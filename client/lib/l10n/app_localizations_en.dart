@@ -5401,7 +5401,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get premiumUiPlayerVipBenefitsBody =>
-      'Player VIP benefits:\n- 10% shorter action timeouts/cooldowns (jail time stays unchanged).\n- In Drug Production, you get a VIP lightning button on each production card to buy missing materials in one click (after cost confirmation).\n- On death, you lose on-hand cash but restart with EUR 500,000 cash.\n- Your rank is halved instead of a full reset.\n- Education progress and unlocked achievements are preserved.\n- Bank balance and crypto are preserved.\n- Properties, vehicles, prostitutes, carried inventory and stored items are removed.\n- Drug progress and drug stock are reset.\n- You receive 100 premium credits weekly while VIP is active.';
+      'Player VIP benefits:\n- 10% shorter action timeouts/cooldowns (jail time stays unchanged).\n- In Drug Production, you get a VIP quick-buy button on each production card to buy missing materials into your current-country depot in one click (after cost confirmation).\n- On death, you lose on-hand cash but restart with EUR 500,000 cash.\n- Your rank is halved instead of a full reset.\n- Education progress and unlocked achievements are preserved.\n- Bank balance and crypto are preserved.\n- Properties, vehicles, prostitutes, carried inventory and stored items are removed.\n- Drug progress and drug stock are reset.\n- You receive 100 premium credits weekly while VIP is active.';
 
   @override
   String get premiumUiCrewVipSubtitleNoCrew =>
@@ -8015,16 +8015,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String inventoryFillPartialHint(
-    int partial,
-    int full,
-    int need,
-    int rest,
-  ) {
-    return 'First top up $partial to $full ($need more), then $rest goes in a new cell.';
-  }
-
-  @override
   String inventoryDrugWithQuality(String name, String quality) {
     return '$name · quality $quality';
   }
@@ -8045,6 +8035,11 @@ class AppLocalizationsEn extends AppLocalizations {
     String source,
   ) {
     return 'This cell is $name quality $target. Your stack is quality $source and will not fill this cell.';
+  }
+
+  @override
+  String inventoryFillPartialHint(int partial, int full, int need, int rest) {
+    return 'First top up $partial to $full ($need more), then $rest goes in a new cell.';
   }
 
   @override
@@ -16846,6 +16841,18 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get drugsVipBuyDepotNote =>
+      'Materials go to the depot of your current country, ready to produce. No backpack transfer needed.';
+
+  @override
+  String get drugsProdLowProfileBlock =>
+      'Low-profile: new production is temporarily blocked.';
+
+  @override
+  String get drugsProdFacilityDowntime =>
+      'This facility is shut down after a raid.';
+
+  @override
   String get drugsPurchaseCompleted => 'Purchase completed';
 
   @override
@@ -17157,7 +17164,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicDrugsHow =>
-      'The drug system uses a photo header plus three tabs: Facilities (upgrade production capacity), Production (active production lines with timer) and Inventory (finished products).\nBuy raw materials via the black market or trade. Combine them in a facility to produce drugs.\nProduction timers run while you are offline. No active clicking needed: check back when the timer finishes.\nFinished output stays visible in Production and keeps that facility slot occupied until you collect it; VIP auto-collect processes ready output automatically in the background.\nStorage capacity is limited per facility. When storage is full production stops automatically.\nA darkweb storefront or other facility does not auto-sell finished output: selling still happens manually through the intended sale flow.\nSell drugs via the black market, Colombia or other special sales locations for the highest margin.\nFBI Heat rises every production cycle and extra on large sales. High heat leads to raid events that can shut down your operation.\nFacility upgrades reduce production time, increase output and expand storage capacity.\nVIP players get a lightning button on production cards: after a confirmation modal, you can buy all missing batch materials in one click.\nAdvanced slot and equipment upgrades are tied to the new Narcotics education track (Hydroponics Specialist, Process Electrics Specialist, Clandestine Chemist). Without the required level/certification you cannot progress to the next upgrade tier.\nDrugs in inventory increase confiscation risk during travel and police checks.';
+      'The drug system uses a photo header plus three tabs: Facilities (upgrade production capacity), Production (active production lines with timer) and Inventory (finished products).\nBuy raw materials via the black market or trade. Combine them in a facility to produce drugs.\nProduction timers run while you are offline. No active clicking needed: check back when the timer finishes.\nFinished output stays visible in Production and keeps that facility slot occupied until you collect it; VIP auto-collect processes ready output automatically in the background.\nStorage capacity is limited per facility. When storage is full production stops automatically.\nA darkweb storefront or other facility does not auto-sell finished output: selling still happens manually through the intended sale flow.\nSell drugs via the black market, Colombia or other special sales locations for the highest margin.\nFBI Heat rises every production cycle and extra on large sales. High heat leads to raid events that can shut down your operation.\nFacility upgrades reduce production time, increase output and expand storage capacity.\nVIP players get a quick-buy button on production cards: after confirmation, missing materials go to the depot of your current country and are ready to produce.\nAdvanced slot and equipment upgrades are tied to the new Narcotics education track (Hydroponics Specialist, Process Electrics Specialist, Clandestine Chemist). Without the required level/certification you cannot progress to the next upgrade tier.\nDrugs in inventory increase confiscation risk during travel and police checks.';
 
   @override
   String get helpTopicDrugsTips =>

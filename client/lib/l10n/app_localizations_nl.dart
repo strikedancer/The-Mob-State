@@ -5436,7 +5436,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get premiumUiPlayerVipBenefitsBody =>
-      'Speler VIP-voordelen:\n- 10% kortere timeout/cooldowns op acties (gevangenistijd blijft gelijk).\n- In Drugs Productie krijg je een VIP bliksemknop op de productiekaart om ontbrekende materialen in 1 klik te kopen (na kostenbevestiging).\n- Bij moord verlies je contant geld, maar je herstart met EUR 500.000 cash.\n- Je rank wordt gehalveerd in plaats van volledige reset.\n- Opleidingen en vrijgespeelde achievements blijven behouden.\n- Banksaldo en crypto blijven behouden.\n- Eigendommen, voertuigen, prostituees, gedragen inventaris en opgeslagen items worden wel verwijderd.\n- Drugsprogress en drugsvoorraad worden gereset.\n- Je ontvangt wekelijks 100 premium credits zolang VIP actief is.';
+      'Speler VIP-voordelen:\n- 10% kortere timeout/cooldowns op acties (gevangenistijd blijft gelijk).\n- In Drugs Productie krijg je een VIP snelkoopknop op de productiekaart om ontbrekende materialen in 1 klik naar het depot van je huidige land te kopen (na kostenbevestiging).\n- Bij moord verlies je contant geld, maar je herstart met EUR 500.000 cash.\n- Je rank wordt gehalveerd in plaats van volledige reset.\n- Opleidingen en vrijgespeelde achievements blijven behouden.\n- Banksaldo en crypto blijven behouden.\n- Eigendommen, voertuigen, prostituees, gedragen inventaris en opgeslagen items worden wel verwijderd.\n- Drugsprogress en drugsvoorraad worden gereset.\n- Je ontvangt wekelijks 100 premium credits zolang VIP actief is.';
 
   @override
   String get premiumUiCrewVipSubtitleNoCrew =>
@@ -8058,16 +8058,6 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String inventoryFillPartialHint(
-    int partial,
-    int full,
-    int need,
-    int rest,
-  ) {
-    return 'Eerst $partial aanvullen tot $full ($need erbij), daarna $rest in een nieuw vak.';
-  }
-
-  @override
   String inventoryDrugWithQuality(String name, String quality) {
     return '$name · kwaliteit $quality';
   }
@@ -8088,6 +8078,11 @@ class AppLocalizationsNl extends AppLocalizations {
     String source,
   ) {
     return 'Dit vak is $name kwaliteit $target. Jouw stapel is kwaliteit $source en vult dit vak niet bij.';
+  }
+
+  @override
+  String inventoryFillPartialHint(int partial, int full, int need, int rest) {
+    return 'Eerst $partial aanvullen tot $full ($need erbij), daarna $rest in een nieuw vak.';
   }
 
   @override
@@ -16885,6 +16880,18 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String get drugsVipBuyDepotNote =>
+      'Materialen gaan naar het depot van je huidige land, klaar om te produceren. Geen overzet naar de rugzak nodig.';
+
+  @override
+  String get drugsProdLowProfileBlock =>
+      'Low-profile: nieuwe productie is tijdelijk geblokkeerd.';
+
+  @override
+  String get drugsProdFacilityDowntime =>
+      'Deze faciliteit ligt stil na een inval.';
+
+  @override
   String get drugsPurchaseCompleted => 'Aankoop voltooid';
 
   @override
@@ -17196,7 +17203,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicDrugsHow =>
-      'Het drugsysteem heeft een foto-header en drie tabs: Faciliteiten (upgrade productiecapaciteit), Productie (actieve productielijnen met timer) en Voorraad (eindproduct).\nGrondstoffen koop je via de zwarte markt of handel. Combineer ze in een faciliteit om drugs te produceren.\nProductietimers lopen door terwijl je offline bent. Je hoeft niet actief te klikken: check terug als de timer klaar is.\nKlaar product blijft zichtbaar in Productie en bezet die faciliteitsslot totdat je het ophaalt; VIP auto-ophalen verwerkt gereed product automatisch op de achtergrond.\nOpslagcapaciteit is beperkt per faciliteit. Als je opslag vol is stopt de productie automatisch.\nEen darkweb storefront of andere faciliteit verkoopt klaar product niet automatisch: verkopen doe je nog steeds handmatig via de juiste verkoopflow.\nDrugs verkopen kan via de zwarte markt, via Colombia of andere speciale verkooplocaties voor de hoogste marge.\nFBI Heat stijgt bij elke productieronde en extra bij grote verkopen. Hoge heat leidt tot raid-events die je operatie kunnen stilleggen.\nFaciliteit-upgrades verlagen productietime, verhogen output en vergroten opslagcapaciteit.\nVIP-spelers krijgen op productiekaarten een bliksemknop: na een bevestigingsmodal koop je in één klik alle ontbrekende materialen voor die batch.\nGeavanceerde slot- en apparatuur-upgrades zijn gekoppeld aan de nieuwe Narcotica-opleiding (Hydroponics Specialist, Process Electrics Specialist, Clandestien Chemicus). Zonder voldoende opleidingsniveau/certificaat kun je niet door naar de volgende upgrade-tier.\nDrugs in je inventaris verhogen het risico op confiscatie bij reizen en politiecontroles.';
+      'Het drugsysteem heeft een foto-header en drie tabs: Faciliteiten (upgrade productiecapaciteit), Productie (actieve productielijnen met timer) en Voorraad (eindproduct).\nGrondstoffen koop je via de zwarte markt of handel. Combineer ze in een faciliteit om drugs te produceren.\nProductietimers lopen door terwijl je offline bent. Je hoeft niet actief te klikken: check terug als de timer klaar is.\nKlaar product blijft zichtbaar in Productie en bezet die faciliteitsslot totdat je het ophaalt; VIP auto-ophalen verwerkt gereed product automatisch op de achtergrond.\nOpslagcapaciteit is beperkt per faciliteit. Als je opslag vol is stopt de productie automatisch.\nEen darkweb storefront of andere faciliteit verkoopt klaar product niet automatisch: verkopen doe je nog steeds handmatig via de juiste verkoopflow.\nDrugs verkopen kan via de zwarte markt, via Colombia of andere speciale verkooplocaties voor de hoogste marge.\nFBI Heat stijgt bij elke productieronde en extra bij grote verkopen. Hoge heat leidt tot raid-events die je operatie kunnen stilleggen.\nFaciliteit-upgrades verlagen productietime, verhogen output en vergroten opslagcapaciteit.\nVIP-spelers krijgen op productiekaarten een snelkoopknop: na bevestiging koop je in één keer alle ontbrekende materialen naar het depot van je huidige land, klaar om te produceren.\nGeavanceerde slot- en apparatuur-upgrades zijn gekoppeld aan de nieuwe Narcotica-opleiding (Hydroponics Specialist, Process Electrics Specialist, Clandestien Chemicus). Zonder voldoende opleidingsniveau/certificaat kun je niet door naar de volgende upgrade-tier.\nDrugs in je inventaris verhogen het risico op confiscatie bij reizen en politiecontroles.';
 
   @override
   String get helpTopicDrugsTips =>

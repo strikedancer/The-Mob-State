@@ -292,6 +292,7 @@ class DrugFacilityService {
 
       return {
         id: f.id,
+        country: f.country || 'netherlands',
         facilityType: f.facilityType,
         displayName: def?.displayName || f.facilityType,
         description: def?.description || '',

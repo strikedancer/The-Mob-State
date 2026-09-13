@@ -6833,6 +6833,9 @@
       }
     }
   },
+  "drugsVipBuyDepotNote": "Materiały trafiają do depotu bieżącego kraju i są gotowe do produkcji. Bez przenoszenia do plecaka.",
+  "drugsProdLowProfileBlock": "Low-profile: nowa produkcja jest tymczasowo zablokowana.",
+  "drugsProdFacilityDowntime": "Ten obiekt stoi po nalocie.",
   "drugsPurchaseCompleted": "Zakup zakończony",
   "drugsPurchaseFailed": "Zakup nie powiódł się",
   "drugsServiceErrorGeneric": "Błąd",

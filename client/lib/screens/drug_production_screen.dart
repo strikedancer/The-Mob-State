@@ -263,13 +263,37 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
     return null;
   }
 
+  String _currentCountry() {
+    final fromStats = _stats?.currentCountry.trim() ?? '';
+    if (fromStats.isNotEmpty) return fromStats;
+    return _materialsSnapshot.currentCountry.trim();
+  }
+
+  bool _sameCountry(String? a, String? b) {
+    return (a ?? '').trim().toLowerCase() == (b ?? '').trim().toLowerCase();
+  }
+
+  bool _isVipActive(AuthProvider authProvider) {
+    if (_stats?.isVip == true) return true;
+    return authProvider.currentPlayer?.isVip == true;
+  }
+
   DrugFacilityInfo? _getFacilityForDrug(String drugId) {
     final facilityType = _getFacilityTypeForDrug(drugId);
     if (facilityType == null) return null;
+    final country = _currentCountry();
+    DrugFacilityInfo? fallback;
     for (final facility in _facilities) {
-      if (facility.facilityType == facilityType) return facility;
+      if (facility.facilityType != facilityType) continue;
+      fallback ??= facility;
+      if (facility.country.isEmpty || country.isEmpty) {
+        return facility;
+      }
+      if (_sameCountry(facility.country, country)) {
+        return facility;
+      }
     }
-    return null;
+    return country.isEmpty ? fallback : null;
   }
 
   int _getAdjustedProductionMinutes(
@@ -422,7 +446,8 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
   }
 
   Future<void> _handleVipQuickBuyMaterials(DrugDefinition drug) async {
-    if (_stats?.isVip != true) return;
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    if (!_isVipActive(authProvider)) return;
     final t = AppLocalizations.of(context)!;
 
     final missingLines = _getMissingMaterialLines(drug);
@@ -443,11 +468,13 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
     );
     final confirmed = await showDialog<bool>(
       context: context,
+      useRootNavigator: true,
       builder: (dialogContext) {
+        final maxHeight = MediaQuery.of(dialogContext).size.height * 0.55;
         return AlertDialog(
           title: Text(t.drugsVipQuickBuyTitle),
           content: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 520, maxHeight: 420),
+            constraints: BoxConstraints(maxWidth: 520, maxHeight: maxHeight),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -457,6 +484,8 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                     t.drugsVipBuyPrompt(drug.displayName),
                     style: const TextStyle(fontWeight: FontWeight.w700),
                   ),
+                  const SizedBox(height: 8),
+                  Text(t.drugsVipBuyDepotNote),
                   const SizedBox(height: 10),
                   ...missingLines.map(
                     (line) => Padding(
@@ -562,9 +591,15 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
 
     final confirm = await showDialog<bool>(
       context: context,
-      builder: (ctx) => AlertDialog(
+      useRootNavigator: true,
+      builder: (ctx) {
+        final maxHeight = MediaQuery.of(ctx).size.height * 0.55;
+        return AlertDialog(
         title: Text(t.drugsProdConfirmTitle),
-        content: Column(
+        content: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: 520, maxHeight: maxHeight),
+          child: SingleChildScrollView(
+            child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -594,6 +629,8 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
               return Text('${entry.value}x $displayName');
             }),
           ],
+            ),
+          ),
         ),
         actions: [
           TextButton(
@@ -606,7 +643,8 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
             child: Text(t.drugsProdStartProductionButton),
           ),
         ],
-      ),
+      );
+      },
     );
 
     if (confirm != true) return;
@@ -839,9 +877,11 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
 
           return DrugFacilityInfo(
             id: facility.id,
+            country: facility.country,
             facilityType: facility.facilityType,
             displayName: facility.displayName,
             slots: facility.slots,
+            effectiveSlots: facility.effectiveSlots,
             activeProductions: nextActive,
             purchasedAt: facility.purchasedAt,
             upgrades: facility.upgrades,
@@ -850,6 +890,9 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
             speedBonus: facility.speedBonus,
             nextSlotCost: facility.nextSlotCost,
             isMaxSlots: facility.isMaxSlots,
+            autoSaleEnabled: facility.autoSaleEnabled,
+            downtimeUntil: facility.downtimeUntil,
+            nextSlotEducation: facility.nextSlotEducation,
           );
         }).toList();
       }
@@ -1506,12 +1549,21 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                         final hasFreeSlot =
                                             facility == null ||
                                             facility.activeProductions <
-                                                facility.slots;
+                                                facility.effectiveSlots;
+                                        final isDowntime =
+                                            facility?.isInDowntime == true;
+                                        final lowProfileBlocked =
+                                            _stats?.lowProfileActive == true;
                                         final canProduce =
                                             hasRank &&
                                             hasMaterials &&
                                             hasFacility &&
-                                            hasFreeSlot;
+                                            hasFreeSlot &&
+                                            !isDowntime &&
+                                            !lowProfileBlocked;
+                                        final showVipBuy =
+                                            _isVipActive(authProvider) &&
+                                            !hasMaterials;
 
                                         return SizedBox(
                                           width: cardWidth,
@@ -1565,36 +1617,16 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                                               ),
                                                         ),
                                                       ),
-                                                      if (_stats?.isVip == true)
-                                                        Tooltip(
-                                                          message: hasMaterials
-                                                              ? t
-                                                                    .drugsProdVipMaterialsOk
-                                                              : t
-                                                                    .drugsProdVipBuyMissing,
-                                                          child: IconButton(
-                                                            visualDensity:
-                                                                VisualDensity
-                                                                    .compact,
-                                                            icon: Icon(
-                                                              Icons.flash_on,
-                                                              color:
-                                                                  hasMaterials
-                                                                  ? Colors
-                                                                        .greenAccent
-                                                                  : Colors
-                                                                        .amberAccent,
-                                                            ),
-                                                            onPressed:
-                                                                hasMaterials ||
-                                                                    _vipQuickBuyingDrugId ==
-                                                                        drug.id
-                                                                ? null
-                                                                : () =>
-                                                                      _handleVipQuickBuyMaterials(
-                                                                        drug,
-                                                                      ),
-                                                          ),
+                                                      if (_isVipActive(
+                                                        authProvider,
+                                                      ))
+                                                        Icon(
+                                                          Icons.flash_on,
+                                                          color: hasMaterials
+                                                              ? Colors
+                                                                    .greenAccent
+                                                              : Colors
+                                                                    .amberAccent,
                                                         ),
                                                     ],
                                                   ),
@@ -1634,7 +1666,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                                                 t,
                                                               ),
                                                               '${facility!.activeProductions}',
-                                                              '${facility.slots}',
+                                                              '${facility.effectiveSlots}',
                                                             )
                                                           : t.drugsProdFacilityRequired(
                                                               _getFacilityDisplayName(
@@ -1745,6 +1777,22 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                                             Colors.orangeAccent,
                                                       ),
                                                     ),
+                                                  if (isDowntime)
+                                                    Text(
+                                                      t.drugsProdFacilityDowntime,
+                                                      style: const TextStyle(
+                                                        color:
+                                                            Colors.orangeAccent,
+                                                      ),
+                                                    ),
+                                                  if (lowProfileBlocked)
+                                                    Text(
+                                                      t.drugsProdLowProfileBlock,
+                                                      style: const TextStyle(
+                                                        color:
+                                                            Colors.orangeAccent,
+                                                      ),
+                                                    ),
                                                   if (facilityType != null &&
                                                       !hasFacility) ...[
                                                     const SizedBox(height: 8),
@@ -1760,6 +1808,58 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                                         ),
                                                         label: Text(
                                                           t.drugsProdOpenFacilities,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                  if (showVipBuy) ...[
+                                                    const SizedBox(height: 8),
+                                                    SizedBox(
+                                                      width: double.infinity,
+                                                      child: OutlinedButton.icon(
+                                                        onPressed:
+                                                            _vipQuickBuyingDrugId ==
+                                                                drug.id
+                                                            ? null
+                                                            : () =>
+                                                                  _handleVipQuickBuyMaterials(
+                                                                    drug,
+                                                                  ),
+                                                        icon:
+                                                            _vipQuickBuyingDrugId ==
+                                                                drug.id
+                                                            ? const SizedBox(
+                                                                width: 16,
+                                                                height: 16,
+                                                                child:
+                                                                    CircularProgressIndicator(
+                                                                  strokeWidth:
+                                                                      2,
+                                                                ),
+                                                              )
+                                                            : const Icon(
+                                                                Icons.flash_on,
+                                                                size: 18,
+                                                              ),
+                                                        label: Text(
+                                                          t.drugsProdVipBuyMissing,
+                                                        ),
+                                                        style: OutlinedButton.styleFrom(
+                                                          foregroundColor:
+                                                              Colors
+                                                                  .amberAccent,
+                                                          minimumSize:
+                                                              const Size(
+                                                                44,
+                                                                48,
+                                                              ),
+                                                          side: BorderSide(
+                                                            color: Colors
+                                                                .amberAccent
+                                                                .withOpacity(
+                                                                  0.7,
+                                                                ),
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
@@ -1783,6 +1883,11 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                                             Colors.white24,
                                                         disabledForegroundColor:
                                                             Colors.white54,
+                                                        minimumSize:
+                                                            const Size(
+                                                              44,
+                                                              48,
+                                                            ),
                                                       ),
                                                       child: Text(
                                                         t.drugsProdStartProduction,
@@ -1816,7 +1921,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
   List<Widget> _buildProductionToolbar(AppLocalizations t) {
     return [
       if (!_isLoading) ..._buildProductionKpis(t),
-      if (_stats?.isVip == true)
+      if (_isVipActive(Provider.of<AuthProvider>(context, listen: false)))
         Tooltip(
           message: _stats?.autoCollectEnabled == true
               ? t.drugsProdAutoCollectOn

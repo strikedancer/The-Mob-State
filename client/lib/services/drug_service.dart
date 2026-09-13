@@ -22,6 +22,25 @@ class DrugService {
     }
   }
 
+  Map<String, dynamic> _decodeDrugResponse(
+    String body, {
+    required String fallbackMessage,
+  }) {
+    if (body.isEmpty) {
+      return {'success': false, 'message': fallbackMessage};
+    }
+    try {
+      final decoded = json.decode(body);
+      if (decoded is Map<String, dynamic>) {
+        return decoded;
+      }
+      if (decoded is Map) {
+        return Map<String, dynamic>.from(decoded);
+      }
+    } catch (_) {}
+    return {'success': false, 'message': fallbackMessage};
+  }
+
   // Get all available drugs
   Future<List<DrugDefinition>> getDrugCatalog() async {
     try {
@@ -141,10 +160,10 @@ class DrugService {
       if (propertyId != null) body['propertyId'] = propertyId;
 
       final response = await _apiClient.post('/drugs/start-production', body);
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        return json.decode(response.body);
-      }
-      return {'success': false, 'message': 'Failed to start production'};
+      return _decodeDrugResponse(
+        response.body,
+        fallbackMessage: 'Failed to start production',
+      );
     } catch (e) {
       return {'success': false, 'message': 'Error: $e'};
     }

@@ -6833,6 +6833,9 @@
       }
     }
   },
+  "drugsVipBuyDepotNote": "Materialien gehen ins Depot des aktuellen Landes und sind sofort produktionsbereit. Kein Rucksack-Transfer nötig.",
+  "drugsProdLowProfileBlock": "Low-Profile: neue Produktion ist vorübergehend blockiert.",
+  "drugsProdFacilityDowntime": "Diese Anlage liegt nach einer Razzia still.",
   "drugsPurchaseCompleted": "Kauf abgeschlossen",
   "drugsPurchaseFailed": "Der Kauf ist fehlgeschlagen",
   "drugsServiceErrorGeneric": "Fehler",

@@ -77,7 +77,7 @@ Authorization: Bearer <admin-token>
 
 - **40% kans** om VIP prostituees te recruiten (â‚¬60/h in plaats van â‚¬40/h)
 - **50% bonus** op earnings van VIP prostituees (â‚¬90/h totaal)
-- **Drugs Productie QoL**: VIP spelers krijgen een 1-klik bliksemknop op productiekaarten om ontbrekende materialen direct te kopen na kostenbevestiging.
+- **Drugs Productie QoL**: VIP spelers krijgen een 1-klik snelkoopknop op productiekaarten om ontbrekende materialen na kostenbevestiging in het depot van het huidige land te zetten.
 - Exclusieve VIP features (toekomstig)
 
 ## ðŸ“Š VIP Status Checken

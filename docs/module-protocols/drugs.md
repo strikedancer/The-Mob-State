@@ -11,7 +11,8 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 ## Production materials: country depot + backpack (2026-08)
 
 ### Player rules
-1. **Buy** → stock goes into the **backpack** (`country = _carried_`). Needs free backpack slots (`ceil(qty / 5)` per stack).
+1. **Buy** (materials shop) → stock goes into the **backpack** (`country = _carried_`). Needs free backpack slots (`ceil(qty / 5)` per stack).
+   VIP **buy-missing** on a production card → **current-country depot** (no backpack slots, ready to produce).
 2. **Production** in country X consumes **depot(X) first** (legacy leftover), then **house/warehouse stock in X**, then **backpack** (`_carried_`).
 3. **Transfer** (`POST /drugs/materials/transfer`): `to_backpack` | `to_depot` still exists for leftover depot lots.
 4. **Backpack capacity**: materials, finished drugs and trade goods share slots with tools and unequipped weapons (`toolService.calculateInventoryUsage`). Worn crime/secondary weapons do not use backpack slots. Upgrade backpacks to carry more.
@@ -29,7 +30,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - `GET /drugs/my-materials` → `{ materials, depot, stored, storedElsewhere, carried, currentCountry, backpack }` — `depot` is **current country only**; `stored` is materials sitting in a house/warehouse in this country; other-country lots stay in `materials` / `storedElsewhere`.
 - `POST /drugs/materials/buy/:materialId` → backpack (`_carried_`)
 - `POST /drugs/materials/transfer` `{ materialId, quantity, direction }`
-- VIP `buy-missing` also credits the **backpack**
+- VIP `buy-missing` credits the **current-country depot** (ready to produce, no backpack transfer)
 - `GET /drugs/productions/:productionId/speedup-quote` → credit cost to finish an in-progress batch early
 - `POST /drugs/productions/:productionId/speedup` → spend premium credits; sets `finishesAt = now` (player still collects normally)
 - `GET /drug-facilities` → owned facilities + `catalog` (price, rank, owned, next-upgrade education)
@@ -93,7 +94,8 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - Visibility of current productions in both Production flow and Facility context when players expect that summary.
 - Finished but uncollected productions must remain visible in the Production flow and still count against their facility slot until they are actually collected.
 - VIP auto-collect must be backed by a real background automation path; a toggle without server-side execution is not sufficient.
-- VIP quick-buy material shortcuts in production cards must remain confirm-first (cost modal with explicit Buy/Cancel actions before purchase) and server-enforced on active VIP status.
+- VIP quick-buy material shortcuts in production cards must remain confirm-first (cost modal with explicit Buy/Cancel actions before purchase) and server-enforced on active VIP status. The button must stay tappable on mobile (full-width control, not a tiny header icon). Stock lands in the current-country depot.
+- Drugs hub `TabBarView` must not steal horizontal swipes on mobile (`NeverScrollableScrollPhysics`); tab changes go through the pinned tab bar so Produce / VIP buy are not interpreted as a swipe to Inventory.
 - Collect UX should not force a full-screen reload; after successful collect, remove only the relevant production card and sync dependent counters in background.
 - Credit speedup for an in-progress batch must quote remaining time server-side, confirm before spend, refuse when already ready/collected, and only move `finishesAt` forward (no auto-inventory grant).
 - Facility ownership or type (including darkweb storefront) must not imply silent auto-sale of finished drug output. Darkweb auto-sale is **opt-in**, default **off**, with an explicit fee/heat disclaimer.

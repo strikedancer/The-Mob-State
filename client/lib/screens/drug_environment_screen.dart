@@ -449,6 +449,7 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen>
       ],
       body: TabBarView(
         controller: _tabs,
+        physics: const NeverScrollableScrollPhysics(),
         children: [
           _keepAlive(
             DrugFacilityScreen(

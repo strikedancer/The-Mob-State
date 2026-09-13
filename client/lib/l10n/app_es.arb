@@ -6833,6 +6833,9 @@
       }
     }
   },
+  "drugsVipBuyDepotNote": "Los materiales van al depósito de tu país actual, listos para producir. No hace falta pasarlos a la mochila.",
+  "drugsProdLowProfileBlock": "Perfil bajo: la producción nueva está bloqueada temporalmente.",
+  "drugsProdFacilityDowntime": "Esta instalación está parada tras una redada.",
   "drugsPurchaseCompleted": "Compra completada",
   "drugsPurchaseFailed": "Compra fallida",
   "drugsServiceErrorGeneric": "Error",

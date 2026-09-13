@@ -105,6 +105,7 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 - Op mobiel mag daarnaast een sticky footer met de primaire loop-acties (Misdaden, Voertuig stelen, Werken, Bank, Crew) blijven staan; die footer mag content niet afsnijden (Scaffold `bottomNavigationBar`) en snackbars blijven top-right.
 - In `Expanded` contexten heeft `ListView` de voorkeur boven `SingleChildScrollView`.
 - Bij `TabBar + TabBarView` schermen: laat elke tabcontent zelf scrollen en voorkom nested scroll conflicts.
+- Als een tab primaire actieknoppen heeft (kopen/starten), zet `TabBarView` op `NeverScrollableScrollPhysics` zodat een vingerbeweging op mobiel niet de tab wisselt in plaats van de knop.
 - Mobile scroll ergonomie: lange “info panels” (zoals Vehicle Ops Intelligence) mogen op smalle schermen standaard ingeklapt zijn (dropdown) zodat primaire acties en content sneller in beeld komen; behoud wel een compacte samenvatting in de header.
 - Snackbars/toasts voor gameplay-acties gebruiken bij voorkeur de top-right overlay helper (`showTopRightFromSnackBar`) zodat feedback niet onderin de layout verdwijnt op web/embedded shells.
 - For touch-first UI where typing is awkward, consider an on-screen numeric keypad for short codes (e.g. vault PIN entry). Keep it responsive: docked on wide screens and stacked on narrow screens.

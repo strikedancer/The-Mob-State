@@ -9710,7 +9710,7 @@ abstract class AppLocalizations {
   /// No description provided for @premiumUiPlayerVipBenefitsBody.
   ///
   /// In en, this message translates to:
-  /// **'Player VIP benefits:\n- 10% shorter action timeouts/cooldowns (jail time stays unchanged).\n- In Drug Production, you get a VIP lightning button on each production card to buy missing materials in one click (after cost confirmation).\n- On death, you lose on-hand cash but restart with EUR 500,000 cash.\n- Your rank is halved instead of a full reset.\n- Education progress and unlocked achievements are preserved.\n- Bank balance and crypto are preserved.\n- Properties, vehicles, prostitutes, carried inventory and stored items are removed.\n- Drug progress and drug stock are reset.\n- You receive 100 premium credits weekly while VIP is active.'**
+  /// **'Player VIP benefits:\n- 10% shorter action timeouts/cooldowns (jail time stays unchanged).\n- In Drug Production, you get a VIP quick-buy button on each production card to buy missing materials into your current-country depot in one click (after cost confirmation).\n- On death, you lose on-hand cash but restart with EUR 500,000 cash.\n- Your rank is halved instead of a full reset.\n- Education progress and unlocked achievements are preserved.\n- Bank balance and crypto are preserved.\n- Properties, vehicles, prostitutes, carried inventory and stored items are removed.\n- Drug progress and drug stock are reset.\n- You receive 100 premium credits weekly while VIP is active.'**
   String get premiumUiPlayerVipBenefitsBody;
 
   /// No description provided for @premiumUiCrewVipSubtitleNoCrew.
@@ -14097,28 +14097,33 @@ abstract class AppLocalizations {
   /// **'Max: {max}'**
   String inventoryMaxShort(int max);
 
-  /// No description provided for @inventoryFillPartialHint.
+  /// No description provided for @inventoryDrugWithQuality.
   ///
   /// In en, this message translates to:
-  /// **'First top up {partial} to {full} ({need} more), then {rest} goes in a new cell.'**
-  String inventoryFillPartialHint(int partial, int full, int need, int rest);
-
-  /// No description provided for @inventoryDrugWithQuality.
+  /// **'{name} · quality {quality}'**
   String inventoryDrugWithQuality(String name, String quality);
 
   /// No description provided for @inventoryQualitySeparateHint.
-  String inventoryQualitySeparateHint(
-    String name,
-    String moved,
-    String stored,
-  );
+  ///
+  /// In en, this message translates to:
+  /// **'You are moving {name} quality {moved}. That stays on its own cells, separate from {name} quality {stored} already in the house.'**
+  String inventoryQualitySeparateHint(String name, String moved, String stored);
 
   /// No description provided for @inventoryQualityMismatchDrop.
+  ///
+  /// In en, this message translates to:
+  /// **'This cell is {name} quality {target}. Your stack is quality {source} and will not fill this cell.'**
   String inventoryQualityMismatchDrop(
     String name,
     String target,
     String source,
   );
+
+  /// No description provided for @inventoryFillPartialHint.
+  ///
+  /// In en, this message translates to:
+  /// **'First top up {partial} to {full} ({need} more), then {rest} goes in a new cell.'**
+  String inventoryFillPartialHint(int partial, int full, int need, int rest);
 
   /// No description provided for @inventoryInvalidQuantity.
   ///
@@ -29128,6 +29133,24 @@ abstract class AppLocalizations {
   /// **'Total: €{amount}'**
   String drugsVipTotal(String amount);
 
+  /// No description provided for @drugsVipBuyDepotNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Materials go to the depot of your current country, ready to produce. No backpack transfer needed.'**
+  String get drugsVipBuyDepotNote;
+
+  /// No description provided for @drugsProdLowProfileBlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Low-profile: new production is temporarily blocked.'**
+  String get drugsProdLowProfileBlock;
+
+  /// No description provided for @drugsProdFacilityDowntime.
+  ///
+  /// In en, this message translates to:
+  /// **'This facility is shut down after a raid.'**
+  String get drugsProdFacilityDowntime;
+
   /// No description provided for @drugsPurchaseCompleted.
   ///
   /// In en, this message translates to:
@@ -29659,7 +29682,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicDrugsHow.
   ///
   /// In en, this message translates to:
-  /// **'The drug system uses a photo header plus three tabs: Facilities (upgrade production capacity), Production (active production lines with timer) and Inventory (finished products).\nBuy raw materials via the black market or trade. Combine them in a facility to produce drugs.\nProduction timers run while you are offline. No active clicking needed: check back when the timer finishes.\nFinished output stays visible in Production and keeps that facility slot occupied until you collect it; VIP auto-collect processes ready output automatically in the background.\nStorage capacity is limited per facility. When storage is full production stops automatically.\nA darkweb storefront or other facility does not auto-sell finished output: selling still happens manually through the intended sale flow.\nSell drugs via the black market, Colombia or other special sales locations for the highest margin.\nFBI Heat rises every production cycle and extra on large sales. High heat leads to raid events that can shut down your operation.\nFacility upgrades reduce production time, increase output and expand storage capacity.\nVIP players get a lightning button on production cards: after a confirmation modal, you can buy all missing batch materials in one click.\nAdvanced slot and equipment upgrades are tied to the new Narcotics education track (Hydroponics Specialist, Process Electrics Specialist, Clandestine Chemist). Without the required level/certification you cannot progress to the next upgrade tier.\nDrugs in inventory increase confiscation risk during travel and police checks.'**
+  /// **'The drug system uses a photo header plus three tabs: Facilities (upgrade production capacity), Production (active production lines with timer) and Inventory (finished products).\nBuy raw materials via the black market or trade. Combine them in a facility to produce drugs.\nProduction timers run while you are offline. No active clicking needed: check back when the timer finishes.\nFinished output stays visible in Production and keeps that facility slot occupied until you collect it; VIP auto-collect processes ready output automatically in the background.\nStorage capacity is limited per facility. When storage is full production stops automatically.\nA darkweb storefront or other facility does not auto-sell finished output: selling still happens manually through the intended sale flow.\nSell drugs via the black market, Colombia or other special sales locations for the highest margin.\nFBI Heat rises every production cycle and extra on large sales. High heat leads to raid events that can shut down your operation.\nFacility upgrades reduce production time, increase output and expand storage capacity.\nVIP players get a quick-buy button on production cards: after confirmation, missing materials go to the depot of your current country and are ready to produce.\nAdvanced slot and equipment upgrades are tied to the new Narcotics education track (Hydroponics Specialist, Process Electrics Specialist, Clandestine Chemist). Without the required level/certification you cannot progress to the next upgrade tier.\nDrugs in inventory increase confiscation risk during travel and police checks.'**
   String get helpTopicDrugsHow;
 
   /// No description provided for @helpTopicDrugsTips.

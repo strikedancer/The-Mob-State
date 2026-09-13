@@ -8098,16 +8098,6 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
-  String inventoryFillPartialHint(
-    int partial,
-    int full,
-    int need,
-    int rest,
-  ) {
-    return 'First top up $partial to $full ($need more), then $rest goes in a new cell.';
-  }
-
-  @override
   String inventoryDrugWithQuality(String name, String quality) {
     return '$name · quality $quality';
   }
@@ -8128,6 +8118,11 @@ class AppLocalizationsIt extends AppLocalizations {
     String source,
   ) {
     return 'This cell is $name quality $target. Your stack is quality $source and will not fill this cell.';
+  }
+
+  @override
+  String inventoryFillPartialHint(int partial, int full, int need, int rest) {
+    return 'First top up $partial to $full ($need more), then $rest goes in a new cell.';
   }
 
   @override
@@ -17027,6 +17022,18 @@ class AppLocalizationsIt extends AppLocalizations {
   String drugsVipTotal(String amount) {
     return 'Totale: €$amount';
   }
+
+  @override
+  String get drugsVipBuyDepotNote =>
+      'I materiali vanno al deposito del paese attuale, pronti per produrre. Nessun trasferimento nello zaino.';
+
+  @override
+  String get drugsProdLowProfileBlock =>
+      'Basso profilo: la nuova produzione è temporaneamente bloccata.';
+
+  @override
+  String get drugsProdFacilityDowntime =>
+      'Questo impianto è fermo dopo un raid.';
 
   @override
   String get drugsPurchaseCompleted => 'Acquisto completato';

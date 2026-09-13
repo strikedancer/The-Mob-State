@@ -6833,6 +6833,9 @@
       }
     }
   },
+  "drugsVipBuyDepotNote": "I materiali vanno al deposito del paese attuale, pronti per produrre. Nessun trasferimento nello zaino.",
+  "drugsProdLowProfileBlock": "Basso profilo: la nuova produzione è temporaneamente bloccata.",
+  "drugsProdFacilityDowntime": "Questo impianto è fermo dopo un raid.",
   "drugsPurchaseCompleted": "Acquisto completato",
   "drugsPurchaseFailed": "Acquisto fallito",
   "drugsServiceErrorGeneric": "Errore",

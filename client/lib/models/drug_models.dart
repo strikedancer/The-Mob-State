@@ -40,13 +40,24 @@ class DrugDefinition {
       description: json['description'] ?? '',
       descriptionEn: json['descriptionEn'] ?? json['description'] ?? '',
       productionTime: json['productionTime'] ?? 0,
-      materials: Map<String, int>.from(json['materials'] ?? {}),
+      materials: _parseIntMap(json['materials']),
       yieldMin: json['yieldMin'] ?? 0,
       yieldMax: json['yieldMax'] ?? 0,
       basePrice: json['basePrice'] ?? 0,
       requiredRank: json['requiredRank'] ?? 0,
-      countryPricing: Map<String, int>.from(json['countryPricing'] ?? {}),
+      countryPricing: _parseIntMap(json['countryPricing']),
     );
+  }
+
+  static Map<String, int> _parseIntMap(dynamic raw) {
+    if (raw is! Map) return const {};
+    final out = <String, int>{};
+    raw.forEach((key, value) {
+      if (value is num) {
+        out[key.toString()] = value.toInt();
+      }
+    });
+    return out;
   }
 
   String getImagePath() {
@@ -223,8 +234,12 @@ class PlayerMaterialsSnapshot {
   }
 
   int carriedQty(String materialId) {
-    return materials
+    final fromMaterials = materials
         .where((m) => m.isCarried && m.materialId == materialId)
+        .fold<int>(0, (sum, m) => sum + m.quantity);
+    if (fromMaterials > 0) return fromMaterials;
+    return carried
+        .where((m) => m.materialId == materialId)
         .fold<int>(0, (sum, m) => sum + m.quantity);
   }
 
@@ -455,9 +470,11 @@ class DrugFacilityUpgradeInfo {
 
 class DrugFacilityInfo {
   final int id;
+  final String country;
   final String facilityType;
   final String displayName;
   final int slots;
+  final int effectiveSlots;
   final int activeProductions;
   final DateTime purchasedAt;
   final Map<String, int> upgrades;
@@ -472,9 +489,11 @@ class DrugFacilityInfo {
 
   DrugFacilityInfo({
     required this.id,
+    this.country = '',
     required this.facilityType,
     required this.displayName,
     required this.slots,
+    int? effectiveSlots,
     required this.activeProductions,
     required this.purchasedAt,
     required this.upgrades,
@@ -486,17 +505,22 @@ class DrugFacilityInfo {
     this.autoSaleEnabled = false,
     this.downtimeUntil,
     this.nextSlotEducation,
-  });
+  }) : effectiveSlots = effectiveSlots ?? slots;
+
+  bool get isInDowntime =>
+      downtimeUntil != null && downtimeUntil!.isAfter(DateTime.now());
 
   factory DrugFacilityInfo.fromJson(Map<String, dynamic> json) {
     final multipliers = json['multipliers'] as Map<String, dynamic>? ?? const {};
-    final slots = json['slots'] ?? 1;
-    final maxSlots = json['maxSlots'] ?? slots;
+    final slots = (json['slots'] as num?)?.toInt() ?? 1;
+    final maxSlots = (json['maxSlots'] as num?)?.toInt() ?? slots;
     return DrugFacilityInfo(
       id: json['id'] ?? 0,
+      country: (json['country'] ?? '').toString(),
       facilityType: json['facilityType'] ?? '',
       displayName: json['displayName'] ?? '',
       slots: slots,
+      effectiveSlots: (json['effectiveSlots'] as num?)?.toInt(),
       activeProductions: json['activeProductions'] ?? 0,
       purchasedAt: DateTime.tryParse(json['purchasedAt'] ?? '') ?? DateTime.now(),
       upgrades: Map<String, int>.from(json['upgrades'] ?? const {}),
@@ -645,6 +669,8 @@ class DrugStats {
   final double raidChance;
   final bool isVip;
   final bool autoCollectEnabled;
+  final bool lowProfileActive;
+  final String currentCountry;
 
   DrugStats({
     required this.totalProduced,
@@ -660,6 +686,8 @@ class DrugStats {
     required this.raidChance,
     required this.isVip,
     required this.autoCollectEnabled,
+    this.lowProfileActive = false,
+    this.currentCountry = '',
   });
 
   factory DrugStats.fromJson(Map<String, dynamic> json) {
@@ -677,6 +705,8 @@ class DrugStats {
       raidChance: (json['raidChance'] ?? 0.0).toDouble(),
       isVip: json['isVip'] ?? false,
       autoCollectEnabled: json['autoCollectEnabled'] ?? false,
+      lowProfileActive: json['lowProfileActive'] == true,
+      currentCountry: (json['currentCountry'] ?? '').toString(),
     );
   }
 }

@@ -6833,6 +6833,9 @@
       }
     }
   },
+  "drugsVipBuyDepotNote": "Les matériaux vont au dépôt du pays actuel, prêts à produire. Pas besoin de les passer au sac à dos.",
+  "drugsProdLowProfileBlock": "Profil bas : la nouvelle production est temporairement bloquée.",
+  "drugsProdFacilityDowntime": "Cette installation est à l'arrêt après un raid.",
   "drugsPurchaseCompleted": "Achat terminé",
   "drugsPurchaseFailed": "L'achat a échoué",
   "drugsServiceErrorGeneric": "Erreur",

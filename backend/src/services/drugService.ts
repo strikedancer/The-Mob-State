@@ -276,32 +276,6 @@ class DrugService {
       };
     }
 
-    let extraSlots = 0;
-    for (const line of purchaseLines) {
-      const carried = await prisma.productionMaterial.findUnique({
-        where: {
-          playerId_country_materialId: {
-            playerId,
-            country: CARRIED_MATERIAL_LOCATION,
-            materialId: line.materialId,
-          },
-        },
-      });
-      extraSlots +=
-        materialSlotsForQuantity((carried?.quantity ?? 0) + line.quantity) -
-        materialSlotsForQuantity(carried?.quantity ?? 0);
-    }
-    try {
-      await assertBackpackFits(playerId, extraSlots);
-    } catch {
-      return {
-        success: false,
-        message: 'Rugzak vol / Backpack full',
-        totalCost,
-        purchased: purchaseLines,
-      };
-    }
-
     await prisma.$transaction(async (tx) => {
       await tx.player.update({
         where: { id: playerId },
@@ -311,14 +285,13 @@ class DrugService {
       });
 
       for (const line of purchaseLines) {
-        await addMaterialStock(tx, playerId, CARRIED_MATERIAL_LOCATION, line.materialId, line.quantity);
+        await addMaterialStock(tx, playerId, country, line.materialId, line.quantity);
       }
     });
-    await refreshInventorySlotUsage(playerId);
 
     return {
       success: true,
-      message: `VIP snelle aankoop voltooid / VIP quick purchase completed for ${drug.displayName}: €${totalCost.toLocaleString()} (rugzak)`,
+      message: `VIP snelle aankoop voltooid / VIP quick purchase completed for ${drug.displayName}: €${totalCost.toLocaleString()} (depot ${country})`,
       totalCost,
       purchased: purchaseLines,
     };
@@ -568,7 +541,7 @@ class DrugService {
         const def = drugFacilityService.getFacilityDefinition(requiredFacilityType);
         return {
           success: false,
-          message: `Je hebt een ${def?.displayName ?? requiredFacilityType} in je huidigging land nodig om ${drug.displayName} te produceren.`,
+          message: `Je hebt een ${def?.displayName ?? requiredFacilityType} in je huidige land nodig om ${drug.displayName} te produceren.`,
         };
       }
 
@@ -2134,7 +2107,18 @@ class DrugService {
       prisma.drugProduction.findMany({ where: { playerId }, select: { drugType: true, quantity: true, quality: true, completed: true, collected: true, startedAt: true, finishesAt: true } }),
       prisma.drugInventory.findMany({ where: { playerId } }),
       prisma.drugFacility.findMany({ where: { playerId }, include: { upgrades: true } }),
-      prisma.player.findUnique({ where: { id: playerId }, select: { drugHeat: true, lastDrugActionAt: true, isVip: true, autoCollectDrugs: true, currentCountry: true } }),
+      prisma.player.findUnique({
+        where: { id: playerId },
+        select: {
+          drugHeat: true,
+          lastDrugActionAt: true,
+          isVip: true,
+          vipExpiresAt: true,
+          autoCollectDrugs: true,
+          currentCountry: true,
+          drugLowProfileUntil: true,
+        },
+      }),
     ]);
 
     // Totals by drug
@@ -2173,8 +2157,10 @@ class DrugService {
       heat,
       heatLevel: heatInfo.level,
       raidChance: heatInfo.raidChance,
-      isVip: player?.isVip ?? false,
+      isVip: isVipStatusActive(player),
       autoCollectEnabled: player?.autoCollectDrugs ?? false,
+      lowProfileActive: Boolean(player?.drugLowProfileUntil && player.drugLowProfileUntil > new Date()),
+      currentCountry: player?.currentCountry || 'netherlands',
     };
   }
 
