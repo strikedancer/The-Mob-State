@@ -12211,7 +12211,7 @@
     }
   },
   "crewUiWarErrorCooldown": "Diese Crew befindet sich immer noch in der Kriegsabklingzeit.",
-  "crewUiWarNoEligibleTargets": "Im Moment gibt es keine teilnahmeberechtigten Crews. Ziele benötigen 3 Mitglieder und müssen außerhalb der Abklingzeit sein.",
+  "crewUiWarNoEligibleTargets": "Im Moment gibt es keine teilnahmeberechtigten Crews. Ziele benötigen {count} Mitglieder und müssen außerhalb der Abklingzeit sein.",
   "crewUiMemberCount": "{count, plural, =1{1 Mitglied} other{{count} Mitglieder}}",
   "@crewUiMemberCount": {
     "placeholders": {
@@ -12272,5 +12272,12 @@
   "crewUiDealNoCapacity": "Eine Crew hat keinen Platz. Der Deal wurde storniert und die Ware wurde zurückgegeben.",
   "crewUiDealWaitingConfirm": "Sie haben es bestätigt. Warten auf die andere Crew.",
   "crewUiDealSettled": "Deal abgeschlossen. Ware getauscht.",
-  "crewUiDealCancelled": "Deal storniert. Jeder bekam seine eigene Ware zurück."
+  "crewUiDealCancelled": "Deal storniert. Jeder bekam seine eigene Ware zurück.",
+  "@crewUiWarNoEligibleTargets": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

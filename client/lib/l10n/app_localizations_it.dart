@@ -5760,8 +5760,9 @@ class AppLocalizationsIt extends AppLocalizations {
       'Quell\'Crew è ancora in fase di recupero della guerra.';
 
   @override
-  String get crewUiWarNoEligibleTargets =>
-      'Nessun Crew idoneo al momento. I bersagli necessitano di 3 membri e devono essere fuori ricarica.';
+  String crewUiWarNoEligibleTargets(int count) {
+    return 'Nessun Crew idoneo al momento. I bersagli necessitano di $count membri e devono essere fuori ricarica.';
+  }
 
   @override
   String get crewUiTr126 => 'Neutra';

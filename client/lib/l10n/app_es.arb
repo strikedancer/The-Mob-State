@@ -12211,7 +12211,7 @@
     }
   },
   "crewUiWarErrorCooldown": "Esa Crew todavía está en tiempo de reutilización de guerra.",
-  "crewUiWarNoEligibleTargets": "No hay equipos elegibles en este momento. Los objetivos necesitan 3 miembros y deben estar fuera del tiempo de reutilización.",
+  "crewUiWarNoEligibleTargets": "No hay equipos elegibles en este momento. Los objetivos necesitan {count} miembros y deben estar fuera del tiempo de reutilización.",
   "crewUiMemberCount": "{count, plural, =1{1 miembro} other{{count} miembros}}",
   "@crewUiMemberCount": {
     "placeholders": {
@@ -12272,5 +12272,12 @@
   "crewUiDealNoCapacity": "Una Crew no tiene espacio. El trato fue cancelado y los bienes fueron devueltos.",
   "crewUiDealWaitingConfirm": "Lo confirmaste. Esperando a la otra Crew.",
   "crewUiDealSettled": "Trato completado. Mercancías intercambiadas.",
-  "crewUiDealCancelled": "Acuerdo cancelado. Todos recuperaron sus propios bienes."
+  "crewUiDealCancelled": "Acuerdo cancelado. Todos recuperaron sus propios bienes.",
+  "@crewUiWarNoEligibleTargets": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

@@ -5744,8 +5744,9 @@ class AppLocalizationsPl extends AppLocalizations {
       'Ta Crew wciąż znajduje się w okresie odnowienia wojny.';
 
   @override
-  String get crewUiWarNoEligibleTargets =>
-      'W tej chwili brak kwalifikujących się załóg. Cele potrzebują 3 członków i muszą mieć wyłączony czas odnowienia.';
+  String crewUiWarNoEligibleTargets(int count) {
+    return 'W tej chwili brak kwalifikujących się załóg. Cele potrzebują $count członków i muszą mieć wyłączony czas odnowienia.';
+  }
 
   @override
   String get crewUiTr126 => 'Neutralny';

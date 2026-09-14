@@ -451,9 +451,9 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 - **HQ & Upgrades visuals**: bijgebouw-afbeeldingen volgen altijd de level-tier van het bijgebouw zelf (niet de actuele HQ-stijl), zodat visuals en levelstatus consistent blijven.
 
 ### Crew Wars
-- Crew Wars lopen via de **War Room** in het crew-scherm. Alleen leaders kunnen een war declareren en beide crews hebben minimaal 3 leden nodig.
-- Na een afgelopen war geldt een cooldown van 8 uur voor beide crews. De War Room zegt dan waarom je niet kunt declareren (geen leider, te weinig leden, al in een war, of cooldown) en grijst doelcrews die nog in cooldown zitten.
-- Fases: **preparing** (join, aanvallen starten over ~15 min), **active** (aanvallen), **lockdown** (geen nieuwe aanvallen, afronden). Territory-claim staat alleen bij Territory War en Total War.
+- Crew Wars lopen via de **War Room** in het crew-scherm. Alleen leaders kunnen een war declareren. Het leden-minimum is runtime (`CREW_WAR_MIN_MEMBERS`, code-default **1** voor de startpopulatie; later via Admin → Crew Wars op 3 of hoger).
+- Na een afgelopen war geldt een cooldown (code-default 8 uur, `CREW_WAR_COOLDOWN_HOURS` in Admin → Crew Wars). De War Room zegt dan waarom je niet kunt declareren (geen leider, te weinig leden, al in een war, of cooldown) en grijst doelcrews die nog in cooldown zitten.
+- Fases: **preparing** (join, aanvallen starten na `CREW_WAR_PREPARATION_MINUTES`, default 15), **active** (aanvallen, default 24 uur), **lockdown** (geen nieuwe aanvallen, default 30 min). Territory-claim staat alleen bij Territory War en Total War.
 - **Territory War** en **Total War** gebruiken echte Territory-regio's als claimdoelen. Die war-doelen hebben nu ook strategische waarde: claimbonus, tick-punten en tags zoals haven, hoofdstad, industrie of logistiek.
 - War-targets worden niet meer alleen gekozen op regio-waarde, maar ook op strategische tags en aangrenzende druk van aanvaller en verdediger. Daardoor ontstaan in Territory Wars logischere frontlinies.
 - Een geclaimde war-regio levert tijdens de war periodieke `territory_tick` punten op. Strategisch sterkere regio's leveren meer tick-punten dan gewone gebieden.

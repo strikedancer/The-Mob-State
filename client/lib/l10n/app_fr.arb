@@ -12211,7 +12211,7 @@
     }
   },
   "crewUiWarErrorCooldown": "Cet équipage est toujours en temps de recharge de guerre.",
-  "crewUiWarNoEligibleTargets": "Aucun équipage éligible pour le moment. Les cibles ont besoin de 3 membres et doivent être hors temps de recharge.",
+  "crewUiWarNoEligibleTargets": "Aucun équipage éligible pour le moment. Les cibles ont besoin de {count} membres et doivent être hors temps de recharge.",
   "crewUiMemberCount": "{count, plural, =1{1 membre} other{{count} membres}}",
   "@crewUiMemberCount": {
     "placeholders": {
@@ -12272,5 +12272,12 @@
   "crewUiDealNoCapacity": "Un équipage n'a pas de place. La transaction a été annulée et les marchandises ont été retournées.",
   "crewUiDealWaitingConfirm": "Vous avez confirmé. En attendant l'autre équipage.",
   "crewUiDealSettled": "Affaire conclue. Marchandises échangées.",
-  "crewUiDealCancelled": "Transaction annulée. Chacun a récupéré ses propres biens."
+  "crewUiDealCancelled": "Transaction annulée. Chacun a récupéré ses propres biens.",
+  "@crewUiWarNoEligibleTargets": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

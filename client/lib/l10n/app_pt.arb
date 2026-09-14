@@ -12211,7 +12211,7 @@
     }
   },
   "crewUiWarErrorCooldown": "Essa Crew ainda está em espera de guerra.",
-  "crewUiWarNoEligibleTargets": "Nenhuma equipe qualificada no momento. Os alvos precisam de 3 membros e devem estar fora do tempo de espera.",
+  "crewUiWarNoEligibleTargets": "Nenhuma equipe qualificada no momento. Os alvos precisam de {count} membros e devem estar fora do tempo de espera.",
   "crewUiMemberCount": "{count, plural, =1{1 membro} other{{count} membros}}",
   "@crewUiMemberCount": {
     "placeholders": {
@@ -12272,5 +12272,12 @@
   "crewUiDealNoCapacity": "Uma Crew não tem espaço. O negócio foi cancelado e as mercadorias foram devolvidas.",
   "crewUiDealWaitingConfirm": "Você confirmou. Esperando pela outra Crew.",
   "crewUiDealSettled": "Negócio concluído. Mercadorias trocadas.",
-  "crewUiDealCancelled": "Acordo cancelado. Todos recuperaram seus próprios produtos."
+  "crewUiDealCancelled": "Acordo cancelado. Todos recuperaram seus próprios produtos.",
+  "@crewUiWarNoEligibleTargets": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

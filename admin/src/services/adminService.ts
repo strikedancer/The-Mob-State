@@ -690,6 +690,7 @@ export interface CrewMissionRuntimeConfigView {
 export type CountryPoliceRuntimeConfigView = CrewMissionRuntimeConfigView;
 export type CasinoRuntimeConfigView = CrewMissionRuntimeConfigView;
 export type DrugRuntimeConfigView = CrewMissionRuntimeConfigView;
+export type CrewWarRuntimeConfigView = CrewMissionRuntimeConfigView;
 
 export interface VehicleOpsTelemetry {
   windowHours: number;
@@ -2938,6 +2939,31 @@ export const adminService = {
     });
 
     await ensureOk(response, "Failed to fetch crew wars overview");
+    return response.json();
+  },
+
+  async getCrewWarRuntimeConfig(): Promise<CrewWarRuntimeConfigView> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/crew-wars/runtime-config`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    await ensureOk(response, "Failed to fetch crew war runtime config");
+    return response.json();
+  },
+
+  async updateCrewWarRuntimeConfig(
+    updates: Record<string, string | number>,
+  ): Promise<CrewWarRuntimeConfigView> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/crew-wars/runtime-config`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ updates }),
+    });
+    await ensureOk(response, "Failed to update crew war runtime config");
     return response.json();
   },
 

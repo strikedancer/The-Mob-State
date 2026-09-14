@@ -15,7 +15,8 @@ Scope-afbakening:
 
 ## Primary Backend Entry
 - backend/src/routes/crewWars.ts
-- backend/src/services/crewWarService.ts
+- Primary Backend Entry: `backend/src/services/crewWarService.ts` (runtime keys `CREW_WAR_*`)
+- Admin: `admin/src/components/CrewWarsAdminPanel.tsx` (`GET/PUT /admin/crew-wars/runtime-config`)
 - backend/src/services/crewWarRaidService.ts
 - backend/src/services/crewDealService.ts
 - backend/src/routes/crewDeals.ts
@@ -49,6 +50,8 @@ Scope-afbakening:
 - Acties moeten traceerbaar blijven via war logs en admin-audit.
 - Leaderboard en rewards moeten deterministisch herleidbaar zijn uit opgeslagen war actions.
 - UI moet live spanning geven zonder kritieke acties of statusinfo op mobiel te verbergen.
+- Het leden-minimum om een war te declareren is runtime (`CREW_WAR_MIN_MEMBERS` in Admin → Crew Wars), niet hardcoded. Code-default is **1** voor de startpopulatie; later via admin terug naar 3 of hoger. War Room toont het live getal.
+- Andere war-pacing (voorbereiding, actieve duur, lockdown, cooldown) hoort bij dezelfde runtime-console.
 - Territory War en Total War moeten hun claimbare gebieden tonen met echte Territory-regio-identiteit (regionKey + NL/EN naam), niet met abstracte labels zoals `docks` of `harbor`.
 - Territory-targets moeten, zodra strategische Territory-metadata beschikbaar is, dezelfde bronwaarden meenemen voor `strategicTags`, claimbonus, tick-waarde en adjacency-context in zowel war-selectie, war scoring als War Room UI; Crew Wars mag geen los tweede waarderingsmodel naast Territory introduceren.
 - War metadata bevat `theaterRegionKey` (theater-doel) + territory targets; dashboard exposeert theater + hot regions. Wars geven **geen** permanente ownership-skip — ownership blijft via Territory contests/resolve.
@@ -235,7 +238,7 @@ CREW_WAR_DISCORD_MIN_INTERVAL_MS=15000
 
 ## QA Checklist
 1. Admin war start werkt inclusief pre-war status.
-2. Crew leader declare flow blokkeert correct bij onvoldoende leden of cooldown.
+2. Crew leader declare flow blokkeert correct bij onvoldoende leden (live `CREW_WAR_MIN_MEMBERS`) of cooldown.
 2a. War Room: lockdown toont geen klikbare attack-knoppen; preparing toont start-countdown + join; recente wars tonen crew-namen.
 3. Kill/economy/territory/total war scoren volgens type-specifieke regels.
 4. Anti-farm regels blokkeren punten voor repeated target abuse en same-IP scenario's.

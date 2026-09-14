@@ -12211,7 +12211,7 @@
     }
   },
   "crewUiWarErrorCooldown": "Ta Crew wciąż znajduje się w okresie odnowienia wojny.",
-  "crewUiWarNoEligibleTargets": "W tej chwili brak kwalifikujących się załóg. Cele potrzebują 3 członków i muszą mieć wyłączony czas odnowienia.",
+  "crewUiWarNoEligibleTargets": "W tej chwili brak kwalifikujących się załóg. Cele potrzebują {count} członków i muszą mieć wyłączony czas odnowienia.",
   "crewUiMemberCount": "{count, plural, =1{1 członek} other{{count} członków}}",
   "@crewUiMemberCount": {
     "placeholders": {
@@ -12272,5 +12272,12 @@
   "crewUiDealNoCapacity": "Crew nie ma miejsca. Umowa została anulowana, a towar zwrócony.",
   "crewUiDealWaitingConfirm": "Potwierdziłeś. Czekam na drugą załogę.",
   "crewUiDealSettled": "Transakcja zakończona. Towar wymieniony.",
-  "crewUiDealCancelled": "Umowa anulowana. Każdy odzyskał swój towar."
+  "crewUiDealCancelled": "Umowa anulowana. Każdy odzyskał swój towar.",
+  "@crewUiWarNoEligibleTargets": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

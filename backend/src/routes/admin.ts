@@ -5308,6 +5308,41 @@ router.get('/crew-wars/overview', async (_req: AdminRequest, res) => {
   }
 });
 
+router.get('/crew-wars/runtime-config', async (_req, res) => {
+  try {
+    const config = await crewWarService.getRuntimeConfigView();
+    return res.json(config);
+  } catch (error) {
+    console.error('Admin crew wars runtime config error:', error);
+    return res.status(500).json({ error: 'Failed to fetch crew war runtime config' });
+  }
+});
+
+router.put('/crew-wars/runtime-config', async (req, res) => {
+  try {
+    const parsed = runtimeNumericConfigUpdatesSchema.parse(req.body ?? {});
+    const updated = await crewWarService.updateRuntimeConfig(parsed.updates);
+    return res.json(updated);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ error: 'Validation failed', details: error.flatten() });
+    }
+    if (error instanceof Error && error.message.startsWith('INVALID_RUNTIME_KEY:')) {
+      return res.status(400).json({ error: 'Invalid runtime key', details: error.message });
+    }
+    if (error instanceof Error && error.message.startsWith('RUNTIME_VALUE_NOT_NUMERIC:')) {
+      return res
+        .status(400)
+        .json({ error: 'Runtime value must be numeric', details: error.message });
+    }
+    if (error instanceof Error && error.message.startsWith('RUNTIME_OUT_OF_RANGE:')) {
+      return res.status(400).json({ error: 'Runtime value out of range', details: error.message });
+    }
+    console.error('Admin crew wars runtime config update error:', error);
+    return res.status(500).json({ error: 'Failed to update crew war runtime config' });
+  }
+});
+
 router.post(
   '/crew-wars/declare',
   auditLog({ action: 'ADMIN_DECLARE_CREW_WAR', targetType: 'CrewWar' }),

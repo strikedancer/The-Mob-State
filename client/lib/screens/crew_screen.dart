@@ -2377,7 +2377,7 @@ class _CrewScreenState extends State<CrewScreen>
         return loc.crewUiWarDeclareNeedLeader;
       case 'not_enough_members':
         return loc.crewUiWarDeclareNeedMembers(
-          (hub['minMembersRequired'] as num?)?.toInt() ?? 3,
+          (hub['minMembersRequired'] as num?)?.toInt() ?? 1,
           (hub['myCrewMemberCount'] as num?)?.toInt() ?? 0,
         );
       case 'on_cooldown':
@@ -6219,7 +6219,11 @@ class _CrewScreenState extends State<CrewScreen>
                       if (declareableTargets.isEmpty) ...[
                         const SizedBox(height: 8),
                         Text(
-                          l10n.crewUiWarNoEligibleTargets,
+                          l10n.crewUiWarNoEligibleTargets(
+                            (_crewWarHub?['minMembersRequired'] as num?)
+                                    ?.toInt() ??
+                                1,
+                          ),
                           style: const TextStyle(color: Colors.white70),
                         ),
                       ],

@@ -5742,8 +5742,9 @@ class AppLocalizationsPt extends AppLocalizations {
       'Essa Crew ainda está em espera de guerra.';
 
   @override
-  String get crewUiWarNoEligibleTargets =>
-      'Nenhuma equipe qualificada no momento. Os alvos precisam de 3 membros e devem estar fora do tempo de espera.';
+  String crewUiWarNoEligibleTargets(int count) {
+    return 'Nenhuma equipe qualificada no momento. Os alvos precisam de $count membros e devem estar fora do tempo de espera.';
+  }
 
   @override
   String get crewUiTr126 => 'Neutra';

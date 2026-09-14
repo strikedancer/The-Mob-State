@@ -5772,8 +5772,9 @@ class AppLocalizationsDe extends AppLocalizations {
       'Diese Crew befindet sich immer noch in der Kriegsabklingzeit.';
 
   @override
-  String get crewUiWarNoEligibleTargets =>
-      'Im Moment gibt es keine teilnahmeberechtigten Crews. Ziele benötigen 3 Mitglieder und müssen außerhalb der Abklingzeit sein.';
+  String crewUiWarNoEligibleTargets(int count) {
+    return 'Im Moment gibt es keine teilnahmeberechtigten Crews. Ziele benötigen $count Mitglieder und müssen außerhalb der Abklingzeit sein.';
+  }
 
   @override
   String get crewUiTr126 => 'Neutral';

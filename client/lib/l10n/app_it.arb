@@ -12211,7 +12211,7 @@
     }
   },
   "crewUiWarErrorCooldown": "Quell'Crew è ancora in fase di recupero della guerra.",
-  "crewUiWarNoEligibleTargets": "Nessun Crew idoneo al momento. I bersagli necessitano di 3 membri e devono essere fuori ricarica.",
+  "crewUiWarNoEligibleTargets": "Nessun Crew idoneo al momento. I bersagli necessitano di {count} membri e devono essere fuori ricarica.",
   "crewUiMemberCount": "{count, plural, =1{1 membro} other{{count} membri}}",
   "@crewUiMemberCount": {
     "placeholders": {
@@ -12272,5 +12272,12 @@
   "crewUiDealNoCapacity": "Un Crew non ha spazio. L'affare è stato annullato e la merce è stata restituita.",
   "crewUiDealWaitingConfirm": "Hai confermato. Aspettando l'altro Crew.",
   "crewUiDealSettled": "Affare concluso. Merce scambiata.",
-  "crewUiDealCancelled": "Affare annullato. Ognuno ha recuperato la propria merce."
+  "crewUiDealCancelled": "Affare annullato. Ognuno ha recuperato la propria merce.",
+  "@crewUiWarNoEligibleTargets": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

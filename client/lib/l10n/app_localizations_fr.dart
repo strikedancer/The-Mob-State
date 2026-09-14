@@ -5787,8 +5787,9 @@ class AppLocalizationsFr extends AppLocalizations {
       'Cet équipage est toujours en temps de recharge de guerre.';
 
   @override
-  String get crewUiWarNoEligibleTargets =>
-      'Aucun équipage éligible pour le moment. Les cibles ont besoin de 3 membres et doivent être hors temps de recharge.';
+  String crewUiWarNoEligibleTargets(int count) {
+    return 'Aucun équipage éligible pour le moment. Les cibles ont besoin de $count membres et doivent être hors temps de recharge.';
+  }
 
   @override
   String get crewUiTr126 => 'Neutre';

@@ -5767,8 +5767,9 @@ class AppLocalizationsEs extends AppLocalizations {
       'Esa Crew todavía está en tiempo de reutilización de guerra.';
 
   @override
-  String get crewUiWarNoEligibleTargets =>
-      'No hay equipos elegibles en este momento. Los objetivos necesitan 3 miembros y deben estar fuera del tiempo de reutilización.';
+  String crewUiWarNoEligibleTargets(int count) {
+    return 'No hay equipos elegibles en este momento. Los objetivos necesitan $count miembros y deben estar fuera del tiempo de reutilización.';
+  }
 
   @override
   String get crewUiTr126 => 'Neutral';

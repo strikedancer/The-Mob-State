@@ -1,8 +1,21 @@
-import { useEffect, useState } from 'react'
-import { adminService, type AdminCrewWarOverview } from '../services/adminService'
+import { useEffect, useMemo, useState } from 'react'
+import {
+  adminService,
+  type AdminCrewWarOverview,
+  type CrewWarRuntimeConfigView,
+} from '../services/adminService'
 import type { AdminLanguage } from '../i18n/translations'
 import { getAdminTr } from '../i18n/inlineMessages'
-import { AdminPageIntro, RuntimeKpi, RuntimeKpiGrid } from './adminChrome'
+import {
+  AdminPageIntro,
+  RuntimeField,
+  RuntimeKpi,
+  RuntimeKpiGrid,
+  RuntimeToolbar,
+  isInvalidAmount,
+  runtimeValueFor,
+  type FieldKind,
+} from './adminChrome'
 
 type Props = {
   locale: AdminLanguage
@@ -11,10 +24,71 @@ type Props = {
 const tr = (locale: AdminLanguage, nl: string, en: string) =>
   getAdminTr(locale, nl, en)
 
+const WAR_RUNTIME_FIELDS: Array<{
+  key: string
+  kind: FieldKind
+  labelNl: string
+  labelEn: string
+  helpNl: string
+  helpEn: string
+}> = [
+  {
+    key: 'CREW_WAR_MIN_MEMBERS',
+    kind: 'int',
+    labelNl: 'Minimum leden',
+    labelEn: 'Minimum members',
+    helpNl: 'Beide crews moeten dit aantal leden hebben om een oorlog te starten. 1–20. Nu 1 zolang er weinig spelers zijn; later kun je dit weer op 3 zetten.',
+    helpEn: 'Both crews need this many members to start a war. 1–20. Use 1 while the player count is low; raise it to 3 later.',
+  },
+  {
+    key: 'CREW_WAR_PREPARATION_MINUTES',
+    kind: 'minutes',
+    labelNl: 'Voorbereiding',
+    labelEn: 'Preparation',
+    helpNl: 'Minuten tussen declareren en de eerste aanvallen. 1–180.',
+    helpEn: 'Minutes between declare and the first attacks. 1–180.',
+  },
+  {
+    key: 'CREW_WAR_ACTIVE_HOURS',
+    kind: 'hours',
+    labelNl: 'Actieve duur',
+    labelEn: 'Active duration',
+    helpNl: 'Uren dat de war actief is (inclusief lockdown). 1–72.',
+    helpEn: 'Hours the war stays active (including lockdown). 1–72.',
+  },
+  {
+    key: 'CREW_WAR_LOCKDOWN_MINUTES',
+    kind: 'minutes',
+    labelNl: 'Lockdown',
+    labelEn: 'Lockdown',
+    helpNl: 'Laatste minuten zonder nieuwe aanvallen. 1–180, korter dan de actieve duur.',
+    helpEn: 'Final minutes without new attacks. 1–180, shorter than the active duration.',
+  },
+  {
+    key: 'CREW_WAR_COOLDOWN_HOURS',
+    kind: 'hours',
+    labelNl: 'Cooldown na war',
+    labelEn: 'Cooldown after war',
+    helpNl: 'Uren voordat dezelfde crews weer kunnen vechten. 0–72.',
+    helpEn: 'Hours before the same crews can fight again. 0–72.',
+  },
+]
+
+function valuesFromView(view: CrewWarRuntimeConfigView) {
+  return Object.fromEntries(
+    WAR_RUNTIME_FIELDS.map((field) => [field.key, runtimeValueFor(view, field.key)]),
+  )
+}
+
 export function CrewWarsAdminPanel({ locale }: Props) {
   const [overview, setOverview] = useState<AdminCrewWarOverview | null>(null)
+  const [runtimeView, setRuntimeView] = useState<CrewWarRuntimeConfigView | null>(null)
+  const [runtimeValues, setRuntimeValues] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const [savingRuntime, setSavingRuntime] = useState(false)
+  const [runtimeMessage, setRuntimeMessage] = useState<string | null>(null)
+  const [runtimeError, setRuntimeError] = useState<string | null>(null)
   const [form, setForm] = useState({
     attackerCrewId: '',
     defenderCrewId: '',
@@ -25,8 +99,13 @@ export function CrewWarsAdminPanel({ locale }: Props) {
   const loadOverview = async () => {
     try {
       setLoading(true)
-      const response = await adminService.getCrewWarsOverview()
+      const [response, config] = await Promise.all([
+        adminService.getCrewWarsOverview(),
+        adminService.getCrewWarRuntimeConfig(),
+      ])
       setOverview(response)
+      setRuntimeView(config)
+      setRuntimeValues(valuesFromView(config))
     } catch (error) {
       window.alert(`${tr(locale, 'Crew-oorlogen laden mislukt', 'Failed to load crew wars')}: ${(error as Error).message}`)
     } finally {
@@ -76,6 +155,34 @@ export function CrewWarsAdminPanel({ locale }: Props) {
     }
   }
 
+  const dirtyCount = useMemo(() => {
+    if (!runtimeView) return 0
+    return WAR_RUNTIME_FIELDS.filter(
+      (field) => (runtimeValues[field.key] ?? '') !== runtimeValueFor(runtimeView, field.key),
+    ).length
+  }, [runtimeValues, runtimeView])
+
+  const saveRuntime = async () => {
+    if (WAR_RUNTIME_FIELDS.some((field) => isInvalidAmount(runtimeValues[field.key] ?? ''))) {
+      setRuntimeError(tr(locale, 'Corrigeer ongeldige waarden voor je opslaat.', 'Fix invalid values before saving.'))
+      return
+    }
+    try {
+      setSavingRuntime(true)
+      setRuntimeError(null)
+      setRuntimeMessage(null)
+      const updated = await adminService.updateCrewWarRuntimeConfig(runtimeValues)
+      setRuntimeView(updated)
+      setRuntimeValues(valuesFromView(updated))
+      setRuntimeMessage(tr(locale, 'Crew War-instellingen opgeslagen. Gelden meteen voor nieuwe oorlogen.', 'Crew War settings saved. They apply immediately to new wars.'))
+    } catch (error) {
+      setRuntimeError(tr(locale, 'Opslaan mislukt (check de bereiken).', 'Save failed (check the ranges).'))
+      console.error(error)
+    } finally {
+      setSavingRuntime(false)
+    }
+  }
+
   return (
     <div className="d-flex flex-column gap-3">
       <AdminPageIntro
@@ -97,10 +204,70 @@ export function CrewWarsAdminPanel({ locale }: Props) {
           value={String(overview?.activeWars.length || 0)}
         />
         <RuntimeKpi
+          label={tr(locale, 'Min. leden', 'Min. members')}
+          value={runtimeValueFor(runtimeView, 'CREW_WAR_MIN_MEMBERS') || '-'}
+          hint={tr(locale, 'Live drempel om te declareren', 'Live declare threshold')}
+        />
+        <RuntimeKpi
           label={tr(locale, 'Geblokkeerde acties', 'Blocked actions')}
           value={String(overview?.flaggedActions || 0)}
         />
       </RuntimeKpiGrid>
+      {runtimeError && <div className="alert alert-danger">{runtimeError}</div>}
+      {runtimeMessage && <div className="alert alert-success">{runtimeMessage}</div>}
+      <RuntimeToolbar
+        locale={locale}
+        loading={loading}
+        saving={savingRuntime}
+        dirtyCount={dirtyCount}
+        disabled={!runtimeView}
+        onRefresh={() => void loadOverview()}
+        onDiscard={() => runtimeView && setRuntimeValues(valuesFromView(runtimeView))}
+        onSave={() => void saveRuntime()}
+      />
+      <div className="card">
+        <div className="card-header d-flex align-items-start gap-3">
+          <i className="ph-flag runtime-section-icon fs-4" />
+          <div>
+            <h2 className="h5 mb-1">{tr(locale, 'War-instellingen', 'War settings')}</h2>
+            <p className="text-muted small mb-0">
+              {tr(
+                locale,
+                'Geldt voor nieuwe oorlogen in de War Room. Leden-minimum 1 is bedoeld voor een kleine startpopulatie.',
+                'Applies to new wars in the War Room. A member minimum of 1 is for a small launch population.',
+              )}
+            </p>
+          </div>
+        </div>
+        <div className="card-body">
+          <div className="row g-3">
+            {WAR_RUNTIME_FIELDS.map((field) => (
+              <div className="col-md-6 col-xl-4" key={field.key}>
+                <RuntimeField
+                  locale={locale}
+                  label={tr(locale, field.labelNl, field.labelEn)}
+                  help={tr(locale, field.helpNl, field.helpEn)}
+                  fieldKey={field.key}
+                  kind={field.kind}
+                  value={runtimeValues[field.key] ?? ''}
+                  saved={runtimeValueFor(runtimeView, field.key)}
+                  fallback={runtimeView?.defaults[field.key] ?? ''}
+                  disabled={savingRuntime || loading || !runtimeView}
+                  onChange={(next) =>
+                    setRuntimeValues((current) => ({ ...current, [field.key]: next }))
+                  }
+                  onReset={() =>
+                    setRuntimeValues((current) => ({
+                      ...current,
+                      [field.key]: runtimeView?.defaults[field.key] ?? '',
+                    }))
+                  }
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
       <div className="row g-3">
         <div className="col-lg-4">
           <div className="card h-100">
@@ -140,7 +307,7 @@ export function CrewWarsAdminPanel({ locale }: Props) {
               </div>
               <div>
                 <label className="form-label fw-semibold">{tr(locale, 'Start over minuten', 'Start in minutes')}</label>
-                <input className="form-control" type="number" min={1} max={60} value={form.startsInMinutes} onChange={(e) => setForm((current) => ({ ...current, startsInMinutes: e.target.value }))} />
+                <input className="form-control" type="number" min={1} max={180} value={form.startsInMinutes} onChange={(e) => setForm((current) => ({ ...current, startsInMinutes: e.target.value }))} />
               </div>
               <button type="button" className="btn btn-danger" onClick={handleDeclare} disabled={submitting || loading}>
                 {submitting ? tr(locale, 'Bezig...', 'Working...') : tr(locale, 'Declareer oorlog', 'Declare war')}

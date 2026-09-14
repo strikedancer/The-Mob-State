@@ -12,10 +12,24 @@ import {
   type RaidLootTarget,
 } from './crewWarRaidService';
 
-const PREPARATION_MINUTES = 15;
-const ACTIVE_HOURS = 24;
-const LOCKDOWN_MINUTES = 30;
-const MIN_MEMBERS_REQUIRED = 3;
+const CREW_WAR_RUNTIME_SETTING_DEFAULTS = {
+  CREW_WAR_MIN_MEMBERS: '1',
+  CREW_WAR_PREPARATION_MINUTES: '15',
+  CREW_WAR_ACTIVE_HOURS: '24',
+  CREW_WAR_LOCKDOWN_MINUTES: '30',
+  CREW_WAR_COOLDOWN_HOURS: '8',
+} as const;
+
+const CREW_WAR_RUNTIME_SETTING_KEYS = Object.keys(CREW_WAR_RUNTIME_SETTING_DEFAULTS);
+
+type CrewWarRuntimeConfig = {
+  minMembers: number;
+  preparationMinutes: number;
+  activeHours: number;
+  lockdownMinutes: number;
+  cooldownHours: number;
+};
+
 const REPEATED_TARGET_WINDOW_MS = 30 * 60 * 1000;
 const TERRITORY_TICK_MS = 30 * 60 * 1000;
 const DEFAULT_REWARD_POOL = 150000;
@@ -75,6 +89,81 @@ function asJson(value: string | null | undefined): Record<string, any> {
 
 function stringifyJson(value: Record<string, any>): string {
   return JSON.stringify(value ?? {});
+}
+
+function clampInt(value: number, min: number, max: number, fallback: number): number {
+  if (!Number.isFinite(value)) return fallback;
+  return Math.min(max, Math.max(min, Math.floor(value)));
+}
+
+async function ensureRuntimeConfigTable(): Promise<void> {
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS runtime_config (
+      configKey VARCHAR(120) NOT NULL PRIMARY KEY,
+      configValue VARCHAR(255) NOT NULL,
+      updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+  `);
+}
+
+async function loadCrewWarRuntimeConfig(): Promise<CrewWarRuntimeConfig> {
+  const defaults = { ...CREW_WAR_RUNTIME_SETTING_DEFAULTS };
+  try {
+    await ensureRuntimeConfigTable();
+    const placeholders = CREW_WAR_RUNTIME_SETTING_KEYS.map(() => '?').join(', ');
+    const rows = await prisma.$queryRawUnsafe<Array<{ configKey: string; configValue: string }>>(
+      `SELECT configKey, configValue FROM runtime_config WHERE configKey IN (${placeholders})`,
+      ...CREW_WAR_RUNTIME_SETTING_KEYS,
+    );
+    for (const row of rows) {
+      if (row.configKey in defaults) {
+        defaults[row.configKey as keyof typeof defaults] = String(row.configValue ?? '');
+      }
+    }
+  } catch {
+    // Keep code defaults when runtime_config is unavailable.
+  }
+
+  const activeHours = clampInt(Number(defaults.CREW_WAR_ACTIVE_HOURS), 1, 72, 24);
+  const lockdownMinutes = clampInt(Number(defaults.CREW_WAR_LOCKDOWN_MINUTES), 1, 180, 30);
+  return {
+    minMembers: clampInt(Number(defaults.CREW_WAR_MIN_MEMBERS), 1, 20, 1),
+    preparationMinutes: clampInt(Number(defaults.CREW_WAR_PREPARATION_MINUTES), 1, 180, 15),
+    activeHours,
+    lockdownMinutes: Math.min(lockdownMinutes, activeHours * 60 - 1),
+    cooldownHours: clampInt(Number(defaults.CREW_WAR_COOLDOWN_HOURS), 0, 72, 8),
+  };
+}
+
+function warSchedule(
+  from: Date,
+  cfg: CrewWarRuntimeConfig,
+  prepMinutes = cfg.preparationMinutes,
+) {
+  const activeFrom = new Date(from.getTime() + prepMinutes * 60 * 1000);
+  const activeMs = cfg.activeHours * 60 * 60 * 1000;
+  const lockdownMs = Math.min(cfg.lockdownMinutes * 60 * 1000, activeMs - 60_000);
+  return {
+    activeFrom,
+    lockDownFrom: new Date(activeFrom.getTime() + Math.max(60_000, activeMs - lockdownMs)),
+    endTime: new Date(activeFrom.getTime() + activeMs),
+    cooldownUntil: new Date(activeFrom.getTime() + activeMs + cfg.cooldownHours * 60 * 60 * 1000),
+  };
+}
+
+async function upsertCrewWarRuntimeConfigValues(updates: Record<string, string>): Promise<void> {
+  await ensureRuntimeConfigTable();
+  for (const [key, value] of Object.entries(updates)) {
+    await prisma.$executeRawUnsafe(
+      `
+        INSERT INTO runtime_config (configKey, configValue)
+        VALUES (?, ?)
+        ON DUPLICATE KEY UPDATE configValue = VALUES(configValue)
+      `,
+      key,
+      value,
+    );
+  }
 }
 
 async function getTerritoryWarAftermathConfig() {
@@ -875,11 +964,12 @@ function resolveDeclareBlockReason(input: {
   currentWar: unknown;
   memberCount: number;
   inCooldown: boolean;
+  minMembers: number;
 }): DeclareBlockReason {
   if (input.currentWar) return 'in_war';
   if (input.role !== 'leader') return 'not_leader';
   if (input.inCooldown) return 'on_cooldown';
-  if (input.memberCount < MIN_MEMBERS_REQUIRED) return 'not_enough_members';
+  if (input.memberCount < input.minMembers) return 'not_enough_members';
   return null;
 }
 
@@ -1059,6 +1149,7 @@ export async function getWarHubForPlayer(playerId: number) {
   });
 
   const season = await ensureCurrentSeason();
+  const warCfg = await loadCrewWarRuntimeConfig();
 
   if (!membership) {
     return {
@@ -1066,6 +1157,7 @@ export async function getWarHubForPlayer(playerId: number) {
       myRole: null,
       canDeclare: false,
       declareBlockReason: null,
+      minMembersRequired: warCfg.minMembers,
       currentWar: null,
       availableTargets: [],
       season,
@@ -1130,6 +1222,7 @@ export async function getWarHubForPlayer(playerId: number) {
     currentWar,
     memberCount: myCrewMemberCount,
     inCooldown: myCrewInCooldown,
+    minMembers: warCfg.minMembers,
   });
   const recentCrewMap = await getCrewNames(
     recentWars.flatMap((war) => [war.attackerCrewId, war.defenderCrewId]),
@@ -1159,7 +1252,7 @@ export async function getWarHubForPlayer(playerId: number) {
     myRole: membership.role,
     canDeclare: declareBlockReason === null,
     declareBlockReason,
-    minMembersRequired: MIN_MEMBERS_REQUIRED,
+    minMembersRequired: warCfg.minMembers,
     myCrewMemberCount,
     myCrewInCooldown,
     myCrewCooldownUntil,
@@ -1171,7 +1264,7 @@ export async function getWarHubForPlayer(playerId: number) {
         inCooldown: targetCrewIdsInCooldown.has(crew.id),
         isVipActive: isVipActive(crew),
       }))
-      .filter((crew) => (countMap.get(crew.id) ?? 0) >= MIN_MEMBERS_REQUIRED),
+      .filter((crew) => (countMap.get(crew.id) ?? 0) >= warCfg.minMembers),
     season,
     seasonLeaderboard: seasonLeaderboard.map((entry, index) => ({
       rank: index + 1,
@@ -1219,7 +1312,8 @@ export async function declareWar(playerId: number, targetCrewId: number, warType
   if (!targetCrew) {
     throw new Error('TARGET_CREW_NOT_FOUND');
   }
-  if (sourceMembers < MIN_MEMBERS_REQUIRED || targetMembers < MIN_MEMBERS_REQUIRED) {
+  const warCfg = await loadCrewWarRuntimeConfig();
+  if (sourceMembers < warCfg.minMembers || targetMembers < warCfg.minMembers) {
     throw new Error('NOT_ENOUGH_CREW_MEMBERS');
   }
 
@@ -1259,9 +1353,7 @@ export async function declareWar(playerId: number, targetCrewId: number, warType
 
   const season = await ensureCurrentSeason();
   const now = new Date();
-  const activeFrom = new Date(now.getTime() + PREPARATION_MINUTES * 60 * 1000);
-  const lockDownFrom = new Date(activeFrom.getTime() + (ACTIVE_HOURS * 60 - LOCKDOWN_MINUTES) * 60 * 1000);
-  const endTime = new Date(activeFrom.getTime() + ACTIVE_HOURS * 60 * 60 * 1000);
+  const { activeFrom, lockDownFrom, endTime, cooldownUntil } = warSchedule(now, warCfg);
   const territoryTargets = await buildCrewWarTerritoryTargets(membership.crewId, targetCrewId);
   const metadata: Record<string, any> = {
     territoryTargets,
@@ -1286,7 +1378,7 @@ export async function declareWar(playerId: number, targetCrewId: number, warType
         activeFrom,
         lockDownFrom,
         endTime,
-        cooldownUntil: new Date(endTime.getTime() + 8 * 60 * 60 * 1000),
+        cooldownUntil,
         entryStake: 0,
       },
     });
@@ -1766,10 +1858,9 @@ export async function adminDeclareWar(adminId: number, payload: {
 }) {
   const season = await ensureCurrentSeason();
   const now = new Date();
-  const startsInMinutes = Math.max(1, Math.min(60, payload.startsInMinutes ?? PREPARATION_MINUTES));
-  const activeFrom = new Date(now.getTime() + startsInMinutes * 60 * 1000);
-  const lockDownFrom = new Date(activeFrom.getTime() + (ACTIVE_HOURS * 60 - LOCKDOWN_MINUTES) * 60 * 1000);
-  const endTime = new Date(activeFrom.getTime() + ACTIVE_HOURS * 60 * 60 * 1000);
+  const warCfg = await loadCrewWarRuntimeConfig();
+  const startsInMinutes = Math.max(1, Math.min(180, payload.startsInMinutes ?? warCfg.preparationMinutes));
+  const { activeFrom, lockDownFrom, endTime, cooldownUntil } = warSchedule(now, warCfg, startsInMinutes);
   const territoryTargets = await buildCrewWarTerritoryTargets(payload.attackerCrewId, payload.defenderCrewId);
   const metadata: Record<string, any> = {
     territoryTargets,
@@ -1791,7 +1882,7 @@ export async function adminDeclareWar(adminId: number, payload: {
       activeFrom,
       lockDownFrom,
       endTime,
-      cooldownUntil: new Date(endTime.getTime() + 8 * 60 * 60 * 1000),
+      cooldownUntil,
     },
   });
 
@@ -1840,14 +1931,16 @@ export async function adminUpdateWarStatus(warId: number, action: 'start_now' | 
   if (!war) throw new Error('WAR_NOT_FOUND');
 
   if (action === 'start_now') {
+    const warCfg = await loadCrewWarRuntimeConfig();
+    const schedule = warSchedule(new Date(), warCfg, 0);
     const updatedWar = await prisma.crewWar.update({
       where: { id: warId },
       data: {
         status: 'active',
-        activeFrom: new Date(),
+        activeFrom: schedule.activeFrom,
         startTime: new Date(),
-        lockDownFrom: new Date(Date.now() + (ACTIVE_HOURS * 60 - LOCKDOWN_MINUTES) * 60 * 1000),
-        endTime: new Date(Date.now() + ACTIVE_HOURS * 60 * 60 * 1000),
+        lockDownFrom: schedule.lockDownFrom,
+        endTime: schedule.endTime,
       },
     });
     await notifyWarMembers(updatedWar, 'started');
@@ -1887,4 +1980,54 @@ export async function adminUpdateWarStatus(warId: number, action: 'start_now' | 
   }
 
   return buildWarDetail(warId);
+}
+
+export async function getRuntimeConfigView() {
+  const cfg = await loadCrewWarRuntimeConfig();
+  const values = {
+    CREW_WAR_MIN_MEMBERS: String(cfg.minMembers),
+    CREW_WAR_PREPARATION_MINUTES: String(cfg.preparationMinutes),
+    CREW_WAR_ACTIVE_HOURS: String(cfg.activeHours),
+    CREW_WAR_LOCKDOWN_MINUTES: String(cfg.lockdownMinutes),
+    CREW_WAR_COOLDOWN_HOURS: String(cfg.cooldownHours),
+  };
+  return {
+    defaults: { ...CREW_WAR_RUNTIME_SETTING_DEFAULTS },
+    values,
+    keys: [...CREW_WAR_RUNTIME_SETTING_KEYS],
+  };
+}
+
+export async function updateRuntimeConfig(updates: Record<string, string | number>) {
+  const normalized: Record<string, string> = {};
+  for (const [key, value] of Object.entries(updates)) {
+    if (!CREW_WAR_RUNTIME_SETTING_KEYS.includes(key)) {
+      throw new Error(`INVALID_RUNTIME_KEY:${key}`);
+    }
+    const asString = String(value ?? '').trim();
+    const asNumber = Number(asString);
+    if (!Number.isFinite(asNumber)) {
+      throw new Error(`RUNTIME_VALUE_NOT_NUMERIC:${key}`);
+    }
+    if (key === 'CREW_WAR_MIN_MEMBERS' && (asNumber < 1 || asNumber > 20)) {
+      throw new Error(`RUNTIME_OUT_OF_RANGE:${key}`);
+    }
+    if (key === 'CREW_WAR_PREPARATION_MINUTES' && (asNumber < 1 || asNumber > 180)) {
+      throw new Error(`RUNTIME_OUT_OF_RANGE:${key}`);
+    }
+    if (key === 'CREW_WAR_ACTIVE_HOURS' && (asNumber < 1 || asNumber > 72)) {
+      throw new Error(`RUNTIME_OUT_OF_RANGE:${key}`);
+    }
+    if (key === 'CREW_WAR_LOCKDOWN_MINUTES' && (asNumber < 1 || asNumber > 180)) {
+      throw new Error(`RUNTIME_OUT_OF_RANGE:${key}`);
+    }
+    if (key === 'CREW_WAR_COOLDOWN_HOURS' && (asNumber < 0 || asNumber > 72)) {
+      throw new Error(`RUNTIME_OUT_OF_RANGE:${key}`);
+    }
+    normalized[key] = String(Math.floor(asNumber));
+  }
+  if (Object.keys(normalized).length > 0) {
+    await upsertCrewWarRuntimeConfigValues(normalized);
+  }
+  return getRuntimeConfigView();
 }
