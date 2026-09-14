@@ -46,8 +46,9 @@ class ConversationCard extends StatelessWidget {
             children: [
               if (selecting) ...[
                 Icon(
-                  selected ? Icons.check_circle : Icons.radio_button_unchecked,
-                  color: selected ? const Color(0xFFC0A060) : Colors.white38,
+                  selected ? Icons.check_box : Icons.check_box_outline_blank,
+                  size: 26,
+                  color: const Color(0xFFC0A060),
                 ),
                 const SizedBox(width: 10),
               ],

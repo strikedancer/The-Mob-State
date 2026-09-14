@@ -558,11 +558,13 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
                 color: const Color(0xFF1F8B24),
                 onRefresh: _loadConversations,
                 child: ListView.builder(
+                  key: ValueKey('inbox-list-$_selecting'),
                   itemCount: _conversations.length,
                   itemBuilder: (context, index) {
                     final conversation = _conversations[index];
                     final selected = _selectedIds.contains(conversation.friendId);
                     final card = ConversationCard(
+                      key: ValueKey('inbox-card-${conversation.friendId}-$_selecting'),
                       conversation: conversation,
                       selecting: _selecting,
                       selected: selected,
