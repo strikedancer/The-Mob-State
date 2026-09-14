@@ -122,6 +122,12 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
           (params['needed'] as num?)?.toInt() ?? 0,
           (params['have'] as num?)?.toInt() ?? 0,
         );
+      case 'LOAN_NOT_DUE':
+        return l10n.donErrorLoanNotDue;
+      case 'LOAN_CAP':
+        return l10n.donErrorLoanCap;
+      case 'LOAN_NOT_FOUND':
+        return l10n.donErrorLoanNotFound;
       default:
         return l10n.donErrorGeneric;
     }
@@ -1367,12 +1373,18 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
     final status = loan['status']?.toString() ?? '';
     final isLender = loan['isLender'] == true;
     final npc = loan['npcKey']?.toString();
+    final dueAt = DateTime.tryParse(loan['dueAt']?.toString() ?? '');
+    final duePassed = dueAt != null && !dueAt.toUtc().isAfter(DateTime.now().toUtc());
+    final canCollect = loan['canCollect'] == true ||
+        status == 'defaulted' ||
+        (status == 'active' && (npc == null || npc.isEmpty) && duePassed);
     final title = npc != null && npc.isNotEmpty
         ? _npcName(l10n, npc)
         : (isLender ? loan['borrowerUsername'] : loan['lenderUsername'])?.toString() ?? '';
     return Container(
       decoration: _panelDecoration(),
       child: ListTile(
+        isThreeLine: true,
         title: Text(
           title,
           style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
@@ -1393,30 +1405,43 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
                   activeLabel: l10n.donLoanDueIn,
                 ),
               ),
-          ],
-        ),
-        trailing: Wrap(
-          spacing: 4,
-          children: [
+            if (isLender && status == 'active' && !canCollect)
+              Padding(
+                padding: const EdgeInsets.only(top: 6),
+                child: Text(
+                  l10n.donLoanWaitHint,
+                  style: TextStyle(color: Colors.white.withValues(alpha: 0.62), fontSize: 12),
+                ),
+              ),
             if (!isLender && status == 'offered')
-              TextButton(
-                onPressed: _busy ? null : () => _postQuietSuccess('/don/loans/$id/accept'),
-                child: Text(l10n.donLoanAccept, style: const TextStyle(color: _donGold)),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton(
+                  onPressed: _busy ? null : () => _postQuietSuccess('/don/loans/$id/accept'),
+                  child: Text(l10n.donLoanAccept, style: const TextStyle(color: _donGold)),
+                ),
               ),
             if (!isLender && status == 'active')
-              TextButton(
-                onPressed: _busy ? null : () => _postQuietSuccess('/don/loans/$id/repay'),
-                child: Text(l10n.donLoanRepay, style: const TextStyle(color: _donGold)),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton(
+                  onPressed: _busy ? null : () => _postQuietSuccess('/don/loans/$id/repay'),
+                  child: Text(l10n.donLoanRepay, style: const TextStyle(color: _donGold)),
+                ),
               ),
-            if (isLender && (status == 'defaulted' || status == 'active'))
-              TextButton(
-                onPressed: _busy ? null : () => _postQuietSuccess('/don/loans/$id/collect'),
-                child: Text(l10n.donLoanCollect, style: const TextStyle(color: _donGold)),
+            if (isLender && canCollect)
+              Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton(
+                  onPressed: _busy ? null : () => _postQuietSuccess('/don/loans/$id/collect'),
+                  child: Text(l10n.donLoanCollect, style: const TextStyle(color: _donGold)),
+                ),
               ),
           ],
         ),
       ),
     );
+  }
   }
 
   Widget _buildOfficials(AppLocalizations l10n, Map<String, dynamic> overview) {

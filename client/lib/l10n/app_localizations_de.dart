@@ -3289,6 +3289,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get donLoanCollect => 'Sammeln';
 
   @override
+  String get donLoanWaitHint =>
+      'NPC-Darlehen haben eine Laufzeit von einigen Tagen. Die meisten NPCs zahlen sich von selbst zurück. „Collect“ wird nur angezeigt, wenn dies standardmäßig der Fall ist.';
+
+  @override
   String get donLoanBorrowerHint => 'Benutzername des Kreditnehmers';
 
   @override
@@ -3404,6 +3408,18 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get donErrorLoanNotDue =>
+      'Dieses Darlehen ist noch nicht einbringlich. NPC-Darlehen haben eine Laufzeit von einigen Tagen; Die meisten NPCs zahlen sich von selbst zurück. Sammeln Sie nur nach einem Zahlungsverzug.';
+
+  @override
+  String get donErrorLoanCap =>
+      'Sie verfügen bereits über die maximale Anzahl aktiver Kredite.';
+
+  @override
+  String get donErrorLoanNotFound =>
+      'Das Darlehen ist entweder weg oder gehört nicht Ihnen.';
+
+  @override
   String get donSqueezeFled => 'Der Laden packte und ging.';
 
   @override
@@ -3506,7 +3522,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get donInfoLoansBody =>
-      'Du bist der Hai. Legen Sie einen Betrag fest und leihen Sie ihn einem NPC (Straßenhändler, Hafenarbeiter, Clubwirt) oder bieten Sie einem anderen Spieler mit Benutzernamen ein Treuhandkonto an. \nNPC-Darlehen tendieren zur Rückzahlung oder zum Zahlungsausfall. Bei Zahlungsverzug kassieren Sie einen Teil der fälligen Beträge und nehmen die Forderung entgegen – nie wird der Kreditnehmer vollständig ausgelöscht. \nSpielerangebote bleiben bis zur Annahme im Treuhandkonto. Obergrenzen verhindern, dass daraus eine Alternativfarm wird: ein paar aktive Kredite, ein Mindest-/Höchstkapital und eine kurze Laufzeit.';
+      'Du bist der Hai. Legen Sie einen Betrag fest und leihen Sie ihn einem NPC (Straßenhändler, Hafenarbeiter, Clubwirt) oder bieten Sie einem anderen Spieler mit Benutzernamen ein Treuhandkonto an. \nNPC-Darlehen haben eine Laufzeit von einigen Tagen. Die meisten NPCs zahlen den fälligen Betrag selbst zurück; Sie sammeln diese nicht von Hand. Wenn sie zahlungsunfähig werden, erscheint „Collect“ und Sie erhalten einen Teil der fälligen und geforderten Beträge – niemals eine vollständige Löschung des Kreditnehmers. \nSpielerangebote bleiben bis zur Annahme im Treuhandkonto. Obergrenzen verhindern, dass daraus eine Alternativfarm wird: ein paar aktive Kredite, ein Mindest-/Höchstkapital und eine kurze Laufzeit.';
 
   @override
   String get donInfoInfluenceTitle => 'Beeinflussen';
@@ -17806,7 +17822,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicDonHow =>
-      'Öffne Don von Empire, sobald du Rang 7 erreicht hast. Du agierst immer in dem Land, in dem du stehst. \nSchläger sind NPC-Läden. Erobern Sie sie mit einer Waffe, die ausreichend Einschüchterungspotenzial bietet, und sammeln Sie nach der Abklingzeit per Hand Tribut ein. Wenn Sie einen Shop etwa drei Tage lang ignorieren, wird er wieder kostenlos. \nSqueeze erhöht den nächsten Tribut, erhöht aber auch die Fahndung und kann den Laden in die Flucht schlagen. Ein Rivale im selben Land kann einen kurzen Wettbewerb starten; Der Besitzer kann halten. \nTribut ist persönliches Geld, es sei denn, Sie sind Anführer, Co-Anführer oder Kapodaster (im Kapodaster-Land) und überweisen es an die Mannschaftsbank. \nKredite: Du bist der Hai. Leihen Sie es an NPCs oder bieten Sie einem anderen Spieler ein Treuhandkonto an. Zahlungsausfälle verursachen Kosten und ermöglichen es Ihnen, einen Teil der Schulden einzutreiben – niemals eine vollständige Tilgung. \nEinfluss: Bestechung des Richters, Kommissars oder Stadtrats für 24 Stunden. Konkurrenten können überbieten. Der Richter fügt nur einen kleinen, begrenzten Berufungsbonus hinzu; Die Gerichtsbestechung pro Fall besteht immer noch. Der Kommissar senkt die Fahndung nach gescheiterten Verbrechen. Der Stadtrat schließt große Verträge ab oder erhöht sie. \nStadtverträge zahlen legal nach einem Gebot (Bargeld oder Mannschaftsbank). Off-Books extra nur, wenn Sie dort Schläger besitzen. Gierige Gebote zahlen mehr und sorgen für zusätzliche Hitze. Für große Aufträge kann eine Ingenieurschule erforderlich sein. \nDie Schutzgelderpressung gegen Straßenkriminalität bleibt eine einmalige Sache und gewährt diesen Geschäften nichts.';
+      'Wettbewerbs-, Überbietungs-, Kredit- und Vertragsergebnisse landen auch dann per Push in Ihrem Posteingang, wenn Sie unterwegs sind. Jede Aktion auf dem Hub zeigt einen klaren Toast. \nÖffne Don von Empire, sobald du Rang 7 erreicht hast. Du agierst immer in dem Land, in dem du stehst. \nSchläger sind NPC-Läden. Erobern Sie sie mit einer Waffe, die ausreichend Einschüchterungspotenzial bietet, und sammeln Sie nach der Abklingzeit per Hand Tribut ein. Wenn Sie einen Shop etwa drei Tage lang ignorieren, wird er wieder kostenlos. \nSqueeze erhöht den nächsten Tribut, erhöht aber auch die Fahndung und kann den Laden in die Flucht schlagen. Ein Rivale im selben Land kann einen kurzen Wettbewerb starten; Der Besitzer kann halten. \nTribut ist persönliches Geld, es sei denn, Sie sind Anführer, Co-Anführer oder Kapodaster (im Kapodaster-Land) und überweisen es an die Mannschaftsbank. \nKredite: Du bist der Hai. Leihen Sie es an NPCs oder bieten Sie einem anderen Spieler ein Treuhandkonto an. NPC-Darlehen haben eine Laufzeit von einigen Tagen und die meisten NPCs zahlen sich selbst zurück; Die Einziehung erfolgt nur nach einem Zahlungsausfall für einen Teil der Schulden plus Fahndung – niemals eine vollständige Löschung. \nEinfluss: Bestechung des Richters, Kommissars oder Stadtrats für 24 Stunden. Konkurrenten können überbieten. Der Richter fügt nur einen kleinen, begrenzten Berufungsbonus hinzu; Die Gerichtsbestechung pro Fall besteht immer noch. Der Kommissar senkt die Fahndung nach gescheiterten Verbrechen. Der Stadtrat schließt große Verträge ab oder erhöht sie. \nStadtverträge zahlen legal nach einem Gebot (Bargeld oder Mannschaftsbank). Off-Books extra nur, wenn Sie dort Schläger besitzen. Gierige Gebote zahlen mehr und sorgen für zusätzliche Hitze. Für große Aufträge kann eine Ingenieurschule erforderlich sein. \nDie Schutzgelderpressung gegen Straßenkriminalität bleibt eine einmalige Sache und gewährt diesen Geschäften nichts.';
 
   @override
   String get helpTopicDonTips =>

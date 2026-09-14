@@ -43,7 +43,7 @@ Tune in Admin; do not flip Clearing House defaults from this module.
 
 ## Player loops
 - **Rackets:** claim in current country with a weapon that meets intimidation. Manual collect + cooldown. Unused shops abandon after ~72h. Squeeze: higher tribute, extra wanted, chance the shop flees. Rival contest: short window; owner can hold.
-- **Loans:** player is the shark. NPC lend (tick repay or default) + P2P escrow offer. Default → collect a share of due, wanted, no full wipe.
+- **Loans:** player is the shark. NPC lend (multi-day term; most NPCs auto-repay) + P2P escrow offer. Collect is only after NPC **default** (share of due + wanted), not right after lending. No full wipe.
 - **Officials:** one judge / commissioner / alderman per country. Cash overbid, expires, rival can replace. Judge stacks with law-school **only up to the +8% Don cap**, then appeal still clamps 10–85%. Commissioner lowers crime-fail wanted. Alderman unlocks/boosts large contracts. Per-case court bribe in `court.md` stays.
 - **Contracts:** open jobs per country; bid costs 20% of catalog payout (cash or crew-bank). Greedy: +payout +heat. Off-books bonus if you own rackets in that country. Large jobs need alderman and/or engineering school.
 
@@ -80,5 +80,5 @@ Tribute and contract payouts stay **under** jobs/drugs/nightclub unless telemetr
 6. Rank &lt; 7 and jailed players are blocked.
 7. Help topic `don` NL/EN; Don hub does not own war-theater / races / police / Clearing House.
 8. Empire → Don looks noir/gold: hero photo, racket/NPC/official/contract photo cards in a 3–4 column grid on desktop (2 on tablet, 1 on narrow), gold CTAs; images load on web (`/images/don/*`) with icon fallback. Scroll tab content: the hero leaves the viewport; the tab strip stays.
-9. Owned rackets show a live collect countdown; Collect is disabled until ready. Contest, squeeze, office, loan and contract remaining time also tick on the card.
+9. Owned rackets show a live collect countdown; Collect is disabled until ready. NPC loan Collect stays hidden until default. Contest, squeeze, office, loan and contract remaining time also tick on the card.
 10. Claim/collect/squeeze/contest/hold/loan/bribe/bid each show a specific toast, not a generic “Don” or squeeze line. A contested owner gets inbox + push.

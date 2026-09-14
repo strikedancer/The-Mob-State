@@ -3267,6 +3267,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get donLoanCollect => 'Coletar';
 
   @override
+  String get donLoanWaitHint =>
+      'Os empréstimos do NPC duram alguns dias. A maioria dos NPCs paga por conta própria. Coletar só aparece se eles forem padrão.';
+
+  @override
   String get donLoanBorrowerHint => 'Nome de usuário do mutuário';
 
   @override
@@ -3380,6 +3384,17 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String get donErrorLoanNotDue =>
+      'Este empréstimo ainda não é cobrável. Os empréstimos de NPC duram alguns dias; a maioria dos NPCs paga por conta própria. Colete somente após um padrão.';
+
+  @override
+  String get donErrorLoanCap =>
+      'Você já possui o número máximo de empréstimos ativos.';
+
+  @override
+  String get donErrorLoanNotFound => 'Esse empréstimo acabou ou não é seu.';
+
+  @override
   String get donSqueezeFled => 'A loja fez as malas e foi embora.';
 
   @override
@@ -3484,7 +3499,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get donInfoLoansBody =>
-      'Você é o tubarão. Defina uma quantia e empreste para um NPC (traficante de rua, estivador, anfitrião do clube) ou ofereça garantia a outro jogador pelo nome de usuário. \nOs empréstimos NPC apontam para reembolso ou inadimplência. Por padrão, você recebe uma parte do que é devido e recebe o que deseja – nunca uma limpeza completa do mutuário. \nAs ofertas dos jogadores ficam em depósito até serem aceitas. Os limites evitam que isso se torne uma fazenda alternativa: alguns empréstimos ativos, um principal mínimo/máximo e um curto prazo.';
+      'Você é o tubarão. Defina uma quantia e empreste para um NPC (traficante de rua, estivador, anfitrião do clube) ou ofereça garantia a outro jogador pelo nome de usuário. \nOs empréstimos do NPC duram alguns dias. A maioria dos NPCs paga o valor devido por conta própria; você não os coleta manualmente. Se eles ficarem inadimplentes, Collect aparecerá e você receberá uma parte do que é devido e desejado – nunca uma limpeza completa do mutuário. \nAs ofertas dos jogadores ficam em depósito até serem aceitas. Os limites evitam que isso se torne uma fazenda alternativa: alguns empréstimos ativos, um principal mínimo/máximo e um curto prazo.';
 
   @override
   String get donInfoInfluenceTitle => 'Influência';
@@ -17718,7 +17733,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicDonHow =>
-      'Abra Don do Empire quando chegar ao rank 7. Você sempre atua no país em que está. \nRaquetes são lojas de NPCs. Reivindique-os com uma arma que tenha intimidação suficiente e, em seguida, colete o tributo manualmente após o tempo de espera. Se você ignorar uma loja por cerca de três dias, ela se tornará gratuita novamente. \nSqueeze aumenta o próximo tributo, mas também aumenta os procurados e pode fazer a loja fugir. Um rival no mesmo país pode iniciar uma competição curta; o proprietário pode segurar. \nO tributo é dinheiro pessoal, a menos que você seja líder, co-líder ou capo (no país capo) e envie para o banco da Crew. \nEmpréstimos: você é o tubarão. Empreste para NPCs ou ofereça garantia a outro jogador. O custo padrão é desejado e permite que você cobre parte da dívida – nunca uma liquidação completa. \nInfluência: subornar o juiz, comissário ou vereador por 24 horas. Os rivais podem fazer ofertas exageradas. O juiz adiciona apenas um pequeno bônus de apelação; o suborno judicial por caso ainda existe. O comissário reduz os procurados por crimes fracassados. O vereador desbloqueia ou aumenta grandes contratos. \nOs contratos municipais são pagos legalmente após uma licitação (dinheiro ou banco da Crew). Extras fora dos livros apenas se você possuir raquetes lá. Lances gananciosos pagam mais e aumentam o calor. Grandes empregos podem exigir escola de engenharia. \nO esquema de proteção ao crime de rua continua sendo um golpe único e também não beneficia essas lojas.';
+      'Os resultados de concursos, ofertas excessivas, empréstimos e contratos também chegam à sua caixa de entrada com um empurrão quando você estiver ausente. Cada ação no hub mostra um brinde claro. \nAbra Don do Empire quando chegar ao rank 7. Você sempre atua no país em que está. \nRaquetes são lojas de NPCs. Reivindique-os com uma arma que tenha intimidação suficiente e, em seguida, colete o tributo manualmente após o tempo de espera. Se você ignorar uma loja por cerca de três dias, ela se tornará gratuita novamente. \nSqueeze aumenta o próximo tributo, mas também aumenta os procurados e pode fazer a loja fugir. Um rival no mesmo país pode iniciar uma competição curta; o proprietário pode segurar. \nO tributo é dinheiro pessoal, a menos que você seja líder, co-líder ou capo (no país capo) e envie para o banco da Crew. \nEmpréstimos: você é o tubarão. Empreste para NPCs ou ofereça garantia a outro jogador. Os empréstimos dos NPCs duram alguns dias e a maioria dos NPCs paga por conta própria; A cobrança aparece somente após uma inadimplência, para parte da dívida mais o desejado – nunca uma liquidação total. \nInfluência: subornar o juiz, comissário ou vereador por 24 horas. Os rivais podem fazer ofertas exageradas. O juiz adiciona apenas um pequeno bônus de apelação; o suborno judicial por caso ainda existe. O comissário reduz os procurados por crimes fracassados. O vereador desbloqueia ou aumenta grandes contratos. \nOs contratos municipais são pagos legalmente após uma licitação (dinheiro ou banco da Crew). Extras fora dos livros apenas se você possuir raquetes lá. Lances gananciosos pagam mais e aumentam o calor. Grandes empregos podem exigir escola de engenharia. \nO esquema de proteção ao crime de rua continua sendo um golpe único e também não beneficia essas lojas.';
 
   @override
   String get helpTopicDonTips =>

@@ -3248,6 +3248,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get donLoanCollect => 'Collect';
 
   @override
+  String get donLoanWaitHint =>
+      'NPC loans last a few days. Most NPCs pay back on their own. Collect only appears if they default.';
+
+  @override
   String get donLoanBorrowerHint => 'Borrower username';
 
   @override
@@ -3360,6 +3364,17 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get donErrorLoanNotDue =>
+      'This loan is not collectable yet. NPC loans run for a few days; most NPCs pay back on their own. Collect only after a default.';
+
+  @override
+  String get donErrorLoanCap =>
+      'You already have the maximum number of active loans.';
+
+  @override
+  String get donErrorLoanNotFound => 'That loan is gone or not yours.';
+
+  @override
   String get donSqueezeFled => 'The shop packed up and left.';
 
   @override
@@ -3461,7 +3476,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get donInfoLoansBody =>
-      'You are the shark. Set an amount and lend to an NPC (street dealer, dock worker, club host) or offer escrow to another player by username.\nNPC loans tick toward repay or default. On default you collect a share of what is due and take wanted — never a full wipe of the borrower.\nPlayer offers sit in escrow until accepted. Caps keep this from becoming an alt farm: a few active loans, a min/max principal and a short term.';
+      'You are the shark. Set an amount and lend to an NPC (street dealer, dock worker, club host) or offer escrow to another player by username.\nNPC loans last a few days. Most NPCs pay the due amount back on their own; you do not collect those by hand. If they default, Collect appears and you take a share of what is due plus wanted — never a full wipe of the borrower.\nPlayer offers sit in escrow until accepted. Caps keep this from becoming an alt farm: a few active loans, a min/max principal and a short term.';
 
   @override
   String get donInfoInfluenceTitle => 'Influence';
@@ -17594,7 +17609,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicDonHow =>
-      'Contest, overbid, loan and contract results also land in your inbox with a push when you are away. Each action on the hub shows a clear toast.\nOpen Don from Empire once you reach rank 7. You always act in the country you are standing in.\nRackets are NPC shops. Claim them with a weapon that has enough intimidation, then collect tribute by hand after the cooldown. If you ignore a shop for about three days it becomes free again.\nSqueeze raises the next tribute but also raises wanted and can make the shop flee. A rival in the same country can start a short contest; the owner can hold.\nTribute is personal cash unless you are leader, co-leader or capo (in the capo country) and send it to the crew bank.\nLoans: you are the shark. Lend to NPCs or offer escrow to another player. Defaults cost wanted and let you collect part of the debt — never a full wipe.\nInfluence: bribe the judge, commissioner or alderman for 24 hours. Rivals can overbid. The judge only adds a small capped appeal bonus; the per-case court bribe still exists. The commissioner lowers wanted on failed crimes. The alderman unlocks or boosts large contracts.\nCity contracts pay legally after a bid (cash or crew bank). Off-books extra only if you own rackets there. Greedy bids pay more and add heat. Large jobs can require engineering school.\nStreet crime protection racket remains a one-shot shake and does not also grant these shops.';
+      'Contest, overbid, loan and contract results also land in your inbox with a push when you are away. Each action on the hub shows a clear toast.\nOpen Don from Empire once you reach rank 7. You always act in the country you are standing in.\nRackets are NPC shops. Claim them with a weapon that has enough intimidation, then collect tribute by hand after the cooldown. If you ignore a shop for about three days it becomes free again.\nSqueeze raises the next tribute but also raises wanted and can make the shop flee. A rival in the same country can start a short contest; the owner can hold.\nTribute is personal cash unless you are leader, co-leader or capo (in the capo country) and send it to the crew bank.\nLoans: you are the shark. Lend to NPCs or offer escrow to another player. NPC loans last a few days and most NPCs pay back on their own; Collect appears only after a default, for part of the debt plus wanted — never a full wipe.\nInfluence: bribe the judge, commissioner or alderman for 24 hours. Rivals can overbid. The judge only adds a small capped appeal bonus; the per-case court bribe still exists. The commissioner lowers wanted on failed crimes. The alderman unlocks or boosts large contracts.\nCity contracts pay legally after a bid (cash or crew bank). Off-books extra only if you own rackets there. Greedy bids pay more and add heat. Large jobs can require engineering school.\nStreet crime protection racket remains a one-shot shake and does not also grant these shops.';
 
   @override
   String get helpTopicDonTips =>

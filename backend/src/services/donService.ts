@@ -474,6 +474,9 @@ export const donService = {
         dueRemainingSeconds: secondsUntil(row.dueAt, now),
         status: row.status,
         isLender: row.lenderId === playerId,
+        canCollect:
+          row.status === 'defaulted' ||
+          (row.status === 'active' && !row.npcKey && row.dueAt.getTime() <= now.getTime()),
       })),
       contracts: contracts.map((row) => {
         const def = CONTRACTS.find((entry) => entry.key === row.contractKey);
@@ -870,6 +873,9 @@ export const donService = {
     const loan = await prisma.donLoan.findUnique({ where: { id: loanId } });
     if (!loan || loan.lenderId !== playerId) throw new Error('DON_LOAN_NOT_FOUND');
     if (loan.status !== 'defaulted' && !(loan.status === 'active' && loan.dueAt.getTime() <= Date.now())) {
+      throw new Error('DON_LOAN_NOT_DUE');
+    }
+    if (loan.npcKey && loan.status !== 'defaulted') {
       throw new Error('DON_LOAN_NOT_DUE');
     }
     const amountDue = dueAmount(loan.principal, loan.interestBps);

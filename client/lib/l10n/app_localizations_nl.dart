@@ -3267,6 +3267,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get donLoanCollect => 'Innen';
 
   @override
+  String get donLoanWaitHint =>
+      'NPC-leningen lopen een paar dagen. De meeste NPC\'s betalen vanzelf terug. Innen verschijnt alleen bij default.';
+
+  @override
   String get donLoanBorrowerHint => 'Gebruikersnaam lener';
 
   @override
@@ -3379,6 +3383,17 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String get donErrorLoanNotDue =>
+      'Deze lening kun je nog niet innen. NPC-leningen lopen een paar dagen; de meeste NPC\'s betalen vanzelf terug. Innen alleen bij default.';
+
+  @override
+  String get donErrorLoanCap =>
+      'Je hebt al het maximum aantal actieve leningen.';
+
+  @override
+  String get donErrorLoanNotFound => 'Die lening is weg of niet van jou.';
+
+  @override
   String get donSqueezeFled => 'De zaak pakte in en vertrok.';
 
   @override
@@ -3481,7 +3496,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get donInfoLoansBody =>
-      'Jij bent de shark. Zet een bedrag en leen uit aan een NPC (straatdealer, havenarbeider, clubhost) of bied escrow aan een andere speler via gebruikersnaam.\nNPC-leningen tikken richting terugbetalen of default. Bij default inner je een deel van wat openstaat en krijg je wanted — nooit een full wipe van de lener.\nSpeler-aanbiedingen staan in escrow tot ze worden geaccepteerd. Caps houden alt-farm tegen: een paar actieve leningen, een min/max hoofdsom en een korte looptijd.';
+      'Jij bent de shark. Zet een bedrag en leen uit aan een NPC (straatdealer, havenarbeider, clubhost) of bied escrow aan een andere speler via gebruikersnaam.\nNPC-leningen lopen een paar dagen. De meeste NPC\'s betalen het verschuldigde bedrag vanzelf terug; dat inner je niet handmatig. Bij default verschijnt Innen en krijg je een deel van wat openstaat plus wanted — nooit een full wipe van de lener.\nSpeler-aanbiedingen staan in escrow tot ze worden geaccepteerd. Caps houden alt-farm tegen: een paar actieve leningen, een min/max hoofdsom en een korte looptijd.';
 
   @override
   String get donInfoInfluenceTitle => 'Invloed';
@@ -17635,7 +17650,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicDonHow =>
-      'Contest, overbieding, leningen en contracten komen ook in je inbox, met een push als je weg bent. Elke actie op de hub toont een duidelijke melding.\nOpen Don onder Empire vanaf rang 7. Je handelt altijd in het land waar je staat.\nRackets zijn NPC-zaken. Claim ze met een wapen dat genoeg intimidatie heeft en innen daarna handmatig na de cooldown. Laat je een zaak ongeveer drie dagen staan, dan wordt hij weer vrij.\nUitknijpen verhoogt de volgende tribute maar ook wanted, en de zaak kan afhaken. Een rivaal in hetzelfde land kan een korte contest starten; de eigenaar kan vasthouden.\nTribute gaat naar cash tenzij je leader, co-leider of capo (in het capo-land) bent en naar de crew-bank stuurt.\nLeningen: jij bent de shark. Leen aan NPC\'s of bied escrow aan een andere speler. Default kost wanted en laat je een deel innen — nooit een full wipe.\nInvloed: koop de rechter, commissaris of wethouder voor 24 uur. Rivalen kunnen overbieden. De rechter geeft alleen een kleine begrensde beroepbonus; per-zaak court-omkoping blijft. De commissaris verlaagt wanted bij mislukte crimes. De wethouder ontgrendelt of versterkt grote contracten.\nStadscontracten betalen legaal na een bod (cash of crew-bank). Off-books extra alleen met rackets in dat land. Hebberige biedingen betalen meer en geven heat. Grote klussen kunnen engineering-school vereisen.\nStraatmisdaad protection racket blijft een eenmalige shake en geeft deze zaken niet extra.';
+      'Contest, overbieding, leningen en contracten komen ook in je inbox, met een push als je weg bent. Elke actie op de hub toont een duidelijke melding.\nOpen Don onder Empire vanaf rang 7. Je handelt altijd in het land waar je staat.\nRackets zijn NPC-zaken. Claim ze met een wapen dat genoeg intimidatie heeft en innen daarna handmatig na de cooldown. Laat je een zaak ongeveer drie dagen staan, dan wordt hij weer vrij.\nUitknijpen verhoogt de volgende tribute maar ook wanted, en de zaak kan afhaken. Een rivaal in hetzelfde land kan een korte contest starten; de eigenaar kan vasthouden.\nTribute gaat naar cash tenzij je leader, co-leider of capo (in het capo-land) bent en naar de crew-bank stuurt.\nLeningen: jij bent de shark. Leen aan NPC\'s of bied escrow aan een andere speler. NPC-leningen lopen een paar dagen en de meeste NPC\'s betalen vanzelf terug; Innen verschijnt alleen bij default, voor een deel van de schuld plus wanted — nooit een full wipe.\nInvloed: koop de rechter, commissaris of wethouder voor 24 uur. Rivalen kunnen overbieden. De rechter geeft alleen een kleine begrensde beroepbonus; per-zaak court-omkoping blijft. De commissaris verlaagt wanted bij mislukte crimes. De wethouder ontgrendelt of versterkt grote contracten.\nStadscontracten betalen legaal na een bod (cash of crew-bank). Off-books extra alleen met rackets in dat land. Hebberige biedingen betalen meer en geven heat. Grote klussen kunnen engineering-school vereisen.\nStraatmisdaad protection racket blijft een eenmalige shake en geeft deze zaken niet extra.';
 
   @override
   String get helpTopicDonTips =>

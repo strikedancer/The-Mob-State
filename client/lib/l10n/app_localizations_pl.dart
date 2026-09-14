@@ -3271,6 +3271,10 @@ class AppLocalizationsPl extends AppLocalizations {
   String get donLoanCollect => 'Zbierać';
 
   @override
+  String get donLoanWaitHint =>
+      'Pożyczki NPC trwają kilka dni. Większość NPC spłaca swoje zobowiązania samodzielnie. Kolekcjonowanie pojawia się tylko wtedy, gdy jest ustawione domyślnie.';
+
+  @override
   String get donLoanBorrowerHint => 'Nazwa użytkownika pożyczkobiorcy';
 
   @override
@@ -3383,6 +3387,18 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
+  String get donErrorLoanNotDue =>
+      'Ta pożyczka nie jest jeszcze ściągalna. Pożyczki NPC są ważne przez kilka dni; większość NPC spłaca swoje zobowiązania samodzielnie. Zbieraj dopiero po domyślnym.';
+
+  @override
+  String get donErrorLoanCap =>
+      'Masz już maksymalną liczbę aktywnych pożyczek.';
+
+  @override
+  String get donErrorLoanNotFound =>
+      'Ta pożyczka przepadła czy nie jest twoja.';
+
+  @override
   String get donSqueezeFled => 'Sklep spakował się i wyszedł.';
 
   @override
@@ -3485,7 +3501,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get donInfoLoansBody =>
-      'Jesteś rekinem. Ustaw kwotę i pożycz NPC (sprzedawcy ulicznemu, pracownikowi portowemu, gospodarzowi klubu) lub zaoferuj depozyt innemu graczowi według nazwy użytkownika. \nPożyczki NPC wskazują na spłatę lub niewykonanie zobowiązania. Domyślnie pobierasz część tego, co jest należne i bierzesz to, co chcesz – nigdy nie całkowicie usuwasz pożyczkobiorcę. \nOferty graczy pozostają w depozycie do czasu ich zaakceptowania. Ograniczenia sprawiają, że nie staje się to farmą alternatywnych: kilka aktywnych pożyczek, kwota główna min./maks. i krótkoterminowa.';
+      'Jesteś rekinem. Ustaw kwotę i pożycz NPC (sprzedawcy ulicznemu, pracownikowi portowemu, gospodarzowi klubu) lub zaoferuj depozyt innemu graczowi według nazwy użytkownika. \nPożyczki NPC trwają kilka dni. Większość NPC-ów sama spłaca należną kwotę; nie zbiera się ich ręcznie. Jeśli nie wywiążą się ze spłaty, pojawi się Collect, a Ty weźmiesz część tego, co należne i czego potrzebujesz – nigdy nie całkowicie wyczyścisz pożyczkobiorcę. \nOferty graczy pozostają w depozycie do czasu ich zaakceptowania. Ograniczenia zapobiegają przekształceniu się w farmę alternatywnych: kilka aktywnych pożyczek, kwota główna min./maks. i krótkoterminowa.';
 
   @override
   String get donInfoInfluenceTitle => 'Wpływ';
@@ -17718,7 +17734,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicDonHow =>
-      'Otwórz Don z Imperium, gdy osiągniesz rangę 7. Zawsze działasz w kraju, w którym stoisz. \nRakiety to sklepy NPC. Zdobądź je za pomocą broni, która ma wystarczająco dużo zastraszenia, a następnie po upływie czasu odnowienia zbieraj daninę ręcznie. Jeśli zignorujesz sklep przez około trzy dni, znów stanie się on bezpłatny. \nSqueeze podnosi kolejny hołd, ale także podnosi liczbę poszukiwanych i może sprawić, że sklep ucieknie. Rywal z tego samego kraju może rozpocząć krótki konkurs; właściciel może utrzymać. \nHołd to osobista gotówka, chyba że jesteś liderem, współliderem lub capo (w kraju capo) i wyślesz ją do banku załogi. \nPożyczki: jesteś rekinem. Pożyczaj NPC-om lub oferuj depozyt innemu graczowi. Domyślne koszty są pożądane i umożliwiają odzyskanie części długu — nigdy pełne wyczyszczenie. \nWpływ: przekup sędziego, komisarza lub radnego na 24 godziny. Rywale mogą przebić. Sędzia dodaje jedynie niewielką, ograniczoną premię za odwołanie; nadal istnieje łapówka sądowa w poszczególnych przypadkach. Komisarz obniża karę za nieudane przestępstwa. Radny odblokowuje lub wzmacnia duże kontrakty. \nKontrakty miejskie płacą legalnie po złożeniu oferty (gotówką lub bankiem załogi). Dodatkowe rezerwacje tylko wtedy, gdy posiadasz tam rakiety. Chciwe oferty płacą więcej i dodają ciepła. Duże prace mogą wymagać szkoły inżynierskiej. \nRakieta chroniąca przed przestępczością uliczną pozostaje jednorazowym przedsięwzięciem i nie zapewnia również tym sklepom.';
+      'Wyniki konkursów, przebić, pożyczek i kontraktów również lądują w Twojej skrzynce odbiorczej, gdy Cię nie ma. Każda akcja na koncentratorze pokazuje wyraźny toast. \nOtwórz Don z Imperium, gdy osiągniesz rangę 7. Zawsze działasz w kraju, w którym stoisz. \nRakiety to sklepy NPC. Zdobądź je za pomocą broni, która ma wystarczająco dużo zastraszenia, a następnie po upływie czasu odnowienia zbieraj daninę ręcznie. Jeśli zignorujesz sklep przez około trzy dni, znów stanie się on bezpłatny. \nSqueeze podnosi kolejny hołd, ale także podnosi liczbę poszukiwanych i może sprawić, że sklep ucieknie. Rywal z tego samego kraju może rozpocząć krótki konkurs; właściciel może utrzymać. \nHołd to osobista gotówka, chyba że jesteś liderem, współliderem lub capo (w kraju capo) i wyślesz ją do banku załogi. \nPożyczki: jesteś rekinem. Pożyczaj NPC-om lub oferuj depozyt innemu graczowi. Pożyczki NPC trwają kilka dni i większość NPC spłaca je samodzielnie; Collect pojawia się dopiero w przypadku niewykonania zobowiązania, za część długu plus kwotę żądaną — nigdy nie jest to pełne czyszczenie. \nWpływ: przekup sędziego, komisarza lub radnego na 24 godziny. Rywale mogą przebić. Sędzia dodaje jedynie niewielką, ograniczoną premię za odwołanie; nadal istnieje łapówka sądowa w poszczególnych przypadkach. Komisarz obniża karę za nieudane przestępstwa. Radny odblokowuje lub wzmacnia duże kontrakty. \nKontrakty miejskie płacą legalnie po złożeniu oferty (gotówką lub bankiem załogi). Dodatkowe rezerwacje tylko wtedy, gdy posiadasz tam rakiety. Chciwe oferty płacą więcej i dodają ciepła. Duże prace mogą wymagać szkoły inżynierskiej. \nRakieta chroniąca przed przestępczością uliczną pozostaje jednorazowym przedsięwzięciem i nie zapewnia również tym sklepom.';
 
   @override
   String get helpTopicDonTips =>

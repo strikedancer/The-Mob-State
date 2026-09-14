@@ -3276,6 +3276,10 @@ class AppLocalizationsIt extends AppLocalizations {
   String get donLoanCollect => 'Raccogliere';
 
   @override
+  String get donLoanWaitHint =>
+      'I prestiti NPC durano pochi giorni. La maggior parte degli NPC si ripaga da sola. La raccolta viene visualizzata solo se sono predefinite.';
+
+  @override
   String get donLoanBorrowerHint => 'Nome utente del mutuatario';
 
   @override
@@ -3390,6 +3394,16 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String get donErrorLoanNotDue =>
+      'Questo prestito non è ancora riscuotibile. I prestiti NPC durano alcuni giorni; la maggior parte degli NPC ripaga da sola. Raccogli solo dopo un default.';
+
+  @override
+  String get donErrorLoanCap => 'Hai già il numero massimo di prestiti attivi.';
+
+  @override
+  String get donErrorLoanNotFound => 'Quel prestito è sparito o non è tuo.';
+
+  @override
   String get donSqueezeFled => 'Il negozio fece le valigie e se ne andò.';
 
   @override
@@ -3493,7 +3507,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get donInfoLoansBody =>
-      'Tu sei lo squalo. Imposta un importo e prestalo a un NPC (commerciante di strada, lavoratore portuale, host del club) o offri un deposito in garanzia a un altro giocatore tramite nome utente. \nI prestiti NPC puntano al rimborso o al default. In caso di inadempienza raccogli una quota di ciò che è dovuto e prendi quello desiderato, mai una cancellazione completa del mutuatario. \nLe offerte dei giocatori rimangono in deposito a garanzia fino all\'accettazione. I limiti impediscono che diventi una fattoria alternativa: pochi prestiti attivi, un capitale minimo/massimo e un breve termine.';
+      'Tu sei lo squalo. Imposta un importo e prestalo a un NPC (commerciante di strada, lavoratore portuale, host del club) o offri un deposito in garanzia a un altro giocatore tramite nome utente. \nI prestiti NPC durano pochi giorni. La maggior parte degli NPC rimborsano l\'importo dovuto da soli; non li raccogli a mano. In caso di default, viene visualizzato Collect e tu prendi una parte di ciò che è dovuto e desiderato, mai una cancellazione completa del mutuatario. \nLe offerte dei giocatori rimangono in deposito a garanzia fino all\'accettazione. I limiti impediscono che diventi una fattoria alternativa: pochi prestiti attivi, un capitale minimo/massimo e un breve termine.';
 
   @override
   String get donInfoInfluenceTitle => 'Influenza';
@@ -17779,7 +17793,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicDonHow =>
-      'Apri Don dall\'Impero una volta raggiunto il grado 7. Agisci sempre nel paese in cui ti trovi. \nI racket sono negozi di NPC. Reclamali con un\'arma che abbia abbastanza intimidazione, quindi raccogli i tributi a mano dopo il tempo di recupero. Se ignori un negozio per circa tre giorni, diventa nuovamente gratuito. \nSqueeze aumenta il prossimo tributo ma aumenta anche il ricercato e può far fuggire il negozio. Un rivale nello stesso paese può iniziare una breve gara; il proprietario può trattenere. \nIl tributo è denaro personale a meno che tu non sia leader, co-leader o capo (nel paese del capo) e lo invii alla banca dell\'Crew. \nPrestiti: lo squalo sei tu. Presta agli NPC o offri un deposito in garanzia a un altro giocatore. Le inadempienze costano qualcosa e ti consentono di riscuotere parte del debito, mai una cancellazione completa. \nInfluenza: corrompere il giudice, il commissario o l\'assessore per 24 ore. I rivali possono rilanciare troppo. Il giudice aggiunge solo un piccolo bonus di appello; la tangente giudiziaria caso per caso esiste ancora. Il commissario abbassa i ricercati per reati falliti. L\'assessore sblocca o rilancia i grandi appalti. \nI contratti comunali vengono pagati legalmente dopo un\'offerta (contanti o banca dell\'Crew). Fuori dai libri extra solo se possiedi delle racchette lì. Le offerte avide pagano di più e aggiungono calore. I lavori di grandi dimensioni possono richiedere la scuola di ingegneria. \nIl racket della protezione dalla criminalità di strada resta un problema unico e non concede benefici anche a questi negozi.';
+      'Anche i risultati di concorsi, rilanci, prestiti e contratti arrivano nella tua casella di posta con un push quando sei assente. Ogni azione sull\'hub mostra un chiaro brindisi. \nApri Don dall\'Impero una volta raggiunto il grado 7. Agisci sempre nel paese in cui ti trovi. \nI racket sono negozi di NPC. Reclamali con un\'arma che abbia abbastanza intimidazione, quindi raccogli i tributi a mano dopo il tempo di recupero. Se ignori un negozio per circa tre giorni, diventa nuovamente gratuito. \nSqueeze aumenta il prossimo tributo ma aumenta anche il ricercato e può far fuggire il negozio. Un rivale nello stesso paese può iniziare una breve gara; il proprietario può trattenere. \nIl tributo è denaro personale a meno che tu non sia leader, co-leader o capo (nel paese del capo) e lo invii alla banca dell\'Crew. \nPrestiti: lo squalo sei tu. Presta agli NPC o offri un deposito in garanzia a un altro giocatore. I prestiti agli NPC durano pochi giorni e la maggior parte degli NPC si ripaga da sola; La riscossione avviene solo dopo un default, per una parte del debito più la richiesta, mai una cancellazione completa. \nInfluenza: corrompere il giudice, il commissario o l\'assessore per 24 ore. I rivali possono rilanciare troppo. Il giudice aggiunge solo un piccolo bonus di appello; la tangente giudiziaria caso per caso esiste ancora. Il commissario abbassa i ricercati per reati falliti. L\'assessore sblocca o rilancia i grandi appalti. \nI contratti comunali vengono pagati legalmente dopo un\'offerta (contanti o banca dell\'Crew). Fuori dai libri extra solo se possiedi delle racchette lì. Le offerte avide pagano di più e aggiungono calore. I lavori di grandi dimensioni possono richiedere la scuola di ingegneria. \nIl racket della protezione dalla criminalità di strada resta un problema unico e non concede benefici anche a questi negozi.';
 
   @override
   String get helpTopicDonTips =>

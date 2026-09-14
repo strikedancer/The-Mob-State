@@ -3283,6 +3283,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get donLoanCollect => 'Recolectar';
 
   @override
+  String get donLoanWaitHint =>
+      'Los préstamos NPC duran unos días. La mayoría de los NPC pagan por sí solos. Cobrar solo aparece si están predeterminados.';
+
+  @override
   String get donLoanBorrowerHint => 'Nombre de usuario del prestatario';
 
   @override
@@ -3396,6 +3400,17 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get donErrorLoanNotDue =>
+      'Este préstamo aún no es cobrable. Los préstamos NPC tienen una duración de unos días; la mayoría de los NPC pagan por sí solos. Cobrar sólo después de un incumplimiento.';
+
+  @override
+  String get donErrorLoanCap =>
+      'Ya tienes el número máximo de préstamos activos.';
+
+  @override
+  String get donErrorLoanNotFound => 'Ese préstamo ya no existe o no es tuyo.';
+
+  @override
   String get donSqueezeFled => 'La tienda hizo las maletas y se fue.';
 
   @override
@@ -3499,7 +3514,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get donInfoLoansBody =>
-      'Eres el tiburón. Establece una cantidad y presta a un NPC (comerciante callejero, trabajador portuario, anfitrión del club) u ofrece depósito en garantía a otro jugador por nombre de usuario. \nLos préstamos NPC avanzan hacia el pago o el incumplimiento. En caso de incumplimiento, usted cobra una parte de lo adeudado y toma lo que desea, nunca una eliminación total del prestatario. \nLas ofertas de los jugadores permanecen en depósito de garantía hasta que sean aceptadas. Los límites evitan que esto se convierta en una granja alternativa: algunos préstamos activos, un capital mínimo/máximo y un plazo corto.';
+      'Eres el tiburón. Establece una cantidad y presta a un NPC (comerciante callejero, trabajador portuario, anfitrión del club) u ofrece depósito en garantía a otro jugador por nombre de usuario. \nLos préstamos NPC duran unos días. La mayoría de los NPC pagan el importe adeudado por su cuenta; no los recoges a mano. Si incumplen, aparece Cobrar y usted toma una parte de lo adeudado y lo que desea, nunca una eliminación total del prestatario. \nLas ofertas de los jugadores permanecen en depósito de garantía hasta que sean aceptadas. Los límites evitan que esto se convierta en una granja alternativa: algunos préstamos activos, un capital mínimo/máximo y un plazo corto.';
 
   @override
   String get donInfoInfluenceTitle => 'Influencia';
@@ -17748,7 +17763,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicDonHow =>
-      'Abre Don del Imperio una vez que alcances el rango 7. Siempre actúas en el país en el que te encuentras. \nLas raquetas son tiendas de NPC. Reclámalos con un arma que tenga suficiente intimidación y luego recolecta tributo a mano después del tiempo de reutilización. Si ignoras una tienda durante unos tres días, vuelve a ser gratuita. \nSqueeze genera el próximo tributo pero también genera búsqueda y puede hacer que la tienda huya. Un rival del mismo país puede iniciar una contienda corta; el dueño puede aguantar. \nEl tributo es dinero en efectivo personal a menos que seas líder, colíder o capo (en el país del capo) y lo envíes al banco de la Crew. \nPréstamos: tú eres el tiburón. Prestar a NPC u ofrecer depósito en garantía a otro jugador. Los costos predeterminados son deseables y le permiten cobrar parte de la deuda, nunca una cancelación completa. \nInfluencia: sobornar al juez, comisario o concejal durante 24 horas. Los rivales pueden sobrepujar. El juez sólo añade una pequeña bonificación de apelación; el soborno judicial por caso todavía existe. El comisario baja los buscados por crímenes fallidos. El concejal desbloquea o impulsa grandes contratos. \nLos contratos de la ciudad se pagan legalmente después de una oferta (en efectivo o en el banco de la Crew). Extra fuera de libros solo si tienes raquetas allí. Las ofertas codiciosas pagan más y añaden calor. Los trabajos grandes pueden requerir una escuela de ingeniería. \nEl negocio de la protección contra la delincuencia callejera sigue siendo una solución puntual y no se concede tampoco a estos establecimientos.';
+      'Los resultados de concursos, sobreofertas, préstamos y contratos también llegan a su bandeja de entrada con un empujón cuando no está. Cada acción en el centro muestra un brindis claro. \nAbre Don del Imperio una vez que alcances el rango 7. Siempre actúas en el país en el que te encuentras. \nLas raquetas son tiendas de NPC. Reclámalos con un arma que tenga suficiente intimidación y luego recolecta tributo a mano después del tiempo de reutilización. Si ignoras una tienda durante unos tres días, vuelve a ser gratuita. \nSqueeze genera el próximo tributo pero también genera búsqueda y puede hacer que la tienda huya. Un rival del mismo país puede iniciar una contienda corta; el dueño puede aguantar. \nEl tributo es dinero en efectivo personal a menos que seas líder, colíder o capo (en el país del capo) y lo envíes al banco de la Crew. \nPréstamos: tú eres el tiburón. Prestar a NPC u ofrecer depósito en garantía a otro jugador. Los préstamos de los NPC duran unos días y la mayoría de los NPC los reembolsan por sí solos; Cobrar aparece solo después de un incumplimiento, para parte de la deuda más deseada, nunca una eliminación completa. \nInfluencia: sobornar al juez, comisario o concejal durante 24 horas. Los rivales pueden sobrepujar. El juez sólo añade una pequeña bonificación de apelación; el soborno judicial por caso todavía existe. El comisario baja los buscados por crímenes fallidos. El concejal desbloquea o impulsa grandes contratos. \nLos contratos de la ciudad se pagan legalmente después de una oferta (en efectivo o en el banco de la Crew). Extra fuera de libros solo si tienes raquetas allí. Las ofertas codiciosas pagan más y añaden calor. Los trabajos grandes pueden requerir una escuela de ingeniería. \nEl negocio de la protección contra la delincuencia callejera sigue siendo un asunto puntual y no se concede a estos establecimientos.';
 
   @override
   String get helpTopicDonTips =>

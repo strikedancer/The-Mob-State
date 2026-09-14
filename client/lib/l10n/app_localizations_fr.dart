@@ -3290,6 +3290,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get donLoanCollect => 'Collecter';
 
   @override
+  String get donLoanWaitHint =>
+      'Les prêts NPC durent quelques jours. La plupart des PNJ remboursent eux-mêmes. Collect n\'apparaît que s\'ils sont par défaut.';
+
+  @override
   String get donLoanBorrowerHint => 'Nom d\'utilisateur de l\'emprunteur';
 
   @override
@@ -3405,6 +3409,18 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get donErrorLoanNotDue =>
+      'Ce prêt n\'est pas encore recouvrable. Les prêts NPC durent quelques jours ; la plupart des PNJ remboursent eux-mêmes. Collectez uniquement après un défaut.';
+
+  @override
+  String get donErrorLoanCap =>
+      'Vous disposez déjà du nombre maximum de prêts actifs.';
+
+  @override
+  String get donErrorLoanNotFound =>
+      'Ce prêt a disparu ou n\'est pas le vôtre.';
+
+  @override
   String get donSqueezeFled => 'Le magasin a fait ses valises et est parti.';
 
   @override
@@ -3509,7 +3525,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get donInfoLoansBody =>
-      'Vous êtes le requin. Fixez un montant et prêtez à un PNJ (marchand de rue, docker, hôte du club) ou offrez un séquestre à un autre joueur par nom d\'utilisateur. \nLes prêts des PNJ sont destinés au remboursement ou au défaut de paiement. En cas de défaut, vous percevez une part de ce qui est dû et prenez ce qui est demandé – jamais un effacement complet de l’emprunteur. \nLes offres des joueurs restent bloquées jusqu\'à leur acceptation. Les plafonds empêchent que cela devienne une ferme alternative : quelques prêts actifs, un capital min/max et un court terme.';
+      'Vous êtes le requin. Fixez un montant et prêtez à un PNJ (marchand de rue, docker, hôte du club) ou offrez un séquestre à un autre joueur par nom d\'utilisateur. \nLes prêts NPC durent quelques jours. La plupart des PNJ remboursent eux-mêmes le montant dû ; vous ne les récupérez pas à la main. En cas de défaut, Collect apparaît et vous prenez une part de ce qui est dû et recherché – jamais un effacement complet de l’emprunteur. \nLes offres des joueurs restent bloquées jusqu\'à leur acceptation. Les plafonds empêchent que cela devienne une ferme alternative : quelques prêts actifs, un capital min/max et un court terme.';
 
   @override
   String get donInfoInfluenceTitle => 'Influence';
@@ -17803,7 +17819,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicDonHow =>
-      'Ouvrez Don depuis Empire une fois que vous atteignez le rang 7. Vous agissez toujours dans le pays dans lequel vous vous trouvez. \nLes raquettes sont des boutiques de PNJ. Réclamez-les avec une arme suffisamment intimidante, puis récupérez l\'hommage à la main après le temps de recharge. Si vous ignorez un magasin pendant environ trois jours, il redevient gratuit. \nSqueeze soulève le prochain hommage mais relance également les personnes recherchées et peut faire fuir la boutique. Un rival du même pays peut lancer une courte compétition ; le propriétaire peut détenir. \nL\'hommage est de l\'argent personnel, sauf si vous êtes leader, co-leader ou capo (dans le pays du capo) et que vous l\'envoyez à la banque de l\'équipage. \nPrêts : vous êtes le requin. Prêtez à des PNJ ou offrez un séquestre à un autre joueur. Les défauts de paiement coûtent cher et vous permettent de recouvrer une partie de la dette – jamais un effacement complet. \nInfluence : corrompre le juge, le commissaire ou l\'échevin pendant 24 heures. Les rivaux peuvent surenchérir. Le juge ajoute seulement une petite prime d\'appel plafonnée ; le pot-de-vin judiciaire par affaire existe toujours. Le commissaire réduit les personnes recherchées pour les crimes manqués. L\'échevin débloque ou booste les gros contrats. \nLes contrats municipaux paient légalement après une offre (en espèces ou en banque d\'équipage). Hors livre en supplément uniquement si vous y possédez des raquettes. Les offres gourmandes paient plus et ajoutent de la chaleur. Les gros travaux peuvent nécessiter une école d’ingénieur. \nLe racket de protection contre la délinquance de rue reste une solution ponctuelle et n\'accorde pas également ces magasins.';
+      'Les résultats des concours, des surenchères, des prêts et des contrats arrivent également dans votre boîte de réception lorsque vous êtes absent. Chaque action sur le hub affiche un toast clair. \nOuvrez Don depuis Empire une fois que vous atteignez le rang 7. Vous agissez toujours dans le pays dans lequel vous vous trouvez. \nLes raquettes sont des boutiques de PNJ. Réclamez-les avec une arme suffisamment intimidante, puis récupérez l\'hommage à la main après le temps de recharge. Si vous ignorez un magasin pendant environ trois jours, il redevient gratuit. \nSqueeze soulève le prochain hommage mais relance également les personnes recherchées et peut faire fuir la boutique. Un rival du même pays peut lancer une courte compétition ; le propriétaire peut détenir. \nL\'hommage est de l\'argent personnel, sauf si vous êtes leader, co-leader ou capo (dans le pays du capo) et que vous l\'envoyez à la banque de l\'équipage. \nPrêts : vous êtes le requin. Prêtez à des PNJ ou offrez un séquestre à un autre joueur. Les prêts des PNJ durent quelques jours et la plupart des PNJ remboursent eux-mêmes ; La collecte n\'apparaît qu\'après un défaut de paiement, pour une partie de la dette plus la somme recherchée – jamais un effacement complet. \nInfluence : corrompre le juge, le commissaire ou l\'échevin pendant 24 heures. Les rivaux peuvent surenchérir. Le juge ajoute seulement une petite prime d\'appel plafonnée ; le pot-de-vin judiciaire par affaire existe toujours. Le commissaire réduit les personnes recherchées pour les crimes ratés. L\'échevin débloque ou booste les gros contrats. \nLes contrats municipaux paient légalement après une offre (en espèces ou en banque d\'équipage). Hors livre en supplément uniquement si vous y possédez des raquettes. Les offres gourmandes paient plus et ajoutent de la chaleur. Les gros travaux peuvent nécessiter une école d’ingénieur. \nLe racket de protection contre la délinquance de rue reste une solution ponctuelle et n\'accorde pas également ces magasins.';
 
   @override
   String get helpTopicDonTips =>
