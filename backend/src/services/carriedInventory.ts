@@ -239,7 +239,7 @@ export async function debitBackpackTrade(
     } else {
       await tx.inventory.update({
         where: { id: row.id },
-        data: { quantity: row.quantity - take, lastUpdated: new Date() },
+        data: { quantity: row.quantity - take },
       });
     }
   };
@@ -285,7 +285,6 @@ export async function creditCarriedTrade(
         quantity: nextQty,
         purchasePrice: blendedPrice,
         condition: Math.min(existing.condition ?? 100, condition),
-        lastUpdated: new Date(),
         ...(purchasedAt && (!existing.purchasedAt || purchasedAt < existing.purchasedAt)
           ? { purchasedAt }
           : {}),
