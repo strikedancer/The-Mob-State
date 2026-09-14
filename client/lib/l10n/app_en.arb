@@ -60,7 +60,7 @@
   "discordSettingsTitle": "Discord community",
   "discordSettingsSubtitle": "Open the The Mob State server for updates, crews and chat.",
   "discordLinkTitle": "Link Discord",
-  "discordLinkSubtitle": "Connect Discord so messages you type there show your in-game name.",
+  "discordLinkSubtitle": "Connect Discord so messages you type there show your in-game name. First link pays €5,000.",
   "discordLinkedSubtitle": "Linked. Discord world-chat posts use your in-game name.",
   "discordLinkAction": "Link Discord",
   "discordUnlinkAction": "Unlink",
@@ -71,6 +71,26 @@
   "discordUnlinkOk": "Discord was unlinked.",
   "discordUnlinkBlocked": "You cannot unlink Discord because it is your only sign-in method.",
   "discordUnlinkConfirm": "Unlink Discord from this account?",
+  "discordPromptTitle": "The family is on Discord",
+  "discordPromptBody": "Link Discord and {amount} hits your pocket. Crew search, world chat and updates live there.",
+  "@discordPromptBody": {
+    "placeholders": {
+      "amount": { "type": "String" }
+    }
+  },
+  "discordPromptLink": "Link Discord and take {amount}",
+  "@discordPromptLink": {
+    "placeholders": {
+      "amount": { "type": "String" }
+    }
+  },
+  "discordPromptNoAccount": "I don't have Discord",
+  "discordLinkBonusOk": "Discord is linked. {amount} has been added.",
+  "@discordLinkBonusOk": {
+    "placeholders": {
+      "amount": { "type": "String" }
+    }
+  },
   "landingFooterDiscord": "Discord",
   "pwaInstallTitle": "Use The Mob State as an app",
   "pwaInstallBody": "Add this page to your home screen for a full-screen app icon.",
@@ -11331,7 +11351,7 @@
   "helpTopicWorldChatCategory": "Social",
   "helpTopicWorldChatTitle": "World chat",
   "helpTopicWorldChatSummary": "One public lobby for every player, with stickers and an optional Discord bridge so you can talk without opening the game.",
-  "helpTopicWorldChatHow": "Open World chat under Social. Everyone who is logged in can read and send, including from jail.\nEnter sends; Shift+Enter starts a new line. Stickers sit next to the composer — no image uploads.\nSwear words in the game languages are filtered on the server. Staff can mute or delete.\nLong-press your own message to delete it for about 10 minutes. Long-press someone else to report.\nThere is no credit paywall. Direct messages and crew chat stay separate.\nWhen Discord is linked, the same lobby is mirrored to a Discord channel. Messages from Discord show a Discord tag in-game. You can link Discord later in Settings if you did not sign in with Discord.",
+  "helpTopicWorldChatHow": "Open World chat under Social. Everyone who is logged in can read and send, including from jail.\nEnter sends; Shift+Enter starts a new line. Stickers sit next to the composer — no image uploads.\nSwear words in the game languages are filtered on the server. Staff can mute or delete.\nLong-press your own message to delete it for about 10 minutes. Long-press someone else to report.\nThere is no credit paywall. Direct messages and crew chat stay separate.\nWhen Discord is linked, the same lobby is mirrored to a Discord channel. Messages from Discord show a Discord tag in-game. You can link Discord later in Settings if you did not sign in with Discord. The first link of an existing account pays €5,000; a weekly prompt reminds you until you link or tap I don't have Discord.",
   "helpTopicWorldChatTips": "Keep it civil: a mute hits both the game and the Discord side if your accounts are linked.\nUse stickers for a quick reaction without flooding the room.\nPrivate deals still belong in direct messages, not the public lobby.",
   "helpTopicInventoryCategory": "Management",
   "helpTopicInventoryTitle": "Inventory",

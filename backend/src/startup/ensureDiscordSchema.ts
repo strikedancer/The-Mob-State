@@ -35,4 +35,25 @@ export async function ensureDiscordSchema(): Promise<void> {
     );
     console.log('[StartupSchema] Added unique index Player_discordId_key');
   }
+
+  const extraColumns: Array<{ name: string; sql: string }> = [
+    {
+      name: 'discordLinkPromptShownAt',
+      sql: 'ALTER TABLE players ADD COLUMN discordLinkPromptShownAt DATETIME(3) NULL',
+    },
+    {
+      name: 'discordLinkPromptDeclinedAt',
+      sql: 'ALTER TABLE players ADD COLUMN discordLinkPromptDeclinedAt DATETIME(3) NULL',
+    },
+    {
+      name: 'discordLinkBonusPaidAt',
+      sql: 'ALTER TABLE players ADD COLUMN discordLinkBonusPaidAt DATETIME(3) NULL',
+    },
+  ];
+  for (const column of extraColumns) {
+    if (!(await columnExists('players', column.name))) {
+      await prisma.$executeRawUnsafe(column.sql);
+      console.log(`[StartupSchema] Added players.${column.name}`);
+    }
+  }
 }

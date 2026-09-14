@@ -201,7 +201,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get discordLinkSubtitle =>
-      'Connect Discord so messages you type there show your in-game name.';
+      'Connect Discord so messages you type there show your in-game name. First link pays €5,000.';
 
   @override
   String get discordLinkedSubtitle =>
@@ -236,6 +236,27 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get discordUnlinkConfirm => 'Unlink Discord from this account?';
+
+  @override
+  String get discordPromptTitle => 'The family is on Discord';
+
+  @override
+  String discordPromptBody(String amount) {
+    return 'Link Discord and $amount hits your pocket. Crew search, world chat and updates live there.';
+  }
+
+  @override
+  String discordPromptLink(String amount) {
+    return 'Link Discord and take $amount';
+  }
+
+  @override
+  String get discordPromptNoAccount => 'I don\'t have Discord';
+
+  @override
+  String discordLinkBonusOk(String amount) {
+    return 'Discord is linked. $amount has been added.';
+  }
 
   @override
   String get landingFooterDiscord => 'Discord';
@@ -17678,7 +17699,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicWorldChatHow =>
-      'Open World chat under Social. Everyone who is logged in can read and send, including from jail.\nEnter sends; Shift+Enter starts a new line. Stickers sit next to the composer — no image uploads.\nSwear words in the game languages are filtered on the server. Staff can mute or delete.\nLong-press your own message to delete it for about 10 minutes. Long-press someone else to report.\nThere is no credit paywall. Direct messages and crew chat stay separate.\nWhen Discord is linked, the same lobby is mirrored to a Discord channel. Messages from Discord show a Discord tag in-game. You can link Discord later in Settings if you did not sign in with Discord.';
+      'Open World chat under Social. Everyone who is logged in can read and send, including from jail.\nEnter sends; Shift+Enter starts a new line. Stickers sit next to the composer — no image uploads.\nSwear words in the game languages are filtered on the server. Staff can mute or delete.\nLong-press your own message to delete it for about 10 minutes. Long-press someone else to report.\nThere is no credit paywall. Direct messages and crew chat stay separate.\nWhen Discord is linked, the same lobby is mirrored to a Discord channel. Messages from Discord show a Discord tag in-game. You can link Discord later in Settings if you did not sign in with Discord. The first link of an existing account pays €5,000; a weekly prompt reminds you until you link or tap I don\'t have Discord.';
 
   @override
   String get helpTopicWorldChatTips =>

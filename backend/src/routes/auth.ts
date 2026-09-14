@@ -178,6 +178,48 @@ router.delete('/discord/link', authenticate, async (req: AuthRequest, res: Respo
   }
 });
 
+router.get('/discord/prompt', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    if (!discordAuthService.status().loginEnabled) {
+      return res.json({
+        event: 'auth.discord.prompt',
+        params: { show: false, rewardCash: 0 },
+      });
+    }
+    const { discordLinkPromptService } = await import('../services/discordLinkPromptService');
+    const params = await discordLinkPromptService.status(req.player!.id);
+    return res.json({
+      event: 'auth.discord.prompt',
+      params,
+    });
+  } catch (error) {
+    console.error('[AUTH] Discord prompt status error:', error);
+    return res.status(500).json({ event: 'error.internal', params: {} });
+  }
+});
+
+router.post('/discord/prompt/seen', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const { discordLinkPromptService } = await import('../services/discordLinkPromptService');
+    await discordLinkPromptService.markShown(req.player!.id);
+    return res.json({ event: 'auth.discord.prompt.seen', params: {} });
+  } catch (error) {
+    console.error('[AUTH] Discord prompt seen error:', error);
+    return res.status(500).json({ event: 'error.internal', params: {} });
+  }
+});
+
+router.post('/discord/prompt/decline', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const { discordLinkPromptService } = await import('../services/discordLinkPromptService');
+    await discordLinkPromptService.decline(req.player!.id);
+    return res.json({ event: 'auth.discord.prompt.declined', params: {} });
+  } catch (error) {
+    console.error('[AUTH] Discord prompt decline error:', error);
+    return res.status(500).json({ event: 'error.internal', params: {} });
+  }
+});
+
 router.post('/discord/complete', async (req: Request, res: Response) => {
   try {
     const { pendingToken, username, gender, preferredLanguage, acceptedTerms } = req.body ?? {};

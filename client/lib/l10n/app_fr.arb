@@ -12309,7 +12309,7 @@
   "helpTopicWorldChatHow": "Chat en monde ouvert sous Social. Toute personne connectée peut lire et envoyer des messages, y compris depuis la prison. \nEntrez les envois ; Shift+Entrée démarre une nouvelle ligne. Les autocollants sont placés à côté du compositeur – aucun téléchargement d’image. \nLes gros mots dans les langues du jeu sont filtrés sur le serveur. Le personnel peut désactiver ou supprimer. \nAppuyez longuement sur votre propre message pour le supprimer pendant environ 10 minutes. Appuyez longuement sur quelqu'un d'autre pour signaler. \nIl n’y a pas de paywall de crédit. Les messages directs et les discussions en équipe restent séparés. \nLorsque Discord est lié, le même lobby est reflété sur une chaîne Discord. Les messages de Discord affichent un tag Discord dans le jeu. Vous pouvez lier Discord plus tard dans Paramètres si vous ne vous êtes pas connecté avec Discord.",
   "helpTopicWorldChatTips": "Restez civil : une sourdine frappe à la fois le jeu et le côté Discord si vos comptes sont liés. \nUtilisez des autocollants pour réagir rapidement sans inonder la pièce. \nLes accords privés appartiennent toujours aux messages directs et non au lobby public.",
   "discordLinkTitle": "Lier Discord",
-  "discordLinkSubtitle": "Connectez Discord pour que les messages que vous y tapez indiquent votre nom dans le jeu.",
+  "discordLinkSubtitle": "Connectez Discord pour que les messages que vous y tapez indiquent votre nom dans le jeu. La première liaison rapporte €5.000.",
   "discordLinkedSubtitle": "Lié. Les publications du chat Discord World utilisent votre nom dans le jeu.",
   "discordLinkAction": "Lier Discord",
   "discordUnlinkAction": "Dissocier",
@@ -12319,5 +12319,31 @@
   "discordInUse": "Ce compte Discord est déjà lié à un autre joueur.",
   "discordUnlinkOk": "Discord a été dissocié.",
   "discordUnlinkBlocked": "Vous ne pouvez pas dissocier Discord car c'est votre seule méthode de connexion.",
-  "discordUnlinkConfirm": "Dissocier Discord de ce compte ?"
+  "discordUnlinkConfirm": "Dissocier Discord de ce compte ?",
+  "discordPromptTitle": "La famille est sur Discord",
+  "discordPromptBody": "Liez Discord et {amount} arrive dans votre poche. La recherche d'équipage, le chat mondial et les mises à jour y sont en direct.",
+  "@discordPromptBody": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "discordPromptLink": "Liez Discord et prenez {amount}",
+  "@discordPromptLink": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "discordPromptNoAccount": "Je n'ai pas Discord",
+  "discordLinkBonusOk": "Discord est lié. {amount} a été ajouté.",
+  "@discordLinkBonusOk": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  }
 }

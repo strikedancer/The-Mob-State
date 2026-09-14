@@ -57,7 +57,7 @@
   "discordSettingsTitle": "Discord-community",
   "discordSettingsSubtitle": "Open de The Mob State-server voor updates, crews en chat.",
   "discordLinkTitle": "Discord koppelen",
-  "discordLinkSubtitle": "Koppel Discord zodat berichten die je daar typt je in-game naam tonen.",
+  "discordLinkSubtitle": "Koppel Discord zodat berichten die je daar typt je in-game naam tonen. De eerste koppeling levert €5.000 op.",
   "discordLinkedSubtitle": "Gekoppeld. Discord-berichten in de wereldchat gebruiken je in-game naam.",
   "discordLinkAction": "Discord koppelen",
   "discordUnlinkAction": "Ontkoppelen",
@@ -68,6 +68,32 @@
   "discordUnlinkOk": "Discord is ontkoppeld.",
   "discordUnlinkBlocked": "Je kunt Discord niet ontkoppelen omdat het je enige inlogmethode is.",
   "discordUnlinkConfirm": "Discord ontkoppelen van dit account?",
+  "discordPromptTitle": "De familie zit op Discord",
+  "discordPromptBody": "Koppel Discord en {amount} gaat je zak in. Crew zoeken, wereldchat en updates houden we daar bij.",
+  "@discordPromptBody": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "discordPromptLink": "Koppel Discord en pak {amount}",
+  "@discordPromptLink": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "discordPromptNoAccount": "Ik heb geen Discord",
+  "discordLinkBonusOk": "Discord is gekoppeld. {amount} is bijgeschreven.",
+  "@discordLinkBonusOk": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "landingFooterDiscord": "Discord",
   "pwaInstallTitle": "Gebruik The Mob State als app",
   "pwaInstallBody": "Zet deze pagina op je beginscherm voor een icoon op volledig scherm.",
@@ -10810,7 +10836,7 @@
   "helpTopicWorldChatCategory": "Sociaal",
   "helpTopicWorldChatTitle": "Wereldchat",
   "helpTopicWorldChatSummary": "Eén open lobby voor alle spelers, met stickers en optioneel Discord zodat je ook buiten de game kunt meepraten.",
-  "helpTopicWorldChatHow": "Open Wereldchat onder Sociaal. Iedereen die is ingelogd kan lezen en sturen, ook vanuit de cel.\nEnter verstuurt; Shift+Enter maakt een nieuwe regel. Stickers staan naast het invoerveld — geen eigen plaatjes.\nScheldwoorden in de speltalen worden op de server gefilterd. Staf kan muten of wissen.\nHoud je eigen bericht ingedrukt om het tot ongeveer 10 minuten te verwijderen. Bij een ander bericht kun je melden.\nGeen credit-muur. Privéberichten en crew-chat blijven apart.\nAls Discord gekoppeld is, spiegelt dezelfde lobby naar een Discord-kanaal. Berichten van Discord krijgen in de game een Discord-label. Je kunt Discord later in Instellingen koppelen als je niet via Discord bent ingelogd.",
+  "helpTopicWorldChatHow": "Open Wereldchat onder Sociaal. Iedereen die is ingelogd kan lezen en sturen, ook vanuit de cel.\nEnter verstuurt; Shift+Enter maakt een nieuwe regel. Stickers staan naast het invoerveld — geen eigen plaatjes.\nScheldwoorden in de speltalen worden op de server gefilterd. Staf kan muten of wissen.\nHoud je eigen bericht ingedrukt om het tot ongeveer 10 minuten te verwijderen. Bij een ander bericht kun je melden.\nGeen credit-muur. Privéberichten en crew-chat blijven apart.\nAls Discord gekoppeld is, spiegelt dezelfde lobby naar een Discord-kanaal. Berichten van Discord krijgen in de game een Discord-label. Je kunt Discord later in Instellingen koppelen als je niet via Discord bent ingelogd. De eerste koppeling van een bestaand account geeft €5.000; een wekelijkse popup herinnert je tot je koppelt of op Ik heb geen Discord tikt.",
   "helpTopicWorldChatTips": "Blijf fatsoenlijk: een mute geldt in de game én op Discord als je accounts gekoppeld zijn.\nGebruik stickers voor een snelle reactie zonder de kamer vol te spammen.\nPrivé-deals horen in privéberichten, niet in de open lobby.",
   "helpTopicInventoryCategory": "Beheer",
   "helpTopicInventoryTitle": "Inventaris",

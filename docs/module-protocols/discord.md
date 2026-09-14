@@ -23,7 +23,7 @@ Permanent invite (no expiry), preferably `https://discord.gg/…` landing on `#r
 - `client/lib/widgets/guest_legal_footer.dart` — landing/login/register footer Discord link (not in the logged-in game)
 - `client/lib/screens/help_screen.dart` — Help CTA next to Almanac
 - `client/lib/screens/settings_screen.dart` — Community invite + Link Discord for accounts that did not sign in with Discord
-- `client/lib/services/discord_community_service.dart` — caches `GET /public/community`
+- `client/lib/widgets/discord_link_prompt.dart` — weekly dashboard popup with €5.000 first-link bonus
 
 ## Primary Backend Entry
 - `GET /public/community` — `{ discordInviteUrl }` (no auth; empty/null hides CTAs)
@@ -35,7 +35,9 @@ Permanent invite (no expiry), preferably `https://discord.gg/…` landing on `#r
 - `GET /auth/discord/callback` — code → session, pending registration, or Settings link result (`/dashboard?section=settings&discord_link=ok|error`)
 - `POST /auth/discord/complete` — `{ pendingToken, username, gender, preferredLanguage, acceptedTerms, referralCode? }`
 - Services: `backend/src/services/discordAuthService.ts`, `backend/src/lib/discordInvite.ts`, `authService.issueSession`
-- Startup: `backend/src/startup/ensureDiscordSchema.ts` (`players.discordId`)
+- `GET /auth/discord/prompt` — `{ show, rewardCash }` weekly until linked or declined
+- `POST /auth/discord/prompt/seen` / `POST /auth/discord/prompt/decline`
+- Startup: `backend/src/startup/ensureDiscordSchema.ts` (`players.discordId`, prompt timestamps, bonus paid)
 
 ## Env (server only, never git)
 
@@ -62,7 +64,8 @@ Without Client ID + Secret the login button stays hidden. Without a valid invite
 ## Change Rules
 - `GET /settings` includes `discordLinked` and `canUnlinkDiscord` (no Discord snowflake in the payload).
 - Discord-email links to an existing account only when that email is **verified** on our side and Discord reports `verified: true`. Otherwise `DISCORD_EMAIL_IN_USE`.
-- Settings **Link Discord** uses a signed OAuth `intent=link` state with `playerId`. Do not require a matching email for that explicit link.
+- Settings **Link Discord** uses a signed OAuth `intent=link` state with `playerId`. Do not require a matching email for that explicit link. First link of an existing account pays **€5.000** once (`discordLinkBonusPaidAt`). New Discord registrations do not get that bonus.
+- Weekly dashboard prompt until `discordId` is set, the player taps **I don't have Discord** (`discordLinkPromptDeclinedAt`), or the €5.000 bonus is already paid. Closing the dialog only snoozes for 7 days.
 - Unlink is blocked when Discord is the only login method (`DISCORD_UNLINK_BLOCKED`).
 - New Discord players still pick **username + gender + terms**. Verified Discord email becomes `emailVerified: true`.
 - Missing or unverified Discord email: registration still allowed (same as Facebook without mail).
@@ -95,6 +98,8 @@ Without Client ID + Secret the login button stays hidden. Without a valid invite
 5. Invite opens Discord in a new tab from landing, Help, and Settings
 6. Logged-in player without `discordId` can Link Discord from Settings; world chat then uses the in-game name
 7. Updates script posts an embed to `#updates` without printing the webhook URL
+8. Unlinked web player sees the weekly Discord popup; decline hides it; close snoozes 7 days; already-linked players never see it
+9. First Settings/popup link of an existing account pays €5.000 once; new Discord registrations do not; already-linked players get no retroactive cash
 
 ## i18n and Messaging
 Player ARB-prefix `discord*` plus `legalPrivacySection13*` and footer `landingFooterDiscord`. Help CTA uses `discordJoin` / `discordJoinBlurb`.

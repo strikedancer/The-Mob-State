@@ -45,6 +45,12 @@ model Player {
   facebookId                      String?                          @unique @db.VarChar(32)
   googleId                        String?                          @unique @db.VarChar(64)
   discordId                       String?                          @unique @db.VarChar(32)
+  /// Last time the weekly Discord-link prompt was shown.
+  discordLinkPromptShownAt        DateTime?
+  /// Player tapped "I don't have Discord"; never prompt again.
+  discordLinkPromptDeclinedAt     DateTime?
+  /// One-time €5000 paid when an existing account first links Discord.
+  discordLinkBonusPaidAt          DateTime?
   /// Public invite code for share links (`/register?ref=`).
   referralCode                    String?                          @unique @db.VarChar(12)
   referredById                    Int?

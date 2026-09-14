@@ -324,6 +324,43 @@ class AuthService {
     }
   }
 
+  Future<({bool show, int rewardCash})> discordPromptStatus() async {
+    try {
+      final response = await _apiClient.get('/auth/discord/prompt');
+      if (response.statusCode != 200) {
+        return (show: false, rewardCash: 0);
+      }
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final params = data['params'] is Map<String, dynamic>
+          ? data['params'] as Map<String, dynamic>
+          : data;
+      final reward = params['rewardCash'];
+      return (
+        show: params['show'] == true,
+        rewardCash: reward is num ? reward.toInt() : 0,
+      );
+    } catch (e) {
+      print('[AuthService] Discord prompt status exception: $e');
+      return (show: false, rewardCash: 0);
+    }
+  }
+
+  Future<void> discordPromptSeen() async {
+    try {
+      await _apiClient.post('/auth/discord/prompt/seen', {});
+    } catch (e) {
+      print('[AuthService] Discord prompt seen exception: $e');
+    }
+  }
+
+  Future<void> discordPromptDecline() async {
+    try {
+      await _apiClient.post('/auth/discord/prompt/decline', {});
+    } catch (e) {
+      print('[AuthService] Discord prompt decline exception: $e');
+    }
+  }
+
   Future<String?> unlinkDiscord() async {
     try {
       final response = await _apiClient.delete('/auth/discord/link');

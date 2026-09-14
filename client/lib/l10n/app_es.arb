@@ -12309,7 +12309,7 @@
   "helpTopicWorldChatHow": "Abra el chat mundial en Social. Cualquiera que haya iniciado sesión puede leer y enviar, incluso desde la cárcel. \nIngrese envíos; Shift+Enter inicia una nueva línea. Las pegatinas se encuentran al lado del compositor: no se cargan imágenes. \nLas malas palabras en los idiomas del juego se filtran en el servidor. El personal puede silenciar o eliminar. \nMantenga presionado su propio mensaje para eliminarlo durante unos 10 minutos. Mantenga presionada a otra persona para informar. \nNo hay muro de pago de crédito. Los mensajes directos y el chat del equipo permanecen separados. \nCuando Discord está vinculado, el mismo lobby se refleja en un canal de Discord. Los mensajes de Discord muestran una etiqueta de Discord en el juego. Puedes vincular Discord más tarde en Configuración si no iniciaste sesión con Discord.",
   "helpTopicWorldChatTips": "Mantenlo civilizado: un silencio afecta tanto al juego como al lado de Discord si tus cuentas están vinculadas. \nUtilice pegatinas para reaccionar rápidamente sin inundar la habitación. \nLos acuerdos privados todavía pertenecen a los mensajes directos, no al lobby público.",
   "discordLinkTitle": "Vincular Discord",
-  "discordLinkSubtitle": "Conecta Discord para que los mensajes que escribas allí muestren tu nombre en el juego.",
+  "discordLinkSubtitle": "Conecta Discord para que los mensajes que escribas allí muestren tu nombre en el juego. La primera vinculación paga €5.000.",
   "discordLinkedSubtitle": "Vinculado. Las publicaciones del chat mundial de Discord usan tu nombre en el juego.",
   "discordLinkAction": "Vincular Discord",
   "discordUnlinkAction": "Desconectar",
@@ -12319,5 +12319,31 @@
   "discordInUse": "Esa cuenta de Discord ya está vinculada a otro jugador.",
   "discordUnlinkOk": "Discord fue desvinculada.",
   "discordUnlinkBlocked": "No puedes desvincular Discord porque es tu único método de inicio de sesión.",
-  "discordUnlinkConfirm": "¿Desvincular Discord de esta cuenta?"
+  "discordUnlinkConfirm": "¿Desvincular Discord de esta cuenta?",
+  "discordPromptTitle": "La familia está en Discord",
+  "discordPromptBody": "Vincula Discord y {amount} llega a tu bolsillo. Búsqueda de Crew, chat mundial y actualizaciones en vivo allí.",
+  "@discordPromptBody": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "discordPromptLink": "Vincula Discord y toma {amount}",
+  "@discordPromptLink": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "discordPromptNoAccount": "No tengo Discord",
+  "discordLinkBonusOk": "Discord está vinculado. {amount} ha sido añadido.",
+  "@discordLinkBonusOk": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  }
 }

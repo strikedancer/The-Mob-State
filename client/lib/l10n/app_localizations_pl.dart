@@ -204,7 +204,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get discordLinkSubtitle =>
-      'Połącz się z Discordem, aby wpisane tam wiadomości wyświetlały Twoją nazwę w grze.';
+      'Połącz się z Discordem, aby wpisane tam wiadomości wyświetlały Twoją nazwę w grze. Pierwsze połączenie daje €5.000.';
 
   @override
   String get discordLinkedSubtitle =>
@@ -240,6 +240,27 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get discordUnlinkConfirm => 'Odłączyć Discorda od tego konta?';
+
+  @override
+  String get discordPromptTitle => 'Rodzina jest na Discordzie';
+
+  @override
+  String discordPromptBody(String amount) {
+    return 'Połącz Discorda i $amount trafi do Twojej kieszeni. Wyszukiwanie załogi, czat światowy i aktualizacje są tam na żywo.';
+  }
+
+  @override
+  String discordPromptLink(String amount) {
+    return 'Połącz Discorda i weź $amount';
+  }
+
+  @override
+  String get discordPromptNoAccount => 'Nie mam Discorda';
+
+  @override
+  String discordLinkBonusOk(String amount) {
+    return 'Discord jest powiązany. $amount zostało dodane.';
+  }
 
   @override
   String get landingFooterDiscord => 'Niezgoda';

@@ -206,7 +206,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get discordLinkSubtitle =>
-      'Verbinde Discord, damit in Nachrichten, die du dort eingibst, dein Name im Spiel angezeigt wird.';
+      'Verbinde Discord, damit in Nachrichten, die du dort eingibst, dein Name im Spiel angezeigt wird. Die erste Verknüpfung bringt €5.000.';
 
   @override
   String get discordLinkedSubtitle =>
@@ -242,6 +242,27 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get discordUnlinkConfirm => 'Discord von diesem Konto trennen?';
+
+  @override
+  String get discordPromptTitle => 'Die Familie ist auf Discord';
+
+  @override
+  String discordPromptBody(String amount) {
+    return 'Verknüpfen Sie Discord und $amount landet in Ihrer Tasche. Crewsuche, Weltchat und Updates live dort.';
+  }
+
+  @override
+  String discordPromptLink(String amount) {
+    return 'Verlinke Discord und nimm $amount';
+  }
+
+  @override
+  String get discordPromptNoAccount => 'Ich habe kein Discord';
+
+  @override
+  String discordLinkBonusOk(String amount) {
+    return 'Discord ist verlinkt. $amount wurde hinzugefügt.';
+  }
 
   @override
   String get landingFooterDiscord => 'Zwietracht';

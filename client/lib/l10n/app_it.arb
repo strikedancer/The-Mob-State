@@ -12309,7 +12309,7 @@
   "helpTopicWorldChatHow": "Apri la chat mondiale in Social. Chiunque abbia effettuato l'accesso può leggere e inviare, anche dal carcere. \nInserisci invii; Shift+Invio inizia una nuova riga. Gli adesivi si trovano accanto al compositore: nessun caricamento di immagini. \nLe parolacce nelle lingue del gioco vengono filtrate sul server. Il personale può disattivare o eliminare. \nPremi a lungo il tuo messaggio per eliminarlo per circa 10 minuti. Premi a lungo qualcun altro per segnalare. \nNon è previsto alcun pagamento del credito. I messaggi diretti e la chat dell'Crew rimangono separati. \nQuando Discord è collegato, la stessa lobby viene rispecchiata su un canale Discord. I messaggi di Discord mostrano un tag Discord nel gioco. Puoi collegare Discord in seguito in Impostazioni se non hai effettuato l'accesso con Discord.",
   "helpTopicWorldChatTips": "Mantienilo civile: un silenziamento colpisce sia il gioco che il lato Discord se i tuoi account sono collegati. \nUsa gli adesivi per una reazione rapida senza allagare la stanza. \nGli accordi privati ​​appartengono ancora ai messaggi diretti, non alla lobby pubblica.",
   "discordLinkTitle": "Collega Discord",
-  "discordLinkSubtitle": "Connetti Discord in modo che i messaggi digitati mostrino il tuo nome di gioco.",
+  "discordLinkSubtitle": "Connetti Discord in modo che i messaggi digitati mostrino il tuo nome di gioco. Il primo collegamento paga €5.000.",
   "discordLinkedSubtitle": "Collegato. I post della chat mondiale di Discord utilizzano il tuo nome di gioco.",
   "discordLinkAction": "Collega Discord",
   "discordUnlinkAction": "Scollega",
@@ -12319,5 +12319,31 @@
   "discordInUse": "Quell'account Discord è già collegato a un altro giocatore.",
   "discordUnlinkOk": "Discord è stato scollegato.",
   "discordUnlinkBlocked": "Non puoi scollegare Discord perché è il tuo unico metodo di accesso.",
-  "discordUnlinkConfirm": "Scollegare Discord da questo account?"
+  "discordUnlinkConfirm": "Scollegare Discord da questo account?",
+  "discordPromptTitle": "La famiglia è su Discord",
+  "discordPromptBody": "Collega Discord e {amount} ti arriva in tasca. La ricerca della crew, la chat mondiale e gli aggiornamenti vivono lì.",
+  "@discordPromptBody": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "discordPromptLink": "Collega Discord e prendi {amount}",
+  "@discordPromptLink": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "discordPromptNoAccount": "Non ho Discord",
+  "discordLinkBonusOk": "Discord è collegato. {amount} è stato aggiunto.",
+  "@discordLinkBonusOk": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  }
 }

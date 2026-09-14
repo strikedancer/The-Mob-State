@@ -455,7 +455,7 @@ abstract class AppLocalizations {
   /// No description provided for @discordLinkSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Connect Discord so messages you type there show your in-game name.'**
+  /// **'Connect Discord so messages you type there show your in-game name. First link pays €5,000.'**
   String get discordLinkSubtitle;
 
   /// No description provided for @discordLinkedSubtitle.
@@ -517,6 +517,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unlink Discord from this account?'**
   String get discordUnlinkConfirm;
+
+  /// No description provided for @discordPromptTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The family is on Discord'**
+  String get discordPromptTitle;
+
+  /// No description provided for @discordPromptBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Link Discord and {amount} hits your pocket. Crew search, world chat and updates live there.'**
+  String discordPromptBody(String amount);
+
+  /// No description provided for @discordPromptLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Link Discord and take {amount}'**
+  String discordPromptLink(String amount);
+
+  /// No description provided for @discordPromptNoAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'I don\'t have Discord'**
+  String get discordPromptNoAccount;
+
+  /// No description provided for @discordLinkBonusOk.
+  ///
+  /// In en, this message translates to:
+  /// **'Discord is linked. {amount} has been added.'**
+  String discordLinkBonusOk(String amount);
 
   /// No description provided for @landingFooterDiscord.
   ///
@@ -30546,7 +30576,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicWorldChatHow.
   ///
   /// In en, this message translates to:
-  /// **'Open World chat under Social. Everyone who is logged in can read and send, including from jail.\nEnter sends; Shift+Enter starts a new line. Stickers sit next to the composer — no image uploads.\nSwear words in the game languages are filtered on the server. Staff can mute or delete.\nLong-press your own message to delete it for about 10 minutes. Long-press someone else to report.\nThere is no credit paywall. Direct messages and crew chat stay separate.\nWhen Discord is linked, the same lobby is mirrored to a Discord channel. Messages from Discord show a Discord tag in-game. You can link Discord later in Settings if you did not sign in with Discord.'**
+  /// **'Open World chat under Social. Everyone who is logged in can read and send, including from jail.\nEnter sends; Shift+Enter starts a new line. Stickers sit next to the composer — no image uploads.\nSwear words in the game languages are filtered on the server. Staff can mute or delete.\nLong-press your own message to delete it for about 10 minutes. Long-press someone else to report.\nThere is no credit paywall. Direct messages and crew chat stay separate.\nWhen Discord is linked, the same lobby is mirrored to a Discord channel. Messages from Discord show a Discord tag in-game. You can link Discord later in Settings if you did not sign in with Discord. The first link of an existing account pays €5,000; a weekly prompt reminds you until you link or tap I don\'t have Discord.'**
   String get helpTopicWorldChatHow;
 
   /// No description provided for @helpTopicWorldChatTips.

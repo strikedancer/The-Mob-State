@@ -137,13 +137,23 @@ async function linkDiscordToPlayer(playerId: number, discordId: string): Promise
   if (taken && taken.id !== playerId) {
     return appLinkRedirect({ discord_link: 'error', reason: 'DISCORD_IN_USE' });
   }
-  if (player.discordId !== discordId) {
+  const firstLink = !player.discordId;
+  if (firstLink) {
     await prisma.player.update({
       where: { id: playerId },
       data: { discordId },
     });
   }
-  return appLinkRedirect({ discord_link: 'ok' });
+  let bonus = 0;
+  if (firstLink) {
+    const { discordLinkPromptService } = await import('./discordLinkPromptService');
+    bonus = await discordLinkPromptService.payLinkBonus(playerId);
+  }
+  return appLinkRedirect(
+    bonus > 0
+      ? { discord_link: 'ok', bonus: String(bonus) }
+      : { discord_link: 'ok' },
+  );
 }
 
 const readJson = async (response: Response): Promise<Record<string, unknown>> => {
@@ -291,10 +301,15 @@ export const discordAuthService = {
           return appRedirect({ d: 'error', reason: 'DISCORD_EMAIL_IN_USE' });
         }
         if (existingByEmail && existingByEmail.emailVerified) {
+          const firstLink = !existingByEmail.discordId;
           await prisma.player.update({
             where: { id: existingByEmail.id },
             data: { discordId: profile.id },
           });
+          if (firstLink) {
+            const { discordLinkPromptService } = await import('./discordLinkPromptService');
+            await discordLinkPromptService.payLinkBonus(existingByEmail.id);
+          }
           try {
             const session = await authService.issueSession(existingByEmail.id);
             if (!session.token) {

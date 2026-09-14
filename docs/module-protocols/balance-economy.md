@@ -21,7 +21,11 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 - See [school.md](school.md).
 
 ## Documented static modifiers (new accounts)
-- **Starter cash:** `PLAYER_STARTER_CASH` default **€2.000** for every new password / Facebook / Google account (`playerStartService.grantStarterBundle`). Existing players are not backfilled.
+- **Starter cash:** `PLAYER_STARTER_CASH` default **€2.000** for every new password / Facebook / Google account (`playerStartService.grantStarterBundle`). Existing players are not backfilled. Discord-only registrations use the same starter bundle; they do **not** also get the Discord link bonus below.
+
+## Documented static modifiers (Discord link)
+- **First-link cash:** `DISCORD_LINK_BONUS_CASH` **€5.000** once when an **existing** account first gets a `discordId` (`discordLinkPromptService.payLinkBonus`, `discordLinkBonusPaidAt`). Not paid on new Discord registrations, not retroactive for already-linked players, not paid for tapping “I don’t have Discord”.
+- See [discord.md](discord.md).
 
 ## Documented static modifiers (referrals)
 - **Recruit cash:** `REFERRAL_RECRUIT_CASH` default **€2.000** at register via a valid `?ref=`, stacked on top of starter cash.

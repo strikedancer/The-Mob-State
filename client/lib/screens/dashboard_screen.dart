@@ -22,6 +22,7 @@ import '../widgets/icu_overlay.dart';
 import '../widgets/game_page_info.dart';
 import '../widgets/pwa_install_banner.dart';
 import '../widgets/push_enable_prompt.dart';
+import '../widgets/discord_link_prompt.dart';
 import '../widgets/live_event_rail.dart';
 import '../utils/game_event_theme.dart';
 import '../utils/localized_game_event_template.dart';
@@ -580,7 +581,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       _refreshDashboardBadges();
       _setupSSEListener();
       _startNavCooldownTimers();
-      _checkPremiumPopupOnOpen().whenComplete(() {
+      _checkPremiumPopupOnOpen().whenComplete(() async {
+        if (mounted) await maybeShowDiscordLinkPrompt(context);
         if (mounted) unawaited(maybeShowPushEnablePrompt(context));
       });
       _loadActiveGameEventsForRail();
@@ -593,6 +595,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final status = Uri.base.queryParameters['discord_link']?.trim() ?? '';
     if (status.isEmpty) return;
     final reason = Uri.base.queryParameters['reason'] ?? '';
+    final bonusRaw = Uri.base.queryParameters['bonus']?.trim() ?? '';
+    final bonus = int.tryParse(bonusRaw) ?? 0;
     replaceBrowserPath(
       _selectedWebSection == _WebSection.settings
           ? '/dashboard?section=settings'
@@ -600,7 +604,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
     final l10n = AppLocalizations.of(context)!;
     final text = status == 'ok'
-        ? l10n.discordLinkOk
+        ? (bonus > 0
+            ? l10n.discordLinkBonusOk(formatCurrency(bonus))
+            : l10n.discordLinkOk)
         : reason == 'DISCORD_IN_USE'
             ? l10n.discordInUse
             : reason == 'DISCORD_ALREADY_LINKED'
