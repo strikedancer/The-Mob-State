@@ -1442,7 +1442,6 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
       ),
     );
   }
-  }
 
   Widget _buildOfficials(AppLocalizations l10n, Map<String, dynamic> overview) {
     final officials = (overview['officials'] as List?) ?? const [];
