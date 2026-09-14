@@ -2078,6 +2078,72 @@ abstract class AppLocalizations {
   /// **'Could not remove those messages'**
   String get messagesHideFailed;
 
+  /// No description provided for @messagesMarkAllRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all as read'**
+  String get messagesMarkAllRead;
+
+  /// No description provided for @messagesMarkAllReadDone.
+  ///
+  /// In en, this message translates to:
+  /// **'All messages marked as read'**
+  String get messagesMarkAllReadDone;
+
+  /// No description provided for @messagesSelect.
+  ///
+  /// In en, this message translates to:
+  /// **'Select'**
+  String get messagesSelect;
+
+  /// No description provided for @messagesSelectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Select all'**
+  String get messagesSelectAll;
+
+  /// No description provided for @messagesDoneSelecting.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get messagesDoneSelecting;
+
+  /// No description provided for @messagesDeleteSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get messagesDeleteSelected;
+
+  /// No description provided for @messagesDeleteSelectedConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove the selected messages from your inbox? Player chats stay visible for the other person. New messages come back.'**
+  String get messagesDeleteSelectedConfirm;
+
+  /// No description provided for @messagesDeleteSelectedEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a message first.'**
+  String get messagesDeleteSelectedEmpty;
+
+  /// No description provided for @messagesDeleteAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete all'**
+  String get messagesDeleteAll;
+
+  /// No description provided for @messagesDeleteAllConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove every message from your inbox? Player chats stay visible for the other person. New messages come back.'**
+  String get messagesDeleteAllConfirm;
+
+  /// No description provided for @messagesSelectedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} selected'**
+  String messagesSelectedCount(String count);
+
   /// No description provided for @investigationWindowExpired.
   ///
   /// In en, this message translates to:
@@ -30546,7 +30612,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicMessagesHow.
   ///
   /// In en, this message translates to:
-  /// **'Messages are split into personal conversations and individual The Mob State notices.\nOn a keyboard, Enter sends the message and Shift+Enter starts a new line. Event shortcuts stay hidden on Messages so they do not cover the send button.\nAfter you have read a notice or chat you can remove it from your inbox (swipe, trash icon, or Clear read). The other player keeps the chat. A new message brings it back. Unread items stay until you open them.\nEach system event is its own inbox item: crypto trades, order fills, leaderboard payouts, heist results, jail escapes and achievement badges do not share one long thread.\nYou can send messages to other players as long as their privacy settings allow it.\nUnread messages appear as a badge on the message icon and are visible from the dashboard.\nMessages do not expire and are kept as a historical log of account events.\nUse the inbox log when in doubt about a payout, a missed order fill or an unexpected balance change.'**
+  /// **'Messages are split into personal conversations and individual The Mob State notices.\nOn a keyboard, Enter sends the message and Shift+Enter starts a new line. Event shortcuts stay hidden on Messages so they do not cover the send button.\nYou can mark every message as read at once. Select messages to remove several at once, or remove all. Swipe or the trash icon still removes one thread. The other player keeps the chat. A new message brings it back.\nEach system event is its own inbox item: crypto trades, order fills, leaderboard payouts, heist results, jail escapes and achievement badges do not share one long thread.\nYou can send messages to other players as long as their privacy settings allow it.\nUnread messages appear as a badge on the message icon and are visible from the dashboard.\nMessages do not expire and are kept as a historical log of account events.\nUse the inbox log when in doubt about a payout, a missed order fill or an unexpected balance change.'**
   String get helpTopicMessagesHow;
 
   /// No description provided for @helpTopicMessagesTips.

@@ -11,6 +11,62 @@ const sendMessageSchema = z.object({
   message: z.string().min(1).max(1000),
 });
 
+const hideInboxSchema = z
+  .object({
+    all: z.boolean().optional(),
+    friendIds: z.array(z.number().int()).max(200).optional(),
+  })
+  .refine((value) => value.all === true || (value.friendIds?.length ?? 0) > 0, {
+    message: 'HIDE_SELECTION_REQUIRED',
+  });
+
+/**
+ * POST /messages/mark-all-read
+ * Mark every visible unread inbox message as read.
+ */
+router.post(
+  '/mark-all-read',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const result = await directMessageService.markAllAsRead(req.player!.id);
+      return res.json({
+        event: 'messages.marked_all_read',
+        params: result,
+      });
+    } catch (error) {
+      return next(error);
+    }
+  },
+);
+
+/**
+ * POST /messages/hide
+ * Hide selected inbox threads, or every visible thread when `all` is true.
+ */
+router.post(
+  '/hide',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const payload = hideInboxSchema.parse(req.body ?? {});
+      const result = await directMessageService.hideConversations(req.player!.id, payload);
+      return res.json({
+        event: 'messages.hidden',
+        params: result,
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({
+          event: 'error.invalid_hide_selection',
+          params: {},
+        });
+      }
+      return next(error);
+    }
+  },
+);
+
 /**
  * POST /messages/:receiverId
  * Send a direct message to a friend

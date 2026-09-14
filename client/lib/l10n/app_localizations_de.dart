@@ -1120,6 +1120,45 @@ class AppLocalizationsDe extends AppLocalizations {
       'Diese Nachrichten konnten nicht entfernt werden';
 
   @override
+  String get messagesMarkAllRead => 'Alle als gelesen markieren';
+
+  @override
+  String get messagesMarkAllReadDone =>
+      'Alle als gelesen markierten Nachrichten';
+
+  @override
+  String get messagesSelect => 'Auswählen';
+
+  @override
+  String get messagesSelectAll => 'Alles auswählen';
+
+  @override
+  String get messagesDoneSelecting => 'Erledigt';
+
+  @override
+  String get messagesDeleteSelected => 'Löschen';
+
+  @override
+  String get messagesDeleteSelectedConfirm =>
+      'Die ausgewählten Nachrichten aus Ihrem Posteingang entfernen? Spielerchats bleiben für die andere Person sichtbar. Neue Nachrichten kommen zurück.';
+
+  @override
+  String get messagesDeleteSelectedEmpty =>
+      'Wählen Sie zunächst eine Nachricht aus.';
+
+  @override
+  String get messagesDeleteAll => 'Alles löschen';
+
+  @override
+  String get messagesDeleteAllConfirm =>
+      'Jede Nachricht aus Ihrem Posteingang entfernen? Spielerchats bleiben für die andere Person sichtbar. Neue Nachrichten kommen zurück.';
+
+  @override
+  String messagesSelectedCount(String count) {
+    return '$count ausgewählt';
+  }
+
+  @override
   String get investigationWindowExpired =>
       'Das Untersuchungsfenster ist abgelaufen (24 Stunden).';
 
@@ -17898,7 +17937,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicMessagesHow =>
-      'Die Nachrichten sind in persönliche Gespräche und einzelne The Mob State-Mitteilungen unterteilt. \nAuf einer Tastatur sendet Enter die Nachricht und Shift+Enter beginnt eine neue Zeile. Ereignisverknüpfungen bleiben in Nachrichten verborgen, sodass sie die Schaltfläche „Senden“ nicht verdecken. \nNachdem Sie eine Mitteilung oder einen Chat gelesen haben, können Sie diese aus Ihrem Posteingang entfernen (Wischen, Papierkorbsymbol oder „Lesen löschen“). Der andere Spieler führt den Chat. Eine neue Nachricht bringt es zurück. Ungelesene Elemente bleiben erhalten, bis Sie sie öffnen. \nJedes Systemereignis ist ein eigener Posteingangspunkt: Krypto-Trades, Auftragsausführungen, Bestenlisten-Auszahlungen, Raubüberfallergebnisse, Gefängnisausbrüche und Leistungsabzeichen teilen sich keinen langen Thread. \nSie können Nachrichten an andere Spieler senden, sofern deren Datenschutzeinstellungen dies zulassen. \nUngelesene Nachrichten werden als Abzeichen auf dem Nachrichtensymbol angezeigt und sind im Dashboard sichtbar. \nNachrichten verfallen nicht und werden als historisches Protokoll der Kontoereignisse gespeichert. \nNutzen Sie das Posteingangsprotokoll, wenn Sie Zweifel an einer Auszahlung, einer versäumten Auftragsausführung oder einer unerwarteten Kontostandsänderung haben.';
+      'Die Nachrichten sind in persönliche Gespräche und einzelne The Mob State-Mitteilungen unterteilt. \nAuf einer Tastatur sendet Enter die Nachricht und Shift+Enter beginnt eine neue Zeile. Ereignisverknüpfungen bleiben in Nachrichten verborgen, sodass sie die Schaltfläche „Senden“ nicht verdecken. \nSie können jede Nachricht gleichzeitig als gelesen markieren. Wählen Sie Nachrichten aus, um mehrere auf einmal zu entfernen, oder entfernen Sie alle. Durch Wischen oder das Papierkorbsymbol wird immer noch ein Thread entfernt. Der andere Spieler führt den Chat. Eine neue Nachricht bringt es zurück. \nJedes Systemereignis ist ein eigener Posteingangspunkt: Krypto-Trades, Auftragsausführungen, Bestenlisten-Auszahlungen, Raubüberfallergebnisse, Gefängnisausbrüche und Leistungsabzeichen teilen sich keinen langen Thread. \nSie können Nachrichten an andere Spieler senden, sofern deren Datenschutzeinstellungen dies zulassen. \nUngelesene Nachrichten werden als Abzeichen auf dem Nachrichtensymbol angezeigt und sind im Dashboard sichtbar. \nNachrichten verfallen nicht und werden als historisches Protokoll der Kontoereignisse gespeichert. \nNutzen Sie das Posteingangsprotokoll, wenn Sie Zweifel an einer Auszahlung, einer versäumten Auftragsausführung oder einer unerwarteten Kontostandsänderung haben.';
 
   @override
   String get helpTopicMessagesTips =>

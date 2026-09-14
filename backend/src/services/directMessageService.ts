@@ -604,8 +604,58 @@ export const directMessageService = {
   },
 
   /**
-   * Hide a fully-read inbox thread for this player only.
-   * Unread threads stay. New messages after this are not hidden.
+   * Mark every visible unread inbox message as read for this player.
+   */
+  async markAllAsRead(playerId: number) {
+    const unreadSenders = await prisma.directMessage.findMany({
+      where: {
+        receiverId: playerId,
+        read: false,
+        hiddenForReceiver: false,
+      },
+      distinct: ['senderId'],
+      select: { senderId: true },
+    });
+
+    const updated = await prisma.directMessage.updateMany({
+      where: {
+        receiverId: playerId,
+        read: false,
+        hiddenForReceiver: false,
+      },
+      data: { read: true },
+    });
+
+    if (updated.count > 0) {
+      await worldEventService.createEvent(
+        'direct_message.read',
+        {
+          receiverId: playerId,
+          count: updated.count,
+        },
+        playerId,
+      );
+
+      for (const row of unreadSenders) {
+        if (row.senderId === playerId) continue;
+        await worldEventService.createEvent(
+          'direct_message.read',
+          {
+            senderId: row.senderId,
+            receiverId: playerId,
+            count: updated.count,
+          },
+          row.senderId,
+        );
+      }
+    }
+
+    return { marked: updated.count };
+  },
+
+  /**
+   * Hide an inbox thread for this player only.
+   * Unread threads are marked read first. New messages after this are not hidden.
    */
   async hideReadConversation(playerId: number, otherPlayerId: number) {
     const noticeId = systemNoticeMessageId(otherPlayerId);
@@ -620,40 +670,39 @@ export const directMessageService = {
       if (!message) {
         throw new Error('MESSAGE_NOT_FOUND');
       }
-      if (!message.read) {
-        throw new Error('CONVERSATION_UNREAD');
-      }
       if (message.hiddenForReceiver) {
         return { hidden: 0 };
       }
       await prisma.directMessage.update({
         where: { id: noticeId },
-        data: { hiddenForReceiver: true },
+        data: { read: true, hiddenForReceiver: true },
       });
+      if (!message.read) {
+        await worldEventService.createEvent(
+          'direct_message.read',
+          { receiverId: playerId, count: 1 },
+          playerId,
+        );
+      }
       return { hidden: 1 };
     }
 
     if (otherPlayerId === SYSTEM_THREAD_ID) {
-      const unread = await prisma.directMessage.count({
-        where: {
-          senderId: playerId,
-          receiverId: playerId,
-          read: false,
-          hiddenForReceiver: false,
-        },
-      });
-      if (unread > 0) {
-        throw new Error('CONVERSATION_UNREAD');
-      }
       const updated = await prisma.directMessage.updateMany({
         where: {
           senderId: playerId,
           receiverId: playerId,
-          read: true,
           hiddenForReceiver: false,
         },
-        data: { hiddenForReceiver: true },
+        data: { read: true, hiddenForReceiver: true },
       });
+      if (updated.count > 0) {
+        await worldEventService.createEvent(
+          'direct_message.read',
+          { receiverId: playerId, count: updated.count },
+          playerId,
+        );
+      }
       return { hidden: updated.count };
     }
 
@@ -661,17 +710,7 @@ export const directMessageService = {
       throw new Error('INVALID_THREAD');
     }
 
-    const unread = await prisma.directMessage.count({
-      where: {
-        senderId: otherPlayerId,
-        receiverId: playerId,
-        read: false,
-        hiddenForReceiver: false,
-      },
-    });
-    if (unread > 0) {
-      throw new Error('CONVERSATION_UNREAD');
-    }
+    await this.markAsRead(playerId, otherPlayerId);
 
     const [received, sent] = await prisma.$transaction([
       prisma.directMessage.updateMany({
@@ -705,6 +744,30 @@ export const directMessageService = {
       }
       const result = await this.hideReadConversation(playerId, conversation.friend.id);
       hidden += result.hidden;
+    }
+    return { hidden };
+  },
+
+  /** Hide selected inbox threads, or every visible thread when `all` is set. */
+  async hideConversations(
+    playerId: number,
+    options: { all?: boolean; friendIds?: number[] },
+  ) {
+    const ids = options.all
+      ? (await this.getConversations(playerId)).map((conversation) => conversation.friend.id)
+      : [...new Set((options.friendIds ?? []).filter((id) => Number.isFinite(id)))].slice(0, 200);
+
+    let hidden = 0;
+    for (const friendId of ids) {
+      try {
+        const result = await this.hideReadConversation(playerId, friendId);
+        hidden += result.hidden;
+      } catch (error) {
+        if (error instanceof Error && error.message === 'MESSAGE_NOT_FOUND') {
+          continue;
+        }
+        throw error;
+      }
     }
     return { hidden };
   },

@@ -8245,7 +8245,7 @@
   "helpTopicMessagesCategory": "Social",
   "helpTopicMessagesTitle": "Mensajes",
   "helpTopicMessagesSummary": "Su bandeja de entrada con mensajes personales del jugador y un aviso del sistema separado para cada recompensa, pedido o evento del juego.",
-  "helpTopicMessagesHow": "Los mensajes se dividen en conversaciones personales y avisos individuales de The Mob State. \nEn un teclado, Enter envía el mensaje y Shift+Enter inicia una nueva línea. Los accesos directos a eventos permanecen ocultos en Mensajes para que no cubran el botón de enviar. \nDespués de haber leído un aviso o chatear, puedes eliminarlo de tu bandeja de entrada (deslizar, icono de papelera o Borrar lectura). El otro jugador mantiene el chat. Un nuevo mensaje lo trae de vuelta. Los elementos no leídos permanecen hasta que los abres. \nCada evento del sistema es su propio elemento en la bandeja de entrada: intercambios de criptomonedas, cumplimiento de pedidos, pagos en tablas de clasificación, resultados de atracos, fugas de cárcel e insignias de logros no comparten un hilo largo. \nPuedes enviar mensajes a otros jugadores siempre que su configuración de privacidad lo permita. \nLos mensajes no leídos aparecen como una insignia en el ícono de mensaje y son visibles desde el tablero. \nLos mensajes no caducan y se mantienen como un registro histórico de los eventos de la cuenta. \nUtilice el registro de la bandeja de entrada cuando tenga dudas sobre un pago, un pedido perdido o un cambio de saldo inesperado.",
+  "helpTopicMessagesHow": "Los mensajes se dividen en conversaciones personales y avisos individuales de The Mob State. \nEn un teclado, Enter envía el mensaje y Shift+Enter inicia una nueva línea. Los accesos directos a eventos permanecen ocultos en Mensajes para que no cubran el botón de enviar. \nPuede marcar cada mensaje como leído a la vez. Seleccione mensajes para eliminar varios a la vez o eliminarlos todos. Deslizar o el ícono de la papelera aún elimina un hilo. El otro jugador mantiene el chat. Un nuevo mensaje lo trae de vuelta. \nCada evento del sistema es su propio elemento en la bandeja de entrada: intercambios de criptomonedas, cumplimiento de pedidos, pagos en tablas de clasificación, resultados de atracos, fugas de cárcel e insignias de logros no comparten un hilo largo. \nPuedes enviar mensajes a otros jugadores siempre que su configuración de privacidad lo permita. \nLos mensajes no leídos aparecen como una insignia en el ícono de mensaje y son visibles desde el tablero. \nLos mensajes no caducan y se mantienen como un registro histórico de los eventos de la cuenta. \nUtilice el registro de la bandeja de entrada cuando tenga dudas sobre un pago, un pedido perdido o un cambio de saldo inesperado.",
   "helpTopicMessagesTips": "Revise su bandeja de entrada después de largos períodos sin conexión: allí se registran las recompensas, los pedidos completados y los eventos. \nConfigure las preferencias de notificación a través de Configuración para que solo reciba alertas automáticas de eventos verdaderamente importantes.",
   "helpTopicInventoryCategory": "Gestión",
   "helpTopicInventoryTitle": "Inventario",
@@ -12342,6 +12342,24 @@
   "@discordLinkBonusOk": {
     "placeholders": {
       "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "messagesMarkAllRead": "Marcar todo como leído",
+  "messagesMarkAllReadDone": "Todos los mensajes marcados como leídos",
+  "messagesSelect": "Seleccionar",
+  "messagesSelectAll": "Seleccionar todo",
+  "messagesDoneSelecting": "Hecho",
+  "messagesDeleteSelected": "Borrar",
+  "messagesDeleteSelectedConfirm": "¿Eliminar los mensajes seleccionados de tu bandeja de entrada? Los chats de los jugadores permanecen visibles para la otra persona. Vuelven nuevos mensajes.",
+  "messagesDeleteSelectedEmpty": "Seleccione un mensaje primero.",
+  "messagesDeleteAll": "Eliminar todo",
+  "messagesDeleteAllConfirm": "¿Eliminar todos los mensajes de tu bandeja de entrada? Los chats de los jugadores permanecen visibles para la otra persona. Vuelven nuevos mensajes.",
+  "messagesSelectedCount": "{count} seleccionado",
+  "@messagesSelectedCount": {
+    "placeholders": {
+      "count": {
         "type": "String"
       }
     }

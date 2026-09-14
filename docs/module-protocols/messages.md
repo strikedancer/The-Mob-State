@@ -12,7 +12,9 @@ Direct messages, system inbox messages, unread state and chat entry points.
 - A load failure on mobile must show retry — never the empty “no messages” state while unread badges are still green.
 - Chat thread (`chat_screen.dart`) follows the same rule: failed conversation load shows retry, not “no messages”.
 - Composer (`MessageInput`): **Enter** sends, **Shift+Enter** inserts a new line. Same widget for player DMs, crew chat and world chat. The live-event rail is hidden on Messages, Crew and World chat so it cannot cover the send button.
-- Players can remove **read** inbox items (`DELETE /messages/conversation/:otherPlayerId`, `DELETE /messages/read`). That only hides the thread for this player (`hiddenForSender` / `hiddenForReceiver`). Unread items stay. A later message is not hidden, so the thread returns. Do not hard-delete the other player's copy.
+- `POST /messages/mark-all-read` — mark every visible unread inbox message as read (badge + read receipts).
+- `POST /messages/hide` — `{ friendIds: number[] }` or `{ all: true }`. Hides those threads for this player only (marks unread as read first).
+- Hide only affects this player (`hiddenForSender` / `hiddenForReceiver`). A later message is not hidden, so the thread returns. Do not hard-delete the other player's copy. `DELETE /messages/conversation/:otherPlayerId` and `DELETE /messages/read` stay as hide-one / hide-read shortcuts.
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.
@@ -46,7 +48,7 @@ Direct messages, system inbox messages, unread state and chat entry points.
 - Verify no text overflows or clipped buttons appear.
 - Open inbox on mobile after an unread/push badge: existing player threads and **separate** system notices must appear (one row per notice, not one combined The Mob State thread). A timeout must show retry, not “Nog geen berichten”.
 - In a player or crew chat, Enter sends and Shift+Enter adds a new line. The live-event rail must not cover the send button.
-- A read inbox row can be removed (swipe / trash / Clear read). Unread rows cannot. After hide, the other player's chat is still there.
+- A inbox row can be removed (swipe / trash / select several / delete all). Mark all as read clears the badge without opening each thread. After hide, the other player's chat is still there.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

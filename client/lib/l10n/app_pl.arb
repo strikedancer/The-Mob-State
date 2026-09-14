@@ -8245,7 +8245,7 @@
   "helpTopicMessagesCategory": "Społeczny",
   "helpTopicMessagesTitle": "Wiadomości",
   "helpTopicMessagesSummary": "Twoja skrzynka odbiorcza z osobistymi wiadomościami graczy i oddzielnymi powiadomieniami systemowymi dotyczącymi każdej nagrody, zamówienia lub wydarzenia w grze.",
-  "helpTopicMessagesHow": "Wiadomości są podzielone na rozmowy osobiste i indywidualne powiadomienia o stanie mafii. \nNa klawiaturze Enter wysyła wiadomość, a Shift+Enter rozpoczyna nową linię. Skróty do wydarzeń pozostają ukryte w Wiadomościach, więc nie zakrywają przycisku wysyłania. \nPo przeczytaniu powiadomienia lub czatu możesz usunąć je ze skrzynki odbiorczej (przesunięciem, ikoną kosza lub Wyczyść przeczytane). Drugi gracz prowadzi czat. Nowa wiadomość przywraca sytuację. Nieprzeczytane elementy pozostają, dopóki ich nie otworzysz. \nKażde zdarzenie systemowe to osobna pozycja w skrzynce odbiorczej: transakcje kryptowalutowe, realizacja zamówień, wypłaty w rankingach, wyniki napadów, ucieczki z więzienia i odznaki za osiągnięcia nie mają wspólnego długiego wątku. \nMożesz wysyłać wiadomości do innych graczy, jeśli pozwalają na to ich ustawienia prywatności. \nNieprzeczytane wiadomości pojawiają się jako plakietka na ikonie wiadomości i są widoczne na pulpicie nawigacyjnym. \nWiadomości nie tracą ważności i są przechowywane jako historyczny dziennik zdarzeń na koncie. \nSkorzystaj z dziennika skrzynki odbiorczej, jeśli masz wątpliwości dotyczące wypłaty, nie zrealizowanego zamówienia lub nieoczekiwanej zmiany salda.",
+  "helpTopicMessagesHow": "Wiadomości są podzielone na rozmowy osobiste i indywidualne powiadomienia o stanie mafii. \nNa klawiaturze Enter wysyła wiadomość, a Shift+Enter rozpoczyna nową linię. Skróty do wydarzeń pozostają ukryte w Wiadomościach, więc nie zakrywają przycisku wysyłania. \nMożesz od razu oznaczyć każdą wiadomość jako przeczytaną. Wybierz wiadomości, aby usunąć kilka na raz lub usuń wszystkie. Przesunięcie lub ikona kosza nadal usuwa jeden wątek. Drugi gracz prowadzi czat. Nowa wiadomość przywraca sytuację. \nKażde zdarzenie systemowe to osobna pozycja w skrzynce odbiorczej: transakcje kryptowalutowe, realizacja zamówień, wypłaty w rankingach, wyniki napadów, ucieczki z więzienia i odznaki za osiągnięcia nie mają wspólnego długiego wątku. \nMożesz wysyłać wiadomości do innych graczy, jeśli pozwalają na to ich ustawienia prywatności. \nNieprzeczytane wiadomości pojawiają się jako plakietka na ikonie wiadomości i są widoczne na pulpicie nawigacyjnym. \nWiadomości nie tracą ważności i są przechowywane jako historyczny dziennik zdarzeń na koncie. \nSkorzystaj z dziennika skrzynki odbiorczej, jeśli masz wątpliwości dotyczące wypłaty, nie zrealizowanego zamówienia lub nieoczekiwanej zmiany salda.",
   "helpTopicMessagesTips": "Sprawdź swoją skrzynkę odbiorczą po długich okresach offline: nagrody, zrealizowane zamówienia i wydarzenia są tam rejestrowane. \nSkonfiguruj preferencje powiadomień w Ustawieniach, aby otrzymywać powiadomienia push tylko o naprawdę ważnych wydarzeniach.",
   "helpTopicInventoryCategory": "Kierownictwo",
   "helpTopicInventoryTitle": "Spis",
@@ -12342,6 +12342,24 @@
   "@discordLinkBonusOk": {
     "placeholders": {
       "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "messagesMarkAllRead": "Oznacz wszystkie jako przeczytane",
+  "messagesMarkAllReadDone": "Wszystkie wiadomości oznaczone jako przeczytane",
+  "messagesSelect": "Wybierz",
+  "messagesSelectAll": "Zaznacz wszystko",
+  "messagesDoneSelecting": "Zrobione",
+  "messagesDeleteSelected": "Usuwać",
+  "messagesDeleteSelectedConfirm": "Usunąć wybrane wiadomości ze swojej skrzynki odbiorczej? Czaty graczy pozostają widoczne dla drugiej osoby. Wracają nowe wiadomości.",
+  "messagesDeleteSelectedEmpty": "Najpierw wybierz wiadomość.",
+  "messagesDeleteAll": "Usuń wszystko",
+  "messagesDeleteAllConfirm": "Usunąć wszystkie wiadomości ze swojej skrzynki odbiorczej? Czaty graczy pozostają widoczne dla drugiej osoby. Wracają nowe wiadomości.",
+  "messagesSelectedCount": "Wybrano {count}",
+  "@messagesSelectedCount": {
+    "placeholders": {
+      "count": {
         "type": "String"
       }
     }

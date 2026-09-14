@@ -3685,6 +3685,24 @@
   "messagesHideUnreadBlocked": "Ongelezen berichten kun je nog niet wissen.",
   "messagesHidden": "Uit je inbox gehaald",
   "messagesHideFailed": "Die berichten konden niet worden gewist",
+  "messagesMarkAllRead": "Alles gelezen",
+  "messagesMarkAllReadDone": "Alle berichten zijn als gelezen gezet",
+  "messagesSelect": "Selecteren",
+  "messagesSelectAll": "Alles",
+  "messagesDoneSelecting": "Klaar",
+  "messagesDeleteSelected": "Verwijderen",
+  "messagesDeleteSelectedConfirm": "Geselecteerde berichten uit je inbox halen? Spelerchats blijven bij de ander staan. Nieuwe berichten komen terug.",
+  "messagesDeleteSelectedEmpty": "Selecteer eerst een bericht.",
+  "messagesDeleteAll": "Alles wissen",
+  "messagesDeleteAllConfirm": "Alle berichten uit je inbox halen? Spelerchats blijven bij de ander staan. Nieuwe berichten komen terug.",
+  "messagesSelectedCount": "{count} geselecteerd",
+  "@messagesSelectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
   "investigationWindowExpired": "Onderzoeksvenster verlopen (24 uur).",
   "investigationStartedInboxHint": "Onderzoek gestart. Check je inbox voor het detective-rapport.",
   "investigationAlreadyInProgress": "Dit onderzoek loopt al of is al afgerond.",
@@ -10831,7 +10849,7 @@
   "helpTopicMessagesCategory": "Sociaal",
   "helpTopicMessagesTitle": "Berichten",
   "helpTopicMessagesSummary": "Je inbox met persoonlijke berichten van andere spelers en een aparte systeemmelding voor elke beloning, order of game-event.",
-  "helpTopicMessagesHow": "Berichten zijn onderverdeeld in persoonlijke gesprekken en losse The Mob State-meldingen.\nOp het toetsenbord verstuurt Enter het bericht; Shift+Enter maakt een nieuwe regel. Event-snelkoppelingen blijven op Berichten verborgen zodat ze niet over de verzendknop liggen.\nGelezen meldingen en chats kun je uit je inbox halen (swipe, prullenbak of Wis gelezen). De andere speler houdt de chat. Een nieuw bericht zet hem terug. Ongelezen items blijven staan tot je ze opent.\nElke systeemgebeurtenis is een eigen inbox-item: crypto trades, order fills, leaderboard-uitkeringen, heist-resultaten, jail-escapes en achievement-badges delen geen lange thread.\nJe kunt berichten sturen naar andere spelers zolang hun privacy-instellingen dat toestaan.\nOngelezen berichten tonen als badge op het berichtenicoontje en zijn zichtbaar vanuit het dashboard.\nBerichten hebben geen vervaldatum en blijven bewaard als historisch log van account-events.\nGebruik het inbox-log bij twijfel over een uitbetaling, een gemiste order-fill of een onverwachte balanswijziging.",
+  "helpTopicMessagesHow": "Berichten zijn onderverdeeld in persoonlijke gesprekken en losse The Mob State-meldingen.\nOp het toetsenbord verstuurt Enter het bericht; Shift+Enter maakt een nieuwe regel. Event-snelkoppelingen blijven op Berichten verborgen zodat ze niet over de verzendknop liggen.\nJe kunt alle berichten in één keer als gelezen zetten. Selecteer berichten om er meerdere tegelijk of allemaal te wissen. Swipe of de prullenbak haalt één gesprek uit je inbox. De andere speler houdt de chat. Een nieuw bericht zet hem terug.\nElke systeemgebeurtenis is een eigen inbox-item: crypto trades, order fills, leaderboard-uitkeringen, heist-resultaten, jail-escapes en achievement-badges delen geen lange thread.\nJe kunt berichten sturen naar andere spelers zolang hun privacy-instellingen dat toestaan.\nOngelezen berichten tonen als badge op het berichtenicoontje en zijn zichtbaar vanuit het dashboard.\nBerichten hebben geen vervaldatum en blijven bewaard als historisch log van account-events.\nGebruik het inbox-log bij twijfel over een uitbetaling, een gemiste order-fill of een onverwachte balanswijziging.",
   "helpTopicMessagesTips": "Check je inbox na lang offline zijn: beloningen, order-fills en events zijn er allemaal terug te vinden.\nStel notificatievoorkeuren in via Instellingen zodat je alleen bij echt belangrijke events een pushmelding krijgt.",
   "helpTopicWorldChatCategory": "Sociaal",
   "helpTopicWorldChatTitle": "Wereldchat",

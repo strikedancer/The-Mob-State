@@ -9,6 +9,9 @@ class ConversationCard extends StatelessWidget {
   final VoidCallback onTap;
   final VoidCallback? onAvatarTap;
   final VoidCallback? onHide;
+  final VoidCallback? onLongPress;
+  final bool selecting;
+  final bool selected;
 
   const ConversationCard({
     super.key,
@@ -16,6 +19,9 @@ class ConversationCard extends StatelessWidget {
     required this.onTap,
     this.onAvatarTap,
     this.onHide,
+    this.onLongPress,
+    this.selecting = false,
+    this.selected = false,
   });
 
   @override
@@ -27,15 +33,24 @@ class ConversationCard extends StatelessWidget {
       color: const Color(0xFF1E1E1E),
       child: InkWell(
         onTap: onTap,
+        onLongPress: onLongPress,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
+            color: selected ? const Color(0x332A6B32) : Colors.transparent,
             border: Border(
               bottom: BorderSide(color: Colors.grey[800]!, width: 0.5),
             ),
           ),
           child: Row(
             children: [
+              if (selecting) ...[
+                Icon(
+                  selected ? Icons.check_circle : Icons.radio_button_unchecked,
+                  color: selected ? const Color(0xFFC0A060) : Colors.white38,
+                ),
+                const SizedBox(width: 10),
+              ],
               // Avatar
               _buildAvatar(isSystemThread),
               
@@ -168,7 +183,7 @@ class ConversationCard extends StatelessWidget {
                           ),
                         ),
                         
-                        if (onHide != null && conversation.unreadCount <= 0) ...[
+                        if (!selecting && onHide != null) ...[
                           const SizedBox(width: 4),
                           IconButton(
                             tooltip: l10n.messagesHideConversation,

@@ -29,6 +29,8 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
   StreamSubscription? _eventSubscription;
   int _totalUnread = 0;
   Conversation? _openConversation;
+  bool _selecting = false;
+  final Set<int> _selectedIds = {};
 
   @override
   void initState() {
@@ -123,6 +125,9 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
           0,
           (sum, conv) => sum + conv.unreadCount,
         );
+        _selectedIds.removeWhere(
+          (id) => !_conversations.any((c) => c.friendId == id),
+        );
         _error = null;
         _loading = false;
       });
@@ -171,8 +176,127 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
     }
   }
 
-  int get _readCount =>
-      _conversations.where((c) => c.unreadCount <= 0).length;
+  void _toggleSelecting({bool? enabled}) {
+    setState(() {
+      _selecting = enabled ?? !_selecting;
+      if (!_selecting) {
+        _selectedIds.clear();
+      }
+    });
+  }
+
+  void _toggleSelected(int friendId) {
+    setState(() {
+      if (_selectedIds.contains(friendId)) {
+        _selectedIds.remove(friendId);
+      } else {
+        _selectedIds.add(friendId);
+      }
+    });
+  }
+
+  void _selectAll() {
+    setState(() {
+      if (_selectedIds.length == _conversations.length) {
+        _selectedIds.clear();
+      } else {
+        _selectedIds
+          ..clear()
+          ..addAll(_conversations.map((c) => c.friendId));
+      }
+    });
+  }
+
+  Future<void> _markAllAsRead() async {
+    final l10n = AppLocalizations.of(context)!;
+    if (_totalUnread <= 0) return;
+    try {
+      final apiClient = AuthService().apiClient;
+      final response = await apiClient.post('/messages/mark-all-read', {});
+      if (response.statusCode != 200) {
+        throw Exception(l10n.messagesHideFailed);
+      }
+      if (!mounted) return;
+      setState(() {
+        for (var i = 0; i < _conversations.length; i++) {
+          final conv = _conversations[i];
+          if (conv.unreadCount > 0) {
+            _conversations[i] = Conversation(
+              friendId: conv.friendId,
+              username: conv.username,
+              rank: conv.rank,
+              avatar: conv.avatar,
+              activePortraitPath: conv.activePortraitPath,
+              lastMessage: conv.lastMessage,
+              lastMessageTime: conv.lastMessageTime,
+              unreadCount: 0,
+            );
+          }
+        }
+        _totalUnread = 0;
+      });
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(content: Text(l10n.messagesMarkAllReadDone)),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(l10n.messagesHideFailed),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Future<void> _hideByIds(List<int> friendIds, {required bool all}) async {
+    final l10n = AppLocalizations.of(context)!;
+    try {
+      final apiClient = AuthService().apiClient;
+      final response = await apiClient.post('/messages/hide', {
+        if (all) 'all': true,
+        if (!all) 'friendIds': friendIds,
+      });
+      if (response.statusCode != 200) {
+        throw Exception(l10n.messagesHideFailed);
+      }
+      if (!mounted) return;
+      setState(() {
+        if (all) {
+          _conversations.clear();
+        } else {
+          _conversations.removeWhere((c) => friendIds.contains(c.friendId));
+        }
+        if (_openConversation != null &&
+            (all || friendIds.contains(_openConversation!.friendId))) {
+          _openConversation = null;
+        }
+        _selectedIds.clear();
+        _selecting = false;
+        _totalUnread = _conversations.fold(
+          0,
+          (sum, conv) => sum + conv.unreadCount,
+        );
+      });
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(content: Text(l10n.messagesHidden)),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      await _loadConversations();
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(l10n.messagesHideFailed),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 
   Future<bool> _confirmHide({required String title, required String body}) async {
     final confirmed = await showDialog<bool>(
@@ -201,86 +325,35 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
   }
 
   Future<void> _hideConversation(Conversation conversation) async {
-    final l10n = AppLocalizations.of(context)!;
-    if (conversation.unreadCount > 0) {
-      showTopRightFromSnackBar(
-        context,
-        SnackBar(
-          content: Text(l10n.messagesHideUnreadBlocked),
-          backgroundColor: Colors.orange,
-        ),
-      );
-      return;
-    }
-    try {
-      final apiClient = AuthService().apiClient;
-      final response = await apiClient.delete(
-        '/messages/conversation/${conversation.friendId}',
-      );
-      if (response.statusCode != 200) {
-        throw Exception(l10n.messagesHideFailed);
-      }
-      if (!mounted) return;
-      setState(() {
-        _conversations.removeWhere((c) => c.friendId == conversation.friendId);
-        if (_openConversation?.friendId == conversation.friendId) {
-          _openConversation = null;
-        }
-      });
-      showTopRightFromSnackBar(
-        context,
-        SnackBar(content: Text(l10n.messagesHidden)),
-      );
-    } catch (e) {
-      if (!mounted) return;
-      await _loadConversations();
-      if (!mounted) return;
-      showTopRightFromSnackBar(
-        context,
-        SnackBar(
-          content: Text(l10n.messagesHideFailed),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
+    await _hideByIds([conversation.friendId], all: false);
   }
 
-  Future<void> _clearReadMessages() async {
+  Future<void> _deleteSelected() async {
     final l10n = AppLocalizations.of(context)!;
-    if (_readCount <= 0) {
+    if (_selectedIds.isEmpty) {
       showTopRightFromSnackBar(
         context,
-        SnackBar(content: Text(l10n.messagesClearReadEmpty)),
+        SnackBar(content: Text(l10n.messagesDeleteSelectedEmpty)),
       );
       return;
     }
     final ok = await _confirmHide(
-      title: l10n.messagesClearRead,
-      body: l10n.messagesClearReadConfirm,
+      title: l10n.messagesDeleteSelected,
+      body: l10n.messagesDeleteSelectedConfirm,
     );
     if (!ok || !mounted) return;
-    try {
-      final apiClient = AuthService().apiClient;
-      final response = await apiClient.delete('/messages/read');
-      if (response.statusCode != 200) {
-        throw Exception(l10n.messagesHideFailed);
-      }
-      if (!mounted) return;
-      await _loadConversations();
-      showTopRightFromSnackBar(
-        context,
-        SnackBar(content: Text(l10n.messagesHidden)),
-      );
-    } catch (e) {
-      if (!mounted) return;
-      showTopRightFromSnackBar(
-        context,
-        SnackBar(
-          content: Text(l10n.messagesHideFailed),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
+    await _hideByIds(_selectedIds.toList(), all: false);
+  }
+
+  Future<void> _deleteAll() async {
+    final l10n = AppLocalizations.of(context)!;
+    if (_conversations.isEmpty) return;
+    final ok = await _confirmHide(
+      title: l10n.messagesDeleteAll,
+      body: l10n.messagesDeleteAllConfirm,
+    );
+    if (!ok || !mounted) return;
+    await _hideByIds(const [], all: true);
   }
 
   void _openChat(Conversation conversation) async {
@@ -336,23 +409,87 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
       onRefresh: _loadConversations,
       fallbackIcon: Icons.mail_outline,
       chips: [
-        if (_totalUnread > 0)
+        if (_selecting) ...[
           EmpireStatChip(
-            icon: Icons.mark_email_unread,
-            label: _totalUnread > 99 ? '99+' : '$_totalUnread',
+            icon: Icons.check_box,
+            label: l10n.messagesSelectedCount(_selectedIds.length.toString()),
           ),
-        if (_readCount > 0)
           Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: _clearReadMessages,
+              onTap: _selectAll,
               borderRadius: BorderRadius.circular(20),
               child: EmpireStatChip(
-                icon: Icons.delete_sweep_outlined,
-                label: l10n.messagesClearRead,
+                icon: Icons.select_all,
+                label: l10n.messagesSelectAll,
               ),
             ),
           ),
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: _deleteSelected,
+              borderRadius: BorderRadius.circular(20),
+              child: EmpireStatChip(
+                icon: Icons.delete_outline,
+                label: l10n.messagesDeleteSelected,
+              ),
+            ),
+          ),
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () => _toggleSelecting(enabled: false),
+              borderRadius: BorderRadius.circular(20),
+              child: EmpireStatChip(
+                icon: Icons.close,
+                label: l10n.messagesDoneSelecting,
+              ),
+            ),
+          ),
+        ] else ...[
+          if (_totalUnread > 0)
+            EmpireStatChip(
+              icon: Icons.mark_email_unread,
+              label: _totalUnread > 99 ? '99+' : '$_totalUnread',
+            ),
+          if (_totalUnread > 0)
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: _markAllAsRead,
+                borderRadius: BorderRadius.circular(20),
+                child: EmpireStatChip(
+                  icon: Icons.done_all,
+                  label: l10n.messagesMarkAllRead,
+                ),
+              ),
+            ),
+          if (_conversations.isNotEmpty)
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () => _toggleSelecting(enabled: true),
+                borderRadius: BorderRadius.circular(20),
+                child: EmpireStatChip(
+                  icon: Icons.checklist,
+                  label: l10n.messagesSelect,
+                ),
+              ),
+            ),
+          if (_conversations.isNotEmpty)
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: _deleteAll,
+                borderRadius: BorderRadius.circular(20),
+                child: EmpireStatChip(
+                  icon: Icons.delete_sweep_outlined,
+                  label: l10n.messagesDeleteAll,
+                ),
+              ),
+            ),
+        ],
       ],
       body: _loading && _conversations.isEmpty
         ? const Center(
@@ -424,11 +561,28 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
                   itemCount: _conversations.length,
                   itemBuilder: (context, index) {
                     final conversation = _conversations[index];
+                    final selected = _selectedIds.contains(conversation.friendId);
                     final card = ConversationCard(
                       conversation: conversation,
-                      onTap: () => _openChat(conversation),
-                      onAvatarTap: () => _openPlayerProfile(conversation),
-                      onHide: conversation.unreadCount > 0
+                      selecting: _selecting,
+                      selected: selected,
+                      onTap: () {
+                        if (_selecting) {
+                          _toggleSelected(conversation.friendId);
+                        } else {
+                          _openChat(conversation);
+                        }
+                      },
+                      onLongPress: () {
+                        if (!_selecting) {
+                          _toggleSelecting(enabled: true);
+                        }
+                        _toggleSelected(conversation.friendId);
+                      },
+                      onAvatarTap: _selecting
+                          ? null
+                          : () => _openPlayerProfile(conversation),
+                      onHide: _selecting
                           ? null
                           : () async {
                               final ok = await _confirmHide(
@@ -440,7 +594,7 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
                               }
                             },
                     );
-                    if (conversation.unreadCount > 0) {
+                    if (_selecting) {
                       return card;
                     }
                     return Dismissible(

@@ -1108,6 +1108,44 @@ class AppLocalizationsPt extends AppLocalizations {
   String get messagesHideFailed => 'Não foi possível remover essas mensagens';
 
   @override
+  String get messagesMarkAllRead => 'Marcar tudo como lido';
+
+  @override
+  String get messagesMarkAllReadDone =>
+      'Todas as mensagens marcadas como lidas';
+
+  @override
+  String get messagesSelect => 'Selecione';
+
+  @override
+  String get messagesSelectAll => 'Selecionar tudo';
+
+  @override
+  String get messagesDoneSelecting => 'Feita';
+
+  @override
+  String get messagesDeleteSelected => 'Excluir';
+
+  @override
+  String get messagesDeleteSelectedConfirm =>
+      'Remover as mensagens selecionadas da sua caixa de entrada? Os bate-papos dos jogadores permanecem visíveis para a outra pessoa. Novas mensagens voltam.';
+
+  @override
+  String get messagesDeleteSelectedEmpty => 'Selecione uma mensagem primeiro.';
+
+  @override
+  String get messagesDeleteAll => 'Excluir tudo';
+
+  @override
+  String get messagesDeleteAllConfirm =>
+      'Remover todas as mensagens da sua caixa de entrada? Os bate-papos dos jogadores permanecem visíveis para a outra pessoa. Novas mensagens voltam.';
+
+  @override
+  String messagesSelectedCount(String count) {
+    return '$count selecionado';
+  }
+
+  @override
   String get investigationWindowExpired =>
       'A janela de investigação expirou (24 horas).';
 
@@ -17809,7 +17847,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicMessagesHow =>
-      'As mensagens são divididas em conversas pessoais e avisos individuais do The Mob State. \nEm um teclado, Enter envia a mensagem e Shift+Enter inicia uma nova linha. Os atalhos de eventos ficam ocultos nas Mensagens para que não cubram o botão enviar. \nDepois de ler um aviso ou bate-papo, você pode removê-lo da sua caixa de entrada (deslizar, ícone de lixeira ou Limpar leitura). O outro jogador mantém o chat. Uma nova mensagem o traz de volta. Os itens não lidos permanecem até você abri-los. \nCada evento do sistema é seu próprio item de caixa de entrada: negociações criptográficas, atendimentos de pedidos, pagamentos de tabelas de classificação, resultados de assaltos, fugas de prisão e emblemas de conquistas não compartilham um longo tópico. \nVocê pode enviar mensagens para outros jogadores, desde que suas configurações de privacidade permitam. \nAs mensagens não lidas aparecem como um emblema no ícone da mensagem e são visíveis no painel. \nAs mensagens não expiram e são mantidas como um registro histórico de eventos da conta. \nUse o registro da caixa de entrada em caso de dúvida sobre um pagamento, um pedido perdido ou uma alteração inesperada no saldo.';
+      'As mensagens são divididas em conversas pessoais e avisos individuais do The Mob State. \nEm um teclado, Enter envia a mensagem e Shift+Enter inicia uma nova linha. Os atalhos de eventos ficam ocultos nas Mensagens para que não cubram o botão enviar. \nVocê pode marcar todas as mensagens como lidas de uma só vez. Selecione mensagens para remover várias de uma vez ou remover todas. Deslize ou o ícone da lixeira ainda remove um tópico. O outro jogador mantém o chat. Uma nova mensagem o traz de volta. \nCada evento do sistema é seu próprio item de caixa de entrada: negociações criptográficas, atendimentos de pedidos, pagamentos de tabelas de classificação, resultados de assaltos, fugas de prisão e emblemas de conquistas não compartilham um longo tópico. \nVocê pode enviar mensagens para outros jogadores, desde que suas configurações de privacidade permitam. \nAs mensagens não lidas aparecem como um emblema no ícone da mensagem e são visíveis no painel. \nAs mensagens não expiram e são mantidas como um registro histórico de eventos da conta. \nUse o registro da caixa de entrada em caso de dúvida sobre um pagamento, um pedido perdido ou uma alteração inesperada no saldo.';
 
   @override
   String get helpTopicMessagesTips =>

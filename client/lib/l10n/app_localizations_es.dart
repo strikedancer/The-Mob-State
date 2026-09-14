@@ -1118,6 +1118,44 @@ class AppLocalizationsEs extends AppLocalizations {
   String get messagesHideFailed => 'No se pudieron eliminar esos mensajes';
 
   @override
+  String get messagesMarkAllRead => 'Marcar todo como leído';
+
+  @override
+  String get messagesMarkAllReadDone =>
+      'Todos los mensajes marcados como leídos';
+
+  @override
+  String get messagesSelect => 'Seleccionar';
+
+  @override
+  String get messagesSelectAll => 'Seleccionar todo';
+
+  @override
+  String get messagesDoneSelecting => 'Hecho';
+
+  @override
+  String get messagesDeleteSelected => 'Borrar';
+
+  @override
+  String get messagesDeleteSelectedConfirm =>
+      '¿Eliminar los mensajes seleccionados de tu bandeja de entrada? Los chats de los jugadores permanecen visibles para la otra persona. Vuelven nuevos mensajes.';
+
+  @override
+  String get messagesDeleteSelectedEmpty => 'Seleccione un mensaje primero.';
+
+  @override
+  String get messagesDeleteAll => 'Eliminar todo';
+
+  @override
+  String get messagesDeleteAllConfirm =>
+      '¿Eliminar todos los mensajes de tu bandeja de entrada? Los chats de los jugadores permanecen visibles para la otra persona. Vuelven nuevos mensajes.';
+
+  @override
+  String messagesSelectedCount(String count) {
+    return '$count seleccionado';
+  }
+
+  @override
   String get investigationWindowExpired =>
       'Ventana de investigación expirada (24 horas).';
 
@@ -17838,7 +17876,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicMessagesHow =>
-      'Los mensajes se dividen en conversaciones personales y avisos individuales de The Mob State. \nEn un teclado, Enter envía el mensaje y Shift+Enter inicia una nueva línea. Los accesos directos a eventos permanecen ocultos en Mensajes para que no cubran el botón de enviar. \nDespués de haber leído un aviso o chatear, puedes eliminarlo de tu bandeja de entrada (deslizar, icono de papelera o Borrar lectura). El otro jugador mantiene el chat. Un nuevo mensaje lo trae de vuelta. Los elementos no leídos permanecen hasta que los abres. \nCada evento del sistema es su propio elemento en la bandeja de entrada: intercambios de criptomonedas, cumplimiento de pedidos, pagos en tablas de clasificación, resultados de atracos, fugas de cárcel e insignias de logros no comparten un hilo largo. \nPuedes enviar mensajes a otros jugadores siempre que su configuración de privacidad lo permita. \nLos mensajes no leídos aparecen como una insignia en el ícono de mensaje y son visibles desde el tablero. \nLos mensajes no caducan y se mantienen como un registro histórico de los eventos de la cuenta. \nUtilice el registro de la bandeja de entrada cuando tenga dudas sobre un pago, un pedido perdido o un cambio de saldo inesperado.';
+      'Los mensajes se dividen en conversaciones personales y avisos individuales de The Mob State. \nEn un teclado, Enter envía el mensaje y Shift+Enter inicia una nueva línea. Los accesos directos a eventos permanecen ocultos en Mensajes para que no cubran el botón de enviar. \nPuede marcar cada mensaje como leído a la vez. Seleccione mensajes para eliminar varios a la vez o eliminarlos todos. Deslizar o el ícono de la papelera aún elimina un hilo. El otro jugador mantiene el chat. Un nuevo mensaje lo trae de vuelta. \nCada evento del sistema es su propio elemento en la bandeja de entrada: intercambios de criptomonedas, cumplimiento de pedidos, pagos en tablas de clasificación, resultados de atracos, fugas de cárcel e insignias de logros no comparten un hilo largo. \nPuedes enviar mensajes a otros jugadores siempre que su configuración de privacidad lo permita. \nLos mensajes no leídos aparecen como una insignia en el ícono de mensaje y son visibles desde el tablero. \nLos mensajes no caducan y se mantienen como un registro histórico de los eventos de la cuenta. \nUtilice el registro de la bandeja de entrada cuando tenga dudas sobre un pago, un pedido perdido o un cambio de saldo inesperado.';
 
   @override
   String get helpTopicMessagesTips =>

@@ -8245,7 +8245,7 @@
   "helpTopicMessagesCategory": "Sozial",
   "helpTopicMessagesTitle": "Nachrichten",
   "helpTopicMessagesSummary": "Ihr Posteingang mit persönlichen Spielernachrichten und einer separaten Systembenachrichtigung für jede Belohnung, Bestellung oder jedes Spielereignis.",
-  "helpTopicMessagesHow": "Die Nachrichten sind in persönliche Gespräche und einzelne The Mob State-Mitteilungen unterteilt. \nAuf einer Tastatur sendet Enter die Nachricht und Shift+Enter beginnt eine neue Zeile. Ereignisverknüpfungen bleiben in Nachrichten verborgen, sodass sie die Schaltfläche „Senden“ nicht verdecken. \nNachdem Sie eine Mitteilung oder einen Chat gelesen haben, können Sie diese aus Ihrem Posteingang entfernen (Wischen, Papierkorbsymbol oder „Lesen löschen“). Der andere Spieler führt den Chat. Eine neue Nachricht bringt es zurück. Ungelesene Elemente bleiben erhalten, bis Sie sie öffnen. \nJedes Systemereignis ist ein eigener Posteingangspunkt: Krypto-Trades, Auftragsausführungen, Bestenlisten-Auszahlungen, Raubüberfallergebnisse, Gefängnisausbrüche und Leistungsabzeichen teilen sich keinen langen Thread. \nSie können Nachrichten an andere Spieler senden, sofern deren Datenschutzeinstellungen dies zulassen. \nUngelesene Nachrichten werden als Abzeichen auf dem Nachrichtensymbol angezeigt und sind im Dashboard sichtbar. \nNachrichten verfallen nicht und werden als historisches Protokoll der Kontoereignisse gespeichert. \nNutzen Sie das Posteingangsprotokoll, wenn Sie Zweifel an einer Auszahlung, einer versäumten Auftragsausführung oder einer unerwarteten Kontostandsänderung haben.",
+  "helpTopicMessagesHow": "Die Nachrichten sind in persönliche Gespräche und einzelne The Mob State-Mitteilungen unterteilt. \nAuf einer Tastatur sendet Enter die Nachricht und Shift+Enter beginnt eine neue Zeile. Ereignisverknüpfungen bleiben in Nachrichten verborgen, sodass sie die Schaltfläche „Senden“ nicht verdecken. \nSie können jede Nachricht gleichzeitig als gelesen markieren. Wählen Sie Nachrichten aus, um mehrere auf einmal zu entfernen, oder entfernen Sie alle. Durch Wischen oder das Papierkorbsymbol wird immer noch ein Thread entfernt. Der andere Spieler führt den Chat. Eine neue Nachricht bringt es zurück. \nJedes Systemereignis ist ein eigener Posteingangspunkt: Krypto-Trades, Auftragsausführungen, Bestenlisten-Auszahlungen, Raubüberfallergebnisse, Gefängnisausbrüche und Leistungsabzeichen teilen sich keinen langen Thread. \nSie können Nachrichten an andere Spieler senden, sofern deren Datenschutzeinstellungen dies zulassen. \nUngelesene Nachrichten werden als Abzeichen auf dem Nachrichtensymbol angezeigt und sind im Dashboard sichtbar. \nNachrichten verfallen nicht und werden als historisches Protokoll der Kontoereignisse gespeichert. \nNutzen Sie das Posteingangsprotokoll, wenn Sie Zweifel an einer Auszahlung, einer versäumten Auftragsausführung oder einer unerwarteten Kontostandsänderung haben.",
   "helpTopicMessagesTips": "Überprüfen Sie nach längeren Offline-Zeiten Ihren Posteingang: Dort werden Belohnungen, Auftragsabwicklungen und Ereignisse erfasst. \nKonfigurieren Sie Benachrichtigungseinstellungen über die Einstellungen, sodass Sie Push-Benachrichtigungen nur bei wirklich wichtigen Ereignissen erhalten.",
   "helpTopicInventoryCategory": "Management",
   "helpTopicInventoryTitle": "Inventar",
@@ -12342,6 +12342,24 @@
   "@discordLinkBonusOk": {
     "placeholders": {
       "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "messagesMarkAllRead": "Alle als gelesen markieren",
+  "messagesMarkAllReadDone": "Alle als gelesen markierten Nachrichten",
+  "messagesSelect": "Auswählen",
+  "messagesSelectAll": "Alles auswählen",
+  "messagesDoneSelecting": "Erledigt",
+  "messagesDeleteSelected": "Löschen",
+  "messagesDeleteSelectedConfirm": "Die ausgewählten Nachrichten aus Ihrem Posteingang entfernen? Spielerchats bleiben für die andere Person sichtbar. Neue Nachrichten kommen zurück.",
+  "messagesDeleteSelectedEmpty": "Wählen Sie zunächst eine Nachricht aus.",
+  "messagesDeleteAll": "Alles löschen",
+  "messagesDeleteAllConfirm": "Jede Nachricht aus Ihrem Posteingang entfernen? Spielerchats bleiben für die andere Person sichtbar. Neue Nachrichten kommen zurück.",
+  "messagesSelectedCount": "{count} ausgewählt",
+  "@messagesSelectedCount": {
+    "placeholders": {
+      "count": {
         "type": "String"
       }
     }
