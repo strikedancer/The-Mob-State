@@ -115,9 +115,10 @@ function weaponMeetsCrimeRequirements(
     return false;
   }
 
-  const suitableTypes = crime.suitableWeaponTypes || [];
-  const isTypeAllowed =
-    suitableTypes.length === 0 || suitableTypes.includes(definition.type);
+  const isTypeAllowed = weaponService.weaponTypeMatchesSuitable(
+    definition.type,
+    crime.suitableWeaponTypes,
+  );
   const meetsDamage = (definition.damage ?? 0) >= (crime.minDamage || 0);
   const meetsIntimidation =
     (definition.intimidation ?? 0) >= (crime.minIntimidation || 0);
@@ -1345,7 +1346,13 @@ export const crimeService = {
         (w) => w.id === weaponUsed.weaponId,
       );
 
-      if (weaponDef && crime.suitableWeaponTypes.includes(weaponDef.type)) {
+      if (
+        weaponDef &&
+        weaponService.weaponTypeMatchesSuitable(
+          weaponDef.type,
+          crime.suitableWeaponTypes,
+        )
+      ) {
         successChance += 0.1;
         if (weaponUsed.condition > 80) {
           successChance += 0.05;

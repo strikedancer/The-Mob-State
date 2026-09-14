@@ -580,6 +580,7 @@ class EventRenderer {
       'rifle': 'rifle',
       'sniper': 'sniper rifle',
       'smg': 'submachine gun',
+      'automatic': 'submachine gun',
     };
     const nl = {
       'knife': 'mes',
@@ -588,6 +589,7 @@ class EventRenderer {
       'rifle': 'geweer',
       'sniper': 'sluipschuttersgeweer',
       'smg': 'automatisch pistool',
+      'automatic': 'machinegeweer',
     };
     final m = dutch ? nl : en;
     final names = types

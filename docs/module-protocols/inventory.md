@@ -10,7 +10,7 @@ Carried items, storage, loadouts and equipment used by multiple modules.
 
 ## Paper-doll inventory
 - Center: player avatar, crime-weapon slot (`GET/POST /weapons/crime-weapon`), second-weapon slot (`GET/POST /weapons/secondary-weapon`) and worn vest (`GET /security/status`).
-- A player can wear two weapons at once (for example a handgun and a rifle). When a crime is committed, both worn slots are compared and the best eligible weapon for that crime is used automatically.
+- A player can wear two weapons at once (for example a handgun and a rifle). When a crime is committed, both worn slots are compared and the best eligible weapon for that crime is used automatically. Worn SMGs (catalog type `automatic`) count for crimes that ask for `smg`.
 - Worn weapons are hidden from the backpack grid and do not count toward backpack capacity. Unequipped extra copies still do.
 - Backpack grid shows `capacity` squares from `GET /tools/carried` slot meter, filled with carried tools, unequipped weapons, ammo, materials, **finished drugs** and **trade goods**.
 - The Inventory **menu** shows paper-doll + backpack only. There is no remote house dropdown and no unplaced-stock grid. To stash or withdraw, the player goes to **Properties → that building → Open storage**, which opens this screen with that property selected.

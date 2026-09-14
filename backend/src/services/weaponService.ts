@@ -57,6 +57,36 @@ class WeaponService {
   }
 
   /**
+   * Crime catalogs use `smg`; weapon catalogs use `automatic` for the same guns.
+   */
+  expandSuitableWeaponTypes(suitableTypes: string[] = []): string[] {
+    const allowed = new Set<string>();
+    for (const type of suitableTypes) {
+      allowed.add(type);
+      if (type === 'smg') {
+        allowed.add('automatic');
+      }
+      if (type === 'automatic') {
+        allowed.add('smg');
+      }
+    }
+    return [...allowed];
+  }
+
+  weaponTypeMatchesSuitable(
+    weaponType: string | undefined,
+    suitableTypes?: string[],
+  ): boolean {
+    if (!suitableTypes || suitableTypes.length === 0) {
+      return true;
+    }
+    if (!weaponType) {
+      return false;
+    }
+    return this.expandSuitableWeaponTypes(suitableTypes).includes(weaponType);
+  }
+
+  /**
    * Get player's weapon inventory with definitions
    */
   async getPlayerWeapons(playerId: number) {
@@ -345,8 +375,11 @@ class WeaponService {
     const suitable = inventory.filter((item) => {
       if (item.condition < 10) return false; // Broken weapon
 
-      // Check weapon type if specified
-      if (suitableTypes.length > 0 && !suitableTypes.includes(item.type || '')) {
+      // Check weapon type if specified (`smg` matches catalog type `automatic`)
+      if (
+        suitableTypes.length > 0 &&
+        !this.weaponTypeMatchesSuitable(item.type, suitableTypes)
+      ) {
         return false;
       }
 

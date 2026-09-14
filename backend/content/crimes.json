@@ -336,7 +336,7 @@
       "isFederal": true,
       "requiredWeapon": true,
       "suitableWeaponTypes": ["rifle", "smg"],
-      "minDamage": 68,
+      "minDamage": 55,
       "vehicleRequirements": {
         "minSpeed": 75,
         "minArmor": 50,
@@ -359,7 +359,7 @@
       "isFederal": true,
       "requiredWeapon": true,
       "suitableWeaponTypes": ["rifle", "smg"],
-      "minDamage": 70,
+      "minDamage": 55,
       "requiredTools": ["night_vision"]
     },
     {
@@ -421,7 +421,7 @@
       "isFederal": true,
       "requiredWeapon": true,
       "suitableWeaponTypes": ["rifle", "smg"],
-      "minDamage": 60,
+      "minDamage": 55,
       "requiredTools": ["gps_jammer"]
     },
     {
@@ -472,7 +472,7 @@
       "isFederal": true,
       "requiredWeapon": true,
       "suitableWeaponTypes": ["rifle", "smg"],
-      "minDamage": 70,
+      "minDamage": 55,
       "requiredTools": ["thermal_drill"]
     },
     {
@@ -492,7 +492,7 @@
       "isFederal": true,
       "requiredWeapon": true,
       "suitableWeaponTypes": ["rifle", "smg"],
-      "minDamage": 65,
+      "minDamage": 55,
       "vehicleRequirements": {
         "minSpeed": 70,
         "minArmor": 40,
@@ -514,7 +514,7 @@
       "breakdownChance": 0.49,
       "requiredWeapon": true,
       "suitableWeaponTypes": ["rifle", "smg"],
-      "minDamage": 72,
+      "minDamage": 55,
       "requiredTools": ["glass_cutter"]
     },
     {
