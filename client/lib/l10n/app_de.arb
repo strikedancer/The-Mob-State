@@ -12137,5 +12137,9 @@
         "type": "String"
       }
     }
-  }
+  },
+  "crewUiBadgeOpenInstant": "Öffnen – sofort beitreten",
+  "crewUiBadgeApplyRequired": "Bewerbung erforderlich",
+  "crewUiActionJoinNow": "Melden Sie sich jetzt an",
+  "crewUiActionApply": "Anwenden"
 }

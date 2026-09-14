@@ -7745,6 +7745,30 @@ abstract class AppLocalizations {
   /// **'Open crews'**
   String get crewUiActionBrowseOpenCrewsShort;
 
+  /// No description provided for @crewUiBadgeOpenInstant.
+  ///
+  /// In en, this message translates to:
+  /// **'Open — join instantly'**
+  String get crewUiBadgeOpenInstant;
+
+  /// No description provided for @crewUiBadgeApplyRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Application required'**
+  String get crewUiBadgeApplyRequired;
+
+  /// No description provided for @crewUiActionJoinNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Join now'**
+  String get crewUiActionJoinNow;
+
+  /// No description provided for @crewUiActionApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get crewUiActionApply;
+
   /// No description provided for @crewUiJoinRookiesHint.
   ///
   /// In en, this message translates to:

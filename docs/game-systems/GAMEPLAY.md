@@ -437,7 +437,7 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
   - Kick members, open/sluit werving, auto-accept aan/uit
   - Start heists
   - Disband crew
-- **Joinen**: open + auto-accept is één klik; open zonder auto-accept blijft een verzoek dat de leader goedkeurt. Gesloten crews staan niet in de wervingslijst. Er is geen invite-link. Als er nog geen open auto-accept crew is, maakt de server **The Rookies** (leader `StreetBureau`). Het lege crew-scherm zet **Bekijk open crews** eerst; zelf aanmaken blijft de tweede knop.
+- **Joinen**: open + auto-accept is één klik (groene badge **Open — meteen lid** + **Join nu**); open zonder auto-accept blijft een verzoek (oranje **Aanmelding vereist** + **Aanmelden**). Gesloten crews staan niet in de wervingslijst. Er is geen invite-link. Als er nog geen open auto-accept crew is, maakt de server **The Rookies** (leader `StreetBureau`). Het lege Overzicht zet **Bekijk open crews** eerst; zelf aanmaken blijft de tweede knop. De Crews-lijst heeft geen extra zwevende Open-crews-knop.
 - **Welkomstbericht:** inbox legt startcash, dagdoelen, The Rookies en “morgen weer” uit. VIP koopt geen winst. Crew krijgt een ping als je vastzit.
 - **Weekdoel**: één ISO-week doel per crew (meestal 1 crew-missie). Claim = crew-bank cash + kleine persoonlijke XP. Niet geclaimd = gemist.
 

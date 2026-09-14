@@ -36,7 +36,8 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - Side-building image style selection must follow the side-building level tier (L1-2 camping, L3-4 rural, L5-7 city, L8-10 villa, L11-15 vip) and may not be derived from current HQ style.
 - Top-level crew navigation should stay grouped by management intent instead of exposing every storage type as a separate main tab.
 - Crew recruiting uses `recruitingOpen` (default true) and `autoAccept` (default false). Open + auto-accept joins instantly via `joinCrew()`; open without auto-accept still uses a pending request. Closed crews stay off `GET /crews/recruiting`.
-- Startup ensures an open auto-accept starter crew when none exists: **The Rookies** (leader `StreetBureau`). Do not steal a real player crew of that name if another open auto-accept crew is already live. The empty crew state leads with **Browse open crews**, not create.
+- Startup ensures an open auto-accept starter crew when none exists: **The Rookies** (leader `StreetBureau`). Do not steal a real player crew of that name if another open auto-accept crew is already live. The empty crew state leads with **Browse open crews**, not create. Do not put a second Open-crews FAB on the Crews list; that tab already is the list.
+- Recruiting list rows must distinguish **open/instant** (green badge + Join now) from **application required** (orange badge + Apply). Do not label both as a generic Join.
 - Applicants must see pending state and be able to cancel (`POST /crews/:id/join/cancel`). Leaders toggle recruiting on the Members tab.
 - Each ISO week has one missable crew weekly goal (`crew_week_mission_1`, fallback `crew_week_crimes_15`). Unclaimed rewards expire at the end of the UTC week. No invite API in this flow.
 - Extra roles besides `leader` / `co_leader` / `member`: `consigliere` (Don crew overview, no bank withdraw) and `capo` with optional `capoCountry` (crew-bank tribute only in that country). Leader sets roles via `POST /crews/:id/members/:playerId/role`. See [don.md](don.md).
@@ -63,7 +64,8 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - Verify purchase and upgrade buttons/dialogs show the correct euro amounts for HQ and every storage building.
 - Verify HQ/storage images still load on web when assets are served through external mounts or nginx alias fallbacks.
 - Verify an open auto-accept crew joins in one click and an open request-only crew shows pending + cancel.
-- Verify a fresh world without open auto-accept crews creates **The Rookies**, and that the empty crew tab shows Browse first.
+- Verify a fresh world without open auto-accept crews creates **The Rookies**, and that the empty Overview tab shows Browse first.
+- Verify the Crews list has no extra Open-crews FAB; open rows use a green instant-join badge + Join now, request-only rows use an orange application badge + Apply.
 - Verify leaders can close recruiting and that closed crews disappear from the recruiting list.
 - Verify the weekly crew goal is visible on the crew overview and dashboard, and that an unclaimed goal is gone after the UTC week rolls.
 

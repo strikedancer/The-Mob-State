@@ -123,6 +123,10 @@ class _CrewScreenState extends State<CrewScreen>
         case 'action.createCrewShort': return l10n.crewUiActionCreateCrewShort;
         case 'action.browseOpenCrews': return l10n.crewUiActionBrowseOpenCrews;
         case 'action.browseOpenCrewsShort': return l10n.crewUiActionBrowseOpenCrewsShort;
+        case 'badge.openInstant': return l10n.crewUiBadgeOpenInstant;
+        case 'badge.applyRequired': return l10n.crewUiBadgeApplyRequired;
+        case 'action.joinNow': return l10n.crewUiActionJoinNow;
+        case 'action.apply': return l10n.crewUiActionApply;
         case 'hint.joinRookies': return l10n.crewUiJoinRookiesHint;
         case 'state.notInCrewYet': return l10n.crewUiStateNotInCrewYet;
         case 'action.createCrew': return l10n.crewUiActionCreateCrew;
@@ -4278,13 +4282,6 @@ class _CrewScreenState extends State<CrewScreen>
                 _buildChatTab(),
               ],
             ),
-      floatingActionButton: _myCrew == null
-          ? FloatingActionButton.extended(
-              onPressed: () => _tabController.animateTo(6),
-              icon: const Icon(Icons.groups),
-              label: Text(_t(l10n, 'action.browseOpenCrewsShort')),
-            )
-          : null,
     );
   }
 
@@ -7201,15 +7198,41 @@ class _CrewScreenState extends State<CrewScreen>
                   Text(
                     '${_t(l10n, 'label.memberCount')}: ${crew.memberCount}',
                   ),
-                  Text(
-                    crew.autoAccept
-                        ? (locale == 'nl'
-                            ? 'Open · direct joinen'
-                            : 'Open · instant join')
-                        : (locale == 'nl'
-                            ? 'Open · verzoek nodig'
-                            : 'Open · request required'),
-                    style: const TextStyle(fontSize: 12),
+                  const SizedBox(height: 4),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 3,
+                      ),
+                      decoration: BoxDecoration(
+                        color: crew.autoAccept
+                            ? Colors.green.withOpacity(0.18)
+                            : Colors.orange.withOpacity(0.18),
+                        borderRadius: BorderRadius.circular(999),
+                        border: Border.all(
+                          color: crew.autoAccept
+                              ? Colors.greenAccent.withOpacity(0.55)
+                              : Colors.orangeAccent.withOpacity(0.55),
+                        ),
+                      ),
+                      child: Text(
+                        _t(
+                          l10n,
+                          crew.autoAccept
+                              ? 'badge.openInstant'
+                              : 'badge.applyRequired',
+                        ),
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                          color: crew.autoAccept
+                              ? Colors.greenAccent
+                              : Colors.orangeAccent,
+                        ),
+                      ),
+                    ),
                   ),
                   Text(
                     '${locale == 'nl' ? 'Leader' : 'Leader'}: ${crew.leader?.playerInfo?.username ?? 'Unknown'}',
@@ -7260,13 +7283,22 @@ class _CrewScreenState extends State<CrewScreen>
                         locale == 'nl' ? 'Annuleer' : 'Cancel',
                       ),
                     )
-                  : ElevatedButton(
+                  : crew.autoAccept
+                  ? ElevatedButton(
                       onPressed: () => _joinCrew(crew.id),
-                      child: Text(
-                        crew.autoAccept
-                            ? (locale == 'nl' ? 'Join nu' : 'Join now')
-                            : _t(l10n, 'action.join'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green[700],
+                        foregroundColor: Colors.white,
                       ),
+                      child: Text(_t(l10n, 'action.joinNow')),
+                    )
+                  : OutlinedButton(
+                      onPressed: () => _joinCrew(crew.id),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Colors.orangeAccent,
+                        side: const BorderSide(color: Colors.orangeAccent),
+                      ),
+                      child: Text(_t(l10n, 'action.apply')),
                     ),
             ),
           );

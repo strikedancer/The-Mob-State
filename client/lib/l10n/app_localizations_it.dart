@@ -4379,6 +4379,18 @@ class AppLocalizationsIt extends AppLocalizations {
   String get crewUiActionBrowseOpenCrewsShort => 'Equipaggi aperti';
 
   @override
+  String get crewUiBadgeOpenInstant => 'Apri: iscriviti immediatamente';
+
+  @override
+  String get crewUiBadgeApplyRequired => 'Applicazione richiesta';
+
+  @override
+  String get crewUiActionJoinNow => 'Iscriviti ora';
+
+  @override
+  String get crewUiActionApply => 'Fare domanda a';
+
+  @override
   String get crewUiJoinRookiesHint =>
       'I Rookies accettano tutti: iscriviti da Crews.';
 
