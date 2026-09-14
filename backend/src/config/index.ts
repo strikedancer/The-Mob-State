@@ -66,6 +66,8 @@ const config: Config = {
       'https://admin.themobstate.com',
       'https://themobstate.nl',
       'https://www.themobstate.nl',
+      'https://admin.themobstate.nl',
+      'https://www.admin.themobstate.nl',
     ];
     if (process.env.NODE_ENV === 'production') {
       return [...new Set([...mobstateShells, ...fromEnv])];

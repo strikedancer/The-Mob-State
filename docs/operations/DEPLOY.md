@@ -67,7 +67,7 @@ plesk bin domain -u admin.themobstate.com -ssl true -certificate-name "Lets Encr
 
 ### Tweede domein: themobstate.nl
 
-Zelfde Flutter-app als `.com`. API en admin blijven op `api.` / `admin.themobstate.com`. Canonical/SEO blijft `.com`.
+Zelfde Flutter-app als `.com`. API blijft `api.themobstate.com`. Admin canonical is `admin.themobstate.com`; `admin.themobstate.nl` moet CORS-toegestaan zijn (Safari-login). Canonical/SEO blijft `.com`.
 
 1. **DNS bij de registrar** — `themobstate.nl` is NXDOMAIN tot de nameservers staan.
    Zet bij de registrar dezelfde nameservers als `.com` (Plesk heeft de zone + SPF/DKIM/DMARC/MX al):
