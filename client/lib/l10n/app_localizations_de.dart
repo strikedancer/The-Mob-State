@@ -2347,6 +2347,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get cash => 'Kasse';
 
   @override
+  String get hudCredits => 'Credits';
+
+  @override
   String get sessionRecap => 'Zusammenfassung der Sitzung';
 
   @override

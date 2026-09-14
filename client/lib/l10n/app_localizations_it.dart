@@ -2335,6 +2335,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get cash => 'Contanti';
 
   @override
+  String get hudCredits => 'Crediti';
+
+  @override
   String get sessionRecap => 'Riepilogo della sessione';
 
   @override

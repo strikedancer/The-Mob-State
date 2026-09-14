@@ -2329,6 +2329,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get cash => 'Gotówka';
 
   @override
+  String get hudCredits => 'Kredyty';
+
+  @override
   String get sessionRecap => 'Podsumowanie sesji';
 
   @override

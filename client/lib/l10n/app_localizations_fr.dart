@@ -2344,6 +2344,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get cash => 'Espèces';
 
   @override
+  String get hudCredits => 'Crédits';
+
+  @override
   String get sessionRecap => 'Récapitulatif de la séance';
 
   @override

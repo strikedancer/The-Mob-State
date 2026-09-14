@@ -326,6 +326,7 @@ class AuthProvider with ChangeNotifier {
     int? health,
     int? wantedLevel,
     int? fbiHeat,
+    int? premiumCredits,
     String? currentCountry,
   }) {
     if (_currentPlayer == null) return;
@@ -343,7 +344,7 @@ class AuthProvider with ChangeNotifier {
       avatar: _currentPlayer!.avatar,
       activePortraitId: _currentPlayer!.activePortraitId,
       activePortraitPath: _currentPlayer!.activePortraitPath,
-      premiumCredits: _currentPlayer!.premiumCredits,
+      premiumCredits: premiumCredits ?? _currentPlayer!.premiumCredits,
       gender: _currentPlayer!.gender,
       isVip: _currentPlayer!.isVip,
       preferredLanguage: _currentPlayer!.preferredLanguage,

@@ -12225,5 +12225,6 @@
   "authResendVerification": "Bestätigungs-E-Mail erneut senden",
   "authResendVerificationSent": "Bestätigungs-E-Mail gesendet. Überprüfen Sie den Posteingang und den Spam.",
   "authResendVerificationCooldown": "Warten Sie einen Moment, bevor Sie eine weitere E-Mail anfordern.",
-  "authResendVerificationFailed": "Die Bestätigungs-E-Mail konnte nicht gesendet werden. Versuchen Sie es später noch einmal."
+  "authResendVerificationFailed": "Die Bestätigungs-E-Mail konnte nicht gesendet werden. Versuchen Sie es später noch einmal.",
+  "hudCredits": "Credits"
 }

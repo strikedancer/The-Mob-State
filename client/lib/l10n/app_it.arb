@@ -12225,5 +12225,6 @@
   "authResendVerification": "Invia nuovamente l'e-mail di verifica",
   "authResendVerificationSent": "E-mail di verifica inviata. Controlla la posta in arrivo e lo spam.",
   "authResendVerificationCooldown": "Attendi un attimo prima di richiedere un'altra email.",
-  "authResendVerificationFailed": "Non è stato possibile inviare l'e-mail di verifica. Riprova più tardi."
+  "authResendVerificationFailed": "Non è stato possibile inviare l'e-mail di verifica. Riprova più tardi.",
+  "hudCredits": "Crediti"
 }

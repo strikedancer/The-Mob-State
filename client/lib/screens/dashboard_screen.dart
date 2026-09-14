@@ -146,11 +146,6 @@ String _cashLabel(BuildContext context) {
   return l10n.cash;
 }
 
-String _newMessagesLabel(BuildContext context, int count) {
-  final l10n = AppLocalizations.of(context)!;
-  return l10n.dashboardNewMessagesCount(count);
-}
-
 String _killProgressLabel(BuildContext context) {
   final l10n = AppLocalizations.of(context)!;
   return l10n.dashboardKillProgress;
@@ -1909,13 +1904,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
       value: '${CountryHelper.getCountryFlag(player.currentCountry)} $countryName',
       flex: compact ? 1 : 2,
     );
-    final messagesCell = _unreadCount > 0
-        ? cell(
-            label: l10n.messages,
-            value: _newMessagesLabel(context, _unreadCount),
-            valueColor: Colors.orange.shade200,
-          )
-        : null;
+    final creditsCell = cell(
+      label: l10n.hudCredits,
+      value: formatCompactNumber(player.premiumCredits ?? 0),
+      valueColor: Colors.amber.shade200,
+      onTap: () => _selectWebSection(_WebSection.premium),
+    );
 
     final infoButton = pageInfoTopic == null
         ? null
@@ -1948,10 +1942,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               fbiCell,
               divider(),
               countryCell,
-              if (messagesCell != null) ...[
-                divider(),
-                messagesCell,
-              ],
+              divider(),
+              creditsCell,
               if (infoButton != null) infoButton,
             ],
           ),
@@ -1972,10 +1964,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           fbiCell,
           divider(),
           countryCell,
-          if (messagesCell != null) ...[
-            divider(),
-            messagesCell,
-          ],
+          divider(),
+          creditsCell,
           if (infoButton != null) infoButton,
         ],
       );

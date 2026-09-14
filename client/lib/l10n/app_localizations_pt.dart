@@ -2327,6 +2327,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get cash => 'Dinheiro';
 
   @override
+  String get hudCredits => 'Créditos';
+
+  @override
   String get sessionRecap => 'Recapitulação da sessão';
 
   @override
