@@ -225,7 +225,7 @@ export const globalChatService = {
       playerId: player?.id ?? null,
       discordUserId: input.discordUserId,
       discordMessageId: input.discordMessageId,
-      displayName: (input.displayName.trim() || player?.username || 'Discord').slice(0, 64),
+      displayName: (player?.username || input.displayName.trim() || 'Discord').slice(0, 64),
       source: 'discord',
       message: body,
       stickerId: sticker,

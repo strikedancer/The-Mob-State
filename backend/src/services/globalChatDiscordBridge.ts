@@ -20,10 +20,10 @@ type DiscordChannelMessage = {
 };
 
 function discordDisplayName(item: DiscordChannelMessage): string {
-  const nick = item.member?.nick?.trim();
-  const globalName = item.author?.global_name?.trim();
   const username = item.author?.username?.trim();
-  return (nick || globalName || username || 'Discord').slice(0, 64);
+  const globalName = item.author?.global_name?.trim();
+  const nick = item.member?.nick?.trim();
+  return (username || globalName || nick || 'Discord').slice(0, 64);
 }
 
 const POLL_MS = 4000;
