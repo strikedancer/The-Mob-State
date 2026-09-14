@@ -873,6 +873,7 @@ export interface SystemLogEntry {
 export interface SystemLogFilters {
   dateRange?: "1h" | "24h" | "7d" | "30d" | "all";
   source?: string;
+  excludeSource?: string;
   search?: string;
 }
 
@@ -1427,6 +1428,7 @@ export const adminService = {
       limit: String(limit),
       dateRange: filters.dateRange || "7d",
       source: filters.source || "all",
+      excludeSource: filters.excludeSource || "",
       search: filters.search || "",
     });
     const response = await fetch(
@@ -1454,6 +1456,7 @@ export const adminService = {
       body: JSON.stringify({
         dateRange: filters.dateRange || "7d",
         source: filters.source || "all",
+        excludeSource: filters.excludeSource || "",
         search: filters.search || "",
       }),
     });

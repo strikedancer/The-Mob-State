@@ -4,7 +4,6 @@ import prisma from '../lib/prisma';
 import { normalizePlayerLanguage, type SupportedPlayerLanguage } from '../config/supportedLanguages';
 import { translationService, type Language } from './translationService';
 import { playerNotificationPreferenceService } from './playerNotificationPreferenceService';
-import { systemLogService } from './systemLogService';
 
 /** Push body uses this word for `cooldown_expired` per language. */
 const COOLDOWN_ACTION_LABEL: Record<string, Partial<Record<SupportedPlayerLanguage, string>>> = {
@@ -253,11 +252,9 @@ export class NotificationService {
     data?: Record<string, string>
   ): Promise<void> {
     if (!this.initialized) {
-      console.warn('[NotificationService] Cannot send notification - Firebase not initialized');
-      await systemLogService.logError('NotificationService.sendToPlayer', 'Firebase Admin not initialized for push send', {
+      console.warn('[NotificationService] Cannot send notification - Firebase not initialized', {
         playerId,
         title,
-        data,
       });
       return;
     }
@@ -353,17 +350,15 @@ export class NotificationService {
       console.log(`[NotificationService] Sent notification to player ${playerId}: ${totalSuccess} succeeded, ${totalFailure} failed`);
 
       if (totalFailure > 0) {
-        await systemLogService.logError('NotificationService.sendToPlayer', 'Push delivery had failed recipients', {
+        console.warn('[NotificationService] Push delivery had failed recipients', {
           playerId,
           title,
-          data,
           deviceCount: devices.length,
-          webDeviceCount: webTokens.length,
-          nativeDeviceCount: nativeTokens.length,
           totalSuccess,
           totalFailure,
           failures: failedResponses.map((failure) => ({
-            ...failure,
+            platform: failure.platform,
+            errorCode: failure.errorCode,
             tokenPreview: failure.token.slice(0, 16),
           })),
         });
@@ -379,13 +374,11 @@ export class NotificationService {
         console.log(`[NotificationService] Removed ${invalidTokens.length} invalid device tokens`);
       }
     } catch (error) {
-      await systemLogService.logError('NotificationService.sendToPlayer', 'Push send threw an exception', {
+      console.warn('[NotificationService] Error sending notification:', {
         playerId,
         title,
-        data,
         error,
       });
-      console.error('[NotificationService] Error sending notification:', error);
       // Don't throw - notification failures should not block main operations
     }
   }

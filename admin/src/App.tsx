@@ -117,6 +117,8 @@ type SystemLogDateRange = "1h" | "24h" | "7d" | "30d" | "all";
 const RECENT_ACTIONS_PAGE_SIZE = 10;
 const RECENT_ACTIONS_PREFS_KEY = "admin_recent_actions_prefs_v1";
 const RECENT_ACTIONS_VIEWS_KEY = "admin_recent_actions_views_v1";
+const SYSTEM_LOG_EXCLUDE_STORAGE_KEY = "admin_system_logs_exclude_source_v1";
+const DEFAULT_SYSTEM_LOG_EXCLUDE_SOURCE = "NotificationService.sendToPlayer";
 const PLAYER_SEARCH_DEBOUNCE_MS = 250;
 const PROSTITUTION_BALANCE_PROFILE_KEY = "PROSTITUTION_BALANCE_PROFILE";
 const PROSTITUTION_BALANCE_PROFILES = ["casual", "normal", "hardcore"] as const;
@@ -225,6 +227,30 @@ const getStoredRecentActionsViews = (): SavedRecentActionsView[] => {
     );
   } catch {
     return [];
+  }
+};
+
+const getStoredSystemLogExcludeSource = (): string => {
+  if (typeof window === "undefined") {
+    return DEFAULT_SYSTEM_LOG_EXCLUDE_SOURCE;
+  }
+
+  try {
+    const stored = localStorage.getItem(SYSTEM_LOG_EXCLUDE_STORAGE_KEY);
+    if (stored === null) {
+      return DEFAULT_SYSTEM_LOG_EXCLUDE_SOURCE;
+    }
+    return stored;
+  } catch {
+    return DEFAULT_SYSTEM_LOG_EXCLUDE_SOURCE;
+  }
+};
+
+const persistSystemLogExcludeSource = (source: string) => {
+  try {
+    localStorage.setItem(SYSTEM_LOG_EXCLUDE_STORAGE_KEY, source);
+  } catch {
+    // Ignore storage failures; the current session still keeps the filter.
   }
 };
 
@@ -760,6 +786,9 @@ function App() {
     useState<SystemLogDateRange>("7d");
   const [systemLogSources, setSystemLogSources] = useState<string[]>([]);
   const [systemLogSourceFilter, setSystemLogSourceFilter] = useState("all");
+  const [systemLogExcludeSource, setSystemLogExcludeSource] = useState(
+    getStoredSystemLogExcludeSource,
+  );
   const [systemLogSearchInput, setSystemLogSearchInput] = useState("");
   const [systemLogSearchFilter, setSystemLogSearchFilter] = useState("");
   const [isClearingSystemLogs, setIsClearingSystemLogs] = useState(false);
@@ -1120,6 +1149,7 @@ function App() {
     systemLogPage,
     systemLogDateFilter,
     systemLogSourceFilter,
+    systemLogExcludeSource,
     systemLogSearchFilter,
   ]);
 
@@ -2148,6 +2178,7 @@ function App() {
       const data = await adminService.getSystemLogs(systemLogPage, 50, {
         dateRange: systemLogDateFilter,
         source: systemLogSourceFilter,
+        excludeSource: systemLogExcludeSource,
         search: systemLogSearchFilter,
       });
       setSystemLogs(data.logs || []);
@@ -2184,6 +2215,7 @@ function App() {
       const data = await adminService.clearSystemLogs({
         dateRange: systemLogDateFilter,
         source: systemLogSourceFilter,
+        excludeSource: systemLogExcludeSource,
         search: systemLogSearchFilter,
       });
 
@@ -11089,15 +11121,16 @@ function App() {
                   <AdminPageIntro
                     kicker={l("Systeem · logs", "System · logs")}
                     description={l(
-                      "Server- en applicatielogs met datum- en bronfilters.",
-                      "Server and application logs with date and source filters.",
+                      "Server- en applicatielogs met datum-, bron- en verberg-filters. Push naar spelers zonder werkend device vult deze lijst niet meer.",
+                      "Server and application logs with date, source and hide filters. Player push misses no longer fill this list.",
                     )}
                   />
                   <div
                     className="search-bar"
                     style={{
                       display: "grid",
-                      gridTemplateColumns: "1fr 1fr 2fr auto",
+                      gridTemplateColumns:
+                        "minmax(130px,1fr) minmax(140px,1fr) minmax(160px,1fr) minmax(180px,2fr) auto",
                       gap: 10,
                       marginBottom: 12,
                     }}
@@ -11142,6 +11175,46 @@ function App() {
                           {source}
                         </option>
                       ))}
+                    </select>
+                    <select
+                      value={systemLogExcludeSource}
+                      onChange={(e) => {
+                        const next = e.target.value;
+                        setSystemLogExcludeSource(next);
+                        persistSystemLogExcludeSource(next);
+                        setSystemLogPage(1);
+                      }}
+                      className="search-input"
+                      disabled={systemLogSourceFilter !== "all"}
+                      title={
+                        systemLogSourceFilter !== "all"
+                          ? l(
+                              "Verbergen geldt alleen bij Alle bronnen.",
+                              "Hide applies only when All sources is selected.",
+                            )
+                          : l(
+                              "Verberg één bron in de lijst. Standaard staat push-ruis uit.",
+                              "Hide one source from the list. Push noise is hidden by default.",
+                            )
+                      }
+                    >
+                      <option value="">
+                        {l("Niets verbergen", "Hide none")}
+                      </option>
+                      {Array.from(
+                        new Set(
+                          [
+                            ...systemLogSources,
+                            systemLogExcludeSource,
+                          ].filter(Boolean),
+                        ),
+                      )
+                        .sort((a, b) => a.localeCompare(b))
+                        .map((source) => (
+                          <option key={`hide-${source}`} value={source}>
+                            {l("Verberg", "Hide")} {source}
+                          </option>
+                        ))}
                     </select>
                     <input
                       type="text"

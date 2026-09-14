@@ -882,6 +882,8 @@ curl -s "https://admin.themobstate.com/api/admin/system-logs?limit=10" \
 - `PrismaClientKnownRequestError` - Database errors (P2024 = connection limit, P2010 = data validation)
 - `Cannot read properties of undefined` - Uninitialized services or missing null-checks
 
+Admin System Logs can hide one source (`excludeSource`, UI: **Verberg bron**). `NotificationService.sendToPlayer` is hidden by default and is no longer persisted as `system.error`; check container logs for leftover FCM noise. Use `source=NotificationService.sendToPlayer` only if you still need historical rows.
+
 ### 2. Critical Runtime Errors & Fixes
 
 | Error Type | Cause | Fix |

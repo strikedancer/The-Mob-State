@@ -232,12 +232,14 @@ const parseWorldEventParams = (params: unknown): Record<string, unknown> => {
 const systemLogFilterSchema = z.object({
   dateRange: z.enum(['1h', '24h', '7d', '30d', 'all']).optional().default('7d'),
   source: z.string().trim().optional().default('all'),
+  excludeSource: z.string().trim().optional().default(''),
   search: z.string().trim().optional().default(''),
 });
 
 const getFilteredSystemLogs = async (filters: {
   dateRange: SystemLogDateRange;
   source: string;
+  excludeSource: string;
   search: string;
 }) => {
   const rangeStart = getRangeStartForSystemLogs(filters.dateRange);
@@ -276,7 +278,11 @@ const getFilteredSystemLogs = async (filters: {
     const message = String(entry.params.message || '').toLowerCase();
     const details = String(entry.params.details || '').toLowerCase();
 
-    if (filters.source !== 'all' && source !== filters.source) {
+    if (filters.source !== 'all') {
+      if (source !== filters.source) {
+        return false;
+      }
+    } else if (filters.excludeSource && source === filters.excludeSource) {
       return false;
     }
 
@@ -3625,6 +3631,7 @@ router.delete(
           deletedCount: 0,
           dateRange: filters.dateRange,
           source: filters.source,
+          excludeSource: filters.excludeSource,
           search: filters.search,
         };
         return res.json({
@@ -3643,6 +3650,7 @@ router.delete(
         deletedCount: result.count,
         dateRange: filters.dateRange,
         source: filters.source,
+        excludeSource: filters.excludeSource,
         search: filters.search,
       };
 
