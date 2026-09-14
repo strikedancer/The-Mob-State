@@ -33,6 +33,7 @@ Factory ownership, production, market stock, upgrades and ammo economy balance.
 - In the dashboard shell, the factory **Zwarte Markt** button opens **Zwarte Markt → Munitie** in the content pane (`onOpenBlackMarket` → `_openBlackMarket(tabAmmo)`). Do not `Navigator.push` a fullscreen Black Market over the shell.
 - Read-only ownership/status loads must not mutate factory ownership; inactivity forfeiture may only be resolved by an owner action or a contested purchase flow, never by simply opening the screen after travel.
 - Vacant factories get an inactive NPC operator (`ensureVenueNpcOccupancy`) so the lot is occupied but still `forSale`. Buying from an NPC transfers `ownerId` at the listed price; do not treat NPC occupancy as `FACTORY_OWNED`. NPC owners skip the 48h inactivity revoke. Do not auto-produce for caretaker NPCs.
+- When a player **loses** a factory (48h inactivity revoke, hitlist reset, admin reset), `revokeFactoriesForPlayer` / admin unown must call `reclaimVacantFactory` immediately so an NPC takes the lot. Do not delete the factory row.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.

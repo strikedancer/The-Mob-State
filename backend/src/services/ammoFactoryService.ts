@@ -3,7 +3,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import { educationService } from './educationService';
 import { getNpcPlayerIdSet, isNpcPlayerId } from './npcLookup';
-import { ensureVenueNpcOccupancy } from './venueNpcOccupancyService';
+import { ensureVenueNpcOccupancy, reclaimVacantFactory } from './venueNpcOccupancyService';
 
 interface CountryDef {
   id: string;
@@ -264,6 +264,11 @@ class AmmoFactoryService {
   }
 
   async revokeFactoriesForPlayer(playerId: number) {
+    const owned = await prisma.ammoFactory.findMany({
+      where: { ownerId: playerId },
+      select: { countryId: true },
+    });
+
     await prisma.ammoFactory.updateMany({
       where: { ownerId: playerId },
       data: {
@@ -274,6 +279,14 @@ class AmmoFactoryService {
         lastProducedAt: null,
       },
     });
+
+    for (const factory of owned) {
+      try {
+        await reclaimVacantFactory(factory.countryId);
+      } catch (error) {
+        console.error(`[AmmoFactory] Failed to hand factory to NPC in ${factory.countryId}:`, error);
+      }
+    }
   }
 
   async purchaseFactory(playerId: number, countryId: string) {

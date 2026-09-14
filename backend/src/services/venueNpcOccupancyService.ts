@@ -227,6 +227,18 @@ async function runEnsure(): Promise<void> {
   }
 }
 
+export async function reclaimVacantCasino(countryId: string): Promise<void> {
+  await seedVacantCasino(countryId.toLowerCase());
+}
+
+export async function reclaimVacantFactory(countryId: string): Promise<void> {
+  await seedVacantFactory(countryId.toLowerCase());
+}
+
+export function countryIdFromCasinoId(casinoId: string): string {
+  return casinoId.replace(/^casino_/, '').toLowerCase();
+}
+
 export async function ensureVenueNpcOccupancy(force = false): Promise<void> {
   if (!force && Date.now() - lastEnsureAt < ENSURE_COOLDOWN_MS) {
     return;

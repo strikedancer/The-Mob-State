@@ -279,7 +279,7 @@ function buildMurderCaseNotification(
 async function resetKilledPlayerProgressInTransaction(
   tx: any,
   playerId: number
-): Promise<{ vipProtectionApplied: boolean }> {
+): Promise<{ vipProtectionApplied: boolean; lostCasinoCountries: string[] }> {
   const victim = await tx.player.findUnique({
     where: { id: playerId },
     select: {
@@ -310,6 +310,10 @@ async function resetKilledPlayerProgressInTransaction(
   await tx.toolLoadouts.deleteMany({ where: { playerId } }).catch(() => undefined);
   await tx.property.deleteMany({ where: { playerId } });
   await tx.prostitute.deleteMany({ where: { playerId } });
+  const lostCasinos = await tx.casinoOwnership.findMany({
+    where: { ownerId: playerId },
+    select: { casinoId: true },
+  });
   await tx.casinoOwnership.deleteMany({ where: { ownerId: playerId } });
   await tx.drugInventory.deleteMany({ where: { playerId } });
   const ownedFacilities = await tx.drugFacility
@@ -431,6 +435,9 @@ async function resetKilledPlayerProgressInTransaction(
 
   return {
     vipProtectionApplied,
+    lostCasinoCountries: lostCasinos.map((row: { casinoId: string }) =>
+      row.casinoId.replace(/^casino_/, '').toLowerCase()
+    ),
   };
 }
 
@@ -1607,6 +1614,7 @@ export async function attemptHit(
     const victimId = isCounterReversal ? hit.placedById : hit.targetId;
     const lootSettings = await getHitLootSettings();
     let vipProtectionApplied = false;
+    let lostCasinoCountries: string[] = [];
     let lootSummary: HitLootSummary = {
       cashTaken: 0,
       cashAwarded: 0,
@@ -1644,6 +1652,7 @@ export async function attemptHit(
 
       const resetOutcome = await resetKilledPlayerProgressInTransaction(tx, victimId);
       vipProtectionApplied = resetOutcome.vipProtectionApplied;
+      lostCasinoCountries = resetOutcome.lostCasinoCountries;
 
       await tx.hitList.update({
         where: { id: hitId },
@@ -1654,6 +1663,15 @@ export async function attemptHit(
         },
       });
     });
+
+    const { reclaimVacantCasino } = await import('./venueNpcOccupancyService');
+    for (const countryId of lostCasinoCountries) {
+      try {
+        await reclaimVacantCasino(countryId);
+      } catch (error) {
+        console.error(`[Hitlist] Failed to hand casino to NPC in ${countryId}:`, error);
+      }
+    }
 
     await ammoFactoryService.revokeFactoriesForPlayer(
       isCounterReversal ? hit.placedById : hit.targetId

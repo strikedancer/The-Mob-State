@@ -32,6 +32,7 @@ House loop (Casino 2.0): one casino per country, floors (public/VIP/private), vi
 - Admin → Casino: grouped runtime console (floors / rake / upgrades / security) via `CasinoAdminPanel` + `adminChrome`. Do not flip Clearing House gate defaults here.
 - Bankruptcy must clear `Property.playerId` as well as the ownership row.
 - Vacant-country casinos get an inactive NPC operator on startup (`ensureVenueNpcOccupancy`) so the floor stays open. NPC-owned houses stay `forSale`; a player buyout transfers ownership and adds the new deposit to the existing bankroll. Do not lock purchase behind a real-player owner. Caretaker NPCs use `npc_players.isActive = false` so they do not join the live crime scheduler.
+- When a player **loses** a casino (bankruptcy, hitlist reset, admin reset), call `reclaimVacantCasino` immediately so an NPC takes the house. Do not leave the country closed until the next startup sweep.
 
 ## Must Preserve
 - Clear success and failure feedback for the player.

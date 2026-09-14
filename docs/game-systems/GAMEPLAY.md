@@ -622,7 +622,7 @@ interest = 0
 ### Munitiefabriek (ammo)
 - Productie wordt **server-side** getakt: claim-interval **20 minuten**, basis **3 patronen per ammo-type per tick** (level 1; schaalt met output-level). Sessievenster blijft 8 uur backlog. Zie `docs/module-protocols/ammo-factory.md` en `docs/module-protocols/balance-economy.md`.
 - De knop **Zwarte Markt** onderaan de fabriek opent **Zwarte Markt → Munitie in het contentpaneel** (zijbalk blijft staan), niet een losse fullscreen-pagina.
-- Een lege fabriek krijgt een **NPC-uitbater** (geen productie-tick) maar blijft **te koop**. Alleen een echte speler-eigenaar blokkeert aankoop; inactiviteit geldt niet voor die NPC-bezetting.
+- Een lege fabriek krijgt een **NPC-uitbater** (geen productie-tick) maar blijft **te koop**. Alleen een echte speler-eigenaar blokkeert aankoop; inactiviteit geldt niet voor die NPC-bezetting. Verlies je de fabriek (48u inactief, hitlist, admin-reset), dan neemt een NPC het terrein meteen over.
 
 ### Prostitutie (Empire hub)
 - Eén entry **Prostitution** met tabs Workers | RLD | Events | Social. Web-zijmenu “Red Light Districts” deep-linkt naar hub-tab RLD; mobiel RLD-menu idem (niet VIP Events).
@@ -748,7 +748,7 @@ In **Voertuig stelen** kies je Auto / Motor / Boot via de drie lane-cards. Help 
 ## Casino
 
 - Casino-games openen binnen de bestaande game-content (dashboard shell) en niet als losse fullpage route buiten de hoofdlayout. **Casino beheer** (eigenaar) opent als **modal** boven het casino-hubblad (`showDialog` + `CasinoManagementScreen` met `embeddedInDialog`), geen tweede fullpage-route meer.
-- Lege-land casino's krijgen een **NPC-uitbater** zodat de zaak openblijft (spelen kan). Ze blijven **te koop** tegen de vraagprijs; een echte speler-eigenaar blokkeert aankoop wel.
+- Lege-land casino's krijgen een **NPC-uitbater** zodat de zaak openblijft (spelen kan). Ze blijven **te koop** tegen de vraagprijs; een echte speler-eigenaar blokkeert aankoop wel. Verlies je het casino (failliet, hitlist, admin-reset), dan neemt een NPC het meteen over.
 - Casino hub en closed state moeten mobiel/tablet/desktop een robuuste verticale scrollflow houden.
 - Casino minigames moeten mobiel/tablet/desktop in Ã©Ã©n viewport speelbaar blijven: kernactie, inzet en status zichtbaar zonder verplichte verticale scroll.
 

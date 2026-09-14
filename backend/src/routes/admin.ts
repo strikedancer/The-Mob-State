@@ -511,7 +511,12 @@ async function tryResetDelete(label: string, fn: () => Promise<unknown>) {
 async function resetPlayerProgressInTransaction(
   tx: any,
   playerId: number
-): Promise<{ preservedPaidCredits: number; previousCredits: number }> {
+): Promise<{
+  preservedPaidCredits: number;
+  previousCredits: number;
+  lostCasinoCountries: string[];
+  lostFactoryCountries: string[];
+}> {
   const player = await tx.player.findUnique({
     where: { id: playerId },
     select: { premiumCredits: true },
@@ -571,8 +576,23 @@ async function resetPlayerProgressInTransaction(
   await tryResetDelete('garages', () => tx.garage.deleteMany({ where: { playerId } }));
   await tryResetDelete('marinas', () => tx.marina.deleteMany({ where: { playerId } }));
   await tryResetDelete('aircraft', () => tx.aircraft.deleteMany({ where: { playerId } }));
+  const lostFactories = await tx.ammoFactory
+    .findMany({
+      where: { ownerId: playerId },
+      select: { countryId: true },
+    })
+    .catch(() => [] as Array<{ countryId: string }>);
   await tryResetDelete('ammoFactories', () =>
-    tx.ammoFactory.deleteMany({ where: { playerId } })
+    tx.ammoFactory.updateMany({
+      where: { ownerId: playerId },
+      data: {
+        ownerId: null,
+        level: 1,
+        qualityLevel: 1,
+        lastActiveAt: null,
+        lastProducedAt: null,
+      },
+    })
   );
   await tryResetDelete('aviationLicense', () =>
     tx.aviationLicense.deleteMany({ where: { playerId } })
@@ -605,6 +625,12 @@ async function resetPlayerProgressInTransaction(
   await tryResetDelete('properties', () =>
     tx.property.deleteMany({ where: { playerId } })
   );
+  const lostCasinos = await tx.casinoOwnership
+    .findMany({
+      where: { ownerId: playerId },
+      select: { casinoId: true },
+    })
+    .catch(() => [] as Array<{ casinoId: string }>);
   await tryResetDelete('casinoOwnership', () =>
     tx.casinoOwnership.deleteMany({ where: { ownerId: playerId } })
   );
@@ -821,7 +847,34 @@ async function resetPlayerProgressInTransaction(
   return {
     preservedPaidCredits,
     previousCredits: player.premiumCredits,
+    lostCasinoCountries: lostCasinos.map((row) =>
+      row.casinoId.replace(/^casino_/, '').toLowerCase()
+    ),
+    lostFactoryCountries: lostFactories.map((row) => row.countryId.toLowerCase()),
   };
+}
+
+async function reclaimVenuesAfterPlayerReset(result: {
+  lostCasinoCountries: string[];
+  lostFactoryCountries: string[];
+}) {
+  const { reclaimVacantCasino, reclaimVacantFactory } = await import(
+    '../services/venueNpcOccupancyService'
+  );
+  for (const countryId of result.lostCasinoCountries) {
+    try {
+      await reclaimVacantCasino(countryId);
+    } catch (error) {
+      console.error(`[AdminReset] Failed to hand casino to NPC in ${countryId}:`, error);
+    }
+  }
+  for (const countryId of result.lostFactoryCountries) {
+    try {
+      await reclaimVacantFactory(countryId);
+    } catch (error) {
+      console.error(`[AdminReset] Failed to hand factory to NPC in ${countryId}:`, error);
+    }
+  }
 }
 
 const vehicleStatsSchema = z.object({
@@ -3040,6 +3093,7 @@ router.post(
       const resetResult = await prisma.$transaction(async (tx) => {
         return resetPlayerProgressInTransaction(tx, playerId);
       });
+      await reclaimVenuesAfterPlayerReset(resetResult);
 
       res.locals.auditLogDetails = {
         playerId,
@@ -3092,6 +3146,7 @@ router.post(
         const resetResult = await prisma.$transaction(async (tx) => {
           return resetPlayerProgressInTransaction(tx, player.id);
         });
+        await reclaimVenuesAfterPlayerReset(resetResult);
         preservedPaidCreditsTotal += resetResult.preservedPaidCredits;
       }
 

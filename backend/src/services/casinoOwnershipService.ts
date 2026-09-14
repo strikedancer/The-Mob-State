@@ -400,6 +400,12 @@ export async function checkBankruptcy(countryId: string) {
         data: { playerId: null },
       });
     });
+    try {
+      const { reclaimVacantCasino } = await import('./venueNpcOccupancyService');
+      await reclaimVacantCasino(normalizedCountryId);
+    } catch (error) {
+      console.error(`[CasinoOwnership] Failed to hand bankrupt casino to NPC in ${normalizedCountryId}:`, error);
+    }
     return true;
   }
 
