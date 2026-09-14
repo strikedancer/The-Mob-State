@@ -21,7 +21,6 @@ import '../widgets/start_and_goals_panel.dart';
 import '../widgets/icu_overlay.dart';
 import '../widgets/game_page_info.dart';
 import '../widgets/pwa_install_banner.dart';
-import '../widgets/guest_legal_footer.dart';
 import '../widgets/push_enable_prompt.dart';
 import '../widgets/live_event_rail.dart';
 import '../utils/game_event_theme.dart';
@@ -1020,7 +1019,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           const PwaInstallBanner(),
-          const GuestLegalFooter(showLanguageSelector: false),
           if (!showLeftSidebar)
             ValueListenableBuilder<Map<String, int>>(
               valueListenable: _navCooldowns,

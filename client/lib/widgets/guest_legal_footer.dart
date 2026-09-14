@@ -16,13 +16,7 @@ const Color _guestFooterGold = Color(0xFFC0A060);
 /// marketing and auth shells. The three policy links open [showGuestLegalDocumentModal]
 /// instead of full-page routes.
 class GuestLegalFooter extends StatelessWidget {
-  const GuestLegalFooter({
-    super.key,
-    this.showLanguageSelector = true,
-  });
-
-  /// Hide language on the in-game shell; players change language in Settings.
-  final bool showLanguageSelector;
+  const GuestLegalFooter({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -126,8 +120,7 @@ class GuestLegalFooter extends StatelessWidget {
                   ),
                 ),
                 DiscordInviteFooterButton(textColor: _guestFooterGold),
-                if (showLanguageSelector)
-                  TextButton.icon(
+                TextButton.icon(
                     style: TextButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 8,

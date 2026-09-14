@@ -20,7 +20,7 @@ Permanent invite (no expiry), preferably `https://discord.gg/…` landing on `#r
 
 ## Primary Frontend Entry
 - `client/lib/screens/login_screen.dart` — **Doorgaan met Discord** (web only, if API `loginEnabled`)
-- `client/lib/widgets/guest_legal_footer.dart` — landing/login footer Discord link; same footer on the in-game dashboard (language stays in Settings)
+- `client/lib/widgets/guest_legal_footer.dart` — landing/login/register footer Discord link (not in the logged-in game)
 - `client/lib/screens/help_screen.dart` — Help CTA next to Almanac
 - `client/lib/screens/settings_screen.dart` — Community invite + Link Discord for accounts that did not sign in with Discord
 - `client/lib/services/discord_community_service.dart` — caches `GET /public/community`
@@ -92,7 +92,7 @@ Without Client ID + Secret the login button stays hidden. Without a valid invite
 2. With Client ID/Secret: button visible; existing `discordId` logs in; new player gets complete form. Address bar cleaned after return (no `?d=ok&token=…`)
 3. Verified email links the existing account
 4. User denies Discord consent → error copy, no 500
-5. Invite opens Discord in a new tab from landing, Help, Settings, and the in-game footer
+5. Invite opens Discord in a new tab from landing, Help, and Settings
 6. Logged-in player without `discordId` can Link Discord from Settings; world chat then uses the in-game name
 7. Updates script posts an embed to `#updates` without printing the webhook URL
 
