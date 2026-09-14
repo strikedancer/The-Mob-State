@@ -1,7 +1,7 @@
 # Discord (community, login, updates)
 
 ## Scope
-Player **community invite** in the app, **Discord Sign-In** (web OAuth, same pattern as Google/Facebook), and a **public `#updates` webhook** for player-facing patch notes. Crew Wars staff alerts stay on a **separate** webhook (`CREW_WAR_DISCORD_WEBHOOK_URL`); they must never post into `#updates`. No in-game Discord chat, no auto-posts of crimes/wars to public channels, no native iOS/Android Discord SDK.
+Player **community invite** in the app, **Discord Sign-In** (web OAuth, same pattern as Google/Facebook), a **public `#updates` webhook** for player-facing patch notes, and an optional **world-chat bridge** (`global-chat.md`) on a dedicated play channel. Crew Wars staff alerts stay on a **separate** webhook (`CREW_WAR_DISCORD_WEBHOOK_URL`); they must never post into `#updates` or the world-chat channel. No auto-posts of crimes/wars to public channels, no native iOS/Android Discord SDK.
 
 ## Server layout (operator, in Discord)
 
@@ -44,6 +44,7 @@ Permanent invite (no expiry), preferably `https://discord.gg/…` landing on `#r
 - `DISCORD_CLIENT_SECRET`
 - `DISCORD_OAUTH_REDIRECT_URI` — default `${API_BASE_URL}/auth/discord/callback` → `https://api.themobstate.com/auth/discord/callback`
 - `DISCORD_UPDATES_WEBHOOK_URL` — incoming webhook for `#updates` only (used by `scripts/post_discord_update.ps1`, not by the game loop)
+- World chat bridge (optional, see `global-chat.md`): `GLOBAL_CHAT_DISCORD_WEBHOOK_URL`, `GLOBAL_CHAT_DISCORD_BOT_TOKEN`, `GLOBAL_CHAT_DISCORD_CHANNEL_ID`
 
 Without Client ID + Secret the login button stays hidden. Without a valid invite URL the Join Discord CTAs stay hidden. Empty updates webhook = no patch-note posts.
 
@@ -62,7 +63,8 @@ Without Client ID + Secret the login button stays hidden. Without a valid invite
 - Missing or unverified Discord email: registration still allowed (same as Facebook without mail).
 - Discord-only accounts get a random `passwordHash`; later logins go through Discord.
 - Ban-check via `authService.issueSession`.
-- Crew Wars Discord transport stays in `crew-wars.md`. Public `#updates` never receives war events.
+- Crew Wars Discord transport stays in `crew-wars.md`. Public `#updates` never receives war events or world chat.
+- World chat Discord bridge is documented in `global-chat.md`. Bot token is not an extra player OAuth scope.
 - `scripts/post_discord_update.ps1` runs **after a player-facing live deploy**, not for docs-only or internal commits. Copy in Dutch, short pitch, no secrets.
 
 ## Cross-Module Dependencies
@@ -78,7 +80,7 @@ Without Client ID + Secret the login button stays hidden. Without a valid invite
 - Hide invite CTAs if invite URL is empty or rejected
 - Username/password, Google, and Facebook login keep working
 - Terms checkbox required for new Discord accounts
-- No extra Discord bot scopes without a new protocol
+- No extra Discord **player OAuth** scopes without a new protocol. The world-chat bot token is not an OAuth scope; see `global-chat.md`.
 
 ## QA Checklist
 1. Without env: no Discord login button, no Join Discord CTAs

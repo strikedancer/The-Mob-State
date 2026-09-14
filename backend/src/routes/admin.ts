@@ -24,6 +24,7 @@ import { queueService } from '../queues/queueService';
 import { supportTicketService } from '../services/supportTicketService';
 import { systemLogService } from '../services/systemLogService';
 import * as crewWarService from '../services/crewWarService';
+import { globalChatService } from '../services/globalChatService';
 import { economyBalanceService } from '../services/economyBalanceService';
 import {
   ECON_RUNTIME_SETTING_DEFAULTS,
@@ -5597,6 +5598,83 @@ router.get('/nightclubs/overview', async (_req: AdminRequest, res) => {
   } catch (error) {
     console.error('Admin nightclub overview error:', error);
     res.status(500).json({ error: 'Failed to fetch nightclub overview' });
+  }
+});
+
+router.get('/global-chat/overview', async (_req, res) => {
+  try {
+    const overview = await globalChatService.getAdminOverview();
+    return res.json(overview);
+  } catch (error) {
+    console.error('Admin global chat overview error:', error);
+    return res.status(500).json({ error: 'Failed to fetch global chat overview' });
+  }
+});
+
+router.put('/global-chat/settings', async (req, res) => {
+  try {
+    if (typeof req.body?.enabled === 'boolean') {
+      await globalChatService.setEnabled(req.body.enabled);
+    }
+    if (typeof req.body?.extraBlocklist === 'string') {
+      await globalChatService.setExtraBlocklist(req.body.extraBlocklist);
+    }
+    const overview = await globalChatService.getAdminOverview();
+    return res.json(overview);
+  } catch (error) {
+    console.error('Admin global chat settings error:', error);
+    return res.status(500).json({ error: 'Failed to update global chat settings' });
+  }
+});
+
+router.delete('/global-chat/messages/:id', async (req, res) => {
+  try {
+    const messageId = Number(req.params.id);
+    if (!Number.isFinite(messageId) || messageId <= 0) {
+      return res.status(400).json({ error: 'Invalid message id' });
+    }
+    await globalChatService.adminDelete(messageId);
+    return res.json({ ok: true, messageId });
+  } catch (error) {
+    const code = (error as { code?: string }).code;
+    if (code === 'GLOBAL_CHAT_NOT_FOUND') {
+      return res.status(404).json({ error: 'Message not found' });
+    }
+    console.error('Admin global chat delete error:', error);
+    return res.status(500).json({ error: 'Failed to delete global chat message' });
+  }
+});
+
+router.post('/global-chat/mutes', async (req, res) => {
+  try {
+    const playerId = Number(req.body?.playerId);
+    const minutes = Number(req.body?.minutes ?? 60);
+    const reason = typeof req.body?.reason === 'string' ? req.body.reason : undefined;
+    if (!Number.isFinite(playerId) || playerId <= 0) {
+      return res.status(400).json({ error: 'Invalid player id' });
+    }
+    if (!Number.isFinite(minutes) || minutes < 0 || minutes > 10080) {
+      return res.status(400).json({ error: 'Mute minutes must be 0–10080' });
+    }
+    await globalChatService.mutePlayer(playerId, minutes, reason);
+    return res.json({ ok: true });
+  } catch (error) {
+    console.error('Admin global chat mute error:', error);
+    return res.status(500).json({ error: 'Failed to mute player' });
+  }
+});
+
+router.delete('/global-chat/mutes/:playerId', async (req, res) => {
+  try {
+    const playerId = Number(req.params.playerId);
+    if (!Number.isFinite(playerId) || playerId <= 0) {
+      return res.status(400).json({ error: 'Invalid player id' });
+    }
+    await globalChatService.unmutePlayer(playerId);
+    return res.json({ ok: true });
+  } catch (error) {
+    console.error('Admin global chat unmute error:', error);
+    return res.status(500).json({ error: 'Failed to unmute player' });
   }
 });
 

@@ -38,6 +38,7 @@ import {
 import { CrewWarsAdminPanel } from "./components/CrewWarsAdminPanel";
 import { CrewMissionsAdminPanel } from "./components/CrewMissionsAdminPanel";
 import { CountryPoliceAdminPanel } from "./components/CountryPoliceAdminPanel";
+import { WorldChatAdminPanel } from "./components/WorldChatAdminPanel";
 import { CasinoAdminPanel } from "./components/CasinoAdminPanel";
 import { DrugsAdminPanel } from "./components/DrugsAdminPanel";
 import { EmailVerificationAdminPanel } from "./components/EmailVerificationAdminPanel";
@@ -103,6 +104,7 @@ type TabType =
   | "tickets"
   | "todos"
   | "crew-wars"
+  | "world-chat"
   | "crew-missions"
   | "country-police"
   | "casino"
@@ -4846,6 +4848,11 @@ function App() {
       id: "crew-wars",
       label: l("Crew Wars", "Crew Wars"),
       icon: "bi-crosshair2",
+    },
+    {
+      id: "world-chat",
+      label: l("Wereldchat", "World chat"),
+      icon: "bi-chat-dots-fill",
     },
     {
       id: "crew-missions",
@@ -11167,6 +11174,10 @@ function App() {
 
               {activeTab === "crew-wars" && (
                 <CrewWarsAdminPanel locale={language} />
+              )}
+
+              {activeTab === "world-chat" && (
+                <WorldChatAdminPanel locale={language} />
               )}
 
               {activeTab === "crew-missions" && (

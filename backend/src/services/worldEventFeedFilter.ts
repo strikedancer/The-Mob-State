@@ -9,7 +9,7 @@ export const PERSONAL_FEED_EXACT_EXCLUDE = [
 ] as const;
 
 /** Chat/SSE-only keys — live push yes, dashboard feed no. */
-export const PERSONAL_FEED_PREFIX_EXCLUDE = ['direct_message.'] as const;
+export const PERSONAL_FEED_PREFIX_EXCLUDE = ['direct_message.', 'global_chat.'] as const;
 
 export function isPersonalDashboardFeedEvent(eventKey: string): boolean {
   if (!eventKey) return false;

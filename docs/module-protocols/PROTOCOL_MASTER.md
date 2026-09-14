@@ -72,7 +72,8 @@ Acceptatie-eis:
 - Flutter Web/Mobile/PWA shell behavior -> Frontend Platform, Notifications
 - Player Almanac (`wiki.themobstate.com`) -> Trade, Travel, Vehicles, Weapons, Drugs, Materials, Properties, Aviation, Help, Marketing web
 - Referrals -> Friends, Auth, Facebook/Google/Discord login, Crimes, Jobs, Messages, Dashboard, Balance & Economy, Marketing web
-- Discord -> Auth, Marketing web, Help, Settings, Referrals, Crew Wars (apart staff-webhook)
+- Discord -> Auth, Marketing web, Help, Settings, Referrals, Crew Wars (apart staff-webhook), World chat (optionele kanaalbrug)
+- World chat -> Dashboard, Discord, Messages (blijft privé), Crew chat (blijft crew-only), Admin
 
 ## Wat Hier Wel En Niet Hoort
 
@@ -147,7 +148,7 @@ Implementatievoorkeur:
 - **Facebook Login + Page:** speler-login via web OAuth (`GET /auth/facebook/start` → callback → `/login?fb=ok|pending|error`). Nieuwe spelers ronden username/gender/voorwaarden af via `POST /auth/facebook/complete`. Pagina-berichten handmatig via **Admin → Config → Toegang**. Secrets: `FACEBOOK_APP_ID` / `FACEBOOK_APP_SECRET` / `FACEBOOK_PAGE_ID` / `FACEBOOK_PAGE_ACCESS_TOKEN` in `.env.plesk` (`docker-compose.plesk.yml`). Zonder App ID+Secret blijft de knop verborgen. Protocol: `facebook.md`. Native Facebook SDK is geen onderdeel van deze flow.
 - **Deel-link / referrals:** `GET /friends/invite` + `?ref=` op register/login/landing. Geen Facebook Graph-vrienden. Protocol: `referrals.md`.
 - **Google Sign-In:** zelfde web-OAuth-patroon (`GET /auth/google/start` → callback → `/login?g=ok|pending|error`, daarna `POST /auth/google/complete`). Alleen `openid email profile`. Secrets: `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` in `.env.plesk`. Zonder Client ID+Secret blijft de knop verborgen. Protocol: `google.md`.
-- **Discord:** community-invite (`DISCORD_INVITE_URL`, `GET /public/community` + footer/Help/Instellingen) en Discord Sign-In (`GET /auth/discord/start` → `/login?d=ok|pending|error`, `POST /auth/discord/complete`). Scopes: `identify email`. Secrets: `DISCORD_CLIENT_ID` / `DISCORD_CLIENT_SECRET`. Publieke patch notes via `DISCORD_UPDATES_WEBHOOK_URL` + `scripts/post_discord_update.ps1` (niet de Crew Wars-webhook). Protocol: `discord.md`.
+- **Discord:** community-invite (`DISCORD_INVITE_URL`, `GET /public/community` + footer/Help/Instellingen) en Discord Sign-In (`GET /auth/discord/start` → `/login?d=ok|pending|error`, `POST /auth/discord/complete`). Scopes: `identify email`. Secrets: `DISCORD_CLIENT_ID` / `DISCORD_CLIENT_SECRET`. Publieke patch notes via `DISCORD_UPDATES_WEBHOOK_URL` + `scripts/post_discord_update.ps1` (niet de Crew Wars-webhook). Optionele wereldchat-brug: `GLOBAL_CHAT_DISCORD_WEBHOOK_URL` / `GLOBAL_CHAT_DISCORD_BOT_TOKEN` / `GLOBAL_CHAT_DISCORD_CHANNEL_ID` (nooit `#updates`). Protocols: `discord.md`, `global-chat.md`.
 - **Admin Config-indeling:** Config is opgesplitst in rubrieken (Toegang, Wonen & RLD, Combat, Alle keys). NPC-aanmaken staat als vast formulier op **Admin → NPCs**, niet in een verborgen modal.
 - **NPC live-loop:** NPCs spelen via dezelfde services als spelers (`crimeService`, `jobService`, travel, hospital, gym, school, shooting range, tools, weapons, vehicle theft, properties, bank). Start-rang en XP volgen `getXPForRank`. Geen hitlist en geen automatische crew-create. Scheduler: elke 5 min, maar max één cyclus per tick-interval (MATIG 20 min, GEMIDDELD 12, CONTINU 10) en max een normale speeldag (2,5 / 5 / 8 actieve uren). **Admin simuleren N uur** = N kalenderuren, waarvan alleen het actieve deel acties doet; de rest is slaap waarin jail/cooldowns doorlopen. Crimes kiezen naar rang (niet blijven hangen op `car_theft`). Bank max 1× per 4 actieve uren.
 - **Venue-caretakers:** lege casino’s en munitiefabrieken krijgen een **inactieve** NPC-uitbater (`isActive=false`, geen live-loop) zodat het pand bezet oogt en het casino openblijft, maar **te koop** blijft. Zie `casino.md` / `ammo-factory.md`.
@@ -500,6 +501,7 @@ PROTOCOL_MASTER.md (JIJ BENT HIER)
     │   ├── facebook.md (Facebook Login web OAuth + admin Page-posts)
     │   ├── google.md (Google Sign-In web OAuth)
     │   ├── discord.md (community invite, Discord Sign-In, #updates webhook)
+    │   ├── global-chat.md (wereldchat, stickers, Discord-brug)
     │   ├── referrals.md (Friends deel-link, startbonus, referrer-payout)
     │   ├── drugs.md → Game-system: docs/game-systems/GAMEPLAY.md
     │   ├── nightclub.md → Game-systems: NIGHTCLUB_SYSTEM.md + TRADE_RISK_MECHANICS.md

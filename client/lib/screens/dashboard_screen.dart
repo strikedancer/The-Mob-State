@@ -70,6 +70,7 @@ import 'player_profile_screen.dart';
 import 'premium_screen.dart';
 import 'support_tickets_screen.dart';
 import 'vault_screen.dart';
+import 'world_chat_screen.dart';
 
 enum _WebSection {
   support,
@@ -79,6 +80,7 @@ enum _WebSection {
   crimes,
   jobs,
   messages,
+  worldChat,
   help,
   settings,
   travel,
@@ -130,6 +132,10 @@ _WebSection _webSectionFromQueryParam(String? value) {
       return _WebSection.don;
     case 'races':
       return _WebSection.races;
+    case 'worldchat':
+    case 'world-chat':
+    case 'chat':
+      return _WebSection.worldChat;
     default:
       return _WebSection.dashboard;
   }
@@ -509,6 +515,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.crew:
       case _WebSection.friends:
       case _WebSection.support:
+      case _WebSection.worldChat:
         return _NavGroup.social;
       case _WebSection.bank:
       case _WebSection.casino:
@@ -1300,7 +1307,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
           if (_selectedWebSection != _WebSection.events &&
               _selectedWebSection != _WebSection.messages &&
-              _selectedWebSection != _WebSection.crew)
+              _selectedWebSection != _WebSection.crew &&
+              _selectedWebSection != _WebSection.worldChat)
             LiveEventRail(
               activeEvents: _gameEventsActive,
               eventPassClaimableCount: _eventPassClaimableCount,
@@ -1543,6 +1551,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         navItem(icon: Icons.language, label: l10n.territory, section: _WebSection.territory),
       ],
       _NavGroup.social: [
+        navItem(icon: Icons.public, label: l10n.worldChatTitle, section: _WebSection.worldChat),
         navItem(icon: Icons.groups, label: l10n.crew, section: _WebSection.crew),
         navItem(icon: Icons.group, label: l10n.friends, section: _WebSection.friends, badge: _pendingFriendRequestCount),
         navItem(icon: FontAwesomeIcons.commentsSolid, label: l10n.support, section: _WebSection.support, badge: _supportBadgeCount),
@@ -2000,6 +2009,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.ammoFactory:
       case _WebSection.inventory:
       case _WebSection.messages:
+      case _WebSection.worldChat:
       case _WebSection.support:
       case _WebSection.bank:
       case _WebSection.casino:
@@ -2055,6 +2065,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return 'jobs';
       case _WebSection.messages:
         return 'messages';
+      case _WebSection.worldChat:
+        return 'world-chat';
       case _WebSection.help:
         return null;
       case _WebSection.settings:
@@ -2186,6 +2198,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         );
       case _WebSection.messages:
         return DirectMessagesScreen(embedded: true);
+      case _WebSection.worldChat:
+        return const WorldChatScreen(embedded: true);
       case _WebSection.help:
         return const HelpScreen(embedded: true);
       case _WebSection.settings:
@@ -2589,6 +2603,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 ),
                                 _buildMenuTile(
                                   context,
+                                  icon: Icons.public,
+                                  label: l10n.worldChatTitle,
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const WorldChatScreen(),
+                                    ),
+                                  ),
+                                ),
+                                _buildMenuTile(
+                                  context,
                                   icon: Icons.menu_book,
                                   label: l10n.helpAndGuide,
                                   onTap: () =>
@@ -2639,6 +2664,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (_) => const CrewScreen(),
+                                    ),
+                                  ),
+                                ),
+                                _buildMenuTile(
+                                  context,
+                                  icon: Icons.public,
+                                  label: l10n.worldChatTitle,
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const WorldChatScreen(),
                                     ),
                                   ),
                                 ),

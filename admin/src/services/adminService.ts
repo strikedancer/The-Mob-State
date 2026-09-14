@@ -692,6 +692,33 @@ export type CasinoRuntimeConfigView = CrewMissionRuntimeConfigView;
 export type DrugRuntimeConfigView = CrewMissionRuntimeConfigView;
 export type CrewWarRuntimeConfigView = CrewMissionRuntimeConfigView;
 
+export type GlobalChatAdminOverview = {
+  enabled: boolean;
+  extraBlocklist: string;
+  discord: { outbound: boolean; inbound: boolean };
+  messages: Array<{
+    id: number;
+    playerId: number | null;
+    displayName: string;
+    source: string;
+    message: string;
+    stickerId: string | null;
+    createdAt: string;
+  }>;
+  reports: Array<{
+    id: number;
+    messageId: number;
+    reporterId: number;
+    createdAt: string;
+  }>;
+  mutes: Array<{
+    playerId: number;
+    username: string;
+    mutedUntil: string | null;
+    reason: string | null;
+  }>;
+};
+
 export interface VehicleOpsTelemetry {
   windowHours: number;
   from: string;
@@ -3002,6 +3029,73 @@ export const adminService = {
     });
     await ensureOk(response, "Failed to update crew war runtime config");
     return response.json();
+  },
+
+  async getGlobalChatOverview(): Promise<GlobalChatAdminOverview> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/global-chat/overview`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    await ensureOk(response, "Failed to fetch world chat overview");
+    return response.json();
+  },
+
+  async updateGlobalChatSettings(payload: {
+    enabled?: boolean;
+    extraBlocklist?: string;
+  }): Promise<GlobalChatAdminOverview> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/global-chat/settings`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+    await ensureOk(response, "Failed to update world chat settings");
+    return response.json();
+  },
+
+  async deleteGlobalChatMessage(messageId: number): Promise<void> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(
+      `${API_URL}/admin/global-chat/messages/${messageId}`,
+      {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    );
+    await ensureOk(response, "Failed to delete world chat message");
+  },
+
+  async muteGlobalChatPlayer(payload: {
+    playerId: number;
+    minutes: number;
+    reason?: string;
+  }): Promise<void> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/global-chat/mutes`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+    await ensureOk(response, "Failed to mute player");
+  },
+
+  async unmuteGlobalChatPlayer(playerId: number): Promise<void> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(
+      `${API_URL}/admin/global-chat/mutes/${playerId}`,
+      {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    );
+    await ensureOk(response, "Failed to unmute player");
   },
 
   async declareCrewWar(payload: {

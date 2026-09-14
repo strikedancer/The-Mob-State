@@ -49,6 +49,11 @@ const List<HelpTopic> helpTopics = [
     protocolPath: 'docs/module-protocols/messages.md',
   ),
   HelpTopic(
+    id: 'world-chat',
+    icon: Icons.public,
+    protocolPath: 'docs/module-protocols/global-chat.md',
+  ),
+  HelpTopic(
     id: 'inventory',
     icon: Icons.inventory,
     protocolPath: 'docs/module-protocols/inventory.md',

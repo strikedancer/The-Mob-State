@@ -5109,6 +5109,73 @@ class AppLocalizationsDe extends AppLocalizations {
       'Senden Sie die erste Nachricht an Ihre Crew!';
 
   @override
+  String get worldChatTitle => 'Weltchat';
+
+  @override
+  String get worldChatSubtitle =>
+      'Sprechen Sie mit jedem Spieler. Auch Discord-Nachrichten werden hier angezeigt, wenn die Bridge aktiviert ist.';
+
+  @override
+  String get worldChatHint => 'Schicken Sie der ganzen Stadt eine Nachricht...';
+
+  @override
+  String get worldChatEmpty => 'Noch hat niemand gesprochen';
+
+  @override
+  String get worldChatEmptyHint =>
+      'Sagen Sie Hallo, hinterlassen Sie einen Aufkleber oder chatten Sie über Discord.';
+
+  @override
+  String get worldChatStickers => 'Aufkleber';
+
+  @override
+  String get worldChatClearSticker => 'Aufkleber entfernen';
+
+  @override
+  String get worldChatFromDiscord => 'Zwietracht';
+
+  @override
+  String get worldChatMessageActions => 'Nachricht';
+
+  @override
+  String get worldChatDeleteBody =>
+      'Diese Nachricht aus dem Weltchat entfernen? Das können Sie etwa 10 Minuten lang machen.';
+
+  @override
+  String get worldChatReport => 'Bericht';
+
+  @override
+  String get worldChatReportBody =>
+      'Senden Sie diese Nachricht an die Mitarbeiter. Der Missbrauch von Meldungen kann bestraft werden.';
+
+  @override
+  String get worldChatReported =>
+      'Danke. Die Mitarbeiter werden einen Blick darauf werfen.';
+
+  @override
+  String get worldChatErrorGeneric =>
+      'Der Weltchat konnte nicht aktualisiert werden. Versuchen Sie es erneut.';
+
+  @override
+  String get worldChatErrorMuted => 'Du bist im Weltchat stummgeschaltet.';
+
+  @override
+  String get worldChatErrorRateLimit =>
+      'Machen Sie es langsamer – warten Sie ein paar Sekunden zwischen den Nachrichten.';
+
+  @override
+  String get worldChatErrorTooLong =>
+      'Diese Nachricht ist zu lang (maximal 200 Zeichen).';
+
+  @override
+  String get worldChatErrorDisabled =>
+      'Der Weltchat ist vorübergehend geschlossen.';
+
+  @override
+  String get worldChatErrorDeleteExpired =>
+      'Diese Nachricht kann nicht mehr gelöscht werden.';
+
+  @override
   String get aviationUiBuyConfirmTitle => 'Flugzeug kaufen?';
 
   @override
@@ -17773,6 +17840,24 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get helpTopicMessagesTips =>
       'Überprüfen Sie nach längeren Offline-Zeiten Ihren Posteingang: Dort werden Belohnungen, Auftragsabwicklungen und Ereignisse erfasst. \nKonfigurieren Sie Benachrichtigungseinstellungen über die Einstellungen, sodass Sie Push-Benachrichtigungen nur bei wirklich wichtigen Ereignissen erhalten.';
+
+  @override
+  String get helpTopicWorldChatCategory => 'Sozial';
+
+  @override
+  String get helpTopicWorldChatTitle => 'Weltchat';
+
+  @override
+  String get helpTopicWorldChatSummary =>
+      'Eine öffentliche Lobby für jeden Spieler, mit Aufklebern und einer optionalen Discord-Brücke, damit Sie sich unterhalten können, ohne das Spiel zu öffnen.';
+
+  @override
+  String get helpTopicWorldChatHow =>
+      'Open-World-Chat unter Social. Jeder, der angemeldet ist, kann lesen und senden, auch aus dem Gefängnis. \nGeben Sie Sendungen ein; Umschalt+Enter beginnt eine neue Zeile. Aufkleber liegen neben dem Komponisten – keine Bild-Uploads. \nSchimpfwörter in den Spielsprachen werden auf dem Server gefiltert. Mitarbeiter können stummschalten oder löschen. \nDrücken Sie etwa 10 Minuten lang lange auf Ihre eigene Nachricht, um sie zu löschen. Drücken Sie lange, um eine andere Person zu melden. \nEs gibt keine Kredit-Paywall. Direktnachrichten und Crew-Chat bleiben getrennt. \nWenn Discord verknüpft ist, wird dieselbe Lobby auf einen Discord-Kanal gespiegelt. Nachrichten von Discord zeigen im Spiel ein Discord-Tag.';
+
+  @override
+  String get helpTopicWorldChatTips =>
+      'Bleiben Sie höflich: Eine Stummschaltung gilt sowohl für das Spiel als auch für die Discord-Seite, wenn Ihre Konten verknüpft sind. \nVerwenden Sie Aufkleber für eine schnelle Reaktion, ohne den Raum zu überfluten. \nPrivate Deals gehören immer noch in Direktnachrichten, nicht in die öffentliche Lobby.';
 
   @override
   String get helpTopicInventoryCategory => 'Management';

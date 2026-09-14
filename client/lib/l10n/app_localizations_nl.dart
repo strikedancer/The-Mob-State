@@ -5078,6 +5078,71 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crewChatEmptyHint => 'Send the first message to your crew!';
 
   @override
+  String get worldChatTitle => 'Wereldchat';
+
+  @override
+  String get worldChatSubtitle =>
+      'Praat met alle spelers. Discord-berichten komen hier ook binnen als de brug aan staat.';
+
+  @override
+  String get worldChatHint => 'Bericht naar de hele stad…';
+
+  @override
+  String get worldChatEmpty => 'Nog niemand heeft iets gezegd';
+
+  @override
+  String get worldChatEmptyHint =>
+      'Zeg hallo, stuur een sticker, of chat via Discord.';
+
+  @override
+  String get worldChatStickers => 'Stickers';
+
+  @override
+  String get worldChatClearSticker => 'Sticker weg';
+
+  @override
+  String get worldChatFromDiscord => 'Discord';
+
+  @override
+  String get worldChatMessageActions => 'Bericht';
+
+  @override
+  String get worldChatDeleteBody =>
+      'Dit bericht uit de wereldchat halen? Dat kan tot ongeveer 10 minuten na het versturen.';
+
+  @override
+  String get worldChatReport => 'Melden';
+
+  @override
+  String get worldChatReportBody =>
+      'Stuur dit bericht naar de staf. Misbruik van meldingen kan gevolgen hebben.';
+
+  @override
+  String get worldChatReported => 'Bedankt. De staf neemt het mee.';
+
+  @override
+  String get worldChatErrorGeneric =>
+      'Wereldchat bijwerken mislukt. Probeer opnieuw.';
+
+  @override
+  String get worldChatErrorMuted => 'Je bent gemute in de wereldchat.';
+
+  @override
+  String get worldChatErrorRateLimit =>
+      'Even rustig — wacht een paar seconden tussen berichten.';
+
+  @override
+  String get worldChatErrorTooLong =>
+      'Dat bericht is te lang (max 200 tekens).';
+
+  @override
+  String get worldChatErrorDisabled => 'De wereldchat is tijdelijk dicht.';
+
+  @override
+  String get worldChatErrorDeleteExpired =>
+      'Dit bericht kun je niet meer verwijderen.';
+
+  @override
   String get aviationUiBuyConfirmTitle => 'Vliegtuigen kopen?';
 
   @override
@@ -17601,6 +17666,24 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get helpTopicMessagesTips =>
       'Check je inbox na lang offline zijn: beloningen, order-fills en events zijn er allemaal terug te vinden.\nStel notificatievoorkeuren in via Instellingen zodat je alleen bij echt belangrijke events een pushmelding krijgt.';
+
+  @override
+  String get helpTopicWorldChatCategory => 'Sociaal';
+
+  @override
+  String get helpTopicWorldChatTitle => 'Wereldchat';
+
+  @override
+  String get helpTopicWorldChatSummary =>
+      'Eén open lobby voor alle spelers, met stickers en optioneel Discord zodat je ook buiten de game kunt meepraten.';
+
+  @override
+  String get helpTopicWorldChatHow =>
+      'Open Wereldchat onder Sociaal. Iedereen die is ingelogd kan lezen en sturen, ook vanuit de cel.\nEnter verstuurt; Shift+Enter maakt een nieuwe regel. Stickers staan naast het invoerveld — geen eigen plaatjes.\nScheldwoorden in de speltalen worden op de server gefilterd. Staf kan muten of wissen.\nHoud je eigen bericht ingedrukt om het tot ongeveer 10 minuten te verwijderen. Bij een ander bericht kun je melden.\nGeen credit-muur. Privéberichten en crew-chat blijven apart.\nAls Discord gekoppeld is, spiegelt dezelfde lobby naar een Discord-kanaal. Berichten van Discord krijgen in de game een Discord-label.';
+
+  @override
+  String get helpTopicWorldChatTips =>
+      'Blijf fatsoenlijk: een mute geldt in de game én op Discord als je accounts gekoppeld zijn.\nGebruik stickers voor een snelle reactie zonder de kamer vol te spammen.\nPrivé-deals horen in privéberichten, niet in de open lobby.';
 
   @override
   String get helpTopicInventoryCategory => 'Beheer';

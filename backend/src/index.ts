@@ -25,6 +25,8 @@ import { ensureDailyGoalsSchema } from './startup/ensureDailyGoalsSchema';
 import { ensureSiteVisitorsSchema } from './startup/ensureSiteVisitorsSchema';
 import { ensureCrewRecruitingSchema } from './startup/ensureCrewRecruitingSchema';
 import { ensureDiscordSchema } from './startup/ensureDiscordSchema';
+import { ensureGlobalChatSchema } from './startup/ensureGlobalChatSchema';
+import { globalChatDiscordBridge } from './services/globalChatDiscordBridge';
 import { playerStartService } from './services/playerStartService';
 import { ensureVenueNpcOccupancy } from './services/venueNpcOccupancyService';
 import { ensureCrewTradeStorageSchema } from './startup/ensureCrewTradeStorageSchema';
@@ -75,6 +77,7 @@ async function startServer() {
   await ensureSiteVisitorsSchema();
   await ensureCrewRecruitingSchema();
   await ensureDiscordSchema();
+  await ensureGlobalChatSchema();
   await ensureCrewTradeStorageSchema();
   await ensureCrewDealSchema();
   try {
@@ -108,6 +111,7 @@ async function startServer() {
     
     // Initialize cron jobs for automated tasks
     initializeCronJobs();
+    globalChatDiscordBridge.start();
   });
 
   // Graceful shutdown
@@ -115,6 +119,7 @@ async function startServer() {
     console.log('Shutting down gracefully...');
     tickService.stop();
     npcScheduler.stop();
+    globalChatDiscordBridge.stop();
     await queueService.shutdown();
     await closeRedis();
     server.close(() => {

@@ -29,6 +29,7 @@ De master protocol zorgt ervoor dat je:
 - [Facebook](facebook.md) - Facebook Login (web OAuth) + handmatige Page-posts vanuit Admin
 - [Google](google.md) - Google Sign-In (web OAuth, alleen identity-scopes)
 - [Discord](discord.md) - Community-invite, Discord Sign-In (web OAuth) en publiek `#updates`-kanaal
+- [World chat](global-chat.md) - Publieke lobby, stickers, scheldwoordenfilter, optionele Discord-brug
 - [Notifications & Push](notifications.md) - Push pipeline, FCM/service worker en cooldown-signalen
 - [Player Profile](player-profile.md) - Profielnavigatie, privacy en profielinteracties
 - [Player Portraits (selfie)](player-portraits.md) - Premium selfie→gangster portretten, bibliotheek, Leonardo, runtime images
@@ -43,6 +44,7 @@ De master protocol zorgt ervoor dat je:
 - [Don](don.md) - Rackets, woeker, ambten en stadscontracten (Empire-hub)
 - [Midnight Races](races.md) - Nachtraces per land, garage/tune-roll, nightclub-rake
 - [Friends & Messages](friends.md) & [Messages](messages.md)
+- [World chat](global-chat.md) - Open lobby (niet DM, niet crew-chat)
 - [Referrals](referrals.md) - Deel-link, startbonus en referrer-payout na eerste actie
 - [Support Tickets](support-tickets.md) - Player reports, admin opvolging en todo-tracking
 - [Inventory](inventory.md) - Item opslag en management

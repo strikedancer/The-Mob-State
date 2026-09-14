@@ -19,6 +19,8 @@ class MessageBubble extends StatelessWidget {
   final VoidCallback? onLongPress;
   final bool showSenderInfo;
   final bool? isRead;
+  final String? stickerEmoji;
+  final String? sourceLabel;
 
   const MessageBubble({
     super.key,
@@ -33,6 +35,8 @@ class MessageBubble extends StatelessWidget {
     this.onLongPress,
     this.showSenderInfo = false,
     this.isRead,
+    this.stickerEmoji,
+    this.sourceLabel,
   });
 
   /// Create from DirectMessage
@@ -204,6 +208,27 @@ class MessageBubble extends StatelessWidget {
                               ),
                             ),
                           ],
+                          if (sourceLabel != null && sourceLabel!.isNotEmpty) ...[
+                            const SizedBox(width: 6),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 4,
+                                vertical: 1,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.black26,
+                                borderRadius: BorderRadius.circular(3),
+                              ),
+                              child: Text(
+                                sourceLabel!,
+                                style: TextStyle(
+                                  color: Colors.grey[300],
+                                  fontSize: 9,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
                         ],
                       ),
                       const SizedBox(height: 4),
@@ -219,13 +244,33 @@ class MessageBubble extends StatelessWidget {
                       _buildAchievementBadgePreview(achievementMeta),
                       const SizedBox(height: 8),
                     ],
-                    Text(
-                      cleanedMessage,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
+                    if (stickerEmoji != null && stickerEmoji!.isNotEmpty) ...[
+                      Text(
+                        stickerEmoji!,
+                        style: const TextStyle(fontSize: 42, height: 1.1),
                       ),
-                    ),
+                      if (cleanedMessage.isNotEmpty &&
+                          cleanedMessage != stickerEmoji)
+                        const SizedBox(height: 6),
+                    ],
+                    if (cleanedMessage.isNotEmpty &&
+                        cleanedMessage != stickerEmoji)
+                      Text(
+                        cleanedMessage,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                        ),
+                      ),
+                    if ((stickerEmoji == null || stickerEmoji!.isEmpty) &&
+                        (cleanedMessage.isEmpty))
+                      Text(
+                        cleanedMessage,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                        ),
+                      ),
                     
                     // Time and checkmarks
                     const SizedBox(height: 2),
@@ -395,6 +440,8 @@ class MessageInput extends StatefulWidget {
   final VoidCallback onSend;
   final bool enabled;
   final String? hint;
+  final Widget? leading;
+  final bool allowEmptySend;
 
   const MessageInput({
     super.key,
@@ -402,6 +449,8 @@ class MessageInput extends StatefulWidget {
     required this.onSend,
     this.enabled = true,
     this.hint,
+    this.leading,
+    this.allowEmptySend = false,
   });
 
   @override
@@ -447,7 +496,7 @@ class _MessageInputState extends State<MessageInput> {
     if (HardwareKeyboard.instance.isShiftPressed) {
       return KeyEventResult.ignored;
     }
-    if (_hasText && widget.enabled) {
+    if ((_hasText || widget.allowEmptySend) && widget.enabled) {
       widget.onSend();
     }
     return KeyEventResult.handled;
@@ -465,6 +514,10 @@ class _MessageInputState extends State<MessageInput> {
       ),
       child: Row(
         children: [
+          if (widget.leading != null) ...[
+            widget.leading!,
+            const SizedBox(width: 4),
+          ],
           Expanded(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -493,18 +546,22 @@ class _MessageInputState extends State<MessageInput> {
           ),
           const SizedBox(width: 8),
           Material(
-            color: _hasText 
+            color: (_hasText || widget.allowEmptySend)
               ? const Color(0xFF1F8B24) 
               : Colors.grey[700],
             borderRadius: BorderRadius.circular(24),
             child: InkWell(
-              onTap: _hasText && widget.enabled ? widget.onSend : null,
+              onTap: (_hasText || widget.allowEmptySend) && widget.enabled
+                  ? widget.onSend
+                  : null,
               borderRadius: BorderRadius.circular(24),
               child: Container(
                 padding: const EdgeInsets.all(10),
                 child: Icon(
                   Icons.send,
-                  color: _hasText ? Colors.white : Colors.grey[400],
+                  color: (_hasText || widget.allowEmptySend)
+                      ? Colors.white
+                      : Colors.grey[400],
                   size: 22,
                 ),
               ),

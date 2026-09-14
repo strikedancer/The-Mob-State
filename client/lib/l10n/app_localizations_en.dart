@@ -5048,6 +5048,70 @@ class AppLocalizationsEn extends AppLocalizations {
   String get crewChatEmptyHint => 'Send the first message to your crew!';
 
   @override
+  String get worldChatTitle => 'World chat';
+
+  @override
+  String get worldChatSubtitle =>
+      'Talk with every player. Discord messages show up here too when the bridge is on.';
+
+  @override
+  String get worldChatHint => 'Message the whole city…';
+
+  @override
+  String get worldChatEmpty => 'Nobody has spoken yet';
+
+  @override
+  String get worldChatEmptyHint =>
+      'Say hello, drop a sticker, or chat from Discord.';
+
+  @override
+  String get worldChatStickers => 'Stickers';
+
+  @override
+  String get worldChatClearSticker => 'Remove sticker';
+
+  @override
+  String get worldChatFromDiscord => 'Discord';
+
+  @override
+  String get worldChatMessageActions => 'Message';
+
+  @override
+  String get worldChatDeleteBody =>
+      'Remove this message from world chat? You can do that for about 10 minutes.';
+
+  @override
+  String get worldChatReport => 'Report';
+
+  @override
+  String get worldChatReportBody =>
+      'Send this message to staff. Abuse of reports can be punished.';
+
+  @override
+  String get worldChatReported => 'Thanks. Staff will take a look.';
+
+  @override
+  String get worldChatErrorGeneric => 'Could not update world chat. Try again.';
+
+  @override
+  String get worldChatErrorMuted => 'You are muted in world chat.';
+
+  @override
+  String get worldChatErrorRateLimit =>
+      'Slow down — wait a few seconds between messages.';
+
+  @override
+  String get worldChatErrorTooLong =>
+      'That message is too long (max 200 characters).';
+
+  @override
+  String get worldChatErrorDisabled => 'World chat is temporarily closed.';
+
+  @override
+  String get worldChatErrorDeleteExpired =>
+      'That message can no longer be deleted.';
+
+  @override
   String get aviationUiBuyConfirmTitle => 'Buy aircraft?';
 
   @override
@@ -17560,6 +17624,24 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get helpTopicMessagesTips =>
       'Check your inbox after long offline periods: rewards, order fills and events are all recorded there.\nConfigure notification preferences via Settings so you only receive push alerts for truly important events.';
+
+  @override
+  String get helpTopicWorldChatCategory => 'Social';
+
+  @override
+  String get helpTopicWorldChatTitle => 'World chat';
+
+  @override
+  String get helpTopicWorldChatSummary =>
+      'One public lobby for every player, with stickers and an optional Discord bridge so you can talk without opening the game.';
+
+  @override
+  String get helpTopicWorldChatHow =>
+      'Open World chat under Social. Everyone who is logged in can read and send, including from jail.\nEnter sends; Shift+Enter starts a new line. Stickers sit next to the composer — no image uploads.\nSwear words in the game languages are filtered on the server. Staff can mute or delete.\nLong-press your own message to delete it for about 10 minutes. Long-press someone else to report.\nThere is no credit paywall. Direct messages and crew chat stay separate.\nWhen Discord is linked, the same lobby is mirrored to a Discord channel. Messages from Discord show a Discord tag in-game.';
+
+  @override
+  String get helpTopicWorldChatTips =>
+      'Keep it civil: a mute hits both the game and the Discord side if your accounts are linked.\nUse stickers for a quick reaction without flooding the room.\nPrivate deals still belong in direct messages, not the public lobby.';
 
   @override
   String get helpTopicInventoryCategory => 'Management';

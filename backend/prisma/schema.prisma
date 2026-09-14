@@ -102,6 +102,8 @@ model Player {
   crewJoinRequests                CrewJoinRequest[]
   crewMembership                  CrewMember?
   crewMessages                    CrewMessage[]
+  globalChatMessages              GlobalChatMessage[]
+  globalChatMute                  GlobalChatMute?
   crimeAttempts                   CrimeAttempt[]
   creditEntitlements              PlayerCreditEntitlement[]
   creditTransactions              PlayerCreditTransaction[]
@@ -627,6 +629,47 @@ model CrewMessage {
   @@index([playerId])
   @@index([createdAt])
   @@map("crew_messages")
+}
+
+model GlobalChatMessage {
+  id               Int       @id @default(autoincrement())
+  playerId         Int?
+  discordUserId    String?   @db.VarChar(32)
+  discordMessageId String?   @unique @db.VarChar(32)
+  displayName      String    @db.VarChar(64)
+  source           String    @db.VarChar(16)
+  message          String    @db.Text
+  stickerId        String?   @db.VarChar(40)
+  filtered         Boolean   @default(false)
+  deletedAt        DateTime?
+  createdAt        DateTime  @default(now())
+  player           Player?   @relation(fields: [playerId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt])
+  @@index([playerId])
+  @@map("global_chat_messages")
+}
+
+model GlobalChatMute {
+  id         Int       @id @default(autoincrement())
+  playerId   Int       @unique
+  mutedUntil DateTime?
+  reason     String?   @db.VarChar(255)
+  createdAt  DateTime  @default(now())
+  player     Player    @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@map("global_chat_mutes")
+}
+
+model GlobalChatReport {
+  id         Int      @id @default(autoincrement())
+  messageId  Int
+  reporterId Int
+  createdAt  DateTime @default(now())
+
+  @@index([messageId])
+  @@index([createdAt])
+  @@map("global_chat_reports")
 }
 
 model SupportTicket {

@@ -5093,6 +5093,73 @@ class AppLocalizationsIt extends AppLocalizations {
   String get crewChatEmptyHint => 'Invia il primo messaggio al tuo Crew!';
 
   @override
+  String get worldChatTitle => 'Chiacchierata mondiale';
+
+  @override
+  String get worldChatSubtitle =>
+      'Parla con ogni giocatore. I messaggi Discord vengono visualizzati anche qui quando il bridge è attivo.';
+
+  @override
+  String get worldChatHint => 'Invia un messaggio a tutta la città...';
+
+  @override
+  String get worldChatEmpty => 'Nessuno ha ancora parlato';
+
+  @override
+  String get worldChatEmptyHint =>
+      'Saluta, rilascia un adesivo o chatta da Discord.';
+
+  @override
+  String get worldChatStickers => 'Adesivi';
+
+  @override
+  String get worldChatClearSticker => 'Rimuovere l\'adesivo';
+
+  @override
+  String get worldChatFromDiscord => 'Discordia';
+
+  @override
+  String get worldChatMessageActions => 'Messaggio';
+
+  @override
+  String get worldChatDeleteBody =>
+      'Rimuovere questo messaggio dalla chat mondiale? Puoi farlo per circa 10 minuti.';
+
+  @override
+  String get worldChatReport => 'Rapporto';
+
+  @override
+  String get worldChatReportBody =>
+      'Invia questo messaggio allo staff. L\'abuso delle segnalazioni può essere punito.';
+
+  @override
+  String get worldChatReported => 'Grazie. Il personale darà un\'occhiata.';
+
+  @override
+  String get worldChatErrorGeneric =>
+      'Impossibile aggiornare la chat mondiale. Riprova.';
+
+  @override
+  String get worldChatErrorMuted =>
+      'L\'audio nella chat mondiale è disattivato.';
+
+  @override
+  String get worldChatErrorRateLimit =>
+      'Rallenta: attendi qualche secondo tra un messaggio e l\'altro.';
+
+  @override
+  String get worldChatErrorTooLong =>
+      'Il messaggio è troppo lungo (massimo 200 caratteri).';
+
+  @override
+  String get worldChatErrorDisabled =>
+      'La chat mondiale è temporaneamente chiusa.';
+
+  @override
+  String get worldChatErrorDeleteExpired =>
+      'Quel messaggio non può più essere eliminato.';
+
+  @override
   String get aviationUiBuyConfirmTitle => 'Acquistare aerei?';
 
   @override
@@ -17744,6 +17811,24 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get helpTopicMessagesTips =>
       'Controlla la tua casella di posta dopo lunghi periodi offline: premi, evasione degli ordini ed eventi sono tutti registrati lì. \nConfigura le preferenze di notifica tramite Impostazioni in modo da ricevere avvisi push solo per eventi veramente importanti.';
+
+  @override
+  String get helpTopicWorldChatCategory => 'Sociale';
+
+  @override
+  String get helpTopicWorldChatTitle => 'Chiacchierata mondiale';
+
+  @override
+  String get helpTopicWorldChatSummary =>
+      'Una lobby pubblica per ogni giocatore, con adesivi e un bridge Discord opzionale per poter parlare senza aprire il gioco.';
+
+  @override
+  String get helpTopicWorldChatHow =>
+      'Apri la chat mondiale in Social. Chiunque abbia effettuato l\'accesso può leggere e inviare, anche dal carcere. \nInserisci invii; Shift+Invio inizia una nuova riga. Gli adesivi si trovano accanto al compositore: nessun caricamento di immagini. \nLe parolacce nelle lingue del gioco vengono filtrate sul server. Il personale può disattivare o eliminare. \nPremi a lungo il tuo messaggio per eliminarlo per circa 10 minuti. Premi a lungo qualcun altro per segnalare. \nNon è previsto alcun pagamento del credito. I messaggi diretti e la chat dell\'Crew rimangono separati. \nQuando Discord è collegato, la stessa lobby viene rispecchiata su un canale Discord. I messaggi di Discord mostrano un tag Discord nel gioco.';
+
+  @override
+  String get helpTopicWorldChatTips =>
+      'Mantienilo civile: un silenziamento colpisce sia il gioco che il lato Discord se i tuoi account sono collegati. \nUsa gli adesivi per una reazione rapida senza allagare la stanza. \nGli accordi privati ​​appartengono ancora ai messaggi diretti, non alla lobby pubblica.';
 
   @override
   String get helpTopicInventoryCategory => 'Gestione';

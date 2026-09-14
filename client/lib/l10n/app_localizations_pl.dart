@@ -5084,6 +5084,72 @@ class AppLocalizationsPl extends AppLocalizations {
   String get crewChatEmptyHint => 'Wyślij pierwszą wiadomość do swojej załogi!';
 
   @override
+  String get worldChatTitle => 'Światowy czat';
+
+  @override
+  String get worldChatSubtitle =>
+      'Porozmawiaj z każdym graczem. Wiadomości Discord pojawiają się również tutaj, gdy most jest włączony.';
+
+  @override
+  String get worldChatHint => 'Wyślij wiadomość do całego miasta…';
+
+  @override
+  String get worldChatEmpty => 'Nikt jeszcze nie mówił';
+
+  @override
+  String get worldChatEmptyHint =>
+      'Przywitaj się, upuść naklejkę lub porozmawiaj na Discordzie.';
+
+  @override
+  String get worldChatStickers => 'Naklejki';
+
+  @override
+  String get worldChatClearSticker => 'Usuń naklejkę';
+
+  @override
+  String get worldChatFromDiscord => 'Niezgoda';
+
+  @override
+  String get worldChatMessageActions => 'Wiadomość';
+
+  @override
+  String get worldChatDeleteBody =>
+      'Usunąć tę wiadomość z czatu światowego? Można to robić przez około 10 minut.';
+
+  @override
+  String get worldChatReport => 'Raport';
+
+  @override
+  String get worldChatReportBody =>
+      'Wyślij tę wiadomość do personelu. Nadużywanie raportów może zostać ukarane.';
+
+  @override
+  String get worldChatReported => 'Dzięki. Personel się temu przyjrzy.';
+
+  @override
+  String get worldChatErrorGeneric =>
+      'Nie można zaktualizować czatu światowego. Spróbuj ponownie.';
+
+  @override
+  String get worldChatErrorMuted => 'Jesteś wyciszony na czacie światowym.';
+
+  @override
+  String get worldChatErrorRateLimit =>
+      'Zwolnij — poczekaj kilka sekund pomiędzy wiadomościami.';
+
+  @override
+  String get worldChatErrorTooLong =>
+      'Ta wiadomość jest za długa (maksymalnie 200 znaków).';
+
+  @override
+  String get worldChatErrorDisabled =>
+      'Czat światowy jest tymczasowo zamknięty.';
+
+  @override
+  String get worldChatErrorDeleteExpired =>
+      'Tej wiadomości nie można już usunąć.';
+
+  @override
   String get aviationUiBuyConfirmTitle => 'Kupić samolot?';
 
   @override
@@ -17685,6 +17751,24 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get helpTopicMessagesTips =>
       'Sprawdź swoją skrzynkę odbiorczą po długich okresach offline: nagrody, zrealizowane zamówienia i wydarzenia są tam rejestrowane. \nSkonfiguruj preferencje powiadomień w Ustawieniach, aby otrzymywać powiadomienia push tylko o naprawdę ważnych wydarzeniach.';
+
+  @override
+  String get helpTopicWorldChatCategory => 'Społeczny';
+
+  @override
+  String get helpTopicWorldChatTitle => 'Światowy czat';
+
+  @override
+  String get helpTopicWorldChatSummary =>
+      'Jedno publiczne lobby dla każdego gracza, z naklejkami i opcjonalnym mostem Discord, dzięki czemu możesz rozmawiać bez otwierania gry.';
+
+  @override
+  String get helpTopicWorldChatHow =>
+      'Czat w otwartym świecie w sekcji Społeczności. Każdy zalogowany może czytać i wysyłać, także z więzienia. \nWpisz wysyła; Shift+Enter rozpoczyna nową linię. Naklejki znajdują się obok kompozytora — nie można przesyłać obrazów. \nPrzekleństwa w językach gry są filtrowane na serwerze. Personel może wyciszyć lub usunąć. \nNaciśnij i przytrzymaj własną wiadomość, aby ją usunąć na około 10 minut. Naciśnij długo kogoś innego, aby zgłosić. \nNie ma paywalla kredytowego. Wiadomości bezpośrednie i czat załogi pozostają oddzielne. \nKiedy Discord jest połączony, to samo lobby jest odzwierciedlane na kanale Discord. Wiadomości od Discorda zawierają tag Discord w grze.';
+
+  @override
+  String get helpTopicWorldChatTips =>
+      'Zachowaj spokój: wyciszenie wpływa zarówno na grę, jak i na stronę Discord, jeśli Twoje konta są połączone. \nUżyj naklejek, aby szybko zareagować i nie zalać pomieszczenia. \nPrywatne umowy nadal należą do bezpośrednich wiadomości, a nie do lobby publicznego.';
 
   @override
   String get helpTopicInventoryCategory => 'Kierownictwo';

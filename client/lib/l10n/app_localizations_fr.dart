@@ -5122,6 +5122,73 @@ class AppLocalizationsFr extends AppLocalizations {
       'Envoyez le premier message à votre équipage !';
 
   @override
+  String get worldChatTitle => 'Discussion mondiale';
+
+  @override
+  String get worldChatSubtitle =>
+      'Parlez avec chaque joueur. Les messages Discord s\'affichent ici également lorsque le pont est activé.';
+
+  @override
+  String get worldChatHint => 'Envoyez un message à toute la ville…';
+
+  @override
+  String get worldChatEmpty => 'Personne n\'a encore parlé';
+
+  @override
+  String get worldChatEmptyHint =>
+      'Dites bonjour, déposez un autocollant ou discutez depuis Discord.';
+
+  @override
+  String get worldChatStickers => 'Autocollants';
+
+  @override
+  String get worldChatClearSticker => 'Supprimer l\'autocollant';
+
+  @override
+  String get worldChatFromDiscord => 'Discorde';
+
+  @override
+  String get worldChatMessageActions => 'Message';
+
+  @override
+  String get worldChatDeleteBody =>
+      'Supprimer ce message du chat mondial ? Vous pouvez faire cela pendant environ 10 minutes.';
+
+  @override
+  String get worldChatReport => 'Rapport';
+
+  @override
+  String get worldChatReportBody =>
+      'Envoyez ce message au personnel. L\'abus de signalements peut être sanctionné.';
+
+  @override
+  String get worldChatReported => 'Merci. Le personnel y jettera un œil.';
+
+  @override
+  String get worldChatErrorGeneric =>
+      'Impossible de mettre à jour le chat mondial. Essayer à nouveau.';
+
+  @override
+  String get worldChatErrorMuted =>
+      'Vous êtes en sourdine dans le chat mondial.';
+
+  @override
+  String get worldChatErrorRateLimit =>
+      'Ralentissez : attendez quelques secondes entre les messages.';
+
+  @override
+  String get worldChatErrorTooLong =>
+      'Ce message est trop long (max 200 caractères).';
+
+  @override
+  String get worldChatErrorDisabled =>
+      'Le chat mondial est temporairement fermé.';
+
+  @override
+  String get worldChatErrorDeleteExpired =>
+      'Ce message ne peut plus être supprimé.';
+
+  @override
   String get aviationUiBuyConfirmTitle => 'Acheter un avion ?';
 
   @override
@@ -17770,6 +17837,24 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get helpTopicMessagesTips =>
       'Vérifiez votre boîte de réception après de longues périodes hors ligne : les récompenses, les commandes exécutées et les événements y sont tous enregistrés. \nConfigurez les préférences de notification via Paramètres afin de recevoir uniquement des alertes push pour les événements vraiment importants.';
+
+  @override
+  String get helpTopicWorldChatCategory => 'Sociale';
+
+  @override
+  String get helpTopicWorldChatTitle => 'Discussion mondiale';
+
+  @override
+  String get helpTopicWorldChatSummary =>
+      'Un lobby public pour chaque joueur, avec des autocollants et un pont Discord en option pour que vous puissiez parler sans ouvrir le jeu.';
+
+  @override
+  String get helpTopicWorldChatHow =>
+      'Chat en monde ouvert sous Social. Toute personne connectée peut lire et envoyer des messages, y compris depuis la prison. \nEntrez les envois ; Shift+Entrée démarre une nouvelle ligne. Les autocollants sont placés à côté du compositeur – aucun téléchargement d’image. \nLes gros mots dans les langues du jeu sont filtrés sur le serveur. Le personnel peut désactiver ou supprimer. \nAppuyez longuement sur votre propre message pour le supprimer pendant environ 10 minutes. Appuyez longuement sur quelqu\'un d\'autre pour signaler. \nIl n’y a pas de paywall de crédit. Les messages directs et les discussions en équipe restent séparés. \nLorsque Discord est lié, le même lobby est reflété sur une chaîne Discord. Les messages de Discord affichent un tag Discord dans le jeu.';
+
+  @override
+  String get helpTopicWorldChatTips =>
+      'Restez civil : une sourdine frappe à la fois le jeu et le côté Discord si vos comptes sont liés. \nUtilisez des autocollants pour réagir rapidement sans inonder la pièce. \nLes accords privés appartiennent toujours aux messages directs et non au lobby public.';
 
   @override
   String get helpTopicInventoryCategory => 'Gestion';

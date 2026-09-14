@@ -11,7 +11,7 @@ Direct messages, system inbox messages, unread state and chat entry points.
 - `GET /messages/conversations` uses one grouped query for player DMs (max 40) plus one latest-system-notices query (max 50). Never N+1 per friend. Player threads stay grouped. **Each system notice is its own inbox row** (`friendId = -messageId`) so badges, payouts and orders do not share one long The Mob State chat. `friendId = 0` still loads the legacy combined system thread. The inbox lists existing threads (player DMs + system notices), not only current accepted friends.
 - A load failure on mobile must show retry — never the empty “no messages” state while unread badges are still green.
 - Chat thread (`chat_screen.dart`) follows the same rule: failed conversation load shows retry, not “no messages”.
-- Composer (`MessageInput`): **Enter** sends, **Shift+Enter** inserts a new line. Same widget for player DMs and crew chat. The live-event rail is hidden on Messages and Crew so it cannot cover the send button.
+- Composer (`MessageInput`): **Enter** sends, **Shift+Enter** inserts a new line. Same widget for player DMs, crew chat and world chat. The live-event rail is hidden on Messages, Crew and World chat so it cannot cover the send button.
 - Players can remove **read** inbox items (`DELETE /messages/conversation/:otherPlayerId`, `DELETE /messages/read`). That only hides the thread for this player (`hiddenForSender` / `hiddenForReceiver`). Unread items stay. A later message is not hidden, so the thread returns. Do not hard-delete the other player's copy.
 
 ## Change Rules

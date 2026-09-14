@@ -9011,6 +9011,120 @@ abstract class AppLocalizations {
   /// **'Send the first message to your crew!'**
   String get crewChatEmptyHint;
 
+  /// No description provided for @worldChatTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'World chat'**
+  String get worldChatTitle;
+
+  /// No description provided for @worldChatSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Talk with every player. Discord messages show up here too when the bridge is on.'**
+  String get worldChatSubtitle;
+
+  /// No description provided for @worldChatHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Message the whole city…'**
+  String get worldChatHint;
+
+  /// No description provided for @worldChatEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Nobody has spoken yet'**
+  String get worldChatEmpty;
+
+  /// No description provided for @worldChatEmptyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Say hello, drop a sticker, or chat from Discord.'**
+  String get worldChatEmptyHint;
+
+  /// No description provided for @worldChatStickers.
+  ///
+  /// In en, this message translates to:
+  /// **'Stickers'**
+  String get worldChatStickers;
+
+  /// No description provided for @worldChatClearSticker.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove sticker'**
+  String get worldChatClearSticker;
+
+  /// No description provided for @worldChatFromDiscord.
+  ///
+  /// In en, this message translates to:
+  /// **'Discord'**
+  String get worldChatFromDiscord;
+
+  /// No description provided for @worldChatMessageActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get worldChatMessageActions;
+
+  /// No description provided for @worldChatDeleteBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove this message from world chat? You can do that for about 10 minutes.'**
+  String get worldChatDeleteBody;
+
+  /// No description provided for @worldChatReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Report'**
+  String get worldChatReport;
+
+  /// No description provided for @worldChatReportBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Send this message to staff. Abuse of reports can be punished.'**
+  String get worldChatReportBody;
+
+  /// No description provided for @worldChatReported.
+  ///
+  /// In en, this message translates to:
+  /// **'Thanks. Staff will take a look.'**
+  String get worldChatReported;
+
+  /// No description provided for @worldChatErrorGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not update world chat. Try again.'**
+  String get worldChatErrorGeneric;
+
+  /// No description provided for @worldChatErrorMuted.
+  ///
+  /// In en, this message translates to:
+  /// **'You are muted in world chat.'**
+  String get worldChatErrorMuted;
+
+  /// No description provided for @worldChatErrorRateLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Slow down — wait a few seconds between messages.'**
+  String get worldChatErrorRateLimit;
+
+  /// No description provided for @worldChatErrorTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'That message is too long (max 200 characters).'**
+  String get worldChatErrorTooLong;
+
+  /// No description provided for @worldChatErrorDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'World chat is temporarily closed.'**
+  String get worldChatErrorDisabled;
+
+  /// No description provided for @worldChatErrorDeleteExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'That message can no longer be deleted.'**
+  String get worldChatErrorDeleteExpired;
+
   /// No description provided for @aviationUiBuyConfirmTitle.
   ///
   /// In en, this message translates to:
@@ -30338,6 +30452,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Check your inbox after long offline periods: rewards, order fills and events are all recorded there.\nConfigure notification preferences via Settings so you only receive push alerts for truly important events.'**
   String get helpTopicMessagesTips;
+
+  /// No description provided for @helpTopicWorldChatCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Social'**
+  String get helpTopicWorldChatCategory;
+
+  /// No description provided for @helpTopicWorldChatTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'World chat'**
+  String get helpTopicWorldChatTitle;
+
+  /// No description provided for @helpTopicWorldChatSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'One public lobby for every player, with stickers and an optional Discord bridge so you can talk without opening the game.'**
+  String get helpTopicWorldChatSummary;
+
+  /// No description provided for @helpTopicWorldChatHow.
+  ///
+  /// In en, this message translates to:
+  /// **'Open World chat under Social. Everyone who is logged in can read and send, including from jail.\nEnter sends; Shift+Enter starts a new line. Stickers sit next to the composer — no image uploads.\nSwear words in the game languages are filtered on the server. Staff can mute or delete.\nLong-press your own message to delete it for about 10 minutes. Long-press someone else to report.\nThere is no credit paywall. Direct messages and crew chat stay separate.\nWhen Discord is linked, the same lobby is mirrored to a Discord channel. Messages from Discord show a Discord tag in-game.'**
+  String get helpTopicWorldChatHow;
+
+  /// No description provided for @helpTopicWorldChatTips.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep it civil: a mute hits both the game and the Discord side if your accounts are linked.\nUse stickers for a quick reaction without flooding the room.\nPrivate deals still belong in direct messages, not the public lobby.'**
+  String get helpTopicWorldChatTips;
 
   /// No description provided for @helpTopicInventoryCategory.
   ///
