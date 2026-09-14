@@ -203,6 +203,16 @@ class TickService {
         );
       }
 
+      try {
+        const crewWarService = await import('./crewWarService');
+        const synced = await crewWarService.syncAllOpenCrewWars();
+        if (synced > 0) {
+          console.log(`⚔️ Crew wars lifecycle synced: ${synced}`);
+        }
+      } catch (crewWarTickErr) {
+        console.error('[Tick] Crew war lifecycle failed:', crewWarTickErr);
+      }
+
       const duration = this.timeProvider.timestamp() - startTime;
       console.log(
         `✅ Tick complete in ${duration}ms (healed ${playerTick.healed}, wanted ${playerTick.wantedDecayed}, fbi ${playerTick.fbiHeatDecayed})\n`

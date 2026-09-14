@@ -229,7 +229,7 @@ CREW_WAR_DISCORD_MIN_INTERVAL_MS=15000
 6. Player-facing patch notes use a **different** webhook (`DISCORD_UPDATES_WEBHOOK_URL` on public `#updates`). Never point Crew Wars events at that channel. See `discord.md`.
 - Admin-gestarte wars en admin lifecycle-acties zoals `start_now` en `enter_lockdown` moeten exact dezelfde event-transports activeren als de reguliere war-flow; admin controls mogen geen stille bypass zijn voor push/inbox of Discord.
 - Bij `declared`, `started`, `lockdown` en `resolved` moeten alle betrokken crew members, inclusief leaders, een consistente push/inbox-notificatie kunnen ontvangen; automatische lifecycle-transities mogen die member-notificaties niet overslaan.
-- Relevante Discord use-cases: war declared, war started, double points hour, territory swing, war ended, season rewards.
+- Discord-berichten in `#crew-wars` tonen **crew-namen** (geen `attackerCrewId`), war-type in het Nederlands, en bij einde de **winnaar + stand**. `war_resolved` gaat mee zodra de war eindigt; de game-tick synct open wars zodat dat niet wacht tot iemand de War Room opent.
 
 ## Frontend Loading Guardrails
 - War overview mag niet leegvallen als leaderboard of log-feed apart faalt.
@@ -246,7 +246,7 @@ CREW_WAR_DISCORD_MIN_INTERVAL_MS=15000
 6. Live leaderboard en persoonlijke stats verversen correct na action.
 7. War end verdeelt rewards exact één keer en schrijft standings/logs correct weg.
 8. Mobile en desktop layouts houden timers, scores en actieknoppen bruikbaar.
-9. Notifications/inbox blijven werken; Discord failure mag war flow niet breken.
+9. Notifications/inbox blijven werken; Discord failure mag war flow niet breken. Discord `#crew-wars` toont namen + winnaar, geen ruwe IDs.
 11. Raid asks for a loot type, fails when the attacker has no room, and never takes personal inventory.
 12. Sabotage cannot drop HQ or go below level 1, and the same building cannot drop twice in one war.
 13. Crew deals lock goods on create/counter, require both officer confirms, and return goods on cancel/timeout/no capacity.

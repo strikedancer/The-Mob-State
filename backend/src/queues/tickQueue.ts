@@ -163,6 +163,13 @@ class TickQueue {
         console.error('[TickQueue] Property forfeiture failed:', forfeitErr);
       }
 
+      try {
+        const crewWarService = await import('../services/crewWarService');
+        await crewWarService.syncAllOpenCrewWars();
+      } catch (crewWarTickErr) {
+        console.error('[TickQueue] Crew war lifecycle failed:', crewWarTickErr);
+      }
+
       const duration = Date.now() - startTime;
 
       console.log(`✅ Tick ${tickId} completed in ${duration}ms:`, {
