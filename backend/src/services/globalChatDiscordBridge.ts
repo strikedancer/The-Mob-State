@@ -18,6 +18,8 @@ type DiscordChannelMessage = {
 
 const POLL_MS = 4000;
 const DISCORD_API = 'https://discord.com/api/v10';
+const DISCORD_USER_AGENT = 'TheMobState (https://themobstate.com, 1.0)';
+const AUTH_WARN_MS = 60_000;
 
 function webhookUrl(): string | null {
   return process.env.GLOBAL_CHAT_DISCORD_WEBHOOK_URL?.trim() || null;
@@ -83,6 +85,7 @@ class GlobalChatDiscordBridge {
   private timer: ReturnType<typeof setInterval> | null = null;
   private lastMessageId = currentSnowflake();
   private started = false;
+  private lastAuthWarnAt = 0;
 
   status(): {
     outbound: boolean;
@@ -154,7 +157,10 @@ class GlobalChatDiscordBridge {
         `${DISCORD_API}/channels/${channel}/messages`,
         {
           params: { after: this.lastMessageId, limit: 20 },
-          headers: { Authorization: `Bot ${token}` },
+          headers: {
+            Authorization: `Bot ${token}`,
+            'User-Agent': DISCORD_USER_AGENT,
+          },
           timeout: 8000,
         },
       );
@@ -181,9 +187,19 @@ class GlobalChatDiscordBridge {
       }
     } catch (error) {
       const status = axios.isAxiosError(error) ? error.response?.status : undefined;
-      if (status === 401 || status === 403) {
-        console.warn('[GlobalChat] Discord inbound auth failed; check bot token and channel access');
+      if (status === 401) {
+        console.warn('[GlobalChat] Discord inbound token rejected');
         this.stop();
+        return;
+      }
+      if (status === 403) {
+        const now = Date.now();
+        if (now - this.lastAuthWarnAt > AUTH_WARN_MS) {
+          this.lastAuthWarnAt = now;
+          console.warn(
+            '[GlobalChat] Discord inbound missing channel access; invite the bot and let it see #wereldchat',
+          );
+        }
         return;
       }
       console.warn('[GlobalChat] Discord poll failed', error instanceof Error ? error.message : error);

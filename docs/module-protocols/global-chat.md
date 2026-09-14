@@ -32,7 +32,9 @@ One public in-game lobby for every logged-in player, with a curated sticker pack
 ## Discord operator setup
 1. Create a play channel such as `#wereldchat` (not Info, not `#updates`, not `#ops`).
 2. Channel → Integrations → Webhook → copy URL into `GLOBAL_CHAT_DISCORD_WEBHOOK_URL` on the VPS (`.env.plesk`).
-3. Discord Developer Portal → Bot: enable **Message Content Intent**, invite the bot with View Channel + Read Message History (and Send Messages if you also want the bot present).
+3. Discord Developer Portal → Bot: enable **Message Content Intent**, then invite the bot:
+   `https://discord.com/oauth2/authorize?client_id=1549017603706716160&permissions=66560&scope=bot`
+   (View Channel + Read Message History). Missing Access (403) until the bot is in the guild and can see `#wereldchat`. Inbound polling keeps retrying on 403 after invite; 401 (bad token) still stops.
 4. Put the bot token in `GLOBAL_CHAT_DISCORD_BOT_TOKEN` and the channel snowflake in `GLOBAL_CHAT_DISCORD_CHANNEL_ID`.
 5. Recreate the backend container so env is picked up. Admin → Wereldchat shows outbound/inbound on/off.
 
