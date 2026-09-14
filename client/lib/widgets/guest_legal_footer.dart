@@ -8,6 +8,7 @@ import '../config/supported_languages.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/locale_provider.dart';
 import 'guest_legal_document_modal.dart';
+import 'discord_invite_button.dart';
 
 const Color _guestFooterGold = Color(0xFFC0A060);
 
@@ -118,6 +119,7 @@ class GuestLegalFooter extends StatelessWidget {
                     ),
                   ),
                 ),
+                DiscordInviteFooterButton(textColor: _guestFooterGold),
                 TextButton.icon(
                   style: TextButton.styleFrom(
                     padding: const EdgeInsets.symmetric(

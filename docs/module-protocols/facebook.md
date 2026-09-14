@@ -61,6 +61,7 @@ Zonder App ID + Secret blijft de inlogknop verborgen. Zonder Page ID + token bli
 ## Must Preserve
 - Knop verbergen als login niet geconfigureerd is
 - Username/password-login blijft werken
+- Google- en Discord-login blijven naast Facebook werken
 - Terms-vinkje verplicht bij nieuwe Facebook-accounts
 
 ## QA Checklist

@@ -6,6 +6,8 @@ import '../config/app_config.dart';
 import '../data/help_content.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/help_topic_localizations.dart';
+import '../widgets/discord_invite_button.dart';
+import '../services/discord_community_service.dart';
 
 class HelpScreen extends StatefulWidget {
   final bool embedded;
@@ -217,6 +219,8 @@ class _HelpScreenState extends State<HelpScreen> {
             label: Text(l10n.helpAlmanacOpen),
           ),
           const SizedBox(height: 8),
+          const _HelpDiscordCta(),
+          const SizedBox(height: 8),
           Text(
             l10n.helpAlmanacBlurb,
             style: const TextStyle(color: Colors.white70, fontSize: 13),
@@ -422,6 +426,54 @@ class _DetailCard extends StatelessWidget {
             ),
         ],
       ),
+    );
+  }
+}
+
+class _HelpDiscordCta extends StatefulWidget {
+  const _HelpDiscordCta();
+
+  @override
+  State<_HelpDiscordCta> createState() => _HelpDiscordCtaState();
+}
+
+class _HelpDiscordCtaState extends State<_HelpDiscordCta> {
+  String? _inviteUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    DiscordCommunityService().fetchInviteUrl().then((url) {
+      if (!mounted) return;
+      setState(() => _inviteUrl = url);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final invite = _inviteUrl;
+    if (invite == null || invite.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    final l10n = AppLocalizations.of(context)!;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        OutlinedButton.icon(
+          onPressed: () => openDiscordInvite(invite),
+          style: OutlinedButton.styleFrom(
+            foregroundColor: discordBlurple,
+            side: const BorderSide(color: discordBlurple),
+          ),
+          icon: const Icon(Icons.forum_outlined),
+          label: Text(l10n.discordJoin),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          l10n.discordJoinBlurb,
+          style: const TextStyle(color: Colors.white70, fontSize: 13),
+        ),
+      ],
     );
   }
 }

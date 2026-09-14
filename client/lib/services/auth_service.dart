@@ -38,6 +38,12 @@ class GoogleAuthStatus {
   const GoogleAuthStatus({required this.loginEnabled});
 }
 
+class DiscordAuthStatus {
+  final bool loginEnabled;
+
+  const DiscordAuthStatus({required this.loginEnabled});
+}
+
 class AuthService {
   final ApiClient _apiClient;
   static const Set<String> _terminalAuthReasons = {
@@ -282,6 +288,26 @@ class AuthService {
     }
   }
 
+  Future<DiscordAuthStatus> discordStatus() async {
+    try {
+      final response = await _apiClient.get(
+        '/auth/discord/status',
+        includeAuth: false,
+      );
+      if (response.statusCode != 200) {
+        return const DiscordAuthStatus(loginEnabled: false);
+      }
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final params = data['params'] is Map<String, dynamic>
+          ? data['params'] as Map<String, dynamic>
+          : data;
+      return DiscordAuthStatus(loginEnabled: params['loginEnabled'] == true);
+    } catch (e) {
+      print('[AuthService] Discord status exception: $e');
+      return const DiscordAuthStatus(loginEnabled: false);
+    }
+  }
+
   Future<AuthResult> loginWithToken(
     String token, {
     String fallbackError = 'FACEBOOK_AUTH_FAILED',
@@ -410,6 +436,62 @@ class AuthService {
       return AuthResult(success: false, error: errorMessage);
     } catch (e) {
       print('[AuthService] Google complete exception: $e');
+      return AuthResult(success: false, error: 'Connection error: $e');
+    }
+  }
+
+  Future<AuthResult> completeDiscord({
+    required String pendingToken,
+    required String username,
+    required String gender,
+    required bool acceptedTerms,
+    String? language,
+  }) async {
+    try {
+      final selectedLanguage = language ?? _getDeviceLanguage();
+      final body = <String, dynamic>{
+        'pendingToken': pendingToken,
+        'username': username,
+        'gender': gender,
+        'preferredLanguage': selectedLanguage,
+        'acceptedTerms': acceptedTerms,
+      };
+      final referralCode = await ReferralInviteStore.peek();
+      if (referralCode != null) {
+        body['referralCode'] = referralCode;
+      }
+      final response = await _apiClient.post(
+        '/auth/discord/complete',
+        body,
+        includeAuth: false,
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = jsonDecode(response.body);
+        final token = data['token'] as String;
+        final playerData = data['player'] as Map<String, dynamic>;
+        await _apiClient.setToken(token);
+        try {
+          final player = Player.fromJson(playerData);
+          await ReferralInviteStore.clear();
+          _syncPushInBackground();
+          return AuthResult(success: true, player: player);
+        } catch (e) {
+          return AuthResult(
+            success: false,
+            error: 'Failed to parse player data: $e',
+          );
+        }
+      }
+
+      final data = jsonDecode(response.body);
+      String errorMessage = 'DISCORD_AUTH_FAILED';
+      if (data['event'] == 'auth.error' && data['params'] != null) {
+        errorMessage = (data['params']['reason'] as String?) ?? errorMessage;
+      }
+      return AuthResult(success: false, error: errorMessage);
+    } catch (e) {
+      print('[AuthService] Discord complete exception: $e');
       return AuthResult(success: false, error: 'Connection error: $e');
     }
   }

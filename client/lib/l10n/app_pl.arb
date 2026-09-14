@@ -12226,5 +12226,18 @@
   "authResendVerificationSent": "Wysłano e-mail weryfikacyjny. Sprawdź skrzynkę odbiorczą i spam.",
   "authResendVerificationCooldown": "Poczekaj chwilę, zanim poprosisz o kolejny e-mail.",
   "authResendVerificationFailed": "Nie udało się wysłać e-maila weryfikacyjnego. Spróbuj ponownie później.",
-  "hudCredits": "Kredyty"
+  "hudCredits": "Kredyty",
+  "discordContinue": "Kontynuuj z Discordem",
+  "discordCompleteHint": "Wybierz nazwę użytkownika i postać. Następnym razem będziesz mógł zalogować się za pomocą Discorda.",
+  "discordEmailInUse": "Ten adres e-mail na Discordzie należy już do innego konta. Zaloguj się przy użyciu swojej nazwy użytkownika i hasła.",
+  "discordAuthFailed": "Logowanie na Discordzie nie powiodło się. Spróbuj ponownie lub użyj swojej nazwy użytkownika i hasła.",
+  "discordNotConfigured": "Logowanie na Discordzie nie jest jeszcze dostępne.",
+  "discordPendingExpired": "Twoja rejestracja na Discordzie wygasła. Zacznij od nowa.",
+  "discordJoin": "Dołącz do Discorda",
+  "discordJoinBlurb": "Wyszukiwanie załogi, informacje o aktualizacjach w #updates i pomoc innych graczy. Oficjalne błędy nadal są sprawdzane przez wsparcie w grze.",
+  "discordSettingsTitle": "Społeczność Discorda",
+  "discordSettingsSubtitle": "Otwórz serwer The Mob State, aby uzyskać aktualizacje, załogi i czat.",
+  "landingFooterDiscord": "Niezgoda",
+  "legalPrivacySection13Title": "Logowanie na Discordzie",
+  "legalPrivacySection13Body": "Kiedy klikniesz Kontynuuj z Discordem, przeniesiemy Cię do Discorda. Jeśli zatwierdzisz, otrzymamy Twój identyfikator użytkownika Discord, nazwę użytkownika i adres e-mail, gdy Discord zweryfikuje ten adres e-mail. Używamy tego wyłącznie do tworzenia lub logowania się na Twoje konto The Mob State. Nie wysyłamy wiadomości ani nie dołączamy do serwerów jako Ty. Możesz cofnąć dostęp w ustawieniach autoryzowanych aplikacji Discord i poprosić nas o usunięcie danych gry, pisząc na adres info@themobstate.com."
 }

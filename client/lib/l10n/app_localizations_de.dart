@@ -165,6 +165,46 @@ class AppLocalizationsDe extends AppLocalizations {
       'Your Google sign-in expired. Start again.';
 
   @override
+  String get discordContinue => 'Weiter mit Discord';
+
+  @override
+  String get discordCompleteHint =>
+      'Wählen Sie einen Benutzernamen und einen Charakter. Das nächste Mal können Sie sich mit Discord anmelden.';
+
+  @override
+  String get discordEmailInUse =>
+      'Diese Discord-E-Mail gehört bereits zu einem anderen Konto. Melden Sie sich mit Ihrem Benutzernamen und Passwort an.';
+
+  @override
+  String get discordAuthFailed =>
+      'Die Anmeldung bei Discord ist fehlgeschlagen. Versuchen Sie es erneut oder verwenden Sie Ihren Benutzernamen und Ihr Passwort.';
+
+  @override
+  String get discordNotConfigured =>
+      'Die Discord-Anmeldung ist noch nicht verfügbar.';
+
+  @override
+  String get discordPendingExpired =>
+      'Ihre Discord-Anmeldung ist abgelaufen. Beginnen Sie erneut.';
+
+  @override
+  String get discordJoin => 'Treten Sie dem Discord bei';
+
+  @override
+  String get discordJoinBlurb =>
+      'Crew-Suche, Patchnotizen in #Updates und Hilfe von anderen Spielern. Offizielle Fehler werden immer noch durch den Support im Spiel behoben.';
+
+  @override
+  String get discordSettingsTitle => 'Discord-Community';
+
+  @override
+  String get discordSettingsSubtitle =>
+      'Öffnen Sie den The Mob State-Server für Updates, Crews und Chat.';
+
+  @override
+  String get landingFooterDiscord => 'Zwietracht';
+
+  @override
   String get pwaInstallTitle => 'Use The Mob State as an app';
 
   @override
@@ -18364,6 +18404,13 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get legalPrivacySection12Body =>
       'When you tap Continue with Google we send you to Google. If you approve, we receive your Google user ID, public profile name, and verified email address. We use this only to create or sign in to your The Mob State account. We do not access Gmail, Drive, or other Google data, and we do not post anything to your Google account. You can remove access in your Google account settings and ask us to delete your game data via info@themobstate.com.';
+
+  @override
+  String get legalPrivacySection13Title => 'Discord-Anmeldung';
+
+  @override
+  String get legalPrivacySection13Body =>
+      'Wenn Sie auf „Mit Discord fortfahren“ tippen, werden Sie zu Discord weitergeleitet. Wenn Sie zustimmen, erhalten wir Ihre Discord-Benutzer-ID, Ihren Benutzernamen und Ihre E-Mail-Adresse, sobald Discord diese E-Mail überprüft hat. Wir verwenden dies nur, um Ihr The Mob State-Konto zu erstellen oder sich darin anzumelden. Wir versenden keine Nachrichten oder treten nicht wie Sie Servern bei. Sie können den Zugriff in Ihren Discord-Einstellungen für autorisierte Apps widerrufen und uns bitten, Ihre Spieldaten über info@themobstate.com zu löschen.';
 
   @override
   String get legalDigitalGoodsTitle => 'Kauf digitaler Waren';

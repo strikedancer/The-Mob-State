@@ -12226,5 +12226,18 @@
   "authResendVerificationSent": "Bestätigungs-E-Mail gesendet. Überprüfen Sie den Posteingang und den Spam.",
   "authResendVerificationCooldown": "Warten Sie einen Moment, bevor Sie eine weitere E-Mail anfordern.",
   "authResendVerificationFailed": "Die Bestätigungs-E-Mail konnte nicht gesendet werden. Versuchen Sie es später noch einmal.",
-  "hudCredits": "Credits"
+  "hudCredits": "Credits",
+  "discordContinue": "Weiter mit Discord",
+  "discordCompleteHint": "Wählen Sie einen Benutzernamen und einen Charakter. Das nächste Mal können Sie sich mit Discord anmelden.",
+  "discordEmailInUse": "Diese Discord-E-Mail gehört bereits zu einem anderen Konto. Melden Sie sich mit Ihrem Benutzernamen und Passwort an.",
+  "discordAuthFailed": "Die Anmeldung bei Discord ist fehlgeschlagen. Versuchen Sie es erneut oder verwenden Sie Ihren Benutzernamen und Ihr Passwort.",
+  "discordNotConfigured": "Die Discord-Anmeldung ist noch nicht verfügbar.",
+  "discordPendingExpired": "Ihre Discord-Anmeldung ist abgelaufen. Beginnen Sie erneut.",
+  "discordJoin": "Treten Sie dem Discord bei",
+  "discordJoinBlurb": "Crew-Suche, Patchnotizen in #Updates und Hilfe von anderen Spielern. Offizielle Fehler werden immer noch durch den Support im Spiel behoben.",
+  "discordSettingsTitle": "Discord-Community",
+  "discordSettingsSubtitle": "Öffnen Sie den The Mob State-Server für Updates, Crews und Chat.",
+  "landingFooterDiscord": "Zwietracht",
+  "legalPrivacySection13Title": "Discord-Anmeldung",
+  "legalPrivacySection13Body": "Wenn Sie auf „Mit Discord fortfahren“ tippen, werden Sie zu Discord weitergeleitet. Wenn Sie zustimmen, erhalten wir Ihre Discord-Benutzer-ID, Ihren Benutzernamen und Ihre E-Mail-Adresse, sobald Discord diese E-Mail überprüft hat. Wir verwenden dies nur, um Ihr The Mob State-Konto zu erstellen oder sich darin anzumelden. Wir versenden keine Nachrichten oder treten nicht wie Sie Servern bei. Sie können den Zugriff in Ihren Discord-Einstellungen für autorisierte Apps widerrufen und uns bitten, Ihre Spieldaten über info@themobstate.com zu löschen."
 }

@@ -165,6 +165,46 @@ class AppLocalizationsNl extends AppLocalizations {
       'Je Google-aanmelding is verlopen. Begin opnieuw.';
 
   @override
+  String get discordContinue => 'Doorgaan met Discord';
+
+  @override
+  String get discordCompleteHint =>
+      'Kies een gebruikersnaam en personage. De volgende keer kun je inloggen met Discord.';
+
+  @override
+  String get discordEmailInUse =>
+      'Dit Discord-e-mailadres hoort al bij een ander account. Log in met je gebruikersnaam en wachtwoord.';
+
+  @override
+  String get discordAuthFailed =>
+      'Inloggen via Discord is mislukt. Probeer het opnieuw of gebruik je gebruikersnaam en wachtwoord.';
+
+  @override
+  String get discordNotConfigured =>
+      'Inloggen via Discord is nog niet beschikbaar.';
+
+  @override
+  String get discordPendingExpired =>
+      'Je Discord-aanmelding is verlopen. Begin opnieuw.';
+
+  @override
+  String get discordJoin => 'Naar Discord';
+
+  @override
+  String get discordJoinBlurb =>
+      'Crew zoeken, patch notes in #updates en hulp van andere spelers. Officiële bugs blijven via in-game Support.';
+
+  @override
+  String get discordSettingsTitle => 'Discord-community';
+
+  @override
+  String get discordSettingsSubtitle =>
+      'Open de The Mob State-server voor updates, crews en chat.';
+
+  @override
+  String get landingFooterDiscord => 'Discord';
+
+  @override
   String get pwaInstallTitle => 'Gebruik The Mob State als app';
 
   @override
@@ -18008,7 +18048,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicSettingsHow =>
-      'Taal: schakel tussen Nederlands en Engels. Alle UI-teksten, systeemberichten en notificaties worden direct bijgewerkt.\nAvatar en selfie-portret: wissel een preset in Instellingen (maximaal eens per week; VIP-looks alleen met Player VIP) of maak een gangsterportret van een foto. De complete stappen staan in Help → Profiel & avatar en in de Almanak-handleiding.\nPrivacy: stel in wie je online-status, locatie (huidig land) en statistieken kan zien — alleen jezelf, crew, vrienden of iedereen.\nPush-notificaties: schakel per systeem in/uit. Categorieën: Crimes, Crypto-handel, Prijsalerts, Orders, live spelerevents (competitie), Marktregime, Heist, Nightclub, algemene berichten.\nAls push al was toegestaan, koppelt de web/PWA-versie na refresh of update automatisch opnieuw aan je actuele apparaat-token; alleen als je browser meldingen blokkeert moet je dit opnieuw via Instellingen toestaan.\nCrypto-notificatievoorkeuren blijven bewaard nadat je Instellingen verlaat en later opnieuw opent.\nIn-app notificaties: apart instelbaar naast push. In-app toont meldingen in de app zonder een systeemnotificatie te sturen.\nBeveiliging: verander wachtwoord, stel twee-factor authenticatie in en bekijk actieve sessies.\nNotificatie-voorkeur per systeem: stel scherpte af zodat je geen meldingen-storm krijgt van systemen die je niet actief speelt.\nOp telefoon of tablet kun je The Mob State op het beginscherm zetten: Android Chrome opent een install-venster via de banner of Instellingen → Zet op beginscherm. Op iPhone/iPad: Delen → Zet op beginscherm (Apple laat volledig automatisch toevoegen niet toe).\nNa het inloggen kan één keer een popup vragen om push aan te zetten. Later onthoudt die keuze; hier kun je push alsnog inschakelen.';
+      'Taal: schakel tussen Nederlands en Engels. Alle UI-teksten, systeemberichten en notificaties worden direct bijgewerkt.\nAvatar en selfie-portret: wissel een preset in Instellingen (maximaal eens per week; VIP-looks alleen met Player VIP) of maak een gangsterportret van een foto. De complete stappen staan in Help → Profiel & avatar en in de Almanak-handleiding.\nPrivacy: stel in wie je online-status, locatie (huidig land) en statistieken kan zien — alleen jezelf, crew, vrienden of iedereen.\nPush-notificaties: schakel per systeem in/uit. Categorieën: Crimes, Crypto-handel, Prijsalerts, Orders, live spelerevents (competitie), Marktregime, Heist, Nightclub, algemene berichten.\nAls push al was toegestaan, koppelt de web/PWA-versie na refresh of update automatisch opnieuw aan je actuele apparaat-token; alleen als je browser meldingen blokkeert moet je dit opnieuw via Instellingen toestaan.\nCrypto-notificatievoorkeuren blijven bewaard nadat je Instellingen verlaat en later opnieuw opent.\nIn-app notificaties: apart instelbaar naast push. In-app toont meldingen in de app zonder een systeemnotificatie te sturen.\nBeveiliging: verander wachtwoord, stel twee-factor authenticatie in en bekijk actieve sessies.\nNotificatie-voorkeur per systeem: stel scherpte af zodat je geen meldingen-storm krijgt van systemen die je niet actief speelt.\nOp telefoon of tablet kun je The Mob State op het beginscherm zetten: Android Chrome opent een install-venster via de banner of Instellingen → Zet op beginscherm. Op iPhone/iPad: Delen → Zet op beginscherm (Apple laat volledig automatisch toevoegen niet toe).\nNa het inloggen kan één keer een popup vragen om push aan te zetten. Later onthoudt die keuze; hier kun je push alsnog inschakelen.\nCommunity: Instellingen toont een Discord-rij als de invite is gezet. Patch notes staan in #updates; officiële bugs blijven in in-game Support.';
 
   @override
   String get helpTopicSettingsTips =>
@@ -18123,14 +18163,14 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get legalPrivacySection02Body =>
-      'We kunnen accountgegevens (gebruikersnaam, e-mail indien opgegeven, gehasht wachtwoord), Facebook- of Google-logingegevens als je die optie kiest (provider-gebruikers-ID, openbare profielnaam en e-mail als die wordt gegeven), gameplay- en voortgangsdata, technische logs (IP-adres, apparaat/browsertype, tijdstempels), betalingsreferenties van betaalproviders (geen volledige kaartnummers) en door jou naar support gestuurde berichten verwerken.';
+      'We kunnen accountgegevens (gebruikersnaam, e-mail indien opgegeven, gehasht wachtwoord), Facebook-, Google- of Discord-logingegevens als je die optie kiest (provider-gebruikers-ID, openbare profielnaam en e-mail als die wordt gegeven), gameplay- en voortgangsdata, technische logs (IP-adres, apparaat/browsertype, tijdstempels), betalingsreferenties van betaalproviders (geen volledige kaartnummers) en door jou naar support gestuurde berichten verwerken.';
 
   @override
   String get legalPrivacySection03Title => 'Doeleinden';
 
   @override
   String get legalPrivacySection03Body =>
-      'We gebruiken gegevens om de game te leveren, een account aan te maken of je in te loggen (ook via Facebook Login of Google Sign-In), accounts te beveiligen, misbruik en fraude te voorkomen, aankopen af te handelen, prestaties te verbeteren, servicemeldingen te sturen en aan wettelijke verplichtingen te voldoen.';
+      'We gebruiken gegevens om de game te leveren, een account aan te maken of je in te loggen (ook via Facebook Login, Google Sign-In of Discord Sign-In), accounts te beveiligen, misbruik en fraude te voorkomen, aankopen af te handelen, prestaties te verbeteren, servicemeldingen te sturen en aan wettelijke verplichtingen te voldoen.';
 
   @override
   String get legalPrivacySection04Title => 'Rechtsgronden (EER/VK)';
@@ -18158,7 +18198,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get legalPrivacySection07Body =>
-      'We delen gegevens met infrastructuur- en betaalpartners voor zover nodig om de dienst te draaien, met passende afspraken. Als je Facebook Login gebruikt, ontvangt Meta het OAuth-verzoek dat jij goedkeurt; we plaatsen niets op je Facebook-profiel en mailen je vrienden niet. Als je Google Sign-In gebruikt, ontvangt Google het OAuth-verzoek dat jij goedkeurt; we openen geen Gmail, Drive of andere Google-diensten. We verkopen geen persoonsgegevens. We kunnen informatie verstrekken indien de wet dat vereist of om rechten en veiligheid te beschermen.';
+      'We delen gegevens met infrastructuur- en betaalpartners voor zover nodig om de dienst te draaien, met passende afspraken. Als je Facebook Login gebruikt, ontvangt Meta het OAuth-verzoek dat jij goedkeurt; we plaatsen niets op je Facebook-profiel en mailen je vrienden niet. Als je Google Sign-In gebruikt, ontvangt Google het OAuth-verzoek dat jij goedkeurt; we openen geen Gmail, Drive of andere Google-diensten. Als je Discord Sign-In gebruikt, ontvangt Discord het OAuth-verzoek dat jij goedkeurt; we sturen geen berichten en joinen geen servers namens jou. We verkopen geen persoonsgegevens. We kunnen informatie verstrekken indien de wet dat vereist of om rechten en veiligheid te beschermen.';
 
   @override
   String get legalPrivacySection08Title => 'Internationale doorgifte';
@@ -18172,7 +18212,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get legalPrivacySection09Body =>
-      'Je kunt rechten hebben op inzage, correctie, verwijdering, beperking of bezwaar, en op gegevensoverdraagbaarheid. Je kunt een klacht indienen bij een toezichthouder. Om rechten uit te oefenen, inclusief verwijdering van je account en Facebook- of Google-gekoppelde data, mail je info@themobstate.com of gebruik je in-game support; we kunnen je identiteit verifiëren.';
+      'Je kunt rechten hebben op inzage, correctie, verwijdering, beperking of bezwaar, en op gegevensoverdraagbaarheid. Je kunt een klacht indienen bij een toezichthouder. Om rechten uit te oefenen, inclusief verwijdering van je account en Facebook-, Google- of Discord-gekoppelde data, mail je info@themobstate.com of gebruik je in-game support; we kunnen je identiteit verifiëren.';
 
   @override
   String get legalPrivacySection10Title => 'Kinderen';
@@ -18194,6 +18234,13 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get legalPrivacySection12Body =>
       'Als je Doorgaan met Google kiest, sturen we je naar Google. Als je akkoord gaat, ontvangen we je Google-gebruikers-ID, openbare profielnaam en geverifieerd e-mailadres. We gebruiken dit alleen om je The Mob State-account aan te maken of in te loggen. We openen geen Gmail, Drive of andere Google-data en plaatsen niets op je Google-account. Je kunt de toegang intrekken in je Google-accountinstellingen en ons vragen je gamegegevens te wissen via info@themobstate.com.';
+
+  @override
+  String get legalPrivacySection13Title => 'Discord Sign-In';
+
+  @override
+  String get legalPrivacySection13Body =>
+      'Als je Doorgaan met Discord kiest, sturen we je naar Discord. Als je akkoord gaat, ontvangen we je Discord-gebruikers-ID, gebruikersnaam en e-mailadres als Discord dat adres heeft geverifieerd. We gebruiken dit alleen om je The Mob State-account aan te maken of in te loggen. We sturen geen berichten en joinen geen servers namens jou. Je kunt de toegang intrekken bij geautoriseerde apps in Discord en ons vragen je gamegegevens te wissen via info@themobstate.com.';
 
   @override
   String get legalDigitalGoodsTitle => 'Aankoop van digitale goederen';
@@ -18305,7 +18352,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get legalTermsSection01Body =>
-      'Je moet voldoen aan de minimumleeftijd die bij registratie voor jouw regio wordt getoond. Je bent verantwoordelijk voor juiste registratiegegevens en het geheim houden van je inloggegevens. Je kunt ook een account aanmaken of inloggen met Facebook of Google; je blijft verantwoordelijk voor dat provider-account en voor extra profielstappen die wij vragen. Je bent verantwoordelijk voor activiteit onder je account, tenzij je ons via support of info@themobstate.com onverwijld informeert bij vermoeden van ongeautoriseerde toegang.';
+      'Je moet voldoen aan de minimumleeftijd die bij registratie voor jouw regio wordt getoond. Je bent verantwoordelijk voor juiste registratiegegevens en het geheim houden van je inloggegevens. Je kunt ook een account aanmaken of inloggen met Facebook, Google of Discord; je blijft verantwoordelijk voor dat provider-account en voor extra profielstappen die wij vragen. Je bent verantwoordelijk voor activiteit onder je account, tenzij je ons via support of info@themobstate.com onverwijld informeert bij vermoeden van ongeautoriseerde toegang.';
 
   @override
   String get legalTermsSection02Title => 'Licentie voor gebruik';

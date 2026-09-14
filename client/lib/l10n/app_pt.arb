@@ -12226,5 +12226,18 @@
   "authResendVerificationSent": "E-mail de verificação enviado. Verifique caixa de entrada e spam.",
   "authResendVerificationCooldown": "Aguarde um momento antes de solicitar outro e-mail.",
   "authResendVerificationFailed": "O e-mail de verificação não pôde ser enviado. Tente novamente mais tarde.",
-  "hudCredits": "Créditos"
+  "hudCredits": "Créditos",
+  "discordContinue": "Continuar com discórdia",
+  "discordCompleteHint": "Escolha um nome de usuário e personagem. Da próxima vez, você pode entrar com o Discord.",
+  "discordEmailInUse": "Este e-mail do Discord já pertence a outra conta. Faça login com seu nome de usuário e senha.",
+  "discordAuthFailed": "Falha no login do Discord. Tente novamente ou use seu nome de usuário e senha.",
+  "discordNotConfigured": "O login do Discord ainda não está disponível.",
+  "discordPendingExpired": "Seu login no Discord expirou. Comece de novo.",
+  "discordJoin": "Junte-se à discórdia",
+  "discordJoinBlurb": "Pesquisa de Crew, notas de patch em #updates e ajuda de outros jogadores. Bugs oficiais ainda passam pelo suporte do jogo.",
+  "discordSettingsTitle": "Comunidade de discórdia",
+  "discordSettingsSubtitle": "Abra o servidor The Mob State para atualizações, equipes e bate-papo.",
+  "landingFooterDiscord": "Discórdia",
+  "legalPrivacySection13Title": "Login no Discord",
+  "legalPrivacySection13Body": "Quando você toca em Continuar com o Discord, enviamos você para o Discord. Se você aprovar, receberemos seu ID de usuário, nome de usuário e endereço de e-mail do Discord quando o Discord verificar esse e-mail. Usamos isso apenas para criar ou fazer login em sua conta The Mob State. Não enviamos mensagens nem ingressamos em servidores como você. Você pode revogar o acesso nas configurações de aplicativos autorizados do Discord e solicitar a exclusão dos dados do jogo através de info@themobstate.com."
 }

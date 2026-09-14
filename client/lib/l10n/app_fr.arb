@@ -12226,5 +12226,18 @@
   "authResendVerificationSent": "E-mail de vérification envoyé. Vérifiez la boîte de réception et les spams.",
   "authResendVerificationCooldown": "Attendez un moment avant de demander un autre e-mail.",
   "authResendVerificationFailed": "L'e-mail de vérification n'a pas pu être envoyé. Réessayez plus tard.",
-  "hudCredits": "Crédits"
+  "hudCredits": "Crédits",
+  "discordContinue": "Continuer avec Discord",
+  "discordCompleteHint": "Choisissez un nom d'utilisateur et un personnage. La prochaine fois, vous pourrez vous connecter avec Discord.",
+  "discordEmailInUse": "Cet e-mail Discord appartient déjà à un autre compte. Connectez-vous avec votre nom d'utilisateur et votre mot de passe.",
+  "discordAuthFailed": "La connexion à Discord a échoué. Réessayez ou utilisez votre nom d'utilisateur et votre mot de passe.",
+  "discordNotConfigured": "La connexion à Discord n’est pas encore disponible.",
+  "discordPendingExpired": "Votre connexion Discord a expiré. Recommencer.",
+  "discordJoin": "Rejoignez le Discord",
+  "discordJoinBlurb": "Recherche d'équipage, notes de mise à jour dans les #updates et aide d'autres joueurs. Les bugs officiels passent toujours par le support en jeu.",
+  "discordSettingsTitle": "Communauté Discorde",
+  "discordSettingsSubtitle": "Ouvrez le serveur The Mob State pour les mises à jour, les équipes et le chat.",
+  "landingFooterDiscord": "Discorde",
+  "legalPrivacySection13Title": "Connexion à Discord",
+  "legalPrivacySection13Body": "Lorsque vous appuyez sur Continuer avec Discord, nous vous envoyons vers Discord. Si vous approuvez, nous recevons votre identifiant d'utilisateur Discord, votre nom d'utilisateur et votre adresse e-mail lorsque Discord a vérifié cet e-mail. Nous l'utilisons uniquement pour créer ou vous connecter à votre compte The Mob State. Nous n'envoyons pas de messages et ne rejoignons pas les serveurs comme vous. Vous pouvez révoquer l'accès dans les paramètres de vos applications autorisées Discord et nous demander de supprimer vos données de jeu via info@themobstate.com."
 }

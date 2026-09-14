@@ -161,6 +161,45 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your Google sign-in expired. Start again.';
 
   @override
+  String get discordContinue => 'Continue with Discord';
+
+  @override
+  String get discordCompleteHint =>
+      'Choose a username and character. Next time you can sign in with Discord.';
+
+  @override
+  String get discordEmailInUse =>
+      'This Discord email already belongs to another account. Log in with your username and password.';
+
+  @override
+  String get discordAuthFailed =>
+      'Discord sign-in failed. Try again or use your username and password.';
+
+  @override
+  String get discordNotConfigured => 'Discord sign-in is not available yet.';
+
+  @override
+  String get discordPendingExpired =>
+      'Your Discord sign-in expired. Start again.';
+
+  @override
+  String get discordJoin => 'Join the Discord';
+
+  @override
+  String get discordJoinBlurb =>
+      'Crew search, patch notes in #updates, and help from other players. Official bugs still go through in-game Support.';
+
+  @override
+  String get discordSettingsTitle => 'Discord community';
+
+  @override
+  String get discordSettingsSubtitle =>
+      'Open the The Mob State server for updates, crews and chat.';
+
+  @override
+  String get landingFooterDiscord => 'Discord';
+
+  @override
   String get pwaInstallTitle => 'Use The Mob State as an app';
 
   @override
@@ -17966,7 +18005,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicSettingsHow =>
-      'Language: switch between Dutch and English. All UI texts, system messages and notifications update immediately.\nAvatar and selfie portrait: switch a preset in Settings (at most once per week; VIP looks need Player VIP) or turn a photo into a gangster portrait. Full steps live in Help → Profile & avatar and in the Almanac handbook.\nPrivacy: set who can see your online status, location (current country) and statistics — only you, crew, friends or everyone.\nPush notifications: toggle per system. Categories: Crimes, Crypto trading, Price alerts, Orders, live player events (competition), Market regime, Heist, Nightclub, general messages.\nIf push was already allowed, the web/PWA version automatically reconnects to your current device token after a refresh or update; you only need to re-enable it in Settings when the browser itself blocks notifications.\nCrypto notification preferences remain saved after leaving Settings and opening it again later.\nIn-app notifications: configurable separately from push. In-app shows alerts inside the app without sending a system notification.\nSecurity: change password, set up two-factor authentication and view active sessions.\nPer-system notification preference: fine tune so you do not get a notification storm from systems you are not actively playing.\nOn phone or tablet you can add The Mob State to your home screen: Android Chrome opens an install sheet from the banner or Settings → Add to Home Screen. On iPhone/iPad use Share → Add to Home Screen (Apple does not allow a fully automatic add).\nAfter login a one-time popup can ask you to enable push. Later remembers that choice; you can still enable push here.';
+      'Language: switch between Dutch and English. All UI texts, system messages and notifications update immediately.\nAvatar and selfie portrait: switch a preset in Settings (at most once per week; VIP looks need Player VIP) or turn a photo into a gangster portrait. Full steps live in Help → Profile & avatar and in the Almanac handbook.\nPrivacy: set who can see your online status, location (current country) and statistics — only you, crew, friends or everyone.\nPush notifications: toggle per system. Categories: Crimes, Crypto trading, Price alerts, Orders, live player events (competition), Market regime, Heist, Nightclub, general messages.\nIf push was already allowed, the web/PWA version automatically reconnects to your current device token after a refresh or update; you only need to re-enable it in Settings when the browser itself blocks notifications.\nCrypto notification preferences remain saved after leaving Settings and opening it again later.\nIn-app notifications: configurable separately from push. In-app shows alerts inside the app without sending a system notification.\nSecurity: change password, set up two-factor authentication and view active sessions.\nPer-system notification preference: fine tune so you do not get a notification storm from systems you are not actively playing.\nOn phone or tablet you can add The Mob State to your home screen: Android Chrome opens an install sheet from the banner or Settings → Add to Home Screen. On iPhone/iPad use Share → Add to Home Screen (Apple does not allow a fully automatic add).\nAfter login a one-time popup can ask you to enable push. Later remembers that choice; you can still enable push here.\nCommunity: Settings also shows a Discord row when the invite is configured. Patch notes live in #updates; official bugs stay in in-game Support.';
 
   @override
   String get helpTopicSettingsTips =>
@@ -18080,14 +18119,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get legalPrivacySection02Body =>
-      'We may process account data (username, email if provided, hashed password), Facebook Login or Google Sign-In data when you choose those options (provider user ID, public profile name, and email if granted), gameplay and progression data, technical logs (IP address, device/browser type, timestamps), payment-related references from our payment providers (we do not store full card numbers), and communications you send to support.';
+      'We may process account data (username, email if provided, hashed password), Facebook Login, Google Sign-In or Discord Sign-In data when you choose those options (provider user ID, public profile name, and email if granted), gameplay and progression data, technical logs (IP address, device/browser type, timestamps), payment-related references from our payment providers (we do not store full card numbers), and communications you send to support.';
 
   @override
   String get legalPrivacySection03Title => 'Purposes';
 
   @override
   String get legalPrivacySection03Body =>
-      'We use data to provide the game, create or sign you in to an account (including via Facebook Login or Google Sign-In), secure accounts, prevent abuse and fraud, process purchases, improve performance, communicate service messages, and comply with legal obligations.';
+      'We use data to provide the game, create or sign you in to an account (including via Facebook Login, Google Sign-In or Discord Sign-In), secure accounts, prevent abuse and fraud, process purchases, improve performance, communicate service messages, and comply with legal obligations.';
 
   @override
   String get legalPrivacySection04Title => 'Legal bases (EEA/UK)';
@@ -18115,7 +18154,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get legalPrivacySection07Body =>
-      'We share data with infrastructure and payment processors strictly as needed to run the service, under appropriate agreements. If you use Facebook Login, Meta receives the OAuth request you approve; we do not post to your Facebook profile or contact your friends. If you use Google Sign-In, Google receives the OAuth request you approve; we do not access Gmail, Drive, or other Google services. We do not sell your personal data. We may disclose information if required by law or to protect rights and safety.';
+      'We share data with infrastructure and payment processors strictly as needed to run the service, under appropriate agreements. If you use Facebook Login, Meta receives the OAuth request you approve; we do not post to your Facebook profile or contact your friends. If you use Google Sign-In, Google receives the OAuth request you approve; we do not access Gmail, Drive, or other Google services. If you use Discord Sign-In, Discord receives the OAuth request you approve; we do not join servers or send messages as you. We do not sell your personal data. We may disclose information if required by law or to protect rights and safety.';
 
   @override
   String get legalPrivacySection08Title => 'International transfers';
@@ -18129,7 +18168,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get legalPrivacySection09Body =>
-      'Depending on your location you may have rights to access, rectify, erase, restrict or object to certain processing, and to data portability. You may lodge a complaint with a supervisory authority. To exercise rights, including deletion of your account and Facebook- or Google-linked data, email info@themobstate.com or use in-game support; we may need to verify your identity.';
+      'Depending on your location you may have rights to access, rectify, erase, restrict or object to certain processing, and to data portability. You may lodge a complaint with a supervisory authority. To exercise rights, including deletion of your account and Facebook-, Google- or Discord-linked data, email info@themobstate.com or use in-game support; we may need to verify your identity.';
 
   @override
   String get legalPrivacySection10Title => 'Children';
@@ -18151,6 +18190,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get legalPrivacySection12Body =>
       'When you tap Continue with Google we send you to Google. If you approve, we receive your Google user ID, public profile name, and verified email address. We use this only to create or sign in to your The Mob State account. We do not access Gmail, Drive, or other Google data, and we do not post anything to your Google account. You can remove access in your Google account settings and ask us to delete your game data via info@themobstate.com.';
+
+  @override
+  String get legalPrivacySection13Title => 'Discord Sign-In';
+
+  @override
+  String get legalPrivacySection13Body =>
+      'When you tap Continue with Discord we send you to Discord. If you approve, we receive your Discord user ID, username, and email address when Discord has verified that email. We use this only to create or sign in to your The Mob State account. We do not send messages or join servers as you. You can revoke access in your Discord authorized-apps settings and ask us to delete your game data via info@themobstate.com.';
 
   @override
   String get legalDigitalGoodsTitle => 'Purchase of Digital Goods';
@@ -18261,7 +18307,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get legalTermsSection01Body =>
-      'You must meet any minimum age shown at registration for your region. You are responsible for providing accurate registration information and keeping your credentials confidential. You may also create or sign in with Facebook or Google; you remain responsible for that provider account and for completing any extra profile steps we require. You are responsible for activity under your account unless you notify us promptly via support or info@themobstate.com if you suspect unauthorised access.';
+      'You must meet any minimum age shown at registration for your region. You are responsible for providing accurate registration information and keeping your credentials confidential. You may also create or sign in with Facebook, Google or Discord; you remain responsible for that provider account and for completing any extra profile steps we require. You are responsible for activity under your account unless you notify us promptly via support or info@themobstate.com if you suspect unauthorised access.';
 
   @override
   String get legalTermsSection02Title => 'Licence to use the Service';

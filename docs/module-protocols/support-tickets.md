@@ -17,6 +17,7 @@ Player support intake, admin ticket handling, reply loop, todo tracking and push
 ## Change Rules
 - Keep the full round-trip intact: player report -> admin reply -> player push/support badge -> player follow-up in the Support screen.
 - Support replies must stay inside the Support screen itself and may not create player inbox/direct-message entries.
+- Discord `#hulp` is extra community chat, not a ticket replacement; official bugs/questions stay in-game Support.
 - Keep ticket + todo state recoverable after refresh and navigation.
 - The Support screen remains the canonical player reply surface; push and the Support badge are notifications, not separate conversation surfaces.
 - Dashboard Support badge must reflect unseen player-relevant ticket activity since the last Support visit, including public admin replies and admin-driven status changes.

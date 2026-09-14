@@ -47,7 +47,7 @@ Zonder Client ID + Secret blijft de knop verborgen.
 
 ## Must Preserve
 - Knop verbergen als login niet geconfigureerd is
-- Username/password- en Facebook-login blijven werken
+- Username/password-, Facebook- en Discord-login blijven werken
 - Terms-vinkje verplicht bij nieuwe Google-accounts
 - Geen extra Google-scopes zonder nieuw protocol
 

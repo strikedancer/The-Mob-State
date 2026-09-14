@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import { authService } from '../services/authService';
 import { facebookAuthService } from '../services/facebookAuthService';
 import { googleAuthService } from '../services/googleAuthService';
+import { discordAuthService } from '../services/discordAuthService';
 import { emailService } from '../services/emailService';
 import prisma from '../lib/prisma';
 import bcrypt from 'bcrypt';
@@ -97,6 +98,79 @@ router.post('/google/complete', async (req: Request, res: Response) => {
         reason === 'USERNAME_TAKEN' ||
         reason === 'GENDER_REQUIRED' ||
         reason === 'GOOGLE_PENDING_INVALID' ||
+        reason === 'PLAYER_BANNED'
+      ) {
+        return res.status(400).json({
+          event: 'auth.error',
+          params: { reason },
+        });
+      }
+    }
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
+
+router.get('/discord/status', (_req: Request, res: Response) => {
+  return res.json({
+    event: 'auth.discord.status',
+    params: discordAuthService.status(),
+  });
+});
+
+router.get('/discord/start', (_req: Request, res: Response) => {
+  try {
+    return res.redirect(discordAuthService.startUrl());
+  } catch (error) {
+    console.error('[AUTH] Discord start error:', error);
+    return res.redirect(discordAuthService.errorRedirect('DISCORD_NOT_CONFIGURED'));
+  }
+});
+
+router.get('/discord/callback', async (req: Request, res: Response) => {
+  try {
+    if (typeof req.query.error === 'string' && req.query.error) {
+      return res.redirect(discordAuthService.errorRedirect('DISCORD_AUTH_FAILED'));
+    }
+    const code = typeof req.query.code === 'string' ? req.query.code : undefined;
+    const state = typeof req.query.state === 'string' ? req.query.state : undefined;
+    return res.redirect(await discordAuthService.handleCallback(code, state));
+  } catch (error) {
+    console.error('[AUTH] Discord callback error:', error);
+    return res.redirect(discordAuthService.errorRedirect('DISCORD_AUTH_FAILED'));
+  }
+});
+
+router.post('/discord/complete', async (req: Request, res: Response) => {
+  try {
+    const { pendingToken, username, gender, preferredLanguage, acceptedTerms } = req.body ?? {};
+    const result = await discordAuthService.completeRegistration({
+      pendingToken: String(pendingToken ?? ''),
+      username: String(username ?? ''),
+      gender,
+      preferredLanguage,
+      acceptedTerms: Boolean(acceptedTerms),
+      referralCode: req.body?.referralCode,
+    });
+
+    return res.status(201).json({
+      event: 'auth.registered',
+      params: {},
+      token: result.token,
+      player: result.player,
+    });
+  } catch (error) {
+    console.error('[AUTH] Discord complete error:', error);
+    if (error instanceof Error) {
+      const reason = error.message;
+      if (
+        reason === 'TERMS_REQUIRED' ||
+        reason === 'USERNAME_INVALID' ||
+        reason === 'USERNAME_TAKEN' ||
+        reason === 'GENDER_REQUIRED' ||
+        reason === 'DISCORD_PENDING_INVALID' ||
         reason === 'PLAYER_BANNED'
       ) {
         return res.status(400).json({

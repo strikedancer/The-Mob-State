@@ -12226,5 +12226,18 @@
   "authResendVerificationSent": "Correo electrónico de verificación enviado. Revisa bandeja de entrada y spam.",
   "authResendVerificationCooldown": "Espere un momento antes de solicitar otro correo electrónico.",
   "authResendVerificationFailed": "No se pudo enviar el correo electrónico de verificación. Vuelve a intentarlo más tarde.",
-  "hudCredits": "Créditos"
+  "hudCredits": "Créditos",
+  "discordContinue": "Continuar con discordia",
+  "discordCompleteHint": "Elige un nombre de usuario y un personaje. La próxima vez podrás iniciar sesión con Discord.",
+  "discordEmailInUse": "Este correo electrónico de Discord ya pertenece a otra cuenta. Inicie sesión con su nombre de usuario y contraseña.",
+  "discordAuthFailed": "Error al iniciar sesión en Discord. Inténtalo de nuevo o utiliza tu nombre de usuario y contraseña.",
+  "discordNotConfigured": "El inicio de sesión en Discord aún no está disponible.",
+  "discordPendingExpired": "Tu inicio de sesión en Discord expiró. Empezar de nuevo.",
+  "discordJoin": "Únete a la discordia",
+  "discordJoinBlurb": "Búsqueda de Crew, notas de parches en #actualizaciones y ayuda de otros jugadores. Los errores oficiales aún pasan por el soporte del juego.",
+  "discordSettingsTitle": "comunidad de discordia",
+  "discordSettingsSubtitle": "Abra el servidor de The Mob State para obtener actualizaciones, equipos y chatear.",
+  "landingFooterDiscord": "Discordia",
+  "legalPrivacySection13Title": "Iniciar sesión en Discord",
+  "legalPrivacySection13Body": "Cuando tocas Continuar con Discord, te enviamos a Discord. Si lo aprueba, recibiremos su ID de usuario de Discord, su nombre de usuario y su dirección de correo electrónico cuando Discord haya verificado ese correo electrónico. Usamos esto solo para crear o iniciar sesión en su cuenta de The Mob State. No enviamos mensajes ni nos unimos a servidores como usted. Puedes revocar el acceso en la configuración de tus aplicaciones autorizadas de Discord y pedirnos que eliminemos los datos de tu juego a través de info@themobstate.com."
 }

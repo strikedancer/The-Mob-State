@@ -386,6 +386,72 @@ abstract class AppLocalizations {
   /// **'Your Google sign-in expired. Start again.'**
   String get googlePendingExpired;
 
+  /// No description provided for @discordContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Discord'**
+  String get discordContinue;
+
+  /// No description provided for @discordCompleteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a username and character. Next time you can sign in with Discord.'**
+  String get discordCompleteHint;
+
+  /// No description provided for @discordEmailInUse.
+  ///
+  /// In en, this message translates to:
+  /// **'This Discord email already belongs to another account. Log in with your username and password.'**
+  String get discordEmailInUse;
+
+  /// No description provided for @discordAuthFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Discord sign-in failed. Try again or use your username and password.'**
+  String get discordAuthFailed;
+
+  /// No description provided for @discordNotConfigured.
+  ///
+  /// In en, this message translates to:
+  /// **'Discord sign-in is not available yet.'**
+  String get discordNotConfigured;
+
+  /// No description provided for @discordPendingExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Discord sign-in expired. Start again.'**
+  String get discordPendingExpired;
+
+  /// No description provided for @discordJoin.
+  ///
+  /// In en, this message translates to:
+  /// **'Join the Discord'**
+  String get discordJoin;
+
+  /// No description provided for @discordJoinBlurb.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew search, patch notes in #updates, and help from other players. Official bugs still go through in-game Support.'**
+  String get discordJoinBlurb;
+
+  /// No description provided for @discordSettingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Discord community'**
+  String get discordSettingsTitle;
+
+  /// No description provided for @discordSettingsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the The Mob State server for updates, crews and chat.'**
+  String get discordSettingsSubtitle;
+
+  /// No description provided for @landingFooterDiscord.
+  ///
+  /// In en, this message translates to:
+  /// **'Discord'**
+  String get landingFooterDiscord;
+
   /// No description provided for @pwaInstallTitle.
   ///
   /// In en, this message translates to:
@@ -31002,7 +31068,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicSettingsHow.
   ///
   /// In en, this message translates to:
-  /// **'Language: switch between Dutch and English. All UI texts, system messages and notifications update immediately.\nAvatar and selfie portrait: switch a preset in Settings (at most once per week; VIP looks need Player VIP) or turn a photo into a gangster portrait. Full steps live in Help → Profile & avatar and in the Almanac handbook.\nPrivacy: set who can see your online status, location (current country) and statistics — only you, crew, friends or everyone.\nPush notifications: toggle per system. Categories: Crimes, Crypto trading, Price alerts, Orders, live player events (competition), Market regime, Heist, Nightclub, general messages.\nIf push was already allowed, the web/PWA version automatically reconnects to your current device token after a refresh or update; you only need to re-enable it in Settings when the browser itself blocks notifications.\nCrypto notification preferences remain saved after leaving Settings and opening it again later.\nIn-app notifications: configurable separately from push. In-app shows alerts inside the app without sending a system notification.\nSecurity: change password, set up two-factor authentication and view active sessions.\nPer-system notification preference: fine tune so you do not get a notification storm from systems you are not actively playing.\nOn phone or tablet you can add The Mob State to your home screen: Android Chrome opens an install sheet from the banner or Settings → Add to Home Screen. On iPhone/iPad use Share → Add to Home Screen (Apple does not allow a fully automatic add).\nAfter login a one-time popup can ask you to enable push. Later remembers that choice; you can still enable push here.'**
+  /// **'Language: switch between Dutch and English. All UI texts, system messages and notifications update immediately.\nAvatar and selfie portrait: switch a preset in Settings (at most once per week; VIP looks need Player VIP) or turn a photo into a gangster portrait. Full steps live in Help → Profile & avatar and in the Almanac handbook.\nPrivacy: set who can see your online status, location (current country) and statistics — only you, crew, friends or everyone.\nPush notifications: toggle per system. Categories: Crimes, Crypto trading, Price alerts, Orders, live player events (competition), Market regime, Heist, Nightclub, general messages.\nIf push was already allowed, the web/PWA version automatically reconnects to your current device token after a refresh or update; you only need to re-enable it in Settings when the browser itself blocks notifications.\nCrypto notification preferences remain saved after leaving Settings and opening it again later.\nIn-app notifications: configurable separately from push. In-app shows alerts inside the app without sending a system notification.\nSecurity: change password, set up two-factor authentication and view active sessions.\nPer-system notification preference: fine tune so you do not get a notification storm from systems you are not actively playing.\nOn phone or tablet you can add The Mob State to your home screen: Android Chrome opens an install sheet from the banner or Settings → Add to Home Screen. On iPhone/iPad use Share → Add to Home Screen (Apple does not allow a fully automatic add).\nAfter login a one-time popup can ask you to enable push. Later remembers that choice; you can still enable push here.\nCommunity: Settings also shows a Discord row when the invite is configured. Patch notes live in #updates; official bugs stay in in-game Support.'**
   String get helpTopicSettingsHow;
 
   /// No description provided for @helpTopicSettingsTips.
@@ -31206,7 +31272,7 @@ abstract class AppLocalizations {
   /// No description provided for @legalPrivacySection02Body.
   ///
   /// In en, this message translates to:
-  /// **'We may process account data (username, email if provided, hashed password), Facebook Login or Google Sign-In data when you choose those options (provider user ID, public profile name, and email if granted), gameplay and progression data, technical logs (IP address, device/browser type, timestamps), payment-related references from our payment providers (we do not store full card numbers), and communications you send to support.'**
+  /// **'We may process account data (username, email if provided, hashed password), Facebook Login, Google Sign-In or Discord Sign-In data when you choose those options (provider user ID, public profile name, and email if granted), gameplay and progression data, technical logs (IP address, device/browser type, timestamps), payment-related references from our payment providers (we do not store full card numbers), and communications you send to support.'**
   String get legalPrivacySection02Body;
 
   /// No description provided for @legalPrivacySection03Title.
@@ -31218,7 +31284,7 @@ abstract class AppLocalizations {
   /// No description provided for @legalPrivacySection03Body.
   ///
   /// In en, this message translates to:
-  /// **'We use data to provide the game, create or sign you in to an account (including via Facebook Login or Google Sign-In), secure accounts, prevent abuse and fraud, process purchases, improve performance, communicate service messages, and comply with legal obligations.'**
+  /// **'We use data to provide the game, create or sign you in to an account (including via Facebook Login, Google Sign-In or Discord Sign-In), secure accounts, prevent abuse and fraud, process purchases, improve performance, communicate service messages, and comply with legal obligations.'**
   String get legalPrivacySection03Body;
 
   /// No description provided for @legalPrivacySection04Title.
@@ -31266,7 +31332,7 @@ abstract class AppLocalizations {
   /// No description provided for @legalPrivacySection07Body.
   ///
   /// In en, this message translates to:
-  /// **'We share data with infrastructure and payment processors strictly as needed to run the service, under appropriate agreements. If you use Facebook Login, Meta receives the OAuth request you approve; we do not post to your Facebook profile or contact your friends. If you use Google Sign-In, Google receives the OAuth request you approve; we do not access Gmail, Drive, or other Google services. We do not sell your personal data. We may disclose information if required by law or to protect rights and safety.'**
+  /// **'We share data with infrastructure and payment processors strictly as needed to run the service, under appropriate agreements. If you use Facebook Login, Meta receives the OAuth request you approve; we do not post to your Facebook profile or contact your friends. If you use Google Sign-In, Google receives the OAuth request you approve; we do not access Gmail, Drive, or other Google services. If you use Discord Sign-In, Discord receives the OAuth request you approve; we do not join servers or send messages as you. We do not sell your personal data. We may disclose information if required by law or to protect rights and safety.'**
   String get legalPrivacySection07Body;
 
   /// No description provided for @legalPrivacySection08Title.
@@ -31290,7 +31356,7 @@ abstract class AppLocalizations {
   /// No description provided for @legalPrivacySection09Body.
   ///
   /// In en, this message translates to:
-  /// **'Depending on your location you may have rights to access, rectify, erase, restrict or object to certain processing, and to data portability. You may lodge a complaint with a supervisory authority. To exercise rights, including deletion of your account and Facebook- or Google-linked data, email info@themobstate.com or use in-game support; we may need to verify your identity.'**
+  /// **'Depending on your location you may have rights to access, rectify, erase, restrict or object to certain processing, and to data portability. You may lodge a complaint with a supervisory authority. To exercise rights, including deletion of your account and Facebook-, Google- or Discord-linked data, email info@themobstate.com or use in-game support; we may need to verify your identity.'**
   String get legalPrivacySection09Body;
 
   /// No description provided for @legalPrivacySection10Title.
@@ -31328,6 +31394,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'When you tap Continue with Google we send you to Google. If you approve, we receive your Google user ID, public profile name, and verified email address. We use this only to create or sign in to your The Mob State account. We do not access Gmail, Drive, or other Google data, and we do not post anything to your Google account. You can remove access in your Google account settings and ask us to delete your game data via info@themobstate.com.'**
   String get legalPrivacySection12Body;
+
+  /// No description provided for @legalPrivacySection13Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Discord Sign-In'**
+  String get legalPrivacySection13Title;
+
+  /// No description provided for @legalPrivacySection13Body.
+  ///
+  /// In en, this message translates to:
+  /// **'When you tap Continue with Discord we send you to Discord. If you approve, we receive your Discord user ID, username, and email address when Discord has verified that email. We use this only to create or sign in to your The Mob State account. We do not send messages or join servers as you. You can revoke access in your Discord authorized-apps settings and ask us to delete your game data via info@themobstate.com.'**
+  String get legalPrivacySection13Body;
 
   /// No description provided for @legalDigitalGoodsTitle.
   ///
@@ -31518,7 +31596,7 @@ abstract class AppLocalizations {
   /// No description provided for @legalTermsSection01Body.
   ///
   /// In en, this message translates to:
-  /// **'You must meet any minimum age shown at registration for your region. You are responsible for providing accurate registration information and keeping your credentials confidential. You may also create or sign in with Facebook or Google; you remain responsible for that provider account and for completing any extra profile steps we require. You are responsible for activity under your account unless you notify us promptly via support or info@themobstate.com if you suspect unauthorised access.'**
+  /// **'You must meet any minimum age shown at registration for your region. You are responsible for providing accurate registration information and keeping your credentials confidential. You may also create or sign in with Facebook, Google or Discord; you remain responsible for that provider account and for completing any extra profile steps we require. You are responsible for activity under your account unless you notify us promptly via support or info@themobstate.com if you suspect unauthorised access.'**
   String get legalTermsSection01Body;
 
   /// No description provided for @legalTermsSection02Title.

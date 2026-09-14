@@ -4,7 +4,7 @@
 Language, privacy, avatar and notification preference management. Custom selfie→gangster portraits: style chips + gender-aware generation (see `player-portraits.md`); help copy should not promise outcomes Leonardo cannot guarantee.
 
 ## Primary Frontend Entry
-- client/lib/screens/settings_screen.dart
+- client/lib/screens/settings_screen.dart — language, avatar, notifications, **Discord community row** when `GET /public/community` returns an invite
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.

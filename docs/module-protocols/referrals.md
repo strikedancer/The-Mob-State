@@ -7,11 +7,11 @@ Personal invite URLs from **Friends → Deel link**. Every new account already g
 - `client/lib/screens/friends_screen.dart` — share / copy / Facebook sharer
 - `client/lib/utils/referral_invite_store.dart` — keeps `ref` across landing, login and OAuth return
 - `client/lib/screens/login_screen.dart` + `client/lib/main.dart` — capture `?ref=`
-- Auth register / Facebook complete / Google complete send `referralCode`
+- Auth register / Facebook complete / Google complete / Discord complete send `referralCode`
 
 ## Primary Backend Entry
 - `GET /friends/invite` — `{ code, url, referrerCash, recruitCash, dailyCap, rewardedToday, qualifiedCount }`
-- `referralService.attachOnRegister` on password + Facebook + Google new accounts
+- `referralService.attachOnRegister` on password + Facebook + Google + Discord new accounts
 - `referralService.qualifyFromGameplay` after a successful crime or job
 - Services: `backend/src/services/referralService.ts`
 
@@ -25,7 +25,7 @@ Personal invite URLs from **Friends → Deel link**. Every new account already g
 
 ## Cross-Module Dependencies
 - Friends → invite UI, auto-accepted friendship
-- Auth / Facebook / Google → `referralCode` on new accounts only
+- Auth / Facebook / Google / Discord → `referralCode` on new accounts only
 - Crimes / Jobs → qualify hook
 - Messages → system inbox + optional push to the referrer
 - Dashboard → cash HUD updates after payout

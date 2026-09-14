@@ -24,6 +24,7 @@ import { ensureVipPrestigeSchema } from './startup/ensureVipPrestigeSchema';
 import { ensureDailyGoalsSchema } from './startup/ensureDailyGoalsSchema';
 import { ensureSiteVisitorsSchema } from './startup/ensureSiteVisitorsSchema';
 import { ensureCrewRecruitingSchema } from './startup/ensureCrewRecruitingSchema';
+import { ensureDiscordSchema } from './startup/ensureDiscordSchema';
 import { playerStartService } from './services/playerStartService';
 import { ensureVenueNpcOccupancy } from './services/venueNpcOccupancyService';
 import { ensureCrewTradeStorageSchema } from './startup/ensureCrewTradeStorageSchema';
@@ -72,6 +73,7 @@ async function startServer() {
   await ensureDailyGoalsSchema();
   await ensureSiteVisitorsSchema();
   await ensureCrewRecruitingSchema();
+  await ensureDiscordSchema();
   await ensureCrewTradeStorageSchema();
   try {
     await playerStartService.ensureStarterCrew();

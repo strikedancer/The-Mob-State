@@ -4,8 +4,19 @@ import { leaderboardService } from '../services/leaderboardService';
 import { getLeaderboard as getTerritoryCrewLeaderboard } from '../services/territoryService';
 import { getTerritoryDramaSnapshot } from '../services/territoryMetaService';
 import { siteVisitorService } from '../services/siteVisitorService';
+import { getDiscordInviteUrl } from '../lib/discordInvite';
 
 const router = Router();
+
+const publicCommunityLimiter = createRateLimiter({
+  windowMs: 60 * 1000,
+  maxRequests: 40,
+  message: 'PUBLIC_COMMUNITY_RATE_LIMIT',
+  keyGenerator: (req) => {
+    const ip = req.ip || req.socket.remoteAddress || 'unknown';
+    return `public_community:${ip}`;
+  },
+});
 
 const publicHomeLimiter = createRateLimiter({
   windowMs: 60 * 1000,
@@ -15,6 +26,19 @@ const publicHomeLimiter = createRateLimiter({
     const ip = req.ip || req.socket.remoteAddress || 'unknown';
     return `public_home:${ip}`;
   },
+});
+
+/**
+ * GET /public/community
+ * Public Discord invite only (no auth). Empty string when unset.
+ */
+router.get('/community', publicCommunityLimiter, (_req: Request, res: Response) => {
+  return res.json({
+    success: true,
+    data: {
+      discordInviteUrl: getDiscordInviteUrl(),
+    },
+  });
 });
 
 /**
@@ -77,6 +101,7 @@ router.get('/home', publicHomeLimiter, async (req: Request, res: Response) => {
         topPlayers,
         topCrews,
         territoryDrama,
+        discordInviteUrl: getDiscordInviteUrl(),
       },
     });
   } catch (error) {

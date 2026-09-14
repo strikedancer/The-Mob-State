@@ -51,6 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String? _selectedGender;
   bool _facebookEnabled = false;
   bool _googleEnabled = false;
+  bool _discordEnabled = false;
   bool _resendingVerification = false;
   String? _oauthPendingToken;
   String? _oauthProvider;
@@ -64,9 +65,11 @@ class _LoginScreenState extends State<LoginScreen> {
       _oauthPendingToken != null && _oauthPendingToken!.isNotEmpty;
 
   bool get _isGoogleComplete => _isOAuthComplete && _oauthProvider == 'google';
+  bool get _isDiscordComplete => _isOAuthComplete && _oauthProvider == 'discord';
 
   bool get _showSocialButtons =>
-      (_facebookEnabled || _googleEnabled) && !_isOAuthComplete;
+      (_facebookEnabled || _googleEnabled || _discordEnabled) &&
+      !_isOAuthComplete;
 
   @override
   void initState() {
@@ -104,10 +107,12 @@ class _LoginScreenState extends State<LoginScreen> {
     final authService = AuthService();
     final facebook = await authService.facebookStatus();
     final google = await authService.googleStatus();
+    final discord = await authService.discordStatus();
     if (!mounted) return;
     setState(() {
       _facebookEnabled = facebook.loginEnabled;
       _googleEnabled = google.loginEnabled;
+      _discordEnabled = discord.loginEnabled;
     });
   }
 
@@ -116,7 +121,8 @@ class _LoginScreenState extends State<LoginScreen> {
     final params = Uri.base.queryParameters;
     final googleStatus = params['g']?.trim() ?? '';
     final facebookStatus = params['fb']?.trim() ?? '';
-    if (googleStatus.isEmpty && facebookStatus.isEmpty) {
+    final discordStatus = params['d']?.trim() ?? '';
+    if (googleStatus.isEmpty && facebookStatus.isEmpty && discordStatus.isEmpty) {
       return;
     }
 
@@ -125,6 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final token = params['token']?.trim() ?? '';
     final googleReason = params['reason'] ?? 'GOOGLE_AUTH_FAILED';
     final facebookReason = params['reason'] ?? 'FACEBOOK_AUTH_FAILED';
+    final discordReason = params['reason'] ?? 'DISCORD_AUTH_FAILED';
 
     replaceBrowserPath('/login');
 
@@ -136,6 +143,19 @@ class _LoginScreenState extends State<LoginScreen> {
         pending: pending,
         suggested: suggested,
         reason: googleReason,
+        token: token,
+      );
+      return;
+    }
+
+    if (discordStatus.isNotEmpty) {
+      await _applyOAuthReturn(
+        status: discordStatus,
+        provider: 'discord',
+        fallbackError: 'DISCORD_AUTH_FAILED',
+        pending: pending,
+        suggested: suggested,
+        reason: discordReason,
         token: token,
       );
       return;
@@ -224,6 +244,11 @@ class _LoginScreenState extends State<LoginScreen> {
     await launchUrl(uri, webOnlyWindowName: '_self');
   }
 
+  Future<void> _startDiscordLogin() async {
+    final uri = Uri.parse('${AppConfig.apiBaseUrl}/auth/discord/start');
+    await launchUrl(uri, webOnlyWindowName: '_self');
+  }
+
   @override
   void dispose() {
     _usernameController.dispose();
@@ -273,6 +298,18 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     if (normalized == 'GOOGLE_AUTH_FAILED') {
       return l10n.googleAuthFailed;
+    }
+    if (normalized == 'DISCORD_EMAIL_IN_USE') {
+      return l10n.discordEmailInUse;
+    }
+    if (normalized == 'DISCORD_PENDING_INVALID') {
+      return l10n.discordPendingExpired;
+    }
+    if (normalized == 'DISCORD_NOT_CONFIGURED') {
+      return l10n.discordNotConfigured;
+    }
+    if (normalized == 'DISCORD_AUTH_FAILED') {
+      return l10n.discordAuthFailed;
     }
     if (normalized == 'PLAYER_BANNED') {
       return l10n.facebookBanned;
@@ -471,13 +508,21 @@ class _LoginScreenState extends State<LoginScreen> {
               acceptedTerms: _acceptedTerms,
               language: language,
             )
-          : await authProvider.completeFacebook(
-              pendingToken: pendingToken,
-              username: username,
-              gender: _selectedGender!,
-              acceptedTerms: _acceptedTerms,
-              language: language,
-            );
+          : _oauthProvider == 'discord'
+              ? await authProvider.completeDiscord(
+                  pendingToken: pendingToken,
+                  username: username,
+                  gender: _selectedGender!,
+                  acceptedTerms: _acceptedTerms,
+                  language: language,
+                )
+              : await authProvider.completeFacebook(
+                  pendingToken: pendingToken,
+                  username: username,
+                  gender: _selectedGender!,
+                  acceptedTerms: _acceptedTerms,
+                  language: language,
+                );
     } else if (_isLogin) {
       success = await authProvider.login(username, password);
     } else {
@@ -682,7 +727,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   Text(
                     _isGoogleComplete
                         ? l10n.googleCompleteHint
-                        : l10n.facebookCompleteHint,
+                        : _isDiscordComplete
+                            ? l10n.discordCompleteHint
+                            : l10n.facebookCompleteHint,
                     style: TextStyle(
                       color: Colors.white70,
                       fontSize: isMobile ? 12 : 13,
@@ -1247,7 +1294,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     SizedBox(height: isMobile ? 10 : 12),
                   ],
-                  if (_facebookEnabled)
+                  if (_facebookEnabled) ...[
                     SizedBox(
                       height: isMobile ? 46 : 50,
                       child: OutlinedButton(
@@ -1262,6 +1309,31 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         child: Text(
                           l10n.facebookContinue,
+                          style: TextStyle(
+                            fontSize: isMobile ? 14 : 15,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 0.4,
+                          ),
+                        ),
+                      ),
+                    ),
+                    if (_discordEnabled) SizedBox(height: isMobile ? 10 : 12),
+                  ],
+                  if (_discordEnabled)
+                    SizedBox(
+                      height: isMobile ? 46 : 50,
+                      child: OutlinedButton(
+                        onPressed: _startDiscordLogin,
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          side: const BorderSide(color: Color(0xFF5865F2)),
+                          backgroundColor: const Color(0xFF5865F2),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
+                        child: Text(
+                          l10n.discordContinue,
                           style: TextStyle(
                             fontSize: isMobile ? 14 : 15,
                             fontWeight: FontWeight.bold,

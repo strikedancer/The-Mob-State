@@ -21,7 +21,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Overige spelersecties (o.a. bank, casino, crew, zwarte markt, vault, travel, training, events) gebruiken dezelfde `EmpireHubScaffold`. Page-info `i` leeft in de hero. Dashboard-home, Help en Instellingen blijven zonder foto-hero.
 - Dealer shops live on **Economie → Zwarte Markt** (trade goods, weapons, ammo, tools, security, materials, backpacks, plus player market). Do not add separate sidebar entries for Tools or Security; search aliases may still open those shops.
 - Premium & Credits is a first-class dashboard destination when premium purchases or wallet actions are exposed to players; wire it into the sidebar and keep direct route entry (`/premium`) working for payment return flows.
-- Help & Uitleg includes a CTA to the public Almanac handbook (`wiki.themobstate.com/{lang}/guide/`); keep `helpAlmanac*` ARB keys in sync.
+- Help & Uitleg includes a CTA to the public Almanac handbook (`wiki.themobstate.com/{lang}/guide/`) and, when configured, a Discord invite; keep `helpAlmanac*` and `discordJoin*` ARB keys in sync.
 
 ## Check Before Editing
 - What is the player trying to achieve in this screen or loop?

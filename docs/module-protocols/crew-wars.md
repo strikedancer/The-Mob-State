@@ -215,6 +215,7 @@ CREW_WAR_DISCORD_MIN_INTERVAL_MS=15000
 3. Empty `CREW_WAR_DISCORD_WEBHOOK_URL` = transport off. Game wars still run.
 4. Templates: `backend/.env.example` and `.env.docker.example`. Compose must pass the three keys through (see `docker-compose.plesk.yml`).
 5. Do not put a real webhook URL in git.
+6. Player-facing patch notes use a **different** webhook (`DISCORD_UPDATES_WEBHOOK_URL` on public `#updates`). Never point Crew Wars events at that channel. See `discord.md`.
 - Admin-gestarte wars en admin lifecycle-acties zoals `start_now` en `enter_lockdown` moeten exact dezelfde event-transports activeren als de reguliere war-flow; admin controls mogen geen stille bypass zijn voor push/inbox of Discord.
 - Bij `declared`, `started`, `lockdown` en `resolved` moeten alle betrokken crew members, inclusief leaders, een consistente push/inbox-notificatie kunnen ontvangen; automatische lifecycle-transities mogen die member-notificaties niet overslaan.
 - Relevante Discord use-cases: war declared, war started, double points hour, territory swing, war ended, season rewards.

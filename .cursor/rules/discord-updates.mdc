@@ -1,0 +1,25 @@
+---
+description: After a player-facing live deploy, post a short Dutch changelog to Discord #updates.
+alwaysApply: true
+---
+
+# Discord #updates na speler-gerichte deploy
+
+Na een **live** wijziging die spelers merken (gameplay, UI, login, Help), post een korte changelog naar Discord `#updates`:
+
+```
+.\scripts\post_discord_update.ps1 -Title "Korte titel" -Bullets @("Wat er beter is","Tweede punt")
+```
+
+De webhook staat in `DISCORD_UPDATES_WEBHOOK_URL` (environment of `.env.plesk`). Print de URL nooit. Protocol: `docs/module-protocols/discord.md`.
+
+## Wel posten
+
+- Verbeteringen, bugfixes en nieuwe spelerfeatures die net gedeployed zijn
+- Nederlands, 3–6 bullets, geen jargon, link blijft `https://themobstate.com`
+
+## Niet posten
+
+- Docs-only, interne refactors, lokaal-only werk
+- Crew Wars-events (die gaan naar het aparte ops-webhook)
+- Commit-hashes, IP-adressen, spelersmails, secrets

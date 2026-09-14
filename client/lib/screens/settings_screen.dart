@@ -16,6 +16,8 @@ import '../widgets/avatar_picker_sheet.dart';
 import '../utils/pwa_install.dart';
 import '../widgets/game_page_info.dart';
 import '../widgets/pwa_install_banner.dart';
+import '../widgets/discord_invite_button.dart';
+import '../services/discord_community_service.dart';
 
 class SettingsScreen extends StatefulWidget {
   final bool embedded;
@@ -44,6 +46,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _inAppCryptoLeaderboard = true;
   String _selectedLanguage = 'nl';
   String? _error;
+  String? _discordInviteUrl;
   AuthorizationStatus? _pushAuthorizationStatus;
   bool _pushTokenRegistered = false;
   bool _isEnablingPush = false;
@@ -54,6 +57,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void initState() {
     super.initState();
     _loadSettings();
+    DiscordCommunityService().fetchInviteUrl().then((url) {
+      if (!mounted) return;
+      setState(() => _discordInviteUrl = url);
+    });
   }
 
   bool _readPreferenceValue(dynamic value, bool fallback) {
@@ -734,6 +741,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     subtitle: Text(l10n.settingsPwaInstallSubtitle),
                     trailing: const Icon(Icons.chevron_right),
                     onTap: () => startPwaHomeScreenInstall(context),
+                  ),
+                ),
+              ],
+              if (_discordInviteUrl != null && _discordInviteUrl!.isNotEmpty) ...[
+                const SizedBox(height: 8),
+                Card(
+                  child: ListTile(
+                    leading: const Icon(Icons.forum, color: discordBlurple),
+                    title: Text(l10n.discordSettingsTitle),
+                    subtitle: Text(l10n.discordSettingsSubtitle),
+                    trailing: const Icon(Icons.open_in_new),
+                    onTap: () => openDiscordInvite(_discordInviteUrl!),
                   ),
                 ),
               ],

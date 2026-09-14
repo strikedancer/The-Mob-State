@@ -44,6 +44,7 @@ model Player {
   email                           String?                          @db.VarChar(255)
   facebookId                      String?                          @unique @db.VarChar(32)
   googleId                        String?                          @unique @db.VarChar(64)
+  discordId                       String?                          @unique @db.VarChar(32)
   /// Public invite code for share links (`/register?ref=`).
   referralCode                    String?                          @unique @db.VarChar(12)
   referredById                    Int?
