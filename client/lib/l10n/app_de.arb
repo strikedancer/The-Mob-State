@@ -7880,7 +7880,7 @@
   "crewUiBuildingDrugStorage": "Arzneimittellagerung",
   "crewUiBuildingCashStorage": "Bargeldaufbewahrung",
   "crewUiWarActionKill": "Töten",
-  "crewUiWarActionMug": "Becher",
+  "crewUiWarActionMug": "Ausrauben",
   "crewUiWarActionSabotage": "Sabotage",
   "crewUiWarActionIntel": "Intel",
   "crewUiWarActionRaid": "Überfall",
@@ -12141,5 +12141,75 @@
   "crewUiBadgeOpenInstant": "Öffnen – sofort beitreten",
   "crewUiBadgeApplyRequired": "Bewerbung erforderlich",
   "crewUiActionJoinNow": "Melden Sie sich jetzt an",
-  "crewUiActionApply": "Anwenden"
+  "crewUiActionApply": "Anwenden",
+  "crewUiWarActionDeclared": "Krieg erklärt",
+  "crewUiWarActionDefense": "Verteidigung",
+  "crewUiWarActionTerritoryTick": "Gebietszecke",
+  "crewUiWarDeclareNeedLeader": "Nur der Anführer der Crew kann einen Krieg erklären.",
+  "crewUiWarDeclareNeedMembers": "Sie benötigen mindestens {count} Mitglieder, um einen Krieg zu erklären. Sie haben derzeit {current}.",
+  "@crewUiWarDeclareNeedMembers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "current": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiWarDeclareOnCooldown": "Ihre Crew befindet sich immer noch in der Kriegsabklingzeit ({remaining}).",
+  "@crewUiWarDeclareOnCooldown": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarDeclareInWar": "Ihre Crew befindet sich bereits im Krieg.",
+  "crewUiWarLockdownHint": "Lockdown: keine neuen Angriffe. Der Krieg geht zu Ende.",
+  "crewUiWarPreparingHint": "Vorbereitung: Jetzt anmelden. Angriffe beginnen in {remaining}.",
+  "@crewUiWarPreparingHint": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarStartsIn": "Beginnt in {remaining}",
+  "@crewUiWarStartsIn": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarLockdownIn": "Lockdown im {remaining}",
+  "@crewUiWarLockdownIn": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarEndsIn": "Endet in {remaining}",
+  "@crewUiWarEndsIn": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarTargetOnCooldown": "{name} ({count}) – Abklingzeit",
+  "@crewUiWarTargetOnCooldown": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiWarErrorCooldown": "Diese Crew befindet sich immer noch in der Kriegsabklingzeit.",
+  "crewUiWarNoEligibleTargets": "Im Moment gibt es keine teilnahmeberechtigten Crews. Ziele benötigen 3 Mitglieder und müssen außerhalb der Abklingzeit sein."
 }

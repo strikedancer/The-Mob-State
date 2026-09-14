@@ -1787,21 +1787,26 @@ class _CrewScreenState extends State<CrewScreen>
             (params['hub'] as Map?)?.cast<String, dynamic>() ??
             <String, dynamic>{};
         final targets = (hub['availableTargets'] as List<dynamic>? ?? []);
-        final suggestedTargetId = targets.isNotEmpty
-            ? (targets.first as Map<String, dynamic>)['id'] as int?
+        final eligibleTargets = targets.where((target) {
+          final row = (target as Map).cast<String, dynamic>();
+          return row['inCooldown'] != true;
+        }).toList();
+        final suggestedTargetId = eligibleTargets.isNotEmpty
+            ? (eligibleTargets.first as Map<String, dynamic>)['id'] as int?
             : null;
 
         if (mounted) {
           setState(() {
             _crewWarHub = hub;
+            final selectedStillEligible = eligibleTargets.any(
+              (target) =>
+                  (target as Map<String, dynamic>)['id'] ==
+                  _selectedWarTargetCrewId,
+            );
             _selectedWarTargetCrewId =
-                targets.any(
-                  (target) =>
-                      (target as Map<String, dynamic>)['id'] ==
-                      _selectedWarTargetCrewId,
-                )
-                ? _selectedWarTargetCrewId
-                : suggestedTargetId;
+                selectedStillEligible
+                    ? _selectedWarTargetCrewId
+                    : suggestedTargetId;
           });
         }
       }
@@ -1828,6 +1833,8 @@ class _CrewScreenState extends State<CrewScreen>
         return loc.crewUiTr26;
       case 'error.crew_already_in_war':
         return loc.crewUiTr27;
+      case 'error.crew_war_cooldown':
+        return loc.crewUiWarErrorCooldown;
       case 'error.not_enough_crew_members':
         return loc.crewUiTr28;
       case 'error.war_not_found':
@@ -2237,6 +2244,65 @@ class _CrewScreenState extends State<CrewScreen>
         return loc.crewUiTr71;
       default:
         return status ?? '-';
+    }
+  }
+
+  String _formatWarActionType(AppLocalizations loc, String? actionType) {
+    switch (actionType) {
+      case 'attack_kill':
+        return loc.crewUiWarActionKill;
+      case 'attack_mug':
+        return loc.crewUiWarActionMug;
+      case 'attack_sabotage':
+        return loc.crewUiWarActionSabotage;
+      case 'intel_scan':
+        return loc.crewUiWarActionIntel;
+      case 'raid':
+        return loc.crewUiWarActionRaid;
+      case 'crew_shield':
+        return loc.crewUiWarActionShield;
+      case 'war_boost':
+        return loc.crewUiWarActionBoost;
+      case 'territory_claim':
+        return loc.crewUiWarActionTerritory;
+      case 'war_declared':
+        return loc.crewUiWarActionDeclared;
+      case 'defense_success':
+        return loc.crewUiWarActionDefense;
+      case 'territory_tick':
+        return loc.crewUiWarActionTerritoryTick;
+      default:
+        return actionType ?? '-';
+    }
+  }
+
+  String _crewNameFromHub(dynamic crew, dynamic fallbackId) {
+    if (crew is Map && (crew['name'] ?? '').toString().isNotEmpty) {
+      return crew['name'].toString();
+    }
+    return '#$fallbackId';
+  }
+
+  String _declareBlockReasonText(AppLocalizations loc, Map<String, dynamic> hub) {
+    switch ((hub['declareBlockReason'] ?? '').toString()) {
+      case 'not_leader':
+        return loc.crewUiWarDeclareNeedLeader;
+      case 'not_enough_members':
+        return loc.crewUiWarDeclareNeedMembers(
+          (hub['minMembersRequired'] as num?)?.toInt() ?? 3,
+          (hub['myCrewMemberCount'] as num?)?.toInt() ?? 0,
+        );
+      case 'on_cooldown':
+        return loc.crewUiWarDeclareOnCooldown(
+          _formatRemaining(
+            _secondsUntil(hub['myCrewCooldownUntil']?.toString()),
+            loc,
+          ),
+        );
+      case 'in_war':
+        return loc.crewUiWarDeclareInWar;
+      default:
+        return loc.crewUiTr120;
     }
   }
 
@@ -5333,10 +5399,19 @@ class _CrewScreenState extends State<CrewScreen>
     final myParticipant = (currentWar?['myParticipant'] as Map?)
         ?.cast<String, dynamic>();
     final status = currentWar?['status'] as String?;
+    final warType = currentWar?['warType'] as String?;
     final canAct =
-        currentWar != null &&
-        myParticipant != null &&
-        (status == 'active' || status == 'lockdown');
+        currentWar != null && myParticipant != null && status == 'active';
+    final showTerritoryAction =
+        warType == 'territory_war' || warType == 'total_war';
+    final declareableTargets = availableTargets
+        .where((target) => target['inCooldown'] != true)
+        .toList();
+    final selectedTargetOnCooldown = availableTargets.any(
+      (target) =>
+          target['id'] == _selectedWarTargetCrewId &&
+          target['inCooldown'] == true,
+    );
     final metadata = currentWar != null
         ? ((currentWar['metadata'] as Map?)?.cast<String, dynamic>() ??
               <String, dynamic>{})
@@ -5461,11 +5536,18 @@ class _CrewScreenState extends State<CrewScreen>
                       '${l10n.crewUiTr116}: ${hub['season'] is Map ? ((hub['season'] as Map)['seasonKey'] ?? '-') : '-'}',
                     ),
                     Text(
-                      '${l10n.crewUiTr117}: ${hub['myRole'] ?? '-'}',
+                      '${l10n.crewUiTr117}: ${_formatCrewWarRole(l10n, (hub['myRole'] ?? 'member').toString())}',
                     ),
                     Text(
                       '${l10n.crewUiTr118}: ${(hub['canDeclare'] == true) ? l10n.crewUiTr119 : l10n.crewUiTr120}',
                     ),
+                    if (hub['canDeclare'] != true) ...[
+                      const SizedBox(height: 8),
+                      Text(
+                        _declareBlockReasonText(l10n, hub),
+                        style: const TextStyle(color: Colors.white70),
+                      ),
+                    ],
                   ],
                 ),
               ),
@@ -5493,21 +5575,41 @@ class _CrewScreenState extends State<CrewScreen>
                         ),
                         items: availableTargets
                             .map(
-                              (target) => DropdownMenuItem<int>(
-                                value: target['id'] as int,
-                                child: Text(
-                                  l10n.crewUiWarTargetCrewSubtitle(
-                                    (target['name'] ?? '').toString(),
-                                    (target['memberCount'] as num?)?.toInt() ?? 0,
+                              (target) {
+                                final onCooldown = target['inCooldown'] == true;
+                                final name = (target['name'] ?? '').toString();
+                                final count =
+                                    (target['memberCount'] as num?)?.toInt() ??
+                                    0;
+                                return DropdownMenuItem<int>(
+                                  value: target['id'] as int,
+                                  enabled: !onCooldown,
+                                  child: Text(
+                                    onCooldown
+                                        ? l10n.crewUiWarTargetOnCooldown(
+                                            name,
+                                            count,
+                                          )
+                                        : l10n.crewUiWarTargetCrewSubtitle(
+                                            name,
+                                            count,
+                                          ),
                                   ),
-                                ),
-                              ),
+                                );
+                              },
                             )
                             .toList(),
                         onChanged: (value) {
                           setState(() => _selectedWarTargetCrewId = value);
                         },
                       ),
+                      if (declareableTargets.isEmpty) ...[
+                        const SizedBox(height: 8),
+                        Text(
+                          l10n.crewUiWarNoEligibleTargets,
+                          style: const TextStyle(color: Colors.white70),
+                        ),
+                      ],
                       const SizedBox(height: 12),
                       DropdownButtonFormField<String>(
                         value: _selectedWarType,
@@ -5549,7 +5651,11 @@ class _CrewScreenState extends State<CrewScreen>
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton.icon(
-                          onPressed: _crewWarLoading ? null : _declareCrewWar,
+                          onPressed: (_crewWarLoading ||
+                                  declareableTargets.isEmpty ||
+                                  selectedTargetOnCooldown)
+                              ? null
+                              : _declareCrewWar,
                           icon: const Icon(Icons.gavel),
                           label: Text(
                             l10n.crewUiTr124,
@@ -5680,9 +5786,63 @@ class _CrewScreenState extends State<CrewScreen>
                           }).toList(),
                         ),
                       ],
-                      Text(
-                        '${l10n.crewUiTr128}: ${currentWar['activeFrom'] ?? '-'}',
-                      ),
+                      if (status == 'preparing')
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: Text(
+                            l10n.crewUiWarPreparingHint(
+                              _formatRemaining(
+                                _secondsUntil(
+                                  currentWar['activeFrom']?.toString(),
+                                ),
+                                l10n,
+                              ),
+                            ),
+                            style: const TextStyle(color: Colors.amberAccent),
+                          ),
+                        )
+                      else if (status == 'lockdown')
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: Text(
+                            l10n.crewUiWarLockdownHint,
+                            style: const TextStyle(color: Colors.orangeAccent),
+                          ),
+                        )
+                      else if (status == 'active') ...[
+                        if (_secondsUntil(currentWar['lockDownFrom']?.toString()) >
+                            0)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8),
+                            child: Text(
+                              l10n.crewUiWarLockdownIn(
+                                _formatRemaining(
+                                  _secondsUntil(
+                                    currentWar['lockDownFrom']?.toString(),
+                                  ),
+                                  l10n,
+                                ),
+                              ),
+                            ),
+                          ),
+                        Text(
+                          l10n.crewUiWarEndsIn(
+                            _formatRemaining(
+                              _secondsUntil(currentWar['endTime']?.toString()),
+                              l10n,
+                            ),
+                          ),
+                        ),
+                      ]
+                      else
+                        Text(
+                          l10n.crewUiWarEndsIn(
+                            _formatRemaining(
+                              _secondsUntil(currentWar['endTime']?.toString()),
+                              l10n,
+                            ),
+                          ),
+                        ),
                       if (myParticipant == null)
                         Padding(
                           padding: const EdgeInsets.only(top: 12),
@@ -5694,7 +5854,7 @@ class _CrewScreenState extends State<CrewScreen>
                             label: Text(l10n.crewUiTr129),
                           ),
                         )
-                      else
+                      else if (status == 'active')
                         Padding(
                           padding: const EdgeInsets.only(top: 8),
                           child: Wrap(
@@ -5743,12 +5903,13 @@ class _CrewScreenState extends State<CrewScreen>
                                 canAct,
                                 () => handleAction('war_boost'),
                               ),
-                              _buildWarActionButton(
-                                l10n.crewUiWarActionTerritory,
-                                Icons.flag,
-                                canAct,
-                                () => handleAction('territory_claim'),
-                              ),
+                              if (showTerritoryAction)
+                                _buildWarActionButton(
+                                  l10n.crewUiWarActionTerritory,
+                                  Icons.flag,
+                                  canAct,
+                                  () => handleAction('territory_claim'),
+                                ),
                             ],
                           ),
                         ),
@@ -5821,7 +5982,7 @@ class _CrewScreenState extends State<CrewScreen>
                               contentPadding: EdgeInsets.zero,
                               leading: const Icon(Icons.bolt, size: 18),
                               title: Text(
-                                '${action['actionType']} • +${action['pointsAwarded'] ?? 0} pt',
+                                '${_formatWarActionType(l10n, action['actionType'] as String?)} • +${action['pointsAwarded'] ?? 0} pt',
                               ),
                               subtitle: Text(
                                 '${action['actor'] is Map ? ((action['actor'] as Map)['username'] ?? '#${action['actorId']}') : '#${action['actorId']}'} ${l10n.crewUiTr134} ${action['target'] is Map ? ((action['target'] as Map)['username'] ?? '-') : '-'}',
@@ -5903,7 +6064,7 @@ class _CrewScreenState extends State<CrewScreen>
                           '${_formatCrewWarType(l10n, war['warType'] as String?)} • ${_formatCrewWarStatus(l10n, war['status'] as String?)}',
                         ),
                         subtitle: Text(
-                          '#${war['attackerCrewId']} vs #${war['defenderCrewId']}',
+                          '${_crewNameFromHub(war['attackerCrew'], war['attackerCrewId'])} vs ${_crewNameFromHub(war['defenderCrew'], war['defenderCrewId'])}',
                         ),
                       ),
                     ),

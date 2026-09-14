@@ -33,6 +33,9 @@ function mapWarError(error: unknown, res: Response, next: NextFunction) {
   if (error.message === 'CREW_ALREADY_IN_WAR') {
     return res.status(409).json({ event: 'error.crew_already_in_war', params: {} });
   }
+  if (error.message === 'CREW_WAR_COOLDOWN') {
+    return res.status(409).json({ event: 'error.crew_war_cooldown', params: {} });
+  }
   if (error.message === 'NOT_ENOUGH_CREW_MEMBERS') {
     return res.status(400).json({ event: 'error.not_enough_crew_members', params: {} });
   }

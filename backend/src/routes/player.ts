@@ -1626,7 +1626,8 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
           myCrewRank: currentStanding?.rank ?? null,
           seasonRank: seasonRankEntry?.rank ?? null,
           availableTargetsCount: Array.isArray(crewWarHub.availableTargets)
-            ? crewWarHub.availableTargets.length
+            ? crewWarHub.availableTargets.filter((target) => (target as { inCooldown?: boolean }).inCooldown !== true)
+                .length
             : 0,
           phaseEndsInSeconds: crewWarPhaseEndsInSeconds,
           theaterRegionKey:

@@ -4847,7 +4847,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get crewUiWarActionKill => 'Tuer';
 
   @override
-  String get crewUiWarActionMug => 'Tasse';
+  String get crewUiWarActionMug => 'Détrousser';
+
+  @override
+  String get crewUiWarActionDeclared => 'Guerre déclarée';
+
+  @override
+  String get crewUiWarActionDefense => 'Défense';
+
+  @override
+  String get crewUiWarActionTerritoryTick => 'Coche de territoire';
 
   @override
   String get crewUiWarActionSabotage => 'Sabotage';
@@ -5539,6 +5548,60 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get crewUiWarTheaterHint =>
       'Territory War et Total War choisissent une région théâtrale sur la carte réelle. Les conséquences restent limitées dans le temps.';
+
+  @override
+  String get crewUiWarDeclareNeedLeader =>
+      'Seul le chef d\'équipage peut déclarer la guerre.';
+
+  @override
+  String crewUiWarDeclareNeedMembers(int count, int current) {
+    return 'Vous avez besoin d\'au moins $count membres pour déclarer une guerre. Vous avez actuellement $current.';
+  }
+
+  @override
+  String crewUiWarDeclareOnCooldown(String remaining) {
+    return 'Votre équipage est toujours en temps de recharge de guerre ($remaining).';
+  }
+
+  @override
+  String get crewUiWarDeclareInWar => 'Votre équipage est déjà en guerre.';
+
+  @override
+  String get crewUiWarLockdownHint =>
+      'Confinement : pas de nouvelles attaques. La guerre touche à sa fin.';
+
+  @override
+  String crewUiWarPreparingHint(String remaining) {
+    return 'Préparation : inscrivez-vous maintenant. Les attaques commencent à $remaining.';
+  }
+
+  @override
+  String crewUiWarStartsIn(String remaining) {
+    return 'Commence dans $remaining';
+  }
+
+  @override
+  String crewUiWarLockdownIn(String remaining) {
+    return 'Confinement en $remaining';
+  }
+
+  @override
+  String crewUiWarEndsIn(String remaining) {
+    return 'Se termine par $remaining';
+  }
+
+  @override
+  String crewUiWarTargetOnCooldown(String name, int count) {
+    return '$name ($count) — temps de recharge';
+  }
+
+  @override
+  String get crewUiWarErrorCooldown =>
+      'Cet équipage est toujours en temps de recharge de guerre.';
+
+  @override
+  String get crewUiWarNoEligibleTargets =>
+      'Aucun équipage éligible pour le moment. Les cibles ont besoin de 3 membres et doivent être hors temps de recharge.';
 
   @override
   String get crewUiTr126 => 'Neutre';

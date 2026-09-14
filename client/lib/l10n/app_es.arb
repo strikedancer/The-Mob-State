@@ -7880,7 +7880,7 @@
   "crewUiBuildingDrugStorage": "Almacenamiento de medicamentos",
   "crewUiBuildingCashStorage": "Almacenamiento de efectivo",
   "crewUiWarActionKill": "Matar",
-  "crewUiWarActionMug": "Taza",
+  "crewUiWarActionMug": "Atracar",
   "crewUiWarActionSabotage": "Sabotaje",
   "crewUiWarActionIntel": "Intel",
   "crewUiWarActionRaid": "RAID",
@@ -12141,5 +12141,75 @@
   "crewUiBadgeOpenInstant": "Abierta - únete al instante",
   "crewUiBadgeApplyRequired": "Solicitud requerida",
   "crewUiActionJoinNow": "Únete ahora",
-  "crewUiActionApply": "Aplicar"
+  "crewUiActionApply": "Aplicar",
+  "crewUiWarActionDeclared": "Guerra declarada",
+  "crewUiWarActionDefense": "Defensa",
+  "crewUiWarActionTerritoryTick": "garrapata de territorio",
+  "crewUiWarDeclareNeedLeader": "Solo la líder de la Crew puede declarar una guerra.",
+  "crewUiWarDeclareNeedMembers": "Necesitas al menos {count} miembros para declarar una guerra. Actualmente tienes {current}.",
+  "@crewUiWarDeclareNeedMembers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "current": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiWarDeclareOnCooldown": "Tu Crew todavía está en tiempo de reutilización de guerra ({remaining}).",
+  "@crewUiWarDeclareOnCooldown": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarDeclareInWar": "Tu Crew ya está en una guerra.",
+  "crewUiWarLockdownHint": "Bloqueo: no hay nuevos ataques. La guerra está llegando a su fin.",
+  "crewUiWarPreparingHint": "Preparación: únete ahora. Los ataques comienzan en {remaining}.",
+  "@crewUiWarPreparingHint": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarStartsIn": "Comienza en {remaining}",
+  "@crewUiWarStartsIn": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarLockdownIn": "Bloqueo en {remaining}",
+  "@crewUiWarLockdownIn": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarEndsIn": "Termina en {remaining}",
+  "@crewUiWarEndsIn": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarTargetOnCooldown": "{name} ({count}) - tiempo de reutilización",
+  "@crewUiWarTargetOnCooldown": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiWarErrorCooldown": "Esa Crew todavía está en tiempo de reutilización de guerra.",
+  "crewUiWarNoEligibleTargets": "No hay equipos elegibles en este momento. Los objetivos necesitan 3 miembros y deben estar fuera del tiempo de reutilización."
 }

@@ -10181,7 +10181,10 @@
   "crewUiBuildingDrugStorage": "Drugsopslag",
   "crewUiBuildingCashStorage": "Geldopslag",
   "crewUiWarActionKill": "Doden",
-  "crewUiWarActionMug": "Mok",
+  "crewUiWarActionMug": "Beroven",
+  "crewUiWarActionDeclared": "Oorlog verklaard",
+  "crewUiWarActionDefense": "Verdediging",
+  "crewUiWarActionTerritoryTick": "Gebiedstick",
   "crewUiWarActionSabotage": "Sabotage",
   "crewUiWarActionIntel": "Intel",
   "crewUiWarActionRaid": "Inval",
@@ -10318,17 +10321,17 @@
   "crewUiTr109": "Soort munitie",
   "crewUiTr110": "Voeg goederen toe",
   "crewUiTr111": "Soort goederen",
-  "crewUiTr112": "Sluit je eerst aan bij een bemanning om Crew Wars te gebruiken.",
+  "crewUiTr112": "Sluit je eerst aan bij een crew om Crew Wars te gebruiken.",
   "crewUiTr113": "Er zijn geen bemanningsleden van de tegenstander beschikbaar om op te richten.",
   "crewUiTr114": "Selecteer doelspeler",
   "crewUiTr115": "Seizoensoverzicht",
   "crewUiTr116": "Actief seizoen",
   "crewUiTr117": "Mijn rol",
-  "crewUiTr118": "Bemanning kan aangifte doen",
+  "crewUiTr118": "Crew kan oorlog verklaren",
   "crewUiTr119": "Ja",
   "crewUiTr120": "Nee",
   "crewUiTr121": "Verklaar een nieuwe oorlog",
-  "crewUiTr122": "Doelgroep",
+  "crewUiTr122": "Doel-crew",
   "crewUiTr123": "Oorlogstype",
   "crewUiTr124": "Verklaar de oorlog",
   "crewUiTr125": "Oorlogsgebieden",
@@ -10341,6 +10344,73 @@
     }
   },
   "crewUiWarTheaterHint": "Territory War en Total War kiezen een theaterregio op de echte kaart. Nasleep blijft time-boxed.",
+  "crewUiWarDeclareNeedLeader": "Alleen de crewleider kan een oorlog verklaren.",
+  "crewUiWarDeclareNeedMembers": "Je hebt minstens {count} leden nodig om een oorlog te verklaren. Je hebt er nu {current}.",
+  "@crewUiWarDeclareNeedMembers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "current": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiWarDeclareOnCooldown": "Je crew zit nog in oorlogs-cooldown ({remaining}).",
+  "@crewUiWarDeclareOnCooldown": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarDeclareInWar": "Je crew zit al in een oorlog.",
+  "crewUiWarLockdownHint": "Lockdown: geen nieuwe aanvallen. De oorlog wordt afgerond.",
+  "crewUiWarPreparingHint": "Voorbereiding: sluit je nu aan. Aanvallen starten over {remaining}.",
+  "@crewUiWarPreparingHint": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarStartsIn": "Start over {remaining}",
+  "@crewUiWarStartsIn": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarLockdownIn": "Lockdown over {remaining}",
+  "@crewUiWarLockdownIn": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarEndsIn": "Eindigt over {remaining}",
+  "@crewUiWarEndsIn": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarTargetOnCooldown": "{name} ({count}) — cooldown",
+  "@crewUiWarTargetOnCooldown": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiWarErrorCooldown": "Die crew zit nog in oorlogs-cooldown.",
+  "crewUiWarNoEligibleTargets": "Geen geschikte crews nu. Doelen hebben 3 leden nodig en mogen niet in cooldown zitten.",
   "crewUiTr126": "Neutrale",
   "crewUiTr127": "Bemanning van de tegenstander",
   "crewUiTr128": "Actief vanaf",

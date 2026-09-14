@@ -4810,7 +4810,16 @@ class AppLocalizationsPl extends AppLocalizations {
   String get crewUiWarActionKill => 'Zabić';
 
   @override
-  String get crewUiWarActionMug => 'Kubek';
+  String get crewUiWarActionMug => 'Obrabować';
+
+  @override
+  String get crewUiWarActionDeclared => 'Wypowiedzona wojna';
+
+  @override
+  String get crewUiWarActionDefense => 'Obrona';
+
+  @override
+  String get crewUiWarActionTerritoryTick => 'Zaznaczenie terytorium';
 
   @override
   String get crewUiWarActionSabotage => 'Sabotaż';
@@ -5497,6 +5506,60 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get crewUiWarTheaterHint =>
       'Territory War i Total War wybierają region teatru z prawdziwej mapy. Następstwa pozostają ograniczone w czasie.';
+
+  @override
+  String get crewUiWarDeclareNeedLeader =>
+      'Tylko dowódca załogi może wypowiedzieć wojnę.';
+
+  @override
+  String crewUiWarDeclareNeedMembers(int count, int current) {
+    return 'Aby wypowiedzieć wojnę, potrzebujesz co najmniej $count członków. Obecnie masz $current.';
+  }
+
+  @override
+  String crewUiWarDeclareOnCooldown(String remaining) {
+    return 'Twoja Crew nadal znajduje się w fazie odnowienia wojny ($remaining).';
+  }
+
+  @override
+  String get crewUiWarDeclareInWar => 'Twoja Crew jest już w stanie wojny.';
+
+  @override
+  String get crewUiWarLockdownHint =>
+      'Blokada: brak nowych ataków. Wojna dobiega końca.';
+
+  @override
+  String crewUiWarPreparingHint(String remaining) {
+    return 'Przygotowanie: dołącz teraz. Ataki rozpoczynają się za $remaining.';
+  }
+
+  @override
+  String crewUiWarStartsIn(String remaining) {
+    return 'Zaczyna się za $remaining';
+  }
+
+  @override
+  String crewUiWarLockdownIn(String remaining) {
+    return 'Blokada w $remaining';
+  }
+
+  @override
+  String crewUiWarEndsIn(String remaining) {
+    return 'Kończy się za $remaining';
+  }
+
+  @override
+  String crewUiWarTargetOnCooldown(String name, int count) {
+    return '$name ($count) — czas odnowienia';
+  }
+
+  @override
+  String get crewUiWarErrorCooldown =>
+      'Ta Crew wciąż znajduje się w okresie odnowienia wojny.';
+
+  @override
+  String get crewUiWarNoEligibleTargets =>
+      'W tej chwili brak kwalifikujących się załóg. Cele potrzebują 3 członków i muszą mieć wyłączony czas odnowienia.';
 
   @override
   String get crewUiTr126 => 'Neutralny';

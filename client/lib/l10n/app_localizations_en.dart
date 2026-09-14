@@ -4773,6 +4773,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get crewUiWarActionMug => 'Mug';
 
   @override
+  String get crewUiWarActionDeclared => 'War declared';
+
+  @override
+  String get crewUiWarActionDefense => 'Defense';
+
+  @override
+  String get crewUiWarActionTerritoryTick => 'Territory tick';
+
+  @override
   String get crewUiWarActionSabotage => 'Sabotage';
 
   @override
@@ -5450,6 +5459,59 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get crewUiWarTheaterHint =>
       'Territory War and Total War pick a theater region from the real map. Aftermath stays time-boxed.';
+
+  @override
+  String get crewUiWarDeclareNeedLeader =>
+      'Only the crew leader can declare a war.';
+
+  @override
+  String crewUiWarDeclareNeedMembers(int count, int current) {
+    return 'You need at least $count members to declare a war. You currently have $current.';
+  }
+
+  @override
+  String crewUiWarDeclareOnCooldown(String remaining) {
+    return 'Your crew is still on war cooldown ($remaining).';
+  }
+
+  @override
+  String get crewUiWarDeclareInWar => 'Your crew is already in a war.';
+
+  @override
+  String get crewUiWarLockdownHint =>
+      'Lockdown: no new attacks. The war is wrapping up.';
+
+  @override
+  String crewUiWarPreparingHint(String remaining) {
+    return 'Preparation: join now. Attacks start in $remaining.';
+  }
+
+  @override
+  String crewUiWarStartsIn(String remaining) {
+    return 'Starts in $remaining';
+  }
+
+  @override
+  String crewUiWarLockdownIn(String remaining) {
+    return 'Lockdown in $remaining';
+  }
+
+  @override
+  String crewUiWarEndsIn(String remaining) {
+    return 'Ends in $remaining';
+  }
+
+  @override
+  String crewUiWarTargetOnCooldown(String name, int count) {
+    return '$name ($count) — cooldown';
+  }
+
+  @override
+  String get crewUiWarErrorCooldown => 'That crew is still on war cooldown.';
+
+  @override
+  String get crewUiWarNoEligibleTargets =>
+      'No eligible crews right now. Targets need 3 members and must be off cooldown.';
 
   @override
   String get crewUiTr126 => 'Neutral';

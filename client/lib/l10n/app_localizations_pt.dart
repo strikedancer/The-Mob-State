@@ -4806,7 +4806,16 @@ class AppLocalizationsPt extends AppLocalizations {
   String get crewUiWarActionKill => 'Matar';
 
   @override
-  String get crewUiWarActionMug => 'Caneca';
+  String get crewUiWarActionMug => 'Assaltar';
+
+  @override
+  String get crewUiWarActionDeclared => 'Guerra declarada';
+
+  @override
+  String get crewUiWarActionDefense => 'Defesa';
+
+  @override
+  String get crewUiWarActionTerritoryTick => 'Carrapato de território';
 
   @override
   String get crewUiWarActionSabotage => 'Sabotar';
@@ -5495,6 +5504,60 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get crewUiWarTheaterHint =>
       'Territory War e Total War escolhem uma região de teatro no mapa real. As consequências permanecem limitadas pelo tempo.';
+
+  @override
+  String get crewUiWarDeclareNeedLeader =>
+      'Somente o líder da Crew pode declarar guerra.';
+
+  @override
+  String crewUiWarDeclareNeedMembers(int count, int current) {
+    return 'Você precisa de pelo menos $count membros para declarar guerra. Atualmente você tem $current.';
+  }
+
+  @override
+  String crewUiWarDeclareOnCooldown(String remaining) {
+    return 'Sua Crew ainda está em espera de guerra ($remaining).';
+  }
+
+  @override
+  String get crewUiWarDeclareInWar => 'Sua Crew já está em guerra.';
+
+  @override
+  String get crewUiWarLockdownHint =>
+      'Lockdown: sem novos ataques. A guerra está terminando.';
+
+  @override
+  String crewUiWarPreparingHint(String remaining) {
+    return 'Preparação: inscreva-se agora. Os ataques começam em $remaining.';
+  }
+
+  @override
+  String crewUiWarStartsIn(String remaining) {
+    return 'Começa em $remaining';
+  }
+
+  @override
+  String crewUiWarLockdownIn(String remaining) {
+    return 'Bloqueio em $remaining';
+  }
+
+  @override
+  String crewUiWarEndsIn(String remaining) {
+    return 'Termina em $remaining';
+  }
+
+  @override
+  String crewUiWarTargetOnCooldown(String name, int count) {
+    return '$name ($count) — tempo de espera';
+  }
+
+  @override
+  String get crewUiWarErrorCooldown =>
+      'Essa Crew ainda está em espera de guerra.';
+
+  @override
+  String get crewUiWarNoEligibleTargets =>
+      'Nenhuma equipe qualificada no momento. Os alvos precisam de 3 membros e devem estar fora do tempo de espera.';
 
   @override
   String get crewUiTr126 => 'Neutra';

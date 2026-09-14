@@ -7880,7 +7880,7 @@
   "crewUiBuildingDrugStorage": "Stockage des médicaments",
   "crewUiBuildingCashStorage": "Stockage d'espèces",
   "crewUiWarActionKill": "Tuer",
-  "crewUiWarActionMug": "Tasse",
+  "crewUiWarActionMug": "Détrousser",
   "crewUiWarActionSabotage": "Sabotage",
   "crewUiWarActionIntel": "Intel",
   "crewUiWarActionRaid": "Raid",
@@ -12141,5 +12141,75 @@
   "crewUiBadgeOpenInstant": "Ouvert – rejoignez instantanément",
   "crewUiBadgeApplyRequired": "Demande requise",
   "crewUiActionJoinNow": "Inscrivez-vous maintenant",
-  "crewUiActionApply": "Appliquer"
+  "crewUiActionApply": "Appliquer",
+  "crewUiWarActionDeclared": "Guerre déclarée",
+  "crewUiWarActionDefense": "Défense",
+  "crewUiWarActionTerritoryTick": "Coche de territoire",
+  "crewUiWarDeclareNeedLeader": "Seul le chef d'équipage peut déclarer la guerre.",
+  "crewUiWarDeclareNeedMembers": "Vous avez besoin d'au moins {count} membres pour déclarer une guerre. Vous avez actuellement {current}.",
+  "@crewUiWarDeclareNeedMembers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "current": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiWarDeclareOnCooldown": "Votre équipage est toujours en temps de recharge de guerre ({remaining}).",
+  "@crewUiWarDeclareOnCooldown": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarDeclareInWar": "Votre équipage est déjà en guerre.",
+  "crewUiWarLockdownHint": "Confinement : pas de nouvelles attaques. La guerre touche à sa fin.",
+  "crewUiWarPreparingHint": "Préparation : inscrivez-vous maintenant. Les attaques commencent à {remaining}.",
+  "@crewUiWarPreparingHint": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarStartsIn": "Commence dans {remaining}",
+  "@crewUiWarStartsIn": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarLockdownIn": "Confinement en {remaining}",
+  "@crewUiWarLockdownIn": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarEndsIn": "Se termine par {remaining}",
+  "@crewUiWarEndsIn": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarTargetOnCooldown": "{name} ({count}) — temps de recharge",
+  "@crewUiWarTargetOnCooldown": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiWarErrorCooldown": "Cet équipage est toujours en temps de recharge de guerre.",
+  "crewUiWarNoEligibleTargets": "Aucun équipage éligible pour le moment. Les cibles ont besoin de 3 membres et doivent être hors temps de recharge."
 }

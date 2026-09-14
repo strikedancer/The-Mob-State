@@ -4819,7 +4819,16 @@ class AppLocalizationsIt extends AppLocalizations {
   String get crewUiWarActionKill => 'Uccisione';
 
   @override
-  String get crewUiWarActionMug => 'Tazza';
+  String get crewUiWarActionMug => 'Rapinare';
+
+  @override
+  String get crewUiWarActionDeclared => 'Guerra dichiarata';
+
+  @override
+  String get crewUiWarActionDefense => 'Difesa';
+
+  @override
+  String get crewUiWarActionTerritoryTick => 'Segno di spunta del territorio';
 
   @override
   String get crewUiWarActionSabotage => 'Sabotaggio';
@@ -5512,6 +5521,60 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get crewUiWarTheaterHint =>
       'Territory War e Total War scelgono una regione teatro dalla mappa reale. Le conseguenze rimangono vincolate al tempo.';
+
+  @override
+  String get crewUiWarDeclareNeedLeader =>
+      'Solo il leader dell\'Crew può dichiarare guerra.';
+
+  @override
+  String crewUiWarDeclareNeedMembers(int count, int current) {
+    return 'Sono necessari almeno $count membri per dichiarare guerra. Al momento hai $current.';
+  }
+
+  @override
+  String crewUiWarDeclareOnCooldown(String remaining) {
+    return 'Il tuo Crew è ancora in fase di recupero della guerra ($remaining).';
+  }
+
+  @override
+  String get crewUiWarDeclareInWar => 'Il tuo Crew è già in guerra.';
+
+  @override
+  String get crewUiWarLockdownHint =>
+      'Lockdown: nessun nuovo attacco. La guerra si sta concludendo.';
+
+  @override
+  String crewUiWarPreparingHint(String remaining) {
+    return 'Preparazione: iscriviti ora. Gli attacchi iniziano tra $remaining.';
+  }
+
+  @override
+  String crewUiWarStartsIn(String remaining) {
+    return 'Inizia tra $remaining';
+  }
+
+  @override
+  String crewUiWarLockdownIn(String remaining) {
+    return 'Blocco tra $remaining';
+  }
+
+  @override
+  String crewUiWarEndsIn(String remaining) {
+    return 'Termina tra $remaining';
+  }
+
+  @override
+  String crewUiWarTargetOnCooldown(String name, int count) {
+    return '$name ($count) – tempo di recupero';
+  }
+
+  @override
+  String get crewUiWarErrorCooldown =>
+      'Quell\'Crew è ancora in fase di recupero della guerra.';
+
+  @override
+  String get crewUiWarNoEligibleTargets =>
+      'Nessun Crew idoneo al momento. I bersagli necessitano di 3 membri e devono essere fuori ricarica.';
 
   @override
   String get crewUiTr126 => 'Neutra';

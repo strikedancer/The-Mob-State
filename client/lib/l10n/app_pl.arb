@@ -7880,7 +7880,7 @@
   "crewUiBuildingDrugStorage": "Przechowywanie leków",
   "crewUiBuildingCashStorage": "Przechowywanie gotówki",
   "crewUiWarActionKill": "Zabić",
-  "crewUiWarActionMug": "Kubek",
+  "crewUiWarActionMug": "Obrabować",
   "crewUiWarActionSabotage": "Sabotaż",
   "crewUiWarActionIntel": "Intela",
   "crewUiWarActionRaid": "Nalot",
@@ -12141,5 +12141,75 @@
   "crewUiBadgeOpenInstant": "Otwórz — dołącz natychmiast",
   "crewUiBadgeApplyRequired": "Wymagana aplikacja",
   "crewUiActionJoinNow": "Dołącz teraz",
-  "crewUiActionApply": "Stosować"
+  "crewUiActionApply": "Stosować",
+  "crewUiWarActionDeclared": "Wypowiedzona wojna",
+  "crewUiWarActionDefense": "Obrona",
+  "crewUiWarActionTerritoryTick": "Zaznaczenie terytorium",
+  "crewUiWarDeclareNeedLeader": "Tylko dowódca załogi może wypowiedzieć wojnę.",
+  "crewUiWarDeclareNeedMembers": "Aby wypowiedzieć wojnę, potrzebujesz co najmniej {count} członków. Obecnie masz {current}.",
+  "@crewUiWarDeclareNeedMembers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "current": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiWarDeclareOnCooldown": "Twoja Crew nadal znajduje się w fazie odnowienia wojny ({remaining}).",
+  "@crewUiWarDeclareOnCooldown": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarDeclareInWar": "Twoja Crew jest już w stanie wojny.",
+  "crewUiWarLockdownHint": "Blokada: brak nowych ataków. Wojna dobiega końca.",
+  "crewUiWarPreparingHint": "Przygotowanie: dołącz teraz. Ataki rozpoczynają się za {remaining}.",
+  "@crewUiWarPreparingHint": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarStartsIn": "Zaczyna się za {remaining}",
+  "@crewUiWarStartsIn": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarLockdownIn": "Blokada w {remaining}",
+  "@crewUiWarLockdownIn": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarEndsIn": "Kończy się za {remaining}",
+  "@crewUiWarEndsIn": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarTargetOnCooldown": "{name} ({count}) — czas odnowienia",
+  "@crewUiWarTargetOnCooldown": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiWarErrorCooldown": "Ta Crew wciąż znajduje się w okresie odnowienia wojny.",
+  "crewUiWarNoEligibleTargets": "W tej chwili brak kwalifikujących się załóg. Cele potrzebują 3 członków i muszą mieć wyłączony czas odnowienia."
 }

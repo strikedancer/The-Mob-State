@@ -50,6 +50,8 @@ Scope-afbakening:
 - Territory-targets moeten, zodra strategische Territory-metadata beschikbaar is, dezelfde bronwaarden meenemen voor `strategicTags`, claimbonus, tick-waarde en adjacency-context in zowel war-selectie, war scoring als War Room UI; Crew Wars mag geen los tweede waarderingsmodel naast Territory introduceren.
 - War metadata bevat `theaterRegionKey` (theater-doel) + territory targets; dashboard exposeert theater + hot regions. Wars geven **geen** permanente ownership-skip — ownership blijft via Territory contests/resolve.
 - `declareWar` / `adminDeclareWar` schrijven `theaterRegionKey` + NL/EN-naam bij Territory War / Total War (hoogste `warPriorityScore`). War Room toont het theater; bestaande wars zonder key worden bij read backfilled.
+- War Room toont crew-namen (niet ruwe IDs), gelokaliseerde rollen/acties en fase-countdowns. Offensieve actieknoppen zijn alleen klikbaar tijdens `active`; `lockdown` toont een afrondingsbanner. `territory_claim` is alleen zichtbaar bij Territory War / Total War.
+- Hub-payload bevat `declareBlockReason` (`not_leader` | `in_war` | `not_enough_members` | `on_cooldown` | null) plus `myCrewCooldownUntil`. `declareWar` blokkeert resolved/archived wars die nog `cooldownUntil` in de toekomst hebben, voor beide crews.
 - Een gewonnen `territory_war` of `total_war` mag tijdelijke druk terugschrijven naar echte Territory-regio's, maar die nasleep moet time-boxed zijn en via een aparte Territory effectlaag lopen in plaats van via permanente damage op ownership of stability. Verliezende crew krijgt `territory_frontline_pressure` notificatie.
 - Metadata parsing voor war hubs en territory targets moet op standaard JavaScript array-methodes gebaseerd zijn en tolerant blijven voor legacy of lege metadata; een parsefout in war metadata mag gekoppelde dashboard/player responses niet 500 laten gaan.
 
@@ -59,6 +61,7 @@ Scope-afbakening:
 - Oorlog kan handmatig door admin, automatisch via scheduler of door crew leaders gestart worden.
 - Crew leader flow vereist minimaal configureerbaar ledenaantal, war cooldown en optioneel inzet/entry cost.
 - Één crew mag nooit een nieuwe war starten als cooldown, lock, sanction of onvoldoende leden actief is.
+- `GET /crew-wars/hub` markeert doelcrews met `inCooldown` op basis van resolved/archived wars met toekomstige `cooldownUntil` (niet op basis van de nog lopende war zelf). De War Room disablet die doelen en toont waarom declare geblokkeerd is.
 
 ### 2. Phases
 - `preparing`: 5-30 minuten voorbereiding, join/lock van deelnemers, aankondigingen.
@@ -224,6 +227,7 @@ CREW_WAR_DISCORD_MIN_INTERVAL_MS=15000
 ## QA Checklist
 1. Admin war start werkt inclusief pre-war status.
 2. Crew leader declare flow blokkeert correct bij onvoldoende leden of cooldown.
+2a. War Room: lockdown toont geen klikbare attack-knoppen; preparing toont start-countdown + join; recente wars tonen crew-namen.
 3. Kill/economy/territory/total war scoren volgens type-specifieke regels.
 4. Anti-farm regels blokkeren punten voor repeated target abuse en same-IP scenario's.
 5. VIP player en VIP crew bonuses respecteren caps en blijven zichtbaar in UI/logs.

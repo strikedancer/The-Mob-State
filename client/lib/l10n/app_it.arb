@@ -7880,7 +7880,7 @@
   "crewUiBuildingDrugStorage": "Conservazione dei farmaci",
   "crewUiBuildingCashStorage": "Deposito contanti",
   "crewUiWarActionKill": "Uccisione",
-  "crewUiWarActionMug": "Tazza",
+  "crewUiWarActionMug": "Rapinare",
   "crewUiWarActionSabotage": "Sabotaggio",
   "crewUiWarActionIntel": "Intel",
   "crewUiWarActionRaid": "Incursione",
@@ -12141,5 +12141,75 @@
   "crewUiBadgeOpenInstant": "Apri: iscriviti immediatamente",
   "crewUiBadgeApplyRequired": "Applicazione richiesta",
   "crewUiActionJoinNow": "Iscriviti ora",
-  "crewUiActionApply": "Fare domanda a"
+  "crewUiActionApply": "Fare domanda a",
+  "crewUiWarActionDeclared": "Guerra dichiarata",
+  "crewUiWarActionDefense": "Difesa",
+  "crewUiWarActionTerritoryTick": "Segno di spunta del territorio",
+  "crewUiWarDeclareNeedLeader": "Solo il leader dell'Crew può dichiarare guerra.",
+  "crewUiWarDeclareNeedMembers": "Sono necessari almeno {count} membri per dichiarare guerra. Al momento hai {current}.",
+  "@crewUiWarDeclareNeedMembers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "current": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiWarDeclareOnCooldown": "Il tuo Crew è ancora in fase di recupero della guerra ({remaining}).",
+  "@crewUiWarDeclareOnCooldown": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarDeclareInWar": "Il tuo Crew è già in guerra.",
+  "crewUiWarLockdownHint": "Lockdown: nessun nuovo attacco. La guerra si sta concludendo.",
+  "crewUiWarPreparingHint": "Preparazione: iscriviti ora. Gli attacchi iniziano tra {remaining}.",
+  "@crewUiWarPreparingHint": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarStartsIn": "Inizia tra {remaining}",
+  "@crewUiWarStartsIn": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarLockdownIn": "Blocco tra {remaining}",
+  "@crewUiWarLockdownIn": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarEndsIn": "Termina tra {remaining}",
+  "@crewUiWarEndsIn": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarTargetOnCooldown": "{name} ({count}) – tempo di recupero",
+  "@crewUiWarTargetOnCooldown": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiWarErrorCooldown": "Quell'Crew è ancora in fase di recupero della guerra.",
+  "crewUiWarNoEligibleTargets": "Nessun Crew idoneo al momento. I bersagli necessitano di 3 membri e devono essere fuori ricarica."
 }

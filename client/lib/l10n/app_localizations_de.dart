@@ -4833,7 +4833,16 @@ class AppLocalizationsDe extends AppLocalizations {
   String get crewUiWarActionKill => 'Töten';
 
   @override
-  String get crewUiWarActionMug => 'Becher';
+  String get crewUiWarActionMug => 'Ausrauben';
+
+  @override
+  String get crewUiWarActionDeclared => 'Krieg erklärt';
+
+  @override
+  String get crewUiWarActionDefense => 'Verteidigung';
+
+  @override
+  String get crewUiWarActionTerritoryTick => 'Gebietszecke';
 
   @override
   String get crewUiWarActionSabotage => 'Sabotage';
@@ -5523,6 +5532,61 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get crewUiWarTheaterHint =>
       'Territory War und Total War wählen eine Schauplatzregion auf der echten Karte aus. Nachwirkungen bleiben zeitlich begrenzt.';
+
+  @override
+  String get crewUiWarDeclareNeedLeader =>
+      'Nur der Anführer der Crew kann einen Krieg erklären.';
+
+  @override
+  String crewUiWarDeclareNeedMembers(int count, int current) {
+    return 'Sie benötigen mindestens $count Mitglieder, um einen Krieg zu erklären. Sie haben derzeit $current.';
+  }
+
+  @override
+  String crewUiWarDeclareOnCooldown(String remaining) {
+    return 'Ihre Crew befindet sich immer noch in der Kriegsabklingzeit ($remaining).';
+  }
+
+  @override
+  String get crewUiWarDeclareInWar =>
+      'Ihre Crew befindet sich bereits im Krieg.';
+
+  @override
+  String get crewUiWarLockdownHint =>
+      'Lockdown: keine neuen Angriffe. Der Krieg geht zu Ende.';
+
+  @override
+  String crewUiWarPreparingHint(String remaining) {
+    return 'Vorbereitung: Jetzt anmelden. Angriffe beginnen in $remaining.';
+  }
+
+  @override
+  String crewUiWarStartsIn(String remaining) {
+    return 'Beginnt in $remaining';
+  }
+
+  @override
+  String crewUiWarLockdownIn(String remaining) {
+    return 'Lockdown im $remaining';
+  }
+
+  @override
+  String crewUiWarEndsIn(String remaining) {
+    return 'Endet in $remaining';
+  }
+
+  @override
+  String crewUiWarTargetOnCooldown(String name, int count) {
+    return '$name ($count) – Abklingzeit';
+  }
+
+  @override
+  String get crewUiWarErrorCooldown =>
+      'Diese Crew befindet sich immer noch in der Kriegsabklingzeit.';
+
+  @override
+  String get crewUiWarNoEligibleTargets =>
+      'Im Moment gibt es keine teilnahmeberechtigten Crews. Ziele benötigen 3 Mitglieder und müssen außerhalb der Abklingzeit sein.';
 
   @override
   String get crewUiTr126 => 'Neutral';

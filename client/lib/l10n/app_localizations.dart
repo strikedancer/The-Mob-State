@@ -8555,6 +8555,24 @@ abstract class AppLocalizations {
   /// **'Mug'**
   String get crewUiWarActionMug;
 
+  /// No description provided for @crewUiWarActionDeclared.
+  ///
+  /// In en, this message translates to:
+  /// **'War declared'**
+  String get crewUiWarActionDeclared;
+
+  /// No description provided for @crewUiWarActionDefense.
+  ///
+  /// In en, this message translates to:
+  /// **'Defense'**
+  String get crewUiWarActionDefense;
+
+  /// No description provided for @crewUiWarActionTerritoryTick.
+  ///
+  /// In en, this message translates to:
+  /// **'Territory tick'**
+  String get crewUiWarActionTerritoryTick;
+
   /// No description provided for @crewUiWarActionSabotage.
   ///
   /// In en, this message translates to:
@@ -9790,6 +9808,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Territory War and Total War pick a theater region from the real map. Aftermath stays time-boxed.'**
   String get crewUiWarTheaterHint;
+
+  /// No description provided for @crewUiWarDeclareNeedLeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the crew leader can declare a war.'**
+  String get crewUiWarDeclareNeedLeader;
+
+  /// No description provided for @crewUiWarDeclareNeedMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'You need at least {count} members to declare a war. You currently have {current}.'**
+  String crewUiWarDeclareNeedMembers(int count, int current);
+
+  /// No description provided for @crewUiWarDeclareOnCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'Your crew is still on war cooldown ({remaining}).'**
+  String crewUiWarDeclareOnCooldown(String remaining);
+
+  /// No description provided for @crewUiWarDeclareInWar.
+  ///
+  /// In en, this message translates to:
+  /// **'Your crew is already in a war.'**
+  String get crewUiWarDeclareInWar;
+
+  /// No description provided for @crewUiWarLockdownHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Lockdown: no new attacks. The war is wrapping up.'**
+  String get crewUiWarLockdownHint;
+
+  /// No description provided for @crewUiWarPreparingHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparation: join now. Attacks start in {remaining}.'**
+  String crewUiWarPreparingHint(String remaining);
+
+  /// No description provided for @crewUiWarStartsIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Starts in {remaining}'**
+  String crewUiWarStartsIn(String remaining);
+
+  /// No description provided for @crewUiWarLockdownIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Lockdown in {remaining}'**
+  String crewUiWarLockdownIn(String remaining);
+
+  /// No description provided for @crewUiWarEndsIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends in {remaining}'**
+  String crewUiWarEndsIn(String remaining);
+
+  /// No description provided for @crewUiWarTargetOnCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} ({count}) — cooldown'**
+  String crewUiWarTargetOnCooldown(String name, int count);
+
+  /// No description provided for @crewUiWarErrorCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'That crew is still on war cooldown.'**
+  String get crewUiWarErrorCooldown;
+
+  /// No description provided for @crewUiWarNoEligibleTargets.
+  ///
+  /// In en, this message translates to:
+  /// **'No eligible crews right now. Targets need 3 members and must be off cooldown.'**
+  String get crewUiWarNoEligibleTargets;
 
   /// No description provided for @crewUiTr126.
   ///

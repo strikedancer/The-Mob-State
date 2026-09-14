@@ -847,6 +847,35 @@ async function getCrewNames(crewIds: number[]) {
   return new Map(crews.map((crew) => [crew.id, crew]));
 }
 
+type DeclareBlockReason = 'not_leader' | 'in_war' | 'not_enough_members' | 'on_cooldown' | null;
+
+async function listResolvedCooldownWars() {
+  return prisma.crewWar.findMany({
+    where: {
+      status: { in: ['resolved', 'archived'] },
+      cooldownUntil: { gt: new Date() },
+    },
+    select: {
+      attackerCrewId: true,
+      defenderCrewId: true,
+      cooldownUntil: true,
+    },
+  });
+}
+
+function resolveDeclareBlockReason(input: {
+  role: string;
+  currentWar: unknown;
+  memberCount: number;
+  inCooldown: boolean;
+}): DeclareBlockReason {
+  if (input.currentWar) return 'in_war';
+  if (input.role !== 'leader') return 'not_leader';
+  if (input.inCooldown) return 'on_cooldown';
+  if (input.memberCount < MIN_MEMBERS_REQUIRED) return 'not_enough_members';
+  return null;
+}
+
 async function notifyWarMembers(
   war: { id: number; attackerCrewId: number; defenderCrewId: number },
   type: 'declared' | 'started' | 'lockdown',
@@ -1027,7 +1056,9 @@ export async function getWarHubForPlayer(playerId: number) {
   if (!membership) {
     return {
       myCrewId: null,
+      myRole: null,
       canDeclare: false,
+      declareBlockReason: null,
       currentWar: null,
       availableTargets: [],
       season,
@@ -1071,14 +1102,31 @@ export async function getWarHubForPlayer(playerId: number) {
   ]);
 
   const currentWar = currentWarRecord ? await buildWarDetail(currentWarRecord.id, playerId) : null;
+  const cooldownWars = await listResolvedCooldownWars();
   const targetCrewIdsInCooldown = new Set(
-    recentWars
-      .filter((war) => war.cooldownUntil && war.cooldownUntil > new Date())
-      .flatMap((war) => [war.attackerCrewId, war.defenderCrewId]),
+    cooldownWars.flatMap((war) => [war.attackerCrewId, war.defenderCrewId]),
   );
+  const myCrewCooldownUntil = cooldownWars.reduce<Date | null>((latest, war) => {
+    if (war.attackerCrewId !== membership.crewId && war.defenderCrewId !== membership.crewId) {
+      return latest;
+    }
+    if (!war.cooldownUntil) return latest;
+    if (!latest || war.cooldownUntil > latest) return war.cooldownUntil;
+    return latest;
+  }, null);
+  const myCrewInCooldown = myCrewCooldownUntil != null;
   const crewCounts = await prisma.crewMember.groupBy({ by: ['crewId'], _count: { _all: true } });
   const countMap = new Map(crewCounts.map((entry) => [entry.crewId, entry._count._all]));
   const myCrewMemberCount = countMap.get(membership.crewId) ?? 0;
+  const declareBlockReason = resolveDeclareBlockReason({
+    role: membership.role,
+    currentWar,
+    memberCount: myCrewMemberCount,
+    inCooldown: myCrewInCooldown,
+  });
+  const recentCrewMap = await getCrewNames(
+    recentWars.flatMap((war) => [war.attackerCrewId, war.defenderCrewId]),
+  );
 
   const seasonAggregate = new Map<number, { crewId: number; totalPoints: number; totalKills: number; totalLoot: number }>();
   for (const standing of seasonStandings) {
@@ -1102,10 +1150,12 @@ export async function getWarHubForPlayer(playerId: number) {
   return {
     myCrewId: membership.crewId,
     myRole: membership.role,
-    canDeclare:
-      membership.role === 'leader' &&
-      !currentWar &&
-      myCrewMemberCount >= MIN_MEMBERS_REQUIRED,
+    canDeclare: declareBlockReason === null,
+    declareBlockReason,
+    minMembersRequired: MIN_MEMBERS_REQUIRED,
+    myCrewMemberCount,
+    myCrewInCooldown,
+    myCrewCooldownUntil,
     currentWar,
     availableTargets: crews
       .map((crew) => ({
@@ -1121,7 +1171,19 @@ export async function getWarHubForPlayer(playerId: number) {
       ...entry,
       crew: seasonCrewMap.get(entry.crewId) ?? null,
     })),
-    recentWars,
+    recentWars: recentWars.map((war) => ({
+      id: war.id,
+      warType: war.warType,
+      status: war.status,
+      attackerCrewId: war.attackerCrewId,
+      defenderCrewId: war.defenderCrewId,
+      winnerCrewId: war.winnerCrewId,
+      activeFrom: war.activeFrom,
+      endTime: war.endTime,
+      cooldownUntil: war.cooldownUntil,
+      attackerCrew: recentCrewMap.get(war.attackerCrewId) ?? null,
+      defenderCrew: recentCrewMap.get(war.defenderCrewId) ?? null,
+    })),
   };
 }
 
@@ -1170,6 +1232,22 @@ export async function declareWar(playerId: number, targetCrewId: number, warType
   });
   if (existingWar) {
     throw new Error('CREW_ALREADY_IN_WAR');
+  }
+
+  const cooldownWar = await prisma.crewWar.findFirst({
+    where: {
+      status: { in: ['resolved', 'archived'] },
+      cooldownUntil: { gt: new Date() },
+      OR: [
+        { attackerCrewId: membership.crewId },
+        { defenderCrewId: membership.crewId },
+        { attackerCrewId: targetCrewId },
+        { defenderCrewId: targetCrewId },
+      ],
+    },
+  });
+  if (cooldownWar) {
+    throw new Error('CREW_WAR_COOLDOWN');
   }
 
   const season = await ensureCurrentSeason();

@@ -7880,7 +7880,7 @@
   "crewUiBuildingDrugStorage": "Armazenamento de medicamentos",
   "crewUiBuildingCashStorage": "Armazenamento de dinheiro",
   "crewUiWarActionKill": "Matar",
-  "crewUiWarActionMug": "Caneca",
+  "crewUiWarActionMug": "Assaltar",
   "crewUiWarActionSabotage": "Sabotar",
   "crewUiWarActionIntel": "Informações",
   "crewUiWarActionRaid": "Ataque",
@@ -12141,5 +12141,75 @@
   "crewUiBadgeOpenInstant": "Aberto – participe instantaneamente",
   "crewUiBadgeApplyRequired": "Inscrição necessária",
   "crewUiActionJoinNow": "Cadastre-se agora",
-  "crewUiActionApply": "Aplicar"
+  "crewUiActionApply": "Aplicar",
+  "crewUiWarActionDeclared": "Guerra declarada",
+  "crewUiWarActionDefense": "Defesa",
+  "crewUiWarActionTerritoryTick": "Carrapato de território",
+  "crewUiWarDeclareNeedLeader": "Somente o líder da Crew pode declarar guerra.",
+  "crewUiWarDeclareNeedMembers": "Você precisa de pelo menos {count} membros para declarar guerra. Atualmente você tem {current}.",
+  "@crewUiWarDeclareNeedMembers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "current": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiWarDeclareOnCooldown": "Sua Crew ainda está em espera de guerra ({remaining}).",
+  "@crewUiWarDeclareOnCooldown": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarDeclareInWar": "Sua Crew já está em guerra.",
+  "crewUiWarLockdownHint": "Lockdown: sem novos ataques. A guerra está terminando.",
+  "crewUiWarPreparingHint": "Preparação: inscreva-se agora. Os ataques começam em {remaining}.",
+  "@crewUiWarPreparingHint": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarStartsIn": "Começa em {remaining}",
+  "@crewUiWarStartsIn": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarLockdownIn": "Bloqueio em {remaining}",
+  "@crewUiWarLockdownIn": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarEndsIn": "Termina em {remaining}",
+  "@crewUiWarEndsIn": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarTargetOnCooldown": "{name} ({count}) — tempo de espera",
+  "@crewUiWarTargetOnCooldown": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiWarErrorCooldown": "Essa Crew ainda está em espera de guerra.",
+  "crewUiWarNoEligibleTargets": "Nenhuma equipe qualificada no momento. Os alvos precisam de 3 membros e devem estar fora do tempo de espera."
 }

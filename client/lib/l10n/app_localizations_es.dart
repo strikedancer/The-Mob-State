@@ -4827,7 +4827,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get crewUiWarActionKill => 'Matar';
 
   @override
-  String get crewUiWarActionMug => 'Taza';
+  String get crewUiWarActionMug => 'Atracar';
+
+  @override
+  String get crewUiWarActionDeclared => 'Guerra declarada';
+
+  @override
+  String get crewUiWarActionDefense => 'Defensa';
+
+  @override
+  String get crewUiWarActionTerritoryTick => 'garrapata de territorio';
 
   @override
   String get crewUiWarActionSabotage => 'Sabotaje';
@@ -5517,6 +5526,60 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get crewUiWarTheaterHint =>
       'Territory War y Total War eligen una región de teatro del mapa real. Las consecuencias permanecen limitadas en el tiempo.';
+
+  @override
+  String get crewUiWarDeclareNeedLeader =>
+      'Solo la líder de la Crew puede declarar una guerra.';
+
+  @override
+  String crewUiWarDeclareNeedMembers(int count, int current) {
+    return 'Necesitas al menos $count miembros para declarar una guerra. Actualmente tienes $current.';
+  }
+
+  @override
+  String crewUiWarDeclareOnCooldown(String remaining) {
+    return 'Tu Crew todavía está en tiempo de reutilización de guerra ($remaining).';
+  }
+
+  @override
+  String get crewUiWarDeclareInWar => 'Tu Crew ya está en una guerra.';
+
+  @override
+  String get crewUiWarLockdownHint =>
+      'Bloqueo: no hay nuevos ataques. La guerra está llegando a su fin.';
+
+  @override
+  String crewUiWarPreparingHint(String remaining) {
+    return 'Preparación: únete ahora. Los ataques comienzan en $remaining.';
+  }
+
+  @override
+  String crewUiWarStartsIn(String remaining) {
+    return 'Comienza en $remaining';
+  }
+
+  @override
+  String crewUiWarLockdownIn(String remaining) {
+    return 'Bloqueo en $remaining';
+  }
+
+  @override
+  String crewUiWarEndsIn(String remaining) {
+    return 'Termina en $remaining';
+  }
+
+  @override
+  String crewUiWarTargetOnCooldown(String name, int count) {
+    return '$name ($count) - tiempo de reutilización';
+  }
+
+  @override
+  String get crewUiWarErrorCooldown =>
+      'Esa Crew todavía está en tiempo de reutilización de guerra.';
+
+  @override
+  String get crewUiWarNoEligibleTargets =>
+      'No hay equipos elegibles en este momento. Los objetivos necesitan 3 miembros y deben estar fuera del tiempo de reutilización.';
 
   @override
   String get crewUiTr126 => 'Neutral';

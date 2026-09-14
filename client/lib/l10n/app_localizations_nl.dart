@@ -4802,7 +4802,16 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crewUiWarActionKill => 'Doden';
 
   @override
-  String get crewUiWarActionMug => 'Mok';
+  String get crewUiWarActionMug => 'Beroven';
+
+  @override
+  String get crewUiWarActionDeclared => 'Oorlog verklaard';
+
+  @override
+  String get crewUiWarActionDefense => 'Verdediging';
+
+  @override
+  String get crewUiWarActionTerritoryTick => 'Gebiedstick';
 
   @override
   String get crewUiWarActionSabotage => 'Sabotage';
@@ -5437,7 +5446,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get crewUiTr112 =>
-      'Sluit je eerst aan bij een bemanning om Crew Wars te gebruiken.';
+      'Sluit je eerst aan bij een crew om Crew Wars te gebruiken.';
 
   @override
   String get crewUiTr113 =>
@@ -5456,7 +5465,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crewUiTr117 => 'Mijn rol';
 
   @override
-  String get crewUiTr118 => 'Bemanning kan aangifte doen';
+  String get crewUiTr118 => 'Crew kan oorlog verklaren';
 
   @override
   String get crewUiTr119 => 'Ja';
@@ -5468,7 +5477,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crewUiTr121 => 'Verklaar een nieuwe oorlog';
 
   @override
-  String get crewUiTr122 => 'Doelgroep';
+  String get crewUiTr122 => 'Doel-crew';
 
   @override
   String get crewUiTr123 => 'Oorlogstype';
@@ -5487,6 +5496,59 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get crewUiWarTheaterHint =>
       'Territory War en Total War kiezen een theaterregio op de echte kaart. Nasleep blijft time-boxed.';
+
+  @override
+  String get crewUiWarDeclareNeedLeader =>
+      'Alleen de crewleider kan een oorlog verklaren.';
+
+  @override
+  String crewUiWarDeclareNeedMembers(int count, int current) {
+    return 'Je hebt minstens $count leden nodig om een oorlog te verklaren. Je hebt er nu $current.';
+  }
+
+  @override
+  String crewUiWarDeclareOnCooldown(String remaining) {
+    return 'Je crew zit nog in oorlogs-cooldown ($remaining).';
+  }
+
+  @override
+  String get crewUiWarDeclareInWar => 'Je crew zit al in een oorlog.';
+
+  @override
+  String get crewUiWarLockdownHint =>
+      'Lockdown: geen nieuwe aanvallen. De oorlog wordt afgerond.';
+
+  @override
+  String crewUiWarPreparingHint(String remaining) {
+    return 'Voorbereiding: sluit je nu aan. Aanvallen starten over $remaining.';
+  }
+
+  @override
+  String crewUiWarStartsIn(String remaining) {
+    return 'Start over $remaining';
+  }
+
+  @override
+  String crewUiWarLockdownIn(String remaining) {
+    return 'Lockdown over $remaining';
+  }
+
+  @override
+  String crewUiWarEndsIn(String remaining) {
+    return 'Eindigt over $remaining';
+  }
+
+  @override
+  String crewUiWarTargetOnCooldown(String name, int count) {
+    return '$name ($count) — cooldown';
+  }
+
+  @override
+  String get crewUiWarErrorCooldown => 'Die crew zit nog in oorlogs-cooldown.';
+
+  @override
+  String get crewUiWarNoEligibleTargets =>
+      'Geen geschikte crews nu. Doelen hebben 3 leden nodig en mogen niet in cooldown zitten.';
 
   @override
   String get crewUiTr126 => 'Neutrale';

@@ -2830,6 +2830,9 @@
   "crewUiBuildingCashStorage": "Cash Storage",
   "crewUiWarActionKill": "Kill",
   "crewUiWarActionMug": "Mug",
+  "crewUiWarActionDeclared": "War declared",
+  "crewUiWarActionDefense": "Defense",
+  "crewUiWarActionTerritoryTick": "Territory tick",
   "crewUiWarActionSabotage": "Sabotage",
   "crewUiWarActionIntel": "Intel",
   "crewUiWarActionRaid": "Raid",
@@ -3235,6 +3238,73 @@
     }
   },
   "crewUiWarTheaterHint": "Territory War and Total War pick a theater region from the real map. Aftermath stays time-boxed.",
+  "crewUiWarDeclareNeedLeader": "Only the crew leader can declare a war.",
+  "crewUiWarDeclareNeedMembers": "You need at least {count} members to declare a war. You currently have {current}.",
+  "@crewUiWarDeclareNeedMembers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "current": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiWarDeclareOnCooldown": "Your crew is still on war cooldown ({remaining}).",
+  "@crewUiWarDeclareOnCooldown": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarDeclareInWar": "Your crew is already in a war.",
+  "crewUiWarLockdownHint": "Lockdown: no new attacks. The war is wrapping up.",
+  "crewUiWarPreparingHint": "Preparation: join now. Attacks start in {remaining}.",
+  "@crewUiWarPreparingHint": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarStartsIn": "Starts in {remaining}",
+  "@crewUiWarStartsIn": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarLockdownIn": "Lockdown in {remaining}",
+  "@crewUiWarLockdownIn": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarEndsIn": "Ends in {remaining}",
+  "@crewUiWarEndsIn": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiWarTargetOnCooldown": "{name} ({count}) — cooldown",
+  "@crewUiWarTargetOnCooldown": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "crewUiWarErrorCooldown": "That crew is still on war cooldown.",
+  "crewUiWarNoEligibleTargets": "No eligible crews right now. Targets need 3 members and must be off cooldown.",
   "crewUiTr126": "Neutral",
   "crewUiTr127": "Opponent crew",
   "crewUiTr128": "Active from",
