@@ -1090,15 +1090,34 @@ export interface AdminImageModuleOverviewResponse {
 
 export const adminAuthService = {
   async login(username: string, password: string): Promise<AdminLoginResponse> {
-    const response = await fetch(`${API_URL}/admin/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
-      signal: AbortSignal.timeout(15_000),
-    });
+    let response: Response;
+    try {
+      response = await fetch(`${API_URL}/admin/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: username.trim(), password }),
+        signal: AbortSignal.timeout(15_000),
+      });
+    } catch (error) {
+      const name = error instanceof Error ? error.name : "";
+      if (name === "TimeoutError" || name === "AbortError") {
+        throw new Error("LOGIN_TIMEOUT");
+      }
+      throw new Error("LOGIN_NETWORK");
+    }
 
     if (!response.ok) {
-      throw new Error("Login failed");
+      if (response.status === 400) {
+        throw new Error("LOGIN_VALIDATION");
+      }
+      if (response.status === 401) {
+        throw new Error("LOGIN_CREDENTIALS");
+      }
+      const payload = (await response.json().catch(() => null)) as {
+        error?: string;
+        message?: string;
+      } | null;
+      throw new Error(payload?.error || payload?.message || "LOGIN_FAILED");
     }
 
     const data = await response.json();
@@ -1106,12 +1125,16 @@ export const adminAuthService = {
     if (data?.admin?.role) {
       localStorage.setItem("admin_role", data.admin.role);
     }
+    if (data?.admin?.id != null) {
+      localStorage.setItem("admin_id", String(data.admin.id));
+    }
     return data;
   },
 
   logout() {
     localStorage.removeItem("admin_token");
     localStorage.removeItem("admin_role");
+    localStorage.removeItem("admin_id");
   },
 
   getToken() {
@@ -1519,6 +1542,20 @@ export const adminService = {
     });
 
     await ensureOk(response, "Failed to update admin");
+
+    return response.json();
+  },
+
+  async deleteAdmin(adminId: number) {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/admins/${adminId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    await ensureOk(response, "Failed to delete admin");
 
     return response.json();
   },

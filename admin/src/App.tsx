@@ -569,6 +569,11 @@ function App() {
   const [adminRole, setAdminRole] = useState<
     "SUPER_ADMIN" | "MODERATOR" | "VIEWER" | null
   >(adminAuthService.getAdminRole());
+  const [currentAdminId, setCurrentAdminId] = useState<number | null>(() => {
+    const stored = localStorage.getItem("admin_id");
+    const parsed = stored ? Number(stored) : NaN;
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
+  });
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [stats, setStats] = useState({
@@ -1077,12 +1082,15 @@ function App() {
         if (cancelled) return;
         setIsAuthenticated(true);
         setAdminRole(me.admin.role);
+        setCurrentAdminId(me.admin.id);
         localStorage.setItem("admin_role", me.admin.role);
+        localStorage.setItem("admin_id", String(me.admin.id));
       } catch {
         if (cancelled) return;
         adminAuthService.logout();
         setIsAuthenticated(false);
         setAdminRole(null);
+        setCurrentAdminId(null);
       } finally {
         if (!cancelled) setSessionReady(true);
       }
@@ -2256,7 +2264,8 @@ function App() {
   };
 
   const handleCreateAdmin = async () => {
-    if (!newAdminForm.username.trim() || !newAdminForm.password.trim()) {
+    const compactUsername = newAdminForm.username.trim().replace(/\s+/g, "");
+    if (!compactUsername || !newAdminForm.password.trim()) {
       alert(
         l(
           "Vul gebruikersnaam en wachtwoord in.",
@@ -2265,17 +2274,51 @@ function App() {
       );
       return;
     }
+    if (!/^[a-zA-Z0-9_\-.]+$/.test(compactUsername)) {
+      alert(
+        l(
+          "Gebruikersnaam mag alleen letters, cijfers, _ - . bevatten. Geen spaties.",
+          "Username may only contain letters, numbers, _ - . No spaces.",
+        ),
+      );
+      return;
+    }
+    if (newAdminForm.password.trim().length < 8) {
+      alert(
+        l(
+          "Wachtwoord moet minstens 8 tekens zijn.",
+          "Password must be at least 8 characters.",
+        ),
+      );
+      return;
+    }
+    if (
+      compactUsername !== newAdminForm.username.trim() &&
+      !window.confirm(
+        l(
+          `Spaties worden verwijderd. Het account wordt "${compactUsername}". Doorgaan?`,
+          `Spaces will be removed. The account will be "${compactUsername}". Continue?`,
+        ),
+      )
+    ) {
+      return;
+    }
 
     try {
       setIsCreatingAdmin(true);
       await adminService.createAdmin({
-        username: newAdminForm.username.trim(),
+        username: compactUsername,
         password: newAdminForm.password,
         role: newAdminForm.role,
       });
       setNewAdminForm({ username: "", password: "", role: "VIEWER" });
       await loadAdmins();
-      alert(l("Admin succesvol aangemaakt.", "Admin created successfully."));
+      alert(
+        l(
+          `Admin "${compactUsername}" is aangemaakt. Inloggen kan alleen op https://admin.themobstate.com, niet in het spel.`,
+          `Admin "${compactUsername}" was created. They must sign in at https://admin.themobstate.com, not in the game.`,
+        ),
+      );
     } catch (err) {
       if (handleUnauthorized(err)) return;
       alert(
@@ -2298,10 +2341,88 @@ function App() {
       setSavingAdminId(admin.id);
       await adminService.updateAdmin(admin.id, updates);
       await loadAdmins();
+      return true;
+    } catch (err) {
+      if (handleUnauthorized(err)) return false;
+      alert(
+        `${l("Admin bijwerken mislukt", "Failed to update admin")}: ${(err as Error).message}`,
+      );
+      return false;
+    } finally {
+      setSavingAdminId(null);
+    }
+  };
+
+  const handleResetAdminPassword = async (admin: AdminAccount) => {
+    const nextPassword = window.prompt(
+      l(
+        `Nieuw wachtwoord voor ${admin.username} (minstens 8 tekens):`,
+        `New password for ${admin.username} (at least 8 characters):`,
+      ),
+    );
+    if (nextPassword == null) return;
+    if (nextPassword.trim().length < 8) {
+      alert(
+        l(
+          "Wachtwoord moet minstens 8 tekens zijn.",
+          "Password must be at least 8 characters.",
+        ),
+      );
+      return;
+    }
+    const updated = await handleUpdateAdmin(admin, { password: nextPassword.trim() });
+    if (updated) {
+      alert(
+        l(
+          `Wachtwoord voor ${admin.username} is gezet. Geef dit persoonlijk door.`,
+          `Password for ${admin.username} was set. Share it with them privately.`,
+        ),
+      );
+    }
+  };
+
+  const handleDeleteAdmin = async (admin: AdminAccount) => {
+    if (currentAdminId === admin.id) {
+      alert(
+        l(
+          "Je kunt je eigen admin-account niet verwijderen.",
+          "You cannot delete your own admin account.",
+        ),
+      );
+      return;
+    }
+    const confirmed = window.confirm(
+      l(
+        `Admin "${admin.username}" definitief verwijderen? Dit kan niet ongedaan worden.`,
+        `Permanently delete admin "${admin.username}"? This cannot be undone.`,
+      ),
+    );
+    if (!confirmed) return;
+    const typed = window.prompt(
+      l(
+        `Typ ${admin.username} om te bevestigen:`,
+        `Type ${admin.username} to confirm:`,
+      ),
+    );
+    if (typed !== admin.username) {
+      if (typed != null) {
+        alert(
+          l(
+            "Verwijderen geannuleerd: gebruikersnaam kwam niet overeen.",
+            "Delete cancelled: username did not match.",
+          ),
+        );
+      }
+      return;
+    }
+    try {
+      setSavingAdminId(admin.id);
+      await adminService.deleteAdmin(admin.id);
+      await loadAdmins();
     } catch (err) {
       if (handleUnauthorized(err)) return;
       alert(
-        `${l("Admin bijwerken mislukt", "Failed to update admin")}: ${(err as Error).message}`,
+        `${l("Admin verwijderen mislukt", "Failed to delete admin")}: ${(err as Error).message}`,
       );
     } finally {
       setSavingAdminId(null);
@@ -4781,11 +4902,34 @@ function App() {
     setLoading(true);
 
     try {
-      await adminAuthService.login(username, password);
+      const data = await adminAuthService.login(username, password);
       setIsAuthenticated(true);
       setAdminRole(adminAuthService.getAdminRole());
+      setCurrentAdminId(data.admin.id);
     } catch (err) {
-      setError(t.loginFailed);
+      const code = err instanceof Error ? err.message : "";
+      if (code === "LOGIN_NETWORK" || code === "LOGIN_TIMEOUT") {
+        setError(
+          l(
+            "De admin-server is niet bereikbaar. Open https://admin.themobstate.com (niet het spel) en probeer opnieuw.",
+            "The admin server is unreachable. Open https://admin.themobstate.com (not the game) and try again.",
+          ),
+        );
+      } else if (code === "LOGIN_VALIDATION") {
+        setError(
+          l(
+            "Gebruikersnaam minstens 3 tekens, wachtwoord minstens 6. Geen spaties in de naam.",
+            "Username must be at least 3 characters and password at least 6. No spaces in the name.",
+          ),
+        );
+      } else {
+        setError(
+          l(
+            "Inloggen mislukt. Gebruik exact de admin-gebruikersnaam op https://admin.themobstate.com — dit is niet het spel.",
+            "Login failed. Use the exact admin username at https://admin.themobstate.com — this is not the game.",
+          ),
+        );
+      }
     } finally {
       setLoading(false);
     }
@@ -4795,6 +4939,7 @@ function App() {
     adminAuthService.logout();
     setIsAuthenticated(false);
     setAdminRole(null);
+    setCurrentAdminId(null);
     setUsername("");
     setPassword("");
     setActiveTab("dashboard");
@@ -4841,7 +4986,13 @@ function App() {
                 {l("Controlecentrum", "Control Center")}
               </span>
               <h1 className="h3 mb-1">{t.loginTitle}</h1>
-              <p className="text-muted mb-0">{t.loginSubtitle}</p>
+              <p className="text-muted mb-2">{t.loginSubtitle}</p>
+              <p className="small text-muted mb-0">
+                {l(
+                  "Alleen via https://admin.themobstate.com. Dit is niet het spel, en de gebruikersnaam mag geen spatie hebben.",
+                  "Only via https://admin.themobstate.com. This is not the game, and the username cannot contain a space.",
+                )}
+              </p>
             </div>
             <form className="login-box" onSubmit={handleLogin}>
               {error && <div className="alert alert-danger py-2">{error}</div>}
@@ -12479,8 +12630,8 @@ function App() {
                   <AdminPageIntro
                     kicker={l("Toegang · beheerders", "Access · admins")}
                     description={l(
-                      "Accounts, rollen en wachtwoorden voor het adminpanel.",
-                      "Accounts, roles and passwords for the admin panel.",
+                      "Accounts, rollen en wachtwoorden voor het adminpanel. Nieuwe admins loggen in op https://admin.themobstate.com, niet in het spel. Gebruikersnamen zonder spatie.",
+                      "Accounts, roles and passwords for the admin panel. New admins sign in at https://admin.themobstate.com, not in the game. Usernames cannot contain spaces.",
                     )}
                   />
 
@@ -12494,6 +12645,12 @@ function App() {
                     <h3 style={{ marginBottom: 12 }}>
                       {l("Nieuwe admin aanmaken", "Create new admin")}
                     </h3>
+                    <p className="text-muted small mb-2">
+                      {l(
+                        "Geen spaties in de naam. Wachtwoord minstens 8 tekens. Als iemand al bestaat (bijv. erwin), reset daar het wachtwoord in plaats van een extra account.",
+                        "No spaces in the name. Password at least 8 characters. If the person already exists (e.g. erwin), reset that password instead of creating a duplicate.",
+                      )}
+                    </p>
                     <div
                       style={{
                         display: "grid",
@@ -12591,19 +12748,38 @@ function App() {
                                 : "-"}
                             </td>
                             <td>
-                              <button
-                                className={`btn-small ${admin.isActive ? "btn-danger" : "btn-success"}`}
-                                disabled={savingAdminId === admin.id}
-                                onClick={() =>
-                                  handleUpdateAdmin(admin, {
-                                    isActive: !admin.isActive,
-                                  })
-                                }
-                              >
-                                {admin.isActive
-                                  ? l("Deactiveer", "Deactivate")
-                                  : l("Activeer", "Activate")}
-                              </button>
+                              <div className="d-flex flex-wrap gap-2">
+                                <button
+                                  className={`btn-small ${admin.isActive ? "btn-danger" : "btn-success"}`}
+                                  disabled={savingAdminId === admin.id}
+                                  onClick={() =>
+                                    handleUpdateAdmin(admin, {
+                                      isActive: !admin.isActive,
+                                    })
+                                  }
+                                >
+                                  {admin.isActive
+                                    ? l("Deactiveer", "Deactivate")
+                                    : l("Activeer", "Activate")}
+                                </button>
+                                <button
+                                  className="btn-small"
+                                  disabled={savingAdminId === admin.id}
+                                  onClick={() => void handleResetAdminPassword(admin)}
+                                >
+                                  {l("Wachtwoord", "Password")}
+                                </button>
+                                <button
+                                  className="btn-small btn-danger"
+                                  disabled={
+                                    savingAdminId === admin.id ||
+                                    currentAdminId === admin.id
+                                  }
+                                  onClick={() => void handleDeleteAdmin(admin)}
+                                >
+                                  {l("Verwijder", "Delete")}
+                                </button>
+                              </div>
                             </td>
                           </tr>
                         ))}

@@ -8,6 +8,7 @@ import path from 'path';
 import multer from 'multer';
 import { AdminRole, Prisma } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import { ADMIN_USERNAME_REGEX, compactAdminUsername } from '../utils/adminAccount';
 import {
   getCronStatus,
   checkExpiredEvents,
@@ -1053,7 +1054,13 @@ const createAdminSchema = z.object({
     .string()
     .min(3)
     .max(50)
-    .regex(/^[a-zA-Z0-9_\-.]+$/),
+    .transform((value) => compactAdminUsername(value))
+    .refine((value) => value.length >= 3 && value.length <= 50, {
+      message: 'Username must be 3-50 characters without spaces',
+    })
+    .refine((value) => ADMIN_USERNAME_REGEX.test(value), {
+      message: 'Username may only contain letters, numbers, _ - .',
+    }),
   password: z.string().min(8).max(128),
   role: z.nativeEnum(AdminRole).default(AdminRole.VIEWER),
 });
@@ -3834,6 +3841,71 @@ router.patch(
 
       console.error('Admin update admin error:', error);
       return res.status(500).json({ error: 'Failed to update admin' });
+    }
+  }
+);
+
+/**
+ * DELETE /api/admin/admins/:adminId
+ * Permanently remove an admin account
+ */
+router.delete(
+  '/admins/:adminId',
+  requireAdminRole(AdminRole.SUPER_ADMIN),
+  auditLog({ action: 'DELETE_ADMIN', targetType: 'Admin' }),
+  async (req: AdminRequest, res) => {
+    try {
+      const adminId = Number(req.params.adminId);
+      if (!Number.isFinite(adminId) || adminId <= 0) {
+        return res.status(400).json({ error: 'Invalid admin id' });
+      }
+
+      if (req.admin?.id === adminId) {
+        return res.status(400).json({ error: 'Cannot delete your own admin account' });
+      }
+
+      const targetAdmin = await prisma.admin.findUnique({
+        where: { id: adminId },
+        select: { id: true, username: true, role: true, isActive: true },
+      });
+
+      if (!targetAdmin) {
+        return res.status(404).json({ error: 'Admin not found' });
+      }
+
+      if (targetAdmin.role === AdminRole.SUPER_ADMIN && targetAdmin.isActive) {
+        const activeSuperAdmins = await prisma.admin.count({
+          where: {
+            role: AdminRole.SUPER_ADMIN,
+            isActive: true,
+          },
+        });
+        if (activeSuperAdmins <= 1) {
+          return res.status(400).json({ error: 'At least one active SUPER_ADMIN is required' });
+        }
+      }
+
+      await prisma.admin.delete({
+        where: { id: adminId },
+      });
+
+      res.locals.auditLogDetails = {
+        deletedUsername: targetAdmin.username,
+        deletedRole: targetAdmin.role,
+      };
+
+      return res.json({
+        message: 'Admin deleted successfully',
+        adminId,
+      });
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2003') {
+        return res.status(409).json({
+          error: 'This admin is still linked to other records. Deactivate the account instead.',
+        });
+      }
+      console.error('Admin delete admin error:', error);
+      return res.status(500).json({ error: 'Failed to delete admin' });
     }
   }
 );
