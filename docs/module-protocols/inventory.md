@@ -45,6 +45,7 @@ Carried items, storage, loadouts and equipment used by multiple modules.
 - Responsive usability without pushing critical actions off-screen.
 - Shared equipment choices that other modules depend on, such as worn weapon slots, must stay visible and must remain in sync with the consuming gameplay screen.
 - Inventory storage is **current-country only** and only the building opened via **Open storage**. Do not show a house picker or unplaced-stock grid on the Inventory menu.
+- `refreshInventorySlotUsage` retries MariaDB 1020 on `player.update` so backpack seize/travel/trade can finish when another request touched the same player row.
 - Paper-doll property grids use catalog capacity by upgrade level. A new house is **10** slots, not 100. The grid always has `capacity` squares; multi-slot stacks occupy one icon per slot.
 - Houses accept tools. Warehouse search on arrest still only hits warehouses.
 - The two paper-doll weapon slots are the only weapons Crimes considers. Dropping a weapon from backpack or house storage onto a slot wears it. Taking it off (to backpack or house) unequips that slot. Moving a weapon only between backpack and storage does not change worn slots.

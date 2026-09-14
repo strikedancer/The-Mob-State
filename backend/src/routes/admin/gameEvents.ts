@@ -11,7 +11,7 @@ router.use(adminAuthMiddleware);
 router.use(requireAdminRole(AdminRole.SUPER_ADMIN, AdminRole.MODERATOR));
 
 const nullableString = z.string().trim().min(1).nullable().optional();
-const jsonRecord = z.record(z.unknown());
+const jsonRecord = z.record(z.string(), z.unknown());
 
 const templateSchema = z.object({
   key: z.string().trim().min(2).max(100).regex(/^[a-z0-9_\-.]+$/),

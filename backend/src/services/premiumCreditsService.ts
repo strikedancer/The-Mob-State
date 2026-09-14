@@ -1,4 +1,5 @@
 import prisma from '../lib/prisma';
+import { withPrismaWriteRetry } from '../lib/prismaRetry';
 import { isVipStatusActive } from './vipBenefitsService';
 
 type CreditCatalogItem = {
@@ -485,26 +486,28 @@ export async function createTimedCreditEntitlement(
 export async function ensureDefaultCreditCatalog() {
   await Promise.all(
     DEFAULT_CREDIT_ITEMS.map((item) =>
-      prisma.creditShopItem.upsert({
-        where: { key: item.key },
-        create: {
-          ...item,
-          isActive: true,
-        },
-        update: {
-          titleNl: item.titleNl,
-          titleEn: item.titleEn,
-          descriptionNl: item.descriptionNl,
-          descriptionEn: item.descriptionEn,
-          creditCost: item.creditCost,
-          effectType: item.effectType,
-          moneyAmount: item.moneyAmount ?? null,
-          durationHours: item.durationHours ?? null,
-          actionType: item.actionType ?? null,
-          metadataJson: item.metadataJson ?? null,
-          sortOrder: item.sortOrder,
-        },
-      })
+      withPrismaWriteRetry(() =>
+        prisma.creditShopItem.upsert({
+          where: { key: item.key },
+          create: {
+            ...item,
+            isActive: true,
+          },
+          update: {
+            titleNl: item.titleNl,
+            titleEn: item.titleEn,
+            descriptionNl: item.descriptionNl,
+            descriptionEn: item.descriptionEn,
+            creditCost: item.creditCost,
+            effectType: item.effectType,
+            moneyAmount: item.moneyAmount ?? null,
+            durationHours: item.durationHours ?? null,
+            actionType: item.actionType ?? null,
+            metadataJson: item.metadataJson ?? null,
+            sortOrder: item.sortOrder,
+          },
+        })
+      )
     )
   );
 }

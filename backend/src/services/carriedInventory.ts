@@ -1,4 +1,5 @@
 import prisma from '../lib/prisma';
+import { withPrismaWriteRetry } from '../lib/prismaRetry';
 import {
   CARRIED_TRADE_LOCATION,
   drugSlotsForGrams,
@@ -102,10 +103,12 @@ export async function assertBackpackFits(
 export async function refreshInventorySlotUsage(playerId: number): Promise<void> {
   const toolService = (await import('./toolService')).default;
   const usage = await toolService.calculateInventoryUsage(playerId);
-  await prisma.player.update({
-    where: { id: playerId },
-    data: { inventory_slots_used: usage },
-  });
+  await withPrismaWriteRetry(() =>
+    prisma.player.update({
+      where: { id: playerId },
+      data: { inventory_slots_used: usage },
+    })
+  );
 }
 
 export async function getBackpackTradeQuantity(

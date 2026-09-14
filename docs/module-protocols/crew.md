@@ -25,7 +25,7 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - Responsive usability without pushing critical actions off-screen.
 - Crew overview on mobile must show the HQ still as an image (not a squeezed ListTile of HQ label + style + level). Member counts use singular/plural (`1 lid` / `2 leden`).
 - Crew chat uses the same `MessageInput` as DMs: Enter sends, Shift+Enter is a new line. The dashboard live-event rail stays hidden on Crew so it cannot cover the send button.
-- Fresh crews must start with Crew HQ and all crew storage buildings at level 1 so bank deposits, shared storage and upgrade flows work immediately without a manual bootstrap purchase.
+- Fresh crews must start with Crew HQ and all crew storage buildings at level 1 so bank deposits, shared storage and upgrade flows work immediately without a manual bootstrap purchase. Concurrent crew/storage GETs must upsert those starter rows (unique `crewId`) instead of racing `create`, so two members opening the same new crew do not 500.
 - Crew HQ member-cap progression must stay continuous across all HQ styles and levels; the cap overview may not reset per style and must scale through to the intended max of 150 members.
 - Crew HQ upgrade costs must stay continuous across all HQ styles and levels; upgrade prices may not reset per style tier and must keep increasing per next global level.
 - HQ progression CTA copy in `HQ & Upgrades` must stay level-based (upgrade to next level) instead of style-unlock wording.

@@ -270,11 +270,6 @@ export class NotificationService {
 
       if (devices.length === 0) {
         console.log(`[NotificationService] No devices registered for player ${playerId}`);
-        await systemLogService.logError('NotificationService.sendToPlayer', 'No registered devices found for push target', {
-          playerId,
-          title,
-          data,
-        });
         return;
       }
 

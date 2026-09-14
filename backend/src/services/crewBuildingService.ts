@@ -437,45 +437,59 @@ export async function ensureCrewStarterBuildings(crewId: number): Promise<void> 
     return;
   }
 
-  await prisma.$transaction(async (tx) => {
-    const txHq = await tx.crewHqBuilding.findUnique({ where: { crewId } });
+  const starterBuildingData = { crewId, style: 'camping' as const, level: 1 };
 
-    if (!txHq) {
-      await tx.crewHqBuilding.create({
-        data: {
-          crewId,
-          style: 'camping',
-          level: 1,
-        },
-      });
-    } else if (txHq.level < 1 && !hasAnyStorageRecord) {
+  await prisma.$transaction(async (tx) => {
+    await tx.crewHqBuilding.upsert({
+      where: { crewId },
+      create: starterBuildingData,
+      update: {},
+    });
+    const txHq = await tx.crewHqBuilding.findUnique({ where: { crewId } });
+    if (txHq && txHq.level < 1 && !hasAnyStorageRecord) {
       await tx.crewHqBuilding.update({
         where: { crewId },
         data: { level: 1 },
       });
     }
 
-    if (!carStorage) {
-      await tx.crewCarStorageBuilding.create({ data: { crewId, style: 'camping', level: 1 } });
-    }
-    if (!boatStorage) {
-      await tx.crewBoatStorageBuilding.create({ data: { crewId, style: 'camping', level: 1 } });
-    }
-    if (!weaponStorage) {
-      await tx.crewWeaponStorageBuilding.create({ data: { crewId, style: 'camping', level: 1 } });
-    }
-    if (!ammoStorage) {
-      await tx.crewAmmoStorageBuilding.create({ data: { crewId, style: 'camping', level: 1 } });
-    }
-    if (!drugStorage) {
-      await tx.crewDrugStorageBuilding.create({ data: { crewId, style: 'camping', level: 1 } });
-    }
-    if (!tradeStorage) {
-      await tx.crewTradeStorageBuilding.create({ data: { crewId, style: 'camping', level: 1 } });
-    }
-    if (!cashStorage) {
-      await tx.crewCashStorageBuilding.create({ data: { crewId, style: 'camping', level: 1 } });
-    }
+    await Promise.all([
+      tx.crewCarStorageBuilding.upsert({
+        where: { crewId },
+        create: starterBuildingData,
+        update: {},
+      }),
+      tx.crewBoatStorageBuilding.upsert({
+        where: { crewId },
+        create: starterBuildingData,
+        update: {},
+      }),
+      tx.crewWeaponStorageBuilding.upsert({
+        where: { crewId },
+        create: starterBuildingData,
+        update: {},
+      }),
+      tx.crewAmmoStorageBuilding.upsert({
+        where: { crewId },
+        create: starterBuildingData,
+        update: {},
+      }),
+      tx.crewDrugStorageBuilding.upsert({
+        where: { crewId },
+        create: starterBuildingData,
+        update: {},
+      }),
+      tx.crewTradeStorageBuilding.upsert({
+        where: { crewId },
+        create: starterBuildingData,
+        update: {},
+      }),
+      tx.crewCashStorageBuilding.upsert({
+        where: { crewId },
+        create: starterBuildingData,
+        update: {},
+      }),
+    ]);
   });
 }
 

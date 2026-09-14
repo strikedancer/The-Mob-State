@@ -253,7 +253,7 @@ Admin moet minimaal kunnen zien:
 
 Verplicht endpointset:
 - `/api/admin/crew-missions/telemetry`
-- `/api/admin/crew-missions/runtime-config`
+- `/api/admin/crew-missions/runtime-config` (`PUT` body: Zod 4 `z.record(z.string(), z.union([z.string(), z.number()]))`)
 
 ## QA Checklist
 

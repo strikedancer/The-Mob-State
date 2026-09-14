@@ -279,7 +279,16 @@ router.post('/login', async (req: Request, res: Response) => {
       player: result.player,
     });
   } catch (error) {
-    console.error('[AUTH] Login error:', error);
+    const loginReason = error instanceof Error ? error.message : '';
+    if (
+      loginReason === 'INVALID_CREDENTIALS' ||
+      loginReason === 'EMAIL_NOT_VERIFIED' ||
+      loginReason === 'PLAYER_BANNED'
+    ) {
+      console.log('[AUTH] Login rejected:', loginReason);
+    } else {
+      console.error('[AUTH] Login error:', error);
+    }
     if (error instanceof Error) {
       if (error.message === 'INVALID_CREDENTIALS') {
         return res.status(401).json({

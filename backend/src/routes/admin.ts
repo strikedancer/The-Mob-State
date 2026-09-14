@@ -896,7 +896,7 @@ const vehicleSchema = z.object({
   description: z.string().min(1),
   availableInCountries: z.array(z.string().min(1)).min(1),
   baseValue: z.number().int().positive(),
-  marketValue: z.record(z.number().int().positive()),
+  marketValue: z.record(z.string(), z.number().int().positive()),
   fuelCapacity: z.number().int().positive(),
   requiredRank: z.number().int().min(1),
   rarity: z.enum(['common', 'uncommon', 'rare', 'epic', 'legendary']).default('common'),
@@ -1614,13 +1614,13 @@ router.get('/casino/runtime-config', async (_req, res) => {
   }
 });
 
+const runtimeNumericConfigUpdatesSchema = z.object({
+  updates: z.record(z.string(), z.union([z.string(), z.number()])),
+});
+
 router.put('/casino/runtime-config', async (req, res) => {
   try {
-    const parsed = z
-      .object({
-        updates: z.record(z.union([z.string(), z.number()])),
-      })
-      .parse(req.body ?? {});
+    const parsed = runtimeNumericConfigUpdatesSchema.parse(req.body ?? {});
     const updated = await casinoOwnershipService.updateRuntimeConfig(parsed.updates);
     return res.json(updated);
   } catch (error) {
@@ -1652,11 +1652,7 @@ router.get('/drugs/runtime-config', async (_req, res) => {
 
 router.put('/drugs/runtime-config', async (req, res) => {
   try {
-    const parsed = z
-      .object({
-        updates: z.record(z.union([z.string(), z.number()])),
-      })
-      .parse(req.body ?? {});
+    const parsed = runtimeNumericConfigUpdatesSchema.parse(req.body ?? {});
     const updated = await updateDrugRuntimeConfig(parsed.updates);
     return res.json(updated);
   } catch (error) {
@@ -1688,11 +1684,7 @@ router.get('/country-police/runtime-config', async (_req, res) => {
 
 router.put('/country-police/runtime-config', async (req, res) => {
   try {
-    const parsed = z
-      .object({
-        updates: z.record(z.union([z.string(), z.number()])),
-      })
-      .parse(req.body ?? {});
+    const parsed = runtimeNumericConfigUpdatesSchema.parse(req.body ?? {});
     const updated = await countryPoliceService.updateRuntimeConfig(parsed.updates);
     return res.json(updated);
   } catch (error) {
@@ -1717,11 +1709,7 @@ router.put('/country-police/runtime-config', async (req, res) => {
 
 router.put('/crew-missions/runtime-config', async (req, res) => {
   try {
-    const parsed = z
-      .object({
-        updates: z.record(z.union([z.string(), z.number()])),
-      })
-      .parse(req.body ?? {});
+    const parsed = runtimeNumericConfigUpdatesSchema.parse(req.body ?? {});
     const updated = await crewMissionService.updateRuntimeConfig(parsed.updates);
     return res.json(updated);
   } catch (error) {

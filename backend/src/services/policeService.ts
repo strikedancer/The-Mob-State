@@ -1,4 +1,5 @@
 import prisma from '../lib/prisma';
+import { withPrismaWriteRetry } from '../lib/prismaRetry';
 import config from '../config';
 import { activityService } from './activityService';
 import { notificationService } from './notificationService';
@@ -285,10 +286,12 @@ export async function checkIfJailed(playerId: number): Promise<number> {
 
   if (latestSentenceAttempt && !latestSentenceAttempt.jailed) {
     if (player?.jailRelease) {
-      await prisma.player.update({
-        where: { id: playerId },
-        data: { jailRelease: null },
-      });
+      await withPrismaWriteRetry(() =>
+        prisma.player.update({
+          where: { id: playerId },
+          data: { jailRelease: null },
+        })
+      );
     }
     return 0;
   }
@@ -329,19 +332,23 @@ export async function checkIfJailed(playerId: number): Promise<number> {
     const remainingMs = releaseTime.getTime() - now.getTime();
     const remainingSeconds = Math.floor(remainingMs / 1000);
 
-    await prisma.player.update({
-      where: { id: playerId },
-      data: { jailRelease: releaseTime },
-    });
+    await withPrismaWriteRetry(() =>
+      prisma.player.update({
+        where: { id: playerId },
+        data: { jailRelease: releaseTime },
+      })
+    );
     
     return remainingSeconds;
   }
 
   if (player?.jailRelease) {
-    await prisma.player.update({
-      where: { id: playerId },
-      data: { jailRelease: null },
-    });
+    await withPrismaWriteRetry(() =>
+      prisma.player.update({
+        where: { id: playerId },
+        data: { jailRelease: null },
+      })
+    );
   }
 
   return 0; // Jail time expired
@@ -356,10 +363,12 @@ export async function setJailReleaseClock(
   jailTimeMinutes: number
 ): Promise<Date> {
   const jailRelease = new Date(Date.now() + jailTimeMinutes * 60 * 1000);
-  await prisma.player.update({
-    where: { id: playerId },
-    data: { jailRelease },
-  });
+  await withPrismaWriteRetry(() =>
+    prisma.player.update({
+      where: { id: playerId },
+      data: { jailRelease },
+    })
+  );
   void searchWarehousesAfterArrest(playerId);
   void seizeCarriedOnArrest(playerId).then((result) => {
     if (result.seizedUnits <= 0) return;
@@ -383,24 +392,26 @@ export async function jailPlayer(playerId: number, jailTime: number): Promise<vo
   const now = new Date();
   const jailRelease = new Date(now.getTime() + jailTime * 60 * 1000);
 
-  await prisma.$transaction(async (tx: any) => {
-    await tx.crimeAttempt.create({
-      data: {
-        playerId,
-        crimeId: 'police_arrest',
-        success: false,
-        reward: 0,
-        xpGained: 0,
-        jailed: true,
-        jailTime,
-      },
-    });
+  await withPrismaWriteRetry(() =>
+    prisma.$transaction(async (tx: any) => {
+      await tx.crimeAttempt.create({
+        data: {
+          playerId,
+          crimeId: 'police_arrest',
+          success: false,
+          reward: 0,
+          xpGained: 0,
+          jailed: true,
+          jailTime,
+        },
+      });
 
-    await tx.player.update({
-      where: { id: playerId },
-      data: { jailRelease },
-    });
-  });
+      await tx.player.update({
+        where: { id: playerId },
+        data: { jailRelease },
+      });
+    })
+  );
 
   await runPoliceSideEffect('ARREST activity', async () => {
     await activityService.logActivity(

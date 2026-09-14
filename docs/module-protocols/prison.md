@@ -31,6 +31,7 @@ Jail state, prisoner list, actions while jailed and release-related flow.
 - Jail- en cooldown-overlays moeten op mobiel compacte header-typografie en zichtbare snackbar/toast feedback houden.
 - `GET /player/prisoners` moet licht blijven: alleen spelers met `jailRelease > now` (max. 100), geen N+1 `checkIfJailed` over oude `crime_attempts`. Index `players.jailRelease` dekt die filter. Mobiel toont bij een laadfout een retry en pull-to-refresh.
 - Arrestatieflows moeten vrienden en crewleden kunnen signaleren dat iemand op hulp wacht, zonder dat het vrijlaten, borg of sentence-state in de gevangenis breekt.
+- Jail-clock `player.update` (checkIfJailed, setJailReleaseClock, jailPlayer) retries MariaDB 1020 write conflicts; backpack-seize slot refresh does the same so concurrent dashboard/arrest writes do not 500.
 - Succesvolle rechteromkoping, borg en ontsnapping moeten dezelfde jail-lock wissen (`jailed=false` op alle actieve rijen + `jailRelease=null`). Crime-outcomes die al `jailed` op de poging zetten mogen geen tweede `police_arrest` / `federal_arrest` rij aanmaken.
 
 ## i18n and Messaging

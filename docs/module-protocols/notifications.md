@@ -41,7 +41,7 @@ Pushnotificaties, inbox-signalen, web/native FCM gedrag, permission entrypoints 
 - Drug batch-ready meldingen (`drugs.production_ready`) lopen via cron + `readyNotifiedAt` (idempotent); geen dubbele push per partij.
 - Cooldown-expiry push voor crimes, jobs en vehicle/boat theft mag nooit alleen op in-memory `setTimeout` vertrouwen; de effectieve cooldownduur en notificatiestatus moeten persistent reconstrueerbaar zijn zodat backend restarts, deploys of container-restarts geen expiry-pushes verliezen.
 - Admin moet een handmatige, auditeerbare test-push naar een specifieke speler kunnen sturen voor live QA; zo'n testactie moet device-count terugkoppelen zodat deliveryproblemen onderscheidbaar blijven van ontbrekende tokenregistratie.
-- Push-delivery fouten, ontbrekende device-registraties en admin test-push diagnosepaden moeten ook in het bestaande Admin > System Logs scherm landen met voldoende context (`source`, playerId, device-count, FCM error codes); console-only logging is onvoldoende voor live QA.
+- Echte push-delivery fouten (FCM failed recipients, send exceptions, Firebase niet geïnitialiseerd) en admin test-push diagnosepaden moeten in Admin > System Logs landen met context (`source`, playerId, device-count, FCM error codes). Een gewone `sendToPlayer` naar een speler zonder devices is verwacht en mag **geen** `system.error` zijn; alleen `console.log`. Admin test-push zonder devices blijft wél een System Log (`AdminTestPush`).
 - Firebase Admin bootstrap mag productie niet alleen van een lokaal bestandspad laten afhangen; de backend moet runtime credentials kunnen lezen via env payload (`FIREBASE_SERVICE_ACCOUNT_JSON` / `FIREBASE_SERVICE_ACCOUNT_BASE64` of split env vars) met bestandspad alleen als fallback, anders vallen live pushes stil uit na container builds zonder ge-mount service-accountbestand.
 - Voor Plesk/VPS deploys horen Firebase Admin secrets in een server-side `.env.plesk` of vergelijkbaar niet-getrackt env-bestand te staan; ze mogen niet structureel inline in `docker-compose.plesk.yml` blijven omdat een `git pull` die noodpatch anders weer overschrijft.
 - Bankoverschrijvingen sturen altijd een pushmelding naar de ontvanger via de bestaande notification pipeline en blijven fire-and-forget.
@@ -67,7 +67,7 @@ Pushnotificaties, inbox-signalen, web/native FCM gedrag, permission entrypoints 
 6. Verifieer expliciet dat een cooldown-expiry push nog steeds aankomt na een backend restart terwijl de cooldown al liep.
 7. Verifieer dat een admin test-push naar een gekozen speler succesvol queued en dat de UI het aantal geregistreerde devices teruggeeft.
 8. Verifieer op web zowel een background/service-worker push als een foreground/in-focus push; beide moeten zichtbaar zijn met de verwachte titel/body.
-9. Verifieer bij mislukte test-pushes of ontbrekende devices dat Admin > System Logs een bruikbare foutregel met pushcontext toont.
+9. Verifieer bij mislukte test-pushes of ontbrekende devices op **admin test-push** dat Admin > System Logs een bruikbare foutregel toont. Gewone gameplay-push naar een speler zonder token mag daar geen `system.error` meer vullen.
 10. Verifieer dat pushfouten hoofdflows niet blokkeren.
 11. Verifieer dat arrestaties van een speler precies de relevante vrienden en crewleden signaleren, zonder dubbele push voor overlap-ontvangers.
 12. Verifieer dat een Territory-contest na de voorbereiding een push + inbox stuurt naar attacker- én defender-crew dat acties ontgrendeld zijn.

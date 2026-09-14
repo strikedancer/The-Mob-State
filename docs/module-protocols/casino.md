@@ -29,7 +29,7 @@ House loop (Casino 2.0): one casino per country, floors (public/VIP/private), vi
 - Dealer raises rake and can trim payouts; promoter raises max bet and FBI heat; security lowers ledger-raid drain. Max one active hire per role.
 - Staff salary is paid from `CasinoOwnership.bankroll` on the existing game tick. Too low → fire cheapest hire and run the low-balance path.
 - Successful `casino_ledger_raid` drains `%` of bankroll in the run `startCountry` (starter `currentCountry` at start; starter country at resolve as fallback). Skip if the casino owner is in the raiding crew. Crew cash reward is unchanged.
-- Admin → Casino: grouped runtime console (floors / rake / upgrades / security) via `CasinoAdminPanel` + `adminChrome`. Do not flip Clearing House gate defaults here.
+- Admin → Casino: grouped runtime console (floors / rake / upgrades / security) via `CasinoAdminPanel` + `adminChrome`. Do not flip Clearing House gate defaults here. Runtime PUT bodies use Zod 4 `z.record(z.string(), value)` so saving the console cannot 500 on `_zod`.
 - Bankruptcy must clear `Property.playerId` as well as the ownership row.
 - Vacant-country casinos get an inactive NPC operator on startup (`ensureVenueNpcOccupancy`) so the floor stays open. NPC-owned houses stay `forSale`; a player buyout transfers ownership and adds the new deposit to the existing bankroll. Do not lock purchase behind a real-player owner. Caretaker NPCs use `npc_players.isActive = false` so they do not join the live crime scheduler.
 - When a player **loses** a casino (bankruptcy, hitlist reset, admin reset), call `reclaimVacantCasino` immediately so an NPC takes the house. Do not leave the country closed until the next startup sweep.
