@@ -230,6 +230,40 @@ router.post('/register', async (req: Request, res: Response) => {
   }
 });
 
+router.post('/resend-verification', async (req: Request, res: Response) => {
+  try {
+    const { username, password } = req.body ?? {};
+    const result = await authService.resendVerificationEmail(
+      String(username ?? ''),
+      String(password ?? ''),
+    );
+    return res.status(200).json({
+      event: 'auth.verification_resent',
+      params: { status: result },
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      if (error.message === 'INVALID_CREDENTIALS') {
+        return res.status(401).json({
+          event: 'auth.error',
+          params: { reason: 'INVALID_CREDENTIALS' },
+        });
+      }
+      if (error.message === 'VERIFICATION_RESEND_COOLDOWN') {
+        return res.status(429).json({
+          event: 'auth.error',
+          params: { reason: 'VERIFICATION_RESEND_COOLDOWN' },
+        });
+      }
+    }
+    console.error('[AUTH] Resend verification error:', error);
+    return res.status(503).json({
+      event: 'auth.error',
+      params: { reason: 'EMAIL_SEND_FAILED' },
+    });
+  }
+});
+
 router.post('/login', async (req: Request, res: Response) => {
   try {
     const { username, password } = req.body;

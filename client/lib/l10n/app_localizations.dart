@@ -206,6 +206,42 @@ abstract class AppLocalizations {
   /// **'Incorrect username or password'**
   String get invalidCredentials;
 
+  /// No description provided for @authEmailNotVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your email first via the link we sent you. Check spam if it is missing.'**
+  String get authEmailNotVerified;
+
+  /// No description provided for @authRegisterCheckEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Account created. Check your email (and spam) to verify, then log in.'**
+  String get authRegisterCheckEmail;
+
+  /// No description provided for @authResendVerification.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend verification email'**
+  String get authResendVerification;
+
+  /// No description provided for @authResendVerificationSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification email sent. Check inbox and spam.'**
+  String get authResendVerificationSent;
+
+  /// No description provided for @authResendVerificationCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'Wait a moment before requesting another email.'**
+  String get authResendVerificationCooldown;
+
+  /// No description provided for @authResendVerificationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The verification email could not be sent. Try again later.'**
+  String get authResendVerificationFailed;
+
   /// No description provided for @loginSuccessful.
   ///
   /// In en, this message translates to:

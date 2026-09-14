@@ -12219,5 +12219,11 @@
         "type": "int"
       }
     }
-  }
+  },
+  "authEmailNotVerified": "Bestätigen Sie zunächst Ihre E-Mail-Adresse über den Link, den wir Ihnen gesendet haben. Überprüfen Sie den Spam, falls dieser fehlt.",
+  "authRegisterCheckEmail": "Konto erstellt. Überprüfen Sie zur Verifizierung Ihre E-Mail-Adresse (und Ihren Spam-Ordner) und melden Sie sich dann an.",
+  "authResendVerification": "Bestätigungs-E-Mail erneut senden",
+  "authResendVerificationSent": "Bestätigungs-E-Mail gesendet. Überprüfen Sie den Posteingang und den Spam.",
+  "authResendVerificationCooldown": "Warten Sie einen Moment, bevor Sie eine weitere E-Mail anfordern.",
+  "authResendVerificationFailed": "Die Bestätigungs-E-Mail konnte nicht gesendet werden. Versuchen Sie es später noch einmal."
 }

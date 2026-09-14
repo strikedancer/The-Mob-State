@@ -57,6 +57,29 @@ class AppLocalizationsNl extends AppLocalizations {
   String get invalidCredentials => 'Onjuiste gebruikersnaam of wachtwoord';
 
   @override
+  String get authEmailNotVerified =>
+      'Verifieer eerst je e-mail via de link die we stuurden. Kijk ook in spam als je niets ziet.';
+
+  @override
+  String get authRegisterCheckEmail =>
+      'Account aangemaakt. Check je e-mail (en spam) om te verifiëren, daarna kun je inloggen.';
+
+  @override
+  String get authResendVerification => 'Verificatiemail opnieuw sturen';
+
+  @override
+  String get authResendVerificationSent =>
+      'Verificatiemail verstuurd. Check inbox en spam.';
+
+  @override
+  String get authResendVerificationCooldown =>
+      'Wacht even voordat je opnieuw een mail aanvraagt.';
+
+  @override
+  String get authResendVerificationFailed =>
+      'De verificatiemail kon niet worden verstuurd. Probeer het later opnieuw.';
+
+  @override
   String get loginSuccessful => 'Succesvol ingelogd!';
 
   @override

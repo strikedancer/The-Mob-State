@@ -58,6 +58,30 @@ class AppLocalizationsEs extends AppLocalizations {
   String get invalidCredentials => 'Nombre de usuario o contraseña incorrectos';
 
   @override
+  String get authEmailNotVerified =>
+      'Primero verifique su correo electrónico a través del enlace que le enviamos. Revisa el spam si falta.';
+
+  @override
+  String get authRegisterCheckEmail =>
+      'Cuenta creada. Revise su correo electrónico (y spam) para verificarlo y luego inicie sesión.';
+
+  @override
+  String get authResendVerification =>
+      'Reenviar correo electrónico de verificación';
+
+  @override
+  String get authResendVerificationSent =>
+      'Correo electrónico de verificación enviado. Revisa bandeja de entrada y spam.';
+
+  @override
+  String get authResendVerificationCooldown =>
+      'Espere un momento antes de solicitar otro correo electrónico.';
+
+  @override
+  String get authResendVerificationFailed =>
+      'No se pudo enviar el correo electrónico de verificación. Vuelve a intentarlo más tarde.';
+
+  @override
   String get loginSuccessful => 'Inicio de sesión exitosa!';
 
   @override

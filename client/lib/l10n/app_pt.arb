@@ -12219,5 +12219,11 @@
         "type": "int"
       }
     }
-  }
+  },
+  "authEmailNotVerified": "Verifique seu e-mail primeiro através do link que lhe enviamos. Verifique o spam se estiver faltando.",
+  "authRegisterCheckEmail": "Conta criada. Verifique seu e-mail (e spam) para verificar e faça login.",
+  "authResendVerification": "Reenviar e-mail de verificação",
+  "authResendVerificationSent": "E-mail de verificação enviado. Verifique caixa de entrada e spam.",
+  "authResendVerificationCooldown": "Aguarde um momento antes de solicitar outro e-mail.",
+  "authResendVerificationFailed": "O e-mail de verificação não pôde ser enviado. Tente novamente mais tarde."
 }

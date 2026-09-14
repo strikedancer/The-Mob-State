@@ -9,6 +9,8 @@ import { normalizePlayerLanguage } from '../config/supportedLanguages';
 import { serializePlayerAvatarFields } from './playerPortraitService';
 
 const SALT_ROUNDS = 10;
+const VERIFICATION_RESEND_COOLDOWN_MS = 90 * 1000;
+const lastVerificationResendAt = new Map<string, number>();
 export const AUTH_REQUIRE_EMAIL_VERIFICATION_KEY = 'AUTH_REQUIRE_EMAIL_VERIFICATION';
 
 async function isEmailVerificationRequired(): Promise<boolean> {
@@ -279,6 +281,43 @@ export const authService = {
         }),
       },
     };
+  },
+
+  async resendVerificationEmail(username: string, password: string): Promise<'sent' | 'not_needed'> {
+    const player = await prisma.player.findUnique({
+      where: { username },
+    });
+    if (!player) {
+      throw new Error('INVALID_CREDENTIALS');
+    }
+    const isValidPassword = await bcrypt.compare(password, player.passwordHash);
+    if (!isValidPassword) {
+      throw new Error('INVALID_CREDENTIALS');
+    }
+    if (!(await isEmailVerificationRequired()) || !player.email || player.emailVerified) {
+      return 'not_needed';
+    }
+
+    const key = username.trim().toLowerCase();
+    const lastSent = lastVerificationResendAt.get(key) ?? 0;
+    if (Date.now() - lastSent < VERIFICATION_RESEND_COOLDOWN_MS) {
+      throw new Error('VERIFICATION_RESEND_COOLDOWN');
+    }
+
+    const verificationToken = emailService.generateToken();
+    const verificationTokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
+    await prisma.player.update({
+      where: { id: player.id },
+      data: { verificationToken, verificationTokenExpiry },
+    });
+    await emailService.sendVerificationEmail(
+      player.email,
+      player.username,
+      verificationToken,
+      normalizePlayerLanguage(player.preferredLanguage),
+    );
+    lastVerificationResendAt.set(key, Date.now());
+    return 'sent';
   },
 
   async getEmailVerificationRequired(): Promise<boolean> {

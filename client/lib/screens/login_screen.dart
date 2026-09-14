@@ -51,6 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String? _selectedGender;
   bool _facebookEnabled = false;
   bool _googleEnabled = false;
+  bool _resendingVerification = false;
   String? _oauthPendingToken;
   String? _oauthProvider;
 
@@ -279,8 +280,53 @@ class _LoginScreenState extends State<LoginScreen> {
     if (normalized == 'FACEBOOK_AUTH_FAILED') {
       return l10n.facebookAuthFailed;
     }
+    if (normalized == 'EMAIL_NOT_VERIFIED' ||
+        normalized.contains('Verifieer eerst je e-mail')) {
+      return l10n.authEmailNotVerified;
+    }
+    if (normalized == 'EMAIL_VERIFICATION_REQUIRED') {
+      return l10n.authRegisterCheckEmail;
+    }
+    if (normalized == 'VERIFICATION_RESEND_COOLDOWN') {
+      return l10n.authResendVerificationCooldown;
+    }
+    if (normalized == 'EMAIL_SEND_FAILED') {
+      return l10n.authResendVerificationFailed;
+    }
 
     return normalized;
+  }
+
+  bool _isUnverifiedEmailError(String? error) {
+    final normalized = (error ?? '').trim();
+    return normalized == 'EMAIL_NOT_VERIFIED' ||
+        normalized.contains('Verifieer eerst je e-mail');
+  }
+
+  Future<void> _resendVerificationEmail() async {
+    final username = _usernameController.text.trim();
+    final password = _passwordController.text;
+    if (username.isEmpty || password.isEmpty) {
+      return;
+    }
+    final loc = AppLocalizations.of(context)!;
+    setState(() => _resendingVerification = true);
+    final result = await AuthService().resendVerification(username, password);
+    if (!mounted) return;
+    setState(() => _resendingVerification = false);
+    showTopRightFromSnackBar(
+      context,
+      SnackBar(
+        content: Text(
+          result.success
+              ? loc.authResendVerificationSent
+              : _localizeAuthError(loc, result.error),
+        ),
+        backgroundColor: result.success
+            ? Colors.green
+            : Colors.orange.shade900,
+      ),
+    );
   }
 
   void _clearAuthError() {
@@ -458,12 +504,9 @@ class _LoginScreenState extends State<LoginScreen> {
           showTopRightFromSnackBar(
             context,
             SnackBar(
-              content: Text(
-                authProvider.error ??
-                    'Registratie gelukt! Controleer je e-mail om te verifiëren.',
-              ),
+              content: Text(l10n.authRegisterCheckEmail),
               backgroundColor: Colors.green,
-              duration: const Duration(seconds: 4),
+              duration: const Duration(seconds: 6),
             ),
           );
           setState(() {
@@ -1063,6 +1106,31 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                           ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                Consumer<AuthProvider>(
+                  builder: (context, authProvider, _) {
+                    if (!_isLogin ||
+                        !_isUnverifiedEmailError(authProvider.error)) {
+                      return const SizedBox.shrink();
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: TextButton(
+                          onPressed: _resendingVerification
+                              ? null
+                              : _resendVerificationEmail,
+                          child: Text(
+                            l10n.authResendVerification,
+                            style: const TextStyle(
+                              color: Color(0xFFD4A574),
+                            ),
+                          ),
                         ),
                       ),
                     );

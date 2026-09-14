@@ -126,8 +126,7 @@ class AuthService {
           if (reason == 'INVALID_CREDENTIALS') {
             errorMessage = 'Ongeldige gebruikersnaam of wachtwoord';
           } else if (reason == 'EMAIL_NOT_VERIFIED') {
-            errorMessage =
-                'Verifieer eerst je e-mailadres via de link in je e-mail.';
+            errorMessage = 'EMAIL_NOT_VERIFIED';
           } else if (reason == 'USERNAME_TAKEN') {
             errorMessage = 'Gebruikersnaam is al in gebruik';
           } else {
@@ -187,7 +186,7 @@ class AuthService {
           return AuthResult(
             success: true,
             requiresEmailVerification: true,
-            error: 'Registratie gelukt! Controleer je e-mail om te verifiëren.',
+            error: 'EMAIL_VERIFICATION_REQUIRED',
           );
         }
 
@@ -543,6 +542,29 @@ class AuthService {
     } catch (e) {
       print('[AuthService] Reset password exception: $e');
       rethrow;
+    }
+  }
+
+  Future<AuthResult> resendVerification(String username, String password) async {
+    try {
+      final response = await _apiClient.post(
+        '/auth/resend-verification',
+        {
+          'username': username,
+          'password': password,
+        },
+        includeAuth: false,
+      );
+      if (response.statusCode == 200) {
+        return AuthResult(success: true);
+      }
+      final data = jsonDecode(response.body);
+      final reason = data['params'] is Map<String, dynamic>
+          ? data['params']['reason'] as String?
+          : null;
+      return AuthResult(success: false, error: reason ?? 'EMAIL_SEND_FAILED');
+    } catch (e) {
+      return AuthResult(success: false, error: 'EMAIL_SEND_FAILED');
     }
   }
 }
