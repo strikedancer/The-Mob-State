@@ -2682,6 +2682,14 @@
   "crewUiStateNoJoinRequests": "No pending requests",
   "crewUiStateNoCrewsFound": "No crews found",
   "crewUiLabelMemberCount": "Members",
+  "crewUiMemberCount": "{count, plural, =1{1 member} other{{count} members}}",
+  "@crewUiMemberCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "crewUiBadgeMyCrew": "My Crew",
   "crewUiActionJoin": "Join",
   "crewUiStateNotInCrew": "You are not in a crew",
@@ -2839,7 +2847,7 @@
   "crewUiWarActionShield": "Shield",
   "crewUiWarActionBoost": "Boost",
   "crewUiWarActionTerritory": "Territory",
-  "crewUiWarTargetCrewSubtitle": "{name} ({count} members)",
+  "crewUiWarTargetCrewSubtitle": "{name} ({count, plural, =1{1 member} other{{count} members}})",
   "@crewUiWarTargetCrewSubtitle": {
     "placeholders": {
       "name": {

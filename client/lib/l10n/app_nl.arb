@@ -10026,14 +10026,22 @@
   "crewUiSectionMembersOverview": "Leden overzicht",
   "crewUiHintMembersTab": "Open het tabblad Leden hierboven voor een ledenlijst en lidmaatschapsverzoeken.",
   "crewUiActionGoToMembers": "Ga naar Leden",
-  "crewUiLabelCrewHq": "Hoofdkwartier van de bemanning",
-  "crewUiActionGoToCrewHq": "Ga naar het hoofdkwartier van de bemanning",
+  "crewUiLabelCrewHq": "Hoofdkwartier",
+  "crewUiActionGoToCrewHq": "Naar HQ",
   "crewUiActionGoToStorage": "Ga naar Opslag",
   "crewUiStateJoinCrewFirst": "Creëer of sluit je eerst aan bij een ploeg",
   "crewUiStateJoinRequests": "Sluit je aan bij verzoeken",
   "crewUiStateNoJoinRequests": "Geen openstaande verzoeken",
   "crewUiStateNoCrewsFound": "Geen crews gevonden",
   "crewUiLabelMemberCount": "Leden",
+  "crewUiMemberCount": "{count, plural, =1{1 lid} other{{count} leden}}",
+  "@crewUiMemberCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "crewUiBadgeMyCrew": "Mijn crew",
   "crewUiActionJoin": "Meedoen",
   "crewUiStateNotInCrew": "Je zit niet in een ploeg",
@@ -10191,7 +10199,7 @@
   "crewUiWarActionShield": "Schild",
   "crewUiWarActionBoost": "Boost",
   "crewUiWarActionTerritory": "Grondgebied",
-  "crewUiWarTargetCrewSubtitle": "{name} ({count} leden)",
+  "crewUiWarTargetCrewSubtitle": "{name} ({count, plural, =1{1 lid} other{{count} leden}})",
   "@crewUiWarTargetCrewSubtitle": {
     "placeholders": {
       "name": {

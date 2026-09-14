@@ -12211,5 +12211,13 @@
     }
   },
   "crewUiWarErrorCooldown": "Cet équipage est toujours en temps de recharge de guerre.",
-  "crewUiWarNoEligibleTargets": "Aucun équipage éligible pour le moment. Les cibles ont besoin de 3 membres et doivent être hors temps de recharge."
+  "crewUiWarNoEligibleTargets": "Aucun équipage éligible pour le moment. Les cibles ont besoin de 3 membres et doivent être hors temps de recharge.",
+  "crewUiMemberCount": "{count, plural, =1{1 membre} other{{count} membres}}",
+  "@crewUiMemberCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

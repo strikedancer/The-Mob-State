@@ -7949,6 +7949,12 @@ abstract class AppLocalizations {
   /// **'Members'**
   String get crewUiLabelMemberCount;
 
+  /// No description provided for @crewUiMemberCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 member} other{{count} members}}'**
+  String crewUiMemberCount(int count);
+
   /// No description provided for @crewUiBadgeMyCrew.
   ///
   /// In en, this message translates to:
@@ -8612,7 +8618,7 @@ abstract class AppLocalizations {
   /// No description provided for @crewUiWarTargetCrewSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'{name} ({count} members)'**
+  /// **'{name} ({count, plural, =1{1 member} other{{count} members}})'**
   String crewUiWarTargetCrewSubtitle(String name, int count);
 
   /// No description provided for @crewChatErrorLoadingMessages.

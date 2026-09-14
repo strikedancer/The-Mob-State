@@ -85,8 +85,9 @@ cp -f client/assets/images/trade_goods/cards/*.png runtime/client-images/trade_g
 # Result overlay badges (/images/ui/*)
 mkdir -p runtime/client-images/ui || true
 cp -f client/assets/images/ui/*.png runtime/client-images/ui/ 2>/dev/null || true
-# Crew HQ side-building cards (/images/crew_buildings/*)
-mkdir -p runtime/client-images/crew_buildings || true
+# Crew HQ stills + side-building cards (/images/crew_hq/*, /images/crew_buildings/*)
+mkdir -p runtime/client-images/crew_hq runtime/client-images/crew_buildings || true
+cp -rf client/assets/images/crew_hq/. runtime/client-images/crew_hq/ 2>/dev/null || true
 cp -rf client/assets/images/crew_buildings/. runtime/client-images/crew_buildings/ 2>/dev/null || true
 # Almanac wordmark
 cp -f client/assets/images/logo.png runtime/client-images/logo.png 2>/dev/null || true

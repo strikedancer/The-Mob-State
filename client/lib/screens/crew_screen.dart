@@ -4156,7 +4156,8 @@ class _CrewScreenState extends State<CrewScreen>
       print('🏢 HQ image path is null: style=$style, level=$level');
       return null;
     }
-    final path = 'assets/images/crew_hq/$style/hq_l$level.png';
+    final imageLevel = level.clamp(0, 3);
+    final path = 'assets/images/crew_hq/$style/hq_l$imageLevel.png';
     print('🏢 HQ image path: $path');
     return path;
   }
@@ -4304,6 +4305,74 @@ class _CrewScreenState extends State<CrewScreen>
     );
   }
 
+  Widget _buildOverviewHqCard({required bool compact}) {
+    final style = _myCrew?.hqStyle;
+    final level = _myCrew?.hqLevel;
+    final path = _getCrewHqImagePath(style, level);
+    final caption = (style != null && level != null)
+        ? '${_localizedHqStyleLabel(l10n, style)} · ${_t(l10n, 'label.level')} $level'
+        : _t(l10n, 'status.notOwned');
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () => _tabController.animateTo(1),
+        borderRadius: BorderRadius.circular(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: AspectRatio(
+                aspectRatio: compact ? 16 / 10 : 16 / 8,
+                child: path == null
+                    ? ColoredBox(
+                        color: Colors.black26,
+                        child: Icon(
+                          Icons.business,
+                          color: Colors.amber.shade600,
+                          size: 40,
+                        ),
+                      )
+                    : WebAssetHelper.image(
+                        path,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) =>
+                            ColoredBox(
+                          color: Colors.black26,
+                          child: Icon(
+                            Icons.business,
+                            color: Colors.amber.shade600,
+                            size: 40,
+                          ),
+                        ),
+                      ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    caption,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () => _tabController.animateTo(1),
+                  child: Text(_t(l10n, 'action.goToCrewHq')),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GamePageInfoHost(
@@ -4317,7 +4386,8 @@ class _CrewScreenState extends State<CrewScreen>
     return EmpireHubScaffold(
       embedded: widget.embedded,
       title: _t(l10n, 'app.crews'),
-      imageAsset: 'assets/images/crew_hq/villa/hq_l3.png',
+      imageAsset: _getCrewHqImagePath(_myCrew?.hqStyle, _myCrew?.hqLevel) ??
+          'assets/images/crew_hq/camping/hq_l1.png',
       topicId: 'crew',
       fallbackIcon: Icons.groups,
       tabBar: empireGoldTabBar(
@@ -4479,9 +4549,7 @@ class _CrewScreenState extends State<CrewScreen>
                                     ),
                                   ),
                                   Text(
-                                    locale == 'nl'
-                                        ? '${_myCrew!.memberCount} leden'
-                                        : '${_myCrew!.memberCount} members',
+                                    l10n.crewUiMemberCount(_myCrew!.memberCount),
                                     style: const TextStyle(color: Colors.grey),
                                   ),
                                 ],
@@ -4490,22 +4558,7 @@ class _CrewScreenState extends State<CrewScreen>
                           ],
                         ),
                         const SizedBox(height: 12),
-                        Card(
-                          child: ListTile(
-                            leading: const Icon(Icons.business),
-                            title: Text(_t(l10n, 'label.crewHq')),
-                            subtitle: Text(
-                              _myCrew!.hqStyle != null &&
-                                      _myCrew!.hqLevel != null
-                                  ? '${(_myCrew!.hqStyle ?? 'camping').toUpperCase()}  •  ${_t(l10n, 'label.level')} ${_myCrew!.hqLevel}'
-                                  : _t(l10n, 'status.notOwned'),
-                            ),
-                            trailing: TextButton(
-                              onPressed: () => _tabController.animateTo(1),
-                              child: Text(_t(l10n, 'action.goToCrewHq')),
-                            ),
-                          ),
-                        ),
+                        _buildOverviewHqCard(compact: isCompactMobile),
                         const Divider(height: 24),
                         Row(
                           children: [
@@ -7357,7 +7410,7 @@ class _CrewScreenState extends State<CrewScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${_t(l10n, 'label.memberCount')}: ${crew.memberCount}',
+                    l10n.crewUiMemberCount(crew.memberCount),
                   ),
                   const SizedBox(height: 4),
                   Align(

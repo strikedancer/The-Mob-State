@@ -4445,11 +4445,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crewUiActionGoToMembers => 'Ga naar Leden';
 
   @override
-  String get crewUiLabelCrewHq => 'Hoofdkwartier van de bemanning';
+  String get crewUiLabelCrewHq => 'Hoofdkwartier';
 
   @override
-  String get crewUiActionGoToCrewHq =>
-      'Ga naar het hoofdkwartier van de bemanning';
+  String get crewUiActionGoToCrewHq => 'Naar HQ';
 
   @override
   String get crewUiActionGoToStorage => 'Ga naar Opslag';
@@ -4469,6 +4468,17 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get crewUiLabelMemberCount => 'Leden';
+
+  @override
+  String crewUiMemberCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count leden',
+      one: '1 lid',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get crewUiBadgeMyCrew => 'Mijn crew';
@@ -4833,7 +4843,13 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String crewUiWarTargetCrewSubtitle(String name, int count) {
-    return '$name ($count leden)';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count leden',
+      one: '1 lid',
+    );
+    return '$name ($_temp0)';
   }
 
   @override

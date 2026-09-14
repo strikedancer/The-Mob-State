@@ -4477,6 +4477,17 @@ class AppLocalizationsPt extends AppLocalizations {
   String get crewUiLabelMemberCount => 'Membros';
 
   @override
+  String crewUiMemberCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count membros',
+      one: '1 membro',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get crewUiBadgeMyCrew => 'Minha Crew';
 
   @override

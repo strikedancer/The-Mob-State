@@ -12211,5 +12211,13 @@
     }
   },
   "crewUiWarErrorCooldown": "Quell'Crew è ancora in fase di recupero della guerra.",
-  "crewUiWarNoEligibleTargets": "Nessun Crew idoneo al momento. I bersagli necessitano di 3 membri e devono essere fuori ricarica."
+  "crewUiWarNoEligibleTargets": "Nessun Crew idoneo al momento. I bersagli necessitano di 3 membri e devono essere fuori ricarica.",
+  "crewUiMemberCount": "{count, plural, =1{1 membro} other{{count} membri}}",
+  "@crewUiMemberCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

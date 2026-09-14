@@ -12211,5 +12211,13 @@
     }
   },
   "crewUiWarErrorCooldown": "Essa Crew ainda está em espera de guerra.",
-  "crewUiWarNoEligibleTargets": "Nenhuma equipe qualificada no momento. Os alvos precisam de 3 membros e devem estar fora do tempo de espera."
+  "crewUiWarNoEligibleTargets": "Nenhuma equipe qualificada no momento. Os alvos precisam de 3 membros e devem estar fora do tempo de espera.",
+  "crewUiMemberCount": "{count, plural, =1{1 membro} other{{count} membros}}",
+  "@crewUiMemberCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

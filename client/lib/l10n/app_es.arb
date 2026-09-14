@@ -12211,5 +12211,13 @@
     }
   },
   "crewUiWarErrorCooldown": "Esa Crew todavía está en tiempo de reutilización de guerra.",
-  "crewUiWarNoEligibleTargets": "No hay equipos elegibles en este momento. Los objetivos necesitan 3 miembros y deben estar fuera del tiempo de reutilización."
+  "crewUiWarNoEligibleTargets": "No hay equipos elegibles en este momento. Los objetivos necesitan 3 miembros y deben estar fuera del tiempo de reutilización.",
+  "crewUiMemberCount": "{count, plural, =1{1 miembro} other{{count} miembros}}",
+  "@crewUiMemberCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

@@ -23,6 +23,7 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
+- Crew overview on mobile must show the HQ still as an image (not a squeezed ListTile of HQ label + style + level). Member counts use singular/plural (`1 lid` / `2 leden`).
 - Crew chat uses the same `MessageInput` as DMs: Enter sends, Shift+Enter is a new line. The dashboard live-event rail stays hidden on Crew so it cannot cover the send button.
 - Fresh crews must start with Crew HQ and all crew storage buildings at level 1 so bank deposits, shared storage and upgrade flows work immediately without a manual bootstrap purchase.
 - Crew HQ member-cap progression must stay continuous across all HQ styles and levels; the cap overview may not reset per style and must scale through to the intended max of 150 members.
@@ -57,6 +58,7 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
+- Verify the Overview HQ block shows the villa/camping/etc still on a narrow phone width, with `1 lid` (not `1 leden`) for a solo crew.
 - Verify a freshly created crew immediately has HQ level 1 plus all storage buildings on level 1, including cash storage, and can deposit into the crew bank without a separate unlock step.
 - Verify the Crew HQ level overview shows a continuous member-cap curve across all HQ styles and reaches 150 members at the top end instead of restarting from the base caps.
 - Verify car storage accepts both cars and motorcycles, while boat storage still only accepts boats.
