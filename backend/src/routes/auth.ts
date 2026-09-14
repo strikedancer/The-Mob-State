@@ -4,6 +4,7 @@ import { facebookAuthService } from '../services/facebookAuthService';
 import { googleAuthService } from '../services/googleAuthService';
 import { discordAuthService } from '../services/discordAuthService';
 import { emailService } from '../services/emailService';
+import { authenticate, AuthRequest } from '../middleware/authenticate';
 import prisma from '../lib/prisma';
 import bcrypt from 'bcrypt';
 import { normalizePlayerLanguage } from '../config/supportedLanguages';
@@ -131,15 +132,49 @@ router.get('/discord/start', (_req: Request, res: Response) => {
 
 router.get('/discord/callback', async (req: Request, res: Response) => {
   try {
+    const state = typeof req.query.state === 'string' ? req.query.state : undefined;
     if (typeof req.query.error === 'string' && req.query.error) {
-      return res.redirect(discordAuthService.errorRedirect('DISCORD_AUTH_FAILED'));
+      return res.redirect(discordAuthService.callbackErrorRedirect(state));
     }
     const code = typeof req.query.code === 'string' ? req.query.code : undefined;
-    const state = typeof req.query.state === 'string' ? req.query.state : undefined;
     return res.redirect(await discordAuthService.handleCallback(code, state));
   } catch (error) {
     console.error('[AUTH] Discord callback error:', error);
-    return res.redirect(discordAuthService.errorRedirect('DISCORD_AUTH_FAILED'));
+    const state = typeof req.query.state === 'string' ? req.query.state : undefined;
+    return res.redirect(discordAuthService.callbackErrorRedirect(state));
+  }
+});
+
+router.get('/discord/link/start', authenticate, (req: AuthRequest, res: Response) => {
+  try {
+    const url = discordAuthService.linkStartUrl(req.player!.id);
+    return res.json({
+      event: 'auth.discord.link.start',
+      params: { url },
+    });
+  } catch (error) {
+    console.error('[AUTH] Discord link start error:', error);
+    return res.status(400).json({
+      event: 'auth.error',
+      params: { reason: 'DISCORD_NOT_CONFIGURED' },
+    });
+  }
+});
+
+router.delete('/discord/link', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    await discordAuthService.unlink(req.player!.id);
+    return res.json({
+      event: 'auth.discord.unlinked',
+      params: {},
+    });
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : 'DISCORD_AUTH_FAILED';
+    const status = reason === 'DISCORD_NOT_LINKED' || reason === 'DISCORD_UNLINK_BLOCKED' ? 400 : 500;
+    return res.status(status).json({
+      event: 'auth.error',
+      params: { reason },
+    });
   }
 });
 

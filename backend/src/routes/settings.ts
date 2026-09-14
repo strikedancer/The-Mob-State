@@ -48,6 +48,14 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
   try {
     const player = await playerService.getPlayer(req.player!.id);
     const notificationPreferences = await playerNotificationPreferenceService.getPreferences(req.player!.id);
+    const loginLinks = await prisma.player.findUnique({
+      where: { id: req.player!.id },
+      select: { discordId: true, googleId: true, facebookId: true, email: true },
+    });
+    const discordLinked = Boolean(loginLinks?.discordId);
+    const canUnlinkDiscord = Boolean(
+      discordLinked && (loginLinks?.googleId || loginLinks?.facebookId || loginLinks?.email),
+    );
 
     return res.status(200).json({
       avatar: player.avatar,
@@ -67,6 +75,8 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
       isVip: player.isVip,
       vipExpiresAt: player.vipExpiresAt,
       notificationPreferences,
+      discordLinked,
+      canUnlinkDiscord,
     });
   } catch {
     return res.status(500).json({

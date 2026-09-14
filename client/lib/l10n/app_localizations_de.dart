@@ -202,6 +202,48 @@ class AppLocalizationsDe extends AppLocalizations {
       'Öffnen Sie den The Mob State-Server für Updates, Crews und Chat.';
 
   @override
+  String get discordLinkTitle => 'Discord verknüpfen';
+
+  @override
+  String get discordLinkSubtitle =>
+      'Verbinde Discord, damit in Nachrichten, die du dort eingibst, dein Name im Spiel angezeigt wird.';
+
+  @override
+  String get discordLinkedSubtitle =>
+      'Verlinkt. In Discord-World-Chat-Beiträgen wird Ihr Name im Spiel verwendet.';
+
+  @override
+  String get discordLinkAction => 'Discord verknüpfen';
+
+  @override
+  String get discordUnlinkAction => 'Verknüpfung aufheben';
+
+  @override
+  String get discordLinkOk => 'Discord ist mit diesem Konto verknüpft.';
+
+  @override
+  String get discordLinkFailed =>
+      'Discord konnte nicht verlinkt werden. Versuchen Sie es erneut.';
+
+  @override
+  String get discordAlreadyLinked =>
+      'Mit diesem Konto ist bereits ein anderer Discord-Benutzer verknüpft.';
+
+  @override
+  String get discordInUse =>
+      'Dieses Discord-Konto ist bereits mit einem anderen Spieler verknüpft.';
+
+  @override
+  String get discordUnlinkOk => 'Discord wurde getrennt.';
+
+  @override
+  String get discordUnlinkBlocked =>
+      'Sie können die Verknüpfung zu Discord nicht aufheben, da dies Ihre einzige Anmeldemethode ist.';
+
+  @override
+  String get discordUnlinkConfirm => 'Discord von diesem Konto trennen?';
+
+  @override
   String get landingFooterDiscord => 'Zwietracht';
 
   @override
@@ -17853,7 +17895,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicWorldChatHow =>
-      'Open-World-Chat unter Social. Jeder, der angemeldet ist, kann lesen und senden, auch aus dem Gefängnis. \nGeben Sie Sendungen ein; Umschalt+Enter beginnt eine neue Zeile. Aufkleber liegen neben dem Komponisten – keine Bild-Uploads. \nSchimpfwörter in den Spielsprachen werden auf dem Server gefiltert. Mitarbeiter können stummschalten oder löschen. \nDrücken Sie etwa 10 Minuten lang lange auf Ihre eigene Nachricht, um sie zu löschen. Drücken Sie lange, um eine andere Person zu melden. \nEs gibt keine Kredit-Paywall. Direktnachrichten und Crew-Chat bleiben getrennt. \nWenn Discord verknüpft ist, wird dieselbe Lobby auf einen Discord-Kanal gespiegelt. Nachrichten von Discord zeigen im Spiel ein Discord-Tag.';
+      'Open-World-Chat unter Social. Jeder, der angemeldet ist, kann lesen und senden, auch aus dem Gefängnis. \nGeben Sie Sendungen ein; Umschalt+Enter beginnt eine neue Zeile. Aufkleber liegen neben dem Komponisten – keine Bild-Uploads. \nSchimpfwörter in den Spielsprachen werden auf dem Server gefiltert. Mitarbeiter können stummschalten oder löschen. \nDrücken Sie etwa 10 Minuten lang lange auf Ihre eigene Nachricht, um sie zu löschen. Drücken Sie lange, um eine andere Person zu melden. \nEs gibt keine Kredit-Paywall. Direktnachrichten und Crew-Chat bleiben getrennt. \nWenn Discord verknüpft ist, wird dieselbe Lobby auf einen Discord-Kanal gespiegelt. Nachrichten von Discord zeigen im Spiel ein Discord-Tag. Sie können Discord später in den Einstellungen verknüpfen, wenn Sie sich nicht bei Discord angemeldet haben.';
 
   @override
   String get helpTopicWorldChatTips =>

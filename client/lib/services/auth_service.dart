@@ -308,6 +308,40 @@ class AuthService {
     }
   }
 
+  Future<String?> discordLinkStartUrl() async {
+    try {
+      final response = await _apiClient.get('/auth/discord/link/start');
+      if (response.statusCode != 200) return null;
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final params = data['params'] is Map<String, dynamic>
+          ? data['params'] as Map<String, dynamic>
+          : data;
+      final url = params['url']?.toString().trim() ?? '';
+      return url.isEmpty ? null : url;
+    } catch (e) {
+      print('[AuthService] Discord link start exception: $e');
+      return null;
+    }
+  }
+
+  Future<String?> unlinkDiscord() async {
+    try {
+      final response = await _apiClient.delete('/auth/discord/link');
+      if (response.statusCode == 200) return null;
+      final data = jsonDecode(response.body);
+      if (data is Map<String, dynamic>) {
+        final params = data['params'];
+        if (params is Map<String, dynamic> && params['reason'] != null) {
+          return params['reason'].toString();
+        }
+      }
+      return 'DISCORD_AUTH_FAILED';
+    } catch (e) {
+      print('[AuthService] Discord unlink exception: $e');
+      return 'DISCORD_AUTH_FAILED';
+    }
+  }
+
   Future<AuthResult> loginWithToken(
     String token, {
     String fallbackError = 'FACEBOOK_AUTH_FAILED',

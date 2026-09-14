@@ -12306,6 +12306,18 @@
   "helpTopicWorldChatCategory": "Społeczny",
   "helpTopicWorldChatTitle": "Światowy czat",
   "helpTopicWorldChatSummary": "Jedno publiczne lobby dla każdego gracza, z naklejkami i opcjonalnym mostem Discord, dzięki czemu możesz rozmawiać bez otwierania gry.",
-  "helpTopicWorldChatHow": "Czat w otwartym świecie w sekcji Społeczności. Każdy zalogowany może czytać i wysyłać, także z więzienia. \nWpisz wysyła; Shift+Enter rozpoczyna nową linię. Naklejki znajdują się obok kompozytora — nie można przesyłać obrazów. \nPrzekleństwa w językach gry są filtrowane na serwerze. Personel może wyciszyć lub usunąć. \nNaciśnij i przytrzymaj własną wiadomość, aby ją usunąć na około 10 minut. Naciśnij długo kogoś innego, aby zgłosić. \nNie ma paywalla kredytowego. Wiadomości bezpośrednie i czat załogi pozostają oddzielne. \nKiedy Discord jest połączony, to samo lobby jest odzwierciedlane na kanale Discord. Wiadomości od Discorda zawierają tag Discord w grze.",
-  "helpTopicWorldChatTips": "Zachowaj spokój: wyciszenie wpływa zarówno na grę, jak i na stronę Discord, jeśli Twoje konta są połączone. \nUżyj naklejek, aby szybko zareagować i nie zalać pomieszczenia. \nPrywatne umowy nadal należą do bezpośrednich wiadomości, a nie do lobby publicznego."
+  "helpTopicWorldChatHow": "Czat w otwartym świecie w sekcji Społeczności. Każdy zalogowany może czytać i wysyłać, także z więzienia. \nWpisz wysyła; Shift+Enter rozpoczyna nową linię. Naklejki znajdują się obok kompozytora — nie można przesyłać obrazów. \nPrzekleństwa w językach gry są filtrowane na serwerze. Personel może wyciszyć lub usunąć. \nNaciśnij i przytrzymaj własną wiadomość, aby ją usunąć na około 10 minut. Naciśnij długo kogoś innego, aby zgłosić. \nNie ma paywalla kredytowego. Wiadomości bezpośrednie i czat załogi pozostają oddzielne. \nKiedy Discord jest połączony, to samo lobby jest odzwierciedlane na kanale Discord. Wiadomości od Discorda zawierają tag Discord w grze. Możesz połączyć Discord później w Ustawieniach, jeśli nie logowałeś się za pomocą Discorda.",
+  "helpTopicWorldChatTips": "Zachowaj spokój: wyciszenie wpływa zarówno na grę, jak i na stronę Discord, jeśli Twoje konta są połączone. \nUżyj naklejek, aby szybko zareagować i nie zalać pomieszczenia. \nPrywatne umowy nadal należą do bezpośrednich wiadomości, a nie do lobby publicznego.",
+  "discordLinkTitle": "Połącz Discorda",
+  "discordLinkSubtitle": "Połącz się z Discordem, aby wpisane tam wiadomości wyświetlały Twoją nazwę w grze.",
+  "discordLinkedSubtitle": "Połączony. W postach na czacie światowym Discord używana jest Twoja nazwa w grze.",
+  "discordLinkAction": "Połącz Discorda",
+  "discordUnlinkAction": "Odczepić",
+  "discordLinkOk": "Discord jest powiązany z tym kontem.",
+  "discordLinkFailed": "Nie udało się połączyć Discorda. Spróbuj ponownie.",
+  "discordAlreadyLinked": "Z tym kontem jest już powiązany inny użytkownik Discord.",
+  "discordInUse": "To konto Discord jest już połączone z innym graczem.",
+  "discordUnlinkOk": "Discord został odłączony.",
+  "discordUnlinkBlocked": "Nie możesz odłączyć Discorda, ponieważ jest to Twoja jedyna metoda logowania.",
+  "discordUnlinkConfirm": "Odłączyć Discorda od tego konta?"
 }

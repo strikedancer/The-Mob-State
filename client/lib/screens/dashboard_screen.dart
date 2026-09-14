@@ -21,6 +21,7 @@ import '../widgets/start_and_goals_panel.dart';
 import '../widgets/icu_overlay.dart';
 import '../widgets/game_page_info.dart';
 import '../widgets/pwa_install_banner.dart';
+import '../widgets/guest_legal_footer.dart';
 import '../widgets/push_enable_prompt.dart';
 import '../widgets/live_event_rail.dart';
 import '../utils/game_event_theme.dart';
@@ -28,6 +29,7 @@ import '../utils/localized_game_event_template.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/localized_api_message.dart';
 import '../utils/player_profile_navigation.dart';
+import '../utils/web_history.dart';
 import '../utils/rank_display.dart';
 import '../theme/dashboard_chrome.dart';
 import '../services/event_renderer.dart';
@@ -136,6 +138,8 @@ _WebSection _webSectionFromQueryParam(String? value) {
     case 'world-chat':
     case 'chat':
       return _WebSection.worldChat;
+    case 'settings':
+      return _WebSection.settings;
     default:
       return _WebSection.dashboard;
   }
@@ -581,7 +585,31 @@ class _DashboardScreenState extends State<DashboardScreen> {
         if (mounted) unawaited(maybeShowPushEnablePrompt(context));
       });
       _loadActiveGameEventsForRail();
+      _consumeDiscordLinkReturn();
     });
+  }
+
+  void _consumeDiscordLinkReturn() {
+    if (!kIsWeb) return;
+    final status = Uri.base.queryParameters['discord_link']?.trim() ?? '';
+    if (status.isEmpty) return;
+    final reason = Uri.base.queryParameters['reason'] ?? '';
+    replaceBrowserPath(
+      _selectedWebSection == _WebSection.settings
+          ? '/dashboard?section=settings'
+          : '/dashboard',
+    );
+    final l10n = AppLocalizations.of(context)!;
+    final text = status == 'ok'
+        ? l10n.discordLinkOk
+        : reason == 'DISCORD_IN_USE'
+            ? l10n.discordInUse
+            : reason == 'DISCORD_ALREADY_LINKED'
+                ? l10n.discordAlreadyLinked
+                : l10n.discordLinkFailed;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(text)),
+    );
   }
 
   Future<void> _loadActiveGameEventsForRail() async {
@@ -992,6 +1020,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           const PwaInstallBanner(),
+          const GuestLegalFooter(showLanguageSelector: false),
           if (!showLeftSidebar)
             ValueListenableBuilder<Map<String, int>>(
               valueListenable: _navCooldowns,

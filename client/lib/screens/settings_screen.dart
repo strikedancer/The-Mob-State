@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../config/app_config.dart';
 import '../config/supported_languages.dart';
 import '../providers/locale_provider.dart';
@@ -18,6 +19,7 @@ import '../widgets/game_page_info.dart';
 import '../widgets/pwa_install_banner.dart';
 import '../widgets/discord_invite_button.dart';
 import '../services/discord_community_service.dart';
+import '../services/auth_service.dart';
 
 class SettingsScreen extends StatefulWidget {
   final bool embedded;
@@ -47,6 +49,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String _selectedLanguage = 'nl';
   String? _error;
   String? _discordInviteUrl;
+  bool _discordLoginEnabled = false;
+  bool _discordLinked = false;
+  bool _canUnlinkDiscord = false;
+  bool _discordLinkBusy = false;
   AuthorizationStatus? _pushAuthorizationStatus;
   bool _pushTokenRegistered = false;
   bool _isEnablingPush = false;
@@ -60,6 +66,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     DiscordCommunityService().fetchInviteUrl().then((url) {
       if (!mounted) return;
       setState(() => _discordInviteUrl = url);
+    });
+    AuthService().discordStatus().then((status) {
+      if (!mounted) return;
+      setState(() => _discordLoginEnabled = status.loginEnabled);
     });
   }
 
@@ -112,6 +122,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         _settings = jsonDecode(settingsResponse.body);
         _allowMessages = _settings?['allowMessages'] ?? true;
         _selectedLanguage = _settings?['preferredLanguage'] ?? 'nl';
+        _discordLinked = _settings?['discordLinked'] == true;
+        _canUnlinkDiscord = _settings?['canUnlinkDiscord'] == true;
 
         final notificationPreferences =
             (_settings?['notificationPreferences'] as Map<String, dynamic>?) ??
@@ -182,6 +194,67 @@ class _SettingsScreenState extends State<SettingsScreen> {
         _isLoading = false;
       });
     }
+  }
+
+  Future<void> _linkDiscord() async {
+    if (_discordLinkBusy || !kIsWeb) return;
+    setState(() => _discordLinkBusy = true);
+    final url = await AuthService().discordLinkStartUrl();
+    if (!mounted) return;
+    if (url == null) {
+      setState(() => _discordLinkBusy = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context)!.discordLinkFailed)),
+      );
+      return;
+    }
+    await launchUrl(Uri.parse(url), webOnlyWindowName: '_self');
+  }
+
+  Future<void> _unlinkDiscord() async {
+    final l10n = AppLocalizations.of(context)!;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: const Color(0xFF1a1a2e),
+        title: Text(l10n.discordUnlinkAction, style: const TextStyle(color: Colors.white)),
+        content: Text(l10n.discordUnlinkConfirm, style: const TextStyle(color: Colors.white70)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: Text(l10n.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: Text(l10n.discordUnlinkAction),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !mounted) return;
+    setState(() => _discordLinkBusy = true);
+    final reason = await AuthService().unlinkDiscord();
+    if (!mounted) return;
+    setState(() => _discordLinkBusy = false);
+    if (reason == null) {
+      setState(() {
+        _discordLinked = false;
+        _canUnlinkDiscord = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.discordUnlinkOk)),
+      );
+      return;
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          reason == 'DISCORD_UNLINK_BLOCKED'
+              ? l10n.discordUnlinkBlocked
+              : l10n.discordLinkFailed,
+        ),
+      ),
+    );
   }
 
   bool get _isDutch => Localizations.localeOf(context).languageCode == 'nl';
@@ -753,6 +826,35 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     subtitle: Text(l10n.discordSettingsSubtitle),
                     trailing: const Icon(Icons.open_in_new),
                     onTap: () => openDiscordInvite(_discordInviteUrl!),
+                  ),
+                ),
+              ],
+              if (_discordLoginEnabled) ...[
+                const SizedBox(height: 8),
+                Card(
+                  child: ListTile(
+                    leading: const Icon(Icons.link, color: discordBlurple),
+                    title: Text(l10n.discordLinkTitle),
+                    subtitle: Text(
+                      _discordLinked
+                          ? l10n.discordLinkedSubtitle
+                          : l10n.discordLinkSubtitle,
+                    ),
+                    trailing: _discordLinkBusy
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : _discordLinked
+                            ? (_canUnlinkDiscord
+                                ? TextButton(
+                                    onPressed: _unlinkDiscord,
+                                    child: Text(l10n.discordUnlinkAction),
+                                  )
+                                : const Icon(Icons.check, color: Colors.green))
+                            : const Icon(Icons.chevron_right),
+                    onTap: _discordLinked || _discordLinkBusy ? null : _linkDiscord,
                   ),
                 ),
               ],

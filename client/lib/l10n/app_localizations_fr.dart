@@ -202,6 +202,48 @@ class AppLocalizationsFr extends AppLocalizations {
       'Ouvrez le serveur The Mob State pour les mises à jour, les équipes et le chat.';
 
   @override
+  String get discordLinkTitle => 'Lier Discord';
+
+  @override
+  String get discordLinkSubtitle =>
+      'Connectez Discord pour que les messages que vous y tapez indiquent votre nom dans le jeu.';
+
+  @override
+  String get discordLinkedSubtitle =>
+      'Lié. Les publications du chat Discord World utilisent votre nom dans le jeu.';
+
+  @override
+  String get discordLinkAction => 'Lier Discord';
+
+  @override
+  String get discordUnlinkAction => 'Dissocier';
+
+  @override
+  String get discordLinkOk => 'Discord est lié à ce compte.';
+
+  @override
+  String get discordLinkFailed =>
+      'Impossible de lier Discord. Essayer à nouveau.';
+
+  @override
+  String get discordAlreadyLinked =>
+      'Ce compte est déjà associé à un autre utilisateur Discord.';
+
+  @override
+  String get discordInUse =>
+      'Ce compte Discord est déjà lié à un autre joueur.';
+
+  @override
+  String get discordUnlinkOk => 'Discord a été dissocié.';
+
+  @override
+  String get discordUnlinkBlocked =>
+      'Vous ne pouvez pas dissocier Discord car c\'est votre seule méthode de connexion.';
+
+  @override
+  String get discordUnlinkConfirm => 'Dissocier Discord de ce compte ?';
+
+  @override
   String get landingFooterDiscord => 'Discorde';
 
   @override
@@ -17850,7 +17892,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicWorldChatHow =>
-      'Chat en monde ouvert sous Social. Toute personne connectée peut lire et envoyer des messages, y compris depuis la prison. \nEntrez les envois ; Shift+Entrée démarre une nouvelle ligne. Les autocollants sont placés à côté du compositeur – aucun téléchargement d’image. \nLes gros mots dans les langues du jeu sont filtrés sur le serveur. Le personnel peut désactiver ou supprimer. \nAppuyez longuement sur votre propre message pour le supprimer pendant environ 10 minutes. Appuyez longuement sur quelqu\'un d\'autre pour signaler. \nIl n’y a pas de paywall de crédit. Les messages directs et les discussions en équipe restent séparés. \nLorsque Discord est lié, le même lobby est reflété sur une chaîne Discord. Les messages de Discord affichent un tag Discord dans le jeu.';
+      'Chat en monde ouvert sous Social. Toute personne connectée peut lire et envoyer des messages, y compris depuis la prison. \nEntrez les envois ; Shift+Entrée démarre une nouvelle ligne. Les autocollants sont placés à côté du compositeur – aucun téléchargement d’image. \nLes gros mots dans les langues du jeu sont filtrés sur le serveur. Le personnel peut désactiver ou supprimer. \nAppuyez longuement sur votre propre message pour le supprimer pendant environ 10 minutes. Appuyez longuement sur quelqu\'un d\'autre pour signaler. \nIl n’y a pas de paywall de crédit. Les messages directs et les discussions en équipe restent séparés. \nLorsque Discord est lié, le même lobby est reflété sur une chaîne Discord. Les messages de Discord affichent un tag Discord dans le jeu. Vous pouvez lier Discord plus tard dans Paramètres si vous ne vous êtes pas connecté avec Discord.';
 
   @override
   String get helpTopicWorldChatTips =>

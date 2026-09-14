@@ -52,7 +52,7 @@ Player OAuth stays `identify` + `email` only. The chat bot is a separate token.
 - Rate limit (~1 / 3s, 10 / min). Max 200 characters.
 - Stickers are a fixed catalog (`globalChatStickers.ts` / `global_chat_stickers.dart`), same ids.
 - Banned accounts cannot send. Linked Discord of a banned or muted player is dropped inbound.
-- Discord-sourced lines use the linked in-game username when `discordId` matches a player; otherwise the Discord username. Game-sourced lines always use the in-game username. Guests without a linked account still appear with a Discord tag.
+- Discord-sourced lines use the linked in-game username when `discordId` matches a player; otherwise the Discord username. Game-sourced lines always use the in-game username. Players who did not sign in with Discord can link later from Settings. Guests without a linked account still appear with a Discord tag.
 
 ## QA Checklist
 1. Send text + sticker in-game; second browser sees it live.

@@ -201,6 +201,47 @@ class AppLocalizationsIt extends AppLocalizations {
       'Apri il server The Mob State per aggiornamenti, crew e chat.';
 
   @override
+  String get discordLinkTitle => 'Collega Discord';
+
+  @override
+  String get discordLinkSubtitle =>
+      'Connetti Discord in modo che i messaggi digitati mostrino il tuo nome di gioco.';
+
+  @override
+  String get discordLinkedSubtitle =>
+      'Collegato. I post della chat mondiale di Discord utilizzano il tuo nome di gioco.';
+
+  @override
+  String get discordLinkAction => 'Collega Discord';
+
+  @override
+  String get discordUnlinkAction => 'Scollega';
+
+  @override
+  String get discordLinkOk => 'Discord è collegato a questo account.';
+
+  @override
+  String get discordLinkFailed => 'Impossibile collegare Discord. Riprova.';
+
+  @override
+  String get discordAlreadyLinked =>
+      'Questo account ha già collegato un altro utente Discord.';
+
+  @override
+  String get discordInUse =>
+      'Quell\'account Discord è già collegato a un altro giocatore.';
+
+  @override
+  String get discordUnlinkOk => 'Discord è stato scollegato.';
+
+  @override
+  String get discordUnlinkBlocked =>
+      'Non puoi scollegare Discord perché è il tuo unico metodo di accesso.';
+
+  @override
+  String get discordUnlinkConfirm => 'Scollegare Discord da questo account?';
+
+  @override
   String get landingFooterDiscord => 'Discordia';
 
   @override
@@ -17824,7 +17865,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicWorldChatHow =>
-      'Apri la chat mondiale in Social. Chiunque abbia effettuato l\'accesso può leggere e inviare, anche dal carcere. \nInserisci invii; Shift+Invio inizia una nuova riga. Gli adesivi si trovano accanto al compositore: nessun caricamento di immagini. \nLe parolacce nelle lingue del gioco vengono filtrate sul server. Il personale può disattivare o eliminare. \nPremi a lungo il tuo messaggio per eliminarlo per circa 10 minuti. Premi a lungo qualcun altro per segnalare. \nNon è previsto alcun pagamento del credito. I messaggi diretti e la chat dell\'Crew rimangono separati. \nQuando Discord è collegato, la stessa lobby viene rispecchiata su un canale Discord. I messaggi di Discord mostrano un tag Discord nel gioco.';
+      'Apri la chat mondiale in Social. Chiunque abbia effettuato l\'accesso può leggere e inviare, anche dal carcere. \nInserisci invii; Shift+Invio inizia una nuova riga. Gli adesivi si trovano accanto al compositore: nessun caricamento di immagini. \nLe parolacce nelle lingue del gioco vengono filtrate sul server. Il personale può disattivare o eliminare. \nPremi a lungo il tuo messaggio per eliminarlo per circa 10 minuti. Premi a lungo qualcun altro per segnalare. \nNon è previsto alcun pagamento del credito. I messaggi diretti e la chat dell\'Crew rimangono separati. \nQuando Discord è collegato, la stessa lobby viene rispecchiata su un canale Discord. I messaggi di Discord mostrano un tag Discord nel gioco. Puoi collegare Discord in seguito in Impostazioni se non hai effettuato l\'accesso con Discord.';
 
   @override
   String get helpTopicWorldChatTips =>

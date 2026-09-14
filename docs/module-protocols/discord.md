@@ -20,17 +20,19 @@ Permanent invite (no expiry), preferably `https://discord.gg/…` landing on `#r
 
 ## Primary Frontend Entry
 - `client/lib/screens/login_screen.dart` — **Doorgaan met Discord** (web only, if API `loginEnabled`)
-- `client/lib/widgets/guest_legal_footer.dart` — landing/login footer Discord link
+- `client/lib/widgets/guest_legal_footer.dart` — landing/login footer Discord link; same footer on the in-game dashboard (language stays in Settings)
 - `client/lib/screens/help_screen.dart` — Help CTA next to Almanac
-- `client/lib/screens/settings_screen.dart` — Community / Discord row
+- `client/lib/screens/settings_screen.dart` — Community invite + Link Discord for accounts that did not sign in with Discord
 - `client/lib/services/discord_community_service.dart` — caches `GET /public/community`
 
 ## Primary Backend Entry
 - `GET /public/community` — `{ discordInviteUrl }` (no auth; empty/null hides CTAs)
 - `GET /public/home` — same `discordInviteUrl` field on `data`
 - `GET /auth/discord/status` — `{ loginEnabled }`
-- `GET /auth/discord/start` — redirect to Discord OAuth
-- `GET /auth/discord/callback` — code → session or pending registration, then `APP_BASE_URL/login?d=ok|pending|error`
+- `GET /auth/discord/start` — redirect to Discord OAuth (new account / login)
+- `GET /auth/discord/link/start` — authenticated; `{ params: { url } }` for Settings link
+- `DELETE /auth/discord/link` — authenticated unlink (blocked if Discord is the only login method)
+- `GET /auth/discord/callback` — code → session, pending registration, or Settings link result (`/dashboard?section=settings&discord_link=ok|error`)
 - `POST /auth/discord/complete` — `{ pendingToken, username, gender, preferredLanguage, acceptedTerms, referralCode? }`
 - Services: `backend/src/services/discordAuthService.ts`, `backend/src/lib/discordInvite.ts`, `authService.issueSession`
 - Startup: `backend/src/startup/ensureDiscordSchema.ts` (`players.discordId`)
@@ -58,7 +60,10 @@ Without Client ID + Secret the login button stays hidden. Without a valid invite
 6. In `#updates`, Integrations → Webhooks → copy URL to `DISCORD_UPDATES_WEBHOOK_URL` (not the Crew Wars ops webhook).
 
 ## Change Rules
+- `GET /settings` includes `discordLinked` and `canUnlinkDiscord` (no Discord snowflake in the payload).
 - Discord-email links to an existing account only when that email is **verified** on our side and Discord reports `verified: true`. Otherwise `DISCORD_EMAIL_IN_USE`.
+- Settings **Link Discord** uses a signed OAuth `intent=link` state with `playerId`. Do not require a matching email for that explicit link.
+- Unlink is blocked when Discord is the only login method (`DISCORD_UNLINK_BLOCKED`).
 - New Discord players still pick **username + gender + terms**. Verified Discord email becomes `emailVerified: true`.
 - Missing or unverified Discord email: registration still allowed (same as Facebook without mail).
 - Discord-only accounts get a random `passwordHash`; later logins go through Discord.
@@ -87,11 +92,12 @@ Without Client ID + Secret the login button stays hidden. Without a valid invite
 2. With Client ID/Secret: button visible; existing `discordId` logs in; new player gets complete form. Address bar cleaned after return (no `?d=ok&token=…`)
 3. Verified email links the existing account
 4. User denies Discord consent → error copy, no 500
-5. Invite opens Discord in a new tab from landing, Help, and Settings
-6. Updates script posts an embed to `#updates` without printing the webhook URL
+5. Invite opens Discord in a new tab from landing, Help, Settings, and the in-game footer
+6. Logged-in player without `discordId` can Link Discord from Settings; world chat then uses the in-game name
+7. Updates script posts an embed to `#updates` without printing the webhook URL
 
 ## i18n and Messaging
 Player ARB-prefix `discord*` plus `legalPrivacySection13*` and footer `landingFooterDiscord`. Help CTA uses `discordJoin` / `discordJoinBlurb`.
 
 ## When To Update This File
-Update when adding link/unlink in Settings, extra OAuth scopes, public game-event posts, or a native Discord SDK.
+Update when changing link/unlink, extra OAuth scopes, public game-event posts, or a native Discord SDK.

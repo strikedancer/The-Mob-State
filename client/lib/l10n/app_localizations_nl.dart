@@ -202,6 +202,48 @@ class AppLocalizationsNl extends AppLocalizations {
       'Open de The Mob State-server voor updates, crews en chat.';
 
   @override
+  String get discordLinkTitle => 'Discord koppelen';
+
+  @override
+  String get discordLinkSubtitle =>
+      'Koppel Discord zodat berichten die je daar typt je in-game naam tonen.';
+
+  @override
+  String get discordLinkedSubtitle =>
+      'Gekoppeld. Discord-berichten in de wereldchat gebruiken je in-game naam.';
+
+  @override
+  String get discordLinkAction => 'Discord koppelen';
+
+  @override
+  String get discordUnlinkAction => 'Ontkoppelen';
+
+  @override
+  String get discordLinkOk => 'Discord is gekoppeld aan dit account.';
+
+  @override
+  String get discordLinkFailed =>
+      'Discord koppelen is mislukt. Probeer het opnieuw.';
+
+  @override
+  String get discordAlreadyLinked =>
+      'Dit account heeft al een andere Discord-gebruiker gekoppeld.';
+
+  @override
+  String get discordInUse =>
+      'Dat Discord-account is al gekoppeld aan een andere speler.';
+
+  @override
+  String get discordUnlinkOk => 'Discord is ontkoppeld.';
+
+  @override
+  String get discordUnlinkBlocked =>
+      'Je kunt Discord niet ontkoppelen omdat het je enige inlogmethode is.';
+
+  @override
+  String get discordUnlinkConfirm => 'Discord ontkoppelen van dit account?';
+
+  @override
   String get landingFooterDiscord => 'Discord';
 
   @override
@@ -17679,7 +17721,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicWorldChatHow =>
-      'Open Wereldchat onder Sociaal. Iedereen die is ingelogd kan lezen en sturen, ook vanuit de cel.\nEnter verstuurt; Shift+Enter maakt een nieuwe regel. Stickers staan naast het invoerveld — geen eigen plaatjes.\nScheldwoorden in de speltalen worden op de server gefilterd. Staf kan muten of wissen.\nHoud je eigen bericht ingedrukt om het tot ongeveer 10 minuten te verwijderen. Bij een ander bericht kun je melden.\nGeen credit-muur. Privéberichten en crew-chat blijven apart.\nAls Discord gekoppeld is, spiegelt dezelfde lobby naar een Discord-kanaal. Berichten van Discord krijgen in de game een Discord-label.';
+      'Open Wereldchat onder Sociaal. Iedereen die is ingelogd kan lezen en sturen, ook vanuit de cel.\nEnter verstuurt; Shift+Enter maakt een nieuwe regel. Stickers staan naast het invoerveld — geen eigen plaatjes.\nScheldwoorden in de speltalen worden op de server gefilterd. Staf kan muten of wissen.\nHoud je eigen bericht ingedrukt om het tot ongeveer 10 minuten te verwijderen. Bij een ander bericht kun je melden.\nGeen credit-muur. Privéberichten en crew-chat blijven apart.\nAls Discord gekoppeld is, spiegelt dezelfde lobby naar een Discord-kanaal. Berichten van Discord krijgen in de game een Discord-label. Je kunt Discord later in Instellingen koppelen als je niet via Discord bent ingelogd.';
 
   @override
   String get helpTopicWorldChatTips =>

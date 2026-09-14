@@ -16,7 +16,13 @@ const Color _guestFooterGold = Color(0xFFC0A060);
 /// marketing and auth shells. The three policy links open [showGuestLegalDocumentModal]
 /// instead of full-page routes.
 class GuestLegalFooter extends StatelessWidget {
-  const GuestLegalFooter({super.key});
+  const GuestLegalFooter({
+    super.key,
+    this.showLanguageSelector = true,
+  });
+
+  /// Hide language on the in-game shell; players change language in Settings.
+  final bool showLanguageSelector;
 
   @override
   Widget build(BuildContext context) {
@@ -120,27 +126,28 @@ class GuestLegalFooter extends StatelessWidget {
                   ),
                 ),
                 DiscordInviteFooterButton(textColor: _guestFooterGold),
-                TextButton.icon(
-                  style: TextButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
+                if (showLanguageSelector)
+                  TextButton.icon(
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
                     ),
-                  ),
-                  onPressed: () => showGuestLanguageDialog(context),
-                  icon: const Icon(
-                    Icons.language,
-                    color: _guestFooterGold,
-                    size: 18,
-                  ),
-                  label: Text(
-                    l10n.landingFooterLanguage,
-                    style: const TextStyle(
+                    onPressed: () => showGuestLanguageDialog(context),
+                    icon: const Icon(
+                      Icons.language,
                       color: _guestFooterGold,
-                      fontSize: 13,
+                      size: 18,
+                    ),
+                    label: Text(
+                      l10n.landingFooterLanguage,
+                      style: const TextStyle(
+                        color: _guestFooterGold,
+                        fontSize: 13,
+                      ),
                     ),
                   ),
-                ),
               ],
             ),
             const SizedBox(height: 4),

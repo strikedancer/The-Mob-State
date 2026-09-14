@@ -197,6 +197,47 @@ class AppLocalizationsEn extends AppLocalizations {
       'Open the The Mob State server for updates, crews and chat.';
 
   @override
+  String get discordLinkTitle => 'Link Discord';
+
+  @override
+  String get discordLinkSubtitle =>
+      'Connect Discord so messages you type there show your in-game name.';
+
+  @override
+  String get discordLinkedSubtitle =>
+      'Linked. Discord world-chat posts use your in-game name.';
+
+  @override
+  String get discordLinkAction => 'Link Discord';
+
+  @override
+  String get discordUnlinkAction => 'Unlink';
+
+  @override
+  String get discordLinkOk => 'Discord is linked to this account.';
+
+  @override
+  String get discordLinkFailed => 'Could not link Discord. Try again.';
+
+  @override
+  String get discordAlreadyLinked =>
+      'This account already has a different Discord user linked.';
+
+  @override
+  String get discordInUse =>
+      'That Discord account is already linked to another player.';
+
+  @override
+  String get discordUnlinkOk => 'Discord was unlinked.';
+
+  @override
+  String get discordUnlinkBlocked =>
+      'You cannot unlink Discord because it is your only sign-in method.';
+
+  @override
+  String get discordUnlinkConfirm => 'Unlink Discord from this account?';
+
+  @override
   String get landingFooterDiscord => 'Discord';
 
   @override
@@ -17637,7 +17678,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicWorldChatHow =>
-      'Open World chat under Social. Everyone who is logged in can read and send, including from jail.\nEnter sends; Shift+Enter starts a new line. Stickers sit next to the composer — no image uploads.\nSwear words in the game languages are filtered on the server. Staff can mute or delete.\nLong-press your own message to delete it for about 10 minutes. Long-press someone else to report.\nThere is no credit paywall. Direct messages and crew chat stay separate.\nWhen Discord is linked, the same lobby is mirrored to a Discord channel. Messages from Discord show a Discord tag in-game.';
+      'Open World chat under Social. Everyone who is logged in can read and send, including from jail.\nEnter sends; Shift+Enter starts a new line. Stickers sit next to the composer — no image uploads.\nSwear words in the game languages are filtered on the server. Staff can mute or delete.\nLong-press your own message to delete it for about 10 minutes. Long-press someone else to report.\nThere is no credit paywall. Direct messages and crew chat stay separate.\nWhen Discord is linked, the same lobby is mirrored to a Discord channel. Messages from Discord show a Discord tag in-game. You can link Discord later in Settings if you did not sign in with Discord.';
 
   @override
   String get helpTopicWorldChatTips =>
@@ -18213,7 +18254,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicSettingsHow =>
-      'Language: switch between Dutch and English. All UI texts, system messages and notifications update immediately.\nAvatar and selfie portrait: switch a preset in Settings (at most once per week; VIP looks need Player VIP) or turn a photo into a gangster portrait. Full steps live in Help → Profile & avatar and in the Almanac handbook.\nPrivacy: set who can see your online status, location (current country) and statistics — only you, crew, friends or everyone.\nPush notifications: toggle per system. Categories: Crimes, Crypto trading, Price alerts, Orders, live player events (competition), Market regime, Heist, Nightclub, general messages.\nIf push was already allowed, the web/PWA version automatically reconnects to your current device token after a refresh or update; you only need to re-enable it in Settings when the browser itself blocks notifications.\nCrypto notification preferences remain saved after leaving Settings and opening it again later.\nIn-app notifications: configurable separately from push. In-app shows alerts inside the app without sending a system notification.\nSecurity: change password, set up two-factor authentication and view active sessions.\nPer-system notification preference: fine tune so you do not get a notification storm from systems you are not actively playing.\nOn phone or tablet you can add The Mob State to your home screen: Android Chrome opens an install sheet from the banner or Settings → Add to Home Screen. On iPhone/iPad use Share → Add to Home Screen (Apple does not allow a fully automatic add).\nAfter login a one-time popup can ask you to enable push. Later remembers that choice; you can still enable push here.\nCommunity: Settings also shows a Discord row when the invite is configured. Patch notes live in #updates; official bugs stay in in-game Support.';
+      'Language: switch between Dutch and English. All UI texts, system messages and notifications update immediately.\nAvatar and selfie portrait: switch a preset in Settings (at most once per week; VIP looks need Player VIP) or turn a photo into a gangster portrait. Full steps live in Help → Profile & avatar and in the Almanac handbook.\nPrivacy: set who can see your online status, location (current country) and statistics — only you, crew, friends or everyone.\nPush notifications: toggle per system. Categories: Crimes, Crypto trading, Price alerts, Orders, live player events (competition), Market regime, Heist, Nightclub, general messages.\nIf push was already allowed, the web/PWA version automatically reconnects to your current device token after a refresh or update; you only need to re-enable it in Settings when the browser itself blocks notifications.\nCrypto notification preferences remain saved after leaving Settings and opening it again later.\nIn-app notifications: configurable separately from push. In-app shows alerts inside the app without sending a system notification.\nSecurity: change password, set up two-factor authentication and view active sessions.\nPer-system notification preference: fine tune so you do not get a notification storm from systems you are not actively playing.\nOn phone or tablet you can add The Mob State to your home screen: Android Chrome opens an install sheet from the banner or Settings → Add to Home Screen. On iPhone/iPad use Share → Add to Home Screen (Apple does not allow a fully automatic add).\nAfter login a one-time popup can ask you to enable push. Later remembers that choice; you can still enable push here.\nCommunity: Settings also shows a Discord row when the invite is configured, plus a Link Discord action if you did not sign in with Discord. Patch notes live in #updates; official bugs stay in in-game Support.';
 
   @override
   String get helpTopicSettingsTips =>

@@ -446,6 +446,78 @@ abstract class AppLocalizations {
   /// **'Open the The Mob State server for updates, crews and chat.'**
   String get discordSettingsSubtitle;
 
+  /// No description provided for @discordLinkTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Link Discord'**
+  String get discordLinkTitle;
+
+  /// No description provided for @discordLinkSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect Discord so messages you type there show your in-game name.'**
+  String get discordLinkSubtitle;
+
+  /// No description provided for @discordLinkedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Linked. Discord world-chat posts use your in-game name.'**
+  String get discordLinkedSubtitle;
+
+  /// No description provided for @discordLinkAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Link Discord'**
+  String get discordLinkAction;
+
+  /// No description provided for @discordUnlinkAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlink'**
+  String get discordUnlinkAction;
+
+  /// No description provided for @discordLinkOk.
+  ///
+  /// In en, this message translates to:
+  /// **'Discord is linked to this account.'**
+  String get discordLinkOk;
+
+  /// No description provided for @discordLinkFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not link Discord. Try again.'**
+  String get discordLinkFailed;
+
+  /// No description provided for @discordAlreadyLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'This account already has a different Discord user linked.'**
+  String get discordAlreadyLinked;
+
+  /// No description provided for @discordInUse.
+  ///
+  /// In en, this message translates to:
+  /// **'That Discord account is already linked to another player.'**
+  String get discordInUse;
+
+  /// No description provided for @discordUnlinkOk.
+  ///
+  /// In en, this message translates to:
+  /// **'Discord was unlinked.'**
+  String get discordUnlinkOk;
+
+  /// No description provided for @discordUnlinkBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'You cannot unlink Discord because it is your only sign-in method.'**
+  String get discordUnlinkBlocked;
+
+  /// No description provided for @discordUnlinkConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlink Discord from this account?'**
+  String get discordUnlinkConfirm;
+
   /// No description provided for @landingFooterDiscord.
   ///
   /// In en, this message translates to:
@@ -30474,7 +30546,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicWorldChatHow.
   ///
   /// In en, this message translates to:
-  /// **'Open World chat under Social. Everyone who is logged in can read and send, including from jail.\nEnter sends; Shift+Enter starts a new line. Stickers sit next to the composer — no image uploads.\nSwear words in the game languages are filtered on the server. Staff can mute or delete.\nLong-press your own message to delete it for about 10 minutes. Long-press someone else to report.\nThere is no credit paywall. Direct messages and crew chat stay separate.\nWhen Discord is linked, the same lobby is mirrored to a Discord channel. Messages from Discord show a Discord tag in-game.'**
+  /// **'Open World chat under Social. Everyone who is logged in can read and send, including from jail.\nEnter sends; Shift+Enter starts a new line. Stickers sit next to the composer — no image uploads.\nSwear words in the game languages are filtered on the server. Staff can mute or delete.\nLong-press your own message to delete it for about 10 minutes. Long-press someone else to report.\nThere is no credit paywall. Direct messages and crew chat stay separate.\nWhen Discord is linked, the same lobby is mirrored to a Discord channel. Messages from Discord show a Discord tag in-game. You can link Discord later in Settings if you did not sign in with Discord.'**
   String get helpTopicWorldChatHow;
 
   /// No description provided for @helpTopicWorldChatTips.
@@ -31434,7 +31506,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicSettingsHow.
   ///
   /// In en, this message translates to:
-  /// **'Language: switch between Dutch and English. All UI texts, system messages and notifications update immediately.\nAvatar and selfie portrait: switch a preset in Settings (at most once per week; VIP looks need Player VIP) or turn a photo into a gangster portrait. Full steps live in Help → Profile & avatar and in the Almanac handbook.\nPrivacy: set who can see your online status, location (current country) and statistics — only you, crew, friends or everyone.\nPush notifications: toggle per system. Categories: Crimes, Crypto trading, Price alerts, Orders, live player events (competition), Market regime, Heist, Nightclub, general messages.\nIf push was already allowed, the web/PWA version automatically reconnects to your current device token after a refresh or update; you only need to re-enable it in Settings when the browser itself blocks notifications.\nCrypto notification preferences remain saved after leaving Settings and opening it again later.\nIn-app notifications: configurable separately from push. In-app shows alerts inside the app without sending a system notification.\nSecurity: change password, set up two-factor authentication and view active sessions.\nPer-system notification preference: fine tune so you do not get a notification storm from systems you are not actively playing.\nOn phone or tablet you can add The Mob State to your home screen: Android Chrome opens an install sheet from the banner or Settings → Add to Home Screen. On iPhone/iPad use Share → Add to Home Screen (Apple does not allow a fully automatic add).\nAfter login a one-time popup can ask you to enable push. Later remembers that choice; you can still enable push here.\nCommunity: Settings also shows a Discord row when the invite is configured. Patch notes live in #updates; official bugs stay in in-game Support.'**
+  /// **'Language: switch between Dutch and English. All UI texts, system messages and notifications update immediately.\nAvatar and selfie portrait: switch a preset in Settings (at most once per week; VIP looks need Player VIP) or turn a photo into a gangster portrait. Full steps live in Help → Profile & avatar and in the Almanac handbook.\nPrivacy: set who can see your online status, location (current country) and statistics — only you, crew, friends or everyone.\nPush notifications: toggle per system. Categories: Crimes, Crypto trading, Price alerts, Orders, live player events (competition), Market regime, Heist, Nightclub, general messages.\nIf push was already allowed, the web/PWA version automatically reconnects to your current device token after a refresh or update; you only need to re-enable it in Settings when the browser itself blocks notifications.\nCrypto notification preferences remain saved after leaving Settings and opening it again later.\nIn-app notifications: configurable separately from push. In-app shows alerts inside the app without sending a system notification.\nSecurity: change password, set up two-factor authentication and view active sessions.\nPer-system notification preference: fine tune so you do not get a notification storm from systems you are not actively playing.\nOn phone or tablet you can add The Mob State to your home screen: Android Chrome opens an install sheet from the banner or Settings → Add to Home Screen. On iPhone/iPad use Share → Add to Home Screen (Apple does not allow a fully automatic add).\nAfter login a one-time popup can ask you to enable push. Later remembers that choice; you can still enable push here.\nCommunity: Settings also shows a Discord row when the invite is configured, plus a Link Discord action if you did not sign in with Discord. Patch notes live in #updates; official bugs stay in in-game Support.'**
   String get helpTopicSettingsHow;
 
   /// No description provided for @helpTopicSettingsTips.

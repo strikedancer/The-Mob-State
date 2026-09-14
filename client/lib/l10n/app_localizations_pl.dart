@@ -200,6 +200,48 @@ class AppLocalizationsPl extends AppLocalizations {
       'Otwórz serwer The Mob State, aby uzyskać aktualizacje, załogi i czat.';
 
   @override
+  String get discordLinkTitle => 'Połącz Discorda';
+
+  @override
+  String get discordLinkSubtitle =>
+      'Połącz się z Discordem, aby wpisane tam wiadomości wyświetlały Twoją nazwę w grze.';
+
+  @override
+  String get discordLinkedSubtitle =>
+      'Połączony. W postach na czacie światowym Discord używana jest Twoja nazwa w grze.';
+
+  @override
+  String get discordLinkAction => 'Połącz Discorda';
+
+  @override
+  String get discordUnlinkAction => 'Odczepić';
+
+  @override
+  String get discordLinkOk => 'Discord jest powiązany z tym kontem.';
+
+  @override
+  String get discordLinkFailed =>
+      'Nie udało się połączyć Discorda. Spróbuj ponownie.';
+
+  @override
+  String get discordAlreadyLinked =>
+      'Z tym kontem jest już powiązany inny użytkownik Discord.';
+
+  @override
+  String get discordInUse =>
+      'To konto Discord jest już połączone z innym graczem.';
+
+  @override
+  String get discordUnlinkOk => 'Discord został odłączony.';
+
+  @override
+  String get discordUnlinkBlocked =>
+      'Nie możesz odłączyć Discorda, ponieważ jest to Twoja jedyna metoda logowania.';
+
+  @override
+  String get discordUnlinkConfirm => 'Odłączyć Discorda od tego konta?';
+
+  @override
   String get landingFooterDiscord => 'Niezgoda';
 
   @override
@@ -17764,7 +17806,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicWorldChatHow =>
-      'Czat w otwartym świecie w sekcji Społeczności. Każdy zalogowany może czytać i wysyłać, także z więzienia. \nWpisz wysyła; Shift+Enter rozpoczyna nową linię. Naklejki znajdują się obok kompozytora — nie można przesyłać obrazów. \nPrzekleństwa w językach gry są filtrowane na serwerze. Personel może wyciszyć lub usunąć. \nNaciśnij i przytrzymaj własną wiadomość, aby ją usunąć na około 10 minut. Naciśnij długo kogoś innego, aby zgłosić. \nNie ma paywalla kredytowego. Wiadomości bezpośrednie i czat załogi pozostają oddzielne. \nKiedy Discord jest połączony, to samo lobby jest odzwierciedlane na kanale Discord. Wiadomości od Discorda zawierają tag Discord w grze.';
+      'Czat w otwartym świecie w sekcji Społeczności. Każdy zalogowany może czytać i wysyłać, także z więzienia. \nWpisz wysyła; Shift+Enter rozpoczyna nową linię. Naklejki znajdują się obok kompozytora — nie można przesyłać obrazów. \nPrzekleństwa w językach gry są filtrowane na serwerze. Personel może wyciszyć lub usunąć. \nNaciśnij i przytrzymaj własną wiadomość, aby ją usunąć na około 10 minut. Naciśnij długo kogoś innego, aby zgłosić. \nNie ma paywalla kredytowego. Wiadomości bezpośrednie i czat załogi pozostają oddzielne. \nKiedy Discord jest połączony, to samo lobby jest odzwierciedlane na kanale Discord. Wiadomości od Discorda zawierają tag Discord w grze. Możesz połączyć Discord później w Ustawieniach, jeśli nie logowałeś się za pomocą Discorda.';
 
   @override
   String get helpTopicWorldChatTips =>

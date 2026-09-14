@@ -202,6 +202,48 @@ class AppLocalizationsEs extends AppLocalizations {
       'Abra el servidor de The Mob State para obtener actualizaciones, equipos y chatear.';
 
   @override
+  String get discordLinkTitle => 'Vincular Discord';
+
+  @override
+  String get discordLinkSubtitle =>
+      'Conecta Discord para que los mensajes que escribas allí muestren tu nombre en el juego.';
+
+  @override
+  String get discordLinkedSubtitle =>
+      'Vinculado. Las publicaciones del chat mundial de Discord usan tu nombre en el juego.';
+
+  @override
+  String get discordLinkAction => 'Vincular Discord';
+
+  @override
+  String get discordUnlinkAction => 'Desconectar';
+
+  @override
+  String get discordLinkOk => 'Discord está vinculado a esta cuenta.';
+
+  @override
+  String get discordLinkFailed =>
+      'No se pudo vincular Discord. Intentar otra vez.';
+
+  @override
+  String get discordAlreadyLinked =>
+      'Esta cuenta ya tiene vinculado un usuario de Discord diferente.';
+
+  @override
+  String get discordInUse =>
+      'Esa cuenta de Discord ya está vinculada a otro jugador.';
+
+  @override
+  String get discordUnlinkOk => 'Discord fue desvinculada.';
+
+  @override
+  String get discordUnlinkBlocked =>
+      'No puedes desvincular Discord porque es tu único método de inicio de sesión.';
+
+  @override
+  String get discordUnlinkConfirm => '¿Desvincular Discord de esta cuenta?';
+
+  @override
   String get landingFooterDiscord => 'Discordia';
 
   @override
@@ -17793,7 +17835,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicWorldChatHow =>
-      'Abra el chat mundial en Social. Cualquiera que haya iniciado sesión puede leer y enviar, incluso desde la cárcel. \nIngrese envíos; Shift+Enter inicia una nueva línea. Las pegatinas se encuentran al lado del compositor: no se cargan imágenes. \nLas malas palabras en los idiomas del juego se filtran en el servidor. El personal puede silenciar o eliminar. \nMantenga presionado su propio mensaje para eliminarlo durante unos 10 minutos. Mantenga presionada a otra persona para informar. \nNo hay muro de pago de crédito. Los mensajes directos y el chat del equipo permanecen separados. \nCuando Discord está vinculado, el mismo lobby se refleja en un canal de Discord. Los mensajes de Discord muestran una etiqueta de Discord en el juego.';
+      'Abra el chat mundial en Social. Cualquiera que haya iniciado sesión puede leer y enviar, incluso desde la cárcel. \nIngrese envíos; Shift+Enter inicia una nueva línea. Las pegatinas se encuentran al lado del compositor: no se cargan imágenes. \nLas malas palabras en los idiomas del juego se filtran en el servidor. El personal puede silenciar o eliminar. \nMantenga presionado su propio mensaje para eliminarlo durante unos 10 minutos. Mantenga presionada a otra persona para informar. \nNo hay muro de pago de crédito. Los mensajes directos y el chat del equipo permanecen separados. \nCuando Discord está vinculado, el mismo lobby se refleja en un canal de Discord. Los mensajes de Discord muestran una etiqueta de Discord en el juego. Puedes vincular Discord más tarde en Configuración si no iniciaste sesión con Discord.';
 
   @override
   String get helpTopicWorldChatTips =>

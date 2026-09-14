@@ -35,17 +35,31 @@ const suggestUsername = (name: string): string => {
   return cleaned.length >= 3 ? cleaned : `player${crypto.randomInt(1000, 9999)}`;
 };
 
-const signState = (): string =>
-  jwt.sign({ t: 'discord_oauth', n: crypto.randomBytes(8).toString('hex') }, config.jwtSecret, {
-    expiresIn: '10m',
-  });
+type OauthStatePayload = {
+  t?: string;
+  intent?: 'login' | 'link';
+  playerId?: number;
+};
 
-const verifyState = (state: string): boolean => {
+const signState = (intent: 'login' | 'link' = 'login', playerId?: number): string =>
+  jwt.sign(
+    {
+      t: 'discord_oauth',
+      intent,
+      playerId,
+      n: crypto.randomBytes(8).toString('hex'),
+    },
+    config.jwtSecret,
+    { expiresIn: '10m' },
+  );
+
+const readState = (state: string): OauthStatePayload | null => {
   try {
-    const payload = jwt.verify(state, config.jwtSecret) as { t?: string };
-    return payload.t === 'discord_oauth';
+    const payload = jwt.verify(state, config.jwtSecret) as OauthStatePayload;
+    if (payload.t !== 'discord_oauth') return null;
+    return payload;
   } catch {
-    return false;
+    return null;
   }
 };
 
@@ -82,6 +96,56 @@ const appRedirect = (params: Record<string, string>): string => {
   return `${base}/login?${query.toString()}`;
 };
 
+const appLinkRedirect = (params: Record<string, string>): string => {
+  const base = (config.appBaseUrl || 'https://themobstate.com').replace(/\/+$/, '');
+  const query = new URLSearchParams({ section: 'settings', ...params });
+  return `${base}/dashboard?${query.toString()}`;
+};
+
+const isLinkState = (state: OauthStatePayload | null): boolean =>
+  state?.intent === 'link' && typeof state.playerId === 'number' && state.playerId > 0;
+
+const authorizeUrl = (intent: 'login' | 'link' = 'login', playerId?: number): string => {
+  if (!isDiscordLoginConfigured()) {
+    throw new Error('DISCORD_NOT_CONFIGURED');
+  }
+  const url = new URL(`${DISCORD_API}/oauth2/authorize`);
+  url.searchParams.set('client_id', discordClientId());
+  url.searchParams.set('redirect_uri', discordOAuthRedirectUri());
+  url.searchParams.set('response_type', 'code');
+  url.searchParams.set('scope', 'identify email');
+  url.searchParams.set('state', signState(intent, playerId));
+  url.searchParams.set('prompt', 'consent');
+  return url.toString();
+};
+
+async function linkDiscordToPlayer(playerId: number, discordId: string): Promise<string> {
+  const player = await prisma.player.findUnique({
+    where: { id: playerId },
+    select: { id: true, discordId: true, isBanned: true },
+  });
+  if (!player || player.isBanned) {
+    return appLinkRedirect({ discord_link: 'error', reason: 'DISCORD_AUTH_FAILED' });
+  }
+  if (player.discordId && player.discordId !== discordId) {
+    return appLinkRedirect({ discord_link: 'error', reason: 'DISCORD_ALREADY_LINKED' });
+  }
+  const taken = await prisma.player.findUnique({
+    where: { discordId },
+    select: { id: true },
+  });
+  if (taken && taken.id !== playerId) {
+    return appLinkRedirect({ discord_link: 'error', reason: 'DISCORD_IN_USE' });
+  }
+  if (player.discordId !== discordId) {
+    await prisma.player.update({
+      where: { id: playerId },
+      data: { discordId },
+    });
+  }
+  return appLinkRedirect({ discord_link: 'ok' });
+}
+
 const readJson = async (response: Response): Promise<Record<string, unknown>> => {
   const data = (await response.json()) as Record<string, unknown>;
   if (!response.ok) {
@@ -106,26 +170,47 @@ export const discordAuthService = {
     return appRedirect({ d: 'error', reason });
   },
 
-  startUrl(): string {
-    if (!isDiscordLoginConfigured()) {
-      throw new Error('DISCORD_NOT_CONFIGURED');
+  callbackErrorRedirect(state: string | undefined, reason = 'DISCORD_AUTH_FAILED'): string {
+    const payload = state ? readState(state) : null;
+    if (isLinkState(payload)) {
+      return appLinkRedirect({ discord_link: 'error', reason });
     }
-    const url = new URL(`${DISCORD_API}/oauth2/authorize`);
-    url.searchParams.set('client_id', discordClientId());
-    url.searchParams.set('redirect_uri', discordOAuthRedirectUri());
-    url.searchParams.set('response_type', 'code');
-    url.searchParams.set('scope', 'identify email');
-    url.searchParams.set('state', signState());
-    url.searchParams.set('prompt', 'consent');
-    return url.toString();
+    return appRedirect({ d: 'error', reason });
+  },
+
+  startUrl(): string {
+    return authorizeUrl('login');
+  },
+
+  linkStartUrl(playerId: number): string {
+    return authorizeUrl('link', playerId);
+  },
+
+  async unlink(playerId: number): Promise<void> {
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { discordId: true, googleId: true, facebookId: true, email: true },
+    });
+    if (!player?.discordId) {
+      throw new Error('DISCORD_NOT_LINKED');
+    }
+    const hasOtherLogin = Boolean(player.googleId || player.facebookId || player.email);
+    if (!hasOtherLogin) {
+      throw new Error('DISCORD_UNLINK_BLOCKED');
+    }
+    await prisma.player.update({
+      where: { id: playerId },
+      data: { discordId: null },
+    });
   },
 
   async handleCallback(code: string | undefined, state: string | undefined): Promise<string> {
     if (!isDiscordLoginConfigured()) {
       return appRedirect({ d: 'error', reason: 'DISCORD_NOT_CONFIGURED' });
     }
-    if (!code || !state || !verifyState(state)) {
-      return appRedirect({ d: 'error', reason: 'DISCORD_AUTH_FAILED' });
+    const statePayload = state ? readState(state) : null;
+    if (!code || !statePayload) {
+      return this.callbackErrorRedirect(state);
     }
 
     try {
@@ -146,7 +231,7 @@ export const discordAuthService = {
       const tokenData = await readJson(tokenResponse);
       const accessToken = String(tokenData.access_token ?? '');
       if (!accessToken) {
-        return appRedirect({ d: 'error', reason: 'DISCORD_AUTH_FAILED' });
+        return this.callbackErrorRedirect(state);
       }
 
       const userResponse = await fetch(`${DISCORD_API}/users/@me`, {
@@ -171,7 +256,11 @@ export const discordAuthService = {
         email,
       };
       if (!profile.id) {
-        return appRedirect({ d: 'error', reason: 'DISCORD_AUTH_FAILED' });
+        return this.callbackErrorRedirect(state);
+      }
+
+      if (isLinkState(statePayload) && statePayload.playerId) {
+        return linkDiscordToPlayer(statePayload.playerId, profile.id);
       }
 
       const existingByDiscord = await prisma.player.findUnique({
@@ -231,7 +320,7 @@ export const discordAuthService = {
       });
     } catch (error) {
       console.error('[DiscordAuth] callback failed', error);
-      return appRedirect({ d: 'error', reason: 'DISCORD_AUTH_FAILED' });
+      return this.callbackErrorRedirect(state);
     }
   },
 

@@ -199,6 +199,48 @@ class AppLocalizationsPt extends AppLocalizations {
       'Abra o servidor The Mob State para atualizações, equipes e bate-papo.';
 
   @override
+  String get discordLinkTitle => 'Vincular Discord';
+
+  @override
+  String get discordLinkSubtitle =>
+      'Conecte o Discord para que as mensagens digitadas mostrem seu nome no jogo.';
+
+  @override
+  String get discordLinkedSubtitle =>
+      'Vinculado. As postagens do bate-papo mundial do Discord usam seu nome no jogo.';
+
+  @override
+  String get discordLinkAction => 'Vincular Discord';
+
+  @override
+  String get discordUnlinkAction => 'Desvincular';
+
+  @override
+  String get discordLinkOk => 'O Discord está vinculado a esta conta.';
+
+  @override
+  String get discordLinkFailed =>
+      'Não foi possível vincular o Discord. Tente novamente.';
+
+  @override
+  String get discordAlreadyLinked =>
+      'Esta conta já possui um usuário Discord diferente vinculado.';
+
+  @override
+  String get discordInUse =>
+      'Essa conta Discord já está vinculada a outro jogador.';
+
+  @override
+  String get discordUnlinkOk => 'O Discord foi desvinculado.';
+
+  @override
+  String get discordUnlinkBlocked =>
+      'Você não pode desvincular o Discord porque é seu único método de login.';
+
+  @override
+  String get discordUnlinkConfirm => 'Desvincular o Discord desta conta?';
+
+  @override
   String get landingFooterDiscord => 'Discórdia';
 
   @override
@@ -17764,7 +17806,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicWorldChatHow =>
-      'Abra o bate-papo mundial em Social. Todos que estão logados podem ler e enviar, inclusive da prisão. \nInsira envios; Shift+Enter inicia uma nova linha. Os adesivos ficam ao lado do compositor – sem upload de imagens. \nPalavrões nos idiomas do jogo são filtrados no servidor. A equipe pode silenciar ou excluir. \nMantenha sua própria mensagem pressionada para excluí-la por cerca de 10 minutos. Pressione longamente outra pessoa para denunciar. \nNão há acesso pago de crédito. As mensagens diretas e o bate-papo da equipe permanecem separados. \nQuando o Discord está vinculado, o mesmo lobby é espelhado em um canal do Discord. As mensagens do Discord mostram uma tag do Discord no jogo.';
+      'Abra o bate-papo mundial em Social. Todos que estão logados podem ler e enviar, inclusive da prisão. \nInsira envios; Shift+Enter inicia uma nova linha. Os adesivos ficam ao lado do compositor – sem upload de imagens. \nPalavrões nos idiomas do jogo são filtrados no servidor. A equipe pode silenciar ou excluir. \nMantenha sua própria mensagem pressionada para excluí-la por cerca de 10 minutos. Pressione longamente outra pessoa para denunciar. \nNão há acesso pago de crédito. As mensagens diretas e o bate-papo da equipe permanecem separados. \nQuando o Discord está vinculado, o mesmo lobby é espelhado em um canal do Discord. As mensagens do Discord mostram uma tag do Discord no jogo. Você pode vincular o Discord posteriormente em Configurações se não tiver feito login com o Discord.';
 
   @override
   String get helpTopicWorldChatTips =>

@@ -12306,6 +12306,18 @@
   "helpTopicWorldChatCategory": "Sozial",
   "helpTopicWorldChatTitle": "Weltchat",
   "helpTopicWorldChatSummary": "Eine öffentliche Lobby für jeden Spieler, mit Aufklebern und einer optionalen Discord-Brücke, damit Sie sich unterhalten können, ohne das Spiel zu öffnen.",
-  "helpTopicWorldChatHow": "Open-World-Chat unter Social. Jeder, der angemeldet ist, kann lesen und senden, auch aus dem Gefängnis. \nGeben Sie Sendungen ein; Umschalt+Enter beginnt eine neue Zeile. Aufkleber liegen neben dem Komponisten – keine Bild-Uploads. \nSchimpfwörter in den Spielsprachen werden auf dem Server gefiltert. Mitarbeiter können stummschalten oder löschen. \nDrücken Sie etwa 10 Minuten lang lange auf Ihre eigene Nachricht, um sie zu löschen. Drücken Sie lange, um eine andere Person zu melden. \nEs gibt keine Kredit-Paywall. Direktnachrichten und Crew-Chat bleiben getrennt. \nWenn Discord verknüpft ist, wird dieselbe Lobby auf einen Discord-Kanal gespiegelt. Nachrichten von Discord zeigen im Spiel ein Discord-Tag.",
-  "helpTopicWorldChatTips": "Bleiben Sie höflich: Eine Stummschaltung gilt sowohl für das Spiel als auch für die Discord-Seite, wenn Ihre Konten verknüpft sind. \nVerwenden Sie Aufkleber für eine schnelle Reaktion, ohne den Raum zu überfluten. \nPrivate Deals gehören immer noch in Direktnachrichten, nicht in die öffentliche Lobby."
+  "helpTopicWorldChatHow": "Open-World-Chat unter Social. Jeder, der angemeldet ist, kann lesen und senden, auch aus dem Gefängnis. \nGeben Sie Sendungen ein; Umschalt+Enter beginnt eine neue Zeile. Aufkleber liegen neben dem Komponisten – keine Bild-Uploads. \nSchimpfwörter in den Spielsprachen werden auf dem Server gefiltert. Mitarbeiter können stummschalten oder löschen. \nDrücken Sie etwa 10 Minuten lang lange auf Ihre eigene Nachricht, um sie zu löschen. Drücken Sie lange, um eine andere Person zu melden. \nEs gibt keine Kredit-Paywall. Direktnachrichten und Crew-Chat bleiben getrennt. \nWenn Discord verknüpft ist, wird dieselbe Lobby auf einen Discord-Kanal gespiegelt. Nachrichten von Discord zeigen im Spiel ein Discord-Tag. Sie können Discord später in den Einstellungen verknüpfen, wenn Sie sich nicht bei Discord angemeldet haben.",
+  "helpTopicWorldChatTips": "Bleiben Sie höflich: Eine Stummschaltung gilt sowohl für das Spiel als auch für die Discord-Seite, wenn Ihre Konten verknüpft sind. \nVerwenden Sie Aufkleber für eine schnelle Reaktion, ohne den Raum zu überfluten. \nPrivate Deals gehören immer noch in Direktnachrichten, nicht in die öffentliche Lobby.",
+  "discordLinkTitle": "Discord verknüpfen",
+  "discordLinkSubtitle": "Verbinde Discord, damit in Nachrichten, die du dort eingibst, dein Name im Spiel angezeigt wird.",
+  "discordLinkedSubtitle": "Verlinkt. In Discord-World-Chat-Beiträgen wird Ihr Name im Spiel verwendet.",
+  "discordLinkAction": "Discord verknüpfen",
+  "discordUnlinkAction": "Verknüpfung aufheben",
+  "discordLinkOk": "Discord ist mit diesem Konto verknüpft.",
+  "discordLinkFailed": "Discord konnte nicht verlinkt werden. Versuchen Sie es erneut.",
+  "discordAlreadyLinked": "Mit diesem Konto ist bereits ein anderer Discord-Benutzer verknüpft.",
+  "discordInUse": "Dieses Discord-Konto ist bereits mit einem anderen Spieler verknüpft.",
+  "discordUnlinkOk": "Discord wurde getrennt.",
+  "discordUnlinkBlocked": "Sie können die Verknüpfung zu Discord nicht aufheben, da dies Ihre einzige Anmeldemethode ist.",
+  "discordUnlinkConfirm": "Discord von diesem Konto trennen?"
 }
