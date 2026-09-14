@@ -12,9 +12,19 @@ type DiscordChannelMessage = {
     global_name?: string | null;
     bot?: boolean;
   };
+  member?: {
+    nick?: string | null;
+  };
   stickers?: Array<{ name?: string }>;
   sticker_items?: Array<{ name?: string }>;
 };
+
+function discordDisplayName(item: DiscordChannelMessage): string {
+  const nick = item.member?.nick?.trim();
+  const globalName = item.author?.global_name?.trim();
+  const username = item.author?.username?.trim();
+  return (nick || globalName || username || 'Discord').slice(0, 64);
+}
 
 const POLL_MS = 4000;
 const DISCORD_API = 'https://discord.com/api/v10';
@@ -177,7 +187,7 @@ class GlobalChatDiscordBridge {
         const ingested = await globalChatService.ingestDiscordMessage({
           discordUserId: item.author?.id ?? '0',
           discordMessageId: item.id,
-          displayName: item.author?.global_name || item.author?.username || 'Discord',
+          displayName: discordDisplayName(item),
           message: item.content ?? '',
           stickerId: stickerNameToId(stickerName),
         });

@@ -46,13 +46,13 @@ Player OAuth stays `identify` + `email` only. The chat bot is a separate token.
 - Messages (DMs remain private)
 - Crew (crew chat remains crew-only)
 - Admin (mute, delete, extra blocklist, kill switch `GLOBAL_CHAT_ENABLED`)
-- Player Profile (tap a linked in-game name)
+- Player Profile (tap still opens a linked in-game account; the shown name stays the Discord display name)
 
 ## Must Preserve
 - Rate limit (~1 / 3s, 10 / min). Max 200 characters.
 - Stickers are a fixed catalog (`globalChatStickers.ts` / `global_chat_stickers.dart`), same ids.
 - Banned accounts cannot send. Linked Discord of a banned or muted player is dropped inbound.
-- Guest Discord names (no linked `discordId`) still appear with a Discord tag.
+- Discord-sourced lines keep the Discord display name (nick / global name / username), even when `discordId` is linked to a player. Linked `playerId` is still stored for mute, ban, own-bubble, and profile tap. Guests without a linked account still appear with a Discord tag.
 
 ## QA Checklist
 1. Send text + sticker in-game; second browser sees it live.
