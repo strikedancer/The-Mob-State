@@ -4917,6 +4917,116 @@ class AppLocalizationsIt extends AppLocalizations {
   String get crewUiWarActionRaid => 'Incursione';
 
   @override
+  String get crewUiWarLootTitle => 'Cosa fai raid?';
+
+  @override
+  String get crewUiWarLootCash => 'Contanti bancari dell\'Crew';
+
+  @override
+  String get crewUiWarLootCar => 'Auto o moto';
+
+  @override
+  String get crewUiWarLootBoat => 'Barca';
+
+  @override
+  String get crewUiWarLootWeapon => 'Armi';
+
+  @override
+  String get crewUiWarLootAmmo => 'Munizioni';
+
+  @override
+  String get crewUiWarLootDrug => 'Droghe';
+
+  @override
+  String get crewUiWarLootTrade => 'Beni commerciali';
+
+  @override
+  String get crewUiWarSabotageTitle => 'Quale dependance colpisci?';
+
+  @override
+  String get crewUiBuildingTradeStorage => 'Deposito commerciale';
+
+  @override
+  String get crewUiWarErrorRaidEmpty =>
+      'Il deposito dell\'Crew non ha nulla del genere.';
+
+  @override
+  String get crewUiWarErrorRaidFull =>
+      'Il deposito dell\'Crew non può contenere quel bottino.';
+
+  @override
+  String get crewUiWarErrorBuildingRequired =>
+      'Scegli un edificio annesso da sabotare.';
+
+  @override
+  String get crewUiWarErrorSabotageMin =>
+      'Quell\'edificio è già al livello più basso.';
+
+  @override
+  String get crewUiWarErrorSabotageDone =>
+      'Quell\'edificio era già stato demolito durante questa guerra.';
+
+  @override
+  String get crewUiDealTitle => 'Accordi per l\'Crew';
+
+  @override
+  String get crewUiDealHint =>
+      'Blocca gli oggetti nel deposito a garanzia. Entrambi gli equipaggi confermano, altrimenti l\'intero accordo viene annullato e ognuno riprende la propria merce.';
+
+  @override
+  String get crewUiDealNew => 'Nuovo accordo';
+
+  @override
+  String get crewUiDealConfirm => 'Conferma l\'affare';
+
+  @override
+  String get crewUiDealCancel => 'Annulla l\'affare';
+
+  @override
+  String get crewUiDealCounter => 'Aggiungi la nostra parte';
+
+  @override
+  String get crewUiDealStatusOffered => 'In attesa della loro offerta';
+
+  @override
+  String get crewUiDealStatusCountered => 'Aspetto entrambe le conferme';
+
+  @override
+  String get crewUiDealEmpty => 'Nessun accordo aperto per l\'Crew.';
+
+  @override
+  String get crewUiDealPickCrew => 'Altro Crew';
+
+  @override
+  String get crewUiDealCash => 'Contanti dalla banca dell\'Crew';
+
+  @override
+  String get crewUiDealCreated =>
+      'Affare bloccato. L\'altro Crew deve aggiungere la propria parte.';
+
+  @override
+  String get crewUiDealNeedOfficer =>
+      'Solo il leader o il co-leader possono stipulare accordi con l\'Crew.';
+
+  @override
+  String get crewUiDealError => 'Non è stato possibile completare l\'affare.';
+
+  @override
+  String get crewUiDealNoCapacity =>
+      'Un Crew non ha spazio. L\'affare è stato annullato e la merce è stata restituita.';
+
+  @override
+  String get crewUiDealWaitingConfirm =>
+      'Hai confermato. Aspettando l\'altro Crew.';
+
+  @override
+  String get crewUiDealSettled => 'Affare concluso. Merce scambiata.';
+
+  @override
+  String get crewUiDealCancelled =>
+      'Affare annullato. Ognuno ha recuperato la propria merce.';
+
+  @override
   String get crewUiWarActionShield => 'Scudo';
 
   @override

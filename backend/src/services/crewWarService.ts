@@ -4,6 +4,13 @@ import { notificationService } from './notificationService';
 import { activityService } from './activityService';
 import { discordWebhookService } from './discordWebhookService';
 import { checkAndUnlockAchievements } from './achievementService';
+import {
+  applyWarRaidLoot,
+  applyWarSabotage,
+  isRaidLootTarget,
+  isSabotageBuildingType,
+  type RaidLootTarget,
+} from './crewWarRaidService';
 
 const PREPARATION_MINUTES = 15;
 const ACTIVE_HOURS = 24;
@@ -1372,7 +1379,15 @@ export async function joinWar(playerId: number, warId: number) {
   return buildWarDetail(warId, playerId);
 }
 
-export async function performWarAction(playerId: number, warId: number, actionType: string, targetPlayerId?: number, territoryKey?: string) {
+export async function performWarAction(
+  playerId: number,
+  warId: number,
+  actionType: string,
+  targetPlayerId?: number,
+  territoryKey?: string,
+  lootTarget?: string,
+  sabotageBuilding?: string,
+) {
   const actionConfig = WAR_ACTIONS[actionType];
   if (!actionConfig) {
     throw new Error('INVALID_WAR_ACTION');
@@ -1479,17 +1494,21 @@ export async function performWarAction(playerId: number, warId: number, actionTy
   let pointsAwarded = Math.round(actionConfig.basePoints * crewVipBonus * playerVipBonus);
   let moneyDelta = 0;
   let metadata = asJson(undefined);
+  let raidTarget: RaidLootTarget = 'cash';
+  if (actionType === 'raid') {
+    raidTarget = isRaidLootTarget(lootTarget) ? lootTarget : 'cash';
+  }
+  if (actionType === 'attack_sabotage' && !isSabotageBuildingType(sabotageBuilding)) {
+    throw new Error('WAR_BUILDING_REQUIRED');
+  }
 
-  if (actionType === 'attack_mug' || actionType === 'raid') {
+  if (actionType === 'attack_mug') {
     const targetCrew = await prisma.crew.findUnique({
       where: { id: enemyCrewId },
       select: { bankBalance: true },
     });
     const bankBalance = targetCrew?.bankBalance ?? 0;
-    const rawLoot = actionType === 'raid'
-      ? Math.max(0, Math.min(75000, Math.floor(bankBalance * 0.08)))
-      : Math.max(0, Math.min(25000, Math.floor(bankBalance * 0.03)));
-    moneyDelta = rawLoot;
+    moneyDelta = Math.max(0, Math.min(25000, Math.floor(bankBalance * 0.03)));
     pointsAwarded += moneyDelta > 0 ? 2 : 0;
   }
 
@@ -1540,7 +1559,33 @@ export async function performWarAction(playerId: number, warId: number, actionTy
   }
 
   await prisma.$transaction(async (tx) => {
-    if (moneyDelta > 0) {
+    if (actionType === 'raid') {
+      const loot = await applyWarRaidLoot(tx, {
+        warId,
+        attackerCrewId: membership.crewId,
+        defenderCrewId: enemyCrewId,
+        actorPlayerId: playerId,
+        lootTarget: raidTarget,
+      });
+      moneyDelta = loot.moneyDelta;
+      metadata = { ...metadata, ...loot.metadata };
+      pointsAwarded += loot.metadata.taken === true ? 2 : 0;
+    }
+
+    if (actionType === 'attack_sabotage' && isSabotageBuildingType(sabotageBuilding)) {
+      const sabotage = await applyWarSabotage(tx, {
+        warId,
+        attackerCrewId: membership.crewId,
+        defenderCrewId: enemyCrewId,
+        buildingType: sabotageBuilding,
+      });
+      metadata = { ...metadata, ...sabotage.metadata };
+      if (sabotage.metadata.levelDropped === true) {
+        pointsAwarded += 4;
+      }
+    }
+
+    if (actionType === 'attack_mug' && moneyDelta > 0) {
       await tx.crew.update({
         where: { id: enemyCrewId },
         data: { bankBalance: { decrement: moneyDelta } },
@@ -1595,7 +1640,7 @@ export async function performWarAction(playerId: number, warId: number, actionTy
         actorId: playerId,
         actorCrewId: membership.crewId,
         targetId: targetPlayerId,
-        targetCrewId: targetPlayerId ? enemyCrewId : null,
+        targetCrewId: enemyCrewId,
         territoryKey: territoryKey ?? null,
         actionType,
         result: 'success',
@@ -1630,7 +1675,7 @@ export async function performWarAction(playerId: number, warId: number, actionTy
     actorId: playerId,
     actorCrewId: membership.crewId,
     targetId: targetPlayerId,
-    targetCrewId: targetPlayerId ? enemyCrewId : null,
+    targetCrewId: enemyCrewId,
     pointsAwarded,
     moneyDelta,
   });

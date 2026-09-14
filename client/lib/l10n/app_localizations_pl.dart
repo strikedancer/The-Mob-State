@@ -4908,6 +4908,115 @@ class AppLocalizationsPl extends AppLocalizations {
   String get crewUiWarActionRaid => 'Nalot';
 
   @override
+  String get crewUiWarLootTitle => 'Co napadacie?';
+
+  @override
+  String get crewUiWarLootCash => 'Gotówka z banku załogi';
+
+  @override
+  String get crewUiWarLootCar => 'Samochód lub motocykl';
+
+  @override
+  String get crewUiWarLootBoat => 'Łódź';
+
+  @override
+  String get crewUiWarLootWeapon => 'Broń';
+
+  @override
+  String get crewUiWarLootAmmo => 'Amunicja';
+
+  @override
+  String get crewUiWarLootDrug => 'Narkotyki';
+
+  @override
+  String get crewUiWarLootTrade => 'Towary handlowe';
+
+  @override
+  String get crewUiWarSabotageTitle => 'W który budynek gospodarczy uderzasz?';
+
+  @override
+  String get crewUiBuildingTradeStorage => 'Magazyn handlowy';
+
+  @override
+  String get crewUiWarErrorRaidEmpty =>
+      'W ich magazynie załogi nie ma niczego tego typu.';
+
+  @override
+  String get crewUiWarErrorRaidFull =>
+      'Twój magazyn załogi nie może pomieścić tego łupu.';
+
+  @override
+  String get crewUiWarErrorBuildingRequired => 'Wybierz oficynę do sabotażu.';
+
+  @override
+  String get crewUiWarErrorSabotageMin =>
+      'Ten budynek jest już na najniższym poziomie.';
+
+  @override
+  String get crewUiWarErrorSabotageDone =>
+      'Budynek ten został już zburzony podczas tej wojny.';
+
+  @override
+  String get crewUiDealTitle => 'Oferty załogi';
+
+  @override
+  String get crewUiDealHint =>
+      'Zablokuj przedmioty w depozycie. Obie załogi potwierdzają, w przeciwnym razie cała transakcja zostanie anulowana i każdy otrzyma z powrotem swój towar.';
+
+  @override
+  String get crewUiDealNew => 'Nowa umowa';
+
+  @override
+  String get crewUiDealConfirm => 'Potwierdź transakcję';
+
+  @override
+  String get crewUiDealCancel => 'Anuluj transakcję';
+
+  @override
+  String get crewUiDealCounter => 'Dodaj naszą stronę';
+
+  @override
+  String get crewUiDealStatusOffered => 'Czekam na ich ofertę';
+
+  @override
+  String get crewUiDealStatusCountered => 'Czekam na oba potwierdzenia';
+
+  @override
+  String get crewUiDealEmpty => 'Brak ofert otwartej załogi.';
+
+  @override
+  String get crewUiDealPickCrew => 'Inna Crew';
+
+  @override
+  String get crewUiDealCash => 'Gotówka z banku załogi';
+
+  @override
+  String get crewUiDealCreated =>
+      'Umowa zamknięta. Pozostała Crew musi dodać swoją stronę.';
+
+  @override
+  String get crewUiDealNeedOfficer =>
+      'Tylko lider lub współlider może zawierać transakcje z załogą.';
+
+  @override
+  String get crewUiDealError => 'Transakcja nie mogła zostać sfinalizowana.';
+
+  @override
+  String get crewUiDealNoCapacity =>
+      'Crew nie ma miejsca. Umowa została anulowana, a towar zwrócony.';
+
+  @override
+  String get crewUiDealWaitingConfirm =>
+      'Potwierdziłeś. Czekam na drugą załogę.';
+
+  @override
+  String get crewUiDealSettled => 'Transakcja zakończona. Towar wymieniony.';
+
+  @override
+  String get crewUiDealCancelled =>
+      'Umowa anulowana. Każdy odzyskał swój towar.';
+
+  @override
   String get crewUiWarActionShield => 'Tarcza';
 
   @override

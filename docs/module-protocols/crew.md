@@ -42,6 +42,7 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - Applicants must see pending state and be able to cancel (`POST /crews/:id/join/cancel`). Leaders toggle recruiting on the Members tab.
 - Each ISO week has one missable crew weekly goal (`crew_week_mission_1`, fallback `crew_week_crimes_15`). Unclaimed rewards expire at the end of the UTC week. No invite API in this flow.
 - Extra roles besides `leader` / `co_leader` / `member`: `consigliere` (Don crew overview, no bank withdraw) and `capo` with optional `capoCountry` (crew-bank tribute only in that country). Leader sets roles via `POST /crews/:id/members/:playerId/role`. See [don.md](don.md).
+- Crew storage deals are officer-only escrow with another crew. Goods leave storage immediately; both crews confirm or the whole deal rolls back. Do not steal from your own crew or from personal inventories.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
@@ -70,6 +71,8 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - Verify the Crews list has no extra Open-crews FAB; open rows use a green instant-join badge + Join now, request-only rows use an orange application badge + Apply.
 - Verify leaders can close recruiting and that closed crews disappear from the recruiting list.
 - Verify the weekly crew goal is visible on the crew overview and dashboard, and that an unclaimed goal is gone after the UTC week rolls.
+- Verify Storage shows crew deals, officers can lock an offer, and cancel returns the goods.
+- Verify a war raid asks which storage type to hit and refuses when attacker storage is full.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

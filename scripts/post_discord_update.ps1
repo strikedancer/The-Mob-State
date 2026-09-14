@@ -12,6 +12,9 @@
 .PARAMETER Bullets
   1–6 changelog lines (without leading bullets).
 
+.PARAMETER Intro
+  Optional lead paragraph above the bullets (player-facing Dutch).
+
 .PARAMETER Url
   Optional link on the embed (default https://themobstate.com).
 
@@ -24,6 +27,8 @@ param(
 
     [Parameter(Mandatory = $true)]
     [string[]] $Bullets,
+
+    [string] $Intro = "",
 
     [string] $Url = "https://themobstate.com"
 )
@@ -63,15 +68,20 @@ $lines = @()
 foreach ($item in $Bullets) {
     $text = ([string]$item).Trim()
     if ($text.Length -eq 0) { continue }
-    $lines += "• $text"
+    $lines += "- $text"
 }
 if ($lines.Count -lt 1 -or $lines.Count -gt 6) {
     Write-Error "Provide 1–6 non-empty bullets."
     exit 1
 }
 
-$description = ($lines -join "`n")
-if ($description.Length -gt 1800) {
+$introText = $Intro.Trim()
+if ($introText.Length -gt 0) {
+    $description = $introText + "`n`n" + ($lines -join "`n")
+} else {
+    $description = $lines -join "`n"
+}
+if ($description.Length -gt 3500) {
     Write-Error "Changelog text is too long."
     exit 1
 }
@@ -90,13 +100,22 @@ $payload = '{"username":"The Mob State","embeds":[{"title":"' +
     (Escape-JsonString $description) +
     '","url":"' +
     (Escape-JsonString $Url) +
-    '","color":13938487}]}'
+    '","color":13938487,"footer":{"text":"themobstate.com"}}]}'
+
+$uri = $webhook
+if ($uri -notmatch '[?&]wait=') {
+    if ($uri.Contains('?')) { $uri += '&wait=true' } else { $uri += '?wait=true' }
+}
 
 try {
-    Invoke-RestMethod -Method Post -Uri $webhook -ContentType "application/json; charset=utf-8" -Body ([System.Text.Encoding]::UTF8.GetBytes($payload)) | Out-Null
+    $posted = Invoke-RestMethod -Method Post -Uri $uri -ContentType "application/json; charset=utf-8" -Body ([System.Text.Encoding]::UTF8.GetBytes($payload))
 } catch {
     Write-Error "Discord webhook post failed (URL not printed)."
     exit 1
 }
 
-Write-Output "Posted changelog to Discord #updates."
+$descLen = 0
+if ($posted -and $posted.embeds -and $posted.embeds.Count -gt 0) {
+    $descLen = ([string]$posted.embeds[0].description).Length
+}
+Write-Output "Posted changelog to Discord #updates ($descLen chars in body)."

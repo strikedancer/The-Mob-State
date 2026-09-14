@@ -87,6 +87,8 @@ class _CrewScreenState extends State<CrewScreen>
   List<dynamic> _crewBuildings = [];
   Map<String, dynamic>? _crewStorage;
   Map<String, dynamic>? _crewWarHub;
+  List<Map<String, dynamic>> _crewDeals = [];
+  bool _crewDealsCanManage = false;
   Map<String, dynamic>? _crewMissionsOverview;
   final Map<int, Map<String, dynamic>> _crewMissionSpeedupQuotes = {};
   final Set<int> _crewMissionSpeedupQuoteLoading = <int>{};
@@ -1505,6 +1507,7 @@ class _CrewScreenState extends State<CrewScreen>
         futures.add(_loadCrewStats());
         futures.add(_loadCrewBuildings());
         futures.add(_loadCrewStorage());
+        futures.add(_loadCrewDeals());
         futures.add(_loadCrewMissionsOverview(silent: true));
         final authProvider = Provider.of<AuthProvider>(context, listen: false);
         final currentPlayerId = authProvider.currentPlayer?.id ?? 0;
@@ -1761,6 +1764,32 @@ class _CrewScreenState extends State<CrewScreen>
     }
   }
 
+  Future<void> _loadCrewDeals() async {
+    if (_myCrew == null) {
+      if (mounted) {
+        setState(() {
+          _crewDeals = [];
+          _crewDealsCanManage = false;
+        });
+      }
+      return;
+    }
+    try {
+      final response = await AuthService().apiClient.get('/crew-deals');
+      if (response.statusCode != 200) return;
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final params = data['params'] as Map<String, dynamic>? ?? {};
+      if (!mounted) return;
+      setState(() {
+        _crewDealsCanManage = params['canManage'] == true;
+        _crewDeals = (params['deals'] as List<dynamic>? ?? [])
+            .whereType<Map>()
+            .map((row) => row.cast<String, dynamic>())
+            .toList();
+      });
+    } catch (_) {}
+  }
+
   Future<void> _loadCrewWarHub() async {
     if (_myCrew == null) {
       if (mounted) {
@@ -1858,6 +1887,16 @@ class _CrewScreenState extends State<CrewScreen>
         return loc.crewUiTr37(remaining.toString());
       case 'error.invalid_war_territory':
         return loc.crewUiTr38;
+      case 'error.raid_nothing_to_steal':
+        return loc.crewUiWarErrorRaidEmpty;
+      case 'error.raid_no_capacity':
+        return loc.crewUiWarErrorRaidFull;
+      case 'error.war_building_required':
+        return loc.crewUiWarErrorBuildingRequired;
+      case 'error.sabotage_min_level':
+        return loc.crewUiWarErrorSabotageMin;
+      case 'error.sabotage_already_done':
+        return loc.crewUiWarErrorSabotageDone;
       default:
         return loc.crewUiTr39;
     }
@@ -1910,6 +1949,47 @@ class _CrewScreenState extends State<CrewScreen>
             ElevatedButton(
               onPressed: () =>
                   Navigator.of(dialogContext).pop(selectedPlayerId),
+              child: Text(loc.crewUiTr44),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<String?> _promptWarChoice(
+    AppLocalizations loc,
+    String title,
+    List<MapEntry<String, String>> options,
+  ) async {
+    String? selected = options.first.key;
+    return showDialog<String>(
+      context: context,
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (context, setLocalState) => AlertDialog(
+          title: Text(title),
+          content: DropdownButtonFormField<String>(
+            value: selected,
+            items: options
+                .map(
+                  (entry) => DropdownMenuItem<String>(
+                    value: entry.key,
+                    child: Text(entry.value),
+                  ),
+                )
+                .toList(),
+            onChanged: (value) {
+              if (value == null) return;
+              setLocalState(() => selected = value);
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(loc.crewUiTr43),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(dialogContext).pop(selected),
               child: Text(loc.crewUiTr44),
             ),
           ],
@@ -2154,6 +2234,8 @@ class _CrewScreenState extends State<CrewScreen>
     String actionType, {
     int? targetPlayerId,
     String? territoryKey,
+    String? lootTarget,
+    String? sabotageBuilding,
   }) async {
     try {
       final apiClient = AuthService().apiClient;
@@ -2163,6 +2245,12 @@ class _CrewScreenState extends State<CrewScreen>
       }
       if (territoryKey != null) {
         payload['territoryKey'] = territoryKey;
+      }
+      if (lootTarget != null) {
+        payload['lootTarget'] = lootTarget;
+      }
+      if (sabotageBuilding != null) {
+        payload['sabotageBuilding'] = sabotageBuilding;
       }
       final response = await apiClient.post(
         '/crew-wars/$warId/actions',
@@ -4964,6 +5052,442 @@ class _CrewScreenState extends State<CrewScreen>
     );
   }
 
+  String _formatDealOffer(AppLocalizations loc, Map<String, dynamic>? offer) {
+    if (offer == null) return '—';
+    final parts = <String>[];
+    final cash = (offer['cash'] as num?)?.toInt() ?? 0;
+    if (cash > 0) parts.add(_money(cash));
+    final cars = (offer['cars'] as List?)?.length ?? 0;
+    final boats = (offer['boats'] as List?)?.length ?? 0;
+    if (cars > 0) parts.add('$cars ${loc.crewUiWarLootCar}');
+    if (boats > 0) parts.add('$boats ${loc.crewUiWarLootBoat}');
+    int stackCount(String key) => ((offer[key] as List?) ?? []).fold<int>(
+          0,
+          (sum, row) => sum + (((row as Map)['quantity'] as num?)?.toInt() ?? 0),
+        );
+    final weapons = stackCount('weapons');
+    final ammo = stackCount('ammo');
+    final drugs = stackCount('drugs');
+    final trade = stackCount('trade');
+    if (weapons > 0) parts.add('$weapons ${loc.crewUiWarLootWeapon}');
+    if (ammo > 0) parts.add('$ammo ${loc.crewUiWarLootAmmo}');
+    if (drugs > 0) parts.add('$drugs ${loc.crewUiWarLootDrug}');
+    if (trade > 0) parts.add('$trade ${loc.crewUiWarLootTrade}');
+    return parts.isEmpty ? '—' : parts.join(' · ');
+  }
+
+  Map<String, dynamic> _collectDealOffer({
+    required int cash,
+    required Set<int> carIds,
+    required Set<int> boatIds,
+    required Map<String, int> weaponQty,
+    required Map<String, int> ammoQty,
+    required Map<String, int> drugQty,
+    required Map<String, int> tradeQty,
+  }) {
+    final payload = <String, dynamic>{};
+    if (cash > 0) payload['cash'] = cash;
+    if (carIds.isNotEmpty) payload['carIds'] = carIds.toList();
+    if (boatIds.isNotEmpty) payload['boatIds'] = boatIds.toList();
+    final weapons = weaponQty.entries
+        .where((e) => e.value > 0)
+        .map((e) => {'weaponId': e.key, 'quantity': e.value})
+        .toList();
+    final ammo = ammoQty.entries
+        .where((e) => e.value > 0)
+        .map((e) => {'ammoType': e.key, 'quantity': e.value})
+        .toList();
+    final drugs = drugQty.entries.where((e) => e.value > 0).map((e) {
+      final parts = e.key.split('|');
+      return {
+        'drugType': parts.first,
+        'quality': parts.length > 1 ? parts.last : 'C',
+        'quantity': e.value,
+      };
+    }).toList();
+    final trade = tradeQty.entries
+        .where((e) => e.value > 0)
+        .map((e) => {'goodType': e.key, 'quantity': e.value})
+        .toList();
+    if (weapons.isNotEmpty) payload['weapons'] = weapons;
+    if (ammo.isNotEmpty) payload['ammo'] = ammo;
+    if (drugs.isNotEmpty) payload['drugs'] = drugs;
+    if (trade.isNotEmpty) payload['trade'] = trade;
+    return payload;
+  }
+
+  Future<Map<String, dynamic>?> _promptDealOffer(
+    AppLocalizations loc, {
+    int? targetCrewId,
+  }) async {
+    final others = _allCrews.where((crew) => crew.id != _myCrew?.id).toList();
+    if (targetCrewId == null && others.isEmpty) return null;
+    int selectedCrewId = targetCrewId ?? others.first.id;
+    final cashController = TextEditingController();
+    final selectedCars = <int>{};
+    final selectedBoats = <int>{};
+    final weaponQty = <String, int>{};
+    final ammoQty = <String, int>{};
+    final drugQty = <String, int>{};
+    final tradeQty = <String, int>{};
+    final inventory =
+        (_crewStorage?['inventory'] as Map?)?.cast<String, dynamic>() ?? {};
+    final cars =
+        (inventory['cars'] as List<dynamic>? ?? []).whereType<Map>().toList();
+    final boats =
+        (inventory['boats'] as List<dynamic>? ?? []).whereType<Map>().toList();
+    final weapons = (inventory['weapons'] as List<dynamic>? ?? [])
+        .whereType<Map>()
+        .toList();
+    final ammo =
+        (inventory['ammo'] as List<dynamic>? ?? []).whereType<Map>().toList();
+    final lots = (inventory['drugLots'] as List<dynamic>? ?? [])
+        .whereType<Map>()
+        .toList();
+    final trade =
+        (inventory['trade'] as List<dynamic>? ?? []).whereType<Map>().toList();
+
+    return showDialog<Map<String, dynamic>>(
+      context: context,
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (context, setLocalState) => AlertDialog(
+          title: Text(
+            targetCrewId == null ? loc.crewUiDealNew : loc.crewUiDealCounter,
+          ),
+          content: SizedBox(
+            width: 420,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (targetCrewId == null)
+                    DropdownButtonFormField<int>(
+                      value: selectedCrewId,
+                      decoration: InputDecoration(
+                        labelText: loc.crewUiDealPickCrew,
+                      ),
+                      items: others
+                          .map(
+                            (crew) => DropdownMenuItem<int>(
+                              value: crew.id,
+                              child: Text(crew.name),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (value) {
+                        if (value == null) return;
+                        setLocalState(() => selectedCrewId = value);
+                      },
+                    ),
+                  TextField(
+                    controller: cashController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(labelText: loc.crewUiDealCash),
+                  ),
+                  ...cars.map((car) {
+                    final id = (car['id'] as num?)?.toInt() ?? 0;
+                    return CheckboxListTile(
+                      dense: true,
+                      value: selectedCars.contains(id),
+                      title: Text('${car['vehicleId'] ?? 'car'}'),
+                      onChanged: (on) {
+                        setLocalState(() {
+                          if (on == true) {
+                            selectedCars.add(id);
+                          } else {
+                            selectedCars.remove(id);
+                          }
+                        });
+                      },
+                    );
+                  }),
+                  ...boats.map((boat) {
+                    final id = (boat['id'] as num?)?.toInt() ?? 0;
+                    return CheckboxListTile(
+                      dense: true,
+                      value: selectedBoats.contains(id),
+                      title: Text('${boat['vehicleId'] ?? 'boat'}'),
+                      onChanged: (on) {
+                        setLocalState(() {
+                          if (on == true) {
+                            selectedBoats.add(id);
+                          } else {
+                            selectedBoats.remove(id);
+                          }
+                        });
+                      },
+                    );
+                  }),
+                  ...weapons.map((row) {
+                    final key = (row['weaponId'] ?? '').toString();
+                    final max = (row['quantity'] as num?)?.toInt() ?? 0;
+                    return ListTile(
+                      dense: true,
+                      title: Text(key),
+                      subtitle: Text('$max'),
+                      trailing: SizedBox(
+                        width: 72,
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(isDense: true),
+                          onChanged: (value) {
+                            weaponQty[key] = int.tryParse(value) ?? 0;
+                          },
+                        ),
+                      ),
+                    );
+                  }),
+                  ...ammo.map((row) {
+                    final key = (row['ammoType'] ?? '').toString();
+                    final max = (row['quantity'] as num?)?.toInt() ?? 0;
+                    return ListTile(
+                      dense: true,
+                      title: Text(key),
+                      subtitle: Text('$max'),
+                      trailing: SizedBox(
+                        width: 72,
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(isDense: true),
+                          onChanged: (value) {
+                            ammoQty[key] = int.tryParse(value) ?? 0;
+                          },
+                        ),
+                      ),
+                    );
+                  }),
+                  ...lots.map((row) {
+                    final type = (row['drugType'] ?? '').toString();
+                    final quality = (row['quality'] ?? 'C').toString();
+                    final key = '$type|$quality';
+                    final max = (row['quantity'] as num?)?.toInt() ?? 0;
+                    return ListTile(
+                      dense: true,
+                      title: Text('$type $quality'),
+                      subtitle: Text('${max}g'),
+                      trailing: SizedBox(
+                        width: 72,
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(isDense: true),
+                          onChanged: (value) {
+                            drugQty[key] = int.tryParse(value) ?? 0;
+                          },
+                        ),
+                      ),
+                    );
+                  }),
+                  ...trade.map((row) {
+                    final key = (row['goodType'] ?? '').toString();
+                    final max = (row['quantity'] as num?)?.toInt() ?? 0;
+                    return ListTile(
+                      dense: true,
+                      title: Text(key),
+                      subtitle: Text('$max'),
+                      trailing: SizedBox(
+                        width: 72,
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(isDense: true),
+                          onChanged: (value) {
+                            tradeQty[key] = int.tryParse(value) ?? 0;
+                          },
+                        ),
+                      ),
+                    );
+                  }),
+                ],
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(loc.crewUiTr43),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                final cash = int.tryParse(cashController.text.trim()) ?? 0;
+                final offer = _collectDealOffer(
+                  cash: cash,
+                  carIds: selectedCars,
+                  boatIds: selectedBoats,
+                  weaponQty: weaponQty,
+                  ammoQty: ammoQty,
+                  drugQty: drugQty,
+                  tradeQty: tradeQty,
+                );
+                if (offer.isEmpty) return;
+                Navigator.of(dialogContext).pop({
+                  if (targetCrewId == null) 'targetCrewId': selectedCrewId,
+                  ...offer,
+                });
+              },
+              child: Text(loc.crewUiTr44),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _postCrewDeal(
+    String path,
+    Map<String, dynamic> body,
+    String success,
+  ) async {
+    try {
+      final response = await AuthService().apiClient.post(path, body);
+      if (!mounted) return;
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var message = success;
+        try {
+          final data = jsonDecode(response.body) as Map<String, dynamic>;
+          final deal = ((data['params'] as Map?)?['deal'] as Map?)
+              ?.cast<String, dynamic>();
+          if (data['event'] == 'crew_deals.confirmed' &&
+              deal?['status'] != 'confirmed') {
+            message = l10n.crewUiDealWaitingConfirm;
+          }
+        } catch (_) {}
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(content: Text(message), backgroundColor: Colors.green),
+        );
+        await _loadCrewDeals();
+        await _loadCrewStorage();
+        await _loadMyCrew();
+        return;
+      }
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final event = data['event'] as String?;
+      final message = event == 'error.deal_no_capacity'
+          ? l10n.crewUiDealNoCapacity
+          : l10n.crewUiDealError;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(content: Text(message), backgroundColor: Colors.red),
+      );
+    } catch (_) {
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(l10n.crewUiDealError),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Widget _buildCrewDealsSection(AppLocalizations loc) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              loc.crewUiDealTitle,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            const SizedBox(height: 8),
+            Text(loc.crewUiDealHint, style: const TextStyle(color: Colors.grey)),
+            const SizedBox(height: 12),
+            if (_crewDealsCanManage)
+              OutlinedButton.icon(
+                onPressed: () async {
+                  final offer = await _promptDealOffer(loc);
+                  if (offer == null) return;
+                  await _postCrewDeal('/crew-deals', offer, loc.crewUiDealCreated);
+                },
+                icon: const Icon(Icons.lock),
+                label: Text(loc.crewUiDealNew),
+              )
+            else
+              Text(
+                loc.crewUiDealNeedOfficer,
+                style: const TextStyle(color: Colors.grey),
+              ),
+            const SizedBox(height: 12),
+            if (_crewDeals.isEmpty)
+              Text(loc.crewUiDealEmpty)
+            else
+              ..._crewDeals.map((deal) {
+                final status = (deal['status'] ?? '').toString();
+                final initiator = (deal['initiatorCrewName'] ?? '').toString();
+                final counter = (deal['counterpartyCrewName'] ?? '').toString();
+                final mine = deal['initiatorCrewId'] == _myCrew?.id;
+                final statusLabel = status == 'offered'
+                    ? loc.crewUiDealStatusOffered
+                    : loc.crewUiDealStatusCountered;
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '$initiator ↔ $counter',
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      Text(statusLabel, style: const TextStyle(color: Colors.grey)),
+                      Text(
+                        '${loc.crewUiDealNew}: ${_formatDealOffer(loc, (deal['initiatorOffer'] as Map?)?.cast<String, dynamic>())}',
+                      ),
+                      Text(
+                        '${loc.crewUiDealCounter}: ${_formatDealOffer(loc, (deal['counterpartyOffer'] as Map?)?.cast<String, dynamic>())}',
+                      ),
+                      if (_crewDealsCanManage)
+                        Wrap(
+                          spacing: 8,
+                          children: [
+                            if (status == 'offered' && !mine)
+                              TextButton(
+                                onPressed: () async {
+                                  final offer = await _promptDealOffer(
+                                    loc,
+                                    targetCrewId:
+                                        (deal['initiatorCrewId'] as num?)?.toInt(),
+                                  );
+                                  if (offer == null) return;
+                                  offer.remove('targetCrewId');
+                                  await _postCrewDeal(
+                                    '/crew-deals/${deal['id']}/counter',
+                                    offer,
+                                    loc.crewUiDealCreated,
+                                  );
+                                },
+                                child: Text(loc.crewUiDealCounter),
+                              ),
+                            if (status == 'countered')
+                              TextButton(
+                                onPressed: () => _postCrewDeal(
+                                  '/crew-deals/${deal['id']}/confirm',
+                                  {},
+                                  loc.crewUiDealSettled,
+                                ),
+                                child: Text(loc.crewUiDealConfirm),
+                              ),
+                            TextButton(
+                              onPressed: () => _postCrewDeal(
+                                '/crew-deals/${deal['id']}/cancel',
+                                {},
+                                loc.crewUiDealCancelled,
+                              ),
+                              child: Text(loc.crewUiDealCancel),
+                            ),
+                          ],
+                        ),
+                    ],
+                  ),
+                );
+              }),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildStorageManagementTab() {
     final locale = Localizations.localeOf(context).languageCode;
     if (_myCrew == null) {
@@ -5028,6 +5552,8 @@ class _CrewScreenState extends State<CrewScreen>
             _t(l10n, 'hint.storageTab'),
             style: const TextStyle(color: Colors.grey),
           ),
+          const SizedBox(height: 16),
+          _buildCrewDealsSection(l10n),
           const SizedBox(height: 16),
           Card(
             child: Padding(
@@ -5498,6 +6024,8 @@ class _CrewScreenState extends State<CrewScreen>
       if (currentWar == null) return;
       int? targetPlayerId;
       String? territoryKey;
+      String? lootTarget;
+      String? sabotageBuilding;
 
       if ([
         'attack_kill',
@@ -5526,6 +6054,36 @@ class _CrewScreenState extends State<CrewScreen>
         if (targetPlayerId == null || targetPlayerId <= 0) return;
       }
 
+      if (actionType == 'raid') {
+        lootTarget = await _promptWarChoice(l10n, l10n.crewUiWarLootTitle, [
+          MapEntry('cash', l10n.crewUiWarLootCash),
+          MapEntry('car', l10n.crewUiWarLootCar),
+          MapEntry('boat', l10n.crewUiWarLootBoat),
+          MapEntry('weapon', l10n.crewUiWarLootWeapon),
+          MapEntry('ammo', l10n.crewUiWarLootAmmo),
+          MapEntry('drug', l10n.crewUiWarLootDrug),
+          MapEntry('trade', l10n.crewUiWarLootTrade),
+        ]);
+        if (lootTarget == null || lootTarget.isEmpty) return;
+      }
+
+      if (actionType == 'attack_sabotage') {
+        sabotageBuilding = await _promptWarChoice(
+          l10n,
+          l10n.crewUiWarSabotageTitle,
+          [
+            MapEntry('car_storage', l10n.crewUiBuildingCarStorage),
+            MapEntry('boat_storage', l10n.crewUiBuildingBoatStorage),
+            MapEntry('weapon_storage', l10n.crewUiBuildingWeaponStorage),
+            MapEntry('ammo_storage', l10n.crewUiBuildingAmmoStorage),
+            MapEntry('drug_storage', l10n.crewUiBuildingDrugStorage),
+            MapEntry('trade_storage', l10n.crewUiBuildingTradeStorage),
+            MapEntry('cash_storage', l10n.crewUiBuildingCashStorage),
+          ],
+        );
+        if (sabotageBuilding == null || sabotageBuilding.isEmpty) return;
+      }
+
       if (actionType == 'territory_claim') {
         territoryKey = await _promptWarTerritory(l10n, territories);
         if (territoryKey == null || territoryKey.isEmpty) return;
@@ -5536,6 +6094,8 @@ class _CrewScreenState extends State<CrewScreen>
         actionType,
         targetPlayerId: targetPlayerId,
         territoryKey: territoryKey,
+        lootTarget: lootTarget,
+        sabotageBuilding: sabotageBuilding,
       );
     }
 

@@ -16,6 +16,9 @@ Scope-afbakening:
 ## Primary Backend Entry
 - backend/src/routes/crewWars.ts
 - backend/src/services/crewWarService.ts
+- backend/src/services/crewWarRaidService.ts
+- backend/src/services/crewDealService.ts
+- backend/src/routes/crewDeals.ts
 - backend/src/services/notificationService.ts
 - backend/src/services/discordWebhookService.ts
 - backend/src/routes/admin.ts
@@ -106,6 +109,11 @@ Scope-afbakening:
 - `war_boost`
 - `territory_claim`
 - `territory_tick`
+
+### Raid loot, sabotage and peacetime deals
+- `raid` steals from the **enemy crew storage** during an active war only (not peacetime, not personal inventory). The actor picks one loot type: cash, car/moto, boat, weapons, ammo, drugs or trade goods. Take is partial, must fit attacker storage, or the action fails. A successful `crew_shield` in the last 75 minutes reduces loot (~40%). Cash cap stays €75k / 8% of bank.
+- `attack_sabotage` can drop **one side building** (not HQ) by one level per building per war, never below level 1. Surplus over the new cap stays; deposits block until they rebuild. Shield can block the level drop but still awards the action. Building visual style follows the new level tier.
+- Crew storage deals (`/crew-deals`) are **peacetime escrow**: leader/co-leader only. Goods leave storage immediately, the other crew adds their side, both confirm, then swap. Cancel, ~2h timeout or no capacity rolls everything back.
 
 Elke action vereist:
 - attacker/actor id
@@ -236,7 +244,9 @@ CREW_WAR_DISCORD_MIN_INTERVAL_MS=15000
 7. War end verdeelt rewards exact één keer en schrijft standings/logs correct weg.
 8. Mobile en desktop layouts houden timers, scores en actieknoppen bruikbaar.
 9. Notifications/inbox blijven werken; Discord failure mag war flow niet breken.
-10. Minimaal Crew, Notifications, Dashboard en Admin mee testen als gekoppelde modules.
+11. Raid asks for a loot type, fails when the attacker has no room, and never takes personal inventory.
+12. Sabotage cannot drop HQ or go below level 1, and the same building cannot drop twice in one war.
+13. Crew deals lock goods on create/counter, require both officer confirms, and return goods on cancel/timeout/no capacity.
 
 ## i18n and Messaging
 - Nieuwe war labels, war types, actions, errors, rewards, boosts en eventmeldingen moeten in NL en EN bestaan.

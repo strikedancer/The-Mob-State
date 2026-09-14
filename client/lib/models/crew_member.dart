@@ -31,6 +31,7 @@ class CrewMember {
   Map<String, dynamic> toJson() => _$CrewMemberToJson(this);
 
   bool get isLeader => role == 'leader';
+  bool get isOfficer => role == 'leader' || role == 'co_leader';
 }
 
 @JsonSerializable()

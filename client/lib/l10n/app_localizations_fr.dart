@@ -4945,6 +4945,116 @@ class AppLocalizationsFr extends AppLocalizations {
   String get crewUiWarActionRaid => 'Raid';
 
   @override
+  String get crewUiWarLootTitle => 'Sur quoi pillez-vous ?';
+
+  @override
+  String get crewUiWarLootCash => 'Trésorerie de la banque de l\'équipage';
+
+  @override
+  String get crewUiWarLootCar => 'Voiture ou moto';
+
+  @override
+  String get crewUiWarLootBoat => 'Bateau';
+
+  @override
+  String get crewUiWarLootWeapon => 'Armes';
+
+  @override
+  String get crewUiWarLootAmmo => 'Munitions';
+
+  @override
+  String get crewUiWarLootDrug => 'Drogues';
+
+  @override
+  String get crewUiWarLootTrade => 'Marchandises commerciales';
+
+  @override
+  String get crewUiWarSabotageTitle => 'Quelle dépendance frappez-vous ?';
+
+  @override
+  String get crewUiBuildingTradeStorage => 'Stockage commercial';
+
+  @override
+  String get crewUiWarErrorRaidEmpty =>
+      'Leur stockage d’équipage n’a rien de ce type.';
+
+  @override
+  String get crewUiWarErrorRaidFull =>
+      'Le stockage de votre équipage ne peut pas contenir ce butin.';
+
+  @override
+  String get crewUiWarErrorBuildingRequired =>
+      'Choisissez une dépendance à saboter.';
+
+  @override
+  String get crewUiWarErrorSabotageMin =>
+      'Ce bâtiment est déjà au niveau le plus bas.';
+
+  @override
+  String get crewUiWarErrorSabotageDone =>
+      'Ce bâtiment a déjà été abandonné pendant cette guerre.';
+
+  @override
+  String get crewUiDealTitle => 'Offres d\'équipage';
+
+  @override
+  String get crewUiDealHint =>
+      'Verrouillez les objets en dépôt. Les deux équipages confirment, ou bien l\'ensemble de l\'accord est annulé et chacun récupère ses propres biens.';
+
+  @override
+  String get crewUiDealNew => 'Nouvelle offre';
+
+  @override
+  String get crewUiDealConfirm => 'Confirmer l\'accord';
+
+  @override
+  String get crewUiDealCancel => 'Annuler l\'offre';
+
+  @override
+  String get crewUiDealCounter => 'Ajoutez notre côté';
+
+  @override
+  String get crewUiDealStatusOffered => 'En attendant leur offre';
+
+  @override
+  String get crewUiDealStatusCountered => 'En attente des deux confirmations';
+
+  @override
+  String get crewUiDealEmpty => 'Aucun accord d’équipage ouvert.';
+
+  @override
+  String get crewUiDealPickCrew => 'Autre équipage';
+
+  @override
+  String get crewUiDealCash => 'Trésorerie de la banque de l\'équipage';
+
+  @override
+  String get crewUiDealCreated =>
+      'Accord verrouillé. L\'autre équipage doit ajouter son camp.';
+
+  @override
+  String get crewUiDealNeedOfficer =>
+      'Seul le leader ou le co-leader peut conclure des accords avec l\'équipage.';
+
+  @override
+  String get crewUiDealError => 'L\'accord n\'a pas pu être conclu.';
+
+  @override
+  String get crewUiDealNoCapacity =>
+      'Un équipage n\'a pas de place. La transaction a été annulée et les marchandises ont été retournées.';
+
+  @override
+  String get crewUiDealWaitingConfirm =>
+      'Vous avez confirmé. En attendant l\'autre équipage.';
+
+  @override
+  String get crewUiDealSettled => 'Affaire conclue. Marchandises échangées.';
+
+  @override
+  String get crewUiDealCancelled =>
+      'Transaction annulée. Chacun a récupéré ses propres biens.';
+
+  @override
   String get crewUiWarActionShield => 'Bouclier';
 
   @override

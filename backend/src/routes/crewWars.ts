@@ -14,6 +14,8 @@ const actionSchema = z.object({
   actionType: z.enum(['attack_kill', 'attack_mug', 'attack_sabotage', 'defense_success', 'intel_scan', 'raid', 'crew_shield', 'war_boost', 'territory_claim']),
   targetPlayerId: z.number().int().positive().optional(),
   territoryKey: z.string().min(2).max(50).optional(),
+  lootTarget: z.enum(['cash', 'car', 'boat', 'weapon', 'ammo', 'drug', 'trade']).optional(),
+  sabotageBuilding: z.enum(['car_storage', 'boat_storage', 'weapon_storage', 'ammo_storage', 'drug_storage', 'trade_storage', 'cash_storage']).optional(),
 });
 
 function mapWarError(error: unknown, res: Response, next: NextFunction) {
@@ -70,6 +72,21 @@ function mapWarError(error: unknown, res: Response, next: NextFunction) {
   if (error.message === 'WAR_TERRITORY_UNAVAILABLE' || error.message === 'INVALID_TERRITORY') {
     return res.status(400).json({ event: 'error.invalid_war_territory', params: {} });
   }
+  if (error.message === 'RAID_NOTHING_TO_STEAL') {
+    return res.status(409).json({ event: 'error.raid_nothing_to_steal', params: {} });
+  }
+  if (error.message === 'RAID_NO_CAPACITY') {
+    return res.status(409).json({ event: 'error.raid_no_capacity', params: {} });
+  }
+  if (error.message === 'WAR_BUILDING_REQUIRED') {
+    return res.status(400).json({ event: 'error.war_building_required', params: {} });
+  }
+  if (error.message === 'SABOTAGE_MIN_LEVEL') {
+    return res.status(409).json({ event: 'error.sabotage_min_level', params: {} });
+  }
+  if (error.message === 'SABOTAGE_ALREADY_DONE') {
+    return res.status(409).json({ event: 'error.sabotage_already_done', params: {} });
+  }
 
   return next(error);
 }
@@ -125,8 +142,16 @@ router.post('/:id/actions', authenticate, async (req: AuthRequest, res: Response
     if (Number.isNaN(warId)) {
       return res.status(400).json({ event: 'error.invalid_war_id', params: {} });
     }
-    const { actionType, targetPlayerId, territoryKey } = actionSchema.parse(req.body);
-    const war = await crewWarService.performWarAction(req.player!.id, warId, actionType, targetPlayerId, territoryKey);
+    const { actionType, targetPlayerId, territoryKey, lootTarget, sabotageBuilding } = actionSchema.parse(req.body);
+    const war = await crewWarService.performWarAction(
+      req.player!.id,
+      warId,
+      actionType,
+      targetPlayerId,
+      territoryKey,
+      lootTarget,
+      sabotageBuilding,
+    );
     return res.json({ event: 'crew_wars.action_completed', params: { war } });
   } catch (error) {
     return mapWarError(error, res, next);

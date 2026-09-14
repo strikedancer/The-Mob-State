@@ -552,6 +552,8 @@ model Crew {
   messages              CrewMessage[]
   weaponInventory       CrewWeaponInventory[]
   weaponStorageBuilding CrewWeaponStorageBuilding?
+  dealsInitiated        CrewStorageDeal[]          @relation("CrewDealInitiator")
+  dealsReceived         CrewStorageDeal[]          @relation("CrewDealCounterparty")
 
   @@index([name])
   @@map("crews")
@@ -953,6 +955,28 @@ model CrewTradeInventory {
   @@unique([crewId, goodType])
   @@index([crewId])
   @@map("crew_trade_inventory")
+}
+
+model CrewStorageDeal {
+  id                      Int       @id @default(autoincrement())
+  initiatorCrewId         Int
+  counterpartyCrewId      Int
+  createdByPlayerId       Int
+  status                  String    @db.VarChar(20)
+  initiatorOfferJson      String    @db.LongText
+  counterpartyOfferJson   String?   @db.LongText
+  initiatorConfirmedAt    DateTime?
+  counterpartyConfirmedAt DateTime?
+  expiresAt               DateTime
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
+  initiatorCrew           Crew      @relation("CrewDealInitiator", fields: [initiatorCrewId], references: [id], onDelete: Cascade)
+  counterpartyCrew        Crew      @relation("CrewDealCounterparty", fields: [counterpartyCrewId], references: [id], onDelete: Cascade)
+
+  @@index([initiatorCrewId, status])
+  @@index([counterpartyCrewId, status])
+  @@index([expiresAt])
+  @@map("crew_storage_deals")
 }
 
 model CrewWar {

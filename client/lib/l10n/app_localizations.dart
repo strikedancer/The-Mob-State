@@ -8705,6 +8705,204 @@ abstract class AppLocalizations {
   /// **'Raid'**
   String get crewUiWarActionRaid;
 
+  /// No description provided for @crewUiWarLootTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What do you raid?'**
+  String get crewUiWarLootTitle;
+
+  /// No description provided for @crewUiWarLootCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew bank cash'**
+  String get crewUiWarLootCash;
+
+  /// No description provided for @crewUiWarLootCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Car or motorcycle'**
+  String get crewUiWarLootCar;
+
+  /// No description provided for @crewUiWarLootBoat.
+  ///
+  /// In en, this message translates to:
+  /// **'Boat'**
+  String get crewUiWarLootBoat;
+
+  /// No description provided for @crewUiWarLootWeapon.
+  ///
+  /// In en, this message translates to:
+  /// **'Weapons'**
+  String get crewUiWarLootWeapon;
+
+  /// No description provided for @crewUiWarLootAmmo.
+  ///
+  /// In en, this message translates to:
+  /// **'Ammo'**
+  String get crewUiWarLootAmmo;
+
+  /// No description provided for @crewUiWarLootDrug.
+  ///
+  /// In en, this message translates to:
+  /// **'Drugs'**
+  String get crewUiWarLootDrug;
+
+  /// No description provided for @crewUiWarLootTrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Trade goods'**
+  String get crewUiWarLootTrade;
+
+  /// No description provided for @crewUiWarSabotageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Which outbuilding do you hit?'**
+  String get crewUiWarSabotageTitle;
+
+  /// No description provided for @crewUiBuildingTradeStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Trade storage'**
+  String get crewUiBuildingTradeStorage;
+
+  /// No description provided for @crewUiWarErrorRaidEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Their crew storage has nothing of that type.'**
+  String get crewUiWarErrorRaidEmpty;
+
+  /// No description provided for @crewUiWarErrorRaidFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Your crew storage cannot hold that loot.'**
+  String get crewUiWarErrorRaidFull;
+
+  /// No description provided for @crewUiWarErrorBuildingRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an outbuilding to sabotage.'**
+  String get crewUiWarErrorBuildingRequired;
+
+  /// No description provided for @crewUiWarErrorSabotageMin.
+  ///
+  /// In en, this message translates to:
+  /// **'That building is already at the lowest level.'**
+  String get crewUiWarErrorSabotageMin;
+
+  /// No description provided for @crewUiWarErrorSabotageDone.
+  ///
+  /// In en, this message translates to:
+  /// **'That building was already dropped in this war.'**
+  String get crewUiWarErrorSabotageDone;
+
+  /// No description provided for @crewUiDealTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew deals'**
+  String get crewUiDealTitle;
+
+  /// No description provided for @crewUiDealHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock items in escrow. Both crews confirm, or the whole deal is cancelled and everyone gets their own goods back.'**
+  String get crewUiDealHint;
+
+  /// No description provided for @crewUiDealNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New deal'**
+  String get crewUiDealNew;
+
+  /// No description provided for @crewUiDealConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm deal'**
+  String get crewUiDealConfirm;
+
+  /// No description provided for @crewUiDealCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel deal'**
+  String get crewUiDealCancel;
+
+  /// No description provided for @crewUiDealCounter.
+  ///
+  /// In en, this message translates to:
+  /// **'Add our side'**
+  String get crewUiDealCounter;
+
+  /// No description provided for @crewUiDealStatusOffered.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for their offer'**
+  String get crewUiDealStatusOffered;
+
+  /// No description provided for @crewUiDealStatusCountered.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for both confirmations'**
+  String get crewUiDealStatusCountered;
+
+  /// No description provided for @crewUiDealEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No open crew deals.'**
+  String get crewUiDealEmpty;
+
+  /// No description provided for @crewUiDealPickCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'Other crew'**
+  String get crewUiDealPickCrew;
+
+  /// No description provided for @crewUiDealCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash from crew bank'**
+  String get crewUiDealCash;
+
+  /// No description provided for @crewUiDealCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Deal locked. The other crew must add their side.'**
+  String get crewUiDealCreated;
+
+  /// No description provided for @crewUiDealNeedOfficer.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the leader or co-leader can make crew deals.'**
+  String get crewUiDealNeedOfficer;
+
+  /// No description provided for @crewUiDealError.
+  ///
+  /// In en, this message translates to:
+  /// **'The deal could not be completed.'**
+  String get crewUiDealError;
+
+  /// No description provided for @crewUiDealNoCapacity.
+  ///
+  /// In en, this message translates to:
+  /// **'A crew does not have room. The deal was cancelled and goods were returned.'**
+  String get crewUiDealNoCapacity;
+
+  /// No description provided for @crewUiDealWaitingConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'You confirmed. Waiting for the other crew.'**
+  String get crewUiDealWaitingConfirm;
+
+  /// No description provided for @crewUiDealSettled.
+  ///
+  /// In en, this message translates to:
+  /// **'Deal completed. Goods swapped.'**
+  String get crewUiDealSettled;
+
+  /// No description provided for @crewUiDealCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Deal cancelled. Everyone got their own goods back.'**
+  String get crewUiDealCancelled;
+
   /// No description provided for @crewUiWarActionShield.
   ///
   /// In en, this message translates to:
@@ -30048,13 +30246,13 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicCrewHow.
   ///
   /// In en, this message translates to:
-  /// **'New players can join The Rookies from the Crews tab — that crew is open and auto-accepts. Creating your own crew still costs cash.\nCreating a crew costs €10.000. The Crew HQ determines how many members your crew can hold and scales up to 150 members. The leader can invite, kick and start heists.\nCrew benefits: access to large heists, shared storage, teamwork bonus (+10% success per extra member, max +30%) and group chat.\nNew crews now start with Crew HQ level 1 and all storage buildings at level 1, including cash storage, so the crew bank and shared storage work immediately.\nCrew car storage now also accepts motorcycles, so land vehicles can be managed together from the same shared crew storage.\nWhen a crew member gets arrested, crew members now receive a push notification that the player is locked up and waiting for help.\nThe crew screen is now grouped into Overview, HQ & Upgrades, Storage, Members, War Room, Crew Missions, Crews and Chat so management feels calmer and more professional.\nCrew Missions shows tier templates, an active run card and recent runs. Leaders/co-leaders can start and resolve; reward claiming and cooldown speedup are handled in the same tab.\nThere are extra crew missions with bank-themed operations (night deposit, skim network, armored route, subsidiary vault, reserve vault and clearing house). There is no second casino crew mission alongside Casino Ledger Raid.\nCrew mission rewards come from the server-side mission economy; other players’ bank balances are not debited for these payouts.\nWhen starting a mission you can now assign a role per crew member (Planner, Enforcer, Logistics, Tech) for team bonuses.\nActive and recent mission cards now also show per-player role contributions with score and any payout multiplier.\nCrew members now also receive push/in-app alerts for mission start, mission result, and when a mission cooldown becomes ready again.\nWhile a mission cooldown is active you cannot start a new mission; first wait for the remaining cooldown or speed it up with credits.\nFor cooldown speedup, you first see the exact credit cost and remaining minutes before you confirm.\nCrew Wars have their own War Room tab inside the crew screen. Only leaders can declare a war and at least 3 crew members are required to participate.\nWar types: Kill War, Economy War, Territory War and Total War. Each war moves through preparation, active phase, lockdown and resolution.\nDuring an active war, participants can perform actions like kills, mugs, sabotage, intel, raids, shields, boosts and territory claims. Targeted actions now let you pick directly from a list of opponent crew members instead of typing a player ID by hand.\nSeason points are aggregated into the Crew Wars leaderboard. The War Room also shows standings, recent actions and recent wars for your crew.\nIn Territory War and Total War you now claim real Territory regions from the territory system instead of generic placeholder targets.\nThose war regions now also show their strategic value in the War Room: claim bonus, tick points and tags such as harbor, capital or logistics. That makes it immediately clear which regions are worth more than a simple ownership swap.\nCrew Wars no longer picks Territory targets on value tier alone, but also on strategic tags and adjacent pressure from attacker or defender territory. That makes Territory War and Total War feel more like a real frontline than three random claims.\nHeists: Small Bank (2 players, 40%, €10.000-€30.000, 30 min cooldown), Jewelry Store (3 players, 35%, €20.000-€50.000, 45 min), Casino Heist (4 players, 25%, €50.000-€150.000, 2 hrs), Federal Reserve (5 players, 15%, €100.000-€500.000, 6 hrs, +20 FBI Heat).\nFor a heist all members must be online at start. If someone is absent the heist fails.\nFailed heist: jail time for everyone, Wanted Level +5, no reward.\nHeist reward is split equally among all participating members.\nCrew chat is available for fast coordination.\nCrew HQ progression: the longer and more active the crew, the more shared upgrades and buffs unlock.'**
+  /// **'New players can join The Rookies from the Crews tab — that crew is open and auto-accepts. Creating your own crew still costs cash.\nCreating a crew costs €10.000. The Crew HQ determines how many members your crew can hold and scales up to 150 members. The leader can invite, kick and start heists.\nCrew benefits: access to large heists, shared storage, teamwork bonus (+10% success per extra member, max +30%) and group chat.\nNew crews now start with Crew HQ level 1 and all storage buildings at level 1, including cash storage, so the crew bank and shared storage work immediately.\nCrew car storage now also accepts motorcycles, so land vehicles can be managed together from the same shared crew storage.\nWhen a crew member gets arrested, crew members now receive a push notification that the player is locked up and waiting for help.\nThe crew screen is now grouped into Overview, HQ & Upgrades, Storage, Members, War Room, Crew Missions, Crews and Chat so management feels calmer and more professional.\nCrew Missions shows tier templates, an active run card and recent runs. Leaders/co-leaders can start and resolve; reward claiming and cooldown speedup are handled in the same tab.\nThere are extra crew missions with bank-themed operations (night deposit, skim network, armored route, subsidiary vault, reserve vault and clearing house). There is no second casino crew mission alongside Casino Ledger Raid.\nCrew mission rewards come from the server-side mission economy; other players’ bank balances are not debited for these payouts.\nWhen starting a mission you can now assign a role per crew member (Planner, Enforcer, Logistics, Tech) for team bonuses.\nActive and recent mission cards now also show per-player role contributions with score and any payout multiplier.\nCrew members now also receive push/in-app alerts for mission start, mission result, and when a mission cooldown becomes ready again.\nWhile a mission cooldown is active you cannot start a new mission; first wait for the remaining cooldown or speed it up with credits.\nFor cooldown speedup, you first see the exact credit cost and remaining minutes before you confirm.\nCrew Wars have their own War Room tab inside the crew screen. Only leaders can declare a war and at least 3 crew members are required to participate.\nWar types: Kill War, Economy War, Territory War and Total War. Each war moves through preparation, active phase, lockdown and resolution.\nDuring an active war, participants can perform actions like kills, mugs, sabotage, intel, raids, shields, boosts and territory claims. Targeted actions now let you pick directly from a list of opponent crew members instead of typing a player ID by hand.\nDuring an active war, Raid now steals a slice of the other crew’s shared storage: cash, cars or motorcycles, boats, weapons, ammo, drugs or trade goods. Your own crew storage must have room, and a recent crew shield reduces the loot. Personal inventory is never raided.\nSabotage can drop one enemy outbuilding by one level per war (not HQ), never below level 1. Goods over the new cap stay, but they cannot deposit more until they rebuild.\nLeaders and co-leaders can lock a crew-to-crew storage deal in escrow. The other crew adds their side, both confirm, and the goods swap. Cancel, timeout or no room returns everything.\nSeason points are aggregated into the Crew Wars leaderboard. The War Room also shows standings, recent actions and recent wars for your crew.\nIn Territory War and Total War you now claim real Territory regions from the territory system instead of generic placeholder targets.\nThose war regions now also show their strategic value in the War Room: claim bonus, tick points and tags such as harbor, capital or logistics. That makes it immediately clear which regions are worth more than a simple ownership swap.\nCrew Wars no longer picks Territory targets on value tier alone, but also on strategic tags and adjacent pressure from attacker or defender territory. That makes Territory War and Total War feel more like a real frontline than three random claims.\nHeists: Small Bank (2 players, 40%, €10.000-€30.000, 30 min cooldown), Jewelry Store (3 players, 35%, €20.000-€50.000, 45 min), Casino Heist (4 players, 25%, €50.000-€150.000, 2 hrs), Federal Reserve (5 players, 15%, €100.000-€500.000, 6 hrs, +20 FBI Heat).\nFor a heist all members must be online at start. If someone is absent the heist fails.\nFailed heist: jail time for everyone, Wanted Level +5, no reward.\nHeist reward is split equally among all participating members.\nCrew chat is available for fast coordination.\nCrew HQ progression: the longer and more active the crew, the more shared upgrades and buffs unlock.'**
   String get helpTopicCrewHow;
 
   /// No description provided for @helpTopicCrewTips.
   ///
   /// In en, this message translates to:
-  /// **'New crews can deposit money and use shared storage immediately; after that, focus on upgrades for more capacity instead of a separate starter purchase.\nCheck the War Room first to see whether your crew is still on cooldown before trying to declare a new war.\nCoordinate target calls in crew chat so you do not keep farming the same opponent and trip the anti-farm guard.\nCoordinate heist start times in crew chat so everyone is online and nobody is in jail.\nChoose a crew in the same timezone or activity pattern for better heist success rates.\nUse shared crew storage to separate risky goods from your personal inventory.'**
+  /// **'New crews can deposit money and use shared storage immediately; after that, focus on upgrades for more capacity instead of a separate starter purchase.\nCheck the War Room first to see whether your crew is still on cooldown before trying to declare a new war.\nKeep spare room in crew storage if you plan to raid during a war; a full warehouse means the raid fails.\nCrew deals lock goods immediately, so do not offer what you still need in the next two hours.\nCoordinate target calls in crew chat so you do not keep farming the same opponent and trip the anti-farm guard.\nCoordinate heist start times in crew chat so everyone is online and nobody is in jail.\nChoose a crew in the same timezone or activity pattern for better heist success rates.\nUse shared crew storage to separate risky goods from your personal inventory.'**
   String get helpTopicCrewTips;
 
   /// No description provided for @helpTopicFriendsCategory.

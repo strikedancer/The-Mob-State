@@ -4931,6 +4931,116 @@ class AppLocalizationsDe extends AppLocalizations {
   String get crewUiWarActionRaid => 'Überfall';
 
   @override
+  String get crewUiWarLootTitle => 'Was überfällt man?';
+
+  @override
+  String get crewUiWarLootCash => 'Bankguthaben der Crew';
+
+  @override
+  String get crewUiWarLootCar => 'Auto oder Motorrad';
+
+  @override
+  String get crewUiWarLootBoat => 'Boot';
+
+  @override
+  String get crewUiWarLootWeapon => 'Waffen';
+
+  @override
+  String get crewUiWarLootAmmo => 'Munition';
+
+  @override
+  String get crewUiWarLootDrug => 'Drogen';
+
+  @override
+  String get crewUiWarLootTrade => 'Handelswaren';
+
+  @override
+  String get crewUiWarSabotageTitle => 'Welches Nebengebäude treffen Sie?';
+
+  @override
+  String get crewUiBuildingTradeStorage => 'Handelslager';
+
+  @override
+  String get crewUiWarErrorRaidEmpty =>
+      'Ihr Mannschaftslager hat nichts dergleichen.';
+
+  @override
+  String get crewUiWarErrorRaidFull =>
+      'Ihr Mannschaftslager kann diese Beute nicht aufnehmen.';
+
+  @override
+  String get crewUiWarErrorBuildingRequired =>
+      'Wählen Sie ein Nebengebäude zur Sabotage.';
+
+  @override
+  String get crewUiWarErrorSabotageMin =>
+      'Dieses Gebäude befindet sich bereits auf der untersten Ebene.';
+
+  @override
+  String get crewUiWarErrorSabotageDone =>
+      'Dieses Gebäude wurde bereits in diesem Krieg abgerissen.';
+
+  @override
+  String get crewUiDealTitle => 'Crew-Angebote';
+
+  @override
+  String get crewUiDealHint =>
+      'Sperren Sie Gegenstände im Treuhandkonto. Beide Besatzungen bestätigen, oder der gesamte Deal wird storniert und jeder erhält seine eigene Ware zurück.';
+
+  @override
+  String get crewUiDealNew => 'Neuer Deal';
+
+  @override
+  String get crewUiDealConfirm => 'Bestätigen Sie den Deal';
+
+  @override
+  String get crewUiDealCancel => 'Deal stornieren';
+
+  @override
+  String get crewUiDealCounter => 'Fügen Sie unsere Seite hinzu';
+
+  @override
+  String get crewUiDealStatusOffered => 'Warten auf ihr Angebot';
+
+  @override
+  String get crewUiDealStatusCountered => 'Warten auf beide Bestätigungen';
+
+  @override
+  String get crewUiDealEmpty => 'Keine offenen Crew-Deals.';
+
+  @override
+  String get crewUiDealPickCrew => 'Andere Crew';
+
+  @override
+  String get crewUiDealCash => 'Bargeld von der Mannschaftsbank';
+
+  @override
+  String get crewUiDealCreated =>
+      'Deal gesperrt. Die andere Crew muss ihre Seite hinzufügen.';
+
+  @override
+  String get crewUiDealNeedOfficer =>
+      'Nur der Anführer oder Co-Anführer kann Crew-Deals abschließen.';
+
+  @override
+  String get crewUiDealError => 'Der Deal konnte nicht abgeschlossen werden.';
+
+  @override
+  String get crewUiDealNoCapacity =>
+      'Eine Crew hat keinen Platz. Der Deal wurde storniert und die Ware wurde zurückgegeben.';
+
+  @override
+  String get crewUiDealWaitingConfirm =>
+      'Sie haben es bestätigt. Warten auf die andere Crew.';
+
+  @override
+  String get crewUiDealSettled => 'Deal abgeschlossen. Ware getauscht.';
+
+  @override
+  String get crewUiDealCancelled =>
+      'Deal storniert. Jeder bekam seine eigene Ware zurück.';
+
+  @override
   String get crewUiWarActionShield => 'Schild';
 
   @override

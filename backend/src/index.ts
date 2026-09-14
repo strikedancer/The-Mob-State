@@ -28,6 +28,7 @@ import { ensureDiscordSchema } from './startup/ensureDiscordSchema';
 import { playerStartService } from './services/playerStartService';
 import { ensureVenueNpcOccupancy } from './services/venueNpcOccupancyService';
 import { ensureCrewTradeStorageSchema } from './startup/ensureCrewTradeStorageSchema';
+import { ensureCrewDealSchema } from './startup/ensureCrewDealSchema';
 import { ensureGameEventPresets } from './services/gameEventPresets';
 import path from 'path';
 import fs from 'fs';
@@ -75,6 +76,7 @@ async function startServer() {
   await ensureCrewRecruitingSchema();
   await ensureDiscordSchema();
   await ensureCrewTradeStorageSchema();
+  await ensureCrewDealSchema();
   try {
     await playerStartService.ensureStarterCrew();
   } catch (error) {

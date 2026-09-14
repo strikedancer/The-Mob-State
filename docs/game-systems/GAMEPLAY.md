@@ -459,6 +459,9 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 - Een geclaimde war-regio levert tijdens de war periodieke `territory_tick` punten op. Strategisch sterkere regio's leveren meer tick-punten dan gewone gebieden.
 - In de War Room zie je per war-regio nu direct wie het gebied houdt en hoeveel claim-/tick-waarde het doel heeft, zodat crews hun calls beter kunnen plannen.
 - Wint een crew zo'n war, dan laat dat tijdelijk sporen na in echte Territory-regio's rond het front. Daardoor kan de winnaar kort druk doorzetten op die regio's zonder dat de onderliggende Territory-stabiliteit permanent kapot blijft.
+- **Raid** in een actieve war steelt uit de **crew-opslag** van de andere crew (cash, voertuigen, wapens, munitie, drugs of handelswaren), niet uit iemands persoonlijke inventory. De buit moet in jullie eigen opslag passen. Een verse crew-shield maakt de buit kleiner.
+- **Sabotage** haalt één bijgebouw (niet HQ) één level omlaag, maximaal één keer per gebouw per oorlog, nooit onder level 1. Te veel spul blijft liggen; extra storten kan pas na een upgrade.
+- **Crew-deals** (vredestijd, leader/co-leider): spul gaat meteen in escrow. De andere crew zet hun kant erin, beide bevestigen, daarna wisselt het. Annuleren, timeout (~2 uur) of te weinig plek draait alles terug.
 
 ### Heists
 
