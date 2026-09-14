@@ -25,6 +25,8 @@ const MAX_LEVEL = 5;
 // Minimum rounds produced per ammo type per tick at level 1 (Aug 2026: 5 → 3).
 // Scales with outputMultiplier: level 5 → ~32 per type per tick.
 const BASE_ROUNDS_PER_TICK = 3;
+/** Soft cap per ammo type so idle NPC factories do not flood the black market. */
+const NPC_MARKET_STOCK_CAP = 180;
 export const AMMO_FACTORY_PURCHASE_PRICE = 500000;
 
 class AmmoFactoryService {
@@ -170,8 +172,11 @@ class AmmoFactoryService {
     }
 
     if (this.isInactive(factory)) {
-      await this.revokeFactoriesForPlayer(factory.ownerId);
-      return { success: false, error: 'FACTORY_INACTIVE' as const };
+      const ownerIsNpc = await isNpcPlayerId(factory.ownerId);
+      if (!ownerIsNpc) {
+        await this.revokeFactoriesForPlayer(factory.ownerId);
+        return { success: false, error: 'FACTORY_INACTIVE' as const };
+      }
     }
 
     if (!factory.lastProducedAt) {
@@ -441,6 +446,107 @@ class AmmoFactoryService {
       factory: productionResult.factory,
       processedTicks: productionResult.processedTicks,
     };
+  }
+
+  /**
+   * Caretaker NPCs keep vacant factories producing onto country market stock.
+   * Same 20-minute cadence as player claims; no 8-hour session; stock is capped.
+   */
+  async tickNpcFactoryProduction(): Promise<{ factories: number; ticks: number }> {
+    await this.ensureFactoriesExist();
+    const npcIds = await getNpcPlayerIdSet();
+    if (npcIds.size === 0) {
+      return { factories: 0, ticks: 0 };
+    }
+
+    const factories = await prisma.ammoFactory.findMany({
+      where: { ownerId: { not: null } },
+    });
+
+    let factoriesRun = 0;
+    let ticksTotal = 0;
+    const now = new Date();
+    const intervalMs = this.getProductionIntervalMs();
+    const maxTicks = this.getTicksPerBacklogWindow();
+
+    for (const factory of factories) {
+      if (!factory.ownerId || !npcIds.has(factory.ownerId)) {
+        continue;
+      }
+
+      if (!factory.lastProducedAt) {
+        await prisma.ammoFactory.update({
+          where: { id: factory.id },
+          data: { lastProducedAt: now, lastActiveAt: now },
+        });
+        factoriesRun += 1;
+        continue;
+      }
+
+      const elapsedMs = now.getTime() - new Date(factory.lastProducedAt).getTime();
+      const ticksToProcess = Math.min(maxTicks, Math.max(0, Math.floor(elapsedMs / intervalMs)));
+      if (ticksToProcess <= 0) {
+        await prisma.ammoFactory.update({
+          where: { id: factory.id },
+          data: { lastActiveAt: now },
+        });
+        continue;
+      }
+
+      const qualityMultiplier = this.qualityMultiplier(factory.qualityLevel);
+      const roundsPerTick = Math.max(
+        1,
+        Math.floor(BASE_ROUNDS_PER_TICK * this.outputMultiplier(factory.level)),
+      );
+
+      for (const ammo of this.ammoTypes) {
+        const stock = await prisma.ammoMarketStock.findUnique({
+          where: {
+            countryId_ammoType: {
+              countryId: factory.countryId,
+              ammoType: ammo.type,
+            },
+          },
+        });
+        if (!stock) {
+          continue;
+        }
+
+        const room = Math.max(0, NPC_MARKET_STOCK_CAP - stock.quantity);
+        const produced = Math.min(room, roundsPerTick * ticksToProcess);
+        if (produced <= 0) {
+          continue;
+        }
+
+        const totalQuantity = stock.quantity + produced;
+        const newQuality =
+          totalQuantity > 0
+            ? (stock.quality * stock.quantity + qualityMultiplier * produced) / totalQuantity
+            : qualityMultiplier;
+
+        await prisma.ammoMarketStock.update({
+          where: { id: stock.id },
+          data: {
+            quantity: totalQuantity,
+            quality: newQuality,
+          },
+        });
+      }
+
+      await prisma.ammoFactory.update({
+        where: { id: factory.id },
+        data: {
+          lastProducedAt: new Date(
+            new Date(factory.lastProducedAt).getTime() + ticksToProcess * intervalMs,
+          ),
+          lastActiveAt: now,
+        },
+      });
+      factoriesRun += 1;
+      ticksTotal += ticksToProcess;
+    }
+
+    return { factories: factoriesRun, ticks: ticksTotal };
   }
 
   async upgradeFactory(playerId: number, upgradeType: 'output' | 'quality') {

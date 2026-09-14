@@ -32,7 +32,7 @@ Factory ownership, production, market stock, upgrades and ammo economy balance.
 - The Ammo Factory screen is for ownership, upgrades and production status; direct ammo buy/sell flows belong to the Black Market and should be linked there instead of being embedded here.
 - In the dashboard shell, the factory **Zwarte Markt** button opens **Zwarte Markt → Munitie** in the content pane (`onOpenBlackMarket` → `_openBlackMarket(tabAmmo)`). Do not `Navigator.push` a fullscreen Black Market over the shell.
 - Read-only ownership/status loads must not mutate factory ownership; inactivity forfeiture may only be resolved by an owner action or a contested purchase flow, never by simply opening the screen after travel.
-- Vacant factories get an inactive NPC operator (`ensureVenueNpcOccupancy`) so the lot is occupied but still `forSale`. Buying from an NPC transfers `ownerId` at the listed price; do not treat NPC occupancy as `FACTORY_OWNED`. NPC owners skip the 48h inactivity revoke. Do not auto-produce for caretaker NPCs.
+- Vacant factories get an inactive NPC operator (`ensureVenueNpcOccupancy`) so the lot is occupied but still `forSale`. Buying from an NPC transfers `ownerId` at the listed price; do not treat NPC occupancy as `FACTORY_OWNED`. NPC owners skip the 48h inactivity revoke. Caretaker NPCs **do** auto-produce onto that country's `ammoMarketStock` on the game tick (same 20-minute cadence and level-1 base output as a player claim, no 8-hour session). Per-type stock is capped (`NPC_MARKET_STOCK_CAP`) so idle lots do not flood the market. Player-owned factories still produce only when the owner claims.
 - When a player **loses** a factory (48h inactivity revoke, hitlist reset, admin reset), `revokeFactoriesForPlayer` / admin unown must call `reclaimVacantFactory` immediately so an NPC takes the lot. Do not delete the factory row.
 
 ## i18n and Messaging
@@ -50,6 +50,7 @@ Factory ownership, production, market stock, upgrades and ammo economy balance.
 - Verify the factory Black Market button stays inside the dashboard content (sidebar/HUD remain) and lands on the Ammo shop tab.
 - Verify traveling away and back, then reopening Ammo Factory, does not silently turn an owned factory into `for sale` just because the screen was viewed.
 - Verify a vacant factory shows an NPC operator and a buy button; buying from that NPC succeeds; a real player owner is not treated as for sale.
+- Verify an NPC-run factory adds ammo to that country's black-market stock on the game tick (until the per-type cap), and that a player-owned factory does not get this automatic fill.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

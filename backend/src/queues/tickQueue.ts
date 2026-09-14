@@ -141,6 +141,17 @@ class TickQueue {
       const prostitutionResult = await prostituteService.settleAllProstitutionEarnings();
       // Keep nightclub economy running in queue-mode ticks as well.
       await nightclubService.processAutomagicSales();
+      try {
+        const { ammoFactoryService } = await import('../services/ammoFactoryService');
+        const npcAmmo = await ammoFactoryService.tickNpcFactoryProduction();
+        if (npcAmmo.ticks > 0) {
+          console.log(
+            `🔫 NPC ammo factories: ${npcAmmo.factories} lots, ${npcAmmo.ticks} production ticks`,
+          );
+        }
+      } catch (npcAmmoErr) {
+        console.error('[TickQueue] NPC ammo factory production failed:', npcAmmoErr);
+      }
       const seasonResult = await nightclubService.processWeeklySeasonIfNeeded();
       let donTick = { abandoned: 0, contests: 0, loans: 0, contracts: 0 };
       try {

@@ -146,6 +146,18 @@ class TickService {
       console.log('🏪 Nightclub auto-sales processed');
 
       try {
+        const { ammoFactoryService } = await import('./ammoFactoryService');
+        const npcAmmo = await ammoFactoryService.tickNpcFactoryProduction();
+        if (npcAmmo.ticks > 0) {
+          console.log(
+            `🔫 NPC ammo factories: ${npcAmmo.factories} lots, ${npcAmmo.ticks} production ticks`,
+          );
+        }
+      } catch (npcAmmoErr) {
+        console.error('[Tick] NPC ammo factory production failed:', npcAmmoErr);
+      }
+
+      try {
         const casinoOwnershipService = await import('./casinoOwnershipService');
         const staffPay = await casinoOwnershipService.payCasinoStaffSalaries();
         if (staffPay.paid > 0 || staffPay.fired > 0) {
