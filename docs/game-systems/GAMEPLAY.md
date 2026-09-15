@@ -506,8 +506,8 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 - **All members must be online**: Anders failure
 - **Success calculation**: Base % + teamwork bonus - wanted level penalty
 - **Failure consequences**: 
-  - Jail time voor alle leden
-  - Wanted level +5
+  - Jail time voor alle leden (ook in grote crews; een mislukte heist mag niet als 500 eindigen)
+  - XP-verlies per lid (niet onder 0)
   - Geen reward
 
 ---

@@ -307,26 +307,21 @@ export async function startHeist(
     const payoutPerMember = Math.floor(heist.basePayout / crew.memberCount);
     const xpPerMember = Math.floor(heist.xpReward / crew.memberCount);
 
-    // Update all members in a transaction
-    await prisma.$transaction(async (tx: any) => {
-      for (const playerId of memberIds) {
-        await tx.player.update({
-          where: { id: playerId },
-          data: {
-            money: { increment: payoutPerMember },
-            xp: { increment: xpPerMember },
-          },
-        });
-      }
-
-      // Update crew bank balance
-      await tx.crew.update({
+    await prisma.$transaction([
+      prisma.player.updateMany({
+        where: { id: { in: memberIds } },
+        data: {
+          money: { increment: payoutPerMember },
+          xp: { increment: xpPerMember },
+        },
+      }),
+      prisma.crew.update({
         where: { id: crewId },
         data: {
-          bankBalance: { increment: Math.floor(heist.basePayout * 0.1) }, // 10% to crew bank
+          bankBalance: { increment: Math.floor(heist.basePayout * 0.1) },
         },
-      });
-    });
+      }),
+    ]);
 
     result.payout = payoutPerMember;
     result.xpGained = xpPerMember;
@@ -389,27 +384,37 @@ export async function startHeist(
       Math.random() * (config.xpLoss.heistFailed.max - config.xpLoss.heistFailed.min)
     );
 
-    await prisma.$transaction(async (tx: any) => {
-      for (const playerId of memberIds) {
-        // Create jail record
-        await tx.crimeAttempt.create({
-          data: {
-            playerId,
-            crimeId: heistId,
-            success: false,
-            reward: 0,
-            xpGained: 0,
-            jailed: true,
-            jailTime: heist.jailTimeOnFailure,
-          },
-        });
-        
-        // Apply XP loss
-        if (xpLossPerMember > 0) {
-          await playerService.loseXP(playerId, xpLossPerMember);
-        }
-      }
+    // Jail rows in one write. XP stays outside the transaction: nested prisma
+    // calls inside $transaction expire the default 5s interactive timeout and
+    // 500 the whole heist (seen live as Transaction already closed).
+    await prisma.crimeAttempt.createMany({
+      data: memberIds.map((playerId) => ({
+        playerId,
+        crimeId: heistId,
+        success: false,
+        reward: 0,
+        xpGained: 0,
+        jailed: true,
+        jailTime: heist.jailTimeOnFailure,
+      })),
     });
+
+    if (xpLossPerMember > 0) {
+      const lowXp = await prisma.player.findMany({
+        where: { id: { in: memberIds }, xp: { lt: xpLossPerMember } },
+        select: { id: true },
+      });
+      await prisma.player.updateMany({
+        where: { id: { in: memberIds }, xp: { gte: xpLossPerMember } },
+        data: { xp: { decrement: xpLossPerMember } },
+      });
+      if (lowXp.length > 0) {
+        await prisma.player.updateMany({
+          where: { id: { in: lowXp.map((row) => row.id) } },
+          data: { xp: 0 },
+        });
+      }
+    }
 
     result.jailTime = heist.jailTimeOnFailure;
     result.xpLost = xpLossPerMember;
