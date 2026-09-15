@@ -48,7 +48,7 @@ Direct messages, system inbox messages, unread state and chat entry points.
 - Verify no text overflows or clipped buttons appear.
 - Open inbox on mobile after an unread/push badge: existing player threads and **separate** system notices must appear (one row per notice, not one combined The Mob State thread). A timeout must show retry, not “Nog geen berichten”.
 - In a player or crew chat, Enter sends and Shift+Enter adds a new line. The live-event rail must not cover the send button.
-- A inbox row can be removed (swipe / trash / select several / delete all). After **Selecteren**, empty gold outline checkboxes must be visible on every row immediately — not only after the first tap. Mark all as read clears the badge without opening each thread. After hide, the other player's chat is still there.
+- A inbox row can be removed (swipe / trash / select several / delete all). After **Selecteren**, every row shows a 24px gold-border square immediately. A selected row uses a filled gold square, a gold left bar and a warmer background — not a faint icon-font glyph. Mark all as read clears the badge without opening each thread. After hide, the other player's chat is still there.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

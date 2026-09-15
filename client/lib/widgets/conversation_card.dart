@@ -37,19 +37,19 @@ class ConversationCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
-            color: selected ? const Color(0x332A6B32) : Colors.transparent,
+            color: selected ? const Color(0xFF3A2E18) : Colors.transparent,
             border: Border(
+              left: BorderSide(
+                color: selected ? const Color(0xFFE4C37A) : Colors.transparent,
+                width: 4,
+              ),
               bottom: BorderSide(color: Colors.grey[800]!, width: 0.5),
             ),
           ),
           child: Row(
             children: [
               if (selecting) ...[
-                Icon(
-                  selected ? Icons.check_box : Icons.check_box_outline_blank,
-                  size: 26,
-                  color: const Color(0xFFC0A060),
-                ),
+                _selectionMark(),
                 const SizedBox(width: 10),
               ],
               // Avatar
@@ -230,6 +230,23 @@ class ConversationCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _selectionMark() {
+    const gold = Color(0xFFE4C37A);
+    return Container(
+      width: 24,
+      height: 24,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: selected ? gold : const Color(0xFF14110C),
+        border: Border.all(color: gold, width: 2),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: selected
+          ? const Icon(Icons.check, size: 18, color: Color(0xFF1A1208))
+          : null,
     );
   }
 
