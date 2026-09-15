@@ -7645,7 +7645,7 @@
   "premiumUiCrewVipBenefitsNoCrewBody": "Vous devez rejoindre un équipage avant d'acheter Crew VIP. Crew VIP débloque des avantages axés sur l’équipage et une progression de mise à niveau plus élevée.",
   "premiumUiCrewVipBenefitsInCrewBody": "Crew VIP donne accès à des améliorations d’équipage supplémentaires et à des avantages premium partagés pour votre flux d’équipage. Après l'achat, le statut actif et l'expiration sont immédiatement mis à jour.",
   "premiumUiSectionBuyCreditsTitle": "Acheter des crédits",
-  "premiumUiSectionBuyCreditsSubtitle": "Choisissez un lot via des vignettes visuelles. L'option populaire de 1 000 crédits bénéficie de son propre intérêt.",
+  "premiumUiSectionBuyCreditsSubtitle": "Choisissez un forfait, puis choisissez le nombre de packs à acheter en un seul paiement.",
   "premiumUiNoCreditBundles": "Il n’y a aucun forfait de crédit actif pour le moment.",
   "premiumUiCreditBundleFallbackTitle": "Forfait de crédit",
   "premiumUiCreditBundleFallbackDescription": "Crédits instantanés pour votre portefeuille premium.",
@@ -8395,9 +8395,9 @@
   "helpTopicSettingsTips": "Activez les notifications push pour les commandes cryptographiques et les événements de braquage : ce sont des systèmes à temps critique où une réaction rapide est importante. \nRéglez la confidentialité sur l'équipage uniquement pour l'emplacement lorsque vous êtes actif sur la liste de succès : autrement, les autres joueurs peuvent vous localiser exactement.",
   "helpTopicPremiumCategory": "Cœur",
   "helpTopicPremiumTitle": "Primes et crédits",
-  "helpTopicPremiumSummary": "Achetez et gérez les packs Player VIP, Crew VIP et crédits ici. Cet aperçu montre également votre solde créditeur et tous les éléments de crédit disponibles que vous pouvez utiliser directement ou contextuellement.",
-  "helpTopicPremiumHow": "Ouvrez la page « Premium et crédits » séparée à partir du menu latéral pour afficher votre statut VIP, vos dates d'expiration, votre solde créditeur et vos options d'achat. \nLa barre supérieure du tableau de bord indique également si le joueur VIP est actif et combien de temps il dure encore ; appuyez dessus pour ouvrir Premium et crédits. Sans date d'expiration, il indique Actif. \nSur chaque vignette d'achat, appuyez/cliquez sur l'icône « i » en haut à gauche pour obtenir tous les détails et avantages ; la vignette elle-même n'affiche intentionnellement que de courtes informations de base et le bouton d'achat. \nLe joueur VIP est personnel. Crew VIP s'applique à votre équipage et n'a de valeur que lorsque vous faites déjà partie d'un équipage. \nLe joueur VIP offre des délais d'action 10 % plus courts (la durée de prison reste inchangée), 100 crédits hebdomadaires, un bouton d'achat VIP en un clic pour les matériaux manquants dans la production de médicaments (après confirmation des coûts) et une réinitialisation de mort plus douce : la banque/crypto/éducation/succès restent, tandis que les actifs, l'inventaire et le stock de médicaments sont supprimés. \nLe paiement VIP ouvre la page de paiement, puis revient à la section « Premium et crédits » du jeu, afin que vous voyiez immédiatement si l'achat a réussi et combien de temps votre VIP fonctionne. \nLorsque le renouvellement automatique est actif, vous pouvez annuler le renouvellement ; votre VIP actuel reste valable jusqu'à la date d'expiration. \nGift VIP achète 30 jours de Player VIP pour un autre joueur par nom d'utilisateur (une fois ; le destinataire ne bénéficie pas de renouvellement automatique). \nGift Crew VIP achète 30 jours de Crew VIP pour un équipage par nom d'équipage (une fois ; pas de renouvellement automatique). \nLe prestige VIP (bronze/argent/or) est affiché uniquement à partir des jours VIP à vie et n'accorde aucun pouvoir de jeu. \nLes forfaits de crédits sont achetés avec de l’argent réel. Après un paiement réussi, les crédits apparaissent immédiatement dans l'aperçu de votre portefeuille. \nL'Event Pass (7 jours, argent réel) est répertorié dans la grille des offres uniques : +10 % de score sur les événements de joueurs en direct, plus un petit bonus de crédit après l'achat. Il s’agit d’un aspect secondaire : pas d’un combat direct ou d’un boost PvP ; cela aide principalement les résultats du classement lors des événements en cours. \nLes articles de crédit utilisent des crédits de portefeuille au lieu d'euros. Pensez à la protection contre les coups, aux réinitialisations du temps de recharge, aux boosts d'événements ou aux lots d'argent, en fonction de ce que l'administrateur a actuellement activé en direct. \nSur les écrans de temporisation pris en charge (tels que les crimes, les emplois, le vol de véhicule/bateau et l'école), vous disposez également d'un bouton d'accélération direct pour les temps de recharge actifs, vous n'avez donc pas besoin de revenir d'abord à Premium et aux crédits. \nCertains éléments de crédit fonctionnent directement à partir de cet écran. Les éléments liés au contexte, tels que certaines actions du véhicule, sont utilisés à la place depuis l'écran du véhicule ou du garage approprié (les véhicules endommagés affichent un bouton de réparation instantanée directement sur la carte). \nPour les boutons contextuels tels que l'accélération de la réparation, le coût actuel du crédit est affiché directement sur le bouton/l'info-bulle. \nLes prix et les articles disponibles sont gérés en direct dans l'administrateur. Cela signifie que les prix VIP, les coûts de crédit et l'offre disponible peuvent changer sans mise à jour de l'application.",
-  "helpTopicPremiumTips": "Vérifiez votre solde créditeur et votre date d'expiration avant d'acheter à nouveau ; étendre est souvent mieux que d’empiler aveuglément. \nUtilisez les crédits principalement pour les boosts ou les protections urgents, et non automatiquement pour chaque petit raccourci. \nSi vous ne faites pas encore partie d'un équipage, commencez avec Player VIP ou un pack de crédits avant Crew VIP.",
+  "helpTopicPremiumSummary": "Achetez et gérez les packs Player VIP, Crew VIP et crédits ici. Consultez le renouvellement automatique, offrez des cadeaux VIP et développez votre prestige VIP (affichage uniquement).",
+  "helpTopicPremiumHow": "Ouvrez la page « Premium et crédits » séparée à partir du menu latéral pour afficher votre statut VIP, vos dates d'expiration, votre solde créditeur et vos options d'achat. \nLa barre supérieure du tableau de bord indique également si le joueur VIP est actif et combien de temps il dure encore ; appuyez dessus pour ouvrir Premium et crédits. Sans date d'expiration, il indique Actif. \nSur chaque vignette d'achat, appuyez/cliquez sur l'icône « i » en haut à gauche pour obtenir tous les détails et avantages ; la vignette elle-même n'affiche intentionnellement que de courtes informations de base et le bouton d'achat. \nLe joueur VIP est personnel. Crew VIP s'applique à votre équipage et n'a de valeur que lorsque vous faites déjà partie d'un équipage. \nLe joueur VIP offre des délais d'action 10 % plus courts (la durée de prison reste inchangée), 100 crédits hebdomadaires, un bouton d'achat VIP en un clic pour les matériaux manquants dans la production de médicaments (après confirmation des coûts) et une réinitialisation de mort plus douce : la banque/crypto/éducation/succès restent, tandis que les actifs, l'inventaire et le stock de médicaments sont supprimés. \nLe paiement VIP ouvre la page de paiement, puis revient à la section « Premium et crédits » du jeu, afin que vous voyiez immédiatement si l'achat a réussi et combien de temps votre VIP fonctionne. \nLorsque le renouvellement automatique est actif, vous pouvez annuler le renouvellement ; votre VIP actuel reste valable jusqu'à la date d'expiration. \nGift VIP achète 30 jours de Player VIP pour un autre joueur par nom d'utilisateur (une fois ; le destinataire ne bénéficie pas de renouvellement automatique). \nGift Crew VIP achète 30 jours de Crew VIP pour un équipage par nom d'équipage (une fois ; pas de renouvellement automatique). \nLe prestige VIP (bronze/argent/or) est affiché uniquement à partir des jours VIP à vie et n'accorde aucun pouvoir de jeu. \nLes forfaits de crédits sont achetés avec de l’argent réel. Appuyez sur un pack, choisissez combien d'acheter en même temps (jusqu'à 20) et payez le total en une seule fois ; après un paiement réussi, tous les crédits apparaissent immédiatement dans votre portefeuille. \nL'Event Pass (7 jours, argent réel) est répertorié dans la grille des offres uniques : +10 % de score sur les événements de joueurs en direct, plus un petit bonus de crédit après l'achat. Il s’agit d’un aspect secondaire : pas d’un combat direct ou d’un boost PvP ; cela aide principalement les résultats du classement lors des événements en cours. \nLes articles de crédit utilisent des crédits de portefeuille au lieu d'euros. Pensez à la protection contre les coups, aux réinitialisations du temps de recharge, aux boosts d'événements ou aux lots d'argent, en fonction de ce que l'administrateur a actuellement activé en direct. \nSur les écrans de temporisation pris en charge (tels que les crimes, les emplois, le vol de véhicule/bateau et l'école), vous disposez également d'un bouton d'accélération direct pour les temps de recharge actifs, vous n'avez donc pas besoin de revenir d'abord à Premium et aux crédits. \nCertains éléments de crédit fonctionnent directement à partir de cet écran. Les éléments liés au contexte, tels que certaines actions du véhicule, sont utilisés à la place depuis l'écran du véhicule ou du garage approprié (les véhicules endommagés affichent un bouton de réparation instantanée directement sur la carte). \nPour les boutons contextuels tels que l'accélération de la réparation, le coût actuel du crédit est affiché directement sur le bouton/l'info-bulle. \nLes prix et les articles disponibles sont gérés en direct dans l'administrateur. Cela signifie que les prix VIP, les coûts de crédit et l'offre disponible peuvent changer sans mise à jour de l'application.",
+  "helpTopicPremiumTips": "Vérifiez votre solde créditeur et votre date d'expiration avant d'acheter à nouveau ; étendre est souvent mieux que d’empiler aveuglément. \nAnnulez le renouvellement automatique à temps si vous ne souhaitez pas de frais courants ; votre période de paiement continue de courir. \nUtilisez les crédits principalement pour les boosts ou les protections urgents, et non automatiquement pour chaque petit raccourci. \nSi vous ne faites pas encore partie d'un équipage, commencez avec Player VIP ou un pack de crédits avant Crew VIP.",
   "landingHeroTitle": "L'État de la foule",
   "landingHeroSubtitle": "Un jeu de stratégie criminelle basé sur du texte dans votre navigateur. Construisez votre empire, dirigez des équipages, faites du commerce, combattez pour le territoire et gravissez les échelons.",
   "landingAboutTitle": "Ce qui t'attend",
@@ -12428,5 +12428,48 @@
   "smugglingUnitWeapon": "arme",
   "smugglingUnitRound": "tours",
   "smugglingUnitGram": "g",
-  "smugglingUnitPiece": "unités"
+  "smugglingUnitPiece": "unités",
+  "premiumUiCreditQtyHint": "Choisissez combien de exemplaires de ce pack acheter en même temps.",
+  "premiumUiCreditQtyPacks": "{count, plural, =1{1 pack} other{{count} packs}}",
+  "@premiumUiCreditQtyPacks": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "premiumUiCreditQtyTotalCredits": "{count} crédits au total",
+  "@premiumUiCreditQtyTotalCredits": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "premiumUiCreditQtyTotalPrice": "Total : {price}",
+  "@premiumUiCreditQtyTotalPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "premiumUiCreditQtyPay": "Payer {price}",
+  "@premiumUiCreditQtyPay": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "premiumUiCreditQtyDecrease": "Moins de paquets",
+  "premiumUiCreditQtyIncrease": "Plus de packs",
+  "premiumUiCreditQtyMaxHint": "Vous pouvez acheter jusqu'à {max} packs en un seul paiement.",
+  "@premiumUiCreditQtyMaxHint": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  }
 }

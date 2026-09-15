@@ -179,7 +179,11 @@ class _PremiumScreenState extends State<PremiumScreen> {
     }
   }
 
-  Future<void> _startCheckout(String type, {String? productKey}) async {
+  Future<void> _startCheckout(
+    String type, {
+    String? productKey,
+    int quantity = 1,
+  }) async {
     setState(() => _processingCheckout = true);
     try {
       final apiClient = AuthService().apiClient;
@@ -193,7 +197,10 @@ class _PremiumScreenState extends State<PremiumScreen> {
           ? {'crewId': crewVip?['crewId']}
           : type == 'player_vip'
           ? <String, dynamic>{}
-          : {'productKey': productKey};
+          : {
+              'productKey': productKey,
+              if (quantity > 1) 'quantity': quantity,
+            };
 
       final response = await apiClient.post(endpoint, body);
       if (response.statusCode != 200) {
@@ -515,6 +522,115 @@ class _PremiumScreenState extends State<PremiumScreen> {
 
   String _oneTimePriceLabel(dynamic raw) =>
       '\u20AC${(raw ?? '0.00').toString()}';
+
+  String _formatEuroAmount(double value) =>
+      '\u20AC${value.toStringAsFixed(2)}';
+
+  double _priceEurNumber(dynamic raw) {
+    if (raw is num) return raw.toDouble();
+    return double.tryParse(raw?.toString() ?? '') ?? 0;
+  }
+
+  static const int _creditPackMaxQuantity = 20;
+
+  Future<void> _buyCreditBundle(Map<String, dynamic> product) async {
+    final l10n = AppLocalizations.of(context)!;
+    final unitCredits = _creditAmountFromProduct(product);
+    final unitPrice = _priceEurNumber(product['priceEur']);
+    final useNl = _useNlCatalogCopy(context);
+    final title = useNl
+        ? (product['titleNl'] ?? '').toString()
+        : (product['titleEn'] ?? '').toString();
+    final resolvedTitle = title.trim().isEmpty
+        ? l10n.premiumUiCreditBundleFallbackTitle
+        : title.trim();
+    var quantity = 1;
+
+    final chosen = await showDialog<int>(
+      context: context,
+      builder: (ctx) {
+        return StatefulBuilder(
+          builder: (ctx, setLocal) {
+            final totalCredits = unitCredits * quantity;
+            final totalPrice = _formatEuroAmount(unitPrice * quantity);
+            return AlertDialog(
+              title: Text(resolvedTitle),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(l10n.premiumUiCreditQtyHint),
+                  const SizedBox(height: 14),
+                  Row(
+                    children: [
+                      IconButton(
+                        tooltip: l10n.premiumUiCreditQtyDecrease,
+                        onPressed: quantity <= 1
+                            ? null
+                            : () => setLocal(() => quantity -= 1),
+                        icon: const Icon(Icons.remove_circle_outline),
+                      ),
+                      Expanded(
+                        child: Text(
+                          l10n.premiumUiCreditQtyPacks(quantity),
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        tooltip: l10n.premiumUiCreditQtyIncrease,
+                        onPressed: quantity >= _creditPackMaxQuantity
+                            ? null
+                            : () => setLocal(() => quantity += 1),
+                        icon: const Icon(Icons.add_circle_outline),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(l10n.premiumUiCreditQtyTotalCredits(totalCredits)),
+                  Text(
+                    l10n.premiumUiCreditQtyTotalPrice(totalPrice),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      color: Colors.amber.shade800,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    l10n.premiumUiCreditQtyMaxHint(_creditPackMaxQuantity),
+                    style: const TextStyle(
+                      color: Colors.white54,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(ctx),
+                  child: Text(l10n.cancel),
+                ),
+                FilledButton(
+                  onPressed: () => Navigator.pop(ctx, quantity),
+                  child: Text(l10n.premiumUiCreditQtyPay(totalPrice)),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+
+    if (chosen == null || chosen < 1 || !mounted) return;
+    await _startCheckout(
+      'one_time',
+      productKey: (product['key'] ?? '').toString(),
+      quantity: chosen,
+    );
+  }
 
   String _formatDate(dynamic raw) {
     if (raw == null) return '-';
@@ -1514,10 +1630,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
       ),
       onPressed: _processingCheckout
           ? null
-          : () => _startCheckout(
-              'one_time',
-              productKey: (product['key'] ?? '').toString(),
-            ),
+          : () => _buyCreditBundle(product),
     );
   }
 

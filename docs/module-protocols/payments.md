@@ -61,6 +61,7 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 - Wekelijkse Player VIP-credit grants moeten ledger-traceerbaar zijn via `player_credit_transactions` (reasonKey + metadata), zodat support/admin uitbetaling kan herleiden.
 - Admin full player reset (`POST /admin/players/:playerId/reset` en `reset-all`) mag VIP/abonnementvelden (`isVip`, `vipExpiresAt`, `vipLifetimeDays`, Mollie/Stripe customer/subscription ids) nooit wissen. Credits mogen alleen terug naar het restant van **betaalde** pack-aankopen (ledger `PURCHASE`/`REFUND` met `premium_checkout`); VIP-stipend, event rewards en vault-prijzen tellen niet als betaald.
 - Credit koopbundels en credit-redemption costs moeten admin-beheerbaar zijn via de premium adminflow en niet hardcoded in player UI.
+- Creditbundel-checkout (`POST /subscriptions/checkout/one-time`) mag `quantity` 1–20 meenemen voor `rewardType === 'credits'`. Prijs en credit-grant schalen lineair (`unit × quantity`). Event Pass, ammo, money en andere one-time producten blijven altijd quantity 1, ook als de client een hoger getal stuurt. Mollie metadata bewaart `quantity` als string; webhook-fulfillment vertrouwt die waarde van de payment, niet een tweede clientcall.
 - Default creditbundels mogen server-side ge-seed worden voor een lege catalogus, maar key, prijs, credit-amount en beeldpad moeten stabiel en idempotent blijven. `ensureDefaultCreditCatalog` upserts retry MariaDB 1020 so concurrent credits-overview loads do not 500.
 - Legacy offers met verouderde prijsstelling (zoals 1000 credits voor 1,99) mogen niet meer in de actieve player-catalogus of checkout terechtkomen; blokkeer of deactiveer deze server-side.
 - Premium/Credits tegelafbeeldingen blijven extern gehost onder `images/premium_tiles/...`; generator, backend-catalogus en client mapping moeten dezelfde vaste bestandsnamen delen.
@@ -92,6 +93,7 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 1. Player VIP checkout opent Mollie en paid webhook activeert VIP.
 2. One-time purchase grant wordt exact één keer fulfilled.
 3. Credit purchase verhoogt wallet en schrijft ledger-regel.
+3b. Creditbundel met quantity 3 rekent 3× de pakketprijs af en grant 3× de pack-credits in één fulfillment; quantity 0/negatief/niet-numeriek valt terug op 1; quantity >20 wordt 20. Event Pass blijft 1 pack ongeacht quantity.
 4. Credit redeem verlaagt wallet en past effect alleen toe bij geldige target/state.
 5. Webhook retry veroorzaakt geen dubbele grant.
 6. Admin/cataloguswijziging wordt correct teruggeleverd in player catalog endpoint.

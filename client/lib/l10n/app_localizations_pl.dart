@@ -6172,7 +6172,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get premiumUiSectionBuyCreditsSubtitle =>
-      'Wybierz pakiet za pomocą kafelków wizualnych. Popularna opcja 1000 kredytów zyskuje własne światło.';
+      'Wybierz pakiet, a następnie wybierz, ile pakietów chcesz kupić w jednej płatności.';
 
   @override
   String get premiumUiSectionPassesTitle => 'Season & event passes';
@@ -6212,6 +6212,47 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String premiumUiBuyCredits(int amount) {
     return 'Kup $amount kredytów';
+  }
+
+  @override
+  String get premiumUiCreditQtyHint =>
+      'Wybierz, ile sztuk tego pakietu chcesz kupić jednocześnie.';
+
+  @override
+  String premiumUiCreditQtyPacks(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count packs',
+      one: '1 pack',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String premiumUiCreditQtyTotalCredits(int count) {
+    return 'Łącznie $count kredytów';
+  }
+
+  @override
+  String premiumUiCreditQtyTotalPrice(String price) {
+    return 'Razem: $price';
+  }
+
+  @override
+  String premiumUiCreditQtyPay(String price) {
+    return 'Zapłać $price';
+  }
+
+  @override
+  String get premiumUiCreditQtyDecrease => 'Mniej paczek';
+
+  @override
+  String get premiumUiCreditQtyIncrease => 'Więcej paczek';
+
+  @override
+  String premiumUiCreditQtyMaxHint(int max) {
+    return 'Możesz kupić aż do $max pakietów w jednej płatności.';
   }
 
   @override
@@ -18556,15 +18597,15 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicPremiumSummary =>
-      'Kupuj i zarządzaj tutaj VIP-ami Gracza, VIP-ami załogi i pakietami kredytów. Przegląd ten pokazuje również saldo kredytu i wszystkie dostępne pozycje kredytu, z których możesz skorzystać bezpośrednio lub kontekstowo.';
+      'Kupuj i zarządzaj tutaj VIP-ami Gracza, VIP-ami załogi i pakietami kredytów. Zobacz automatyczne odnawianie, podaruj VIP i buduj prestiż VIP (tylko wyświetlanie).';
 
   @override
   String get helpTopicPremiumHow =>
-      'Otwórz oddzielną stronę „Premium i kredyty” w bocznym menu, aby wyświetlić swój status VIP, daty wygaśnięcia, saldo środków i opcje zakupu. \nGórny pasek pulpitu nawigacyjnego pokazuje również, czy Player VIP jest aktywny i jak długo jeszcze trwa; dotknij go, aby otworzyć Premium i Kredyty. Bez daty ważności pokazuje Aktywny. \nNa każdym kafelku zakupu dotknij/kliknij ikonę „i” w lewym górnym rogu, aby uzyskać szczegółowe informacje i korzyści; sam kafelek celowo pokazuje tylko krótkie podstawowe informacje i przycisk zakupu. \nGracz VIP jest osobisty. VIP dla załogi dotyczy Twojej załogi i ma wartość tylko wtedy, gdy jesteś już w załodze. \nGracz VIP zapewnia o 10% krótsze czasy działania (czas więzienia pozostaje niezmieniony), 100 tygodniowych kredytów, przycisk VIP do zakupu jednym kliknięciem brakujących materiałów w produkcji narkotyków (po potwierdzeniu kosztów) i łagodniejszy reset po śmierci: bank/kryptografia/edukacja/osiągnięcia pozostają, podczas gdy aktywa, ekwipunek i zapasy leków są usuwane. \nKasa VIP otwiera stronę płatności, a następnie powraca do sekcji „Premium i kredyty” w grze, dzięki czemu od razu widzisz, czy zakup się powiódł i jak długo ważny jest Twój VIP. \nGdy automatyczne odnawianie jest aktywne, możesz anulować odnowienie; Twój aktualny VIP pozostaje ważny do daty wygaśnięcia. \nGift VIP kupuje 30 dni Player VIP dla innego gracza według nazwy użytkownika (jednorazowo; odbiorca nie otrzymuje automatycznego odnowienia). \nGift Crew VIP kupuje 30 dni Crew VIP dla załogi według nazwy załogi (jednorazowo; bez automatycznego odnawiania). \nPrestiż VIP (brązowy/srebrny/złoty) jest wyświetlany tylko w okresie dożywotnich dni VIP i nie zapewnia żadnej mocy w rozgrywce. \nPakiety kredytów kupuje się za prawdziwe pieniądze. Po pomyślnej płatności środki natychmiast pojawią się w przeglądzie Twojego portfela. \nKarnet na wydarzenie (7 dni, prawdziwe pieniądze) jest wymieniony w siatce ofert jednorazowych: +10% wyniku w wydarzeniach dla graczy na żywo oraz niewielki bonus kredytowy po zakupie. Jest to poziom poboczny: nie jest to bezpośrednia walka ani wzmocnienie PvP; pomaga głównie w wynikach rankingów podczas wydarzeń biegowych. \nW przypadku pozycji kredytowych wykorzystywane są środki z portfela zamiast euro. Pomyśl o ochronie przed trafieniami, resetowaniu czasu odnowienia, wzmocnieniach wydarzeń lub pakietach pieniężnych, w zależności od tego, co administrator aktualnie włączył na żywo. \nNa obsługiwanych ekranach limitów czasu (takich jak przestępstwa, praca, kradzież pojazdu/łodzi i szkoła) dostępny jest także bezpośredni przycisk przyspieszenia dla aktywnych czasów odnowienia, dzięki czemu nie musisz najpierw wracać do konta premium i kredytów. \nNiektóre pozycje kredytowe działają bezpośrednio z tego ekranu. Zamiast tego elementy powiązane z kontekstem, takie jak określone akcje pojazdu, są używane na ekranie odpowiedniego pojazdu lub garażu (uszkodzone pojazdy mają przycisk natychmiastowej naprawy bezpośrednio na karcie). \nW przypadku przycisków kontekstowych, takich jak przyspieszenie naprawy, bieżący koszt kredytu jest wyświetlany bezpośrednio na przycisku/etykiecie narzędzia. \nCeny i dostępne produkty są zarządzane na żywo w panelu administracyjnym. Oznacza to, że ceny VIP, koszty kredytu i dostępna oferta mogą ulec zmianie bez aktualizacji aplikacji.';
+      'Otwórz oddzielną stronę „Premium i kredyty” w bocznym menu, aby wyświetlić swój status VIP, daty wygaśnięcia, saldo środków i opcje zakupu. \nGórny pasek pulpitu nawigacyjnego pokazuje również, czy Player VIP jest aktywny i jak długo jeszcze trwa; dotknij go, aby otworzyć Premium i Kredyty. Bez daty ważności pokazuje Aktywny. \nNa każdym kafelku zakupu dotknij/kliknij ikonę „i” w lewym górnym rogu, aby uzyskać szczegółowe informacje i korzyści; sam kafelek celowo pokazuje tylko krótkie podstawowe informacje i przycisk zakupu. \nGracz VIP jest osobisty. VIP dla załogi dotyczy Twojej załogi i ma wartość tylko wtedy, gdy jesteś już w załodze. \nGracz VIP zapewnia o 10% krótsze limity czasu na działanie (czas więzienia pozostaje niezmieniony), 100 tygodniowych kredytów, przycisk VIP do zakupu jednym kliknięciem brakujących materiałów w produkcji narkotyków (po potwierdzeniu kosztów) oraz łagodniejszy reset po śmierci: bank/krypto/edukacja/osiągnięcia pozostają, podczas gdy aktywa, ekwipunek i zapasy leków są usuwane. \nKasa VIP otwiera stronę płatności, a następnie powraca do sekcji „Premium i kredyty” w grze, dzięki czemu od razu widzisz, czy zakup się powiódł i jak długo ważny jest Twój VIP. \nGdy automatyczne odnawianie jest aktywne, możesz anulować odnowienie; Twój aktualny VIP pozostaje ważny do daty wygaśnięcia. \nGift VIP kupuje 30 dni Player VIP dla innego gracza według nazwy użytkownika (jednorazowo; odbiorca nie otrzymuje automatycznego odnowienia). \nGift Crew VIP kupuje 30 dni Crew VIP dla załogi według nazwy załogi (jednorazowo; bez automatycznego odnawiania). \nPrestiż VIP (brązowy/srebrny/złoty) jest wyświetlany tylko w okresie dożywotnich dni VIP i nie zapewnia żadnej mocy w rozgrywce. \nPakiety kredytów kupuje się za prawdziwe pieniądze. Kliknij paczkę, wybierz, ile chcesz kupić na raz (do 20) i zapłać całość w jednej kasie; po pomyślnej płatności wszystkie środki natychmiast pojawią się w Twoim portfelu. \nKarnet na wydarzenie (7 dni, prawdziwe pieniądze) jest wymieniony w siatce ofert jednorazowych: +10% wyniku w wydarzeniach dla graczy na żywo oraz niewielki bonus kredytowy po zakupie. Jest to poziom poboczny: nie jest to bezpośrednia walka ani wzmocnienie PvP; pomaga głównie w wynikach rankingów podczas wydarzeń biegowych. \nW przypadku pozycji kredytowych wykorzystywane są środki z portfela zamiast euro. Pomyśl o ochronie przed trafieniami, resetowaniu czasu odnowienia, wzmocnieniach wydarzeń lub pakietach pieniężnych, w zależności od tego, co administrator aktualnie włączył na żywo. \nNa obsługiwanych ekranach limitów czasu (takich jak przestępstwa, praca, kradzież pojazdu/łodzi i szkoła) dostępny jest także bezpośredni przycisk przyspieszenia dla aktywnych czasów odnowienia, dzięki czemu nie musisz najpierw wracać do konta premium i kredytów. \nNiektóre pozycje kredytowe działają bezpośrednio z tego ekranu. Zamiast tego elementy powiązane z kontekstem, takie jak określone akcje pojazdu, są używane na ekranie odpowiedniego pojazdu lub garażu (uszkodzone pojazdy mają przycisk natychmiastowej naprawy bezpośrednio na karcie). \nW przypadku przycisków kontekstowych, takich jak przyspieszenie naprawy, bieżący koszt kredytu jest wyświetlany bezpośrednio na przycisku/etykiecie narzędzia. \nCeny i dostępne produkty są zarządzane na żywo w panelu administracyjnym. Oznacza to, że ceny VIP, koszty kredytu i dostępna oferta mogą ulec zmianie bez aktualizacji aplikacji.';
 
   @override
   String get helpTopicPremiumTips =>
-      'Przed ponownym zakupem sprawdź saldo kredytu i datę jego wygaśnięcia; przedłużanie jest często lepsze niż układanie na ślepo. \nWykorzystuj kredyty głównie na krytyczne czasowo wzmocnienia lub ochronę, a nie automatycznie na każdym małym skrócie. \nJeśli nie jesteś jeszcze w załodze, zacznij od Gracza VIP lub pakietu kredytów przed Crew VIP.';
+      'Przed ponownym zakupem sprawdź saldo kredytu i datę jego wygaśnięcia; przedłużanie jest często lepsze niż układanie na ślepo. \nAnuluj automatyczne odnawianie na czas, jeśli nie chcesz bieżących opłat; Twój okres rozliczeniowy nadal trwa. \nWykorzystuj kredyty głównie na krytyczne czasowo wzmocnienia lub ochronę, a nie automatycznie na każdym małym skrócie. \nJeśli nie jesteś jeszcze w załodze, zacznij od Gracza VIP lub pakietu kredytów przed Crew VIP.';
 
   @override
   String get landingHeroTitle => 'Państwo tłumu';

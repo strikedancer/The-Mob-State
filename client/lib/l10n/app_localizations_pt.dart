@@ -6170,7 +6170,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get premiumUiSectionBuyCreditsSubtitle =>
-      'Escolha um pacote por meio de blocos visuais. A opção popular de 1.000 créditos ganha destaque.';
+      'Escolha um pacote e, em seguida, quantos pacotes comprar em um único pagamento.';
 
   @override
   String get premiumUiSectionPassesTitle => 'Season & event passes';
@@ -6210,6 +6210,47 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String premiumUiBuyCredits(int amount) {
     return 'Compre $amount créditos';
+  }
+
+  @override
+  String get premiumUiCreditQtyHint =>
+      'Escolha quantos deste pacote comprar de uma vez.';
+
+  @override
+  String premiumUiCreditQtyPacks(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count packs',
+      one: '1 pack',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String premiumUiCreditQtyTotalCredits(int count) {
+    return '$count créditos no total';
+  }
+
+  @override
+  String premiumUiCreditQtyTotalPrice(String price) {
+    return 'Total: $price';
+  }
+
+  @override
+  String premiumUiCreditQtyPay(String price) {
+    return 'Pague $price';
+  }
+
+  @override
+  String get premiumUiCreditQtyDecrease => 'Menos pacotes';
+
+  @override
+  String get premiumUiCreditQtyIncrease => 'Mais pacotes';
+
+  @override
+  String premiumUiCreditQtyMaxHint(int max) {
+    return 'Você pode comprar até $max pacotes em um único pagamento.';
   }
 
   @override
@@ -18556,15 +18597,15 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicPremiumSummary =>
-      'Compre e gerencie Player VIP, Crew VIP e pacotes de créditos aqui. Esta visão geral também mostra seu saldo de crédito e todos os itens de crédito disponíveis que você pode usar direta ou contextualmente.';
+      'Compre e gerencie Player VIP, Crew VIP e pacotes de créditos aqui. Veja renovação automática, presenteie VIP e ganhe prestígio VIP (somente exibição).';
 
   @override
   String get helpTopicPremiumHow =>
-      'Abra a página separada `Prêmio e Créditos` no menu lateral para visualizar seu status VIP, datas de validade, saldo de crédito e opções de compra. \nA barra superior do painel também mostra se o Player VIP está ativo e quanto tempo ainda dura; toque nele para abrir Premium e Créditos. Sem prazo de validade mostra Ativo. \nEm cada bloco de compra, toque/clique no ícone `i` no canto superior esquerdo para obter todos os detalhes e benefícios; o bloco em si mostra intencionalmente apenas informações básicas curtas e o botão de compra. \nO VIP do jogador é pessoal. Crew VIP aplica-se à sua Crew e só tem valor quando você já faz parte de uma Crew. \nO Jogador VIP oferece tempos limite de ação 10% mais curtos (o tempo de prisão permanece inalterado), 100 créditos semanais, um botão VIP de compra com um clique para materiais perdidos na Produção de Medicamentos (após a confirmação do custo) e uma redefinição de morte mais suave: banco/cripto/educação/conquistas permanecem, enquanto ativos, inventário e estoque de drogas são removidos. \nA finalização da compra VIP abre a página de pagamento e depois retorna para a seção `Premium & Credits` do jogo, para que você veja imediatamente se a compra foi bem-sucedida e por quanto tempo seu VIP é válido. \nQuando a renovação automática estiver ativa, você poderá cancelar a renovação; seu VIP atual permanece válido até a data de vencimento. \nGift VIP compra 30 dias de Player VIP para outro jogador por nome de usuário (único; o destinatário não recebe renovação automática). \nGift Crew VIP compra 30 dias de Crew VIP para uma Crew pelo nome da Crew (uma única vez; sem renovação automática). \nO prestígio VIP (bronze/prata/ouro) é exibido apenas nos dias VIP vitalícios e não concede poder de jogo. \nOs pacotes de crédito são comprados com dinheiro real. Após um pagamento bem-sucedido, os créditos aparecem imediatamente na visão geral da sua carteira. \nO Event Pass (7 dias, dinheiro real) está listado na grade de ofertas únicas: +10% de pontuação em eventos de jogadores ao vivo, além de um pequeno bônus de crédito após a compra. É um nível secundário: não um combate direto ou reforço de PvP; ajuda principalmente nos resultados da tabela de classificação durante eventos em execução. \nOs itens de crédito utilizam créditos de carteira em vez de euros. Pense em proteção contra golpes, redefinições de tempo de espera, aumentos de eventos ou pacotes de dinheiro, dependendo de qual administrador ativou atualmente. \nNas telas de tempo limite suportadas (como crimes, empregos, roubo de veículos/barcos e escola), você também recebe um botão de aceleração direto para recargas ativas, então você não precisa voltar primeiro para Premium e Créditos. \nAlguns itens de crédito funcionam diretamente nesta tela. Em vez disso, itens vinculados ao contexto, como certas ações do veículo, são usados ​​na tela correta do veículo ou da garagem (veículos danificados mostram um botão de reparo instantâneo diretamente no cartão). \nPara botões contextuais, como aceleração de reparo, o custo de crédito atual é mostrado diretamente no botão/dica. \nPreços e itens disponíveis são gerenciados ao vivo no administrador. Isso significa que os preços VIP, os custos de crédito e a oferta disponível podem mudar sem uma atualização do aplicativo.';
+      'Abra a página separada `Prêmio e Créditos` no menu lateral para visualizar seu status VIP, datas de validade, saldo de crédito e opções de compra. \nA barra superior do painel também mostra se o Player VIP está ativo e quanto tempo ainda dura; toque nele para abrir Premium e Créditos. Sem prazo de validade mostra Ativo. \nEm cada bloco de compra, toque/clique no ícone `i` no canto superior esquerdo para obter todos os detalhes e benefícios; o bloco em si mostra intencionalmente apenas informações básicas curtas e o botão de compra. \nO VIP do jogador é pessoal. Crew VIP aplica-se à sua Crew e só tem valor quando você já faz parte de uma Crew. \nO Jogador VIP oferece tempos limite de ação 10% mais curtos (o tempo de prisão permanece inalterado), 100 créditos semanais, um botão VIP de compra com um clique para materiais perdidos na Produção de Medicamentos (após a confirmação do custo) e uma redefinição de morte mais suave: banco/cripto/educação/conquistas permanecem, enquanto ativos, inventário e estoque de drogas são removidos. \nA finalização da compra VIP abre a página de pagamento e depois retorna para a seção `Premium & Credits` do jogo, para que você veja imediatamente se a compra foi bem-sucedida e por quanto tempo seu VIP é válido. \nQuando a renovação automática estiver ativa, você poderá cancelar a renovação; seu VIP atual permanece válido até a data de vencimento. \nGift VIP compra 30 dias de Player VIP para outro jogador por nome de usuário (único; o destinatário não recebe renovação automática). \nGift Crew VIP compra 30 dias de Crew VIP para uma Crew pelo nome da Crew (uma única vez; sem renovação automática). \nO prestígio VIP (bronze/prata/ouro) é exibido apenas nos dias VIP vitalícios e não concede poder de jogo. \nOs pacotes de crédito são comprados com dinheiro real. Toque em um pacote, escolha quantos comprar de uma vez (até 20) e pague o total em uma só finalização; após um pagamento bem-sucedido, todos os créditos aparecem imediatamente na sua carteira. \nO Event Pass (7 dias, dinheiro real) está listado na grade de ofertas únicas: +10% de pontuação em eventos de jogadores ao vivo, além de um pequeno bônus de crédito após a compra. É um nível secundário: não um combate direto ou reforço de PvP; ajuda principalmente nos resultados da tabela de classificação durante eventos em execução. \nOs itens de crédito utilizam créditos de carteira em vez de euros. Pense em proteção contra golpes, redefinições de tempo de espera, aumentos de eventos ou pacotes de dinheiro, dependendo de qual administrador ativou atualmente. \nNas telas de tempo limite suportadas (como crimes, empregos, roubo de veículos/barcos e escola), você também recebe um botão de aceleração direto para recargas ativas, então você não precisa voltar primeiro para Premium e Créditos. \nAlguns itens de crédito funcionam diretamente nesta tela. Em vez disso, itens vinculados ao contexto, como certas ações do veículo, são usados ​​na tela correta do veículo ou da garagem (veículos danificados mostram um botão de reparo instantâneo diretamente no cartão). \nPara botões contextuais, como aceleração de reparo, o custo de crédito atual é mostrado diretamente no botão/dica. \nPreços e itens disponíveis são gerenciados ao vivo no administrador. Isso significa que os preços VIP, os custos de crédito e a oferta disponível podem mudar sem uma atualização do aplicativo.';
 
   @override
   String get helpTopicPremiumTips =>
-      'Verifique seu saldo de crédito e prazo de validade antes de comprar novamente; estender geralmente é melhor do que empilhar às cegas. \nUse créditos principalmente em reforços ou proteção urgentes, não automaticamente em cada pequeno atalho. \nSe você ainda não faz parte de uma equipe, comece com Player VIP ou um pacote de créditos antes de Crew VIP.';
+      'Verifique seu saldo de crédito e prazo de validade antes de comprar novamente; estender geralmente é melhor do que empilhar às cegas. \nCancele a renovação automática a tempo se não quiser cobranças contínuas; seu período de pagamento ainda está em vigor. \nUse créditos principalmente em reforços ou proteção urgentes, não automaticamente em cada pequeno atalho. \nSe você ainda não faz parte de uma Crew, comece com Player VIP ou um pacote de créditos antes de Crew VIP.';
 
   @override
   String get landingHeroTitle => 'O Estado da Máfia';

@@ -29,6 +29,7 @@
 ## Premium & Credits
 
 - De Premium/Credits shop gebruikt alleen actieve backend-catalogusoffers.
+- Bij een creditbundel kies je na aanklikken hoeveel pakketten je in één betaling wilt (1–20). Prijs en credits schalen mee. Event Pass blijft één aankoop.
 - Legacy aanbiedingen met oude prijsstelling (zoals 1000 credits voor EUR 1.99) horen niet meer zichtbaar of afrekenbaar te zijn.
 
 ---
@@ -1042,6 +1043,7 @@ Bob: â‚¬300K counter-hit
 - Player VIP is persoonlijk. Crew VIP werkt alleen als je in een crew zit en ondersteunt crew-perks en VIP-gated upgrades.
 - Cosmetische credit-items (zoals het gouden landgoedhek) geven geen combat-power.
 - VIP- en credit-checkouts openen de betaalpagina en keren daarna terug naar `Premium & Credits` in de game-shell, zodat de speler direct de uitkomst, vernieuwde VIP-status en bijgewerkte credits ziet.
+- Creditbundels openen eerst een aantalkeuze (1–20 pakketten). Je betaalt het totaal in één checkout; Event Pass en VIP blijven één stuk.
 - Credit-items gebruiken wallet-credits in plaats van euro's. Admin beheert live welke items actief zijn, wat ze kosten en welk effecttype ze gebruiken.
 - Mogelijke credit-effecten zijn onder meer cash bundles, hit protection, cooldown resets, event boosts en context-gebonden voertuigacties.
 - VIP-prijzen en credit-kosten zijn runtime-config/admin-gestuurd en dus niet langer vaste clientwaarden.

@@ -60,6 +60,7 @@ type PaymentMetadata = {
   playerId: string;
   crewId?: string;
   productKey?: string;
+  quantity?: string;
   recipientPlayerId?: string;
   recipientUsername?: string;
   recipientCrewName?: string;
@@ -373,6 +374,17 @@ function parsePaymentMetadata(raw: unknown): PaymentMetadata | null {
   }
 
   return null;
+}
+
+const CREDIT_PACK_MAX_QUANTITY = 20;
+
+function parsePackQuantity(raw: unknown): number {
+  const parsed =
+    typeof raw === 'string' ? Number.parseInt(raw, 10) : Number(raw);
+  if (!Number.isFinite(parsed)) {
+    return 1;
+  }
+  return Math.min(CREDIT_PACK_MAX_QUANTITY, Math.max(1, Math.floor(parsed)));
 }
 
 function isMollieNotFoundError(error: unknown): boolean {
@@ -718,6 +730,12 @@ async function fulfillOneTimePurchase(paymentId: string, metadata: PaymentMetada
     return;
   }
 
+  const packQuantity =
+    product.rewardType === 'credits' ? parsePackQuantity(metadata.quantity) : 1;
+  const chargedCents = product.priceEurCents * packQuantity;
+  const chargedDescription =
+    packQuantity > 1 ? `${product.titleEn} x${packQuantity}` : product.titleEn;
+
   await prisma.$transaction(async (tx) => {
     const insertedRows = await tx.$executeRawUnsafe(
       `INSERT IGNORE INTO stripe_payment_fulfillments (stripeSessionId, playerId, productKey, payload, fulfilledAt)
@@ -738,12 +756,12 @@ async function fulfillOneTimePurchase(paymentId: string, metadata: PaymentMetada
         playerId,
         productKey,
         checkoutType: 'ONE_TIME',
-        amountValue: centsToEuroValue(product.priceEurCents),
+        amountValue: centsToEuroValue(chargedCents),
         amountCurrency: 'EUR',
         providerPaymentId: paymentId,
         status: 'PAID',
         paidAt: new Date(),
-        description: product.titleEn,
+        description: chargedDescription,
         metadataJson: JSON.stringify(metadata),
       },
       update: {
@@ -811,7 +829,12 @@ async function fulfillOneTimePurchase(paymentId: string, metadata: PaymentMetada
         throw new Error('INVALID_PRODUCT_CONFIGURATION');
       }
 
-      await grantPurchasedCredits(tx, playerId, product.creditAmount, product.key);
+      const quantity = parsePackQuantity(metadata.quantity);
+      const totalCredits = product.creditAmount * quantity;
+      await grantPurchasedCredits(tx, playerId, totalCredits, product.key, {
+        quantity,
+        unitCredits: product.creditAmount,
+      });
       return;
     }
 
@@ -1458,7 +1481,10 @@ router.post(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const playerId = (req as any).player?.id as number;
-      const { productKey } = req.body as { productKey?: string };
+      const { productKey, quantity: rawQuantity } = req.body as {
+        productKey?: string;
+        quantity?: unknown;
+      };
 
       if (!productKey) {
         return res.status(400).json({ event: 'error.invalid_product_key', params: {} });
@@ -1492,18 +1518,25 @@ router.post(
         select: { email: true },
       });
 
+      const packQuantity =
+        product.rewardType === 'credits' ? parsePackQuantity(rawQuantity) : 1;
+      const totalCents = product.priceEurCents * packQuantity;
+      const description =
+        packQuantity > 1 ? `${product.titleEn} x${packQuantity}` : product.titleEn;
+
       const customerId = await getOrCreateMollieCustomer(playerId, player?.email);
       const payment = await createMollieCheckout({
         playerId,
         customerId,
-        amountValue: centsToEuroValue(product.priceEurCents),
-        description: product.titleEn,
+        amountValue: centsToEuroValue(totalCents),
+        description,
         checkoutType: 'ONE_TIME',
         redirectStatus: 'paid',
         metadata: {
           type: 'one_time',
           playerId: String(playerId),
           productKey: product.key,
+          quantity: String(packQuantity),
         },
       });
 

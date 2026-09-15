@@ -6203,7 +6203,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get premiumUiSectionBuyCreditsSubtitle =>
-      'Wählen Sie über die visuellen Kacheln ein Bündel aus. Die beliebte 1000-Credit-Option erhält ein eigenes Rampenlicht.';
+      'Wählen Sie ein Paket aus und legen Sie dann fest, wie viele Pakete Sie in einer Zahlung kaufen möchten.';
 
   @override
   String get premiumUiSectionPassesTitle => 'Season & event passes';
@@ -6243,6 +6243,47 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String premiumUiBuyCredits(int amount) {
     return 'Kaufen Sie $amount Credits';
+  }
+
+  @override
+  String get premiumUiCreditQtyHint =>
+      'Wählen Sie aus, wie viele dieser Pakete Sie auf einmal kaufen möchten.';
+
+  @override
+  String premiumUiCreditQtyPacks(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count packs',
+      one: '1 pack',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String premiumUiCreditQtyTotalCredits(int count) {
+    return 'Insgesamt $count Credits';
+  }
+
+  @override
+  String premiumUiCreditQtyTotalPrice(String price) {
+    return 'Gesamt: $price';
+  }
+
+  @override
+  String premiumUiCreditQtyPay(String price) {
+    return 'Zahle $price';
+  }
+
+  @override
+  String get premiumUiCreditQtyDecrease => 'Weniger Packungen';
+
+  @override
+  String get premiumUiCreditQtyIncrease => 'Weitere Packungen';
+
+  @override
+  String premiumUiCreditQtyMaxHint(int max) {
+    return 'Sie können bis zu $max Pakete in einer Zahlung kaufen.';
   }
 
   @override
@@ -18646,15 +18687,15 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicPremiumSummary =>
-      'Kaufen und verwalten Sie hier Spieler-VIP-, Crew-VIP- und Credit-Pakete. In dieser Übersicht werden auch Ihr Guthabenstand und alle verfügbaren Guthabenpositionen angezeigt, die Sie direkt oder kontextbezogen nutzen können.';
+      'Kaufen und verwalten Sie hier Spieler-VIP-, Crew-VIP- und Credit-Pakete. Sehen Sie sich die Optionen „Automatische Verlängerung“, „VIP verschenken“ und „VIP-Prestige aufbauen“ an (nur Anzeige).';
 
   @override
   String get helpTopicPremiumHow =>
-      'Öffnen Sie im Seitenmenü die separate Seite „Premium & Credits“, um Ihren VIP-Status, Ablaufdaten, Guthaben und Kaufoptionen anzuzeigen. \nIn der oberen Leiste des Dashboards wird auch angezeigt, ob Player VIP aktiv ist und wie lange es noch dauert; Tippen Sie darauf, um Premium & Credits zu öffnen. Ohne Ablaufdatum wird „Aktiv“ angezeigt. \nTippen/klicken Sie auf jeder Kaufkachel oben links auf das „i“-Symbol, um alle Details und Vorteile anzuzeigen. Die Kachel selbst zeigt bewusst nur kurze Kerninformationen und den Kaufen-Button. \nSpieler-VIP ist persönlich. Crew-VIP gilt für Ihre Crew und hat nur dann einen Wert, wenn Sie bereits Mitglied einer Crew sind. \nSpieler-VIP bietet 10 % kürzere Aktions-Timeouts (die Gefängniszeit bleibt unverändert), 100 wöchentliche Credits, eine VIP-Ein-Klick-Kaufschaltfläche für fehlende Materialien in der Arzneimittelproduktion (nach Kostenbestätigung) und einen sanfteren Todes-Reset: Bank/Krypto/Bildung/Erfolge bleiben bestehen, während Vermögenswerte, Inventar und Arzneimittelvorräte entfernt werden. \nBeim VIP-Checkout wird die Zahlungsseite geöffnet und dann zum Abschnitt „Premium & Credits“ im Spiel zurückgekehrt, sodass Sie sofort sehen, ob der Kauf erfolgreich war und wie lange Ihr VIP läuft. \nWenn die automatische Verlängerung aktiv ist, können Sie die Verlängerung abbrechen. Ihr aktueller VIP bleibt bis zum Ablaufdatum gültig. \nGeschenk-VIP kauft 30 Tage Spieler-VIP für einen anderen Spieler mit Benutzernamen (einmalig; der Empfänger erhält keine automatische Verlängerung). \nGift Crew VIP kauft 30 Tage Crew VIP für eine Crew mit Crewnamen (einmalig; keine automatische Verlängerung). \nVIP-Prestige (Bronze/Silber/Gold) ist ab lebenslangen VIP-Tagen nur sichtbar und gewährt keine Spielkraft. \nCredit-Pakete werden mit echtem Geld gekauft. Nach erfolgreicher Zahlung erscheint das Guthaben sofort in Ihrer Wallet-Übersicht. \nDer Event-Pass (7 Tage, Echtgeld) ist in der Liste der einmaligen Angebote aufgeführt: +10 % Punktestand bei Live-Spieler-Events, plus ein kleiner Kreditbonus nach dem Kauf. Es ist eine Nebenstufe: kein direkter Kampf oder PvP-Boost; Es hilft vor allem bei den Bestenlistenergebnissen bei Laufveranstaltungen. \nFür Guthabenartikel werden Wallet-Guthaben anstelle von Euro verwendet. Denken Sie an Trefferschutz, Cooldown-Resets, Event-Boosts oder Geldpakete, je nachdem, was der Administrator derzeit live aktiviert hat. \nAuf unterstützten Timeout-Bildschirmen (z. B. Verbrechen, Jobs, Fahrzeug-/Bootsdiebstahl und Schule) erhalten Sie außerdem eine direkte Beschleunigungstaste für aktive Abklingzeiten, sodass Sie nicht zuerst zu Premium & Credits zurückkehren müssen. \nEinige Guthabenpositionen funktionieren direkt über diesen Bildschirm. Kontextgebundene Elemente, wie z. B. bestimmte Fahrzeugaktionen, werden stattdessen vom richtigen Fahrzeug- oder Garagenbildschirm aus verwendet (beschädigte Fahrzeuge zeigen direkt auf der Karte eine Schaltfläche für die sofortige Reparatur an). \nBei kontextbezogenen Schaltflächen wie Reparaturbeschleunigung werden die aktuellen Kreditkosten direkt auf der Schaltfläche/im Tooltip angezeigt. \nPreise und verfügbare Artikel werden live im Admin verwaltet. Das bedeutet, dass sich VIP-Preise, Kreditkosten und das verfügbare Angebot ohne ein App-Update ändern können.';
+      'Öffnen Sie im Seitenmenü die separate Seite „Premium & Credits“, um Ihren VIP-Status, Ablaufdaten, Guthaben und Kaufoptionen anzuzeigen. \nIn der oberen Leiste des Dashboards wird auch angezeigt, ob Player VIP aktiv ist und wie lange es noch dauert; Tippen Sie darauf, um Premium & Credits zu öffnen. Ohne Ablaufdatum wird „Aktiv“ angezeigt. \nTippen/klicken Sie auf jeder Kaufkachel oben links auf das „i“-Symbol, um alle Details und Vorteile anzuzeigen. Die Kachel selbst zeigt bewusst nur kurze Kerninformationen und den Kaufen-Button. \nSpieler-VIP ist persönlich. Crew-VIP gilt für Ihre Crew und hat nur dann einen Wert, wenn Sie bereits Mitglied einer Crew sind. \nSpieler-VIP bietet 10 % kürzere Aktions-Timeouts (die Gefängniszeit bleibt unverändert), 100 wöchentliche Credits, eine VIP-Ein-Klick-Kaufschaltfläche für fehlende Materialien in der Arzneimittelproduktion (nach Kostenbestätigung) und einen sanfteren Todes-Reset: Bank/Krypto/Bildung/Erfolge bleiben bestehen, während Vermögenswerte, Inventar und Arzneimittelvorräte entfernt werden. \nBeim VIP-Checkout wird die Zahlungsseite geöffnet und dann zum Abschnitt „Premium & Credits“ im Spiel zurückgekehrt, sodass Sie sofort sehen, ob der Kauf erfolgreich war und wie lange Ihr VIP läuft. \nWenn die automatische Verlängerung aktiv ist, können Sie die Verlängerung abbrechen. Ihr aktueller VIP bleibt bis zum Ablaufdatum gültig. \nGeschenk-VIP kauft 30 Tage Spieler-VIP für einen anderen Spieler mit Benutzernamen (einmalig; der Empfänger erhält keine automatische Verlängerung). \nGift Crew VIP kauft 30 Tage Crew VIP für eine Crew mit Crewnamen (einmalig; keine automatische Verlängerung). \nVIP-Prestige (Bronze/Silber/Gold) ist ab lebenslangen VIP-Tagen nur sichtbar und gewährt keine Spielkraft. \nCredit-Pakete werden mit echtem Geld gekauft. Tippen Sie auf eine Packung, wählen Sie aus, wie viele Sie auf einmal kaufen möchten (bis zu 20) und bezahlen Sie den Gesamtbetrag in einer einzigen Kasse; Nach erfolgreicher Zahlung erscheinen alle Guthaben sofort in Ihrem Wallet. \nDer Event-Pass (7 Tage, Echtgeld) ist in der Liste der einmaligen Angebote aufgeführt: +10 % Punktestand bei Live-Spieler-Events, plus ein kleiner Kreditbonus nach dem Kauf. Es ist eine Nebenstufe: kein direkter Kampf oder PvP-Boost; Es hilft vor allem bei den Bestenlistenergebnissen bei Laufveranstaltungen. \nFür Guthabenartikel werden Wallet-Guthaben anstelle von Euro verwendet. Denken Sie an Trefferschutz, Cooldown-Resets, Event-Boosts oder Geldpakete, je nachdem, was der Administrator derzeit live aktiviert hat. \nAuf unterstützten Timeout-Bildschirmen (z. B. Verbrechen, Jobs, Fahrzeug-/Bootsdiebstahl und Schule) erhalten Sie außerdem eine direkte Beschleunigungstaste für aktive Abklingzeiten, sodass Sie nicht zuerst zu Premium & Credits zurückkehren müssen. \nEinige Guthabenpositionen funktionieren direkt über diesen Bildschirm. Kontextgebundene Elemente, wie z. B. bestimmte Fahrzeugaktionen, werden stattdessen vom richtigen Fahrzeug- oder Garagenbildschirm aus verwendet (beschädigte Fahrzeuge zeigen direkt auf der Karte eine Schaltfläche für die sofortige Reparatur an). \nBei kontextbezogenen Schaltflächen wie Reparaturbeschleunigung werden die aktuellen Kreditkosten direkt auf der Schaltfläche/im Tooltip angezeigt. \nPreise und verfügbare Artikel werden live im Admin verwaltet. Das bedeutet, dass sich VIP-Preise, Kreditkosten und das verfügbare Angebot ohne ein App-Update ändern können.';
 
   @override
   String get helpTopicPremiumTips =>
-      'Überprüfen Sie Ihr Guthaben und das Ablaufdatum, bevor Sie erneut kaufen. Erweitern ist oft besser als blindes Stapeln. \nVerwenden Sie Credits hauptsächlich für zeitkritische Boosts oder Schutzmaßnahmen, nicht automatisch für jede kleine Abkürzung. \nWenn Sie noch keiner Crew angehören, beginnen Sie mit Spieler-VIP oder einem Credit-Paket vor Crew-VIP.';
+      'Überprüfen Sie Ihr Guthaben und das Ablaufdatum, bevor Sie erneut kaufen. Erweitern ist oft besser als blindes Stapeln. \nKündigen Sie die automatische Verlängerung rechtzeitig, wenn Sie keine laufenden Gebühren wünschen; Ihr Abzahlungszeitraum läuft noch. \nVerwenden Sie Credits hauptsächlich für zeitkritische Boosts oder Schutzmaßnahmen, nicht automatisch für jede kleine Abkürzung. \nWenn Sie noch keiner Crew angehören, beginnen Sie mit Spieler-VIP oder einem Credit-Paket vor Crew-VIP.';
 
   @override
   String get landingHeroTitle => 'Der Mob-Staat';

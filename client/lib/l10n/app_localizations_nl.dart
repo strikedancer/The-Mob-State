@@ -6161,7 +6161,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get premiumUiSectionBuyCreditsSubtitle =>
-      'Kies een bundel via visuele tegels. Populaire optie met 1000 credits krijgt zijn eigen spotlight.';
+      'Kies een bundel en hoeveel pakketten je in één betaling wilt.';
 
   @override
   String get premiumUiSectionPassesTitle => 'Event Pass';
@@ -6201,6 +6201,47 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String premiumUiBuyCredits(int amount) {
     return 'Koop $amount credits';
+  }
+
+  @override
+  String get premiumUiCreditQtyHint =>
+      'Kies hoeveel van dit pakket je in één keer wilt kopen.';
+
+  @override
+  String premiumUiCreditQtyPacks(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pakketten',
+      one: '1 pakket',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String premiumUiCreditQtyTotalCredits(int count) {
+    return '$count credits in totaal';
+  }
+
+  @override
+  String premiumUiCreditQtyTotalPrice(String price) {
+    return 'Totaal: $price';
+  }
+
+  @override
+  String premiumUiCreditQtyPay(String price) {
+    return 'Betaal $price';
+  }
+
+  @override
+  String get premiumUiCreditQtyDecrease => 'Minder pakketten';
+
+  @override
+  String get premiumUiCreditQtyIncrease => 'Meer pakketten';
+
+  @override
+  String premiumUiCreditQtyMaxHint(int max) {
+    return 'Je kunt tot $max pakketten in één betaling kopen.';
   }
 
   @override
@@ -18474,7 +18515,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicPremiumHow =>
-      'Open in het zijmenu de aparte pagina `Premium & Credits` om je VIP-status, vervaldatums, credit-saldo en koopopties te bekijken.\nIn de bovenbalk van het dashboard zie je ook of Player VIP actief is en hoe lang die nog loopt; tik daarop om Premium & Credits te openen. Zonder einddatum staat er Actief.\nOp elke aankooptegel kun je linksboven op het `i`-icoon tikken/klikken voor de volledige uitleg en voordelen; de tegel zelf toont bewust alleen korte kerninfo en de koopknop.\nPlayer VIP is persoonlijk. Crew VIP geldt voor je crew en heeft alleen waarde als je al in een crew zit.\nPlayer VIP geeft 10% kortere action timeouts (gevangenistijd blijft gelijk), wekelijkse 100 credits, een VIP 1-klik aankoopknop voor ontbrekende materialen in Drugs Productie (na kostenbevestiging) en een zachtere death-reset: je houdt bank/crypto/opleidingen/achievements, maar verliest wel assets, inventory en drugsvoorraad.\nVIP checkout opent de betaalpagina en landt daarna terug in de game op `Premium & Credits`, zodat je direct ziet of de aankoop is gelukt en tot wanneer je VIP loopt.\nAls auto-renew actief is, kun je verlenging stopzetten; je huidige VIP blijft tot de vervaldatum geldig.\nMet VIP cadeau koop je 30 dagen Player VIP voor een andere speler via gebruikersnaam (eenmalig, zonder auto-renew voor de ontvanger).\nMet Crew VIP cadeau koop je 30 dagen Crew VIP voor een crew via de crewnaam (eenmalig, zonder auto-renew).\nVIP prestige (brons/zilver/goud) is puur zichtbaar op basis van lifetime VIP-dagen en geeft geen gameplay-power.\nCreditbundels koop je met echt geld. Na succesvolle betaling verschijnen de credits meteen in je wallet-overzicht.\nEvent Pass (7 dagen, echt geld) staat in hetzelfde eenmalige overzicht: +10% score op live spelerevents, plus een klein bonuscredits-pakket na betaling. Dit is side-grade: geen directe combat- of PvP-boost; het helpt vooral bij leaderboard-prestaties binnen lopende events.\nCredit-items gebruiken wallet-credits in plaats van euro\'s. Denk aan hit protection, cooldown resets, event boosts of cash bundles, afhankelijk van wat admin live actief heeft gezet.\nBij actieve cooldowns zie je op ondersteunde timeout-schermen (zoals crimes, jobs, voertuig/boot diefstal en school) ook direct een knop om met credits te versnellen; je hoeft daarvoor niet eerst terug naar Premium & Credits.\nSommige credit-items werken direct vanuit dit scherm. Context-gebonden items, zoals bepaalde voertuigacties, gebruik je pas vanuit het juiste voertuigen- of garagescherm (bij beschadigde voertuigen staat op de kaart direct een instant-repair knop).\nBij contextknoppen zoals reparatie-versnellen wordt de actuele credit-kost direct op de knop/tooltip getoond.\nPrijzen en beschikbare items worden live in admin beheerd. VIP-prijzen, credit-kosten en het aanbod kunnen dus wijzigen zonder app-update.';
+      'Open in het zijmenu de aparte pagina `Premium & Credits` om je VIP-status, vervaldatums, credit-saldo en koopopties te bekijken.\nIn de bovenbalk van het dashboard zie je ook of Player VIP actief is en hoe lang die nog loopt; tik daarop om Premium & Credits te openen. Zonder einddatum staat er Actief.\nOp elke aankooptegel kun je linksboven op het `i`-icoon tikken/klikken voor de volledige uitleg en voordelen; de tegel zelf toont bewust alleen korte kerninfo en de koopknop.\nPlayer VIP is persoonlijk. Crew VIP geldt voor je crew en heeft alleen waarde als je al in een crew zit.\nPlayer VIP geeft 10% kortere action timeouts (gevangenistijd blijft gelijk), wekelijkse 100 credits, een VIP 1-klik aankoopknop voor ontbrekende materialen in Drugs Productie (na kostenbevestiging) en een zachtere death-reset: je houdt bank/crypto/opleidingen/achievements, maar verliest wel assets, inventory en drugsvoorraad.\nVIP checkout opent de betaalpagina en landt daarna terug in de game op `Premium & Credits`, zodat je direct ziet of de aankoop is gelukt en tot wanneer je VIP loopt.\nAls auto-renew actief is, kun je verlenging stopzetten; je huidige VIP blijft tot de vervaldatum geldig.\nMet VIP cadeau koop je 30 dagen Player VIP voor een andere speler via gebruikersnaam (eenmalig, zonder auto-renew voor de ontvanger).\nMet Crew VIP cadeau koop je 30 dagen Crew VIP voor een crew via de crewnaam (eenmalig, zonder auto-renew).\nVIP prestige (brons/zilver/goud) is puur zichtbaar op basis van lifetime VIP-dagen en geeft geen gameplay-power.\nCreditbundels koop je met echt geld. Tik op een pakket, kies hoeveel je in één keer wilt (tot 20) en betaal het totaal in één checkout; na succesvolle betaling verschijnen alle credits meteen in je wallet.\nEvent Pass (7 dagen, echt geld) staat in hetzelfde eenmalige overzicht: +10% score op live spelerevents, plus een klein bonuscredits-pakket na betaling. Dit is side-grade: geen directe combat- of PvP-boost; het helpt vooral bij leaderboard-prestaties binnen lopende events.\nCredit-items gebruiken wallet-credits in plaats van euro\'s. Denk aan hit protection, cooldown resets, event boosts of cash bundles, afhankelijk van wat admin live actief heeft gezet.\nBij actieve cooldowns zie je op ondersteunde timeout-schermen (zoals crimes, jobs, voertuig/boot diefstal en school) ook direct een knop om met credits te versnellen; je hoeft daarvoor niet eerst terug naar Premium & Credits.\nSommige credit-items werken direct vanuit dit scherm. Context-gebonden items, zoals bepaalde voertuigacties, gebruik je pas vanuit het juiste voertuigen- of garagescherm (bij beschadigde voertuigen staat op de kaart direct een instant-repair knop).\nBij contextknoppen zoals reparatie-versnellen wordt de actuele credit-kost direct op de knop/tooltip getoond.\nPrijzen en beschikbare items worden live in admin beheerd. VIP-prijzen, credit-kosten en het aanbod kunnen dus wijzigen zonder app-update.';
 
   @override
   String get helpTopicPremiumTips =>

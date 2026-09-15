@@ -445,7 +445,8 @@ export async function grantPurchasedCredits(
   tx: any,
   playerId: number,
   amount: number,
-  productKey: string
+  productKey: string,
+  extra: Record<string, unknown> = {}
 ) {
   return updateCreditsBalance(
     tx,
@@ -453,7 +454,7 @@ export async function grantPurchasedCredits(
     amount,
     'PURCHASE',
     productKey,
-    JSON.stringify({ source: 'premium_checkout', amount })
+    JSON.stringify({ source: 'premium_checkout', amount, ...extra })
   );
 }
 

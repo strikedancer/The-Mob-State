@@ -76,6 +76,7 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 - Cooldown reset-items mogen geen credits verbranden zonder actieve cooldown.
 - Player VIP timeout-voordelen moeten side-grade blijven: vaste reductie op actie-timeouts (geen jail-time reductie) en geen bypass van risk loops.
 - Periodieke VIP-credit grants (bijv. wekelijks) moeten beperkt, voorspelbaar en ledger-traceerbaar blijven zodat monetization geen pay-to-win escalatie veroorzaakt.
+- Creditbundel multi-buy (quantity 1–20) schaalt prijs en credits **lineair** (`unit × quantity`). Geen staffelkorting, geen extra bonuscredits. Event Pass en overige one-time producten blijven quantity 1. Cap 20 beperkt één checkout tot een redelijk Mollie-bedrag.
 - Alle economy-aanpassingen moeten traceerbaar zijn via telemetry en runtime settings.
 - Voor Territory geldt: gebruik `TERRITORY_ACTION_DAILY_CAP=0` als default om de cap uit te zetten; begrenzing loopt daar via cooldown + anti-farm.
 - Territory Fase C: actief `safehouse_network`-project verhoogt passief regio-inkomen met `TERRITORY_PROJECT_SAFEHOUSE_INCOME_BONUS_PERCENT` (default 10%; damaged = helft). Sabotage/supply contest-acties wijzigen project-HP/voortgang via runtime keys `TERRITORY_PROJECT_*`.
