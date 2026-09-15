@@ -12,7 +12,7 @@ const apiBaseUrl = normalizeBaseUrl(config.apiBaseUrl);
 const smtpUser = process.env.SMTP_USER || 'noreply@themobstate.com';
 const smtpPass = process.env.SMTP_PASS || '';
 const smtpFromAddress =
-  process.env.SMTP_FROM?.trim() || smtpUser || 'noreply@themobstate.com';
+  process.env.SMTP_FROM?.trim() || 'noreply@themobstate.nl';
 const smtpFromName = process.env.SMTP_FROM_NAME?.trim() || 'The Mob State';
 const smtpFromHeader = `"${smtpFromName}" <${smtpFromAddress}>`;
 
