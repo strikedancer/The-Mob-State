@@ -582,6 +582,27 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
         .toList();
   }
 
+  List<InventoryGridItem> _backpackSlotCells() {
+    return expandToSlotCells(_backpackGridItems());
+  }
+
+  int _backpackGridSlotCount() {
+    final occupied = _backpackSlotCells().length;
+    return _slots.max > occupied ? _slots.max : occupied;
+  }
+
+  InventoryGridItem _canonicalSource(InventoryGridItem cell) {
+    if (cell.zone != InventoryZone.backpack) return cell;
+    for (final item in _backpackGridItems()) {
+      if (item.kind == cell.kind &&
+          item.id == cell.id &&
+          item.quality == cell.quality) {
+        return item;
+      }
+    }
+    return cell;
+  }
+
   Future<bool> _setWeaponSlot(InventoryZone zone, String weaponId) async {
     if (zone == InventoryZone.equippedWeapon) {
       return _setCrimeWeapon(weaponId);
@@ -870,6 +891,7 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
       return;
     }
 
+    source = _canonicalSource(source);
     var quantity = 1;
     if (_isStackableMove(source, target)) {
       final chosen = await _askTransferQuantity(source, target, onto: onto);
@@ -1167,8 +1189,8 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
     final doll = _buildDoll(l10n, player?.avatar, player?.activePortraitPath);
     final pack = _buildGrid(
       title: l10n.inventorySlotUsage(_slots.used, _slots.max),
-      items: _backpackGridItems(),
-      emptySlots: _slots.max,
+      items: _backpackSlotCells(),
+      emptySlots: _backpackGridSlotCount(),
       zone: InventoryZone.backpack,
     );
     final stash = _buildContextPanel(l10n);

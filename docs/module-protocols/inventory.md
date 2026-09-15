@@ -12,7 +12,7 @@ Carried items, storage, loadouts and equipment used by multiple modules.
 - Center: player avatar, crime-weapon slot (`GET/POST /weapons/crime-weapon`), second-weapon slot (`GET/POST /weapons/secondary-weapon`) and worn vest (`GET /security/status`).
 - A player can wear two weapons at once (for example a handgun and a rifle). When a crime is committed, both worn slots are compared and the best eligible weapon for that crime is used automatically. Worn SMGs (catalog type `automatic`) count for crimes that ask for `smg`.
 - Worn weapons are hidden from the backpack grid and do not count toward backpack capacity. Unequipped extra copies still do.
-- Backpack grid shows `capacity` squares from `GET /tools/carried` slot meter, filled with carried tools, unequipped weapons, ammo, materials, **finished drugs** and **trade goods**.
+- Backpack grid shows `capacity` squares from `GET /tools/carried` slot meter, filled with carried tools, unequipped weapons, ammo, materials, **finished drugs** and **trade goods**. Occupied stacks split into physical cells the same way as property storage (trade **1 unit = 1 square**), so 19 perfume fill 19 backpack squares rather than one icon with a 19 badge.
 - The Inventory **menu** shows paper-doll + backpack only. There is no remote house dropdown and no unplaced-stock grid. To stash or withdraw, the player goes to **Properties → that building → Open storage**, which opens this screen with that property selected.
 - Property grid (right on desktop, below on mobile) appears **only** when opened via Open storage on a house/apartment/warehouse **in the current country**. Other-country houses stay hidden until the player travels there (`inventoryOtherCountryStashHint`). Backpack squares match `GET /tools/carried` capacity (no 8-slot floor).
   - House / apartment / mansion / penthouse / safehouse: **tools**, weapons, ammo, armor, cash, **materials, finished drugs, trade goods**. Safer on arrest. Slot count comes from `properties.json` `storageCapacity` at the building's upgrade level (house 10→95, apartment 5→38), not the legacy `property_storage_capacity` row. The property grid always shows `capacity` squares (empty house = 10). Occupied stacks are split into physical cells (145g drugs = 100 + 45). A partial cell of the same type can be topped up to a full slot.
@@ -46,7 +46,7 @@ Carried items, storage, loadouts and equipment used by multiple modules.
 - Shared equipment choices that other modules depend on, such as worn weapon slots, must stay visible and must remain in sync with the consuming gameplay screen.
 - Inventory storage is **current-country only** and only the building opened via **Open storage**. Do not show a house picker or unplaced-stock grid on the Inventory menu.
 - `refreshInventorySlotUsage` retries MariaDB 1020 on `player.update` so backpack seize/travel/trade can finish when another request touched the same player row.
-- Paper-doll property grids use catalog capacity by upgrade level. A new house is **10** slots, not 100. The grid always has `capacity` squares; multi-slot stacks occupy one icon per slot.
+- Paper-doll property grids use catalog capacity by upgrade level. A new house is **10** slots, not 100. The grid always has `capacity` squares; multi-slot stacks occupy one icon per slot. The backpack grid uses the same split against `GET /tools/carried` capacity.
 - Houses accept tools. Warehouse search on arrest still only hits warehouses.
 - The two paper-doll weapon slots are the only weapons Crimes considers. Dropping a weapon from backpack or house storage onto a slot wears it. Taking it off (to backpack or house) unequips that slot. Moving a weapon only between backpack and storage does not change worn slots.
 - The second-weapon slot uses `POST/DELETE /weapons/secondary-weapon` the same way. Crimes compare both worn slots at attempt time and pick the best match; wearing a weapon on the second slot is enough for it to be considered. The same `weaponId` cannot occupy both body slots (moving it switches slot). Withdrawing a weapon from a house onto a body slot may send `equip: true` so a full backpack does not block wearing it.
@@ -70,6 +70,7 @@ Carried items, storage, loadouts and equipment used by multiple modules.
 - Verify Open storage from a house or warehouse opens this screen with that property selected, and that the Inventory menu itself does not offer a house dropdown.
 - Verify leftover country-depot materials still exist for production, but new buys go to the backpack.
 - Verify a newly bought empty house shows 10 free squares (not 100). After storing 145g of one drug, the house shows two cells (100 + 45) and the leftover 45g cell can be topped up to 100g without using a new slot. An apartment starts at 5; a warehouse at 100.
+- Verify 19 backpack perfume occupy 19 squares while `Rugzak` still reads the matching used/max; empty squares must not remain when those units already fill capacity.
 - Verify tools can be stored in a house/apartment as well as a warehouse.
 
 ## When To Update This File
