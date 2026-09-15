@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:async';
 import 'dart:convert';
 import '../providers/auth_provider.dart';
 import '../services/auth_service.dart';
@@ -96,6 +97,7 @@ class _CrewScreenState extends State<CrewScreen>
   bool _crewWarLoading = false;
   bool _crewMissionsLoading = false;
   bool _crewMissionActionLoading = false;
+  Timer? _crewMissionTick;
   String _selectedWarType = 'kill_war';
   int? _selectedWarTargetCrewId;
 
@@ -849,11 +851,27 @@ class _CrewScreenState extends State<CrewScreen>
   }
 
   String _formatRemaining(int seconds, AppLocalizations loc) {
-    final mins = (seconds / 60).ceil();
-    if (mins < 1) {
-      return loc.crewUiFormatRemainingUnderOneMinute;
+    if (seconds <= 0) {
+      return loc.crewUiStatusReady;
     }
-    return loc.crewUiFormatRemainingMinutes(mins);
+    return formatAdaptiveDurationFromSeconds(
+      seconds,
+      localeName: loc.localeName,
+      includeSeconds: seconds < 3600,
+    );
+  }
+
+  void _onCrewMissionTick() {
+    if (!mounted || _tabController.index != 5) return;
+    final active = _crewMissionsOverview?['activeRun'];
+    if (active is! Map) return;
+    final cooldown = _secondsUntil(active['cooldownUntil']?.toString());
+    final ends = _secondsUntil(active['endsAt']?.toString());
+    if (cooldown <= 0 && ends <= 0) return;
+    setState(() {});
+    if (cooldown == 1 || ends == 1) {
+      unawaited(_loadCrewMissionsOverview(silent: true));
+    }
   }
 
   Future<void> _loadCrewMissionsOverview({bool silent = false}) async {
@@ -1483,11 +1501,18 @@ class _CrewScreenState extends State<CrewScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 8, vsync: this);
+    _tabController.addListener(() {
+      if (mounted) setState(() {});
+    });
+    _crewMissionTick = Timer.periodic(const Duration(seconds: 1), (_) {
+      _onCrewMissionTick();
+    });
     _loadData();
   }
 
   @override
   void dispose() {
+    _crewMissionTick?.cancel();
     _tabController.dispose();
     super.dispose();
   }
@@ -7279,6 +7304,11 @@ class _CrewScreenState extends State<CrewScreen>
         : null;
     final role = (overview['role'] ?? '').toString().toLowerCase();
     final canManage = role == 'leader' || role == 'co_leader';
+    final waitSeconds = activeRun == null
+        ? 0
+        : (activeRun['status']?.toString() == 'completed'
+              ? _secondsUntil(activeRun['cooldownUntil']?.toString())
+              : 0);
 
     return RefreshIndicator(
       onRefresh: () => _loadCrewMissionsOverview(),
@@ -7310,6 +7340,41 @@ class _CrewScreenState extends State<CrewScreen>
                       ),
                   ],
                 ),
+                if (waitSeconds > 0) ...[
+                  const SizedBox(height: 12),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF2A1A10),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: const Color(0x66FFB347)),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.crewUiNextMissionIn(
+                            _formatRemaining(waitSeconds, l10n),
+                          ),
+                          style: const TextStyle(
+                            color: Color(0xFFFFB347),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          l10n.crewUiMissionWaitHint,
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
                 if (!canManage) ...[
                   const SizedBox(height: 8),
                   Text(
@@ -7847,10 +7912,19 @@ class _CrewScreenState extends State<CrewScreen>
                 }).toList(),
               ),
             ],
-            if (cooldownInSeconds > 0)
+            if (cooldownInSeconds > 0) ...[
+              const SizedBox(height: 10),
               Text(
-                '${_t(loc, 'label.cooldownActive')}: ${_formatRemaining(cooldownInSeconds, loc)}',
+                loc.crewUiNextMissionIn(
+                  _formatRemaining(cooldownInSeconds, loc),
+                ),
+                style: const TextStyle(
+                  color: Color(0xFFFFB347),
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16,
+                ),
               ),
+            ],
             const SizedBox(height: 10),
             Wrap(
               spacing: 8,

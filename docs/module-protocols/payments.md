@@ -5,6 +5,7 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 
 ## Primary Frontend Entry
 - `client/lib/screens/premium_screen.dart` (VIP buy/extend, gift, cancel auto-renew, prestige KPI)
+- `client/lib/screens/dashboard_screen.dart` (HUD VIP-cel: actief/nee + resterende tijd, tik naar Premium)
 - `client/lib/screens/crew_screen.dart` (crew VIP checkout entry)
 
 ## Primary Backend Entry

@@ -29,6 +29,7 @@ import {
   normalizePlayerLanguage,
 } from '../config/supportedLanguages';
 import { getPublicEventChipShowcase } from '../services/eventItemService';
+import { crewMissionService } from '../services/crewMissionService';
 
 function emptyCrewWarHub() {
   return {
@@ -1382,6 +1383,19 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
     );
 
     cooldowns.nightclub = toRemainingSeconds(nightclubSeasonState?.seasonEndAt ?? null);
+
+    if (crewMembership?.crewId) {
+      try {
+        const missionCooldown = await crewMissionService.getCooldownRemainingSeconds(
+          crewMembership.crewId
+        );
+        if (missionCooldown > 0) {
+          cooldowns.crew_mission = missionCooldown;
+        }
+      } catch (error) {
+        console.error('[Dashboard] Crew mission cooldown failed:', { playerId, error });
+      }
+    }
 
     const totalAmmo = Number(ammoInventoryAgg._sum.quantity ?? 0);
     const drugsTotalQuantity = Number(drugInventoryAgg._sum.quantity ?? 0);

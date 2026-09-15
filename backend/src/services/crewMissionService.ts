@@ -1154,6 +1154,14 @@ export async function seedCrewMissionTemplatesIfNeeded(): Promise<void> {
 }
 
 export const crewMissionService = {
+  async getCooldownRemainingSeconds(crewId: number): Promise<number> {
+    const run = await getActiveRunForCrew(crewId);
+    if (run?.status !== 'completed' || !run.cooldownUntil) {
+      return 0;
+    }
+    return Math.max(0, Math.ceil((run.cooldownUntil.getTime() - Date.now()) / 1000));
+  },
+
   async getOverview(playerId: number) {
     await ensureSeededTemplates();
     const membership = await getCrewMembership(playerId);

@@ -233,7 +233,7 @@
       "Bij starten van een missie kun je nu per crewlid een rol kiezen (Planner, Enforcer, Logistics, Tech) voor team-bonussen.",
       "Actieve en recente missiekaarten tonen nu ook rolbijdragen per speler met score en eventuele payout-multiplier.",
       "Crewleden krijgen nu ook push/in-app meldingen bij missie-start, missie-resultaat en wanneer een missie-cooldown weer klaar is.",
-      "Tijdens een actieve missie-cooldown kun je geen nieuwe missie starten; je ziet eerst de resterende cooldown of kunt die versnellen met credits.",
+      "Tijdens een actieve missie-cooldown kun je geen nieuwe missie starten. Bovenin Crew Missies telt een grote timer live af tot je weer mag starten; dezelfde resttijd staat ook op Home bij de timeouts. Je kunt de wachttijd met credits versnellen.",
       "Bij cooldown speedup zie je eerst exact hoeveel credits het kost en hoeveel minuten resterend zijn voordat je bevestigt.",
       "Crew Wars hebben een eigen War Room-tab in het crew-scherm. Alleen leaders kunnen een war declareren en er zijn minimaal 3 crewleden nodig om mee te doen.",
       "War-types: Kill War, Economy War, Territory War en Total War. Iedere war doorloopt voorbereiding, actieve fase, lockdown en afronding.",
@@ -263,7 +263,7 @@
       "When starting a mission you can now assign a role per crew member (Planner, Enforcer, Logistics, Tech) for team bonuses.",
       "Active and recent mission cards now also show per-player role contributions with score and any payout multiplier.",
       "Crew members now also receive push/in-app alerts for mission start, mission result, and when a mission cooldown becomes ready again.",
-      "While a mission cooldown is active you cannot start a new mission; first wait for the remaining cooldown or speed it up with credits.",
+      "While a mission cooldown is active you cannot start a new mission. At the top of Crew Missions a large timer counts down live until you can start again; the same remaining time also appears on Home under timeouts. You can speed the wait up with credits.",
       "For cooldown speedup, you first see the exact credit cost and remaining minutes before you confirm.",
       "Crew Wars have their own War Room tab inside the crew screen. Only leaders can declare a war and at least 3 crew members are required to participate.",
       "War types: Kill War, Economy War, Territory War and Total War. Each war moves through preparation, active phase, lockdown and resolution.",
@@ -1731,6 +1731,7 @@
     "summaryEn": "Buy and manage Player VIP, Crew VIP and credit bundles here. See auto-renew, gift VIP, and build VIP prestige (display only).",
     "howNl": [
       "Open in het zijmenu de aparte pagina `Premium & Credits` om je VIP-status, vervaldatums, credit-saldo en koopopties te bekijken.",
+      "In de bovenbalk van het dashboard zie je ook of Player VIP actief is en hoe lang die nog loopt; tik daarop om Premium & Credits te openen. Zonder einddatum staat er Actief.",
       "Op elke aankooptegel kun je linksboven op het `i`-icoon tikken/klikken voor de volledige uitleg en voordelen; de tegel zelf toont bewust alleen korte kerninfo en de koopknop.",
       "Player VIP is persoonlijk. Crew VIP geldt voor je crew en heeft alleen waarde als je al in een crew zit.",
       "Player VIP geeft 10% kortere action timeouts (gevangenistijd blijft gelijk), wekelijkse 100 credits, een VIP 1-klik aankoopknop voor ontbrekende materialen in Drugs Productie (na kostenbevestiging) en een zachtere death-reset: je houdt bank/crypto/opleidingen/achievements, maar verliest wel assets, inventory en drugsvoorraad.",
@@ -1749,6 +1750,7 @@
     ],
     "howEn": [
       "Open the separate `Premium & Credits` page from the side menu to view your VIP status, expiry dates, credit balance and purchase options.",
+      "The dashboard top bar also shows whether Player VIP is active and how long it still lasts; tap it to open Premium & Credits. With no expiry date it shows Active.",
       "On each purchase tile, tap/click the `i` icon at the top-left for full details and benefits; the tile itself intentionally shows only short core info and the buy button.",
       "Player VIP is personal. Crew VIP applies to your crew and only has value when you are already in a crew.",
       "Player VIP gives 10% shorter action timeouts (jail time remains unchanged), 100 weekly credits, a VIP one-click purchase button for missing materials in Drug Production (after cost confirmation), and a softer death reset: bank/crypto/education/achievements stay, while assets, inventory and drug stock are removed.",

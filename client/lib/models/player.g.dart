@@ -22,6 +22,9 @@ Player _$PlayerFromJson(Map<String, dynamic> json) => Player(
   premiumCredits: (json['premiumCredits'] as num?)?.toInt(),
   gender: json['gender'] as String?,
   isVip: json['isVip'] as bool?,
+  vipExpiresAt: json['vipExpiresAt'] == null
+      ? null
+      : DateTime.parse(json['vipExpiresAt'] as String),
   preferredLanguage: json['preferredLanguage'] as String?,
   wealthStatus: json['wealthStatus'] as String?,
   wealthIcon: json['wealthIcon'] as String?,
@@ -52,6 +55,7 @@ Map<String, dynamic> _$PlayerToJson(Player instance) => <String, dynamic>{
   'premiumCredits': instance.premiumCredits,
   'gender': instance.gender,
   'isVip': instance.isVip,
+  'vipExpiresAt': instance.vipExpiresAt?.toIso8601String(),
   'preferredLanguage': instance.preferredLanguage,
   'wealthStatus': instance.wealthStatus,
   'wealthIcon': instance.wealthIcon,

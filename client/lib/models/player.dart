@@ -22,6 +22,7 @@ class Player {
   /// `male` | `female` from server; null for legacy accounts.
   final String? gender;
   final bool? isVip;
+  final DateTime? vipExpiresAt;
   final String? preferredLanguage;
   final String? wealthStatus;
   final String? wealthIcon;
@@ -45,6 +46,7 @@ class Player {
     this.premiumCredits,
     this.gender,
     this.isVip,
+    this.vipExpiresAt,
     this.preferredLanguage,
     this.wealthStatus,
     this.wealthIcon,
@@ -70,6 +72,7 @@ class Player {
     int? premiumCredits,
     String? gender,
     bool? isVip,
+    DateTime? vipExpiresAt,
     String? preferredLanguage,
     String? wealthStatus,
     String? wealthIcon,
@@ -90,6 +93,7 @@ class Player {
       premiumCredits: premiumCredits ?? this.premiumCredits,
       gender: gender ?? this.gender,
       isVip: isVip ?? this.isVip,
+      vipExpiresAt: vipExpiresAt ?? this.vipExpiresAt,
       preferredLanguage: preferredLanguage ?? this.preferredLanguage,
       wealthStatus: wealthStatus ?? this.wealthStatus,
       wealthIcon: wealthIcon ?? this.wealthIcon,
@@ -116,6 +120,8 @@ class PlayerHudSnapshot {
     required this.username,
     required this.avatar,
     required this.activePortraitPath,
+    required this.isVip,
+    required this.vipExpiresAt,
   });
 
   factory PlayerHudSnapshot.from(Player player) {
@@ -131,6 +137,8 @@ class PlayerHudSnapshot {
       username: player.username,
       avatar: player.avatar,
       activePortraitPath: player.activePortraitPath,
+      isVip: player.isVip == true,
+      vipExpiresAt: player.vipExpiresAt,
     );
   }
 
@@ -145,6 +153,8 @@ class PlayerHudSnapshot {
   final String username;
   final String? avatar;
   final String? activePortraitPath;
+  final bool isVip;
+  final DateTime? vipExpiresAt;
 
   @override
   bool operator ==(Object other) {
@@ -159,7 +169,9 @@ class PlayerHudSnapshot {
         other.currentCountry == currentCountry &&
         other.username == username &&
         other.avatar == avatar &&
-        other.activePortraitPath == activePortraitPath;
+        other.activePortraitPath == activePortraitPath &&
+        other.isVip == isVip &&
+        other.vipExpiresAt == vipExpiresAt;
   }
 
   @override
@@ -175,5 +187,7 @@ class PlayerHudSnapshot {
         username,
         avatar,
         activePortraitPath,
+        isVip,
+        vipExpiresAt,
       );
 }

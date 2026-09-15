@@ -378,6 +378,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   bool _navCooldownsLoaded = false;
   bool _navCooldownsLoading = false;
   Timer? _navCooldownTick;
+  final ValueNotifier<int> _hudClock = ValueNotifier<int>(0);
   final TextEditingController _menuSearchController = TextEditingController();
 
   int? _profilePlayerId;
@@ -683,6 +684,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _eventSubscription?.cancel();
     _navCooldownTick?.cancel();
     _navCooldowns.dispose();
+    _hudClock.dispose();
     _menuSearchController.dispose();
     super.dispose();
   }
@@ -722,7 +724,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void _startNavCooldownTimers() {
     _navCooldownTick?.cancel();
     _navCooldownTick = Timer.periodic(const Duration(seconds: 1), (_) {
-      if (!mounted || !_navCooldownsLoaded) return;
+      if (!mounted) return;
+      _hudClock.value++;
+      if (!_navCooldownsLoaded) return;
       final current = _navCooldowns.value;
       var changed = false;
       final next = <String, int>{};
@@ -1857,6 +1861,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
 
+  /// Remaining VIP seconds for the HUD. `-1` means active with no expiry.
+  int _vipRemainingSeconds(Player player) {
+    if (player.isVip != true) return 0;
+    final expiresAt = player.vipExpiresAt;
+    if (expiresAt == null) return -1;
+    final remaining = expiresAt.toUtc().difference(DateTime.now().toUtc()).inSeconds;
+    return remaining > 0 ? remaining : 0;
+  }
+
   Widget _buildLiveStatusBar(BuildContext context, AppLocalizations l10n) {
     return Selector<AuthProvider, PlayerHudSnapshot?>(
       selector: (_, auth) => auth.currentPlayer?.hudSnapshot,
@@ -1980,6 +1993,33 @@ class _DashboardScreenState extends State<DashboardScreen> {
       valueColor: Colors.amber.shade200,
       onTap: () => _selectWebSection(_WebSection.premium),
     );
+    final vipCell = Expanded(
+      child: ValueListenableBuilder<int>(
+        valueListenable: _hudClock,
+        builder: (_, __, ___) {
+          final remaining = _vipRemainingSeconds(player);
+          final active = remaining != 0;
+          final value = remaining < 0
+              ? l10n.hudVipActive
+              : remaining > 0
+                  ? formatAdaptiveDurationFromSeconds(
+                      remaining,
+                      localeName: l10n.localeName,
+                      includeSeconds: remaining < 3600,
+                    )
+                  : l10n.hudVipInactive;
+          return InkWell(
+            onTap: () => _selectWebSection(_WebSection.premium),
+            child: DashboardHudCell(
+              label: l10n.hudVip,
+              value: value,
+              valueColor: active ? Colors.amber.shade300 : Colors.white54,
+              compact: compact,
+            ),
+          );
+        },
+      ),
+    );
 
     final infoButton = pageInfoTopic == null
         ? null
@@ -2001,6 +2041,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               rankCell,
               divider(),
               healthCell,
+              divider(),
+              vipCell,
             ],
           ),
           const SizedBox(height: 6),
@@ -2036,6 +2078,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           countryCell,
           divider(),
           creditsCell,
+          divider(),
+          vipCell,
           if (infoButton != null) infoButton,
         ],
       );
@@ -4362,6 +4406,10 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       'shooting_range',
                     ),
                     _buildCooldownRow(l10n.dashboardTimeoutGym, 'gym'),
+                    _buildCooldownRow(
+                      l10n.dashboardTimeoutCrewMission,
+                      'crew_mission',
+                    ),
                     _buildCooldownRow(
                       l10n.dashboardTimeoutGymStrength,
                       'gym_strength',
