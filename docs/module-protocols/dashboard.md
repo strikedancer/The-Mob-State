@@ -99,6 +99,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Verifieer onder rang 5 dat late menu-items grijs/slot zijn en een toast `menuUnlocksAtRank` geven; vanaf rang 5 zijn ze weer open.
 - Verifieer dat dagdoelen **één keer** in de gestylede paneelkaart staan (niet dubbel bovenaan), dat elke regel cash + XP toont, dat Claim een toast met bedragen geeft, en dat autodiefstal niet featured is onder rank 5.
 - Verifieer dat **Eten & Drinken** nergens meer in zijbalk of hamburger-menu staat.
+- Verifieer dat de dashboard-`i` (Help-onderwerp Dashboard) geen honger, dorst of eten/drinken-tick meer noemt. Banen-help mag die checks ook niet meer eisen.
 - Verifieer dat een klaar dag- of weekdoel **geen** rood cijfer op weekevent-avatars zet. Alleen het maandelijkse Empire-avatar mag een Event Pass-claimcijfer tonen.
 - Verifieer dat de rangtitel op het dashboard dezelfde ladder volgt als het publieke profiel (Soldaat op 25–29, Peetvader op 60–74).
 - Verifieer in admin image-management dat uploaden en vervangen werkt voor dezelfde storage-root die door runtime `/assets/images` wordt geserveerd.

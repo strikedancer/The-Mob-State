@@ -112,9 +112,10 @@
 ### Tick Systeem
 Elke **5 minuten** gebeurt er automatisch:
 - **Passive Healing**: +5 HP (alleen als HP > 0 en < 100)
+- **Wanted decay**: licht omlaag als Wanted < 10
 - **FBI Heat Decay**: -1 punt per tick (alleen als FBI Heat < 10)
 - **Bank Interest**: Momenteel uitgeschakeld (geen passieve rente per tick)
-- **Eten & Drinken** is uit het spel: geen honger/dorst-meters, geen food-shop, geen dood door honger/dorst.
+- **Eten & Drinken** is uit het spel: geen honger/dorst-meters, geen food-shop, geen dood door honger/dorst. De dashboard-`i` en Banen-help noemen honger en dorst niet meer.
 
 ### Drugs & prestaties (server)
 - Prestaties die op drugproductie (o.a. aantal voltooide batches, hoeveelheid per type) zijn gebaseerd, worden door de server **verwerkt wanneer productie klaar is of wanneer je ophaalt** (incl. VIP auto-ophalen), zodat je ze niet pas krijgt door later een ander scherm (zoals nachtclub) te openen. Zie `docs/module-protocols/drugs.md`.
