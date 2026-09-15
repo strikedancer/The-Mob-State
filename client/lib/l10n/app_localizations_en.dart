@@ -15549,6 +15549,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get territoryTagBorder => 'Border region';
 
   @override
+  String get territoryTagAirhub => 'Air hub';
+
   String get territoryTagLogistics => 'Logistics hub';
 
   @override
@@ -18250,7 +18252,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicTerritoryTips =>
-      'Start in a balanced country with medium-sized regions: less competition than large countries but reasonable passive income.\nFocus on one country where your crew is strong first: better knowledge leads to better contest strategy than shallow control in many countries.\nUse seasons as strategic resets: if you lose in a dry season, a better season always follows for a comeback.';
+      'Start in a balanced country with medium-sized regions: less competition than large countries but reasonable passive income.\nFocus on one country where your crew is strong first: better knowledge leads to better contest strategy than shallow control in many countries.\nUse seasons as strategic resets: if you lose in a dry season, a better season always follows for a comeback.\nPrioritize industry and capital hubs for income and season score. Own an airhub near your travel routes to cut layover waits. Push war aftermath theaters before the pressure expires.';
 
   @override
   String get helpTopicProstitutionCategory => 'Empire';
@@ -19173,6 +19175,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get territoryOverlayProject => 'Projects';
 
   @override
+  String get territoryOverlayWar => 'War aftermath';
+
   String get territoryOverlayEvent => 'Region events';
 
   @override

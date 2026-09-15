@@ -15715,6 +15715,8 @@ class AppLocalizationsIt extends AppLocalizations {
   String get territoryTagBorder => 'Regione di confine';
 
   @override
+  String get territoryTagAirhub => 'Hub aereo';
+
   String get territoryTagLogistics => 'Polo logistico';
 
   @override
@@ -19370,6 +19372,8 @@ class AppLocalizationsIt extends AppLocalizations {
   String get territoryOverlayProject => 'Progetti';
 
   @override
+  String get territoryOverlayWar => 'Conseguenze di guerra';
+
   String get territoryOverlayEvent => 'Eventi della regione';
 
   @override

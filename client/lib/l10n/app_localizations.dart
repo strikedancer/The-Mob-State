@@ -26947,6 +26947,16 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Logistics hub'**
+  /// Air hub strategic tag
+  ///
+  /// In en, this message translates to:
+  /// **'Air hub'**
+  String get territoryTagAirhub;
+
+  /// No description provided for @territoryTagLogistics.
+  ///
+  /// In en, this message translates to:
+  /// **'Logistics hub'**
   String get territoryTagLogistics;
 
   /// No description provided for @territoryActionPatrol.
@@ -33055,6 +33065,16 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Projects'**
   String get territoryOverlayProject;
+
+  /// No description provided for @territoryOverlayEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Region events'**
+  /// War aftermath overlay toggle
+  ///
+  /// In en, this message translates to:
+  /// **'War aftermath'**
+  String get territoryOverlayWar;
 
   /// No description provided for @territoryOverlayEvent.
   ///

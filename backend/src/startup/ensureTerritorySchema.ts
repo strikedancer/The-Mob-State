@@ -1,5 +1,6 @@
 import prisma from '../lib/prisma';
 import { territoryAutoRegionSeeds } from './territoryRegionSeeds';
+import { lookupTerritoryStrategicOverlay } from './territoryStrategicOverlays';
 
 async function columnExists(tableName: string, columnName: string): Promise<boolean> {
   const rows = await prisma.$queryRaw<Array<{ count: number }>>`
@@ -57,6 +58,13 @@ const TERRITORY_CONFIG_DEFAULTS: Record<string, string> = {
   TERRITORY_WAR_AFTERMATH_ADJACENT_ATTACK_BONUS: '1',
   TERRITORY_WAR_AFTERMATH_TARGET_STABILITY_PENALTY: '20',
   TERRITORY_WAR_AFTERMATH_ADJACENT_STABILITY_PENALTY: '10',
+  TERRITORY_WAR_AFTERMATH_TOTAL_WAR_MULTIPLIER: '1.5',
+  TERRITORY_WAR_AFTERMATH_STABILITY_CAPTURE_FACTOR: '0.15',
+  TERRITORY_TAG_INDUSTRY_INCOME_BONUS_PERCENT: '12',
+  TERRITORY_TAG_INDUSTRY_CONTRIBUTE_BONUS_PERCENT: '25',
+  TERRITORY_TAG_BORDER_PREP_REDUCTION_PERCENT: '25',
+  TERRITORY_TAG_CAPITAL_SEASON_WEIGHT: '1.5',
+  TERRITORY_TAG_AIRHUB_TRAVEL_TIME_REDUCTION_PERCENT: '15',
   TERRITORY_HQ_REGION_CAP_PER_LEVEL: '0.2',
   TERRITORY_HQ_REGION_CAP_BONUS_CAP: '3',
   TERRITORY_HQ_CONTEST_CAP_PER_LEVEL: '0.1',
@@ -138,15 +146,16 @@ function buildAutoRegions(countryCode: string, svgAssetKey: string): TerritorySe
   const seeds = territoryAutoRegionSeeds[svgAssetKey] ?? [];
   return seeds.map((seed) => {
     const safeName = sanitizeSeedName(seed.name) || seed.svg;
+    const overlay = lookupTerritoryStrategicOverlay(seed.svg);
     return {
       countryCode,
       key: normalizeTerritoryRegionKey(seed.svg),
       nl: safeName,
       en: safeName,
       svg: seed.svg,
-      tier: 2,
-      strategicTags: [],
-      neighbors: [],
+      tier: overlay?.valueTier ?? 2,
+      strategicTags: overlay?.strategicTags ?? [],
+      neighbors: overlay?.neighbors ?? [],
     };
   });
 }
@@ -506,7 +515,7 @@ export async function ensureTerritorySchema(): Promise<void> {
     },
     {
       countryCode: 'nl', key: 'nl-noord-holland', nl: 'Noord-Holland', en: 'North Holland', svg: 'NL-NH', tier: 3,
-      strategicTags: ['capital', 'harbor'], neighbors: ['nl-friesland', 'nl-flevoland', 'nl-utrecht', 'nl-zuid-holland'],
+      strategicTags: ['capital', 'harbor', 'airhub'], neighbors: ['nl-friesland', 'nl-flevoland', 'nl-utrecht', 'nl-zuid-holland'],
     },
     {
       countryCode: 'nl', key: 'nl-zuid-holland', nl: 'Zuid-Holland', en: 'South Holland', svg: 'NL-ZH', tier: 3,

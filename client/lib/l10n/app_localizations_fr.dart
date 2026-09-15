@@ -15738,6 +15738,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get territoryTagBorder => 'Région frontalière';
 
   @override
+  String get territoryTagAirhub => 'Hub aérien';
+
   String get territoryTagLogistics => 'Plateforme logistique';
 
   @override
@@ -19394,6 +19396,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get territoryOverlayProject => 'Projets';
 
   @override
+  String get territoryOverlayWar => 'Séquelles de guerre';
+
   String get territoryOverlayEvent => 'Événements régionaux';
 
   @override
