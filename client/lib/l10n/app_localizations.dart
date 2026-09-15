@@ -26308,8 +26308,26 @@ abstract class AppLocalizations {
   /// No description provided for @crimeScreenFilterAvailable.
   ///
   /// In en, this message translates to:
-  /// **'Available only'**
+  /// **'On your rank'**
   String get crimeScreenFilterAvailable;
+
+  /// No description provided for @crimeScreenSectionReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to commit'**
+  String get crimeScreenSectionReady;
+
+  /// No description provided for @crimeScreenSectionNeedsGear.
+  ///
+  /// In en, this message translates to:
+  /// **'Still need gear'**
+  String get crimeScreenSectionNeedsGear;
+
+  /// No description provided for @crimeScreenSectionLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Not unlocked yet'**
+  String get crimeScreenSectionLocked;
 
   /// No description provided for @crimeScreenSortLabel.
   ///
@@ -30744,7 +30762,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicCrimesHow.
   ///
   /// In en, this message translates to:
-  /// **'At ranks 1–5, street crimes (min rank 1) show the real catalog success chance — pickpocket and shoplift start around 65–70%. Vandalism and graffiti do not need spray paint.\nIf those early street crimes fail, you usually get away empty-handed instead of going to jail. Jail is still possible, just no longer the default.\nJobs stay available from rank 1 while you are not in jail — use them when you want cash without crime risk.\nCrime cooldowns now scale with potential payout: low-yield crimes stay fast, while high-yield crimes get clearly longer cooldowns.\nGuideline by reward tier: up to €500 ≈ 1.5 min, up to €2,000 ≈ 5 min, up to €10,000 ≈ 15 min, up to €30,000 ≈ 30 min, above that ≈ 60 min.\nThere is no hard daily cap on crimes; active players can keep playing as long as they manage cooldowns, risk and resources.\nArmed crimes show on each card which weapon type you need (pistol, shotgun, rifle, SMG, sniper). Wear a matching weapon on slot 1 or 2 in Inventory — a gun only in your backpack does not count.\nYour active gym and shooting-range bonuses (up to +8% each) are shown on the Crimes screen; they raise success chance as the server calculates (train more via the Training hub / gym + range).\nIf you complete at least one gym session and one shooting-range session on the same UTC calendar day, the server adds a small extra crime success chance (+0.5%). The Crimes screen shows when this combo is active.\nCrimes with a vehicle requirement use your selected crime vehicle from Garage or Marina. Only a vehicle that is actually in your current country and not in transit or listed for sale counts.\nDrug requirements in crimes are shown in grams and follow the same quantities as your drug inventory and storage.\nIf a crime cannot start because of a missing vehicle, the wrong weapon, or missing ammo, the error message should now show the real cause instead of a generic retry.\nEvery crime attempt: you take 5-15 HP damage and Wanted Level rises by 1-4 points depending on success or failure.\nArrest chance scales fast with Wanted Level: Wanted 5 = 25%, Wanted 10 = 50%, Wanted 18+ = maximum 90%.\nOn arrest you go to prison. Sentence = max(wanted level × 10, 5) minutes. Bail = wanted level × €1.000. Even if a crime seems successful at first but you get caught right after, the final outcome still counts as an arrest: required tools are confiscated, the used crime weapon is lost, and vehicles can also be seized.\nSome crimes require a vehicle, tool or minimum rank. Missing these will prevent the crime from starting.\nXP earned raises your rank, unlocking better crimes and higher rewards.\nFBI Heat rises with heavier crimes. Above heat 50 the FBI becomes active with even higher arrest chances.'**
+  /// **'At ranks 1–5, street crimes (min rank 1) show the real catalog success chance — pickpocket and shoplift start around 65–70%. Vandalism and graffiti do not need spray paint.\nIf those early street crimes fail, you usually get away empty-handed instead of going to jail. Jail is still possible, just no longer the default.\nJobs stay available from rank 1 while you are not in jail — use them when you want cash without crime risk.\nCrime cooldowns now scale with potential payout: low-yield crimes stay fast, while high-yield crimes get clearly longer cooldowns.\nGuideline by reward tier: up to €500 ≈ 1.5 min, up to €2,000 ≈ 5 min, up to €10,000 ≈ 15 min, up to €30,000 ≈ 30 min, above that ≈ 60 min.\nThere is no hard daily cap on crimes; active players can keep playing as long as they manage cooldowns, risk and resources.\nArmed crimes show on each card which weapon type you need (pistol, shotgun, rifle, SMG, sniper). Wear a matching weapon on slot 1 or 2 in Inventory — a gun only in your backpack does not count.\nThe Crimes screen defaults to On your rank. Ready-to-commit crimes are listed first; below that are same-rank crimes that still need a weapon, drugs, tools or a car. All crimes also shows crimes that need a higher rank.\nYour active gym and shooting-range bonuses (up to +8% each) are shown on the Crimes screen; they raise success chance as the server calculates (train more via the Training hub / gym + range).\nIf you complete at least one gym session and one shooting-range session on the same UTC calendar day, the server adds a small extra crime success chance (+0.5%). The Crimes screen shows when this combo is active.\nCrimes with a vehicle requirement use your selected crime vehicle from Garage or Marina. Only a vehicle that is actually in your current country and not in transit or listed for sale counts.\nDrug requirements in crimes are shown in grams and follow the same quantities as your drug inventory and storage.\nIf a crime cannot start because of a missing vehicle, the wrong weapon, or missing ammo, the error message should now show the real cause instead of a generic retry.\nEvery crime attempt: you take 5-15 HP damage and Wanted Level rises by 1-4 points depending on success or failure.\nArrest chance scales fast with Wanted Level: Wanted 5 = 25%, Wanted 10 = 50%, Wanted 18+ = maximum 90%.\nOn arrest you go to prison. Sentence = max(wanted level × 10, 5) minutes. Bail = wanted level × €1.000. Even if a crime seems successful at first but you get caught right after, the final outcome still counts as an arrest: required tools are confiscated, the used crime weapon is lost, and vehicles can also be seized.\nSome crimes require a vehicle, tool or minimum rank. Missing these will prevent the crime from starting.\nXP earned raises your rank, unlocking better crimes and higher rewards.\nFBI Heat rises with heavier crimes. Above heat 50 the FBI becomes active with even higher arrest chances.'**
   String get helpTopicCrimesHow;
 
   /// No description provided for @helpTopicCrimesTips.

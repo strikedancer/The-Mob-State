@@ -1754,8 +1754,9 @@ export const crimeService = {
   },
 
   /**
-   * Whether a crime should appear under the "available" filter.
+   * Whether a crime should appear under the "on your rank" filter.
    * Tool/weapon gaps are OK (buyable); vehicle/drug crimes need system rank unlocks.
+   * The client splits this set into ready-to-commit vs still-need-gear.
    */
   isCrimeListedAvailable(
     crimeId: string,
