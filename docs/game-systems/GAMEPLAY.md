@@ -706,7 +706,7 @@ Er zijn **drie landvoertuig-omgevingen** plus vliegtuigen:
 
 In **Voertuig stelen** kies je Auto / Motor / Boot via de drie lane-cards. Help & Uitleg (gouden `i`) en de Almanak-handleiding hebben voor elk van die omgevingen een eigen hoofdstuk. Admin → Voertuigen toont dezelfde vier catalogi (auto's, motoren, boten, vliegtuigen); nieuw/vies/defect als klikbare thumbs, geen bestandsnamen.
 
-- Bij beschadigde voertuigen in Garage / Motorstalling / Marina staat op de voertuigkaart een contextuele credits-knop voor instant repair; als reparatie nog niet loopt wordt die eerst gestart en meteen daarna afgerond.
+- Bij beschadigde voertuigen in Garage / Motorstalling / Marina staat op de voertuigkaart een contextuele credits-knop voor instant repair; als reparatie nog niet loopt wordt die eerst gestart en meteen daarna afgerond. Een reparatiejob waarvan de auto al weg is (verkocht, gesloopt of in beslag) mag de garage-inventaris niet laten crashen.
 - Voertuigkaarten in Garage / Motorstalling / Marina tonen linksboven op de voertuigfoto een korte **zeldzaamheid-badge** (Gewoon/Ongewoon/Zeldzaam/Episch/Legendarisch).
 
 ---
@@ -1057,7 +1057,7 @@ Bob: â‚¬300K counter-hit
 - Kill-reset zonder actieve Player VIP: volledige progression reset naar baseline (incl. bank/crypto/opleidingen/achievements).
 - Op ondersteunde timeout-schermen (crime, jobs, school, voertuig-, motor- en bootdiefstal) staat een directe `versnel met credits` knop, zodat spelers een actieve cooldown contextueel kunnen resetten zonder eerst naar `Premium & Credits` te navigeren. Die overlays (plus reizen en hoger beroep) gebruiken noir/goud-stills (`/images/cooldown_*.png`).
 - Voor school geldt: een credit-speedup reset alleen de cooldowntimer; XP wordt verdiend bij de trainingsactie zelf. Na reset start je direct een nieuwe training voor extra XP.
-- Bij beschadigde voertuigen in Garage / Motorstalling / Marina staat op de voertuigkaart een contextuele credits-knop voor instant repair; als reparatie nog niet loopt wordt die eerst gestart en meteen daarna afgerond.
+- Bij beschadigde voertuigen in Garage / Motorstalling / Marina staat op de voertuigkaart een contextuele credits-knop voor instant repair; als reparatie nog niet loopt wordt die eerst gestart en meteen daarna afgerond. Een reparatiejob waarvan de auto al weg is (verkocht, gesloopt of in beslag) mag de garage-inventaris niet laten crashen.
 - De instant-repair knop gebruikt een gecombineerd icoon (steeksleutel + bliksem) om de actie visueel duidelijk te maken zonder extra tekstdruk op de kaart.
 - Voertuigkaarten in Garage / Motorstalling / Marina tonen linksboven op de voertuigfoto een korte **zeldzaamheid-badge** (Gewoon/Ongewoon/Zeldzaam/Episch/Legendarisch) zodat je sneller ziet welke voertuigen het waard zijn om te houden of te verkopen.
 - Tijdelijke premium boosts zijn bewust non pay-to-win en capped: kleine utility bonussen voor crime success/payout, hitlist attack/defense en event contribution, zonder event-reward tiers te overrulen.

@@ -95,6 +95,7 @@ Vehicle inventory, steal flow, sorting, condition, fuel, timed repairs, country 
 - Verify no text overflows or clipped buttons appear.
 - Verify the available-cars catalog matches the player country and hides capped-out vehicles.
 - Start a repair and verify the vehicle becomes temporarily unavailable until the timer completes.
+- If a vehicle is sold, scrapped or seized while a repair job is still open, garage inventory must still load. The orphaned job is cancelled or completed without a Prisma P2025 update on a missing `vehicleInventory` row.
 - Verify repair concurrency cap shared across car/motorcycle/boat: non-VIP can start only 1 active repair, VIP can start up to 2.
 - Confirm transport actions are no longer offered from Garage and that players are pointed to Smuggling when relevant.
 - Verify car cards have no Select/Deselect for crimes; the Inventory paper doll crime-car slot is the car assignment UI.

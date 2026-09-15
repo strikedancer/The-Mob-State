@@ -1596,8 +1596,36 @@ const getTuneUpgradeCost = (
   return { nextLevel, partsCost, moneyCost };
 };
 
+async function cancelOrphanedRepairJobs(playerId?: number) {
+  if (playerId == null) {
+    await prisma.$executeRaw`
+      UPDATE vehicle_repair_jobs j
+      LEFT JOIN vehicle_inventory v ON v.id = j.vehicle_inventory_id
+      SET j.status = 'cancelled', j.completed_at = UTC_TIMESTAMP()
+      WHERE j.status = 'in_progress'
+        AND v.id IS NULL
+    `;
+    return;
+  }
+
+  await prisma.$executeRaw`
+    UPDATE vehicle_repair_jobs j
+    LEFT JOIN vehicle_inventory v ON v.id = j.vehicle_inventory_id
+    SET j.status = 'cancelled', j.completed_at = UTC_TIMESTAMP()
+    WHERE j.status = 'in_progress'
+      AND j.player_id = ${playerId}
+      AND v.id IS NULL
+  `;
+}
+
 async function processCompletedRepairJobs(playerId?: number) {
   await ensureRepairJobsTable();
+  try {
+    await cancelOrphanedRepairJobs(playerId);
+  } catch (error) {
+    console.error('[VehicleService] cancelOrphanedRepairJobs failed:', error);
+  }
+
   const dueJobs =
     playerId == null
       ? await prisma.$queryRaw<RepairJobRow[]>`
@@ -1639,44 +1667,47 @@ async function processCompletedRepairJobs(playerId?: number) {
   }> = [];
 
   for (const job of dueJobs) {
-    const markedCompleted = await prisma.$transaction(async (tx) => {
-      const updatedRows = await tx.$executeRaw`
-        UPDATE vehicle_repair_jobs
-        SET status = 'completed', completed_at = UTC_TIMESTAMP()
-        WHERE id = ${job.id}
-          AND status = 'in_progress'
-      `;
+    try {
+      const vehicleInventory = vehiclesByInventoryId.get(job.vehicle_inventory_id);
+      const markedCompleted = await prisma.$transaction(async (tx) => {
+        const updatedRows = await tx.$executeRaw`
+          UPDATE vehicle_repair_jobs
+          SET status = 'completed', completed_at = UTC_TIMESTAMP()
+          WHERE id = ${job.id}
+            AND status = 'in_progress'
+        `;
 
-      if (Number(updatedRows ?? 0) <= 0) {
-        return false;
-      }
+        if (Number(updatedRows ?? 0) <= 0) {
+          return false;
+        }
 
-      await tx.vehicleInventory.update({
-        where: { id: job.vehicle_inventory_id },
-        data: { condition: job.target_condition },
+        await tx.vehicleInventory.updateMany({
+          where: { id: job.vehicle_inventory_id },
+          data: { condition: job.target_condition },
+        });
+
+        return true;
       });
 
-      return true;
-    });
+      if (!markedCompleted || !vehicleInventory) {
+        continue;
+      }
 
-    if (!markedCompleted) {
-      continue;
+      const definition = vehicleService.getVehicleById(vehicleInventory.vehicleId);
+      const normalizedVehicleType = normalizeVehicleType(vehicleInventory.vehicleType);
+
+      completedJobs.push({
+        playerId: vehicleInventory.playerId,
+        vehicleName: definition?.name ?? 'Vehicle',
+        vehicleType: normalizedVehicleType,
+        vehicleInventoryId: vehicleInventory.id,
+      });
+    } catch (error) {
+      console.error(
+        `[VehicleService] repair completion skipped for job ${job.id} vehicle ${job.vehicle_inventory_id}:`,
+        error
+      );
     }
-
-    const vehicleInventory = vehiclesByInventoryId.get(job.vehicle_inventory_id);
-    if (!vehicleInventory) {
-      continue;
-    }
-
-    const definition = vehicleService.getVehicleById(vehicleInventory.vehicleId);
-    const normalizedVehicleType = normalizeVehicleType(vehicleInventory.vehicleType);
-
-    completedJobs.push({
-      playerId: vehicleInventory.playerId,
-      vehicleName: definition?.name ?? 'Vehicle',
-      vehicleType: normalizedVehicleType,
-      vehicleInventoryId: vehicleInventory.id,
-    });
   }
 
   if (completedJobs.length === 0) {
@@ -1701,7 +1732,11 @@ async function processCompletedRepairJobs(playerId?: number) {
 
 async function getActiveRepairJobs(playerId: number): Promise<Map<number, RepairJobRow>> {
   await ensureRepairJobsTable();
-  await processCompletedRepairJobs(playerId);
+  try {
+    await processCompletedRepairJobs(playerId);
+  } catch (error) {
+    console.error('[VehicleService] processCompletedRepairJobs failed:', error);
+  }
 
   const rows = await prisma.$queryRaw<RepairJobRow[]>`
     SELECT *
@@ -1729,7 +1764,11 @@ async function hasRepairInProgress(playerId: number, vehicleInventoryId: number)
 
 async function getActiveRepairJobCount(playerId: number): Promise<number> {
   await ensureRepairJobsTable();
-  await processCompletedRepairJobs(playerId);
+  try {
+    await processCompletedRepairJobs(playerId);
+  } catch (error) {
+    console.error('[VehicleService] processCompletedRepairJobs failed:', error);
+  }
 
   const rows = await prisma.$queryRaw<Array<{ total: bigint | number }>>`
     SELECT COUNT(*) AS total
@@ -1778,10 +1817,6 @@ export async function processDueVehicleRepairCompletions(): Promise<number> {
   `;
 
   const dueCount = Number(rows[0]?.total ?? 0);
-  if (dueCount <= 0) {
-    return 0;
-  }
-
   await processCompletedRepairJobs();
   return dueCount;
 }
