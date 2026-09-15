@@ -22,6 +22,7 @@ One public in-game lobby for every logged-in player, with a curated sticker pack
 - Keep DMs and crew chat unchanged.
 - Filter on the server, never only in the client.
 - Live updates use SSE `global_chat.message` / `global_chat.message_deleted` via `eventBroadcaster.broadcast`. Do not write world-chat lines into the personal activity feed. No push per public message.
+- System lines (`source: system`, sender `Gevangenis`) announce when a **real player** is jailed, bought out, or jailbroken. Names are in the body. NPCs are skipped. Own bail / self-escape stay silent. These lines still mirror to the Discord wereldchat lobby; they never go to `#updates`.
 - Hide the live-event rail on World chat (same as Messages / Crew) so it cannot cover send.
 - World chat stays open before rank 5.
 - Discord outbound uses `GLOBAL_CHAT_DISCORD_WEBHOOK_URL`. Inbound polling uses `GLOBAL_CHAT_DISCORD_BOT_TOKEN` + `GLOBAL_CHAT_DISCORD_CHANNEL_ID`. Empty env = in-game only. Never post this lobby into `#updates` or the Crew Wars ops webhook.
@@ -45,6 +46,7 @@ Player OAuth stays `identify` + `email` only. The chat bot is a separate token.
 - Discord (community invite + Sign-In stay; this adds a chat bridge)
 - Messages (DMs remain private)
 - Crew (crew chat remains crew-only)
+- Prison (system jail / buyout / jailbreak lines)
 - Admin (mute, delete, extra blocklist, kill switch `GLOBAL_CHAT_ENABLED`)
 - Player Profile (tap a linked in-game name)
 
@@ -63,6 +65,7 @@ Player OAuth stays `identify` + `email` only. The chat bot is a separate token.
 6. Live-event rail hidden on the screen; Enter sends.
 7. Without Discord env, in-game chat still works.
 8. With webhook only: game posts appear in Discord; Discord replies do not enter the game until bot+channel are set.
+9. Jail a real player (or buy out / jailbreak another): a `Gevangenis` system line appears live. An NPC arrest does not.
 
 ## i18n and Messaging
 ARB prefix `worldChat*` plus Help `helpTopicWorldChat*`.

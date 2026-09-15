@@ -904,7 +904,11 @@ export const crimeService = {
       // Sentence is already on this crime_attempt. Do not create a second
       // police_arrest / federal_arrest row — bribing the latest row used to
       // leave the original attempt jailed and checkIfJailed re-locked the player.
-      await policeService.setJailReleaseClock(playerId, jailTime);
+      await policeService.setJailReleaseClock(
+        playerId,
+        jailTime,
+        crime.isFederal ? 'FBI' : 'Police',
+      );
       if (crime.isFederal) {
         const fbiArrestResult = await fbiService.checkFBIArrest(playerId);
         arrestingAuthority = 'FBI';

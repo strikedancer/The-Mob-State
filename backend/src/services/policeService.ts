@@ -6,6 +6,7 @@ import { notificationService } from './notificationService';
 import { propertyStorageService } from './propertyStorageService';
 import { showroomService } from './showroomService';
 import { seizeCarriedOnArrest } from './carriedInventory';
+import { announcePlayerFreedBy, announcePlayerJailed } from './prisonWorldChat';
 
 async function searchWarehousesAfterArrest(playerId: number): Promise<void> {
   await runPoliceSideEffect('warehouse search', async () => {
@@ -360,7 +361,8 @@ export async function checkIfJailed(playerId: number): Promise<number> {
  */
 export async function setJailReleaseClock(
   playerId: number,
-  jailTimeMinutes: number
+  jailTimeMinutes: number,
+  authority: string = 'Police',
 ): Promise<Date> {
   const jailRelease = new Date(Date.now() + jailTimeMinutes * 60 * 1000);
   await withPrismaWriteRetry(() =>
@@ -381,6 +383,9 @@ export async function setJailReleaseClock(
     );
   }).catch((error) => {
     console.error('[Police Service] backpack seize failed:', error);
+  });
+  void announcePlayerJailed(playerId, authority).catch((error) => {
+    console.error('[Police Service] world chat jail announcement failed:', error);
   });
   return jailRelease;
 }
@@ -587,6 +592,10 @@ export async function buyOutPrisoner(
     });
   });
 
+  void announcePlayerFreedBy(buyerId, targetId, 'buyout').catch((error) => {
+    console.error('[Police Service] world chat buyout announcement failed:', error);
+  });
+
   return {
     amount: bail,
     targetUsername: target.username,
@@ -703,6 +712,10 @@ export async function attemptJailbreak(
           crewId: crewId ?? null,
         }),
       },
+    });
+
+    void announcePlayerFreedBy(rescuerId, jailedPlayerId, 'jailbreak').catch((error) => {
+      console.error('[Police Service] world chat jailbreak announcement failed:', error);
     });
 
     return {

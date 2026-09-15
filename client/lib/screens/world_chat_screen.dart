@@ -414,6 +414,9 @@ class _WorldChatScreenState extends State<WorldChatScreen> {
       itemCount: _messages.length,
       itemBuilder: (context, index) {
         final message = _messages[index];
+        if (message.isSystem) {
+          return _SystemChatLine(message: message);
+        }
         final isOwn = playerId != null && message.playerId == playerId;
         return MessageBubble(
           message: message.message,
@@ -471,6 +474,50 @@ class _WorldChatScreenState extends State<WorldChatScreen> {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _SystemChatLine extends StatelessWidget {
+  const _SystemChatLine({required this.message});
+
+  final GlobalChatMessage message;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 8),
+      child: Column(
+        children: [
+          Text(
+            message.displayName,
+            style: const TextStyle(
+              color: Color(0xFFFFB347),
+              fontSize: 11,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.6,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            message.message,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.grey[300],
+              fontSize: 13,
+              fontStyle: FontStyle.italic,
+              height: 1.35,
+            ),
+          ),
+          if (message.formattedTime.isNotEmpty) ...[
+            const SizedBox(height: 4),
+            Text(
+              message.formattedTime,
+              style: TextStyle(color: Colors.grey[600], fontSize: 10),
+            ),
+          ],
+        ],
       ),
     );
   }
