@@ -57,6 +57,13 @@ async function getTerritoryConfig() {
     'TERRITORY_WAR_AFTERMATH_ADJACENT_ATTACK_BONUS',
     'TERRITORY_WAR_AFTERMATH_TARGET_STABILITY_PENALTY',
     'TERRITORY_WAR_AFTERMATH_ADJACENT_STABILITY_PENALTY',
+    'TERRITORY_WAR_AFTERMATH_TOTAL_WAR_MULTIPLIER',
+    'TERRITORY_WAR_AFTERMATH_STABILITY_CAPTURE_FACTOR',
+    'TERRITORY_TAG_INDUSTRY_INCOME_BONUS_PERCENT',
+    'TERRITORY_TAG_INDUSTRY_CONTRIBUTE_BONUS_PERCENT',
+    'TERRITORY_TAG_BORDER_PREP_REDUCTION_PERCENT',
+    'TERRITORY_TAG_CAPITAL_SEASON_WEIGHT',
+    'TERRITORY_TAG_AIRHUB_TRAVEL_TIME_REDUCTION_PERCENT',
     'TERRITORY_HQ_REGION_CAP_PER_LEVEL',
     'TERRITORY_HQ_REGION_CAP_BONUS_CAP',
     'TERRITORY_HQ_CONTEST_CAP_PER_LEVEL',
@@ -142,6 +149,13 @@ async function getTerritoryConfig() {
     warAftermathAdjacentAttackBonus: Number(cfg['TERRITORY_WAR_AFTERMATH_ADJACENT_ATTACK_BONUS'] ?? 1),
     warAftermathTargetStabilityPenalty: Number(cfg['TERRITORY_WAR_AFTERMATH_TARGET_STABILITY_PENALTY'] ?? 20),
     warAftermathAdjacentStabilityPenalty: Number(cfg['TERRITORY_WAR_AFTERMATH_ADJACENT_STABILITY_PENALTY'] ?? 10),
+    warAftermathTotalWarMultiplier: Number(cfg['TERRITORY_WAR_AFTERMATH_TOTAL_WAR_MULTIPLIER'] ?? 1.5),
+    warAftermathStabilityCaptureFactor: Number(cfg['TERRITORY_WAR_AFTERMATH_STABILITY_CAPTURE_FACTOR'] ?? 0.15),
+    tagIndustryIncomeBonusPercent: Number(cfg['TERRITORY_TAG_INDUSTRY_INCOME_BONUS_PERCENT'] ?? 12),
+    tagIndustryContributeBonusPercent: Number(cfg['TERRITORY_TAG_INDUSTRY_CONTRIBUTE_BONUS_PERCENT'] ?? 25),
+    tagBorderPrepReductionPercent: Number(cfg['TERRITORY_TAG_BORDER_PREP_REDUCTION_PERCENT'] ?? 25),
+    tagCapitalSeasonWeight: Number(cfg['TERRITORY_TAG_CAPITAL_SEASON_WEIGHT'] ?? 1.5),
+    tagAirhubTravelTimeReductionPercent: Number(cfg['TERRITORY_TAG_AIRHUB_TRAVEL_TIME_REDUCTION_PERCENT'] ?? 15),
     hqRegionCapPerLevel: Number(cfg['TERRITORY_HQ_REGION_CAP_PER_LEVEL'] ?? 0.2),
     hqRegionCapBonusCap: Number(cfg['TERRITORY_HQ_REGION_CAP_BONUS_CAP'] ?? 3),
     hqContestCapPerLevel: Number(cfg['TERRITORY_HQ_CONTEST_CAP_PER_LEVEL'] ?? 0.1),
@@ -223,6 +237,7 @@ function getProjectConfig(
     armsCacheDefenseBonusPoints: Math.max(0, Math.floor(cfg.projectArmsCacheDefenseBonusPoints)),
     contributeProgress: Math.max(1, Math.floor(cfg.projectContributeProgress)),
     contributeCooldownSeconds: Math.max(0, Math.floor(cfg.projectContributeCooldownSeconds)),
+    industryContributeBonusPercent: Math.max(0, Math.floor(cfg.tagIndustryContributeBonusPercent)),
     sabotageHpDamage: Math.max(1, Math.floor(cfg.projectSabotageHpDamage)),
     supplyRepairHp: Math.max(1, Math.floor(cfg.projectSupplyRepairHp)),
     supplyBuildProgress: Math.max(1, Math.floor(cfg.projectSupplyBuildProgress)),
@@ -403,11 +418,16 @@ const TRAVEL_TO_TERRITORY_COUNTRY_CODE: Record<string, string> = {
 function buildContestSchedule(
   startedAt: Date,
   cfg: Awaited<ReturnType<typeof getTerritoryConfig>>,
-): { activeAt: Date; lockdownAt: Date; resolveAt: Date } {
-  const activeAt = new Date(startedAt.getTime() + (cfg.contestPrepMinutes * 60 * 1000));
+  prepMinutesOverride?: number,
+): { activeAt: Date; lockdownAt: Date; resolveAt: Date; prepMinutes: number } {
+  const prepMinutes = Math.max(
+    1,
+    Math.floor(prepMinutesOverride ?? cfg.contestPrepMinutes),
+  );
+  const activeAt = new Date(startedAt.getTime() + (prepMinutes * 60 * 1000));
   const lockdownAt = new Date(activeAt.getTime() + (cfg.contestActiveMinutes * 60 * 1000));
   const resolveAt = new Date(lockdownAt.getTime() + (cfg.contestLockdownMinutes * 60 * 1000));
-  return { activeAt, lockdownAt, resolveAt };
+  return { activeAt, lockdownAt, resolveAt, prepMinutes };
 }
 
 function normalizeContestSchedule(
@@ -420,6 +440,79 @@ function normalizeContestSchedule(
     lockdownAt: contest.lockdownAt ?? fallback.lockdownAt,
     resolveAt: contest.resolveAt ?? fallback.resolveAt,
   };
+}
+
+function getStrategicTagModifiers(
+  strategicTags: string[],
+  cfg: Awaited<ReturnType<typeof getTerritoryConfig>>,
+) {
+  const tags = strategicTags.map((tag) => tag.toLowerCase());
+  return {
+    industryIncomeBonusPercent: tags.includes('industry')
+      ? Math.max(0, Math.floor(cfg.tagIndustryIncomeBonusPercent))
+      : 0,
+    industryContributeBonusPercent: tags.includes('industry')
+      ? Math.max(0, Math.floor(cfg.tagIndustryContributeBonusPercent))
+      : 0,
+    borderPrepReductionPercent: tags.includes('border')
+      ? Math.max(0, Math.min(50, Math.floor(cfg.tagBorderPrepReductionPercent)))
+      : 0,
+    capitalSeasonWeight: tags.includes('capital')
+      ? Math.max(1, Number(cfg.tagCapitalSeasonWeight) || 1.5)
+      : 1,
+    airhubTravelTimeReductionPercent: tags.includes('airhub')
+      ? Math.max(0, Math.min(40, Math.floor(cfg.tagAirhubTravelTimeReductionPercent)))
+      : 0,
+    hasCapital: tags.includes('capital'),
+    hasIndustry: tags.includes('industry'),
+    hasBorder: tags.includes('border'),
+    hasAirhub: tags.includes('airhub'),
+    hasHarbor: tags.includes('harbor'),
+    hasLogistics: tags.includes('logistics'),
+  };
+}
+
+function applyPercentBonus(amount: number, bonusPercent: number): number {
+  if (bonusPercent <= 0) return Math.max(0, Math.round(amount));
+  return Math.max(0, Math.round(amount * (1 + (bonusPercent / 100))));
+}
+
+function applyPercentReduction(amount: number, reductionPercent: number): number {
+  if (reductionPercent <= 0) return Math.max(0, Math.round(amount));
+  return Math.max(0, Math.round(amount * (1 - (reductionPercent / 100))));
+}
+
+export {
+  getTerritoryConfig,
+  getStrategicTagModifiers,
+  applyPercentBonus,
+  applyPercentReduction,
+  parseStringArray as parseTerritoryStringArray,
+};
+
+/** True when the crew owns at least one enabled region with the given strategic tag in a territory country. */
+export async function crewOwnsStrategicTagInCountry(
+  crewId: number | null | undefined,
+  travelOrTerritoryCountry: string | null | undefined,
+  tag: string,
+): Promise<boolean> {
+  if (!crewId || !travelOrTerritoryCountry) return false;
+  const countryCode = mapTravelCountryToTerritoryCode(travelOrTerritoryCountry);
+  if (!countryCode) return false;
+  const needle = `%${tag.toLowerCase()}%`;
+  const rows = await prisma.$queryRawUnsafe<Array<{ cnt: number }>>(
+    `SELECT COUNT(*) AS cnt
+     FROM territory_control tc
+     INNER JOIN territory_regions tr ON tr.regionKey = tc.regionKey
+     WHERE tc.ownerCrewId = ?
+       AND tr.countryCode = ?
+       AND tr.enabled = 1
+       AND LOWER(COALESCE(tr.strategicTagsJson, '')) LIKE ?`,
+    crewId,
+    countryCode,
+    needle,
+  );
+  return toNumeric(rows[0]?.cnt ?? 0) > 0;
 }
 
 function parseJson(v: string | null | undefined): Record<string, unknown> {
@@ -1020,8 +1113,8 @@ async function processPassiveTerritoryIncome(
   );
   const seasonKey = seasons[0]?.seasonKey ?? 'territory-open';
 
-  const rows = await prisma.$queryRawUnsafe<PassiveIncomeRegionRow[]>(
-    `SELECT tc.regionKey, tr.countryCode, tc.ownerCrewId, tr.valueTier, tc.lastIncomeAt
+  const rows = await prisma.$queryRawUnsafe<Array<PassiveIncomeRegionRow & { strategicTagsJson: string | null }>>(
+    `SELECT tc.regionKey, tr.countryCode, tc.ownerCrewId, tr.valueTier, tr.strategicTagsJson, tc.lastIncomeAt
      FROM territory_control tc
      JOIN territory_regions tr ON tr.regionKey = tc.regionKey
      WHERE tc.ownerCrewId IS NOT NULL AND tr.enabled = 1`,
@@ -1046,14 +1139,16 @@ async function processPassiveTerritoryIncome(
       continue;
     }
 
+    const tagModifiers = getStrategicTagModifiers(parseStringArray(row.strategicTagsJson), cfg);
     const boosted = applyIncomeBonus(
       getPassiveIncomeCashForTier(toNumeric(row.valueTier), cfg),
       incomeBonusByRegion[row.regionKey] ?? 0,
     );
+    const withIndustry = applyPercentBonus(boosted, tagModifiers.industryIncomeBonusPercent);
     const penaltyPercent = incomePenaltyByRegion[row.regionKey] ?? 0;
     const amountPerCycle = penaltyPercent > 0
-      ? Math.max(0, Math.round(boosted * (1 - (penaltyPercent / 100))))
-      : boosted;
+      ? Math.max(0, Math.round(withIndustry * (1 - (penaltyPercent / 100))))
+      : withIndustry;
     const payoutAmount = payoutCycles * amountPerCycle;
     const newLastIncomeAt = new Date(lastIncomeAt.getTime() + (payoutCycles * intervalMs));
 
@@ -1517,9 +1612,14 @@ export async function getMapData(
     const projectIncomeBonusPercent = incomeBonusByRegion[r.regionKey] ?? 0;
     const regionEvent = regionEventByKey[r.regionKey] ?? null;
     const eventPenaltyPercent = incomePenaltyByRegion[r.regionKey] ?? 0;
+    const strategicTags = parseStringArray(r.strategicTagsJson);
+    const tagModifiers = getStrategicTagModifiers(strategicTags, cfg);
     let amountPerInterval = applyIncomeBonus(incomeSnapshot.amountPerInterval, projectIncomeBonusPercent);
     let amountPerHour = applyIncomeBonus(incomeSnapshot.amountPerHour, projectIncomeBonusPercent);
     let amountPerDay = applyIncomeBonus(incomeSnapshot.amountPerDay, projectIncomeBonusPercent);
+    amountPerInterval = applyPercentBonus(amountPerInterval, tagModifiers.industryIncomeBonusPercent);
+    amountPerHour = applyPercentBonus(amountPerHour, tagModifiers.industryIncomeBonusPercent);
+    amountPerDay = applyPercentBonus(amountPerDay, tagModifiers.industryIncomeBonusPercent);
     if (eventPenaltyPercent > 0) {
       const factor = 1 - (eventPenaltyPercent / 100);
       amountPerInterval = Math.max(0, Math.round(amountPerInterval * factor));
@@ -1532,7 +1632,6 @@ export async function getMapData(
       amountPerHour,
       amountPerDay,
     };
-    const strategicTags = parseStringArray(r.strategicTagsJson);
     const neighbors = parseStringArray(r.neighborsJson);
     const countOwnedNeighbors = (crewId: number | null | undefined): number => {
       if (crewId == null) return 0;
@@ -1619,6 +1718,7 @@ export async function getMapData(
       regionProject,
       regionEvent,
       strategicTags,
+      tagModifiers,
       neighbors,
       adjacentOwnedRegions,
       ownerAdjacentOwnedRegions,
@@ -2167,7 +2267,13 @@ export async function startContest(
   }
 
   const now = new Date();
-  const schedule = buildContestSchedule(now, cfg);
+  const strategicTags = parseStringArray(regions[0].strategicTagsJson);
+  const tagModifiers = getStrategicTagModifiers(strategicTags, cfg);
+  const prepMinutes = applyPercentReduction(
+    cfg.contestPrepMinutes,
+    tagModifiers.borderPrepReductionPercent,
+  );
+  const schedule = buildContestSchedule(now, cfg, prepMinutes);
   const activeAt = schedule.activeAt;
   const lockdownAt = schedule.lockdownAt;
   const resolveAt = schedule.resolveAt;
@@ -2770,12 +2876,25 @@ export async function resolveContest(contestId: number): Promise<{ winnerCrewId:
     garrison != null &&
     contest.defenderCrewId != null &&
     garrison.favoredCrewId === toNumeric(contest.defenderCrewId);
-  const captureThreshold = garrisonProtectsDefender
+  let captureThreshold = garrisonProtectsDefender
     ? Math.min(
         garrisonOffer.captureThresholdCap,
         cfg.captureThresholdPercent + garrison.captureThresholdBonus,
       )
     : cfg.captureThresholdPercent;
+
+  // War-aftermath stability pressure makes contested regions easier to capture.
+  const warPressure = (await getActiveWarPressureEffects([contest.regionKey], new Date()))[contest.regionKey] ?? null;
+  if (
+    warPressure
+    && contest.defenderCrewId != null
+    && warPressure.affectedCrewId === toNumeric(contest.defenderCrewId)
+    && warPressure.stabilityPenalty > 0
+  ) {
+    const stabilityFactor = Math.max(0, Math.min(0.35, Number(cfg.warAftermathStabilityCaptureFactor) || 0.15));
+    const stabilityEase = Math.round((warPressure.stabilityPenalty / 100) * 100 * stabilityFactor);
+    captureThreshold = Math.max(45, captureThreshold - stabilityEase);
+  }
 
   if (totalPoints > 0) {
     const attackerPct = (attackerPoints / totalPoints) * 100;
@@ -2925,6 +3044,7 @@ export async function adminCloseSeason(seasonKey: string): Promise<territoryMeta
   const result = await territoryMetaService.closeSeasonAndDistributeAwards({
     seasonKey,
     rewardCashMultiplierPercent: cfg.rewardCashMultiplierPercent,
+    capitalSeasonWeight: cfg.tagCapitalSeasonWeight,
   });
   await _notifySeasonAwards(result).catch(() => {});
   return result;

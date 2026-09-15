@@ -173,6 +173,7 @@ async function getTerritoryWarAftermathConfig() {
     'TERRITORY_WAR_AFTERMATH_ADJACENT_ATTACK_BONUS',
     'TERRITORY_WAR_AFTERMATH_TARGET_STABILITY_PENALTY',
     'TERRITORY_WAR_AFTERMATH_ADJACENT_STABILITY_PENALTY',
+    'TERRITORY_WAR_AFTERMATH_TOTAL_WAR_MULTIPLIER',
   ];
   const placeholders = keys.map(() => '?').join(', ');
   const rows = await prisma.$queryRawUnsafe<Array<{ configKey: string; configValue: string }>>(
@@ -189,6 +190,7 @@ async function getTerritoryWarAftermathConfig() {
     adjacentAttackBonus: Number(cfg.TERRITORY_WAR_AFTERMATH_ADJACENT_ATTACK_BONUS ?? 1),
     targetStabilityPenalty: Number(cfg.TERRITORY_WAR_AFTERMATH_TARGET_STABILITY_PENALTY ?? 20),
     adjacentStabilityPenalty: Number(cfg.TERRITORY_WAR_AFTERMATH_ADJACENT_STABILITY_PENALTY ?? 10),
+    totalWarMultiplier: Number(cfg.TERRITORY_WAR_AFTERMATH_TOTAL_WAR_MULTIPLIER ?? 1.5),
   };
 }
 
@@ -210,6 +212,7 @@ function computeStrategicClaimBonus(strategicTags: string[], valueTier: number, 
   if (strategicTags.includes('industry')) bonus += 1;
   if (strategicTags.includes('logistics')) bonus += 1;
   if (strategicTags.includes('border')) bonus += 1;
+  if (strategicTags.includes('airhub')) bonus += 1;
   if (adjacentEnemyRegions > 0) bonus += 1;
   return Math.min(4, bonus);
 }
@@ -217,7 +220,12 @@ function computeStrategicClaimBonus(strategicTags: string[], valueTier: number, 
 function computeStrategicTickPoints(valueTier: number, strategicTags: string[], adjacentFriendlyRegions: number): number {
   let points = 4 + Math.max(0, valueTier - 1);
   if (strategicTags.includes('capital')) points += 2;
-  if (strategicTags.includes('harbor') || strategicTags.includes('industry') || strategicTags.includes('logistics')) {
+  if (
+    strategicTags.includes('harbor')
+    || strategicTags.includes('industry')
+    || strategicTags.includes('logistics')
+    || strategicTags.includes('airhub')
+  ) {
     points += 1;
   }
   points += Math.min(2, adjacentFriendlyRegions);
@@ -254,6 +262,9 @@ function computeWarPriorityScore(row: {
         break;
       case 'border':
         score += 8;
+        break;
+      case 'airhub':
+        score += 14;
         break;
       default:
         break;
@@ -662,24 +673,29 @@ async function applyTerritoryWarAftermath(war: NonNullable<CrewWarRecord>, winne
   const ownerMap = new Map(controlRows.map((row) => [row.regionKey, row.ownerCrewId]));
 
   const cfg = await getTerritoryWarAftermathConfig();
+  const intensity = war.warType === 'total_war'
+    ? Math.max(1, Number(cfg.totalWarMultiplier) || 1.5)
+    : 1;
   const now = new Date();
-  const endsAt = new Date(now.getTime() + (Math.max(1, cfg.hours) * 60 * 60 * 1000));
+  const endsAt = new Date(now.getTime() + (Math.max(1, Math.round(cfg.hours * intensity)) * 60 * 60 * 1000));
   const effectRows = [
     ...targetKeys
       .filter((regionKey) => ownerMap.get(regionKey) === loserCrewId)
       .map((regionKey) => ({
         regionKey,
         regionRole: regionKey === theaterTarget.regionKey ? 'theater' : 'target',
-        attackBonusPoints: cfg.targetAttackBonus,
-        stabilityPenalty: cfg.targetStabilityPenalty,
+        effectKey: regionKey === theaterTarget.regionKey ? 'siege_momentum' : 'region_fatigue',
+        attackBonusPoints: Math.round(cfg.targetAttackBonus * intensity),
+        stabilityPenalty: Math.round(cfg.targetStabilityPenalty * intensity),
       })),
     ...theaterNeighbors
       .filter((regionKey) => ownerMap.get(regionKey) === loserCrewId && !targetKeys.includes(regionKey))
       .map((regionKey) => ({
         regionKey,
         regionRole: 'adjacent' as const,
-        attackBonusPoints: cfg.adjacentAttackBonus,
-        stabilityPenalty: cfg.adjacentStabilityPenalty,
+        effectKey: 'region_fatigue',
+        attackBonusPoints: Math.round(cfg.adjacentAttackBonus * intensity),
+        stabilityPenalty: Math.round(cfg.adjacentStabilityPenalty * intensity),
       })),
   ];
 
@@ -703,6 +719,8 @@ async function applyTerritoryWarAftermath(war: NonNullable<CrewWarRecord>, winne
       loserCrewId,
       stringifyJson({
         regionRole: effect.regionRole,
+        effectKey: effect.effectKey,
+        warType: war.warType,
         attackBonusPoints: effect.attackBonusPoints,
         stabilityPenalty: effect.stabilityPenalty,
       }),
@@ -717,6 +735,7 @@ async function applyTerritoryWarAftermath(war: NonNullable<CrewWarRecord>, winne
     favoredCrewId: winnerCrewId,
     affectedCrewId: loserCrewId,
     endsAt,
+    intensity,
   };
 }
 
@@ -955,6 +974,7 @@ async function postCrewWarDiscord(
     attackerCrewId: number;
     defenderCrewId: number;
     warType?: string | null;
+    metadataJson?: string | null;
     endTime?: Date | null;
     winnerCrewId?: number | null;
   },
@@ -974,11 +994,18 @@ async function postCrewWarDiscord(
       defenderPoints = standings.find((row) => row.crewId === war.defenderCrewId)?.totalPoints ?? 0;
     }
 
+    const metadata = asJson(war.metadataJson);
+    const theaterName =
+      (typeof metadata.theaterNameNl === 'string' && metadata.theaterNameNl.trim())
+        ? metadata.theaterNameNl.trim()
+        : (typeof metadata.theaterRegionKey === 'string' ? metadata.theaterRegionKey : null);
+
     await discordWebhookService.sendCrewWarEvent(eventType, {
       warId: war.id,
       attackerName: crewMap.get(war.attackerCrewId)?.name ?? `Crew ${war.attackerCrewId}`,
       defenderName: crewMap.get(war.defenderCrewId)?.name ?? `Crew ${war.defenderCrewId}`,
       warTypeLabel: warTypeLabelNl(war.warType),
+      theaterName,
       winnerName: winnerCrewId ? crewMap.get(winnerCrewId)?.name ?? null : null,
       attackerPoints,
       defenderPoints,

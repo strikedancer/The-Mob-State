@@ -149,8 +149,9 @@ function applyCashMultiplier(amount: number, multiplierPercent: number): number 
 export async function closeSeasonAndDistributeAwards(params: {
   seasonKey: string;
   rewardCashMultiplierPercent: number;
+  capitalSeasonWeight?: number;
 }): Promise<SeasonCloseResult> {
-  const { seasonKey, rewardCashMultiplierPercent } = params;
+  const { seasonKey, rewardCashMultiplierPercent, capitalSeasonWeight = 1.5 } = params;
 
   const seasons = await prisma.$queryRawUnsafe<Array<{
     seasonKey: string;
@@ -218,16 +219,24 @@ export async function closeSeasonAndDistributeAwards(params: {
   const awards: SeasonAwardPayout[] = [];
 
   const expansionRows = await prisma.$queryRawUnsafe<Array<{ crewId: number; captures: number }>>(
-    `SELECT winnerCrewId AS crewId, COUNT(*) AS captures
-     FROM territory_contests
-     WHERE status = 'resolved'
-       AND winnerCrewId IS NOT NULL
-       AND resolvedAt IS NOT NULL
-       AND resolvedAt >= ?
-       AND resolvedAt < ?
+    `SELECT winnerCrewId AS crewId,
+            SUM(
+              CASE
+                WHEN LOWER(COALESCE(tr.strategicTagsJson, '')) LIKE '%capital%' THEN ?
+                ELSE 1
+              END
+            ) AS captures
+     FROM territory_contests tc
+     LEFT JOIN territory_regions tr ON tr.regionKey = tc.regionKey
+     WHERE tc.status = 'resolved'
+       AND tc.winnerCrewId IS NOT NULL
+       AND tc.resolvedAt IS NOT NULL
+       AND tc.resolvedAt >= ?
+       AND tc.resolvedAt < ?
      GROUP BY winnerCrewId
      ORDER BY captures DESC, winnerCrewId ASC
      LIMIT 3`,
+    Math.max(1, Number(capitalSeasonWeight ?? 1.5)),
     startsAt,
     endsAt,
   );
@@ -468,7 +477,7 @@ export async function rotateRegionEvents(
   const preferred = candidates.filter((c) => {
     if (occupiedSet.has(c.regionKey)) return false;
     const tags = String(c.strategicTagsJson ?? '').toLowerCase();
-    return tags.includes('harbor') || tags.includes('border') || tags.includes('capital') || tags.includes('industry');
+    return tags.includes('harbor') || tags.includes('border') || tags.includes('capital') || tags.includes('industry') || tags.includes('logistics') || tags.includes('airhub');
   });
   const fallback = candidates.filter((c) => !occupiedSet.has(c.regionKey));
   const pool = preferred.length > 0 ? preferred : fallback;

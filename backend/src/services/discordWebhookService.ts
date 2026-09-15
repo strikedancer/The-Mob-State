@@ -11,6 +11,7 @@ export type CrewWarDiscordPayload = {
   attackerName: string;
   defenderName: string;
   warTypeLabel: string;
+  theaterName?: string | null;
   winnerName?: string | null;
   attackerPoints?: number | null;
   defenderPoints?: number | null;
@@ -155,6 +156,9 @@ class DiscordWebhookService {
       field('Verdediger', payload.defenderName),
       field('Type', payload.warTypeLabel),
     ];
+    if (payload.theaterName?.trim()) {
+      fields.push(field('Theater', payload.theaterName.trim()));
+    }
     const endsAt = formatAmsterdam(payload.endsAt ?? null);
     if (endsAt && eventType !== 'war_resolved') {
       fields.push(field('Live tot', endsAt));

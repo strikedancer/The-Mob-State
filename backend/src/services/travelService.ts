@@ -45,6 +45,7 @@ export interface CountryWithRoute extends Country {
   route?: RouteInfo;
   totalCost?: number;
   totalTime?: number;
+  airhubBonusApplied?: boolean;
 }
 
 export interface TravelResult {
@@ -216,10 +217,12 @@ export function applyAircraftTravelBonus(baseMinutes: number, bonus = 0): number
 /**
  * Get all countries with route information from a specific origin.
  * `travelBonus` shortens air-route times (best owned plane). Water routes stay unchanged.
+ * `airhubBonusPercent` further shortens times when the crew owns an airhub in origin or destination.
  */
 export function getAllCountriesWithRoutes(
   fromCountry: string,
-  travelBonus = 0
+  travelBonus = 0,
+  airhubBonusPercent = 0,
 ): CountryWithRoute[] {
   return countries.map((country) => {
     const c = country as Country;
@@ -244,13 +247,17 @@ export function getAllCountriesWithRoutes(
     const totalCost = Math.round(c.travelCost * route.costMultiplier);
     const totalLegs = Math.max(route.path.length - 1, 1);
     const baseTime = totalLegs * LEG_COOLDOWN_MINUTES;
-    const totalTime = applyAircraftTravelBonus(baseTime, travelBonus);
+    let totalTime = applyAircraftTravelBonus(baseTime, travelBonus);
+    if (airhubBonusPercent > 0) {
+      totalTime = Math.max(1, Math.round(totalTime * (1 - (Math.min(40, airhubBonusPercent) / 100))));
+    }
     
     return {
       ...c,
       route,
       totalCost,
       totalTime,
+      airhubBonusApplied: airhubBonusPercent > 0,
     };
   });
 }

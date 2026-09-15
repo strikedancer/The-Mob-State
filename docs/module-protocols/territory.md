@@ -129,8 +129,20 @@ Scope-afbakening:
 - `nameNl`, `nameEn`
 - `svgElementId` (id in SVG)
 - `valueTier` (economy waarde)
-- `strategicTags` (harbor, border, capital, industry, logistics)
-- `harbor` now grants a smuggling route bonus (ETA −10%, seizure −5%) when the crew owns a harbor region in the player's current country. See `smuggling.md`.
+- `strategicTags` (harbor, border, capital, industry, logistics, airhub)
+- Tag identity effects (live):
+  - `harbor`: smuggling ETA/seizure bonus when owned in current country
+  - `capital`: higher season expansion weight for captures
+  - `industry`: +passive income % and faster project contribute
+  - `border`: shorter contest prep on that region
+  - `airhub`: travel leg cooldown reduction when owned in origin/destination country
+  - `logistics`: contest action bonuses (supply/raid)
+- Multi-country strategic overlays seed major hubs (BE/DE/FR/IT/ES/GB/US) with tags + neighbors; NL includes Schiphol `airhub` on Noord-Holland
+- War theater + aftermath:
+  - Theater auto-picked on territory/total wars; Discord embeds show theater name
+  - Aftermath writes typed effects (`siege_momentum` / `region_fatigue`); `total_war` uses a stronger multiplier
+  - Effective stability from aftermath lowers capture threshold; map overlay toggle shows theater/pressure markers
+- `harbor` still grants smuggling route bonus (ETA −10%, seizure −5%) when the crew owns a harbor region in the player's current country. See `smuggling.md`.
 - `neighborsJson` (adjacency)
 
 ### Control

@@ -19,10 +19,18 @@ Wat al live aanwezig is:
 - Crew leaders zien al territory economy samenvattingen in dashboard-statistieken.
 
 Wat nog grotendeels ontbreekt:
-- strategisch verschillende regio-identiteiten
-- diepe koppeling tussen Crew HQ progression en Territory power
-- echte nasleep tussen Crew Wars en Territory control
-- langdurige regionale investeringen, sabotage en map-meta
+- (fase F+) diepere geopolitieke meta buiten tags/theater/aftermath
+
+## Live diepte (2026-09-15)
+
+Aanbevolen Eerste Build is nu uitgebreid live:
+1. `strategicTags` identity effects (harbor/capital/industry/border/airhub/logistics) + multi-country overlays
+2. war theater zichtbaar in War Room, Discord en territory map overlay
+3. typed post-war aftermath (`siege_momentum` / `region_fatigue`) met total_war multiplier + stability→capture impact
+
+Wat nog grotendeels ontbreekt (oud overzicht, deels achterhaald):
+- handmatige theater-keuze door leaders
+- aparte named aftermath matrix verder uitbreiden (elevated heat / recovery loop)
 
 ## North Star
 
@@ -295,11 +303,15 @@ Waarschijnlijke metadata-uitbreidingen:
 
 ## Aanbevolen Eerste Build
 
-Als er maar één concrete uitbreiding gebouwd wordt, dan is dit de beste volgorde:
+Status (2026-09-15): deze drie stappen zijn nu live uitgebreid.
 
-1. voeg echte `strategicTags` effecten toe
-2. voeg `war theater` toe aan territory war / total war
-3. voeg tijdelijke post-war territory modifiers toe
+1. echte `strategicTags` identity effects — ✅ (harbor/capital/industry/border/airhub/logistics + multi-country overlays)
+2. `war theater` op territory war / total war — ✅ (War Room + Discord + map overlay)
+3. tijdelijke post-war territory modifiers — ✅ (typed aftermath, total_war multiplier, stability→capture)
+
+Volgende optionele polish:
+- handmatige theater-pick door crew leaders
+- bredere named aftermath matrix (elevated heat / recovery loop)
 
 Waarom juist deze drie:
 - ze bouwen direct voort op bestaande code

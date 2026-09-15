@@ -326,7 +326,9 @@
           "type": "int"
         }
       }
-    }
+    },
+    "territoryTagAirhub": "Air hub",
+    "territoryOverlayWar": "War aftermath"
   },
   "nl": {
     "territoryContestStatusPreparing": "Voorbereiding",
@@ -489,6 +491,8 @@
     "territoryLeaderboardStatsLine": "W {won} · V {defended} · L {lost} · hold {hold}",
     "territoryHoldDurationDaysHours": "{days}d {hours}u",
     "territoryHoldDurationHoursMinutes": "{hours}u {minutes}m",
-    "territoryHoldDurationMinutes": "{minutes}m"
+    "territoryHoldDurationMinutes": "{minutes}m",
+    "territoryTagAirhub": "Luchthavenhub",
+    "territoryOverlayWar": "Oorlogs-nasleep"
   }
 }

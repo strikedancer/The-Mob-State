@@ -153,6 +153,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   bool _overlayContest = true;
   bool _overlayProject = true;
   bool _overlayEvent = true;
+  bool _overlayWar = true;
 
   // â”€â”€ Tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   late TabController _tabController;
@@ -521,6 +522,8 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         return t.territoryTagBorder;
       case 'logistics':
         return t.territoryTagLogistics;
+      case 'airhub':
+        return t.territoryTagAirhub;
       default:
         return tag;
     }
@@ -1357,6 +1360,16 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         '<text x="${cx + 11}" y="${cy + 13}" text-anchor="middle" font-size="9" fill="#F8FAFC" font-family="Arial,sans-serif" font-weight="700">!</text>',
       );
     }
+    final warPressure = (region['activeWarPressure'] as Map?)?.cast<String, dynamic>();
+    if (_overlayWar && warPressure != null) {
+      final role = (warPressure['regionRole'] as String?) ?? 'target';
+      final letter = role == 'theater' ? 'T' : (role == 'adjacent' ? 'F' : 'W');
+      final color = role == 'theater' ? '#DC2626' : '#F97316';
+      parts.add(
+        '<circle cx="$cx" cy="${cy + 22}" r="7" fill="$color" stroke="#111827" stroke-width="0.9"/>'
+        '<text x="$cx" y="${cy + 25}" text-anchor="middle" font-size="8" fill="#FFF7ED" font-family="Arial,sans-serif" font-weight="700">$letter</text>',
+      );
+    }
     final garrison = (region['garrison'] as Map?)?.cast<String, dynamic>();
     if (garrison?['active'] == true) {
       parts.add(
@@ -2093,6 +2106,19 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                           onSelected: (value) {
                             setState(() {
                               _overlayEvent = value;
+                              _renderedSvgMap = _renderSvgWithOwnership(
+                                (_mapData['regions'] as List<dynamic>?) ??
+                                    const [],
+                              );
+                            });
+                          },
+                        ),
+                        FilterChip(
+                          label: Text(_l10n.territoryOverlayWar),
+                          selected: _overlayWar,
+                          onSelected: (value) {
+                            setState(() {
+                              _overlayWar = value;
                               _renderedSvgMap = _renderSvgWithOwnership(
                                 (_mapData['regions'] as List<dynamic>?) ??
                                     const [],

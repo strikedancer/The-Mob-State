@@ -11,15 +11,48 @@ import * as travelService from '../services/travelService';
 import * as aviationService from '../services/aviationService';
 import * as policeService from '../services/policeService';
 import * as cooldownService from '../services/cooldownService';
+import * as territoryService from '../services/territoryService';
+import prisma from '../lib/prisma';
 
 const TRAVEL_LEG_COOLDOWN_SECONDS = 3600;
 
-async function travelCooldownWithAircraftBonus(playerId: number) {
+async function getPlayerCrewId(playerId: number): Promise<number | null> {
+  const membership = await prisma.crewMember.findFirst({
+    where: { playerId },
+    select: { crewId: true },
+  });
+  return membership?.crewId ?? null;
+}
+
+async function resolveAirhubTravelBonusPercent(
+  playerId: number,
+  fromCountry: string,
+  toCountry?: string | null,
+): Promise<number> {
+  const crewId = await getPlayerCrewId(playerId);
+  if (!crewId) return 0;
+  const cfg = await territoryService.getTerritoryConfig();
+  const reduction = Math.max(0, Math.min(40, Math.floor(cfg.tagAirhubTravelTimeReductionPercent ?? 15)));
+  if (reduction <= 0) return 0;
+  const ownsFrom = await territoryService.crewOwnsStrategicTagInCountry(crewId, fromCountry, 'airhub');
+  const ownsTo = toCountry
+    ? await territoryService.crewOwnsStrategicTagInCountry(crewId, toCountry, 'airhub')
+    : false;
+  return ownsFrom || ownsTo ? reduction : 0;
+}
+
+async function travelCooldownWithAircraftBonus(playerId: number, fromCountry?: string | null) {
   const bonus = await aviationService.getBestAircraftBonus(playerId);
-  const seconds = Math.max(
+  let seconds = Math.max(
     60,
     Math.round(TRAVEL_LEG_COOLDOWN_SECONDS * (1 - Math.min(0.9, Math.max(0, bonus))))
   );
+  if (fromCountry) {
+    const airhubPercent = await resolveAirhubTravelBonusPercent(playerId, fromCountry);
+    if (airhubPercent > 0) {
+      seconds = Math.max(60, Math.round(seconds * (1 - (airhubPercent / 100))));
+    }
+  }
   return cooldownService.setCooldown(playerId, 'travel', seconds);
 }
 
@@ -54,9 +87,11 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response, next: Next
     // Get player's current country to calculate routes
     const currentCountry = await travelService.getPlayerCountry(playerId);
     const aircraftTravelBonus = await aviationService.getBestAircraftBonus(playerId);
+    const airhubTravelBonusPercent = await resolveAirhubTravelBonusPercent(playerId, currentCountry);
     const countries = travelService.getAllCountriesWithRoutes(
       currentCountry,
-      aircraftTravelBonus
+      aircraftTravelBonus,
+      airhubTravelBonusPercent,
     );
     
     return res.json({
@@ -65,6 +100,7 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response, next: Next
       countries,
       currentCountry,
       aircraftTravelBonus,
+      airhubTravelBonusPercent,
     });
   } catch (error) {
     return next(error);
@@ -99,9 +135,11 @@ router.get('/countries', authenticate, async (req: AuthRequest, res: Response, n
     // Get player's current country to calculate routes
     const currentCountry = await travelService.getPlayerCountry(playerId);
     const aircraftTravelBonus = await aviationService.getBestAircraftBonus(playerId);
+    const airhubTravelBonusPercent = await resolveAirhubTravelBonusPercent(playerId, currentCountry);
     const countries = travelService.getAllCountriesWithRoutes(
       currentCountry,
-      aircraftTravelBonus
+      aircraftTravelBonus,
+      airhubTravelBonusPercent,
     );
     
     return res.json({
@@ -109,6 +147,7 @@ router.get('/countries', authenticate, async (req: AuthRequest, res: Response, n
       countries,
       currentCountry,
       aircraftTravelBonus,
+      airhubTravelBonusPercent,
     });
   } catch (error) {
     return next(error);
@@ -195,7 +234,8 @@ router.post(
       const result = await travelService.continueJourney(playerId);
       
       // Set cooldown after successful travel (own aircraft shortens the wait)
-      const cooldownInfo = await travelCooldownWithAircraftBonus(playerId);
+      const currentCountry = await travelService.getPlayerCountry(playerId);
+      const cooldownInfo = await travelCooldownWithAircraftBonus(playerId, currentCountry);
 
       return res.json({
         ...result,
@@ -329,7 +369,8 @@ router.post(
       const result = await travelService.startJourney(playerId, countryId);
       
       // Set cooldown after successful travel (own aircraft shortens the wait)
-      const cooldownInfo = await travelCooldownWithAircraftBonus(playerId);
+      const currentCountry = await travelService.getPlayerCountry(playerId);
+      const cooldownInfo = await travelCooldownWithAircraftBonus(playerId, currentCountry);
 
       return res.json({
         ...result,

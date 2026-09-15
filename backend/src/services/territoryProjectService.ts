@@ -52,6 +52,7 @@ export type TerritoryProjectConfig = {
   armsCacheDefenseBonusPoints: number;
   contributeProgress: number;
   contributeCooldownSeconds: number;
+  industryContributeBonusPercent?: number;
   sabotageHpDamage: number;
   supplyRepairHp: number;
   supplyBuildProgress: number;
@@ -395,8 +396,8 @@ export async function contributeRegionProject(params: {
 }): Promise<TerritoryRegionProject> {
   const { crewId, regionKey, config, currentCountry, assertInCountry } = params;
 
-  const regions = await prisma.$queryRawUnsafe<Array<{ regionKey: string; countryCode: string }>>(
-    'SELECT regionKey, countryCode FROM territory_regions WHERE regionKey = ? AND enabled = 1 LIMIT 1',
+  const regions = await prisma.$queryRawUnsafe<Array<{ regionKey: string; countryCode: string; strategicTagsJson: string | null }>>(
+    'SELECT regionKey, countryCode, strategicTagsJson FROM territory_regions WHERE regionKey = ? AND enabled = 1 LIMIT 1',
     regionKey,
   );
   if (!regions[0]) throw new Error('REGION_NOT_FOUND');
@@ -430,7 +431,18 @@ export async function contributeRegionProject(params: {
     }
   }
 
-  let nextProgress = clamp(toNumeric(project.progress) + config.contributeProgress, 0, 100);
+  let contributeAmount = config.contributeProgress;
+  try {
+    const tags = JSON.parse(regions[0].strategicTagsJson || '[]');
+    if (Array.isArray(tags) && tags.map((t) => String(t).toLowerCase()).includes('industry')) {
+      const bonusPercent = Math.max(0, Math.floor(Number(config.industryContributeBonusPercent ?? 25)));
+      contributeAmount = Math.max(1, Math.round(contributeAmount * (1 + (bonusPercent / 100))));
+    }
+  } catch {
+    // keep base contribute amount
+  }
+
+  let nextProgress = clamp(toNumeric(project.progress) + contributeAmount, 0, 100);
   let nextHp = Math.max(0, toNumeric(project.hp));
   let nextStatus: TerritoryProjectStatus = status;
 
