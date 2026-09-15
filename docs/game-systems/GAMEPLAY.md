@@ -441,6 +441,7 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
   - Disband crew
 - **Joinen**: open + auto-accept is één klik (groene badge **Open — meteen lid** + **Join nu**); open zonder auto-accept blijft een verzoek (oranje **Aanmelding vereist** + **Aanmelden**). Gesloten crews staan niet in de wervingslijst. Er is geen invite-link. Als er nog geen open auto-accept crew is, maakt de server **The Rookies** (leader `StreetBureau`). Het lege Overzicht zet **Bekijk open crews** eerst; zelf aanmaken blijft de tweede knop. De Crews-lijst heeft geen extra zwevende Open-crews-knop.
 - **Startergebouwen:** een nieuwe crew krijgt HQ + alle opslag op level 1. Twee leden die tegelijk crew/storage openen mogen geen unieke-constraintfout geven; bootstrap is upsert op `crewId`.
+- **Crewbank / geldopslag:** de kluis bepaalt hoeveel cash de crewbank aankan. Level 1 houdt €1.000.000. Upgrades van de geldopslag worden uit die bank betaald en kosten daarom altijd minder dan de huidige kluis (naar level 2: €450.000), zodat je niet vastloopt omdat de upgrade duurder is dan wat erin past.
 - **Welkomstbericht:** inbox legt startcash, dagdoelen, The Rookies en “morgen weer” uit. VIP koopt geen winst. Crew krijgt een ping als je vastzit.
 - **Weekdoel**: één ISO-week doel per crew (meestal 1 crew-missie). Claim = crew-bank cash + kleine persoonlijke XP. Niet geclaimd = gemist.
 - **Overzicht (mobiel):** het HQ is een foto van de huidige stijl/level (tikken opent HQ & Upgrades). Lid-telling is `1 lid` en pas bij meer `leden`.

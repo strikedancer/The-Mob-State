@@ -88,6 +88,24 @@ interface CrewBuildingsConfig {
 const configPath = join(__dirname, '../../content/crewBuildings.json');
 const buildingConfig = JSON.parse(readFileSync(configPath, 'utf-8')) as CrewBuildingsConfig;
 
+function assertCashStorageUpgradesFitVault(): void {
+  const levels = [...buildingConfig.buildings.cash_storage.levels].sort(
+    (a, b) => a.level - b.level
+  );
+  for (let i = 0; i < levels.length - 1; i++) {
+    if (levels[i].level < 1) continue;
+    const currentCap = levels[i].capacity ?? 0;
+    const nextCost = levels[i + 1].upgradeCost;
+    if (currentCap > 0 && nextCost >= currentCap) {
+      throw new Error(
+        `CASH_STORAGE_UPGRADE_EXCEEDS_CAPACITY: L${levels[i].level} cap ${currentCap} < L${levels[i + 1].level} cost ${nextCost}`
+      );
+    }
+  }
+}
+
+assertCashStorageUpgradesFitVault();
+
 function getBuildingDefinition(type: CrewBuildingType): BuildingDefinition {
   const def = buildingConfig.buildings[type];
   if (!def) {

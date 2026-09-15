@@ -367,7 +367,7 @@ class _CrewScreenState extends State<CrewScreen>
     ],
     'cash_storage': [
       100000,
-      600000,
+      1000000,
       2500000,
       10000000,
       35000000,
@@ -498,7 +498,7 @@ class _CrewScreenState extends State<CrewScreen>
     'cash_storage': [
       75000,
       250000,
-      800000,
+      450000,
       2000000,
       5000000,
       12500000,
