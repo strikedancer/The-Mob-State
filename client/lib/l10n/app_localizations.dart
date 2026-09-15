@@ -26435,6 +26435,108 @@ abstract class AppLocalizations {
   /// **'Ammo required'**
   String get crimeCardWeaponBannerAmmo;
 
+  /// No description provided for @crimeWeaponTypeMelee.
+  ///
+  /// In en, this message translates to:
+  /// **'melee'**
+  String get crimeWeaponTypeMelee;
+
+  /// No description provided for @crimeWeaponTypeHandgun.
+  ///
+  /// In en, this message translates to:
+  /// **'pistol'**
+  String get crimeWeaponTypeHandgun;
+
+  /// No description provided for @crimeWeaponTypeShotgun.
+  ///
+  /// In en, this message translates to:
+  /// **'shotgun'**
+  String get crimeWeaponTypeShotgun;
+
+  /// No description provided for @crimeWeaponTypeRifle.
+  ///
+  /// In en, this message translates to:
+  /// **'rifle'**
+  String get crimeWeaponTypeRifle;
+
+  /// No description provided for @crimeWeaponTypeSniper.
+  ///
+  /// In en, this message translates to:
+  /// **'sniper'**
+  String get crimeWeaponTypeSniper;
+
+  /// No description provided for @crimeWeaponTypeSmg.
+  ///
+  /// In en, this message translates to:
+  /// **'SMG'**
+  String get crimeWeaponTypeSmg;
+
+  /// No description provided for @crimeWeaponTypeKnife.
+  ///
+  /// In en, this message translates to:
+  /// **'knife'**
+  String get crimeWeaponTypeKnife;
+
+  /// No description provided for @crimeWeaponTypeAny.
+  ///
+  /// In en, this message translates to:
+  /// **'any worn weapon'**
+  String get crimeWeaponTypeAny;
+
+  /// No description provided for @crimeWeaponTypesOr.
+  ///
+  /// In en, this message translates to:
+  /// **'{first} or {second}'**
+  String crimeWeaponTypesOr(String first, String second);
+
+  /// No description provided for @crimeWeaponTypesList.
+  ///
+  /// In en, this message translates to:
+  /// **'{items}, or {last}'**
+  String crimeWeaponTypesList(String items, String last);
+
+  /// No description provided for @crimeCardWeaponBannerNeededTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'Need {types}'**
+  String crimeCardWeaponBannerNeededTypes(String types);
+
+  /// No description provided for @crimeCardWeaponBannerReadyTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'{weapon} · {types}'**
+  String crimeCardWeaponBannerReadyTypes(String weapon, String types);
+
+  /// No description provided for @crimeCardWeaponBannerAmmoTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'Ammo for {types}'**
+  String crimeCardWeaponBannerAmmoTypes(String types);
+
+  /// No description provided for @crimeCardWeaponNeedLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Weapon: {types}'**
+  String crimeCardWeaponNeedLine(String types);
+
+  /// No description provided for @crimeCardWeaponReadyLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{weapon} · {types}'**
+  String crimeCardWeaponReadyLine(String weapon, String types);
+
+  /// No description provided for @tooltipCrimeRequiresWeaponTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'{types} required'**
+  String tooltipCrimeRequiresWeaponTypes(String types);
+
+  /// No description provided for @crimeChooseWeaponBeforeCommitTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'Wear {types} on slot 1 or 2 in Inventory first.'**
+  String crimeChooseWeaponBeforeCommitTypes(String types);
+
   /// No description provided for @crimeCardTierLow.
   ///
   /// In en, this message translates to:
@@ -30642,7 +30744,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicCrimesHow.
   ///
   /// In en, this message translates to:
-  /// **'At ranks 1–5, street crimes (min rank 1) show the real catalog success chance — pickpocket and shoplift start around 65–70%. Vandalism and graffiti do not need spray paint.\nIf those early street crimes fail, you usually get away empty-handed instead of going to jail. Jail is still possible, just no longer the default.\nJobs stay available from rank 1 while you are not in jail — use them when you want cash without crime risk.\nCrime cooldowns now scale with potential payout: low-yield crimes stay fast, while high-yield crimes get clearly longer cooldowns.\nGuideline by reward tier: up to €500 ≈ 1.5 min, up to €2,000 ≈ 5 min, up to €10,000 ≈ 15 min, up to €30,000 ≈ 30 min, above that ≈ 60 min.\nThere is no hard daily cap on crimes; active players can keep playing as long as they manage cooldowns, risk and resources.\nCrimes with `required weapon` use your selected crime weapon. You can now choose it directly at the top of the Crimes screen or through Inventory.\nYour active gym and shooting-range bonuses (up to +8% each) are shown on the Crimes screen; they raise success chance as the server calculates (train more via the Training hub / gym + range).\nIf you complete at least one gym session and one shooting-range session on the same UTC calendar day, the server adds a small extra crime success chance (+0.5%). The Crimes screen shows when this combo is active.\nCrimes with a vehicle requirement use your selected crime vehicle from Garage or Marina. Only a vehicle that is actually in your current country and not in transit or listed for sale counts.\nDrug requirements in crimes are shown in grams and follow the same quantities as your drug inventory and storage.\nIf a crime cannot start because of a missing vehicle, the wrong weapon, or missing ammo, the error message should now show the real cause instead of a generic retry.\nEvery crime attempt: you take 5-15 HP damage and Wanted Level rises by 1-4 points depending on success or failure.\nArrest chance scales fast with Wanted Level: Wanted 5 = 25%, Wanted 10 = 50%, Wanted 18+ = maximum 90%.\nOn arrest you go to prison. Sentence = max(wanted level × 10, 5) minutes. Bail = wanted level × €1.000. Even if a crime seems successful at first but you get caught right after, the final outcome still counts as an arrest: required tools are confiscated, the used crime weapon is lost, and vehicles can also be seized.\nSome crimes require a vehicle, tool or minimum rank. Missing these will prevent the crime from starting.\nXP earned raises your rank, unlocking better crimes and higher rewards.\nFBI Heat rises with heavier crimes. Above heat 50 the FBI becomes active with even higher arrest chances.'**
+  /// **'At ranks 1–5, street crimes (min rank 1) show the real catalog success chance — pickpocket and shoplift start around 65–70%. Vandalism and graffiti do not need spray paint.\nIf those early street crimes fail, you usually get away empty-handed instead of going to jail. Jail is still possible, just no longer the default.\nJobs stay available from rank 1 while you are not in jail — use them when you want cash without crime risk.\nCrime cooldowns now scale with potential payout: low-yield crimes stay fast, while high-yield crimes get clearly longer cooldowns.\nGuideline by reward tier: up to €500 ≈ 1.5 min, up to €2,000 ≈ 5 min, up to €10,000 ≈ 15 min, up to €30,000 ≈ 30 min, above that ≈ 60 min.\nThere is no hard daily cap on crimes; active players can keep playing as long as they manage cooldowns, risk and resources.\nArmed crimes show on each card which weapon type you need (pistol, shotgun, rifle, SMG, sniper). Wear a matching weapon on slot 1 or 2 in Inventory — a gun only in your backpack does not count.\nYour active gym and shooting-range bonuses (up to +8% each) are shown on the Crimes screen; they raise success chance as the server calculates (train more via the Training hub / gym + range).\nIf you complete at least one gym session and one shooting-range session on the same UTC calendar day, the server adds a small extra crime success chance (+0.5%). The Crimes screen shows when this combo is active.\nCrimes with a vehicle requirement use your selected crime vehicle from Garage or Marina. Only a vehicle that is actually in your current country and not in transit or listed for sale counts.\nDrug requirements in crimes are shown in grams and follow the same quantities as your drug inventory and storage.\nIf a crime cannot start because of a missing vehicle, the wrong weapon, or missing ammo, the error message should now show the real cause instead of a generic retry.\nEvery crime attempt: you take 5-15 HP damage and Wanted Level rises by 1-4 points depending on success or failure.\nArrest chance scales fast with Wanted Level: Wanted 5 = 25%, Wanted 10 = 50%, Wanted 18+ = maximum 90%.\nOn arrest you go to prison. Sentence = max(wanted level × 10, 5) minutes. Bail = wanted level × €1.000. Even if a crime seems successful at first but you get caught right after, the final outcome still counts as an arrest: required tools are confiscated, the used crime weapon is lost, and vehicles can also be seized.\nSome crimes require a vehicle, tool or minimum rank. Missing these will prevent the crime from starting.\nXP earned raises your rank, unlocking better crimes and higher rewards.\nFBI Heat rises with heavier crimes. Above heat 50 the FBI becomes active with even higher arrest chances.'**
   String get helpTopicCrimesHow;
 
   /// No description provided for @helpTopicCrimesTips.

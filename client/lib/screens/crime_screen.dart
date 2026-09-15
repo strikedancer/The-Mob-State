@@ -19,6 +19,7 @@ import '../widgets/crime_result_overlay.dart';
 import '../widgets/country_police_ui.dart';
 import 'hospital_screen.dart';
 import '../utils/crime_localization.dart';
+import '../utils/weapon_display_name.dart';
 import '../utils/localized_game_event_template.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
@@ -866,7 +867,9 @@ class _CrimeScreenState extends State<CrimeScreen> {
         context,
         SnackBar(
           content: Text(
-            l10n.crimeChooseWeaponBeforeCommit,
+            l10n.crimeChooseWeaponBeforeCommitTypes(
+              formatCrimeWeaponTypes(l10n, crime.suitableWeaponTypes),
+            ),
           ),
           backgroundColor: Colors.orange,
           action: SnackBarAction(

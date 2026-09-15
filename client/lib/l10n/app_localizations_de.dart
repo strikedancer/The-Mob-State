@@ -15474,6 +15474,75 @@ class AppLocalizationsDe extends AppLocalizations {
   String get crimeCardWeaponBannerAmmo => 'Ammo required';
 
   @override
+  String get crimeWeaponTypeMelee => 'Nahkampf';
+
+  @override
+  String get crimeWeaponTypeHandgun => 'Pistole';
+
+  @override
+  String get crimeWeaponTypeShotgun => 'Schrotflinte';
+
+  @override
+  String get crimeWeaponTypeRifle => 'Gewehr';
+
+  @override
+  String get crimeWeaponTypeSniper => 'Scharfschützin';
+
+  @override
+  String get crimeWeaponTypeSmg => 'SMG';
+
+  @override
+  String get crimeWeaponTypeKnife => 'Messer';
+
+  @override
+  String get crimeWeaponTypeAny => 'jede getragene Waffe';
+
+  @override
+  String crimeWeaponTypesOr(String first, String second) {
+    return '$first oder $second';
+  }
+
+  @override
+  String crimeWeaponTypesList(String items, String last) {
+    return '$items oder $last';
+  }
+
+  @override
+  String crimeCardWeaponBannerNeededTypes(String types) {
+    return 'Brauchen Sie $types';
+  }
+
+  @override
+  String crimeCardWeaponBannerReadyTypes(String weapon, String types) {
+    return '$weapon · $types';
+  }
+
+  @override
+  String crimeCardWeaponBannerAmmoTypes(String types) {
+    return 'Munition für $types';
+  }
+
+  @override
+  String crimeCardWeaponNeedLine(String types) {
+    return 'Waffe: $types';
+  }
+
+  @override
+  String crimeCardWeaponReadyLine(String weapon, String types) {
+    return '$weapon · $types';
+  }
+
+  @override
+  String tooltipCrimeRequiresWeaponTypes(String types) {
+    return '$types erforderlich';
+  }
+
+  @override
+  String crimeChooseWeaponBeforeCommitTypes(String types) {
+    return 'Tragen Sie $types zuerst auf Platz 1 oder 2 im Inventar.';
+  }
+
+  @override
   String get crimeCardTierLow => 'Petty';
 
   @override
@@ -17971,7 +18040,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicCrimesHow =>
-      'Auf den Rängen 1–5 zeigen Straßenkriminalität (mindestens Rang 1) die tatsächlichen Erfolgschancen im Katalog – Taschendiebstahl und Ladendiebstahl beginnen bei etwa 65–70 %. Vandalismus und Graffiti brauchen keine Sprühfarbe. \nWenn diese frühen Straßenverbrechen scheitern, kommt man meist leer aus, anstatt ins Gefängnis zu gehen. Eine Gefängnisstrafe ist immer noch möglich, aber nicht mehr die Standardeinstellung. \nJobs bleiben ab Rang 1 verfügbar, solange Sie nicht im Gefängnis sind – nutzen Sie sie, wenn Sie Bargeld ohne Kriminalitätsrisiko wollen. \nDie Abklingzeiten von Verbrechen skalieren jetzt mit der möglichen Auszahlung: Verbrechen mit geringer Ausbeute bleiben schnell, während Verbrechen mit hoher Ausbeute deutlich längere Abklingzeiten haben. \nRichtwert je Prämienstufe: bis 500 € ≈ 1,5 Min., bis 2.000 € ≈ 5 Min., bis 10.000 € ≈ 15 Min., bis 30.000 € ≈ 30 Min., darüber ≈ 60 Min. \nEs gibt keine feste tägliche Obergrenze für Verbrechen; Aktive Spieler können weiterspielen, solange sie Abklingzeiten, Risiken und Ressourcen verwalten. \nBei Straftaten mit „erforderlicher Waffe“ verwenden Sie die von Ihnen gewählte Straftatwaffe. Sie können es jetzt direkt oben auf dem Bildschirm „Verbrechen“ oder über das Inventar auswählen. \nIhre aktiven Fitness- und Schießstandsboni (jeweils bis zu +8 %) werden auf dem Bildschirm „Verbrechen“ angezeigt. Sie erhöhen die Erfolgschancen, wie der Server berechnet (trainieren Sie mehr über den Trainings-Hub / Fitnessstudio + Reichweite). \nWenn Sie am selben UTC-Kalendertag mindestens eine Trainingseinheit im Fitnessstudio und eine Schießstandseinheit absolvieren, fügt der Server eine kleine zusätzliche Erfolgschance bei einem Verbrechen hinzu (+0,5 %). Der Bildschirm „Verbrechen“ zeigt an, wann diese Kombination aktiv ist. \nFür Verbrechen mit einer Fahrzeuganforderung verwenden Sie Ihr ausgewähltes Verbrechensfahrzeug aus dem Inventar (neben Waffen und Weste) oder ein in der Marina ausgewähltes Boot. Motorräder können weiterhin in der Motorradgarage ausgewählt werden. Es zählt nur ein Fahrzeug, das sich tatsächlich in Ihrem aktuellen Land befindet und nicht im Transit ist oder zum Verkauf angeboten wird. \nDer Arzneimittelbedarf bei Straftaten wird in Gramm angegeben und folgt den gleichen Mengen wie Ihr Arzneimittelbestand und Ihre Arzneimittellagerung. \nWenn eine Straftat aufgrund eines fehlenden Fahrzeugs, der falschen Waffe oder fehlender Munition nicht gestartet werden kann, sollte die Fehlermeldung jetzt die wahre Ursache anstelle eines allgemeinen Wiederholungsversuchs anzeigen. \nBei jedem Verbrechensversuch erleiden Sie 5–15 HP-Schaden und das Wanted-Level steigt je nach Erfolg oder Misserfolg um 1–4 Punkte. \nDie Verhaftungswahrscheinlichkeit skaliert schnell mit der Fahndungsstufe: Gesucht 5 = 25 %, Gesucht 10 = 50 %, Gesucht 18+ = maximal 90 %. \nBei einer Verhaftung kommt man ins Gefängnis. Satz = max(gewünschtes Level × 10, 5) Minuten. Kaution = Fahndungsniveau × 1.000 €. Auch wenn eine Straftat zunächst erfolgreich erscheint, man aber gleich danach erwischt wird, zählt das Endergebnis dennoch als Festnahme: Benötigtes Werkzeug wird beschlagnahmt, die gebrauchte Tatwaffe geht verloren und auch Fahrzeuge können beschlagnahmt werden. \nFür einige Straftaten sind ein Fahrzeug, ein Werkzeug oder ein Mindestdienstgrad erforderlich. Wenn diese fehlen, wird verhindert, dass die Straftat beginnt. \nVerdiente XP erhöhen Ihren Rang und schalten bessere Verbrechen und höhere Belohnungen frei. \nDer FBI-Hit steigt mit schwereren Verbrechen. Oberhalb von Hitze 50 wird das FBI aktiv und die Wahrscheinlichkeit einer Festnahme ist noch höher.';
+      'Auf den Rängen 1–5 zeigen Straßenkriminalität (mindestens Rang 1) die tatsächlichen Erfolgschancen im Katalog – Taschendiebstahl und Ladendiebstahl beginnen bei etwa 65–70 %. Vandalismus und Graffiti brauchen keine Sprühfarbe. \nWenn diese frühen Straßenverbrechen scheitern, kommt man meist leer aus, anstatt ins Gefängnis zu gehen. Eine Gefängnisstrafe ist immer noch möglich, aber nicht mehr die Standardeinstellung. \nJobs bleiben ab Rang 1 verfügbar, solange Sie nicht im Gefängnis sind – nutzen Sie sie, wenn Sie Bargeld ohne Kriminalitätsrisiko wollen. \nDie Abklingzeiten von Verbrechen skalieren jetzt mit der potenziellen Auszahlung: Verbrechen mit geringer Ausbeute bleiben schnell, während Verbrechen mit hoher Ausbeute deutlich längere Abklingzeiten haben. \nRichtwert je Prämienstufe: bis 500 € ≈ 1,5 Min., bis 2.000 € ≈ 5 Min., bis 10.000 € ≈ 15 Min., bis 30.000 € ≈ 30 Min., darüber ≈ 60 Min. \nEs gibt keine feste tägliche Obergrenze für Verbrechen; Aktive Spieler können weiterspielen, solange sie Abklingzeiten, Risiken und Ressourcen verwalten. \nBewaffnete Verbrechen zeigen auf jeder Karte, welchen Waffentyp Sie benötigen (Pistole, Schrotflinte, Gewehr, Maschinenpistole, Scharfschütze). Tragen Sie eine passende Waffe auf Platz 1 oder 2 im Inventar – eine Waffe nur in Ihrem Rucksack zählt nicht. \nIhre aktiven Fitness- und Schießstandsboni (jeweils bis zu +8 %) werden auf dem Bildschirm „Verbrechen“ angezeigt. Sie erhöhen die Erfolgschancen, wie der Server berechnet (trainieren Sie mehr über den Trainings-Hub / Fitnessstudio + Reichweite). \nWenn Sie am selben UTC-Kalendertag mindestens eine Trainingseinheit im Fitnessstudio und eine Schießstandseinheit absolvieren, fügt der Server eine kleine zusätzliche Erfolgschance bei einem Verbrechen hinzu (+0,5 %). Der Bildschirm „Verbrechen“ zeigt an, wann diese Kombination aktiv ist. \nFür Verbrechen mit Fahrzeugpflicht nutzen Sie Ihr ausgewähltes Verbrechensfahrzeug aus Garage oder Marina. Es zählt nur ein Fahrzeug, das sich tatsächlich in Ihrem aktuellen Land befindet und nicht im Transit ist oder zum Verkauf angeboten wird. \nDer Arzneimittelbedarf bei Straftaten wird in Gramm angegeben und folgt den gleichen Mengen wie Ihr Arzneimittelbestand und Ihre Arzneimittellagerung. \nWenn eine Straftat aufgrund eines fehlenden Fahrzeugs, der falschen Waffe oder fehlender Munition nicht gestartet werden kann, sollte die Fehlermeldung jetzt die wahre Ursache anstelle eines allgemeinen Wiederholungsversuchs anzeigen. \nBei jedem Verbrechensversuch erleiden Sie 5–15 HP-Schaden und das Wanted-Level steigt je nach Erfolg oder Misserfolg um 1–4 Punkte. \nDie Verhaftungswahrscheinlichkeit skaliert schnell mit der Fahndungsstufe: Gesucht 5 = 25 %, Gesucht 10 = 50 %, Gesucht 18+ = maximal 90 %. \nBei einer Verhaftung kommt man ins Gefängnis. Satz = max(gewünschtes Level × 10, 5) Minuten. Kaution = Fahndungsniveau × 1.000 €. Auch wenn eine Straftat zunächst erfolgreich erscheint, man aber gleich danach erwischt wird, zählt das Endergebnis dennoch als Festnahme: Benötigtes Werkzeug wird beschlagnahmt, die gebrauchte Tatwaffe geht verloren und auch Fahrzeuge können beschlagnahmt werden. \nFür einige Straftaten sind ein Fahrzeug, ein Werkzeug oder ein Mindestdienstgrad erforderlich. Wenn diese fehlen, wird verhindert, dass die Straftat beginnt. \nVerdiente XP erhöhen Ihren Rang und schalten bessere Verbrechen und höhere Belohnungen frei. \nDer FBI-Hit steigt mit schwereren Verbrechen. Oberhalb von Hitze 50 wird das FBI aktiv und die Wahrscheinlichkeit einer Festnahme ist noch höher.';
 
   @override
   String get helpTopicCrimesTips =>

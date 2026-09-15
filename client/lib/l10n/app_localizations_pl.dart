@@ -15392,6 +15392,75 @@ class AppLocalizationsPl extends AppLocalizations {
   String get crimeCardWeaponBannerAmmo => 'Ammo required';
 
   @override
+  String get crimeWeaponTypeMelee => 'bijatyka';
+
+  @override
+  String get crimeWeaponTypeHandgun => 'pistolet';
+
+  @override
+  String get crimeWeaponTypeShotgun => 'flinta';
+
+  @override
+  String get crimeWeaponTypeRifle => 'karabin';
+
+  @override
+  String get crimeWeaponTypeSniper => 'snajper';
+
+  @override
+  String get crimeWeaponTypeSmg => 'SMG';
+
+  @override
+  String get crimeWeaponTypeKnife => 'nóż';
+
+  @override
+  String get crimeWeaponTypeAny => 'jakąkolwiek zużytą broń';
+
+  @override
+  String crimeWeaponTypesOr(String first, String second) {
+    return '$first lub $second';
+  }
+
+  @override
+  String crimeWeaponTypesList(String items, String last) {
+    return '$items lub $last';
+  }
+
+  @override
+  String crimeCardWeaponBannerNeededTypes(String types) {
+    return 'Potrzebujesz $types';
+  }
+
+  @override
+  String crimeCardWeaponBannerReadyTypes(String weapon, String types) {
+    return '$weapon · $types';
+  }
+
+  @override
+  String crimeCardWeaponBannerAmmoTypes(String types) {
+    return 'Amunicja dla $types';
+  }
+
+  @override
+  String crimeCardWeaponNeedLine(String types) {
+    return 'Broń: $types';
+  }
+
+  @override
+  String crimeCardWeaponReadyLine(String weapon, String types) {
+    return '$weapon · $types';
+  }
+
+  @override
+  String tooltipCrimeRequiresWeaponTypes(String types) {
+    return 'wymagane $types';
+  }
+
+  @override
+  String crimeChooseWeaponBeforeCommitTypes(String types) {
+    return 'Najpierw załóż $types na miejsce 1 lub 2 w Ekwipunku.';
+  }
+
+  @override
   String get crimeCardTierLow => 'Petty';
 
   @override
@@ -17881,7 +17950,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicCrimesHow =>
-      'Na pozycjach 1–5 przestępstwa uliczne (min. pozycja 1) wykazują realną szansę na sukces w katalogu — kradzieże kieszonkowe i sklepowe zaczynają się na poziomie 65–70%. Wandalizm i graffiti nie wymagają farby w sprayu. \nJeśli te wczesne przestępstwa uliczne zawiodą, zwykle uciekasz z pustymi rękami, zamiast iść do więzienia. Więzienie jest nadal możliwe, ale nie jest już rozwiązaniem domyślnym. \nPraca pozostaje dostępna od rangi 1, gdy nie przebywasz w więzieniu — korzystaj z niej, gdy potrzebujesz gotówki bez ryzyka przestępstwa. \nCzasy odnowienia przestępstw skalują się teraz wraz z potencjalną wypłatą: przestępstwa o niskim zysku pozostają szybkie, podczas gdy przestępstwa o wysokim zysku mają wyraźnie dłuższy czas odnowienia. \nWytyczne według poziomu nagrody: do 500 € ≈ 1,5 min, do 2000 € ≈ 5 min, do 10 000 € ≈ 15 min, do 30 000 € ≈ 30 min, powyżej tego ≈ 60 min. \nNie ma sztywnego dziennego limitu przestępstw; aktywni gracze mogą grać dalej, o ile zarządzają czasami odnowienia, ryzykiem i zasobami. \nPrzestępstwa z „wymaganą bronią” wykorzystują wybraną broń przestępczą. Możesz teraz wybrać go bezpośrednio u góry ekranu Zbrodni lub w Inwentarzu. \nTwoje aktywne bonusy z siłowni i strzelnicy (do +8% każdy) są pokazane na ekranie Zbrodni; zwiększają szansę na sukces zgodnie z obliczeniami serwera (trenuj więcej za pośrednictwem centrum treningowego / siłowni + strzelnicy). \nJeśli ukończysz co najmniej jedną sesję na siłowni i jedną sesję na strzelnicy w tym samym dniu kalendarzowym UTC, serwer dodaje niewielką dodatkową szansę na powodzenie przestępstwa (+0,5%). Ekran Przestępstw pokazuje, kiedy ta kombinacja jest aktywna. \nW przypadku przestępstw wymagających pojazdu użyj wybranego samochodu przestępczego z Inwentarza (obok broni i kamizelki) lub łodzi wybranej w Marinie. Motocykle nadal można wybierać w garażu motocyklowym. Liczy się tylko pojazd, który faktycznie znajduje się w Twoim obecnym kraju i nie jest w transporcie ani nie jest wystawiony na sprzedaż. \nZapotrzebowanie na narkotyki w przestępstwach jest podawane w gramach i odpowiada takim samym ilościom, jak stan zapasów i przechowywania narkotyków. \nJeśli przestępstwo nie może się rozpocząć z powodu braku pojazdu, niewłaściwej broni lub braku amunicji, komunikat o błędzie powinien teraz pokazywać prawdziwą przyczynę, a nie zwykłą ponowną próbę. \nKażda próba przestępstwa: otrzymujesz 5-15 HP obrażeń, a Poziom Pościgu wzrasta o 1-4 punkty w zależności od sukcesu lub porażki. \nSzansa na aresztowanie szybko rośnie wraz z poziomem poszukiwanego: Poszukiwany 5 = 25%, Poszukiwany 10 = 50%, Poszukiwany 18+ = maksymalnie 90%. \nPo aresztowaniu idziesz do więzienia. Zdanie = max (pożądany poziom × 10, 5) minut. Kaucja = wysokość poszukiwanego × 1000 EUR. Nawet jeśli na początku przestępstwo wydaje się zakończone sukcesem, ale zaraz potem zostaniesz złapany, ostateczny wynik nadal liczy się jako aresztowanie: wymagane narzędzia zostaną skonfiskowane, użyte narzędzie zbrodni zaginie, a pojazdy będą mogły zostać skonfiskowane. \nNiektóre przestępstwa wymagają pojazdu, narzędzia lub minimalnej rangi. Ich brak zapobiegnie rozpoczęciu przestępstwa. \nZdobyte XP podnosi twoją rangę, odblokowując lepsze przestępstwa i wyższe nagrody. \nFBI Heat rośnie wraz z cięższymi przestępstwami. Powyżej 50 stopni FBI staje się aktywne i stwarza jeszcze większe szanse na aresztowanie.';
+      'Na pozycjach 1–5 przestępstwa uliczne (min. pozycja 1) wykazują realną szansę na sukces w katalogu — kradzieże kieszonkowe i sklepowe zaczynają się na poziomie 65–70%. Wandalizm i graffiti nie wymagają farby w sprayu. \nJeśli te wczesne przestępstwa uliczne zawiodą, zwykle uciekasz z pustymi rękami, zamiast iść do więzienia. Więzienie jest nadal możliwe, ale nie jest już rozwiązaniem domyślnym. \nPraca pozostaje dostępna od rangi 1, gdy nie przebywasz w więzieniu — korzystaj z niej, gdy potrzebujesz gotówki bez ryzyka przestępstwa. \nCzasy odnowienia przestępstw skalują się teraz wraz z potencjalną wypłatą: przestępstwa o niskim zysku pozostają szybkie, podczas gdy przestępstwa o wysokim zysku mają wyraźnie dłuższy czas odnowienia. \nWytyczne według poziomu nagrody: do 500 € ≈ 1,5 min, do 2000 € ≈ 5 min, do 10 000 € ≈ 15 min, do 30 000 € ≈ 30 min, powyżej tego ≈ 60 min. \nNie ma sztywnego dziennego limitu przestępstw; aktywni gracze mogą grać dalej, o ile zarządzają czasami odnowienia, ryzykiem i zasobami. \nPrzestępstwa z bronią w ręku pokazują na każdej karcie, jakiego rodzaju broni potrzebujesz (pistolet, strzelba, karabin, pistolet maszynowy, snajper). Noś pasującą broń w slocie 1 lub 2 w ekwipunku – broń znajdująca się tylko w twoim plecaku nie liczy się. \nTwoje aktywne bonusy z siłowni i strzelnicy (do +8% każdy) są pokazane na ekranie Zbrodni; zwiększają szansę na sukces zgodnie z obliczeniami serwera (trenuj więcej za pośrednictwem centrum treningowego / siłowni + strzelnicy). \nJeśli ukończysz co najmniej jedną sesję na siłowni i jedną sesję na strzelnicy w tym samym dniu kalendarzowym UTC, serwer dodaje niewielką dodatkową szansę na powodzenie przestępstwa (+0,5%). Ekran Przestępstw pokazuje, kiedy ta kombinacja jest aktywna. \nW przypadku przestępstw wymagających pojazdu użyj wybranego pojazdu przestępczego z garażu lub przystani. Liczy się tylko pojazd, który faktycznie znajduje się w Twoim obecnym kraju i nie jest w transporcie ani nie jest wystawiony na sprzedaż. \nZapotrzebowanie na narkotyki w przestępstwach jest podawane w gramach i odpowiada takim samym ilościom, jak stan zapasów i przechowywania narkotyków. \nJeśli przestępstwo nie może się rozpocząć z powodu braku pojazdu, niewłaściwej broni lub braku amunicji, komunikat o błędzie powinien teraz pokazywać prawdziwą przyczynę, a nie zwykłą ponowną próbę. \nKażda próba przestępstwa: otrzymujesz 5-15 HP obrażeń, a Poziom Pościgu wzrasta o 1-4 punkty w zależności od sukcesu lub porażki. \nSzansa na aresztowanie szybko rośnie wraz z poziomem poszukiwanego: Poszukiwany 5 = 25%, Poszukiwany 10 = 50%, Poszukiwany 18+ = maksymalnie 90%. \nPo aresztowaniu idziesz do więzienia. Zdanie = max (pożądany poziom × 10, 5) minut. Kaucja = wysokość poszukiwanego × 1000 EUR. Nawet jeśli na początku przestępstwo wydaje się zakończone sukcesem, ale zaraz potem zostaniesz złapany, ostateczny wynik nadal liczy się jako aresztowanie: wymagane narzędzia zostaną skonfiskowane, użyte narzędzie zbrodni zaginie, a pojazdy będą mogły zostać skonfiskowane. \nNiektóre przestępstwa wymagają pojazdu, narzędzia lub minimalnej rangi. Ich brak zapobiegnie rozpoczęciu przestępstwa. \nZdobyte XP podnosi twoją rangę, odblokowując lepsze przestępstwa i wyższe nagrody. \nFBI Heat rośnie wraz z cięższymi przestępstwami. Powyżej 50 stopni FBI staje się aktywne i stwarza jeszcze większe szanse na aresztowanie.';
 
   @override
   String get helpTopicCrimesTips =>

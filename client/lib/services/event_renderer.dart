@@ -1,5 +1,6 @@
 import '../l10n/app_localizations.dart';
 import '../utils/country_helper.dart';
+import '../utils/weapon_display_name.dart';
 
 /// Renders backend event stream keys with [AppLocalizations] (all player locales).
 class EventRenderer {
@@ -495,7 +496,6 @@ class EventRenderer {
       return message;
     }
     final reason = params['reason'] as String?;
-    final useNlWeaponNames = l10n.localeName.toLowerCase().startsWith('nl');
     switch (reason) {
       case 'TOOL_REQUIRED':
         return l10n.crimeErrorToolRequired(
@@ -527,8 +527,13 @@ class EventRenderer {
         return l10n.evStreamWeaponSelectRequired;
       case 'WEAPON_NOT_SUITABLE':
         final st = params['suitableTypes'] as String? ?? '';
+        final types = st
+            .split(',')
+            .map((t) => t.trim())
+            .where((t) => t.isNotEmpty)
+            .toList();
         return l10n.evStreamWeaponNotSuitable(
-          _weaponTypesList(st, useNlWeaponNames),
+          formatCrimeWeaponTypes(l10n, types),
         );
       case 'WEAPON_BROKEN':
         return l10n.crimeErrorWeaponBroken;
@@ -569,47 +574,6 @@ class EventRenderer {
       default:
         return l10n.evStreamImpactNeutral;
     }
-  }
-
-  String _weaponTypesList(String types, bool dutch) {
-    if (types.isEmpty) return '';
-    const en = {
-      'knife': 'knife',
-      'handgun': 'handgun/pistol',
-      'shotgun': 'shotgun',
-      'rifle': 'rifle',
-      'sniper': 'sniper rifle',
-      'smg': 'submachine gun',
-      'automatic': 'submachine gun',
-    };
-    const nl = {
-      'knife': 'mes',
-      'handgun': 'pistool',
-      'shotgun': 'jachtgeweer',
-      'rifle': 'geweer',
-      'sniper': 'sluipschuttersgeweer',
-      'smg': 'automatisch pistool',
-      'automatic': 'machinegeweer',
-    };
-    final m = dutch ? nl : en;
-    final names = types
-        .split(',')
-        .map((t) => m[t.trim()] ?? t.trim())
-        .toList();
-    if (names.isEmpty) {
-      return '';
-    }
-    if (names.length == 1) {
-      return names[0];
-    }
-    if (names.length == 2) {
-      return dutch
-          ? '${names[0]} of ${names[1]}'
-          : '${names[0]} or ${names[1]}';
-    }
-    final last = names.removeLast();
-    final join = names.join(', ');
-    return dutch ? '$join of $last' : '$join or $last';
   }
 
   String _vehicleTypeLabel(String? type) {

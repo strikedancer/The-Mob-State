@@ -15464,6 +15464,75 @@ class AppLocalizationsFr extends AppLocalizations {
   String get crimeCardWeaponBannerAmmo => 'Ammo required';
 
   @override
+  String get crimeWeaponTypeMelee => 'mêlée';
+
+  @override
+  String get crimeWeaponTypeHandgun => 'pistolet';
+
+  @override
+  String get crimeWeaponTypeShotgun => 'fusil de chasse';
+
+  @override
+  String get crimeWeaponTypeRifle => 'fusil';
+
+  @override
+  String get crimeWeaponTypeSniper => 'tireur isolé';
+
+  @override
+  String get crimeWeaponTypeSmg => 'SMG';
+
+  @override
+  String get crimeWeaponTypeKnife => 'couteau';
+
+  @override
+  String get crimeWeaponTypeAny => 'toute arme portée';
+
+  @override
+  String crimeWeaponTypesOr(String first, String second) {
+    return '$first ou $second';
+  }
+
+  @override
+  String crimeWeaponTypesList(String items, String last) {
+    return '$items, ou $last';
+  }
+
+  @override
+  String crimeCardWeaponBannerNeededTypes(String types) {
+    return 'Besoin de $types';
+  }
+
+  @override
+  String crimeCardWeaponBannerReadyTypes(String weapon, String types) {
+    return '$weapon · $types';
+  }
+
+  @override
+  String crimeCardWeaponBannerAmmoTypes(String types) {
+    return 'Munitions pour $types';
+  }
+
+  @override
+  String crimeCardWeaponNeedLine(String types) {
+    return 'Arme : $types';
+  }
+
+  @override
+  String crimeCardWeaponReadyLine(String weapon, String types) {
+    return '$weapon · $types';
+  }
+
+  @override
+  String tooltipCrimeRequiresWeaponTypes(String types) {
+    return '$types requis';
+  }
+
+  @override
+  String crimeChooseWeaponBeforeCommitTypes(String types) {
+    return 'Portez d\'abord $types sur l\'emplacement 1 ou 2 de l\'inventaire.';
+  }
+
+  @override
   String get crimeCardTierLow => 'Petty';
 
   @override
@@ -17966,7 +18035,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicCrimesHow =>
-      'Aux rangs 1 à 5, les crimes de rue (rang minimum 1) montrent les véritables chances de succès du catalogue : les vols à la tire et à l\'étalage commencent autour de 65 à 70 %. Le vandalisme et les graffitis n’ont pas besoin de peinture en aérosol. \nSi ces premiers crimes de rue échouent, vous vous en sortez généralement les mains vides au lieu d\'aller en prison. La prison est toujours possible, mais ce n\'est plus la valeur par défaut. \nLes emplois restent disponibles à partir du rang 1 pendant que vous n\'êtes pas en prison : utilisez-les lorsque vous voulez de l\'argent sans risque de criminalité. \nLes temps de recharge des crimes s\'adaptent désormais aux gains potentiels : les crimes à faible rendement restent rapides, tandis que les crimes à haut rendement ont des temps de recharge nettement plus longs. \nLigne directrice par niveau de récompense : jusqu\'à 500 € ≈ 1,5 min, jusqu\'à 2 000 € ≈ 5 min, jusqu\'à 10 000 € ≈ 15 min, jusqu\'à 30 000 € ≈ 30 min, au-delà ≈ 60 min. \nIl n’y a pas de plafond quotidien strict pour les crimes ; les joueurs actifs peuvent continuer à jouer tant qu’ils gèrent les temps de recharge, les risques et les ressources. \nLes crimes avec « arme requise » utilisent l\'arme du crime sélectionnée. Vous pouvez désormais le choisir directement en haut de l\'écran Crimes ou via l\'Inventaire. \nVos bonus actifs de salle de sport et de stand de tir (jusqu\'à +8 % chacun) sont affichés sur l\'écran Crimes ; ils augmentent les chances de réussite au fur et à mesure que le serveur calcule (entrainez-vous davantage via le Training hub / gym + range). \nSi vous terminez au moins une séance de gym et une séance de tir au cours du même jour calendaire UTC, le serveur ajoute une petite chance supplémentaire de réussite du crime (+0,5 %). L\'écran Crimes indique quand ce combo est actif. \nLes crimes nécessitant un véhicule utilisent la voiture du crime sélectionnée dans l\'inventaire (à côté des armes et du gilet) ou un bateau sélectionné à la marina. Les motos peuvent toujours être sélectionnées sur le garage moto. Seul un véhicule qui se trouve réellement dans votre pays actuel et qui n\'est pas en transit ou mis en vente compte. \nLes besoins en drogues dans les crimes sont indiqués en grammes et suivent les mêmes quantités que votre stock et votre stockage de drogues. \nSi un crime ne peut pas commencer en raison d\'un véhicule manquant, d\'une mauvaise arme ou de munitions manquantes, le message d\'erreur devrait désormais indiquer la cause réelle au lieu d\'une nouvelle tentative générique. \nÀ chaque tentative de crime : vous subissez 5 à 15 points de dégâts et le niveau de recherche augmente de 1 à 4 points en fonction du succès ou de l\'échec. \nLes chances d\'arrestation augmentent rapidement avec le niveau de recherche : Recherché 5 = 25 %, Recherché 10 = 50 %, Recherché 18+ = maximum 90 %. \nUne fois arrêté, vous allez en prison. Phrase = max (niveau recherché × 10, 5) minutes. Caution = niveau de recherche × 1 000 €. Même si un crime semble réussi au début mais que vous êtes arrêté juste après, le résultat final compte toujours comme une arrestation : les outils nécessaires sont confisqués, l\'arme du crime utilisée est perdue et les véhicules peuvent également être saisis. \nCertains crimes nécessitent un véhicule, un outil ou un grade minimum. Manquer ces éléments empêchera le crime de commencer. \nL\'XP gagné augmente votre rang, débloquant de meilleurs crimes et des récompenses plus élevées. \nFBI La chaleur augmente avec les crimes plus graves. Au-dessus de la température 50, le FBI devient actif avec des chances d\'arrestation encore plus élevées.';
+      'Aux rangs 1 à 5, les crimes de rue (rang minimum 1) montrent les véritables chances de succès du catalogue : les vols à la tire et à l\'étalage commencent autour de 65 à 70 %. Le vandalisme et les graffitis n’ont pas besoin de peinture en aérosol. \nSi ces premiers crimes de rue échouent, vous vous en sortez généralement les mains vides au lieu d\'aller en prison. La prison est toujours possible, mais ce n\'est plus la valeur par défaut. \nLes emplois restent disponibles à partir du rang 1 pendant que vous n\'êtes pas en prison : utilisez-les lorsque vous voulez de l\'argent sans risque de criminalité. \nLes temps de recharge des crimes s\'adaptent désormais aux gains potentiels : les crimes à faible rendement restent rapides, tandis que les crimes à haut rendement ont des temps de recharge nettement plus longs. \nLigne directrice par niveau de récompense : jusqu\'à 500 € ≈ 1,5 min, jusqu\'à 2 000 € ≈ 5 min, jusqu\'à 10 000 € ≈ 15 min, jusqu\'à 30 000 € ≈ 30 min, au-delà ≈ 60 min. \nIl n’y a pas de plafond quotidien strict pour les crimes ; les joueurs actifs peuvent continuer à jouer tant qu’ils gèrent les temps de recharge, les risques et les ressources. \nLes crimes armés indiquent sur chaque carte le type d\'arme dont vous avez besoin (pistolet, fusil de chasse, fusil, SMG, tireur d\'élite). Portez une arme correspondante sur l\'emplacement 1 ou 2 de l\'inventaire – une arme uniquement dans votre sac à dos ne compte pas. \nVos bonus actifs de salle de sport et de stand de tir (jusqu\'à +8 % chacun) sont affichés sur l\'écran Crimes ; ils augmentent les chances de réussite au fur et à mesure que le serveur calcule (entrainez-vous davantage via le Training hub / gym + range). \nSi vous terminez au moins une séance de gym et une séance de tir au cours du même jour calendaire UTC, le serveur ajoute une petite chance supplémentaire de réussite du crime (+0,5 %). L\'écran Crimes indique quand ce combo est actif. \nLes crimes nécessitant un véhicule utilisent le véhicule criminel que vous avez sélectionné dans Garage ou Marina. Seul un véhicule qui se trouve réellement dans votre pays actuel et qui n\'est pas en transit ou mis en vente compte. \nLes besoins en drogues dans les crimes sont indiqués en grammes et suivent les mêmes quantités que votre stock et votre stockage de drogues. \nSi un crime ne peut pas commencer en raison d\'un véhicule manquant, d\'une mauvaise arme ou de munitions manquantes, le message d\'erreur devrait désormais indiquer la cause réelle au lieu d\'une nouvelle tentative générique. \nÀ chaque tentative de crime : vous subissez 5 à 15 points de dégâts et le niveau de recherche augmente de 1 à 4 points en fonction du succès ou de l\'échec. \nLes chances d\'arrestation augmentent rapidement avec le niveau de recherche : Recherché 5 = 25 %, Recherché 10 = 50 %, Recherché 18+ = maximum 90 %. \nUne fois arrêté, vous allez en prison. Phrase = max (niveau recherché × 10, 5) minutes. Caution = niveau de recherche × 1 000 €. Même si un crime semble réussi au début mais que vous êtes arrêté juste après, le résultat final compte toujours comme une arrestation : les outils nécessaires sont confisqués, l\'arme du crime utilisée est perdue et les véhicules peuvent également être saisis. \nCertains crimes nécessitent un véhicule, un outil ou un grade minimum. Manquer ces éléments empêchera le crime de commencer. \nL\'XP gagné augmente votre rang, débloquant de meilleurs crimes et des récompenses plus élevées. \nFBI La chaleur augmente avec les crimes plus graves. Au-dessus de la température 50, le FBI devient actif avec des chances d\'arrestation encore plus élevées.';
 
   @override
   String get helpTopicCrimesTips =>

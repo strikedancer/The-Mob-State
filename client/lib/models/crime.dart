@@ -37,6 +37,9 @@ class Crime {
   // Required weapon for the crime
   final bool? requiredWeapon;
 
+  /// Catalog weapon families that count for this crime (handgun, rifle, …).
+  final List<String>? suitableWeaponTypes;
+
   /// Server-evaluated: rank + vehicle/drugs/tools/weapon requirements met.
   final bool? canAttempt;
 
@@ -84,6 +87,7 @@ class Crime {
     this.requiredDrugs,
     this.minDrugQuantity,
     this.requiredWeapon,
+    this.suitableWeaponTypes,
     this.canAttempt,
     this.isAvailable,
     this.readinessBlocker,

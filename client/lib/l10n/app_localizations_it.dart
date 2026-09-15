@@ -15445,6 +15445,75 @@ class AppLocalizationsIt extends AppLocalizations {
   String get crimeCardWeaponBannerAmmo => 'Ammo required';
 
   @override
+  String get crimeWeaponTypeMelee => 'mischia';
+
+  @override
+  String get crimeWeaponTypeHandgun => 'pistola';
+
+  @override
+  String get crimeWeaponTypeShotgun => 'fucile';
+
+  @override
+  String get crimeWeaponTypeRifle => 'fucile';
+
+  @override
+  String get crimeWeaponTypeSniper => 'cecchina';
+
+  @override
+  String get crimeWeaponTypeSmg => 'SMG';
+
+  @override
+  String get crimeWeaponTypeKnife => 'coltello';
+
+  @override
+  String get crimeWeaponTypeAny => 'qualsiasi arma indossata';
+
+  @override
+  String crimeWeaponTypesOr(String first, String second) {
+    return '$first o $second';
+  }
+
+  @override
+  String crimeWeaponTypesList(String items, String last) {
+    return '$items o $last';
+  }
+
+  @override
+  String crimeCardWeaponBannerNeededTypes(String types) {
+    return 'Bisogno di $types';
+  }
+
+  @override
+  String crimeCardWeaponBannerReadyTypes(String weapon, String types) {
+    return '$weapon · $types';
+  }
+
+  @override
+  String crimeCardWeaponBannerAmmoTypes(String types) {
+    return 'Munizioni per $types';
+  }
+
+  @override
+  String crimeCardWeaponNeedLine(String types) {
+    return 'Arma: $types';
+  }
+
+  @override
+  String crimeCardWeaponReadyLine(String weapon, String types) {
+    return '$weapon · $types';
+  }
+
+  @override
+  String tooltipCrimeRequiresWeaponTypes(String types) {
+    return '$types obbligatorio';
+  }
+
+  @override
+  String crimeChooseWeaponBeforeCommitTypes(String types) {
+    return 'Indossa prima $types sullo slot 1 o 2 nell\'inventario.';
+  }
+
+  @override
   String get crimeCardTierLow => 'Petty';
 
   @override
@@ -17940,7 +18009,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicCrimesHow =>
-      'Ai livelli 1-5, i crimini di strada (livello minimo 1) mostrano le reali possibilità di successo del catalogo: borseggiatori e taccheggi iniziano intorno al 65-70%. Vandalismo e graffiti non hanno bisogno di vernice spray. \nSe i primi crimini di strada falliscono, di solito te ne vai a mani vuote invece di andare in prigione. Il carcere è ancora possibile, ma non è più la norma. \nI lavori rimangono disponibili dal livello 1 mentre non sei in prigione: usali quando vuoi contanti senza rischio di criminalità. \nI tempi di recupero dei crimini ora aumentano con il potenziale guadagno: i crimini a basso rendimento rimangono veloci, mentre i crimini ad alto rendimento ottengono tempi di recupero chiaramente più lunghi. \nLinee guida per livello di premio: fino a 500 € ≈ 1,5 min, fino a 2.000 € ≈ 5 min, fino a 10.000 € ≈ 15 min, fino a 30.000 € ≈ 30 min, oltre ≈ 60 min. \nNon esiste un limite giornaliero rigido ai crimini; i giocatori attivi possono continuare a giocare purché gestiscano tempi di recupero, rischi e risorse. \nI crimini con \"arma richiesta\" utilizzano l\'arma del crimine selezionata. Ora puoi sceglierlo direttamente nella parte superiore della schermata Crimini o tramite Inventario. \nI bonus attivi della palestra e del poligono di tiro (fino a +8% ciascuno) vengono mostrati nella schermata Crimini; aumentano le possibilità di successo man mano che il server calcola (allenarsi di più tramite l\'hub di allenamento/palestra + gamma). \nSe completi almeno una sessione in palestra e una sessione al poligono di tiro nello stesso giorno di calendario UTC, il server aggiunge una piccola probabilità extra di successo nel crimine (+0,5%). La schermata Crimini mostra quando questa combinazione è attiva. \nI crimini che richiedono un veicolo utilizzano l\'auto del crimine selezionata dall\'inventario (accanto alle armi e al giubbotto) o una barca selezionata nella marina. Le moto possono ancora essere selezionate nel garage per moto. Conta solo un veicolo che si trova effettivamente nel tuo Paese attuale e non in transito o in vendita. \nIl fabbisogno di farmaci nei reati è indicato in grammi e segue le stesse quantità dell\'inventario e dello stoccaggio dei farmaci. \nSe un crimine non può iniziare a causa di un veicolo scomparso, di un\'arma sbagliata o di munizioni mancanti, il messaggio di errore ora dovrebbe mostrare la vera causa invece di un generico tentativo. \nAd ogni tentativo di crimine: subisci 5-15 danni HP e il livello di ricercato aumenta di 1-4 punti a seconda del successo o del fallimento. \nLa probabilità di arresto aumenta rapidamente con il livello di ricercato: ricercato 5 = 25%, ricercato 10 = 50%, ricercato 18+ = massimo 90%. \nAll\'arresto vai in prigione. Frase = max(livello desiderato × 10, 5) minuti. Cauzione = livello di ricercato × € 1.000. Anche se all’inizio un crimine sembra riuscito, ma poi si viene scoperti, il risultato finale conta comunque come un arresto: gli strumenti necessari vengono confiscati, l’arma usata del crimine viene persa e anche i veicoli possono essere sequestrati. \nAlcuni crimini richiedono un veicolo, uno strumento o un grado minimo. Mancare questi impedirà l\'inizio del crimine. \nGli XP guadagnati aumentano il tuo grado, sbloccando crimini migliori e ricompense più elevate. \nFBI La tensione aumenta con crimini più pesanti. Al di sopra dei 50 gradi l\'FBI diventa attivo con possibilità di arresto ancora più elevate.';
+      'Ai livelli 1-5, i crimini di strada (livello minimo 1) mostrano le reali possibilità di successo del catalogo: borseggiatori e taccheggi iniziano intorno al 65-70%. Vandalismo e graffiti non hanno bisogno di vernice spray. \nSe i primi crimini di strada falliscono, di solito te ne vai a mani vuote invece di andare in prigione. Il carcere è ancora possibile, ma non è più la norma. \nI lavori rimangono disponibili dal livello 1 mentre non sei in prigione: usali quando vuoi contanti senza rischio di criminalità. \nI tempi di recupero dei crimini ora aumentano con il potenziale guadagno: i crimini a basso rendimento rimangono veloci, mentre i crimini ad alto rendimento ottengono tempi di recupero chiaramente più lunghi. \nLinee guida per livello di premio: fino a 500 € ≈ 1,5 min, fino a 2.000 € ≈ 5 min, fino a 10.000 € ≈ 15 min, fino a 30.000 € ≈ 30 min, oltre ≈ 60 min. \nNon esiste un limite giornaliero rigido ai crimini; i giocatori attivi possono continuare a giocare purché gestiscano tempi di recupero, rischi e risorse. \nCrimini armati mostrano su ogni carta il tipo di arma di cui hai bisogno (pistola, fucile, fucile, mitragliatore, cecchino). Indossa un\'arma corrispondente nello slot 1 o 2 nell\'inventario: una pistola solo nel tuo zaino non conta. \nI bonus attivi della palestra e del poligono di tiro (fino a +8% ciascuno) vengono mostrati nella schermata Crimini; aumentano le possibilità di successo man mano che il server calcola (allenarsi di più tramite l\'hub di allenamento/palestra + gamma). \nSe completi almeno una sessione in palestra e una sessione al poligono di tiro nello stesso giorno di calendario UTC, il server aggiunge una piccola probabilità extra di successo nel crimine (+0,5%). La schermata Crimini mostra quando questa combinazione è attiva. \nI crimini che richiedono un veicolo utilizzano il veicolo criminale selezionato da Garage o Marina. Conta solo un veicolo che si trova effettivamente nel tuo Paese attuale e non in transito o in vendita. \nIl fabbisogno di farmaci nei reati è indicato in grammi e segue le stesse quantità dell\'inventario e dello stoccaggio dei farmaci. \nSe un crimine non può iniziare a causa di un veicolo scomparso, di un\'arma sbagliata o di munizioni mancanti, il messaggio di errore ora dovrebbe mostrare la vera causa invece di un generico tentativo. \nAd ogni tentativo di crimine: subisci 5-15 danni HP e il livello di ricercato aumenta di 1-4 punti a seconda del successo o del fallimento. \nLa probabilità di arresto aumenta rapidamente con il livello di ricercato: ricercato 5 = 25%, ricercato 10 = 50%, ricercato 18+ = massimo 90%. \nAll\'arresto vai in prigione. Frase = max(livello desiderato × 10, 5) minuti. Cauzione = livello di ricercato × € 1.000. Anche se all’inizio un crimine sembra riuscito, ma poi si viene scoperti, il risultato finale conta comunque come un arresto: gli strumenti necessari vengono confiscati, l’arma usata del crimine viene persa e anche i veicoli possono essere sequestrati. \nAlcuni crimini richiedono un veicolo, uno strumento o un grado minimo. Mancare questi impedirà l\'inizio del crimine. \nGli XP guadagnati aumentano il tuo grado, sbloccando crimini migliori e ricompense più elevate. \nFBI La tensione aumenta con crimini più pesanti. Al di sopra dei 50 gradi l\'FBI diventa attivo con possibilità di arresto ancora più elevate.';
 
   @override
   String get helpTopicCrimesTips =>

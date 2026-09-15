@@ -79,7 +79,10 @@ class _CrimeCardState extends State<CrimeCard> {
 
   bool get _hasWeaponRequirement => widget.crime.requiredWeapon == true;
 
-  static const double _requirementBannerHeight = 30;
+  static const double _requirementBannerHeight = 34;
+
+  String _weaponTypesLabel(AppLocalizations l10n) =>
+      formatCrimeWeaponTypes(l10n, widget.crime.suitableWeaponTypes);
 
   String _formatToolNames(AppLocalizations l10n, List<String> toolIds) {
     return toolIds
@@ -112,7 +115,7 @@ class _CrimeCardState extends State<CrimeCard> {
       case 'drugs':
         return l10n.crimeCardBlockerDrugs;
       case 'weapon':
-        return l10n.crimeCardBlockerWeapon;
+        return l10n.crimeCardWeaponBannerNeededTypes(_weaponTypesLabel(l10n));
       case 'weapon_ammo':
         return l10n.crimeCardBlockerAmmo;
       case 'criminal_record':
@@ -199,38 +202,36 @@ class _CrimeCardState extends State<CrimeCard> {
     IconData trailingIcon;
     Color trailingColor;
 
+    final typesLabel = _weaponTypesLabel(l10n);
+
     if (weaponReady && widget.canCommit) {
-      final label = weaponLabel.isNotEmpty
-          ? weaponLabel
-          : l10n.tooltipCrimeRequiresWeapon;
-      bannerText = l10n.crimeCardWeaponBannerReady(label);
+      final label = weaponLabel.isNotEmpty ? weaponLabel : typesLabel;
+      bannerText = l10n.crimeCardWeaponBannerReadyTypes(label, typesLabel);
       bannerColor = const Color(0xFF1A237E);
       textColor = Colors.lightBlueAccent;
       trailingIcon = Icons.check_circle_rounded;
       trailingColor = Colors.lightBlueAccent;
     } else if (blocker == 'weapon_ammo') {
-      bannerText = l10n.crimeCardWeaponBannerAmmo;
+      bannerText = l10n.crimeCardWeaponBannerAmmoTypes(typesLabel);
       bannerColor = const Color(0xFF4A148C);
       textColor = Colors.purpleAccent;
       trailingIcon = Icons.lock_outline_rounded;
       trailingColor = Colors.purpleAccent;
     } else if (blocker == 'weapon' || widget.crime.weaponReady == false) {
-      bannerText = l10n.crimeCardWeaponBannerNeeded;
+      bannerText = l10n.crimeCardWeaponBannerNeededTypes(typesLabel);
       bannerColor = const Color(0xFF311B92);
       textColor = const Color(0xFFB39DDB);
       trailingIcon = Icons.lock_outline_rounded;
       trailingColor = const Color(0xFFB39DDB);
     } else if (blocker == 'rank') {
-      bannerText = l10n.crimeCardWeaponBannerNeeded;
+      bannerText = l10n.crimeCardWeaponBannerNeededTypes(typesLabel);
       bannerColor = Colors.black.withValues(alpha: 0.72);
       textColor = Colors.white60;
       trailingIcon = Icons.whatshot_outlined;
       trailingColor = Colors.white54;
     } else {
-      final label = weaponLabel.isNotEmpty
-          ? weaponLabel
-          : l10n.tooltipCrimeRequiresWeapon;
-      bannerText = l10n.crimeCardWeaponBannerReady(label);
+      final label = weaponLabel.isNotEmpty ? weaponLabel : typesLabel;
+      bannerText = l10n.crimeCardWeaponBannerReadyTypes(label, typesLabel);
       bannerColor = const Color(0xFF1A237E).withValues(alpha: 0.88);
       textColor = Colors.lightBlueAccent;
       trailingIcon = Icons.check_circle_outline_rounded;
@@ -425,7 +426,9 @@ class _CrimeCardState extends State<CrimeCard> {
       requirements.add('🚗 ${l10n.tooltipCrimeRequiresVehicle}');
     }
     if (widget.crime.requiredWeapon == true) {
-      requirements.add('🔫 ${l10n.tooltipCrimeRequiresWeapon}');
+      requirements.add(
+        '🔫 ${l10n.tooltipCrimeRequiresWeaponTypes(_weaponTypesLabel(l10n))}',
+      );
     }
     if (widget.crime.requiredDrugs != null &&
         widget.crime.requiredDrugs!.isNotEmpty) {
@@ -643,6 +646,35 @@ class _CrimeCardState extends State<CrimeCard> {
                                 : Colors.grey,
                           ),
                           maxLines: isWide ? 2 : 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    if (_hasWeaponRequirement)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 3),
+                        child: Text(
+                          widget.crime.weaponReady == true &&
+                                  widget.crime.selectedCrimeWeaponId != null
+                              ? l10n.crimeCardWeaponReadyLine(
+                                  localizedWeaponDisplayName(
+                                    l10n,
+                                    widget.crime.selectedCrimeWeaponId,
+                                    widget.crime.selectedCrimeWeaponName,
+                                  ),
+                                  _weaponTypesLabel(l10n),
+                                )
+                              : l10n.crimeCardWeaponNeedLine(
+                                  _weaponTypesLabel(l10n),
+                                ),
+                          style: TextStyle(
+                            fontSize: isWide ? 10 : 9.5,
+                            fontWeight: FontWeight.w700,
+                            height: 1.2,
+                            color: widget.crime.weaponReady == true
+                                ? Colors.lightBlueAccent
+                                : const Color(0xFFB39DDB),
+                          ),
+                          maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
