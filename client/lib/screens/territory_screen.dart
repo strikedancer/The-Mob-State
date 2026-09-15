@@ -141,6 +141,13 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       TransformationController();
   final ValueNotifier<Map<String, dynamic>?> _regionDetailNotifier =
       ValueNotifier<Map<String, dynamic>?>(null);
+  final ValueNotifier<DateTime> _nowNotifier = ValueNotifier<DateTime>(
+    DateTime.now(),
+  );
+  Timer? _liveTimer;
+  bool _silentRefreshInFlight = false;
+  String? _lastSilentRefreshKey;
+  DateTime? _lastSilentRefreshAt;
   Offset? _mapPointerDownPosition;
   bool _mapPointerMoved = false;
   int _activeMapPointers = 0;
@@ -237,6 +244,9 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     _tabController = TabController(length: 3, vsync: this);
     _auth = context.read<AuthProvider>();
     _auth!.addListener(_onAuthChanged);
+    _liveTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+      _onLiveTick();
+    });
     _loadData(reloadCountries: true, countryCode: _territoryCodeForPlayer());
   }
 
@@ -251,8 +261,10 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   void dispose() {
     _auth?.removeListener(_onAuthChanged);
     _mapTooltipTimer?.cancel();
+    _liveTimer?.cancel();
     _mapTransformController.dispose();
     _regionDetailNotifier.dispose();
+    _nowNotifier.dispose();
     _tabController.dispose();
     super.dispose();
   }
@@ -260,11 +272,17 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   Future<void> _loadData({
     String? countryCode,
     bool reloadCountries = false,
+    bool silent = false,
   }) async {
-    setState(() {
-      _isLoading = _mapData.isEmpty;
-      _loadError = null;
-    });
+    if (silent) {
+      if (_silentRefreshInFlight || _isActing || _isLoading) return;
+      _silentRefreshInFlight = true;
+    } else {
+      setState(() {
+        _isLoading = _mapData.isEmpty;
+        _loadError = null;
+      });
+    }
 
     try {
     List<Map<String, dynamic>> countries = _countries;
@@ -289,7 +307,8 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       }
     }
 
-    final previousRegionKey = _selectedRegion?['regionKey'] as String?;
+    final previousRegionKey = _selectedRegion?['regionKey'] as String? ??
+        _regionDetailNotifier.value?['regionKey'] as String?;
 
     final [mapData, overview, leaderboard, myCrew] = await Future.wait([
       _service.getMap(targetCountryCode),
@@ -299,16 +318,23 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     ]);
 
     final mapDataMap = mapData as Map<String, dynamic>;
+    _stampViewerCooldowns(mapDataMap, DateTime.now());
     final mapCountry = mapDataMap['country'] as Map<String, dynamic>?;
     final resolvedCountryCode =
         (mapCountry?['countryCode'] as String?)?.toLowerCase() ??
         targetCountryCode;
     final svgAssetKey = mapCountry?['svgAssetKey'] as String?;
-    final svgTemplate = await _loadSvgTemplateForCountry(
-      resolvedCountryCode,
-      svgAssetKey,
-    );
-    final parsedSvg = _parseSvgMap(svgTemplate);
+    final reuseSvg = silent &&
+        _svgTemplate != null &&
+        _svgRegionShapes.isNotEmpty &&
+        resolvedCountryCode == _selectedCountryCode.toLowerCase();
+    final svgTemplate = reuseSvg
+        ? _svgTemplate!
+        : await _loadSvgTemplateForCountry(
+            resolvedCountryCode,
+            svgAssetKey,
+          );
+    final parsedSvg = reuseSvg ? null : _parseSvgMap(svgTemplate);
     final myCrewMap = myCrew as Map<String, dynamic>?;
     final myCrewIdRaw = myCrewMap?['id'];
     final myCrewId = myCrewIdRaw is num
@@ -341,27 +367,162 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       _myCrewId = myCrewId;
       _myCrewName = myCrewMap?['name'] as String?;
       _svgTemplate = svgTemplate;
-      _svgViewBox = parsedSvg?.viewBox;
-      _svgRegionShapes = parsedSvg?.shapes ?? const [];
-      _hoveredSvgElementId = null;
-      _mapTooltipLabel = null;
-      _mapTooltipOffset = null;
+      if (!reuseSvg) {
+        _svgViewBox = parsedSvg?.viewBox;
+        _svgRegionShapes = parsedSvg?.shapes ?? const [];
+      }
+      if (!silent) {
+        _hoveredSvgElementId = null;
+        _mapTooltipLabel = null;
+        _mapTooltipOffset = null;
+      }
       _selectedRegion = selectedRegion;
       _renderedSvgMap = _renderSvgWithOwnership(
         (_mapData['regions'] as List<dynamic>?) ?? const <dynamic>[],
       );
       _isLoading = false;
     });
-    _resetMapTransform();
-    _regionDetailNotifier.value = selectedRegion;
+    if (!silent) {
+      _resetMapTransform();
+      _lastSilentRefreshKey = null;
+    }
+    _regionDetailNotifier.value = selectedRegion ??
+        (silent ? _regionDetailNotifier.value : null);
     } catch (e) {
+      if (silent) {
+        _lastSilentRefreshKey = null;
+        return;
+      }
       if (!mounted) return;
       final t = AppLocalizations.of(context)!;
       setState(() {
         _loadError = t.connectionErrorGeneric;
         _isLoading = false;
       });
+    } finally {
+      if (silent) {
+        _silentRefreshInFlight = false;
+      }
     }
+  }
+
+  void _stampViewerCooldowns(
+    Map<String, dynamic> mapData,
+    DateTime fetchedAt,
+  ) {
+    final regions = mapData['regions'];
+    if (regions is! List) return;
+    for (final raw in regions) {
+      if (raw is! Map) continue;
+      final remaining =
+          (raw['viewerCooldownSecondsRemaining'] as num?)?.toInt() ?? 0;
+      if (remaining > 0) {
+        raw['viewerCooldownUntil'] =
+            fetchedAt.add(Duration(seconds: remaining)).toIso8601String();
+      } else {
+        raw.remove('viewerCooldownUntil');
+      }
+    }
+  }
+
+  void _onLiveTick() {
+    if (!mounted) return;
+    final now = DateTime.now();
+    _nowNotifier.value = now;
+    unawaited(_maybeSilentRefreshExpiredTimers(now));
+  }
+
+  Future<void> _maybeSilentRefreshExpiredTimers([DateTime? clock]) async {
+    if (!mounted || _isActing || _isLoading || _silentRefreshInFlight) return;
+    final now = clock ?? DateTime.now();
+    final region = _regionDetailNotifier.value ?? _selectedRegion;
+    if (region == null) return;
+    final key = _expiredTimerRefreshKey(region, now);
+    if (key == null) return;
+    if (key == _lastSilentRefreshKey) {
+      final lastAt = _lastSilentRefreshAt;
+      if (lastAt != null &&
+          now.difference(lastAt) < const Duration(seconds: 12)) {
+        return;
+      }
+    }
+    _lastSilentRefreshKey = key;
+    _lastSilentRefreshAt = now;
+    await _loadData(silent: true);
+  }
+
+  String? _expiredTimerRefreshKey(
+    Map<String, dynamic> region,
+    DateTime now,
+  ) {
+    final regionKey = (region['regionKey'] as String?) ?? '';
+    final status = (region['contestStatus'] as String?)?.toLowerCase();
+    final contestStartedAt = _parseApiDate(region['contestStartedAt']);
+    final prepMinutes =
+        (_overview['config']?['contestPrepMinutes'] as num?)?.toInt() ?? 0;
+    final activeMinutes =
+        (_overview['config']?['contestActiveMinutes'] as num?)?.toInt() ?? 0;
+    final lockdownMinutes =
+        (_overview['config']?['contestLockdownMinutes'] as num?)?.toInt() ?? 0;
+    final contestActiveAt = _contestTimestampFromFallback(
+      startedAt: contestStartedAt,
+      primary: _parseApiDate(region['contestActiveAt']),
+      offsetMinutes: prepMinutes,
+    );
+    final contestLockdownAt = _contestTimestampFromFallback(
+      startedAt: contestStartedAt,
+      primary: _parseApiDate(region['contestLockdownAt']),
+      offsetMinutes: prepMinutes + activeMinutes,
+    );
+    final contestResolveAt = _contestTimestampFromFallback(
+      startedAt: contestStartedAt,
+      primary: _parseApiDate(region['contestResolveAt']),
+      offsetMinutes: prepMinutes + activeMinutes + lockdownMinutes,
+    );
+
+    if (status == 'preparing' &&
+        contestActiveAt != null &&
+        !contestActiveAt.isAfter(now)) {
+      return '$regionKey:contest-active';
+    }
+    if (status == 'active' &&
+        contestLockdownAt != null &&
+        !contestLockdownAt.isAfter(now)) {
+      return '$regionKey:contest-lockdown';
+    }
+    if (status == 'lockdown' &&
+        contestResolveAt != null &&
+        !contestResolveAt.isAfter(now)) {
+      return '$regionKey:contest-resolve';
+    }
+
+    final cooldownUntil = _parseApiDate(region['viewerCooldownUntil']);
+    final remainingSnap =
+        (region['viewerCooldownSecondsRemaining'] as num?)?.toInt() ?? 0;
+    if (remainingSnap > 0 &&
+        cooldownUntil != null &&
+        !cooldownUntil.isAfter(now)) {
+      return '$regionKey:cooldown';
+    }
+
+    final garrison = (region['garrison'] as Map?)?.cast<String, dynamic>();
+    if (garrison != null && garrison['active'] == true) {
+      final endsAt = _parseApiDate(garrison['endsAt']);
+      if (endsAt != null && !endsAt.isAfter(now)) {
+        return '$regionKey:garrison';
+      }
+    }
+
+    final warPressure = (region['activeWarPressure'] as Map?)
+        ?.cast<String, dynamic>();
+    if (warPressure != null) {
+      final endsAt = _parseApiDate(warPressure['endsAt']);
+      if (endsAt != null && !endsAt.isAfter(now)) {
+        return '$regionKey:war-pressure';
+      }
+    }
+
+    return null;
   }
 
   bool _isMyCrewRegion(Map<String, dynamic> region) {
@@ -423,16 +584,30 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     return '${seconds}s';
   }
 
-  String _countdownLabel(DateTime? targetAt) {
+  String _formatLiveDuration(Duration duration) {
+    final safeDuration = duration.isNegative ? Duration.zero : duration;
+    final hours = safeDuration.inHours;
+    final minutes = safeDuration.inMinutes.remainder(60);
+    final seconds = safeDuration.inSeconds.remainder(60);
+    if (hours > 0) {
+      return '${hours}u ${minutes.toString().padLeft(2, '0')}m ${seconds.toString().padLeft(2, '0')}s';
+    }
+    if (safeDuration.inMinutes > 0) {
+      return '${safeDuration.inMinutes}m ${seconds.toString().padLeft(2, '0')}s';
+    }
+    return '${seconds}s';
+  }
+
+  String _countdownLabel(DateTime? targetAt, [DateTime? now]) {
     final t = _l10n;
     if (targetAt == null) {
       return t.unknown;
     }
-    final remaining = targetAt.difference(DateTime.now());
+    final remaining = targetAt.difference(now ?? _nowNotifier.value);
     if (remaining.isNegative || remaining.inSeconds <= 0) {
       return t.territoryNow;
     }
-    return _formatDuration(remaining);
+    return _formatLiveDuration(remaining);
   }
 
   DateTime? _contestTimestampFromFallback({
@@ -1185,6 +1360,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     if (_isRegionSheetOpen) return;
 
     _regionDetailNotifier.value = region;
+    unawaited(_maybeSilentRefreshExpiredTimers());
 
     setState(() {
       _isRegionSheetOpen = true;
@@ -1227,9 +1403,16 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                         if (liveRegion == null) {
                           return const SizedBox.shrink();
                         }
-                        return _buildRegionDetail(
-                          liveRegion,
-                          onClose: () => Navigator.of(sheetContext).pop(),
+                        return ValueListenableBuilder<DateTime>(
+                          valueListenable: _nowNotifier,
+                          builder: (context, now, _) {
+                            return _buildRegionDetail(
+                              liveRegion,
+                              onClose: () =>
+                                  Navigator.of(sheetContext).pop(),
+                              now: now,
+                            );
+                          },
                         );
                       },
                     ),
@@ -2186,7 +2369,9 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   Widget _buildRegionDetail(
     Map<String, dynamic> region, {
     VoidCallback? onClose,
+    DateTime? now,
   }) {
+    final clock = now ?? _nowNotifier.value;
     final regionName = _localizedRegionNameFromMap(region);
     final ownerName = region['ownerCrewName'] as String?;
     final stability = (region['stability'] as num?)?.toInt() ?? 100;
@@ -2218,8 +2403,10 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       primary: _parseApiDate(region['contestResolveAt']),
       offsetMinutes: prepMinutes + activeMinutes + lockdownMinutes,
     );
-    final viewerCooldownSecondsRemaining =
-        (region['viewerCooldownSecondsRemaining'] as num?)?.toInt() ?? 0;
+    final viewerCooldownUntil = _parseApiDate(region['viewerCooldownUntil']);
+    final viewerCooldownSecondsRemaining = viewerCooldownUntil != null
+        ? viewerCooldownUntil.difference(clock).inSeconds
+        : ((region['viewerCooldownSecondsRemaining'] as num?)?.toInt() ?? 0);
     final tier = (region['valueTier'] as num?)?.toInt() ?? 1;
     final isMyCrewRegion = _isMyCrewRegion(region);
     final encircled = region['encircled'] == true;
@@ -2393,14 +2580,14 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                 ),
               if (contestStatus == 'preparing')
                 Text(
-                  '${t.territoryDetailActionsUnlockIn}: ${_countdownLabel(contestActiveAt)}',
+                  '${t.territoryDetailActionsUnlockIn}: ${_countdownLabel(contestActiveAt, clock)}',
                 ),
               if (contestStatus == 'active')
                 Text(
-                  '${t.territoryDetailActionsCloseIn}: ${_countdownLabel(contestLockdownAt)}',
+                  '${t.territoryDetailActionsCloseIn}: ${_countdownLabel(contestLockdownAt, clock)}',
                 ),
               Text(
-                '${t.territoryDetailContestEndsIn}: ${_countdownLabel(contestResolveAt)}',
+                '${t.territoryDetailContestEndsIn}: ${_countdownLabel(contestResolveAt, clock)}',
               ),
             ],
           ),
@@ -2461,7 +2648,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       if (activeWarPressure != null && warPressureEndsAt != null)
         _detailRow(
           t.territoryWarPressureEndsIn,
-          _countdownLabel(warPressureEndsAt),
+          _countdownLabel(warPressureEndsAt, clock),
         ),
       _detailRow(
         t.territoryDetailIncomeHour,
@@ -2498,7 +2685,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       if (garrisonActive)
         _detailRow(
           t.territoryGarrisonTitle,
-          '${t.territoryGarrisonActiveUntil(_countdownLabel(garrisonEndsAt))} · +$garrisonDefenseBonus / +$garrisonCaptureBonus',
+          '${t.territoryGarrisonActiveUntil(_countdownLabel(garrisonEndsAt, clock))} · +$garrisonDefenseBonus / +$garrisonCaptureBonus',
         ),
       if (regionEvent != null)
         _detailRow(
@@ -2525,17 +2712,17 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       if (contestStatus == 'preparing')
         _detailRow(
           t.territoryDetailActionsUnlockIn,
-          _countdownLabel(contestActiveAt),
+          _countdownLabel(contestActiveAt, clock),
         ),
       if (contestStatus == 'active')
         _detailRow(
           t.territoryDetailActionsCloseIn,
-          _countdownLabel(contestLockdownAt),
+          _countdownLabel(contestLockdownAt, clock),
         ),
       if (hasContest)
         _detailRow(
           t.territoryDetailContestEndsIn,
-          _countdownLabel(contestResolveAt),
+          _countdownLabel(contestResolveAt, clock),
         ),
       if (_actionCooldownSeconds > 0)
         _detailRow(
@@ -2545,7 +2732,9 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       if (viewerCooldownSecondsRemaining > 0)
         _detailRow(
           t.territoryDetailYourCooldown,
-          _formatDuration(Duration(seconds: viewerCooldownSecondsRemaining)),
+          _formatLiveDuration(
+            Duration(seconds: viewerCooldownSecondsRemaining),
+          ),
         ),
       const SizedBox(height: 16),
       if (!_hasCrew)
@@ -3173,6 +3362,15 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   // â”€â”€ Season Tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   Widget _buildSeasonTab() {
+    return ValueListenableBuilder<DateTime>(
+      valueListenable: _nowNotifier,
+      builder: (context, now, _) {
+        return _buildSeasonTabBody(now);
+      },
+    );
+  }
+
+  Widget _buildSeasonTabBody(DateTime now) {
     final season = _overview['activeSeason'] as Map<String, dynamic>?;
     final drama = (_overview['drama'] as Map?)?.cast<String, dynamic>();
     final events =
@@ -3195,7 +3393,11 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     final key = season?['seasonKey'] as String? ?? '-';
     final status = season?['status'] as String? ?? '-';
     final startsAt = season?['startsAt'] as String? ?? '-';
-    final endsAt = season?['endsAt'] as String? ?? '-';
+    final endsAtRaw = season?['endsAt'];
+    final endsAtDate = _parseApiDate(endsAtRaw);
+    final endsAt = endsAtDate != null
+        ? _countdownLabel(endsAtDate, now)
+        : (endsAtRaw as String? ?? '-');
 
     return ListView(
       padding: const EdgeInsets.all(20),

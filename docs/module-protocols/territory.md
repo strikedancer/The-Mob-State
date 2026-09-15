@@ -43,6 +43,7 @@
   - Territory modal preview-fix: de gebiedsmodal rendert nu ook een compacte preview van alleen het aangeklikte SVG-gebied via het bestaande regio-path, zodat spelers in de popup direct visueel zien welk gebied geselecteerd is zonder de volledige landkaart opnieuw te tonen; brede layouts tonen deze preview rechts naast de stats, smallere layouts stapelen hem onder de titel
   - Territory income visibility + crewleader summary: gecontroleerde regio's keren nu server-authoritative passieve crew-bank inkomsten uit op basis van runtime-config per `valueTier`, loggen die payouts in `territory_reward_log`, tonen in de regio-modal echte bedragen per payout/per uur/per dag, en leveren in het crewleader-dashboard een samenvatting voor gebieden, landen, huidig inkomen en totaal verdiend territory-geld
   - Territory live-refresh fix: bij contest-start en verdedigen wordt de open regio-modal nu altijd direct ververst; als de eerste call fout terugkomt maar de contest al is aangemaakt, ziet de speler meteen de actuele conteststatus in plaats van pas na weg-navigeren. De modal berekent timerfallbacks bovendien lokaal vanuit `startedAt` + runtime-config als een timestamp in de payload nog ontbreekt
+  - Territory live timers: de regio-modal telt cooldown, contest-fasen, garnizoen en war pressure per seconde af zonder de SVG-kaart elke tick opnieuw te bouwen; als een timer op nul staat, herlaadt het scherm de mapdata stil zodat aanvals-/actieknoppen ontgrendelen zonder handmatige page refresh
   - Territory live resolve fix: contest resolve dwingt punten nu eerst naar echte nummers voordat capture-percentages worden berekend, zodat neutrale regio's met alleen attacker-acties niet meer onterecht `winnerCrewId = NULL` eindigen; territory draait daarnaast nu ook via een minuut-cron zodat afhandeling en meldingen niet afhankelijk blijven van een latere map/overview read, en contest start/capture/loss versturen nu behalve push ook een inboxbericht
   - Territory prep-ready push: wanneer een contest van `preparing` naar `active` gaat, krijgen aanvallende én verdedigende crewleden push + inbox (`territory_contest_active`) zodat ze weten dat acties ontgrendeld zijn; de overgang blijft cron/lifecycle-gestuurd en fire-and-forget
   - Territory admin/live API serialisatie-fix: `overview` en `leaderboard` normaliseren aggregate velden zoals `COUNT(...)` nu expliciet naar gewone numbers voordat Express JSON rendert, zodat admin/system logs geen `Do not know how to serialize a BigInt` meer krijgen op territory responses
@@ -95,6 +96,7 @@ Scope-afbakening:
 - Territory-passive income naar de crew-bank moet dezelfde cash-storage cap respecteren als normale crew deposits; volle cashopslag betekent geen verdere Territory-bijschrijving totdat er weer ruimte is.
 - NL en EN copy synchroon voor alle nieuwe labels, flows, errors, meldingen en push/inbox events.
 - UI blijft bruikbaar op mobiel/tablet/desktop met 1 primaire verticale scrollflow onder sticky headers.
+- Live countdown in de regio-modal is display-only: de client mag resterende cooldown/fase-tijd lokaal aftellen, maar `contestStatus` en actieknoppen blijven server-authoritative. Bij het aflopen van een timer stil mapdata herladen zodat knoppen ontgrendelen zonder de SVG-kaart elke seconde opnieuw te tekenen.
 
 ## Cross-Module Dependencies
 - Territory -> Crew (roles, permissions, membership, crew identity)
@@ -115,6 +117,7 @@ Scope-afbakening:
 - Volledige audit trail van acties en ownership mutaties.
 - Map rendering met duidelijke fallback als SVG/region mapping deels faalt.
 - Initial `/territory` load failure must show retry (`MobileLoadError`), not an infinite spinner. TabBar is scrollable on narrow widths.
+- Region-modal timers (cooldown, contest phases, garrison, war pressure) tick live without a manual page refresh; expiry triggers a silent map refresh so action buttons follow server state.
 
 ## Core Domain Model
 
