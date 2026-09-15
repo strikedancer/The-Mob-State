@@ -23,6 +23,7 @@ import {
   DRUG_GRAMS_PER_SLOT,
   MATERIAL_UNITS_PER_SLOT,
   maxAddForSlotStack,
+  TRADE_UNITS_PER_SLOT,
   drugStashKey,
   isMetaStashKey,
   materialStashKey,
@@ -968,7 +969,13 @@ class PropertyStorageService {
       where: { propertyId_drugType: { propertyId, drugType: key } },
     });
     const detail = await this.getPropertyStorageDetail(playerId, propertyId);
-    quantity = this.clampToFreeSlots(quantity, detail.usage, detail.capacity);
+    quantity = this.clampStackDeposit(
+      existing?.quantity ?? 0,
+      TRADE_UNITS_PER_SLOT,
+      detail.usage,
+      detail.capacity,
+      quantity,
+    );
     if (quantity <= 0) {
       throw new Error('STORAGE_FULL');
     }
@@ -1032,7 +1039,7 @@ class PropertyStorageService {
     const stashPx = pxRow?.quantity ?? 0;
     const remainingQty = stored.quantity - quantity;
 
-    await assertBackpackFits(playerId, await extraSlotsForTradeAdd(playerId, quantity));
+    await assertBackpackFits(playerId, await extraSlotsForTradeAdd(playerId, quantity, goodType));
 
     await prisma.$transaction(async (tx) => {
       await this.bumpStorageKey(tx, propertyId, key, -quantity);

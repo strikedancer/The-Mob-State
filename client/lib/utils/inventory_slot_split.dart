@@ -3,6 +3,7 @@ import '../models/inventory_grid_item.dart';
 const kDrugGramsPerSlot = 100;
 const kMaterialUnitsPerSlot = 5;
 const kAmmoRoundsPerSlot = 50;
+const kTradeUnitsPerSlot = 10;
 
 int unitsPerPropertySlot(InventoryItemKind kind) {
   switch (kind) {
@@ -12,10 +13,11 @@ int unitsPerPropertySlot(InventoryItemKind kind) {
       return kMaterialUnitsPerSlot;
     case InventoryItemKind.ammo:
       return kAmmoRoundsPerSlot;
+    case InventoryItemKind.trade:
+      return kTradeUnitsPerSlot;
     case InventoryItemKind.weapon:
     case InventoryItemKind.tool:
     case InventoryItemKind.armor:
-    case InventoryItemKind.trade:
       return 1;
   }
 }

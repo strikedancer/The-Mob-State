@@ -3,6 +3,7 @@ import { withPrismaWriteRetry } from '../lib/prismaRetry';
 import {
   CARRIED_TRADE_LOCATION,
   drugSlotsForGrams,
+  tradeSlotsForLots,
   tradeSlotsForQuantity,
 } from '../utils/propertyStash';
 import { CARRIED_MATERIAL_LOCATION } from './productionMaterialStock';
@@ -26,9 +27,9 @@ export async function getCarriedDrugSlots(playerId: number): Promise<number> {
 export async function getCarriedTradeSlots(playerId: number): Promise<number> {
   const rows = await prisma.inventory.findMany({
     where: { playerId, country: CARRIED_TRADE_LOCATION, quantity: { gt: 0 } },
-    select: { quantity: true },
+    select: { goodType: true, quantity: true },
   });
-  return rows.reduce((sum, row) => sum + tradeSlotsForQuantity(row.quantity), 0);
+  return tradeSlotsForLots(rows);
 }
 
 /**
@@ -50,9 +51,9 @@ export async function getBackpackTradeSlots(playerId: number): Promise<number> {
         ...(currentCountry ? [{ country: currentCountry }] : []),
       ],
     },
-    select: { quantity: true },
+    select: { goodType: true, quantity: true },
   });
-  return rows.reduce((sum, row) => sum + tradeSlotsForQuantity(row.quantity), 0);
+  return tradeSlotsForLots(rows);
 }
 
 export async function getRiskyBackpackSlots(playerId: number): Promise<number> {
@@ -82,8 +83,19 @@ export async function extraSlotsForDrugAdd(
 export async function extraSlotsForTradeAdd(
   playerId: number,
   quantity: number,
+  goodType: string,
 ): Promise<number> {
-  return tradeSlotsForQuantity(quantity);
+  if (quantity <= 0) return 0;
+  const player = await prisma.player.findUnique({
+    where: { id: playerId },
+    select: { currentCountry: true },
+  });
+  const current = await getBackpackTradeQuantity(
+    playerId,
+    goodType,
+    player?.currentCountry ?? '',
+  );
+  return tradeSlotsForQuantity(current + quantity) - tradeSlotsForQuantity(current);
 }
 
 export async function assertBackpackFits(

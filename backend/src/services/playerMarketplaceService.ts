@@ -1031,7 +1031,7 @@ export const playerMarketplaceService = {
       if (currentQuantity + storedQuantity + lotQuantity > good.maxInventory) {
         throw new Error('TRADE_CAPACITY');
       }
-      await assertBackpackFits(buyerId, await extraSlotsForTradeAdd(buyerId, lotQuantity));
+      await assertBackpackFits(buyerId, await extraSlotsForTradeAdd(buyerId, lotQuantity, meta.goodType));
 
       await claimListing(tx, listing.id, buyerId);
       const newMoney = await settlePayment(tx, buyerId, listing.sellerId, listing.price);

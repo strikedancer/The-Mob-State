@@ -279,7 +279,7 @@ export async function buyGoods(
     throw new Error('INVENTORY_FULL');
   }
 
-  await assertBackpackFits(playerId, await extraSlotsForTradeAdd(playerId, quantity));
+  await assertBackpackFits(playerId, await extraSlotsForTradeAdd(playerId, quantity, goodType));
 
   const [updatedPlayer] = await prisma.$transaction(async (tx) => {
     const playerRow = await tx.player.update({

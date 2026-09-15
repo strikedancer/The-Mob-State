@@ -1872,7 +1872,7 @@ class SmugglingService {
           );
           await assertBackpackFits(
             playerId,
-            await extraSlotsForTradeAdd(playerId, shipment.quantity),
+            await extraSlotsForTradeAdd(playerId, shipment.quantity, shipment.item_key),
           );
           await creditCarriedTrade(
             tx,

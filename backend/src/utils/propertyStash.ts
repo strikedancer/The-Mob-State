@@ -9,6 +9,8 @@ export const CARRIED_TRADE_LOCATION = '_carried_';
 /** Grams of one drug stack per property / backpack slot. */
 export const DRUG_GRAMS_PER_SLOT = 100;
 export const MATERIAL_UNITS_PER_SLOT = 5;
+/** Trade goods per property / backpack slot (carton). */
+export const TRADE_UNITS_PER_SLOT = 10;
 
 export const STASH_PROPERTY_TYPES = [
   'warehouse',
@@ -67,7 +69,21 @@ export function drugSlotsForGrams(grams: number): number {
 
 export function tradeSlotsForQuantity(quantity: number): number {
   if (quantity <= 0) return 0;
-  return quantity;
+  return Math.ceil(quantity / TRADE_UNITS_PER_SLOT);
+}
+
+export function tradeSlotsForLots(
+  rows: Array<{ goodType: string; quantity: number }>,
+): number {
+  const byType = new Map<string, number>();
+  for (const row of rows) {
+    byType.set(row.goodType, (byType.get(row.goodType) ?? 0) + row.quantity);
+  }
+  let sum = 0;
+  for (const qty of byType.values()) {
+    sum += tradeSlotsForQuantity(qty);
+  }
+  return sum;
 }
 
 export function isCarriedTradeLocation(country: string | null | undefined): boolean {
@@ -136,7 +152,7 @@ export function stashSlotsForRow(drugType: string, quantity: number): number {
     return drugSlotsForGrams(quantity);
   }
   if (drugType.startsWith(STASH_TRADE_PREFIX)) {
-    return quantity;
+    return tradeSlotsForQuantity(quantity);
   }
   return 0;
 }
