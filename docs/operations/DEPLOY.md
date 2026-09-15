@@ -81,7 +81,7 @@ Zelfde Flutter-app als `.com`. API blijft `api.themobstate.com`. Admin canonical
    plesk bin extension --exec letsencrypt cli.php -d themobstate.com -d www.themobstate.com -d themobstate.nl -d www.themobstate.nl -m administratie@themobstate.com
    ```
    `www.themobstate.nl` is een CNAME in de alias-zone, geen aparte alias.
-3. **Mailbox / deliverability:** From-header is `SMTP_FROM=noreply@themobstate.nl`. Zolang `87.106.78.33` op Spamhaus CSS staat of `themobstate.com` op de DBL, stuur transactionele mail via **Resend** (`RESEND_API_KEY` in `.env.plesk`; domein `themobstate.nl` daar verifiëren). Zonder die key valt de backend terug op Plesk-SMTP (`SMTP_USER=noreply@themobstate.com` op poort 465). Postfix-HELO en PTR moeten `mail.themobstate.nl` zijn; houd `smtp_address_preference=ipv4`. Auth-mails blijven eenvoudige HTML + text. Secrets nooit in git.
+3. **Mailbox / deliverability:** `SMTP_USER` en `SMTP_FROM` zijn beide **`noreply@themobstate.com`**. Niet vanaf `@themobstate.nl` verzenden zolang dat een Plesk-alias is: DMARC op beide zones is strict, dus From `.nl` + envelope/DKIM `.com` laat Gmail live-mail vallen. Postfix-HELO en PTR blijven `mail.themobstate.nl`; houd `smtp_address_preference=ipv4`. Auth-mails blijven eenvoudige HTML + text. Secrets nooit in git.
 4. CORS/Flutter kennen `.nl` al in code (`config/index.ts`, `app_config.dart`). Alias `themobstate.nl` staat op de VPS (mail+web aan, geen 301).
 5. **Google Postmaster / Search Console** — apex-TXT op `themobstate.nl` (Plesk alias-zone). Meerdere `google-site-verification=…` records mogen naast elkaar; de oude Search Console-token niet verwijderen.
    ```bash
@@ -294,10 +294,9 @@ MAX_FLIGHTS_PER_DAY=100
 SMTP_HOST="themobstate.com"
 SMTP_PORT="465"
 SMTP_USER="noreply@themobstate.com"
-SMTP_FROM="noreply@themobstate.nl"
+SMTP_FROM="noreply@themobstate.com"
 SMTP_FROM_NAME="The Mob State"
 SMTP_PASS=""
-RESEND_API_KEY=""
 ```
 
 ### Client (Flutter Web)

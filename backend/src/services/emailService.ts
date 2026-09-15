@@ -15,7 +15,6 @@ const smtpFromAddress =
   process.env.SMTP_FROM?.trim() || smtpUser || 'noreply@themobstate.com';
 const smtpFromName = process.env.SMTP_FROM_NAME?.trim() || 'The Mob State';
 const smtpFromHeader = `"${smtpFromName}" <${smtpFromAddress}>`;
-const resendApiKey = process.env.RESEND_API_KEY?.trim() || '';
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST || 'themobstate.com',
@@ -59,32 +58,6 @@ function htmlToPlainText(html: string): string {
     .trim();
 }
 
-async function sendViaResend(opts: {
-  to: string;
-  subject: string;
-  html: string;
-  text: string;
-}): Promise<void> {
-  const res = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${resendApiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      from: smtpFromHeader,
-      to: [opts.to],
-      subject: opts.subject,
-      html: opts.html,
-      text: opts.text,
-    }),
-  });
-  if (!res.ok) {
-    const body = await res.text();
-    throw new Error(`Resend HTTP ${res.status}: ${body.slice(0, 400)}`);
-  }
-}
-
 async function sendTransactionalMail(opts: {
   to: string;
   subject: string;
@@ -93,12 +66,9 @@ async function sendTransactionalMail(opts: {
 }): Promise<void> {
   const subject = stripMailDecorations(opts.subject);
   const text = opts.text || htmlToPlainText(opts.html);
-  if (resendApiKey) {
-    await sendViaResend({ to: opts.to, subject, html: opts.html, text });
-    return;
-  }
   await transporter.sendMail({
     from: smtpFromHeader,
+    envelope: { from: smtpFromAddress, to: opts.to },
     to: opts.to,
     subject,
     text,
@@ -261,20 +231,16 @@ function buildCrewEmailHtml(params: {
   `;
 }
 
-if (resendApiKey) {
-  console.log('[EmailService] Using Resend API for transactional mail');
-} else {
-  transporter.verify((error) => {
-    if (error) {
-      console.warn(
-        '[EmailService] SMTP server not reachable (emails will fail):',
-        error.message,
-      );
-    } else {
-      console.log('[EmailService] SMTP server ready to send emails');
-    }
-  });
-}
+transporter.verify((error) => {
+  if (error) {
+    console.warn(
+      '[EmailService] SMTP server not reachable (emails will fail):',
+      error.message,
+    );
+  } else {
+    console.log('[EmailService] SMTP server ready to send emails');
+  }
+});
 
 export const emailService = {
   /**
