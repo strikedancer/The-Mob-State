@@ -8216,7 +8216,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get vehicleTypeCar => 'Car';
 
   @override
+  String get vehicleTypeMotorcycle => 'Motorcycle';
+
+  @override
   String get vehicleTypeBoat => 'Boat';
+
+  @override
+  String get vehicleTypeAircraft => 'Aircraft';
 
   @override
   String stolenVehicleTitle(String vehicleType) {
@@ -16113,6 +16119,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get smugglingVehiclesOneByOne => 'Vehicles are shipped one by one';
 
   @override
+  String smugglingVehicleOptionLabel(String type, String name) {
+    return '$type · $name';
+  }
+
+  @override
+  String smugglingCatalogQtyLine(String name, int qty, String unit) {
+    return '$name · $qty $unit';
+  }
+
+  @override
+  String get smugglingUnitVehicle => 'vehicle';
+
+  @override
+  String get smugglingUnitWeapon => 'weapon';
+
+  @override
+  String get smugglingUnitRound => 'rounds';
+
+  @override
+  String get smugglingUnitGram => 'g';
+
+  @override
+  String get smugglingUnitPiece => 'units';
+
+  @override
   String smugglingMaxQuantity(int max) {
     return 'Max: $max';
   }
@@ -18002,7 +18033,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicSmugglingHow =>
-      'Choose a category, the specific item, the destination, and then decide between a commercial channel or your own transport.\nOwned cars, motorcycles, boats, and aircraft now show a live quote with cargo slots, lower cost, and risk reduction.\nA boat can carry cars and motorcycles; an aircraft cannot carry a boat and will return an immediate error.\nSuccess chance depends on the selected channel or owned transport, your current Wanted Level, and shipment size.\nOn failure you lose the entire shipment. No refund. Cargo and transport costs are gone.\nWhen you use owned transport and the run fails, the transport asset itself can also be confiscated.\nActive shipments are tracked live in an overview. After arrival the cargo appears in a depot ready for collection.\nCrew network remains available for commercial crew shipments, but owned transport is personal only.';
+      'Choose a category, the specific item, the destination, and then decide between a commercial channel or your own transport.\nCars, motorcycles and boats show their real names in the list, not internal codes.\nOwned cars, motorcycles, boats, and aircraft now show a live quote with cargo slots, lower cost, and risk reduction.\nA boat can carry cars and motorcycles; an aircraft cannot carry a boat and will return an immediate error.\nSuccess chance depends on the selected channel or owned transport, your current Wanted Level, and shipment size.\nOn failure you lose the entire shipment. No refund. Cargo and transport costs are gone.\nWhen you use owned transport and the run fails, the transport asset itself can also be confiscated.\nActive shipments are tracked live in an overview. After arrival the cargo appears in a depot ready for collection.\nCrew network remains available for commercial crew shipments, but owned transport is personal only.';
 
   @override
   String get helpTopicSmugglingTips =>

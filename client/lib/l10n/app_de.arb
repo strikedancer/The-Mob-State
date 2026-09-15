@@ -8291,7 +8291,7 @@
   "helpTopicSmugglingCategory": "Reich",
   "helpTopicSmugglingTitle": "Schmuggel",
   "helpTopicSmugglingSummary": "Bewegen Sie illegale Waren und Fahrzeuge zwischen Ländern. Wählen Sie einen kommerziellen Kanal oder nutzen Sie Ihr eigenes Fahrzeug oder Flugzeug, um die Kosten zu senken und das Risiko einer Beschlagnahme zu erhöhen.",
-  "helpTopicSmugglingHow": "Wählen Sie eine Kategorie, den spezifischen Artikel, das Ziel und entscheiden Sie sich dann zwischen einem kommerziellen Kanal oder Ihrem eigenen Transport. \nFür eigene Autos, Motorräder, Boote und Flugzeuge wird jetzt ein Live-Angebot mit Frachtplätzen, geringeren Kosten und Risikominderung angezeigt. \nEin Boot kann Autos und Motorräder transportieren; Ein Flugzeug kann kein Boot transportieren und gibt sofort einen Fehler zurück. \nDie Erfolgsaussichten hängen vom ausgewählten Kanal oder eigenen Transportmittel, Ihrem aktuellen Wanted-Level und der Sendungsgröße ab. \nBei einem Misserfolg verlieren Sie die gesamte Sendung. Keine Rückerstattung. Fracht- und Transportkosten entfallen. \nWenn Sie eigene Transportmittel nutzen und die Fahrt fehlschlägt, kann auch das Transportgut selbst beschlagnahmt werden. \nAktive Sendungen werden in einer Übersicht live verfolgt. Nach der Ankunft steht die Ladung in einem Depot zur Abholung bereit. \nDas Crew-Netzwerk steht weiterhin für kommerzielle Crew-Transporte zur Verfügung, der eigene Transport erfolgt jedoch nur für Privatpersonen.",
+  "helpTopicSmugglingHow": "Wählen Sie eine Kategorie, den spezifischen Artikel, das Ziel und entscheiden Sie sich dann zwischen einem kommerziellen Kanal oder Ihrem eigenen Transport. \nAutos, Motorräder und Boote werden in der Liste mit ihren echten Namen angezeigt, nicht mit internen Codes. \nFür eigene Autos, Motorräder, Boote und Flugzeuge wird jetzt ein Live-Angebot mit Frachtplätzen, geringeren Kosten und Risikominderung angezeigt. \nEin Boot kann Autos und Motorräder transportieren; Ein Flugzeug kann kein Boot transportieren und gibt sofort einen Fehler zurück. \nDie Erfolgsaussichten hängen vom ausgewählten Kanal oder eigenen Transportmittel, Ihrem aktuellen Wanted-Level und der Sendungsgröße ab. \nBei einem Misserfolg verlieren Sie die gesamte Sendung. Keine Rückerstattung. Fracht- und Transportkosten entfallen. \nWenn Sie eigene Transportmittel nutzen und die Fahrt fehlschlägt, kann auch das Transportgut selbst beschlagnahmt werden. \nAktive Sendungen werden in einer Übersicht live verfolgt. Nach der Ankunft steht die Ladung in einem Depot zur Abholung bereit. \nDas Crew-Netzwerk steht weiterhin für kommerzielle Crew-Transporte zur Verfügung, der eigene Transport erfolgt jedoch nur für Privatpersonen.",
   "helpTopicSmugglingTips": "Versenden Sie niemals Ihren gesamten Lagerbestand in einer Sendung: Teilen Sie ihn auf mehrere kleinere Ladungen auf, um katastrophale Verluste zu begrenzen. \nSenken Sie die Fahndungsstufe und die FBI-Hitze auf ein Minimum, bevor Sie eine große Schmuggeltour starten. \nNutzen Sie Ihr bestes Flugzeug oder Boot für teure Fahrten: Niedrigere Kosten helfen, aber Frachtplätze und Beschlagnahmungschancen entscheiden immer noch über das Risiko. \nSammeln Sie aktive Depots immer so schnell wie möglich ein: Abgelaufene Depotinhalte gehen dauerhaft verloren.",
   "helpTopicToolsCategory": "Management",
   "helpTopicToolsTitle": "Werkzeuge",
@@ -12396,5 +12396,37 @@
       }
     }
   },
-  "crewUiMissionWaitHint": "Ihre Crew muss warten, bis dieser Timer abgelaufen ist, bevor sie eine weitere Mission starten kann."
+  "crewUiMissionWaitHint": "Ihre Crew muss warten, bis dieser Timer abgelaufen ist, bevor sie eine weitere Mission starten kann.",
+  "vehicleTypeMotorcycle": "Motorrad",
+  "vehicleTypeAircraft": "Flugzeug",
+  "smugglingVehicleOptionLabel": "{type} · {name}",
+  "@smugglingVehicleOptionLabel": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingCatalogQtyLine": "{name} · {qty} {unit}",
+  "@smugglingCatalogQtyLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "int"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingUnitVehicle": "Fahrzeug",
+  "smugglingUnitWeapon": "Waffe",
+  "smugglingUnitRound": "Runden",
+  "smugglingUnitGram": "G",
+  "smugglingUnitPiece": "Einheiten"
 }

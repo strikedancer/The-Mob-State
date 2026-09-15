@@ -601,6 +601,87 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
     }
   }
 
+  String _vehicleTypeLabel(AppLocalizations l10n, String? type) {
+    switch ((type ?? '').toLowerCase()) {
+      case 'motorcycle':
+        return l10n.vehicleTypeMotorcycle;
+      case 'boat':
+        return l10n.vehicleTypeBoat;
+      case 'aircraft':
+        return l10n.vehicleTypeAircraft;
+      case 'car':
+        return l10n.vehicleTypeCar;
+      default:
+        return l10n.vehicleTypeCar;
+    }
+  }
+
+  String _unitLabel(AppLocalizations l10n, String? unitTag) {
+    switch ((unitTag ?? '').toLowerCase()) {
+      case 'vehicle':
+        return l10n.smugglingUnitVehicle;
+      case 'weapon':
+        return l10n.smugglingUnitWeapon;
+      case 'round':
+        return l10n.smugglingUnitRound;
+      case 'g':
+        return l10n.smugglingUnitGram;
+      case 'unit':
+        return l10n.smugglingUnitPiece;
+      default:
+        return (unitTag ?? '').trim();
+    }
+  }
+
+  String _prettySmugglingName(String raw) {
+    var text = raw
+        .replaceAll('â€¢', ' ')
+        .replaceAll('•', ' ')
+        .replaceAll(RegExp(r'^(CAR|MOTORCYCLE|BOAT|AIRCRAFT)\s+', caseSensitive: false), '')
+        .trim();
+    if (text.contains('_')) {
+      text = text.replaceAll('_', ' ');
+    }
+    return text;
+  }
+
+  Map<String, dynamic>? _asStringMap(dynamic value) {
+    if (value is Map<String, dynamic>) return value;
+    if (value is Map) {
+      return value.map((key, nested) => MapEntry(key.toString(), nested));
+    }
+    return null;
+  }
+
+  String _catalogItemLine(AppLocalizations l10n, Map<String, dynamic> map) {
+    final qty = (map['quantity'] as num?)?.toInt() ?? 0;
+    final unit = map['unitTag']?.toString() ?? '';
+    final name = _prettySmugglingName(map['itemLabel']?.toString() ?? '');
+    if (_selectedCategory == 'vehicle' || unit == 'vehicle') {
+      final type = _asStringMap(map['metadata'])?['vehicleType']?.toString();
+      return l10n.smugglingVehicleOptionLabel(_vehicleTypeLabel(l10n, type), name);
+    }
+    return l10n.smugglingCatalogQtyLine(name, qty, _unitLabel(l10n, unit));
+  }
+
+  String _ownedTransportName(AppLocalizations l10n, Map<String, dynamic> map) {
+    final pretty = _prettySmugglingName(map['transportLabel']?.toString() ?? '');
+    final type = map['transportType']?.toString();
+    if (type == null || type.isEmpty) return pretty;
+    return l10n.smugglingVehicleOptionLabel(_vehicleTypeLabel(l10n, type), pretty);
+  }
+
+  String _shipmentLine(AppLocalizations l10n, Map<String, dynamic> shipment) {
+    final qty = (shipment['quantity'] as num?)?.toInt() ?? 0;
+    final unit = shipment['unitTag']?.toString() ?? '';
+    final name = _prettySmugglingName(shipment['itemLabel']?.toString() ?? '');
+    final type = _asStringMap(shipment['metadata'])?['vehicleType']?.toString();
+    if (unit == 'vehicle' || (type != null && type.isNotEmpty)) {
+      return l10n.smugglingVehicleOptionLabel(_vehicleTypeLabel(l10n, type), name);
+    }
+    return l10n.smugglingCatalogQtyLine(name, qty, _unitLabel(l10n, unit));
+  }
+
   IconData _categoryIcon(String category) {
     switch (category) {
       case 'drug':
@@ -1181,13 +1262,10 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
             items: _currentItems.map((item) {
               final map = item as Map<String, dynamic>;
               final key = map['itemKey']?.toString() ?? '';
-              final qty = (map['quantity'] as num?)?.toInt() ?? 0;
-              final label =
-                  '${map['itemLabel']} • $qty ${map['unitTag'] ?? ''}';
               return DropdownMenuItem<String>(
                 value: key,
                 child: Text(
-                  label,
+                  _catalogItemLine(l10n, map),
                   style: const TextStyle(color: Colors.white),
                 ),
               );
@@ -1388,7 +1466,7 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
                     (((map['riskReduction'] as num?)?.toDouble() ?? 0) * 100)
                         .toStringAsFixed(0);
                 final label = l10n.smugglingOwnedTransportDropdownRow(
-                  map['transportLabel']?.toString() ?? '',
+                  _ownedTransportName(l10n, map),
                   slots,
                   risk,
                 );
@@ -1456,11 +1534,8 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
     final l10n = AppLocalizations.of(context)!;
     final selected = _selectedItem;
     final itemLabel = selected is Map<String, dynamic>
-        ? selected['itemLabel']?.toString() ?? ''
+        ? _catalogItemLine(l10n, selected)
         : '';
-    final qty = _selectedCategory == 'vehicle'
-        ? 1
-        : (int.tryParse(_quantityController.text.trim()) ?? 0);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1469,7 +1544,7 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
           spacing: 8,
           runSpacing: 8,
           children: [
-            _kpiChip(l10n.smugglingFieldItem, '$itemLabel × $qty'),
+            _kpiChip(l10n.smugglingFieldItem, itemLabel.isEmpty ? '—' : itemLabel),
             _kpiChip(
               l10n.smugglingFieldDestination,
               () {
@@ -1490,8 +1565,9 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
             _kpiChip(
               l10n.smugglingTransport,
               _selectedTransportMode == 'owned'
-                  ? (_selectedOwnedTransport?['transportLabel']?.toString() ??
-                      l10n.smugglingChannelOwned)
+                  ? (_selectedOwnedTransport == null
+                      ? l10n.smugglingChannelOwned
+                      : _ownedTransportName(l10n, _selectedOwnedTransport!))
                   : _channelLabel(l10n, _selectedChannel),
             ),
           ],
@@ -1578,7 +1654,9 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
         if (transportLabel != null && transportLabel.isNotEmpty) ...[
           const SizedBox(height: 6),
           Text(
-            l10n.smugglingOwnedTransportCaption(transportLabel),
+            l10n.smugglingOwnedTransportCaption(
+              _prettySmugglingName(transportLabel),
+            ),
             style: const TextStyle(color: Colors.lightBlueAccent),
           ),
         ],
@@ -1801,11 +1879,12 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
               final scope =
                   shipment['networkScope']?.toString() ?? 'personal';
 
-              final ownedExtra = (shipment['metadata'] is Map<String, dynamic> &&
-                      (shipment['metadata'] as Map<String, dynamic>)[
-                          'ownedTransport'] is Map<String, dynamic>)
-                  ? ' • ${((shipment['metadata'] as Map<String, dynamic>)['ownedTransport'] as Map<String, dynamic>)['transportLabel']}'
-                  : '';
+              final ownedTransport = _asStringMap(
+                _asStringMap(shipment['metadata'])?['ownedTransport'],
+              );
+              final ownedExtra = ownedTransport == null
+                  ? ''
+                  : ' · ${_prettySmugglingName(ownedTransport['transportLabel']?.toString() ?? '')}';
               final riskPct =
                   ((double.tryParse(shipment['seizureChance'].toString()) ?? 0) *
                           100)
@@ -1830,7 +1909,7 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
                       children: [
                         Expanded(
                           child: Text(
-                            '${shipment['itemLabel']} • ${shipment['quantity']} ${shipment['unitTag'] ?? ''}',
+                            _shipmentLine(l10n, Map<String, dynamic>.from(shipment)),
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w600,

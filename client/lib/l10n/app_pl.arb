@@ -8291,7 +8291,7 @@
   "helpTopicSmugglingCategory": "Imperium",
   "helpTopicSmugglingTitle": "Przemyt",
   "helpTopicSmugglingSummary": "Przemieszczaj nielegalne towary i pojazdy między krajami. Wybierz kanał komercyjny lub skorzystaj z własnego pojazdu lub samolotu, aby obniżyć koszty i zwiększyć ryzyko konfiskaty.",
-  "helpTopicSmugglingHow": "Wybierz kategorię, konkretny przedmiot, miejsce docelowe, a następnie zdecyduj pomiędzy kanałem komercyjnym lub własnym transportem. \nPosiadane samochody, motocykle, łodzie i samoloty wyświetlają teraz wycenę na żywo z miejscami na ładunek, niższymi kosztami i redukcją ryzyka. \nŁódź może przewozić samochody i motocykle; samolot nie może przewozić łodzi i natychmiast zwróci błąd. \nSzansa na sukces zależy od wybranego kanału lub posiadanego transportu, aktualnego Poziomu Poszukiwania i wielkości przesyłki. \nW przypadku niepowodzenia tracisz całą przesyłkę. Brak zwrotu pieniędzy. Zniknęły koszty ładunku i transportu. \nJeżeli korzystasz z własnego transportu, a przejazd się nie powiedzie, sam środek transportu również może zostać skonfiskowany. \nAktywne przesyłki są śledzone na żywo w formie przeglądu. Po przybyciu na miejsce ładunek pojawia się w magazynie gotowy do odbioru. \nSieć załogi pozostaje dostępna dla komercyjnych przesyłek załogi, ale posiadany transport jest wyłącznie osobisty.",
+  "helpTopicSmugglingHow": "Wybierz kategorię, konkretny przedmiot, miejsce docelowe, a następnie zdecyduj pomiędzy kanałem komercyjnym lub własnym transportem. \nSamochody, motocykle i łodzie wyświetlają na liście swoje prawdziwe nazwy, a nie kody wewnętrzne. \nPosiadane samochody, motocykle, łodzie i samoloty wyświetlają teraz wycenę na żywo z miejscami na ładunek, niższymi kosztami i redukcją ryzyka. \nŁódź może przewozić samochody i motocykle; samolot nie może przewozić łodzi i natychmiast zwróci błąd. \nSzansa na sukces zależy od wybranego kanału lub posiadanego transportu, aktualnego Poziomu Poszukiwania i wielkości przesyłki. \nW przypadku niepowodzenia tracisz całą przesyłkę. Brak zwrotu pieniędzy. Zniknęły koszty ładunku i transportu. \nJeżeli korzystasz z własnego transportu, a przejazd się nie powiedzie, sam środek transportu również może zostać skonfiskowany. \nAktywne przesyłki są śledzone na żywo w formie przeglądu. Po przybyciu na miejsce ładunek pojawia się w magazynie gotowy do odbioru. \nSieć załogi pozostaje dostępna dla komercyjnych przesyłek załogi, ale posiadany transport jest wyłącznie osobisty.",
   "helpTopicSmugglingTips": "Nigdy nie wysyłaj całego towaru w jednej przesyłce: podziel go na wiele mniejszych ładunków, aby ograniczyć katastrofalne straty. \nObniż poziom listu gończego i temperaturę FBI do minimum, zanim rozpoczniesz duży przemyt. \nDo kosztownych rejsów używaj najlepszego samolotu lub łodzi: niższy koszt pomaga, ale o ryzyku nadal decydują miejsca na ładunek i ryzyko konfiskaty. \nZawsze zbieraj aktywne magazyny tak szybko, jak to możliwe: zawartość przeterminowanych magazynów zostanie trwale utracona.",
   "helpTopicToolsCategory": "Kierownictwo",
   "helpTopicToolsTitle": "Narzędzia",
@@ -12396,5 +12396,37 @@
       }
     }
   },
-  "crewUiMissionWaitHint": "Twoja Crew musi poczekać, aż upłynie ten czas, zanim rozpocznie kolejną misję."
+  "crewUiMissionWaitHint": "Twoja Crew musi poczekać, aż upłynie ten czas, zanim rozpocznie kolejną misję.",
+  "vehicleTypeMotorcycle": "Motocykl",
+  "vehicleTypeAircraft": "Samolot",
+  "smugglingVehicleOptionLabel": "{type} · {name}",
+  "@smugglingVehicleOptionLabel": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingCatalogQtyLine": "{name} · {qty} {unit}",
+  "@smugglingCatalogQtyLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "int"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingUnitVehicle": "pojazd",
+  "smugglingUnitWeapon": "broń",
+  "smugglingUnitRound": "rundy",
+  "smugglingUnitGram": "G",
+  "smugglingUnitPiece": "jednostki"
 }

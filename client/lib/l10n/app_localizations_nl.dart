@@ -8259,7 +8259,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get vehicleTypeCar => 'Auto';
 
   @override
+  String get vehicleTypeMotorcycle => 'Motor';
+
+  @override
   String get vehicleTypeBoat => 'Boot';
+
+  @override
+  String get vehicleTypeAircraft => 'Vliegtuig';
 
   @override
   String stolenVehicleTitle(String vehicleType) {
@@ -16156,6 +16162,31 @@ class AppLocalizationsNl extends AppLocalizations {
   String get smugglingVehiclesOneByOne => 'Voertuigen gaan per stuk';
 
   @override
+  String smugglingVehicleOptionLabel(String type, String name) {
+    return '$type · $name';
+  }
+
+  @override
+  String smugglingCatalogQtyLine(String name, int qty, String unit) {
+    return '$name · $qty $unit';
+  }
+
+  @override
+  String get smugglingUnitVehicle => 'voertuig';
+
+  @override
+  String get smugglingUnitWeapon => 'wapen';
+
+  @override
+  String get smugglingUnitRound => 'patronen';
+
+  @override
+  String get smugglingUnitGram => 'g';
+
+  @override
+  String get smugglingUnitPiece => 'stuks';
+
+  @override
   String smugglingMaxQuantity(int max) {
     return 'Max: $max';
   }
@@ -18047,7 +18078,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicSmugglingHow =>
-      'Kies categorie, het specifieke item, de bestemming en daarna tussen een commercieel kanaal of eigen transport.\nEigen auto, motor, boot en vliegtuig geven een live quote met cargo-slots, lagere kosten en risicoreductie.\nEen boot kan auto\'s en motoren meenemen; een vliegtuig kan geen boot vervoeren en geeft dan direct een foutmelding.\nSlagingskans hangt af van: kanaal of gekozen eigen transport, je huidige Wanted Level en de grootte van de zending.\nBij mislukking verlies je de volledige lading. Je krijgt geen vergoeding. Lading en transportkosten zijn weg.\nGebruik je eigen transport en gaat de run fout, dan kan ook het gebruikte voertuig of vliegtuig in beslag genomen worden.\nActieve shipments worden live gevolgd in een overzicht. Na aankomst verschijnt de lading in een depot klaar voor ophalen.\nCrew-netwerk blijft beschikbaar voor commerciële crew-zendingen, maar eigen transport werkt alleen persoonlijk.';
+      'Kies categorie, het specifieke item, de bestemming en daarna tussen een commercieel kanaal of eigen transport.\nBij auto’s, motoren en boten zie je de echte voertuignaam in de lijst, geen interne code.\nEigen auto, motor, boot en vliegtuig geven een live quote met cargo-slots, lagere kosten en risicoreductie.\nEen boot kan auto\'s en motoren meenemen; een vliegtuig kan geen boot vervoeren en geeft dan direct een foutmelding.\nSlagingskans hangt af van: kanaal of gekozen eigen transport, je huidige Wanted Level en de grootte van de zending.\nBij mislukking verlies je de volledige lading. Je krijgt geen vergoeding. Lading en transportkosten zijn weg.\nGebruik je eigen transport en gaat de run fout, dan kan ook het gebruikte voertuig of vliegtuig in beslag genomen worden.\nActieve shipments worden live gevolgd in een overzicht. Na aankomst verschijnt de lading in een depot klaar voor ophalen.\nCrew-netwerk blijft beschikbaar voor commerciële crew-zendingen, maar eigen transport werkt alleen persoonlijk.';
 
   @override
   String get helpTopicSmugglingTips =>

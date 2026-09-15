@@ -8291,7 +8291,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get vehicleTypeCar => 'Auto';
 
   @override
+  String get vehicleTypeMotorcycle => 'Motocicleta';
+
+  @override
   String get vehicleTypeBoat => 'Bote';
+
+  @override
+  String get vehicleTypeAircraft => 'Aeronave';
 
   @override
   String stolenVehicleTitle(String vehicleType) {
@@ -16255,6 +16261,31 @@ class AppLocalizationsEs extends AppLocalizations {
       'Los vehículos se envían uno por uno.';
 
   @override
+  String smugglingVehicleOptionLabel(String type, String name) {
+    return '$type · $name';
+  }
+
+  @override
+  String smugglingCatalogQtyLine(String name, int qty, String unit) {
+    return '$name · $qty $unit';
+  }
+
+  @override
+  String get smugglingUnitVehicle => 'vehículo';
+
+  @override
+  String get smugglingUnitWeapon => 'arma';
+
+  @override
+  String get smugglingUnitRound => 'rondas';
+
+  @override
+  String get smugglingUnitGram => 'gramo';
+
+  @override
+  String get smugglingUnitPiece => 'unidades';
+
+  @override
   String smugglingMaxQuantity(int max) {
     return 'Máximo: $max';
   }
@@ -18162,7 +18193,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicSmugglingHow =>
-      'Elige una categoría, el artículo concreto, el destino y luego decide entre un canal comercial o tu propio transporte. \nLos automóviles, motocicletas, barcos y aviones de propiedad ahora muestran una cotización en vivo con espacios de carga, menores costos y reducción de riesgos. \nUn barco puede transportar coches y motos; un avión no puede transportar un barco y devolverá un error inmediato. \nLas posibilidades de éxito dependen del canal seleccionado o del transporte propio, su nivel de búsqueda actual y el tamaño del envío. \nEn caso de falla, perderá todo el envío. Sin reembolso. Los costos de carga y transporte han desaparecido. \nCuando utiliza transporte propio y el recorrido falla, el propio medio de transporte también puede ser confiscado. \nLos envíos activos se rastrean en vivo en una descripción general. Después de su llegada, la carga aparece en un depósito lista para su recogida. \nLa red de Crew sigue estando disponible para envíos comerciales de Crew, pero el transporte propio es únicamente personal.';
+      'Elige una categoría, el artículo concreto, el destino y luego decide entre un canal comercial o tu propio transporte. \nLos coches, motos y barcos muestran en la lista sus nombres reales, no sus códigos internos. \nLos automóviles, motocicletas, barcos y aviones de propiedad ahora muestran una cotización en vivo con espacios de carga, menores costos y reducción de riesgos. \nUn barco puede transportar coches y motos; un avión no puede transportar un barco y devolverá un error inmediato. \nLas posibilidades de éxito dependen del canal seleccionado o del transporte propio, su nivel de búsqueda actual y el tamaño del envío. \nEn caso de falla, perderá todo el envío. Sin reembolso. Los costos de carga y transporte han desaparecido. \nCuando utiliza transporte propio y el recorrido falla, el propio medio de transporte también puede ser confiscado. \nLos envíos activos se rastrean en vivo en una descripción general. Después de su llegada, la carga aparece en un depósito lista para su recogida. \nLa red de Crew sigue estando disponible para envíos comerciales de Crew, pero el transporte propio es únicamente personal.';
 
   @override
   String get helpTopicSmugglingTips =>

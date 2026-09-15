@@ -8266,7 +8266,13 @@ class AppLocalizationsPt extends AppLocalizations {
   String get vehicleTypeCar => 'Carro';
 
   @override
+  String get vehicleTypeMotorcycle => 'Motocicleta';
+
+  @override
   String get vehicleTypeBoat => 'Barco';
+
+  @override
+  String get vehicleTypeAircraft => 'Aeronave';
 
   @override
   String stolenVehicleTitle(String vehicleType) {
@@ -16229,6 +16235,31 @@ class AppLocalizationsPt extends AppLocalizations {
   String get smugglingVehiclesOneByOne => 'Os veículos são enviados um por um';
 
   @override
+  String smugglingVehicleOptionLabel(String type, String name) {
+    return '$type · $name';
+  }
+
+  @override
+  String smugglingCatalogQtyLine(String name, int qty, String unit) {
+    return '$name · $qty $unit';
+  }
+
+  @override
+  String get smugglingUnitVehicle => 'veículo';
+
+  @override
+  String get smugglingUnitWeapon => 'arma';
+
+  @override
+  String get smugglingUnitRound => 'rodadas';
+
+  @override
+  String get smugglingUnitGram => 'g';
+
+  @override
+  String get smugglingUnitPiece => 'unidades';
+
+  @override
   String smugglingMaxQuantity(int max) {
     return 'Máx.: $max';
   }
@@ -18133,7 +18164,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicSmugglingHow =>
-      'Escolha uma categoria, o item específico, o destino e depois decida entre um canal comercial ou seu próprio transporte. \nCarros, motocicletas, barcos e aeronaves próprias agora mostram cotação em tempo real com slots de carga, menor custo e redução de risco. \nUm barco pode transportar carros e motos; uma aeronave não pode transportar um barco e retornará um erro imediato. \nA chance de sucesso depende do canal selecionado ou do transporte de sua propriedade, do seu nível de procurado atual e do tamanho da remessa. \nEm caso de falha, você perde toda a remessa. Sem reembolso. Os custos de carga e transporte desapareceram. \nQuando você usa transporte próprio e a execução falha, o próprio ativo de transporte também pode ser confiscado. \nAs remessas ativas são rastreadas ao vivo em uma visão geral. Após a chegada a carga chega em um depósito pronto para coleta. \nA rede de Crew permanece disponível para remessas de Crew comercial, mas o transporte próprio é apenas pessoal.';
+      'Escolha uma categoria, o item específico, o destino e depois decida entre um canal comercial ou seu próprio transporte. \nCarros, motos e barcos apresentam seus nomes reais na lista, e não códigos internos. \nCarros, motocicletas, barcos e aeronaves próprias agora mostram cotação em tempo real com slots de carga, menor custo e redução de risco. \nUm barco pode transportar carros e motos; uma aeronave não pode transportar um barco e retornará um erro imediato. \nA chance de sucesso depende do canal selecionado ou do transporte de sua propriedade, do seu nível de procurado atual e do tamanho da remessa. \nEm caso de falha, você perde toda a remessa. Sem reembolso. Os custos de carga e transporte desapareceram. \nQuando você usa transporte próprio e a execução falha, o próprio ativo de transporte também pode ser confiscado. \nAs remessas ativas são rastreadas ao vivo em uma visão geral. Após a chegada a carga chega em um depósito pronto para coleta. \nA rede de Crew permanece disponível para remessas de Crew comercial, mas o transporte próprio é apenas pessoal.';
 
   @override
   String get helpTopicSmugglingTips =>

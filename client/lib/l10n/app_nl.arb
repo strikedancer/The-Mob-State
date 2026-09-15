@@ -1026,7 +1026,9 @@
   "carStolen": "Auto succesvol gestolen!",
   "boatStolen": "Boot succesvol gestolen!",
   "vehicleTypeCar": "Auto",
+  "vehicleTypeMotorcycle": "Motor",
   "vehicleTypeBoat": "Boot",
+  "vehicleTypeAircraft": "Vliegtuig",
   "stolenVehicleTitle": "{vehicleType} gestolen!",
   "@stolenVehicleTitle": {
     "placeholders": {
@@ -8190,6 +8192,36 @@
   "smugglingChannelField": "Smokkelkanaal",
   "smugglingQuantity": "Hoeveelheid",
   "smugglingVehiclesOneByOne": "Voertuigen gaan per stuk",
+  "smugglingVehicleOptionLabel": "{type} · {name}",
+  "@smugglingVehicleOptionLabel": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingCatalogQtyLine": "{name} · {qty} {unit}",
+  "@smugglingCatalogQtyLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "int"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingUnitVehicle": "voertuig",
+  "smugglingUnitWeapon": "wapen",
+  "smugglingUnitRound": "patronen",
+  "smugglingUnitGram": "g",
+  "smugglingUnitPiece": "stuks",
   "smugglingMaxQuantity": "Max: {max}",
   "smugglingStartSmuggling": "Start smokkel",
   "smugglingSelectItemDestination": "Selecteer item en bestemming",
@@ -10939,7 +10971,7 @@
   "helpTopicSmugglingCategory": "Empire",
   "helpTopicSmugglingTitle": "Smokkelen",
   "helpTopicSmugglingSummary": "Verplaats illegale goederen en voertuigen tussen landen. Kies een commercieel kanaal of gebruik je eigen voertuig of vliegtuig voor lagere kosten en extra risico op confiscatie.",
-  "helpTopicSmugglingHow": "Kies categorie, het specifieke item, de bestemming en daarna tussen een commercieel kanaal of eigen transport.\nEigen auto, motor, boot en vliegtuig geven een live quote met cargo-slots, lagere kosten en risicoreductie.\nEen boot kan auto's en motoren meenemen; een vliegtuig kan geen boot vervoeren en geeft dan direct een foutmelding.\nSlagingskans hangt af van: kanaal of gekozen eigen transport, je huidige Wanted Level en de grootte van de zending.\nBij mislukking verlies je de volledige lading. Je krijgt geen vergoeding. Lading en transportkosten zijn weg.\nGebruik je eigen transport en gaat de run fout, dan kan ook het gebruikte voertuig of vliegtuig in beslag genomen worden.\nActieve shipments worden live gevolgd in een overzicht. Na aankomst verschijnt de lading in een depot klaar voor ophalen.\nCrew-netwerk blijft beschikbaar voor commerciële crew-zendingen, maar eigen transport werkt alleen persoonlijk.",
+  "helpTopicSmugglingHow": "Kies categorie, het specifieke item, de bestemming en daarna tussen een commercieel kanaal of eigen transport.\nBij auto’s, motoren en boten zie je de echte voertuignaam in de lijst, geen interne code.\nEigen auto, motor, boot en vliegtuig geven een live quote met cargo-slots, lagere kosten en risicoreductie.\nEen boot kan auto's en motoren meenemen; een vliegtuig kan geen boot vervoeren en geeft dan direct een foutmelding.\nSlagingskans hangt af van: kanaal of gekozen eigen transport, je huidige Wanted Level en de grootte van de zending.\nBij mislukking verlies je de volledige lading. Je krijgt geen vergoeding. Lading en transportkosten zijn weg.\nGebruik je eigen transport en gaat de run fout, dan kan ook het gebruikte voertuig of vliegtuig in beslag genomen worden.\nActieve shipments worden live gevolgd in een overzicht. Na aankomst verschijnt de lading in een depot klaar voor ophalen.\nCrew-netwerk blijft beschikbaar voor commerciële crew-zendingen, maar eigen transport werkt alleen persoonlijk.",
   "helpTopicSmugglingTips": "Stuur nooit je volledige voorraad in één shipment: verdeel over meerdere kleinere ladingen om catastrofaal verlies te beperken.\nVerlaag Wanted Level en FBI Heat tot een minimum voor je een grote smokkelrun start.\nGebruik je beste vliegtuig of boot voor dure runs: lagere kosten zijn prettig, maar cargo-slots en confiscatiekans blijven bepalend.\nHaal altijd actieve depots zo snel mogelijk op: verlopen depot-inhoud is definitief verloren.",
   "helpTopicToolsCategory": "Beheer",
   "helpTopicToolsTitle": "Gereedschap",

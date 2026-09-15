@@ -8270,7 +8270,13 @@ class AppLocalizationsPl extends AppLocalizations {
   String get vehicleTypeCar => 'Samochód';
 
   @override
+  String get vehicleTypeMotorcycle => 'Motocykl';
+
+  @override
   String get vehicleTypeBoat => 'Łódź';
+
+  @override
+  String get vehicleTypeAircraft => 'Samolot';
 
   @override
   String stolenVehicleTitle(String vehicleType) {
@@ -16229,6 +16235,31 @@ class AppLocalizationsPl extends AppLocalizations {
   String get smugglingVehiclesOneByOne => 'Pojazdy wysyłane są pojedynczo';
 
   @override
+  String smugglingVehicleOptionLabel(String type, String name) {
+    return '$type · $name';
+  }
+
+  @override
+  String smugglingCatalogQtyLine(String name, int qty, String unit) {
+    return '$name · $qty $unit';
+  }
+
+  @override
+  String get smugglingUnitVehicle => 'pojazd';
+
+  @override
+  String get smugglingUnitWeapon => 'broń';
+
+  @override
+  String get smugglingUnitRound => 'rundy';
+
+  @override
+  String get smugglingUnitGram => 'G';
+
+  @override
+  String get smugglingUnitPiece => 'jednostki';
+
+  @override
   String smugglingMaxQuantity(int max) {
     return 'Maks.: $max';
   }
@@ -18133,7 +18164,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicSmugglingHow =>
-      'Wybierz kategorię, konkretny przedmiot, miejsce docelowe, a następnie zdecyduj pomiędzy kanałem komercyjnym lub własnym transportem. \nPosiadane samochody, motocykle, łodzie i samoloty wyświetlają teraz wycenę na żywo z miejscami na ładunek, niższymi kosztami i redukcją ryzyka. \nŁódź może przewozić samochody i motocykle; samolot nie może przewozić łodzi i natychmiast zwróci błąd. \nSzansa na sukces zależy od wybranego kanału lub posiadanego transportu, aktualnego Poziomu Poszukiwania i wielkości przesyłki. \nW przypadku niepowodzenia tracisz całą przesyłkę. Brak zwrotu pieniędzy. Zniknęły koszty ładunku i transportu. \nJeżeli korzystasz z własnego transportu, a przejazd się nie powiedzie, sam środek transportu również może zostać skonfiskowany. \nAktywne przesyłki są śledzone na żywo w formie przeglądu. Po przybyciu na miejsce ładunek pojawia się w magazynie gotowy do odbioru. \nSieć załogi pozostaje dostępna dla komercyjnych przesyłek załogi, ale posiadany transport jest wyłącznie osobisty.';
+      'Wybierz kategorię, konkretny przedmiot, miejsce docelowe, a następnie zdecyduj pomiędzy kanałem komercyjnym lub własnym transportem. \nSamochody, motocykle i łodzie wyświetlają na liście swoje prawdziwe nazwy, a nie kody wewnętrzne. \nPosiadane samochody, motocykle, łodzie i samoloty wyświetlają teraz wycenę na żywo z miejscami na ładunek, niższymi kosztami i redukcją ryzyka. \nŁódź może przewozić samochody i motocykle; samolot nie może przewozić łodzi i natychmiast zwróci błąd. \nSzansa na sukces zależy od wybranego kanału lub posiadanego transportu, aktualnego Poziomu Poszukiwania i wielkości przesyłki. \nW przypadku niepowodzenia tracisz całą przesyłkę. Brak zwrotu pieniędzy. Zniknęły koszty ładunku i transportu. \nJeżeli korzystasz z własnego transportu, a przejazd się nie powiedzie, sam środek transportu również może zostać skonfiskowany. \nAktywne przesyłki są śledzone na żywo w formie przeglądu. Po przybyciu na miejsce ładunek pojawia się w magazynie gotowy do odbioru. \nSieć załogi pozostaje dostępna dla komercyjnych przesyłek załogi, ale posiadany transport jest wyłącznie osobisty.';
 
   @override
   String get helpTopicSmugglingTips =>

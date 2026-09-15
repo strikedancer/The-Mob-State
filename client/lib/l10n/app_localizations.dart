@@ -14457,11 +14457,23 @@ abstract class AppLocalizations {
   /// **'Car'**
   String get vehicleTypeCar;
 
+  /// No description provided for @vehicleTypeMotorcycle.
+  ///
+  /// In en, this message translates to:
+  /// **'Motorcycle'**
+  String get vehicleTypeMotorcycle;
+
   /// No description provided for @vehicleTypeBoat.
   ///
   /// In en, this message translates to:
   /// **'Boat'**
   String get vehicleTypeBoat;
+
+  /// No description provided for @vehicleTypeAircraft.
+  ///
+  /// In en, this message translates to:
+  /// **'Aircraft'**
+  String get vehicleTypeAircraft;
 
   /// No description provided for @stolenVehicleTitle.
   ///
@@ -27908,6 +27920,48 @@ abstract class AppLocalizations {
   /// **'Vehicles are shipped one by one'**
   String get smugglingVehiclesOneByOne;
 
+  /// No description provided for @smugglingVehicleOptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{type} · {name}'**
+  String smugglingVehicleOptionLabel(String type, String name);
+
+  /// No description provided for @smugglingCatalogQtyLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} · {qty} {unit}'**
+  String smugglingCatalogQtyLine(String name, int qty, String unit);
+
+  /// No description provided for @smugglingUnitVehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'vehicle'**
+  String get smugglingUnitVehicle;
+
+  /// No description provided for @smugglingUnitWeapon.
+  ///
+  /// In en, this message translates to:
+  /// **'weapon'**
+  String get smugglingUnitWeapon;
+
+  /// No description provided for @smugglingUnitRound.
+  ///
+  /// In en, this message translates to:
+  /// **'rounds'**
+  String get smugglingUnitRound;
+
+  /// No description provided for @smugglingUnitGram.
+  ///
+  /// In en, this message translates to:
+  /// **'g'**
+  String get smugglingUnitGram;
+
+  /// No description provided for @smugglingUnitPiece.
+  ///
+  /// In en, this message translates to:
+  /// **'units'**
+  String get smugglingUnitPiece;
+
   /// No description provided for @smugglingMaxQuantity.
   ///
   /// In en, this message translates to:
@@ -31080,7 +31134,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicSmugglingHow.
   ///
   /// In en, this message translates to:
-  /// **'Choose a category, the specific item, the destination, and then decide between a commercial channel or your own transport.\nOwned cars, motorcycles, boats, and aircraft now show a live quote with cargo slots, lower cost, and risk reduction.\nA boat can carry cars and motorcycles; an aircraft cannot carry a boat and will return an immediate error.\nSuccess chance depends on the selected channel or owned transport, your current Wanted Level, and shipment size.\nOn failure you lose the entire shipment. No refund. Cargo and transport costs are gone.\nWhen you use owned transport and the run fails, the transport asset itself can also be confiscated.\nActive shipments are tracked live in an overview. After arrival the cargo appears in a depot ready for collection.\nCrew network remains available for commercial crew shipments, but owned transport is personal only.'**
+  /// **'Choose a category, the specific item, the destination, and then decide between a commercial channel or your own transport.\nCars, motorcycles and boats show their real names in the list, not internal codes.\nOwned cars, motorcycles, boats, and aircraft now show a live quote with cargo slots, lower cost, and risk reduction.\nA boat can carry cars and motorcycles; an aircraft cannot carry a boat and will return an immediate error.\nSuccess chance depends on the selected channel or owned transport, your current Wanted Level, and shipment size.\nOn failure you lose the entire shipment. No refund. Cargo and transport costs are gone.\nWhen you use owned transport and the run fails, the transport asset itself can also be confiscated.\nActive shipments are tracked live in an overview. After arrival the cargo appears in a depot ready for collection.\nCrew network remains available for commercial crew shipments, but owned transport is personal only.'**
   String get helpTopicSmugglingHow;
 
   /// No description provided for @helpTopicSmugglingTips.

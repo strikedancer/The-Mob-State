@@ -8291,7 +8291,7 @@
   "helpTopicSmugglingCategory": "Impero",
   "helpTopicSmugglingTitle": "Contrabbando",
   "helpTopicSmugglingSummary": "Spostare merci e veicoli illegali tra paesi. Scegli un canale commerciale o utilizza il tuo veicolo o aereo per ridurre i costi e aumentare il rischio di confisca.",
-  "helpTopicSmugglingHow": "Scegli una categoria, l'articolo specifico, la destinazione e poi decidi tra un canale commerciale o il tuo trasporto. \nAuto, motociclette, barche e aerei di proprietà ora mostrano un preventivo in tempo reale con slot di carico, costi inferiori e riduzione del rischio. \nUna barca può trasportare auto e moto; un aereo non può trasportare un'imbarcazione e restituirà un errore immediato. \nLe probabilità di successo dipendono dal canale selezionato o dal trasporto posseduto, dal tuo attuale livello di ricercato e dalle dimensioni della spedizione. \nIn caso di fallimento si perde l'intera spedizione. Nessun rimborso. I costi di carico e trasporto sono scomparsi. \nQuando si utilizza il trasporto di proprietà e la corsa fallisce, anche la risorsa di trasporto stessa può essere confiscata. \nLe spedizioni attive vengono monitorate in tempo reale in una panoramica. Dopo l'arrivo il carico appare in un deposito pronto per il ritiro. \nLa rete dell'Crew rimane disponibile per le spedizioni commerciali dell'Crew, ma il trasporto di proprietà è solo personale.",
+  "helpTopicSmugglingHow": "Scegli una categoria, l'articolo specifico, la destinazione e poi decidi tra un canale commerciale o il tuo trasporto. \nAuto, moto e barche riportano nell'elenco i loro veri nomi e non i codici interni. \nAuto, motociclette, barche e aerei di proprietà ora mostrano un preventivo in tempo reale con slot di carico, costi inferiori e riduzione del rischio. \nUna barca può trasportare auto e moto; un aereo non può trasportare un'imbarcazione e restituirà un errore immediato. \nLe probabilità di successo dipendono dal canale selezionato o dal trasporto posseduto, dal tuo attuale livello di ricercato e dalle dimensioni della spedizione. \nIn caso di fallimento si perde l'intera spedizione. Nessun rimborso. I costi di carico e trasporto sono scomparsi. \nQuando si utilizza il trasporto di proprietà e la corsa fallisce, anche la risorsa di trasporto stessa può essere confiscata. \nLe spedizioni attive vengono monitorate in tempo reale in una panoramica. Dopo l'arrivo il carico appare in un deposito pronto per il ritiro. \nLa rete dell'Crew rimane disponibile per le spedizioni commerciali dell'Crew, ma il trasporto di proprietà è solo personale.",
   "helpTopicSmugglingTips": "Non inviare mai l'intero stock in un'unica spedizione: dividilo in più carichi più piccoli per limitare perdite catastrofiche. \nAbbassa il livello di ricercato e l'influenza dell'FBI al minimo prima di iniziare una grande corsa di contrabbando. \nUsa il tuo aereo o la tua barca migliore per corse costose: i costi inferiori aiutano, ma gli slot di carico e la possibilità di confisca determinano comunque il rischio. \nRaccogli sempre i depot attivi il più velocemente possibile: i contenuti dei depot scaduti vengono persi in modo permanente.",
   "helpTopicToolsCategory": "Gestione",
   "helpTopicToolsTitle": "Utensili",
@@ -12396,5 +12396,37 @@
       }
     }
   },
-  "crewUiMissionWaitHint": "Il tuo Crew deve attendere fino allo scadere del timer prima di iniziare un'altra missione."
+  "crewUiMissionWaitHint": "Il tuo Crew deve attendere fino allo scadere del timer prima di iniziare un'altra missione.",
+  "vehicleTypeMotorcycle": "Motociclo",
+  "vehicleTypeAircraft": "Aereo",
+  "smugglingVehicleOptionLabel": "{type} · {name}",
+  "@smugglingVehicleOptionLabel": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingCatalogQtyLine": "{name} · {qty} {unit}",
+  "@smugglingCatalogQtyLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "int"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingUnitVehicle": "veicolo",
+  "smugglingUnitWeapon": "arma",
+  "smugglingUnitRound": "giri",
+  "smugglingUnitGram": "G",
+  "smugglingUnitPiece": "unità"
 }

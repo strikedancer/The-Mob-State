@@ -781,6 +781,7 @@
     "summaryEn": "Move illegal goods and vehicles between countries. Choose a commercial channel or use your own vehicle or aircraft for lower cost and added confiscation risk.",
     "howNl": [
       "Kies categorie, het specifieke item, de bestemming en daarna tussen een commercieel kanaal of eigen transport.",
+      "Bij auto’s, motoren en boten zie je de echte voertuignaam in de lijst, geen interne code.",
       "Eigen auto, motor, boot en vliegtuig geven een live quote met cargo-slots, lagere kosten en risicoreductie.",
       "Een boot kan auto's en motoren meenemen; een vliegtuig kan geen boot vervoeren en geeft dan direct een foutmelding.",
       "Slagingskans hangt af van: kanaal of gekozen eigen transport, je huidige Wanted Level en de grootte van de zending.",
@@ -791,6 +792,7 @@
     ],
     "howEn": [
       "Choose a category, the specific item, the destination, and then decide between a commercial channel or your own transport.",
+      "Cars, motorcycles and boats show their real names in the list, not internal codes.",
       "Owned cars, motorcycles, boats, and aircraft now show a live quote with cargo slots, lower cost, and risk reduction.",
       "A boat can carry cars and motorcycles; an aircraft cannot carry a boat and will return an immediate error.",
       "Success chance depends on the selected channel or owned transport, your current Wanted Level, and shipment size.",

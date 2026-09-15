@@ -5062,7 +5062,9 @@
   "carStolen": "Car successfully stolen!",
   "boatStolen": "Boat successfully stolen!",
   "vehicleTypeCar": "Car",
+  "vehicleTypeMotorcycle": "Motorcycle",
   "vehicleTypeBoat": "Boat",
+  "vehicleTypeAircraft": "Aircraft",
   "stolenVehicleTitle": "{vehicleType} stolen!",
   "@stolenVehicleTitle": {
     "placeholders": {
@@ -10243,6 +10245,36 @@
   "smugglingChannelField": "Smuggling channel",
   "smugglingQuantity": "Quantity",
   "smugglingVehiclesOneByOne": "Vehicles are shipped one by one",
+  "smugglingVehicleOptionLabel": "{type} · {name}",
+  "@smugglingVehicleOptionLabel": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingCatalogQtyLine": "{name} · {qty} {unit}",
+  "@smugglingCatalogQtyLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "int"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingUnitVehicle": "vehicle",
+  "smugglingUnitWeapon": "weapon",
+  "smugglingUnitRound": "rounds",
+  "smugglingUnitGram": "g",
+  "smugglingUnitPiece": "units",
   "smugglingMaxQuantity": "Max: {max}",
   "@smugglingMaxQuantity": {
     "placeholders": {
@@ -11484,7 +11516,7 @@
   "helpTopicSmugglingCategory": "Empire",
   "helpTopicSmugglingTitle": "Smuggling",
   "helpTopicSmugglingSummary": "Move illegal goods and vehicles between countries. Choose a commercial channel or use your own vehicle or aircraft for lower cost and added confiscation risk.",
-  "helpTopicSmugglingHow": "Choose a category, the specific item, the destination, and then decide between a commercial channel or your own transport.\nOwned cars, motorcycles, boats, and aircraft now show a live quote with cargo slots, lower cost, and risk reduction.\nA boat can carry cars and motorcycles; an aircraft cannot carry a boat and will return an immediate error.\nSuccess chance depends on the selected channel or owned transport, your current Wanted Level, and shipment size.\nOn failure you lose the entire shipment. No refund. Cargo and transport costs are gone.\nWhen you use owned transport and the run fails, the transport asset itself can also be confiscated.\nActive shipments are tracked live in an overview. After arrival the cargo appears in a depot ready for collection.\nCrew network remains available for commercial crew shipments, but owned transport is personal only.",
+  "helpTopicSmugglingHow": "Choose a category, the specific item, the destination, and then decide between a commercial channel or your own transport.\nCars, motorcycles and boats show their real names in the list, not internal codes.\nOwned cars, motorcycles, boats, and aircraft now show a live quote with cargo slots, lower cost, and risk reduction.\nA boat can carry cars and motorcycles; an aircraft cannot carry a boat and will return an immediate error.\nSuccess chance depends on the selected channel or owned transport, your current Wanted Level, and shipment size.\nOn failure you lose the entire shipment. No refund. Cargo and transport costs are gone.\nWhen you use owned transport and the run fails, the transport asset itself can also be confiscated.\nActive shipments are tracked live in an overview. After arrival the cargo appears in a depot ready for collection.\nCrew network remains available for commercial crew shipments, but owned transport is personal only.",
   "helpTopicSmugglingTips": "Never send your entire stock in one shipment: split across multiple smaller loads to limit catastrophic loss.\nLower Wanted Level and FBI Heat to a minimum before starting a large smuggling run.\nUse your best aircraft or boat for expensive runs: lower cost helps, but cargo slots and confiscation chance still decide the risk.\nAlways collect active depots as fast as possible: expired depot contents are permanently lost.",
   "helpTopicToolsCategory": "Management",
   "helpTopicToolsTitle": "Tools",

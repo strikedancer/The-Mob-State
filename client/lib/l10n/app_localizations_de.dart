@@ -8317,7 +8317,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get vehicleTypeCar => 'Auto';
 
   @override
+  String get vehicleTypeMotorcycle => 'Motorrad';
+
+  @override
   String get vehicleTypeBoat => 'Boot';
+
+  @override
+  String get vehicleTypeAircraft => 'Flugzeug';
 
   @override
   String stolenVehicleTitle(String vehicleType) {
@@ -16311,6 +16317,31 @@ class AppLocalizationsDe extends AppLocalizations {
       'Die Fahrzeuge werden einzeln versendet';
 
   @override
+  String smugglingVehicleOptionLabel(String type, String name) {
+    return '$type · $name';
+  }
+
+  @override
+  String smugglingCatalogQtyLine(String name, int qty, String unit) {
+    return '$name · $qty $unit';
+  }
+
+  @override
+  String get smugglingUnitVehicle => 'Fahrzeug';
+
+  @override
+  String get smugglingUnitWeapon => 'Waffe';
+
+  @override
+  String get smugglingUnitRound => 'Runden';
+
+  @override
+  String get smugglingUnitGram => 'G';
+
+  @override
+  String get smugglingUnitPiece => 'Einheiten';
+
+  @override
   String smugglingMaxQuantity(int max) {
     return 'Maximal: $max';
   }
@@ -18223,7 +18254,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicSmugglingHow =>
-      'Wählen Sie eine Kategorie, den spezifischen Artikel, das Ziel und entscheiden Sie sich dann zwischen einem kommerziellen Kanal oder Ihrem eigenen Transport. \nFür eigene Autos, Motorräder, Boote und Flugzeuge wird jetzt ein Live-Angebot mit Frachtplätzen, geringeren Kosten und Risikominderung angezeigt. \nEin Boot kann Autos und Motorräder transportieren; Ein Flugzeug kann kein Boot transportieren und gibt sofort einen Fehler zurück. \nDie Erfolgsaussichten hängen vom ausgewählten Kanal oder eigenen Transportmittel, Ihrem aktuellen Wanted-Level und der Sendungsgröße ab. \nBei einem Misserfolg verlieren Sie die gesamte Sendung. Keine Rückerstattung. Fracht- und Transportkosten entfallen. \nWenn Sie eigene Transportmittel nutzen und die Fahrt fehlschlägt, kann auch das Transportgut selbst beschlagnahmt werden. \nAktive Sendungen werden in einer Übersicht live verfolgt. Nach der Ankunft steht die Ladung in einem Depot zur Abholung bereit. \nDas Crew-Netzwerk steht weiterhin für kommerzielle Crew-Transporte zur Verfügung, der eigene Transport erfolgt jedoch nur für Privatpersonen.';
+      'Wählen Sie eine Kategorie, den spezifischen Artikel, das Ziel und entscheiden Sie sich dann zwischen einem kommerziellen Kanal oder Ihrem eigenen Transport. \nAutos, Motorräder und Boote werden in der Liste mit ihren echten Namen angezeigt, nicht mit internen Codes. \nFür eigene Autos, Motorräder, Boote und Flugzeuge wird jetzt ein Live-Angebot mit Frachtplätzen, geringeren Kosten und Risikominderung angezeigt. \nEin Boot kann Autos und Motorräder transportieren; Ein Flugzeug kann kein Boot transportieren und gibt sofort einen Fehler zurück. \nDie Erfolgsaussichten hängen vom ausgewählten Kanal oder eigenen Transportmittel, Ihrem aktuellen Wanted-Level und der Sendungsgröße ab. \nBei einem Misserfolg verlieren Sie die gesamte Sendung. Keine Rückerstattung. Fracht- und Transportkosten entfallen. \nWenn Sie eigene Transportmittel nutzen und die Fahrt fehlschlägt, kann auch das Transportgut selbst beschlagnahmt werden. \nAktive Sendungen werden in einer Übersicht live verfolgt. Nach der Ankunft steht die Ladung in einem Depot zur Abholung bereit. \nDas Crew-Netzwerk steht weiterhin für kommerzielle Crew-Transporte zur Verfügung, der eigene Transport erfolgt jedoch nur für Privatpersonen.';
 
   @override
   String get helpTopicSmugglingTips =>

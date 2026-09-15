@@ -43,6 +43,7 @@ Succesvolle **depot-claim** geeft **kleine XP** aan de claimende speler (per zen
 - Clear success and failure feedback for the player (result overlay on send/claim success; snackbar on failure).
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels (including live ETA countdown from `etaAt`).
+- Vehicle cargo and owned-transport labels use catalog display names (`vehicleService.getVehicleById(...).name`), never raw `vehicleId` keys or mojibake separators.
 - Responsive usability without pushing critical actions off-screen.
 - De speler moet expliciet kunnen zien of een quote via commercieel kanaal of eigen transport loopt.
 - Cargo-capaciteit en confiscatierisico van eigen transport moeten zichtbaar en server-side leidend blijven.

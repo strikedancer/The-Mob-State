@@ -8291,7 +8291,7 @@
   "helpTopicSmugglingCategory": "Empire",
   "helpTopicSmugglingTitle": "Contrebande",
   "helpTopicSmugglingSummary": "Déplacez des marchandises et des véhicules illégaux entre les pays. Choisissez un canal commercial ou utilisez votre propre véhicule ou avion pour réduire les coûts et augmenter le risque de confiscation.",
-  "helpTopicSmugglingHow": "Choisissez une catégorie, l'article spécifique, la destination, puis décidez entre un canal commercial ou votre propre transport. \nLes voitures, motos, bateaux et avions en propriété affichent désormais un devis en direct avec des emplacements de chargement, des coûts inférieurs et une réduction des risques. \nUn bateau peut transporter des voitures et des motos ; un avion ne peut pas transporter un bateau et renverra une erreur immédiate. \nLes chances de réussite dépendent du canal sélectionné ou du transport détenu, de votre niveau de recherche actuel et de la taille de l'envoi. \nEn cas d'échec, vous perdez la totalité de l'envoi. Aucun remboursement. Les coûts de fret et de transport ont disparu. \nLorsque vous utilisez un moyen de transport détenu et que le trajet échoue, le bien de transport lui-même peut également être confisqué. \nLes expéditions actives sont suivies en direct dans un aperçu. Après son arrivée, la cargaison apparaît dans un dépôt prête à être récupérée. \nLe réseau d'équipage reste disponible pour les expéditions commerciales d'équipage, mais le transport en propriété est uniquement personnel.",
+  "helpTopicSmugglingHow": "Choisissez une catégorie, l'article spécifique, la destination, puis décidez entre un canal commercial ou votre propre transport. \nLes voitures, motos et bateaux affichent leurs vrais noms dans la liste, et non leurs codes internes. \nLes voitures, motos, bateaux et avions en propriété affichent désormais un devis en direct avec des emplacements de chargement, des coûts inférieurs et une réduction des risques. \nUn bateau peut transporter des voitures et des motos ; un avion ne peut pas transporter un bateau et renverra une erreur immédiate. \nLes chances de réussite dépendent du canal sélectionné ou du transport détenu, de votre niveau de recherche actuel et de la taille de l'envoi. \nEn cas d'échec, vous perdez la totalité de l'envoi. Aucun remboursement. Les coûts de fret et de transport ont disparu. \nLorsque vous utilisez un moyen de transport détenu et que le trajet échoue, le bien de transport lui-même peut également être confisqué. \nLes expéditions actives sont suivies en direct dans un aperçu. Après son arrivée, la cargaison apparaît dans un dépôt prête à être récupérée. \nLe réseau d'équipage reste disponible pour les expéditions commerciales d'équipage, mais le transport en propriété est uniquement personnel.",
   "helpTopicSmugglingTips": "N'envoyez jamais l'intégralité de votre stock en un seul envoi : répartissez-le en plusieurs chargements plus petits pour limiter les pertes catastrophiques. \nRéduisez le niveau de recherche et la chaleur du FBI au minimum avant de lancer une vaste opération de contrebande. \nUtilisez votre meilleur avion ou bateau pour des trajets coûteux : un coût inférieur est utile, mais les emplacements de chargement et les chances de confiscation déterminent toujours le risque. \nCollectez toujours les dépôts actifs le plus rapidement possible : le contenu des dépôts expirés est définitivement perdu.",
   "helpTopicToolsCategory": "Gestion",
   "helpTopicToolsTitle": "Outils",
@@ -12396,5 +12396,37 @@
       }
     }
   },
-  "crewUiMissionWaitHint": "Votre équipage doit attendre la fin de ce chronomètre avant de commencer une autre mission."
+  "crewUiMissionWaitHint": "Votre équipage doit attendre la fin de ce chronomètre avant de commencer une autre mission.",
+  "vehicleTypeMotorcycle": "Moto",
+  "vehicleTypeAircraft": "Aéronef",
+  "smugglingVehicleOptionLabel": "{type} · {name}",
+  "@smugglingVehicleOptionLabel": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingCatalogQtyLine": "{name} · {qty} {unit}",
+  "@smugglingCatalogQtyLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "int"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingUnitVehicle": "véhicule",
+  "smugglingUnitWeapon": "arme",
+  "smugglingUnitRound": "tours",
+  "smugglingUnitGram": "g",
+  "smugglingUnitPiece": "unités"
 }

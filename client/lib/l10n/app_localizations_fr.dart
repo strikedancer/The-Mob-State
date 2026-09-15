@@ -8325,7 +8325,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get vehicleTypeCar => 'Voiture';
 
   @override
+  String get vehicleTypeMotorcycle => 'Moto';
+
+  @override
   String get vehicleTypeBoat => 'Bateau';
+
+  @override
+  String get vehicleTypeAircraft => 'Aéronef';
 
   @override
   String stolenVehicleTitle(String vehicleType) {
@@ -16306,6 +16312,31 @@ class AppLocalizationsFr extends AppLocalizations {
       'Les véhicules sont expédiés un par un';
 
   @override
+  String smugglingVehicleOptionLabel(String type, String name) {
+    return '$type · $name';
+  }
+
+  @override
+  String smugglingCatalogQtyLine(String name, int qty, String unit) {
+    return '$name · $qty $unit';
+  }
+
+  @override
+  String get smugglingUnitVehicle => 'véhicule';
+
+  @override
+  String get smugglingUnitWeapon => 'arme';
+
+  @override
+  String get smugglingUnitRound => 'tours';
+
+  @override
+  String get smugglingUnitGram => 'g';
+
+  @override
+  String get smugglingUnitPiece => 'unités';
+
+  @override
   String smugglingMaxQuantity(int max) {
     return 'Max : $max';
   }
@@ -18218,7 +18249,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicSmugglingHow =>
-      'Choisissez une catégorie, l\'article spécifique, la destination, puis décidez entre un canal commercial ou votre propre transport. \nLes voitures, motos, bateaux et avions en propriété affichent désormais un devis en direct avec des emplacements de chargement, des coûts inférieurs et une réduction des risques. \nUn bateau peut transporter des voitures et des motos ; un avion ne peut pas transporter un bateau et renverra une erreur immédiate. \nLes chances de réussite dépendent du canal sélectionné ou du transport détenu, de votre niveau de recherche actuel et de la taille de l\'envoi. \nEn cas d\'échec, vous perdez la totalité de l\'envoi. Aucun remboursement. Les coûts de fret et de transport ont disparu. \nLorsque vous utilisez un moyen de transport détenu et que le trajet échoue, le bien de transport lui-même peut également être confisqué. \nLes expéditions actives sont suivies en direct dans un aperçu. Après son arrivée, la cargaison apparaît dans un dépôt prête à être récupérée. \nLe réseau d\'équipage reste disponible pour les expéditions commerciales d\'équipage, mais le transport en propriété est uniquement personnel.';
+      'Choisissez une catégorie, l\'article spécifique, la destination, puis décidez entre un canal commercial ou votre propre transport. \nLes voitures, motos et bateaux affichent leurs vrais noms dans la liste, et non leurs codes internes. \nLes voitures, motos, bateaux et avions en propriété affichent désormais un devis en direct avec des emplacements de chargement, des coûts inférieurs et une réduction des risques. \nUn bateau peut transporter des voitures et des motos ; un avion ne peut pas transporter un bateau et renverra une erreur immédiate. \nLes chances de réussite dépendent du canal sélectionné ou du transport détenu, de votre niveau de recherche actuel et de la taille de l\'envoi. \nEn cas d\'échec, vous perdez la totalité de l\'envoi. Aucun remboursement. Les coûts de fret et de transport ont disparu. \nLorsque vous utilisez un moyen de transport détenu et que le trajet échoue, le bien de transport lui-même peut également être confisqué. \nLes expéditions actives sont suivies en direct dans un aperçu. Après son arrivée, la cargaison apparaît dans un dépôt prête à être récupérée. \nLe réseau d\'équipage reste disponible pour les expéditions commerciales d\'équipage, mais le transport en propriété est uniquement personnel.';
 
   @override
   String get helpTopicSmugglingTips =>

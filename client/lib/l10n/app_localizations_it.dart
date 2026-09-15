@@ -8294,7 +8294,13 @@ class AppLocalizationsIt extends AppLocalizations {
   String get vehicleTypeCar => 'Auto';
 
   @override
+  String get vehicleTypeMotorcycle => 'Motociclo';
+
+  @override
   String get vehicleTypeBoat => 'Barca';
+
+  @override
+  String get vehicleTypeAircraft => 'Aereo';
 
   @override
   String stolenVehicleTitle(String vehicleType) {
@@ -16283,6 +16289,31 @@ class AppLocalizationsIt extends AppLocalizations {
       'I veicoli vengono spediti uno per uno';
 
   @override
+  String smugglingVehicleOptionLabel(String type, String name) {
+    return '$type · $name';
+  }
+
+  @override
+  String smugglingCatalogQtyLine(String name, int qty, String unit) {
+    return '$name · $qty $unit';
+  }
+
+  @override
+  String get smugglingUnitVehicle => 'veicolo';
+
+  @override
+  String get smugglingUnitWeapon => 'arma';
+
+  @override
+  String get smugglingUnitRound => 'giri';
+
+  @override
+  String get smugglingUnitGram => 'G';
+
+  @override
+  String get smugglingUnitPiece => 'unità';
+
+  @override
   String smugglingMaxQuantity(int max) {
     return 'Massimo: $max';
   }
@@ -18192,7 +18223,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicSmugglingHow =>
-      'Scegli una categoria, l\'articolo specifico, la destinazione e poi decidi tra un canale commerciale o il tuo trasporto. \nAuto, motociclette, barche e aerei di proprietà ora mostrano un preventivo in tempo reale con slot di carico, costi inferiori e riduzione del rischio. \nUna barca può trasportare auto e moto; un aereo non può trasportare un\'imbarcazione e restituirà un errore immediato. \nLe probabilità di successo dipendono dal canale selezionato o dal trasporto posseduto, dal tuo attuale livello di ricercato e dalle dimensioni della spedizione. \nIn caso di fallimento si perde l\'intera spedizione. Nessun rimborso. I costi di carico e trasporto sono scomparsi. \nQuando si utilizza il trasporto di proprietà e la corsa fallisce, anche la risorsa di trasporto stessa può essere confiscata. \nLe spedizioni attive vengono monitorate in tempo reale in una panoramica. Dopo l\'arrivo il carico appare in un deposito pronto per il ritiro. \nLa rete dell\'Crew rimane disponibile per le spedizioni commerciali dell\'Crew, ma il trasporto di proprietà è solo personale.';
+      'Scegli una categoria, l\'articolo specifico, la destinazione e poi decidi tra un canale commerciale o il tuo trasporto. \nAuto, moto e barche riportano nell\'elenco i loro veri nomi e non i codici interni. \nAuto, motociclette, barche e aerei di proprietà ora mostrano un preventivo in tempo reale con slot di carico, costi inferiori e riduzione del rischio. \nUna barca può trasportare auto e moto; un aereo non può trasportare un\'imbarcazione e restituirà un errore immediato. \nLe probabilità di successo dipendono dal canale selezionato o dal trasporto posseduto, dal tuo attuale livello di ricercato e dalle dimensioni della spedizione. \nIn caso di fallimento si perde l\'intera spedizione. Nessun rimborso. I costi di carico e trasporto sono scomparsi. \nQuando si utilizza il trasporto di proprietà e la corsa fallisce, anche la risorsa di trasporto stessa può essere confiscata. \nLe spedizioni attive vengono monitorate in tempo reale in una panoramica. Dopo l\'arrivo il carico appare in un deposito pronto per il ritiro. \nLa rete dell\'Crew rimane disponibile per le spedizioni commerciali dell\'Crew, ma il trasporto di proprietà è solo personale.';
 
   @override
   String get helpTopicSmugglingTips =>

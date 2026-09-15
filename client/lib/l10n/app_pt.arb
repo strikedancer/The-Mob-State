@@ -8291,7 +8291,7 @@
   "helpTopicSmugglingCategory": "Império",
   "helpTopicSmugglingTitle": "Contrabando",
   "helpTopicSmugglingSummary": "Mova mercadorias e veículos ilegais entre países. Escolha um canal comercial ou use seu próprio veículo ou aeronave para obter custos mais baixos e aumentar o risco de confisco.",
-  "helpTopicSmugglingHow": "Escolha uma categoria, o item específico, o destino e depois decida entre um canal comercial ou seu próprio transporte. \nCarros, motocicletas, barcos e aeronaves próprias agora mostram cotação em tempo real com slots de carga, menor custo e redução de risco. \nUm barco pode transportar carros e motos; uma aeronave não pode transportar um barco e retornará um erro imediato. \nA chance de sucesso depende do canal selecionado ou do transporte de sua propriedade, do seu nível de procurado atual e do tamanho da remessa. \nEm caso de falha, você perde toda a remessa. Sem reembolso. Os custos de carga e transporte desapareceram. \nQuando você usa transporte próprio e a execução falha, o próprio ativo de transporte também pode ser confiscado. \nAs remessas ativas são rastreadas ao vivo em uma visão geral. Após a chegada a carga chega em um depósito pronto para coleta. \nA rede de Crew permanece disponível para remessas de Crew comercial, mas o transporte próprio é apenas pessoal.",
+  "helpTopicSmugglingHow": "Escolha uma categoria, o item específico, o destino e depois decida entre um canal comercial ou seu próprio transporte. \nCarros, motos e barcos apresentam seus nomes reais na lista, e não códigos internos. \nCarros, motocicletas, barcos e aeronaves próprias agora mostram cotação em tempo real com slots de carga, menor custo e redução de risco. \nUm barco pode transportar carros e motos; uma aeronave não pode transportar um barco e retornará um erro imediato. \nA chance de sucesso depende do canal selecionado ou do transporte de sua propriedade, do seu nível de procurado atual e do tamanho da remessa. \nEm caso de falha, você perde toda a remessa. Sem reembolso. Os custos de carga e transporte desapareceram. \nQuando você usa transporte próprio e a execução falha, o próprio ativo de transporte também pode ser confiscado. \nAs remessas ativas são rastreadas ao vivo em uma visão geral. Após a chegada a carga chega em um depósito pronto para coleta. \nA rede de Crew permanece disponível para remessas de Crew comercial, mas o transporte próprio é apenas pessoal.",
   "helpTopicSmugglingTips": "Nunca envie todo o seu estoque em uma única remessa: divida-o em várias cargas menores para limitar perdas catastróficas. \nReduza o nível de procurado e o calor do FBI ao mínimo antes de iniciar uma grande operação de contrabando. \nUse sua melhor aeronave ou barco para viagens caras: o custo mais baixo ajuda, mas os slots de carga e a chance de confisco ainda decidem o risco. \nSempre colete depósitos ativos o mais rápido possível: o conteúdo expirado do depósito é perdido permanentemente.",
   "helpTopicToolsCategory": "Gerenciamento",
   "helpTopicToolsTitle": "Ferramentas",
@@ -12396,5 +12396,37 @@
       }
     }
   },
-  "crewUiMissionWaitHint": "Sua Crew deve esperar até que esse cronômetro termine antes de iniciar outra missão."
+  "crewUiMissionWaitHint": "Sua Crew deve esperar até que esse cronômetro termine antes de iniciar outra missão.",
+  "vehicleTypeMotorcycle": "Motocicleta",
+  "vehicleTypeAircraft": "Aeronave",
+  "smugglingVehicleOptionLabel": "{type} · {name}",
+  "@smugglingVehicleOptionLabel": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingCatalogQtyLine": "{name} · {qty} {unit}",
+  "@smugglingCatalogQtyLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "int"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingUnitVehicle": "veículo",
+  "smugglingUnitWeapon": "arma",
+  "smugglingUnitRound": "rodadas",
+  "smugglingUnitGram": "g",
+  "smugglingUnitPiece": "unidades"
 }

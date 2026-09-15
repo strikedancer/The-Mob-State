@@ -8291,7 +8291,7 @@
   "helpTopicSmugglingCategory": "Imperio",
   "helpTopicSmugglingTitle": "Contrabando",
   "helpTopicSmugglingSummary": "Mueva mercancías y vehículos ilegales entre países. Elija un canal comercial o utilice su propio vehículo o avión para reducir los costos y aumentar el riesgo de confiscación.",
-  "helpTopicSmugglingHow": "Elige una categoría, el artículo concreto, el destino y luego decide entre un canal comercial o tu propio transporte. \nLos automóviles, motocicletas, barcos y aviones de propiedad ahora muestran una cotización en vivo con espacios de carga, menores costos y reducción de riesgos. \nUn barco puede transportar coches y motos; un avión no puede transportar un barco y devolverá un error inmediato. \nLas posibilidades de éxito dependen del canal seleccionado o del transporte propio, su nivel de búsqueda actual y el tamaño del envío. \nEn caso de falla, perderá todo el envío. Sin reembolso. Los costos de carga y transporte han desaparecido. \nCuando utiliza transporte propio y el recorrido falla, el propio medio de transporte también puede ser confiscado. \nLos envíos activos se rastrean en vivo en una descripción general. Después de su llegada, la carga aparece en un depósito lista para su recogida. \nLa red de Crew sigue estando disponible para envíos comerciales de Crew, pero el transporte propio es únicamente personal.",
+  "helpTopicSmugglingHow": "Elige una categoría, el artículo concreto, el destino y luego decide entre un canal comercial o tu propio transporte. \nLos coches, motos y barcos muestran en la lista sus nombres reales, no sus códigos internos. \nLos automóviles, motocicletas, barcos y aviones de propiedad ahora muestran una cotización en vivo con espacios de carga, menores costos y reducción de riesgos. \nUn barco puede transportar coches y motos; un avión no puede transportar un barco y devolverá un error inmediato. \nLas posibilidades de éxito dependen del canal seleccionado o del transporte propio, su nivel de búsqueda actual y el tamaño del envío. \nEn caso de falla, perderá todo el envío. Sin reembolso. Los costos de carga y transporte han desaparecido. \nCuando utiliza transporte propio y el recorrido falla, el propio medio de transporte también puede ser confiscado. \nLos envíos activos se rastrean en vivo en una descripción general. Después de su llegada, la carga aparece en un depósito lista para su recogida. \nLa red de Crew sigue estando disponible para envíos comerciales de Crew, pero el transporte propio es únicamente personal.",
   "helpTopicSmugglingTips": "Nunca envíe todo su stock en un solo envío: divídalo en varias cargas más pequeñas para limitar pérdidas catastróficas. \nReduzca el nivel de búsqueda y el calor del FBI al mínimo antes de iniciar una gran carrera de contrabando. \nUtilice su mejor avión o barco para recorridos costosos: un menor costo ayuda, pero los espacios de carga y la posibilidad de confiscación aún deciden el riesgo. \nRecoja siempre los depósitos activos lo más rápido posible: el contenido caducado del depósito se pierde permanentemente.",
   "helpTopicToolsCategory": "Gestión",
   "helpTopicToolsTitle": "Herramientas",
@@ -12396,5 +12396,37 @@
       }
     }
   },
-  "crewUiMissionWaitHint": "Tu Crew debe esperar hasta que finalice este cronómetro antes de comenzar otra misión."
+  "crewUiMissionWaitHint": "Tu Crew debe esperar hasta que finalice este cronómetro antes de comenzar otra misión.",
+  "vehicleTypeMotorcycle": "Motocicleta",
+  "vehicleTypeAircraft": "Aeronave",
+  "smugglingVehicleOptionLabel": "{type} · {name}",
+  "@smugglingVehicleOptionLabel": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingCatalogQtyLine": "{name} · {qty} {unit}",
+  "@smugglingCatalogQtyLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "int"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingUnitVehicle": "vehículo",
+  "smugglingUnitWeapon": "arma",
+  "smugglingUnitRound": "rondas",
+  "smugglingUnitGram": "gramo",
+  "smugglingUnitPiece": "unidades"
 }
