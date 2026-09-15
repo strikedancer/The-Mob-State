@@ -26,6 +26,7 @@ Pushnotificaties, inbox-signalen, web/native FCM gedrag, permission entrypoints 
 - Drugs -> Notifications (batch ready: `drugs.production_ready`, idempotent via `readyNotifiedAt`)
 - Nightclub player-supply -> inbox system message to the club owner (no extra push)
 - Midnight Races -> inbox + FCM + activity feed on settle (`race.settled`) or refund (`race.refunded`)
+- Live spelerevents -> inbox + FCM voor winnaars/prijswinnaars bij resolve (`game_event_won` / `game_event_placed`); start/einde blijft een broadcast-push
 
 ## Must Preserve
 - Expliciete in-app permissie-entrypoint voor web/iOS homescreen push: één popup na login (`maybeShowPushEnablePrompt` op het dashboard) plus Settings. Geen automatische browser-prompt zonder knop. Later/dismiss blijft lokaal bewaard; al toegestaan of door de browser geweigerd = geen popup.
@@ -39,6 +40,7 @@ Pushnotificaties, inbox-signalen, web/native FCM gedrag, permission entrypoints 
 - Voor cooldown-expiry meldingen: voeg nieuwe cooldown-actions toe in zowel `notificationService.sendCooldownExpiredNotification(...)` als de notifier-registratie in `cooldownService` of een gelijkwaardige scheduler.
 - Crew Missions cooldown-ready meldingen moeten persistent via backend-scan/cron verwerkt worden (niet alleen via in-memory timeout), met idempotente marking per mission run.
 - Territory contest `preparing` → `active` moet via persistente cron/lifecycle-sync push + inbox sturen naar aanvallende én verdedigende crewleden (`territory_contest_active`); die overgang mag niet stil blijven als niemand het Territory-scherm open heeft.
+- Live event resolve moet prijswinnaars (en de 1e plek) een inboxbericht geven; push volgt `push_game_events`. Resolve mag niet falen als inbox/push faalt.
 - Drug batch-ready meldingen (`drugs.production_ready`) lopen via cron + `readyNotifiedAt` (idempotent); geen dubbele push per partij.
 - Cooldown-expiry push voor crimes, jobs en vehicle/boat theft mag nooit alleen op in-memory `setTimeout` vertrouwen; de effectieve cooldownduur en notificatiestatus moeten persistent reconstrueerbaar zijn zodat backend restarts, deploys of container-restarts geen expiry-pushes verliezen.
 - Admin moet een handmatige, auditeerbare test-push naar een specifieke speler kunnen sturen voor live QA; zo'n testactie moet device-count terugkoppelen zodat deliveryproblemen onderscheidbaar blijven van ontbrekende tokenregistratie.
@@ -73,6 +75,7 @@ Pushnotificaties, inbox-signalen, web/native FCM gedrag, permission entrypoints 
 10. Verifieer dat pushfouten hoofdflows niet blokkeren.
 11. Verifieer dat arrestaties van een speler precies de relevante vrienden en crewleden signaleren, zonder dubbele push voor overlap-ontvangers.
 12. Verifieer dat een Territory-contest na de voorbereiding een push + inbox stuurt naar attacker- én defender-crew dat acties ontgrendeld zijn.
+13. Verifieer dat een afgelopen live event de prijswinnaars een inboxbericht én een push geeft (`game_event_won` / `game_event_placed`); zonder devices blijft de inbox staan.
 
 ## When To Update This File
 Update bij nieuwe notificatiekanalen, FCM/service-worker gedrag, permission flows, cooldown-signalen of inbox/push koppelingen.

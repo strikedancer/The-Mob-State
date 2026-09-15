@@ -705,6 +705,7 @@ class GameEventService {
       where: { liveEventId },
       orderBy: { score: 'desc' },
     });
+    const winnerNotices = new Map<number, number>();
 
     if (participants.length > 0) {
       await Promise.all(
@@ -742,7 +743,18 @@ class GameEventService {
               }),
             ),
         );
+
+        for (const qualifier of qualifiers) {
+          if (qualifier.playerId == null || winnerNotices.has(qualifier.playerId)) continue;
+          const rank = participants.findIndex((row) => row.id === qualifier.id) + 1;
+          winnerNotices.set(qualifier.playerId, rank > 0 ? rank : 1);
+        }
       }
+    }
+
+    const first = participants[0];
+    if (first?.playerId != null && !winnerNotices.has(first.playerId)) {
+      winnerNotices.set(first.playerId, 1);
     }
 
     await prisma.gameLiveEvent.update({
@@ -757,10 +769,24 @@ class GameEventService {
       include: { template: true },
     });
     if (forNotify?.template) {
+      const winners = [...winnerNotices.entries()].map(([playerId, rank]) => ({ playerId, rank }));
       setImmediate(() => {
-        void gameEventNotificationService
-          .onLiveEventCompleted(forNotify as GameLiveEventWithTemplate)
-          .catch((e) => console.error('[GameEventNotification] complete', e));
+        void (async () => {
+          try {
+            await gameEventNotificationService.notifyWinners({
+              live: forNotify as GameLiveEventWithTemplate,
+              winners,
+              hideRank: forNotify.template.key === 'monthly_empire_showdown',
+            });
+          } catch (e) {
+            console.error('[GameEventNotification] winners', e);
+          }
+          try {
+            await gameEventNotificationService.onLiveEventCompleted(forNotify as GameLiveEventWithTemplate);
+          } catch (e) {
+            console.error('[GameEventNotification] complete', e);
+          }
+        })();
       });
     }
 

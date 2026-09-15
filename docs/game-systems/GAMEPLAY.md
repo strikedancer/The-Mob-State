@@ -70,7 +70,7 @@
 - **Contraband Rush** (`trade`): verkoop handelswaren met winst en claim gesmokkelde trade-zendingen scoren punten (kopen telt niet; drug/tool-smokkel blijft onder Smuggling Surge).
 - Tijdens een lopend event toont de detail-leaderboard de **top 10 op score** (niet alleen jouw eigen rij); vaste ranks worden pas bij afloop vastgelegd.
 - Op het dashboard staan events **rechtsonder** als een **ingeklapte chip** (tik om de foto-avatars te openen, pijl om ze weer weg te klappen) inclusief het maandelijkse Empire Showdown, ook als die ronde nog niet live is. Opengeklapt toont elke avatar een resterende-tijd-badge. Ze blijven **verborgen op Berichten, Crew, Wereldchat en Evenementen** zodat tekst en de verzendknop vrij blijven. Tikken op een avatar opent dezelfde detailpopup als op Evenementen. **Maandevent:** dezelfde Event Pass-doellijst als op Evenementen (te claimen prijzen bovenaan, geen 1e/2e/3e-plek). Een rood cijfer op die maand-avatar betekent Event Pass-prijzen klaar om te claimen. **Weekevent-avatars hebben geen claim-cijfer.** Dag- en weekdoelen op het dashboard zijn een apart systeem; die claims staan alleen op de doelkaarten.
-- In **Instellingen** kun je onder **Spelerevents** pushmeldingen bij start/einde van een ronde **per speler** aan- of uitzetten (standaard aan). In **Premium** bestaat optioneel **Event Pass (7 dagen)** (echt geld) voor +event-score en bonus credits, zonder directe combat pay-to-win.
+- In **Instellingen** kun je onder **Spelerevents** pushmeldingen bij start/einde van een ronde **per speler** aan- of uitzetten (standaard aan). Wie wint of een prijs pakt krijgt altijd een inboxbericht; de bijbehorende push volgt dezelfde voorkeur. In **Premium** bestaat optioneel **Event Pass (7 dagen)** (echt geld) voor +event-score en bonus credits, zonder directe combat pay-to-win.
 - Volledig operator-/deploy-pad: `docs/module-protocols/PROTOCOL_MASTER.md` (verwijst naar `events.md`).
 - Technische afspraak server↔DB voor live events (JSON in tekstkolommen): `docs/module-protocols/events.md` (sectie *Backend (Prisma) invariant*).
 
@@ -339,6 +339,7 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 - **Belangrijke regel**: bekijken mag in elk land, maar aanvallen, verdedigen en andere Territory-contestacties werken alleen in het land waar je speler zich op dat moment echt bevindt.
 - Voorbeeld: zit je in Nederland en open je de kaart van BelgiÃ«, dan kun je Belgische regio's wel inspecteren maar niet aanvallen of aan een Belgische contest meedoen totdat je eerst naar BelgiÃ« reist.
 - Territory blijft crew-gebonden: zonder crew kun je geen neutrale of vijandige regio's aanvallen.
+- Het aantal gebieden is wereldwijd (alle landen bij elkaar), niet per land. Slots = het laagste van HQ, leden en een harde cap van 10: elke 3 HQ-niveaus +1, elke 5 extra leden +1. Alleen HQ of alleen leden is niet genoeg. Zit je aan de cap, dan kun je geen nieuwe contest starten; verdedigen blijft mogelijk en gebieden verdwijnen niet als iemand leavet. Gelijktijdige contests blijven alleen HQ-gedreven. Vanaf 8 slots mag je één extra garnizoen plaatsen.
 - Als de voorbereiding van een Territory-contest klaar is, krijgen aanvallende en verdedigende crewleden een push- en inboxbericht dat de strijd live is en acties ontgrendeld zijn.
 - Op mobiel ondersteunt de Territory-kaart pinch-zoom en pannen zodat kleine regio's bruikbaar blijven.
 - Per crew zie je Territory-statistieken (gewonnen, verdedigd, verloren, contests, totale hold-tijd) zowel all-time als voor het actieve seizoen: op de leaderboard via een all-time/seizoen-toggle, en als crew-statsblok op de kaarttab.
@@ -1220,6 +1221,7 @@ healing = 5 HP (if health > 0 && health < 100)
 - ✅ Territory Fase D (season awards, region event rotation, drama widgets) — see TERRITORY_VISION.md / territory.md
 - ✅ Territory crew-stats (all-time + seizoen W/D/L/hold op leaderboard + crew-kaart) — see `territory.md`
 - ✅ Territory garnizoen / luchtafweer (crew-bank, tijdelijk defense + hogere capture-drempel, geen nachtslot) — see `territory.md`
+- ✅ Territory dual-key region-cap (HQ + leden, hard cap 10, extra garnizoen vanaf 8 slots) — see `territory.md`
 - ✅ Money laundering (cash→bank wash above the free daily deposit cap: fee, delay, FBI-heat seize risk) — see `money-laundering.md` / `bank.md`
 - ✅ Stock market (bank-funded slow tickers, separate from crypto; UI has load/empty states + portfolio summary) — see `stock-market.md`
 - ✅ Real estate development (bank-funded permanent income levels; confirm/cooldown/error UX) — see `properties.md`

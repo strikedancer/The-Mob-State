@@ -322,6 +322,10 @@ class NotificationService {
       case 'territory_lost':
       case 'race_settled':
       case 'race_refunded':
+      case 'game_event_started':
+      case 'game_event_completed':
+      case 'game_event_won':
+      case 'game_event_placed':
         return '/dashboard';
       default:
         return null;
