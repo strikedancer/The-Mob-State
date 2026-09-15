@@ -700,9 +700,9 @@ Onderstaande bullets beschrijven reis- en heat-risico’s voor **smokkelzendinge
 
 Er zijn **drie landvoertuig-omgevingen** plus vliegtuigen:
 
-- **Auto (Garage):** stelen, opslag, reparatie, verkoop/sloop. Eigen capaciteitslijn per land. De misdaad-auto kies je in Inventaris op de uitrusting, niet met Selecteer op de autokaart.
-- **Motor (Motorstalling):** dezelfde loop als auto, maar een **aparte** catalogus, cooldown, heat/reputatie en opslaglijn. Niet hetzelfde als garage-auto's.
-- **Boot (Marina):** havenopslag, eigen steelkans en world-cap.
+- **Auto (Garage):** stelen, opslag, reparatie, verkoop/sloop. Eigen capaciteitslijn per land. De misdaad-auto kies je in Inventaris op de uitrusting, niet met Selecteer op de autokaart. Het bedrag op Verkopen is wat je krijgt (landprijs × conditie, plus tuning).
+- **Motor (Motorstalling):** dezelfde loop als auto, maar een **aparte** catalogus, cooldown, heat/reputatie en opslaglijn. Niet hetzelfde als garage-auto's. Verkoopbedrag werkt hetzelfde als bij auto's.
+- **Boot (Marina):** havenopslag, eigen steelkans en world-cap. Verkoopbedrag werkt hetzelfde als bij auto's.
 - **Vliegtuig (Hangar):** reizen/smokkel, catalogus in `aircraft.json`.
 
 In **Voertuig stelen** kies je Auto / Motor / Boot via de drie lane-cards. Help & Uitleg (gouden `i`) en de Almanak-handleiding hebben voor elk van die omgevingen een eigen hoofdstuk. Admin → Voertuigen toont dezelfde vier catalogi (auto's, motoren, boten, vliegtuigen); nieuw/vies/defect als klikbare thumbs, geen bestandsnamen.

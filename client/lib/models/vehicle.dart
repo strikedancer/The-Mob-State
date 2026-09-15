@@ -93,6 +93,8 @@ class VehicleInventoryItem {
   final int fuelLevel;
   final bool marketListing;
   final int? askingPrice;
+  final int? sellPrice;
+  final double? tunedValueMultiplier;
   final VehicleDefinition? definition;
   final String? transportStatus; // NULL, 'shipping', 'flying', 'driving'
   final DateTime? transportArrivalTime;
@@ -118,6 +120,8 @@ class VehicleInventoryItem {
     required this.fuelLevel,
     required this.marketListing,
     this.askingPrice,
+    this.sellPrice,
+    this.tunedValueMultiplier,
     this.definition,
     this.transportStatus,
     this.transportArrivalTime,
@@ -135,14 +139,24 @@ class VehicleInventoryItem {
       _$VehicleInventoryItemFromJson(json);
   Map<String, dynamic> toJson() => _$VehicleInventoryItemToJson(this);
 
-  // Calculate market value in current location
+  /// Quoted cash if you sell now. Prefers the server quote so the button
+  /// matches the top-right payout.
   int getMarketValue() {
+    if (sellPrice != null) return sellPrice!;
     if (definition == null || currentLocation == null) return 0;
     final marketValue = definition?.marketValue;
     if (marketValue == null) return 0;
-    final basePrice =
-        marketValue[currentLocation] ?? (definition?.baseValue ?? 0);
-    return (basePrice * (condition / 100)).floor();
+    final locationKey = currentLocation!.toLowerCase();
+    int? countryPrice;
+    for (final entry in marketValue.entries) {
+      if (entry.key.toLowerCase() == locationKey) {
+        countryPrice = entry.value;
+        break;
+      }
+    }
+    final basePrice = countryPrice ?? (definition?.baseValue ?? 0);
+    final tune = tunedValueMultiplier ?? 1;
+    return (basePrice * (condition / 100) * tune).floor();
   }
 
   // Get condition color (red/orange/green)

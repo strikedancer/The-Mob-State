@@ -87,6 +87,8 @@ VehicleInventoryItem _$VehicleInventoryItemFromJson(
   fuelLevel: (json['fuelLevel'] as num).toInt(),
   marketListing: json['marketListing'] as bool,
   askingPrice: (json['askingPrice'] as num?)?.toInt(),
+  sellPrice: (json['sellPrice'] as num?)?.toInt(),
+  tunedValueMultiplier: (json['tunedValueMultiplier'] as num?)?.toDouble(),
   definition: json['definition'] == null
       ? null
       : VehicleDefinition.fromJson(json['definition'] as Map<String, dynamic>),
@@ -123,6 +125,8 @@ Map<String, dynamic> _$VehicleInventoryItemToJson(
   'fuelLevel': instance.fuelLevel,
   'marketListing': instance.marketListing,
   'askingPrice': instance.askingPrice,
+  'sellPrice': instance.sellPrice,
+  'tunedValueMultiplier': instance.tunedValueMultiplier,
   'definition': instance.definition,
   'transportStatus': instance.transportStatus,
   'transportArrivalTime': instance.transportArrivalTime?.toIso8601String(),

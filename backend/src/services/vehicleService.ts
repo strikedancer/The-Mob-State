@@ -1541,6 +1541,48 @@ const getTuneValueMultiplier = (levels: {
   return 1 + totalLevel * 0.03;
 };
 
+const FALLBACK_SELL_BASE_VALUE: Record<'car' | 'boat' | 'motorcycle', number> = {
+  car: 30000,
+  motorcycle: 22000,
+  boat: 50000,
+};
+
+function lookupCountryMarketValue(
+  marketValue: Record<string, number> | undefined,
+  country: string
+): number | undefined {
+  if (!marketValue) return undefined;
+  const exact = marketValue[country];
+  if (Number.isFinite(exact) && exact > 0) return exact;
+  const needle = country.trim().toLowerCase();
+  if (!needle) return undefined;
+  for (const [key, value] of Object.entries(marketValue)) {
+    if (key.toLowerCase() === needle && Number.isFinite(value) && value > 0) {
+      return value;
+    }
+  }
+  return undefined;
+}
+
+function calculateSellPrice(
+  vehicle: Vehicle | null | undefined,
+  country: string,
+  condition: number,
+  vehicleType: 'car' | 'boat' | 'motorcycle',
+  tuningLevels?: { speed: number; stealth: number; armor: number }
+): number {
+  const countryPrice = lookupCountryMarketValue(vehicle?.marketValue, country);
+  const catalogBase = vehicle?.baseValue;
+  const basePrice =
+    countryPrice ??
+    (Number.isFinite(catalogBase) && (catalogBase ?? 0) > 0
+      ? (catalogBase as number)
+      : FALLBACK_SELL_BASE_VALUE[vehicleType]);
+  const clampedCondition = Math.max(0, Math.min(100, Number(condition) || 0));
+  const tuneMultiplier = tuningLevels ? getTuneValueMultiplier(tuningLevels) : 1;
+  return Math.max(0, Math.floor(basePrice * (clampedCondition / 100) * tuneMultiplier));
+}
+
 const getTunedStats = (
   baseStats: VehicleStats,
   levels: { speed: number; stealth: number; armor: number }
@@ -4375,6 +4417,13 @@ export const vehicleService = {
       vehicle: {
         ...stolenVehicle,
         definition: vehicleDef,
+        sellPrice: calculateSellPrice(
+          vehicleDef,
+          stolenVehicle.currentLocation,
+          stolenVehicle.condition,
+          vehicleType
+        ),
+        tunedValueMultiplier: 1,
       },
     };
   },
@@ -4408,6 +4457,7 @@ export const vehicleService = {
     // Add vehicle definitions
     return inventory.map((item) => {
       const definition = this.getVehicleById(item.vehicleId);
+      const vehicleType = normalizeVehicleType(item.vehicleType);
       const repairJob = activeRepairJobs.get(item.id);
       const tuningLevels = tuningMap.get(item.id) ?? { speed: 0, stealth: 0, armor: 0 };
       const tunedStats = definition?.stats
@@ -4425,6 +4475,13 @@ export const vehicleService = {
         definition: tunedDefinition,
         tuningLevels,
         tunedValueMultiplier: getTuneValueMultiplier(tuningLevels),
+        sellPrice: calculateSellPrice(
+          definition,
+          item.currentLocation,
+          item.condition,
+          vehicleType,
+          tuningLevels
+        ),
         repairInProgress: !!repairJob,
         repairStatus: repairJob?.status ?? null,
         repairStartedAt: repairJob?.started_at ?? null,
@@ -4472,20 +4529,17 @@ export const vehicleService = {
   },
 
   /**
-   * Calculate market price for a vehicle
+   * Quoted sell price for a vehicle. Deterministic: country market value
+   * (else catalog base) × condition × tuning. No random checkout roll.
    */
   calculateMarketPrice(
-    vehicle: Vehicle,
+    vehicle: Vehicle | null | undefined,
     country: string,
     condition: number,
-    tuningLevels?: { speed: number; stealth: number; armor: number }
+    tuningLevels?: { speed: number; stealth: number; armor: number },
+    vehicleType: 'car' | 'boat' | 'motorcycle' = 'car'
   ): number {
-    const basePrice = vehicle.marketValue[country] || vehicle.baseValue;
-    const conditionMultiplier = condition / 100;
-    const randomVariation = 0.9 + Math.random() * 0.2; // ±10% random variation
-    const tuneMultiplier = tuningLevels ? getTuneValueMultiplier(tuningLevels) : 1;
-
-    return Math.floor(basePrice * conditionMultiplier * randomVariation * tuneMultiplier);
+    return calculateSellPrice(vehicle, country, condition, vehicleType, tuningLevels);
   },
 
   /**
@@ -4532,20 +4586,14 @@ export const vehicleService = {
 
     const vehicleType = normalizeVehicleType(inventoryItem.vehicleType);
     const vehicleDef = this.getVehicleById(inventoryItem.vehicleId);
-    const fallbackBaseValueByType: Record<'car' | 'boat' | 'motorcycle', number> = {
-      car: 30000,
-      motorcycle: 22000,
-      boat: 50000,
-    };
-    const baseValue = vehicleDef?.baseValue ?? fallbackBaseValueByType[vehicleType];
-
     const tuningLevels = await getVehicleTuningLevels(playerId, inventoryId);
-
-    // Calculate sell price
-    const sellPrice = this.calculateMarketPrice(
+    const sellCountry =
+      inventoryItem.currentLocation || player.currentCountry || '';
+    const sellPrice = calculateSellPrice(
       vehicleDef,
-      player.currentCountry!,
+      sellCountry,
       inventoryItem.condition,
+      vehicleType,
       tuningLevels
     );
 
@@ -5127,8 +5175,12 @@ export const vehicleService = {
         };
         const tunedStats = getTunedStats(definition.stats, levels);
         const tunedValueMultiplier = getTuneValueMultiplier(levels);
-        const estimatedValue = Math.floor(
-          definition.baseValue * (item.condition / 100) * tunedValueMultiplier
+        const estimatedValue = calculateSellPrice(
+          definition,
+          item.currentLocation,
+          item.condition,
+          vehicleType,
+          levels
         );
         const repairJob = activeRepairJobs.get(item.id);
         const tuneCooldownRemainingSeconds = getTuneCooldownRemainingSeconds(

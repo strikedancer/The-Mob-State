@@ -55,6 +55,19 @@ void main() {
     print('  Location: ${vehicle.currentLocation}');
     print('  Stolen At: ${vehicle.createdAt}');
     print('  Definition: ${vehicle.definition?.name}');
+    print('  Quoted sell: ${vehicle.getMarketValue()}');
+    if (vehicle.getMarketValue() != 290000) {
+      throw Exception('Expected Switzerland 100% market value 290000');
+    }
+
+    final quoted = VehicleInventoryItem.fromJson({
+      ...json,
+      'sellPrice': 12345,
+      'condition': 70,
+    });
+    if (quoted.getMarketValue() != 12345) {
+      throw Exception('sellPrice quote must win over local estimate');
+    }
     print('\n✅ All fields parsed correctly!');
   } catch (e, stackTrace) {
     print('❌ Error parsing vehicle:');

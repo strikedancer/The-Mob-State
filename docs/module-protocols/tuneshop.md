@@ -25,7 +25,7 @@ Vehicle parts economy, tuning upgrades (speed/stealth/armor), upgrade costs, val
   - motorcycle: 120s
   - boat: 240s
 - Concurrent tuning slots are VIP-gated: non-VIP max 1 active tuning cooldown across vehicles, VIP max 5.
-- Tuning upgrades increase effective vehicle performance and resale/salvage value multipliers.
+- Tuning upgrades increase effective vehicle performance and resale/salvage value multipliers. Resale uses the same quoted sell price as Garage/Marina (country market × condition × tune).
 - Tuning must be blocked while a vehicle is in transport or repair.
 - Tuning levels are per vehicle inventory item, not global per model.
 

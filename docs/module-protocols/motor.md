@@ -29,6 +29,7 @@ Motorcycle inventory, theft flow, timed repairs, country availability catalog, m
 - Concurrent repair slots are VIP-gated: non-VIP max 1 active repair, VIP max 5 active repairs.
 - Available motorcycle catalog entries must expose country availability, value, rarity and world-cap information.
 - World-cap rotation must remain correct: when a motorcycle is sold or scrapped, one slot reopens for theft.
+- Motorcycle sell payout uses the same deterministic quote as cars: country market value × condition × tuning. The steal-popup sell amount must match the top-right sold toast.
 - Scrap system: players can scrap owned motorcycles to get salvage value (35% of base value, scaled by condition and garage upgrade level). Scrapping must trigger immediately with clear feedback. Scrap price must respect garage upgrade multipliers (up to 20% bonus at max level).
 - Scrapping in this flow also yields motorcycle parts for TuneShop upgrades.
 - Keep event-only police motorcycles disabled outside explicit event windows.

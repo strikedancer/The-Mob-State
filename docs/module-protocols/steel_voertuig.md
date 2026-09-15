@@ -94,3 +94,4 @@ Onderdeel hiervan is TuneShop: onderdelen-economie via sloop en upgrades voor sp
 - Event-only politievoertuigen verschijnen alleen tijdens actieve events.
 - Timed repairs en timers blijven correct na refresh.
 - Verkoop en sloop verlagen inventory en laten world-cap correct roteren.
+- Het verkoopbedrag op de steal-popup (auto/motor/boot) is hetzelfde bedrag als in de melding rechtsboven na verkoop: landmarktprijs × conditie × tuning, zonder extra dobbelsteen bij checkout.

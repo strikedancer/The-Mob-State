@@ -44,6 +44,7 @@ Vehicle inventory, steal flow, sorting, condition, fuel, timed repairs, country 
 - Owned vehicle cards in Garage/Marina should visibly show **rarity tiers** (common→legendary) as a small badge/pill on the vehicle image (top-left), so players can quickly spot rare drops.
 - Country availability lists must be robust: normalize country ids to lowercase, and avoid accidental “empty catalog” failures. For boats, an empty/missing `availableInCountries` list is treated as global availability (unless a regional blacklist event blocks it).
 - World-cap rotation must remain correct: when a vehicle is sold or scrapped, one slot reopens for theft.
+- Vehicle sell payout is **deterministic**: country `marketValue` (else catalog `baseValue`) × condition × tuning multiplier. No random ±10% at checkout. The amount on the steal popup sell button, garage/marina card, and top-right sold toast must be the same number. Inventory payloads include `sellPrice` from that formula.
 - Scrap system: players can scrap owned vehicles to get salvage value (35% of base value, scaled by condition and **the garage upgrade level of the same track** as the vehicle type). Scrapping must not be instant; it must trigger immediately but show clear feedback. Scrap price must respect garage upgrade multipliers (up to 20% bonus at max level).
 - Scrapping in this flow also yields category parts for TuneShop upgrades (car/motorcycle parts).
 - Keep event-only police vehicles disabled outside explicit event windows.

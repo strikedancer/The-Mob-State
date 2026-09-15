@@ -289,7 +289,7 @@ class VehicleCard extends StatelessWidget {
                       style: theme.textTheme.bodySmall,
                     ),
                     Text(
-                      '€${vehicle.getMarketValue().toStringAsFixed(0)}',
+                      formatCurrency(vehicle.getMarketValue()),
                       style: theme.textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: Colors.green,
