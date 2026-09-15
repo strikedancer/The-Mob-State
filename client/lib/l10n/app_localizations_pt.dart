@@ -9408,6 +9408,30 @@ class AppLocalizationsPt extends AppLocalizations {
   String get bmHubSellCarriedItem => 'Vender item';
 
   @override
+  String get marketTeaserTitle => 'Mercado';
+
+  @override
+  String get marketTeaserOpen => 'Abrir';
+
+  @override
+  String get marketTeaserEmpty =>
+      'Liste ferramentas, drogas ou produtos comerciais para venda';
+
+  @override
+  String marketTeaserActiveCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count anúncios ativos',
+      one: '$count anúncio ativo',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get marketTeaserKindVehicle => 'Veículos';
+
+  @override
   String bmHubToolQtyDurability(int qty, int pct) {
     return 'Qtd $qty • $pct% estado';
   }

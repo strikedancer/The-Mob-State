@@ -8976,7 +8976,7 @@
   "bmHubQuantityEvent": "Aantal",
   "bmHubListEventItemTitle": "Event item verkopen",
   "bmHubNoEventItemsToSell": "Geen event items te verkopen",
-  "bmHubSellKindEvent": "Event items",
+  "bmHubSellKindEvent": "Evenementitems",
   "bmHubNoDrugsToSell": "Geen drugs om te verkopen",
   "bmHubNoCryptoToSell": "Geen crypto om te verkopen",
   "bmHubNoTradeGoodsToSell": "Geen handelswaren om te verkopen",
@@ -8990,6 +8990,18 @@
   "bmHubQuantityCrypto": "Hoeveelheid",
   "bmHubQuantityUnits": "Hoeveelheid",
   "bmHubSellCarriedItem": "Verkoop item",
+  "marketTeaserTitle": "Markt",
+  "marketTeaserOpen": "Openen",
+  "marketTeaserEmpty": "Zet gereedschap, drugs of handelswaren te koop",
+  "marketTeaserActiveCount": "{count, plural, one{{count} actieve advertentie} other{{count} actieve advertenties}}",
+  "@marketTeaserActiveCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "marketTeaserKindVehicle": "Voertuigen",
   "bmHubToolQtyDurability": "Aantal {qty} • {pct}% conditie",
   "@bmHubToolQtyDurability": {
     "placeholders": {

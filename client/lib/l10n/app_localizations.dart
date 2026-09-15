@@ -16436,6 +16436,36 @@ abstract class AppLocalizations {
   /// **'Sell item'**
   String get bmHubSellCarriedItem;
 
+  /// No description provided for @marketTeaserTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Market'**
+  String get marketTeaserTitle;
+
+  /// No description provided for @marketTeaserOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get marketTeaserOpen;
+
+  /// No description provided for @marketTeaserEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'List tools, drugs or trade goods for sale'**
+  String get marketTeaserEmpty;
+
+  /// No description provided for @marketTeaserActiveCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} active listing} other{{count} active listings}}'**
+  String marketTeaserActiveCount(int count);
+
+  /// No description provided for @marketTeaserKindVehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicles'**
+  String get marketTeaserKindVehicle;
+
   /// No description provided for @bmHubToolQtyDurability.
   ///
   /// In en, this message translates to:

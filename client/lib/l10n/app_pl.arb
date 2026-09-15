@@ -12363,5 +12363,17 @@
         "type": "String"
       }
     }
-  }
+  },
+  "marketTeaserTitle": "Rynek",
+  "marketTeaserOpen": "Otwarte",
+  "marketTeaserEmpty": "Wystaw narzędzia, leki lub towary handlowe na sprzedaż",
+  "marketTeaserActiveCount": "{count, plural, one{{count} aktywne ogłoszenie} other{{count} aktywne ogłoszenia}}",
+  "@marketTeaserActiveCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "marketTeaserKindVehicle": "Pojazdy"
 }

@@ -12363,5 +12363,17 @@
         "type": "String"
       }
     }
-  }
+  },
+  "marketTeaserTitle": "Mercata",
+  "marketTeaserOpen": "Aprire",
+  "marketTeaserEmpty": "Elenca strumenti, farmaci o beni commerciali in vendita",
+  "marketTeaserActiveCount": "{count, plural, one{{count} annuncio attivo} other{{count} annunci attivi}}",
+  "@marketTeaserActiveCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "marketTeaserKindVehicle": "Veicoli"
 }

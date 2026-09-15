@@ -5790,6 +5790,18 @@
   "bmHubQuantityCrypto": "Quantity",
   "bmHubQuantityUnits": "Quantity",
   "bmHubSellCarriedItem": "Sell item",
+  "marketTeaserTitle": "Market",
+  "marketTeaserOpen": "Open",
+  "marketTeaserEmpty": "List tools, drugs or trade goods for sale",
+  "marketTeaserActiveCount": "{count, plural, one{{count} active listing} other{{count} active listings}}",
+  "@marketTeaserActiveCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "marketTeaserKindVehicle": "Vehicles",
   "bmHubToolQtyDurability": "Qty {qty} • {pct}% condition",
   "@bmHubToolQtyDurability": {
     "placeholders": {

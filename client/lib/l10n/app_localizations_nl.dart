@@ -9359,7 +9359,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get bmHubNoEventItemsToSell => 'Geen event items te verkopen';
 
   @override
-  String get bmHubSellKindEvent => 'Event items';
+  String get bmHubSellKindEvent => 'Evenementitems';
 
   @override
   String get bmHubNoDrugsToSell => 'Geen drugs om te verkopen';
@@ -9399,6 +9399,30 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get bmHubSellCarriedItem => 'Verkoop item';
+
+  @override
+  String get marketTeaserTitle => 'Markt';
+
+  @override
+  String get marketTeaserOpen => 'Openen';
+
+  @override
+  String get marketTeaserEmpty =>
+      'Zet gereedschap, drugs of handelswaren te koop';
+
+  @override
+  String marketTeaserActiveCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count actieve advertenties',
+      one: '$count actieve advertentie',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get marketTeaserKindVehicle => 'Voertuigen';
 
   @override
   String bmHubToolQtyDurability(int qty, int pct) {

@@ -12363,5 +12363,17 @@
         "type": "String"
       }
     }
-  }
+  },
+  "marketTeaserTitle": "Mercado",
+  "marketTeaserOpen": "Abierta",
+  "marketTeaserEmpty": "Listar herramientas, drogas o bienes comerciales a la venta.",
+  "marketTeaserActiveCount": "{count, plural, one{{count} anuncio activo} other{{count} anuncios activos}}",
+  "@marketTeaserActiveCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "marketTeaserKindVehicle": "Vehículos"
 }
