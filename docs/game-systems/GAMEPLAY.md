@@ -656,7 +656,7 @@ Contraband-handelsgoederen met eigen caps en risico’s (server + UI):
 - **Optionele kaart-thumbnails**: `assets/images/trade_goods/cards/<good_id>.png` (externe mount `/images/…` op web) met **gradient+emoji fallback** als het bestand ontbreekt. Genereren: `backend/scripts/generate_trade_goods_card_images_leonardo.py` (zie `docs/module-protocols/trade.md` en PROTOCOL_MASTER).
 
 ### Trade Mechanics (samenvatting)
-- **Kopen/verkopen**: live prijzen en **rugzakvoorraad**; elektronica-verkoop hangt af van **conditie**. Winst = verkoopprijs − inkoopprijs (`purchasePrice` op inventory). Hoeveelheid typen of **Max** tikken (lang −/+ = 10). Extra kopen bij een bestaande stapel voegt bij de rugzak. Gewone reizen en hangar-vluchten kunnen rugzak-handelswaren confisqueren.
+- **Kopen/verkopen**: live prijzen en **rugzakvoorraad**; elektronica-verkoop hangt af van **conditie**. De straatprijs per goed per land blijft **één UTC-uur** gelijk, zodat de getoonde koopprijs de prijs is die je betaalt. Winst = verkoopprijs − inkoopprijs (`purchasePrice` op inventory). Hoeveelheid typen of **Max** tikken (lang −/+ = 10). Extra kopen bij een bestaande stapel voegt bij de rugzak. Gewone reizen en hangar-vluchten kunnen rugzak-handelswaren confisqueren.
 - **XP bij verkoop**: klein (max 30), gebaseerd op omzet + winst — misdaden blijven de hoofd-XP-bron.
 - **Smokkel van handelswaren** bewaart inkoopprijs en conditie in de zending en zet die bij claim terug (gewogen gemiddelde bij samenvoegen); anders leek winst gelijk aan het hele verkoopbedrag.
 - **XP bij smokkel-claim**: klein per zending (max 60 per claim-actie), afhankelijk van categorie/hoeveelheid.

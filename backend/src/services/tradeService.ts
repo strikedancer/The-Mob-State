@@ -5,6 +5,7 @@
  * Prices vary by country based on trade bonuses.
  */
 
+import { createHash } from 'crypto';
 import prisma from '../lib/prisma';
 import { worldEventService } from './worldEventService';
 import { playerService } from './playerService';
@@ -109,10 +110,24 @@ export function getTradeBonus(goodType: string, countryId: string): number {
   return (country as any).tradeBonuses?.[goodType] || 1.0;
 }
 
+/** Street quotes stay fixed this long so listed buy/sell matches checkout. */
+export const TRADE_PRICE_WINDOW_MS = 60 * 60 * 1000;
+
+function signedUnitInterval(seed: string): number {
+  const digest = createHash('sha256').update(seed).digest();
+  return (digest.readUInt32BE(0) / 0xffffffff) * 2 - 1;
+}
+
 /**
- * Calculate price for a good in a specific country with volatility
+ * Calculate price for a good in a specific country with volatility.
+ * Volatility is deterministic per good + country + UTC hour so GET /trade/prices
+ * and POST /trade/buy charge the same number (not a fresh Math.random() each call).
  */
-export function calculatePrice(goodType: string, countryId: string): number {
+export function calculatePrice(
+  goodType: string,
+  countryId: string,
+  at: Date = new Date(),
+): number {
   const good = getGoodById(goodType);
   if (!good) {
     return 0;
@@ -123,15 +138,13 @@ export function calculatePrice(goodType: string, countryId: string): number {
     return good.basePrice;
   }
 
-  // Apply country-specific trade bonus
   const tradeBonus = (country as any).tradeBonuses?.[goodType] || 1.0;
   let price = good.basePrice * tradeBonus;
 
-  // Apply price volatility (random fluctuation based on good type)
   if (good.priceVolatility && good.priceVolatility > 0) {
-    const volatilityRange = good.priceVolatility; // e.g., 0.25 = ±25%
-    const randomFactor = 1 + (Math.random() * 2 - 1) * volatilityRange;
-    price = price * randomFactor;
+    const windowKey = Math.floor(at.getTime() / TRADE_PRICE_WINDOW_MS);
+    const unit = signedUnitInterval(`${goodType}|${countryId}|${windowKey}`);
+    price = price * (1 + unit * good.priceVolatility);
   }
 
   return Math.floor(price);

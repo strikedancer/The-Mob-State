@@ -43,6 +43,7 @@ Speler-tegen-speler verkoop op de **Marktplaats**-tab: **voertuigen** (auto/moto
 - Open the module on mobile width, tablet width and desktop width.
 - Run through the main success path and at least one failure or locked-state path.
 - Verify the screen refreshes correctly after actions.
+- Verify the listed buy price on a contraband row matches the charged `pricePerUnit` for a buy in the same UTC hour (no fresh random roll).
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
 
