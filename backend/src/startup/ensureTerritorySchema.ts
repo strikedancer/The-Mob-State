@@ -66,7 +66,13 @@ const TERRITORY_CONFIG_DEFAULTS: Record<string, string> = {
   TERRITORY_TAG_CAPITAL_SEASON_WEIGHT: '1.5',
   TERRITORY_TAG_AIRHUB_TRAVEL_TIME_REDUCTION_PERCENT: '15',
   TERRITORY_HQ_REGION_CAP_PER_LEVEL: '0.2',
-  TERRITORY_HQ_REGION_CAP_BONUS_CAP: '3',
+  TERRITORY_HQ_REGION_LEVELS_PER_SLOT: '3',
+  TERRITORY_HQ_REGION_CAP_BONUS_CAP: '5',
+  TERRITORY_MEMBER_REGION_BASE: '5',
+  TERRITORY_MEMBER_REGION_PER: '5',
+  TERRITORY_MEMBER_REGION_BONUS_CAP: '5',
+  TERRITORY_REGION_HARD_CAP: '10',
+  TERRITORY_GARRISON_EXTRA_AT_REGION_CAP: '8',
   TERRITORY_HQ_CONTEST_CAP_PER_LEVEL: '0.1',
   TERRITORY_HQ_CONTEST_CAP_BONUS_CAP: '2',
   TERRITORY_HQ_ACTION_POINT_BONUS_PER_LEVEL: '0.12',
@@ -200,13 +206,26 @@ async function seedRuntimeConfigDefaults(): Promise<void> {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
   `);
 
+  let insertedLevelsPerSlot = false;
   for (const [key, value] of Object.entries(TERRITORY_CONFIG_DEFAULTS)) {
-    await prisma.$executeRawUnsafe(
+    const affected = await prisma.$executeRawUnsafe(
       `INSERT INTO runtime_config (configKey, configValue)
        VALUES (?, ?)
        ON DUPLICATE KEY UPDATE configKey = configKey`,
       key,
       value,
+    );
+    if (key === 'TERRITORY_HQ_REGION_LEVELS_PER_SLOT' && Number(affected) === 1) {
+      insertedLevelsPerSlot = true;
+    }
+  }
+
+  // Old default bonus cap was +3 (HQ 15+ → 8 slots). Integer-step HQ slots need +5 to reach the hard cap of 10.
+  if (insertedLevelsPerSlot) {
+    await prisma.$executeRawUnsafe(
+      `UPDATE runtime_config
+       SET configValue = '5'
+       WHERE configKey = 'TERRITORY_HQ_REGION_CAP_BONUS_CAP' AND configValue = '3'`,
     );
   }
 

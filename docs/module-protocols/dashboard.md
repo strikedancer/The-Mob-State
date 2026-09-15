@@ -109,6 +109,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Elke modulewijziging die nieuwe cooldowns, payouts, risico-indicatoren, notificatie-events of operationele loops toevoegt/verandert, moet in dezelfde PR ook het dashboardcontract (`/player/dashboard-stats`), dashboardweergave en `Help & Uitleg` controleren en indien nodig bijwerken.
 - Warehouse arrest-search is geen extra dashboard-meter: het hangt aan bestaande arrestatie-events. Help & Uitleg (Eigendommen + Inventaris) moet het risico noemen.
 - Nightclub player-supply is geen extra dashboard-meter: het hangt aan Inventaris (Aan club) + Nightclub Ops Lab + inbox naar de clubbaas. Help & Uitleg (Drugs + Nightclub) moet de flow noemen.
+- Territory region-cap (HQ + leden, hard cap 10) is geen extra Home-meter: slots en de volgende drempel staan op Territorium; Help (Territorium + Crew) noemt dezelfde regel.
 - "Done" is pas geldig als de nieuwe module-impact zichtbaar of expliciet gemotiveerd afwezig is in dashboard-economy, dashboard-operaties en dashboard-notificaties.
 
 ## When To Update This File

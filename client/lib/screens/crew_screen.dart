@@ -7032,6 +7032,13 @@ class _CrewScreenState extends State<CrewScreen>
                     style: const TextStyle(color: Colors.grey),
                   ),
                 ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Text(
+                  l10n.territoryHqUpgradeHint,
+                  style: const TextStyle(color: Colors.grey, fontSize: 12),
+                ),
+              ),
             ],
           );
         },

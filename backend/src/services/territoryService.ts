@@ -7,6 +7,11 @@ import * as territoryProjectService from './territoryProjectService';
 import * as territoryMetaService from './territoryMetaService';
 import * as territoryCrewStatsService from './territoryCrewStatsService';
 import { ensureCurrentTerritorySeason } from '../startup/ensureTerritorySchema';
+import {
+  canStartNewRegionContest,
+  computeTerritoryRegionCaps,
+  garrisonMaxActiveForRegionCap,
+} from './territoryRegionCaps';
 
 // ---------------------------------------------------------------------------
 // Territory Service
@@ -65,7 +70,13 @@ async function getTerritoryConfig() {
     'TERRITORY_TAG_CAPITAL_SEASON_WEIGHT',
     'TERRITORY_TAG_AIRHUB_TRAVEL_TIME_REDUCTION_PERCENT',
     'TERRITORY_HQ_REGION_CAP_PER_LEVEL',
+    'TERRITORY_HQ_REGION_LEVELS_PER_SLOT',
     'TERRITORY_HQ_REGION_CAP_BONUS_CAP',
+    'TERRITORY_MEMBER_REGION_BASE',
+    'TERRITORY_MEMBER_REGION_PER',
+    'TERRITORY_MEMBER_REGION_BONUS_CAP',
+    'TERRITORY_REGION_HARD_CAP',
+    'TERRITORY_GARRISON_EXTRA_AT_REGION_CAP',
     'TERRITORY_HQ_CONTEST_CAP_PER_LEVEL',
     'TERRITORY_HQ_CONTEST_CAP_BONUS_CAP',
     'TERRITORY_HQ_ACTION_POINT_BONUS_PER_LEVEL',
@@ -157,7 +168,13 @@ async function getTerritoryConfig() {
     tagCapitalSeasonWeight: Number(cfg['TERRITORY_TAG_CAPITAL_SEASON_WEIGHT'] ?? 1.5),
     tagAirhubTravelTimeReductionPercent: Number(cfg['TERRITORY_TAG_AIRHUB_TRAVEL_TIME_REDUCTION_PERCENT'] ?? 15),
     hqRegionCapPerLevel: Number(cfg['TERRITORY_HQ_REGION_CAP_PER_LEVEL'] ?? 0.2),
-    hqRegionCapBonusCap: Number(cfg['TERRITORY_HQ_REGION_CAP_BONUS_CAP'] ?? 3),
+    hqRegionLevelsPerSlot: Number(cfg['TERRITORY_HQ_REGION_LEVELS_PER_SLOT'] ?? 3),
+    hqRegionCapBonusCap: Number(cfg['TERRITORY_HQ_REGION_CAP_BONUS_CAP'] ?? 5),
+    memberRegionBase: Number(cfg['TERRITORY_MEMBER_REGION_BASE'] ?? 5),
+    memberRegionPer: Number(cfg['TERRITORY_MEMBER_REGION_PER'] ?? 5),
+    memberRegionBonusCap: Number(cfg['TERRITORY_MEMBER_REGION_BONUS_CAP'] ?? 5),
+    regionHardCap: Number(cfg['TERRITORY_REGION_HARD_CAP'] ?? 10),
+    garrisonExtraAtRegionCap: Number(cfg['TERRITORY_GARRISON_EXTRA_AT_REGION_CAP'] ?? 8),
     hqContestCapPerLevel: Number(cfg['TERRITORY_HQ_CONTEST_CAP_PER_LEVEL'] ?? 0.1),
     hqContestCapBonusCap: Number(cfg['TERRITORY_HQ_CONTEST_CAP_BONUS_CAP'] ?? 2),
     hqActionPointBonusPerLevel: Number(cfg['TERRITORY_HQ_ACTION_POINT_BONUS_PER_LEVEL'] ?? 0.12),
@@ -217,6 +234,12 @@ export type ViewerTerritoryCaps = {
   effectiveMaxContests: number;
   hqRegionBonus: number;
   hqContestBonus: number;
+  hqSlots: number;
+  memberSlots: number;
+  memberCount: number;
+  nextHqLevel: number | null;
+  nextMemberCount: number | null;
+  regionHardCap: number;
   projectSafehouseMinHqLevel: number;
 };
 
@@ -255,17 +278,12 @@ async function buildViewerTerritoryCaps(
   progression?: CrewTerritoryProgression | null,
 ): Promise<ViewerTerritoryCaps> {
   const crewProgression = progression ?? await getCrewTerritoryProgression(crewId);
-  const hqRegionBonus = getScaledBonus(
-    crewProgression.hqGlobalLevel,
-    cfg.hqRegionCapPerLevel,
-    cfg.hqRegionCapBonusCap,
-  );
   const hqContestBonus = getScaledBonus(
     crewProgression.hqGlobalLevel,
     cfg.hqContestCapPerLevel,
     cfg.hqContestCapBonusCap,
   );
-  const [ownedCount, contestCount] = await Promise.all([
+  const [ownedCount, contestCount, memberCountRow] = await Promise.all([
     prisma.$queryRawUnsafe<Array<{ cnt: number }>>(
       `SELECT COUNT(*) AS cnt FROM territory_control WHERE ownerCrewId = ?`,
       crewId,
@@ -275,21 +293,40 @@ async function buildViewerTerritoryCaps(
        WHERE attackerCrewId = ? AND status NOT IN ('resolved', 'cancelled')`,
       crewId,
     ),
+    prisma.crewMember.count({ where: { crewId } }),
   ]);
+  const regionCaps = computeTerritoryRegionCaps({
+    hqGlobalLevel: crewProgression.hqGlobalLevel,
+    memberCount: memberCountRow,
+    baseMaxRegions: cfg.maxRegionsPerCrew,
+    hqLevelsPerSlot: cfg.hqRegionLevelsPerSlot,
+    hqRegionCapPerLevel: cfg.hqRegionCapPerLevel,
+    hqRegionCapBonusCap: cfg.hqRegionCapBonusCap,
+    memberRegionBase: cfg.memberRegionBase,
+    memberRegionPer: cfg.memberRegionPer,
+    memberRegionBonusCap: cfg.memberRegionBonusCap,
+    regionHardCap: cfg.regionHardCap,
+  });
 
   return {
     hqGlobalLevel: crewProgression.hqGlobalLevel,
     ownedRegions: toNumeric(ownedCount[0]?.cnt ?? 0),
     activeContests: toNumeric(contestCount[0]?.cnt ?? 0),
     baseMaxRegions: cfg.maxRegionsPerCrew,
-    effectiveMaxRegions: Math.max(cfg.maxRegionsPerCrew, cfg.maxRegionsPerCrew + hqRegionBonus),
+    effectiveMaxRegions: regionCaps.effectiveMaxRegions,
     baseMaxContests: cfg.maxConcurrentContestsPerCrew,
     effectiveMaxContests: Math.max(
       cfg.maxConcurrentContestsPerCrew,
       cfg.maxConcurrentContestsPerCrew + hqContestBonus,
     ),
-    hqRegionBonus,
+    hqRegionBonus: regionCaps.hqRegionBonus,
     hqContestBonus,
+    hqSlots: regionCaps.hqSlots,
+    memberSlots: regionCaps.memberSlots,
+    memberCount: memberCountRow,
+    nextHqLevel: regionCaps.nextHqLevel,
+    nextMemberCount: regionCaps.nextMemberCount,
+    regionHardCap: Math.max(cfg.maxRegionsPerCrew, Math.floor(cfg.regionHardCap)),
     projectSafehouseMinHqLevel: Math.max(0, Math.floor(cfg.projectSafehouseMinHqLevel)),
   };
 }
@@ -750,13 +787,20 @@ async function getActiveGarrisonEffects(
   return effectMap;
 }
 
-function garrisonOfferFromConfig(cfg: Awaited<ReturnType<typeof getTerritoryConfig>>) {
+function garrisonOfferFromConfig(
+  cfg: Awaited<ReturnType<typeof getTerritoryConfig>>,
+  effectiveMaxRegions?: number,
+) {
   return {
     cashCost: Math.max(0, Math.floor(cfg.garrisonCashCost)),
     hours: Math.max(1, Math.floor(cfg.garrisonHours)),
     defenseBonusPoints: Math.max(0, Math.floor(cfg.garrisonDefenseBonusPoints)),
     captureThresholdBonus: Math.max(0, Math.floor(cfg.garrisonCaptureThresholdBonus)),
-    maxActivePerCrew: Math.max(1, Math.floor(cfg.garrisonMaxActivePerCrew)),
+    maxActivePerCrew: garrisonMaxActiveForRegionCap(
+      cfg.garrisonMaxActivePerCrew,
+      cfg.garrisonExtraAtRegionCap,
+      effectiveMaxRegions ?? 0,
+    ),
     minHqLevel: Math.max(0, Math.floor(cfg.garrisonMinHqLevel)),
     captureThresholdCap: Math.min(95, Math.max(60, Math.floor(cfg.garrisonCaptureThresholdCap))),
   };
@@ -1453,13 +1497,13 @@ export async function getMapData(
   const cfg = await getTerritoryConfig();
   const now = new Date();
   const projectConfig = getProjectConfig(cfg);
-  const garrisonOffer = garrisonOfferFromConfig(cfg);
   const viewerCrewProgression = viewer?.viewerCrewId
     ? await getCrewTerritoryProgression(viewer.viewerCrewId)
     : null;
   const viewerCaps = viewer?.viewerCrewId
     ? await buildViewerTerritoryCaps(viewer.viewerCrewId, cfg, viewerCrewProgression)
     : null;
+  const garrisonOffer = garrisonOfferFromConfig(cfg, viewerCaps?.effectiveMaxRegions);
 
   const [countries, regions, controls, contests] = await Promise.all([
     prisma.$queryRawUnsafe<TerritoryRow[]>(
@@ -2257,12 +2301,13 @@ export async function startContest(
     throw new Error('CREW_CONTEST_LIMIT_REACHED');
   }
 
-  // Validate max regions per crew
+  // New attacks only: owning at/over the dual-key cap blocks startContest.
+  // Defense actions in doAction never check this cap, so over-cap crews can still hold.
   const ownedCount = await prisma.$queryRawUnsafe<Array<{ cnt: number }>>(
     `SELECT COUNT(*) AS cnt FROM territory_control WHERE ownerCrewId = ?`,
     crewId,
   );
-  if (Number(ownedCount[0]?.cnt ?? 0) >= effectiveMaxRegionsPerCrew) {
+  if (!canStartNewRegionContest(Number(ownedCount[0]?.cnt ?? 0), effectiveMaxRegionsPerCrew)) {
     throw new Error('REGIONS_CAP_REACHED');
   }
 
@@ -2356,6 +2401,7 @@ export async function doAction(
   const crewProgression = await getCrewTerritoryProgression(crewId);
   const projectConfig = getProjectConfig(cfg);
 
+  // Defense (and every other contest action) stays available when a crew is over the region cap.
   const validActions = ['patrol', 'intel_scan', 'sabotage', 'supply_run', 'raid', 'defense'];
   if (!validActions.includes(actionType)) throw new Error('INVALID_ACTION_TYPE');
   const requiredHqLevel = Math.max(
@@ -2550,8 +2596,9 @@ export async function deployGarrison(
   void playerId;
   const cfg = await getTerritoryConfig();
   if (!cfg.enabled) throw new Error('TERRITORY_DISABLED');
-  const offer = garrisonOfferFromConfig(cfg);
   const progression = await getCrewTerritoryProgression(crewId);
+  const caps = await buildViewerTerritoryCaps(crewId, cfg, progression);
+  const offer = garrisonOfferFromConfig(cfg, caps.effectiveMaxRegions);
   if (progression.hqGlobalLevel < offer.minHqLevel) {
     throw new Error('GARRISON_HQ_LEVEL_REQUIRED');
   }

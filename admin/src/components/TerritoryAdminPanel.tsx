@@ -9,8 +9,14 @@ type Props = {
 }
 
 type TerritoryProgressionTuningForm = {
-  hqRegionCapPerLevel: string
+  hqRegionLevelsPerSlot: string
   hqRegionCapBonusCap: string
+  memberRegionBase: string
+  memberRegionPer: string
+  memberRegionBonusCap: string
+  regionHardCap: string
+  garrisonExtraAtRegionCap: string
+  hqRegionCapPerLevel: string
   hqContestCapPerLevel: string
   hqContestCapBonusCap: string
   hqActionPointBonusPerLevel: string
@@ -63,8 +69,14 @@ export function TerritoryAdminPanel({ locale }: Props) {
   const [seasonStartsAt, setSeasonStartsAt] = useState('')
   const [seasonEndsAt, setSeasonEndsAt] = useState('')
   const [progressionTuning, setProgressionTuning] = useState<TerritoryProgressionTuningForm>({
+    hqRegionLevelsPerSlot: '3',
+    hqRegionCapBonusCap: '5',
+    memberRegionBase: '5',
+    memberRegionPer: '5',
+    memberRegionBonusCap: '5',
+    regionHardCap: '10',
+    garrisonExtraAtRegionCap: '8',
     hqRegionCapPerLevel: '0.2',
-    hqRegionCapBonusCap: '3',
     hqContestCapPerLevel: '0.1',
     hqContestCapBonusCap: '2',
     hqActionPointBonusPerLevel: '0.12',
@@ -91,8 +103,14 @@ export function TerritoryAdminPanel({ locale }: Props) {
       const nextOverview = await adminService.getTerritoryOverview()
       setOverview(nextOverview)
       setProgressionTuning({
+        hqRegionLevelsPerSlot: String(nextOverview.config.hqRegionLevelsPerSlot ?? 3),
+        hqRegionCapBonusCap: String(nextOverview.config.hqRegionCapBonusCap ?? 5),
+        memberRegionBase: String(nextOverview.config.memberRegionBase ?? 5),
+        memberRegionPer: String(nextOverview.config.memberRegionPer ?? 5),
+        memberRegionBonusCap: String(nextOverview.config.memberRegionBonusCap ?? 5),
+        regionHardCap: String(nextOverview.config.regionHardCap ?? 10),
+        garrisonExtraAtRegionCap: String(nextOverview.config.garrisonExtraAtRegionCap ?? 8),
         hqRegionCapPerLevel: String(nextOverview.config.hqRegionCapPerLevel ?? 0.2),
-        hqRegionCapBonusCap: String(nextOverview.config.hqRegionCapBonusCap ?? 3),
         hqContestCapPerLevel: String(nextOverview.config.hqContestCapPerLevel ?? 0.1),
         hqContestCapBonusCap: String(nextOverview.config.hqContestCapBonusCap ?? 2),
         hqActionPointBonusPerLevel: String(nextOverview.config.hqActionPointBonusPerLevel ?? 0.12),
@@ -261,8 +279,14 @@ export function TerritoryAdminPanel({ locale }: Props) {
     }
 
     const payload: Record<string, string> = {
-      TERRITORY_HQ_REGION_CAP_PER_LEVEL: progressionTuning.hqRegionCapPerLevel,
+      TERRITORY_HQ_REGION_LEVELS_PER_SLOT: progressionTuning.hqRegionLevelsPerSlot,
       TERRITORY_HQ_REGION_CAP_BONUS_CAP: progressionTuning.hqRegionCapBonusCap,
+      TERRITORY_MEMBER_REGION_BASE: progressionTuning.memberRegionBase,
+      TERRITORY_MEMBER_REGION_PER: progressionTuning.memberRegionPer,
+      TERRITORY_MEMBER_REGION_BONUS_CAP: progressionTuning.memberRegionBonusCap,
+      TERRITORY_REGION_HARD_CAP: progressionTuning.regionHardCap,
+      TERRITORY_GARRISON_EXTRA_AT_REGION_CAP: progressionTuning.garrisonExtraAtRegionCap,
+      TERRITORY_HQ_REGION_CAP_PER_LEVEL: progressionTuning.hqRegionCapPerLevel,
       TERRITORY_HQ_CONTEST_CAP_PER_LEVEL: progressionTuning.hqContestCapPerLevel,
       TERRITORY_HQ_CONTEST_CAP_BONUS_CAP: progressionTuning.hqContestCapBonusCap,
       TERRITORY_HQ_ACTION_POINT_BONUS_PER_LEVEL: progressionTuning.hqActionPointBonusPerLevel,
@@ -324,14 +348,20 @@ export function TerritoryAdminPanel({ locale }: Props) {
           <div className="small text-muted mb-3">
             {tr(
               locale,
-              'Koppel Territory-groei aan HQ, crew missielevel en bijgebouwen. Alle waarden zijn runtime en direct live.',
-              'Couple Territory growth to HQ, crew mission level and side buildings. All values are runtime and apply live.',
+              'Gebied-slots = laagste van HQ-slots, leden-slots en harde cap. Elke N HQ-niveaus +1, elke N extra leden +1. Contest-frontage blijft alleen HQ. Alle waarden zijn runtime en direct live.',
+              'Region slots = lowest of HQ slots, member slots and the hard cap. +1 every N HQ levels, +1 every N extra members. Contest frontage stays HQ-only. All values are runtime and apply live.',
             )}
           </div>
           <div className="row g-3">
             {[
-              ['hqRegionCapPerLevel', 'HQ region cap +/level', 'HQ region cap +/level'],
-              ['hqRegionCapBonusCap', 'HQ region cap bonus max', 'HQ region cap bonus cap'],
+              ['hqRegionLevelsPerSlot', 'HQ-niveaus per extra gebied', 'HQ levels per extra region'],
+              ['hqRegionCapBonusCap', 'HQ gebied-bonus max', 'HQ region bonus cap'],
+              ['memberRegionBase', 'Leden-slots basis', 'Member region base'],
+              ['memberRegionPer', 'Extra leden per gebied', 'Extra members per region'],
+              ['memberRegionBonusCap', 'Leden gebied-bonus max', 'Member region bonus cap'],
+              ['regionHardCap', 'Harde wereldwijde cap', 'Worldwide hard cap'],
+              ['garrisonExtraAtRegionCap', 'Extra garnizoen vanaf slots', 'Extra garrison from slots'],
+              ['hqRegionCapPerLevel', 'HQ gebied fallback +/level', 'HQ region fallback +/level'],
               ['hqContestCapPerLevel', 'HQ contest cap +/level', 'HQ contest cap +/level'],
               ['hqContestCapBonusCap', 'HQ contest cap bonus max', 'HQ contest cap bonus cap'],
               ['hqActionPointBonusPerLevel', 'HQ actiepunten +/level', 'HQ action points +/level'],

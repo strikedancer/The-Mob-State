@@ -221,7 +221,7 @@
     "summaryNl": "Richt een crew op of sluit je aan bij bestaande spelers om samen heists te plegen, opslag te delen en sterker te staan.",
     "summaryEn": "Start a crew or join existing players to pull off heists together, share storage and become stronger as a unit.",
     "howNl": [
-      "Crew aanmaken kost €10.000. De Crew HQ bepaalt hoeveel leden je crew aankan en groeit door tot maximaal 150 leden. De leader kan leden uitnodigen, kicken en heists starten.",
+      "Crew aanmaken kost €10.000. De Crew HQ bepaalt hoeveel leden je crew aankan en groeit door tot maximaal 150 leden. De leader kan leden uitnodigen, kicken en heists starten. Territory-slots: elke 3 HQ-niveaus +1 gebied, elke 5 extra leden +1, het laagste telt, nooit meer dan 10.",
       "Crew-voordelen: toegang tot grote heists, gedeelde opslag, teamwork-bonus (+10% slagingskans per extra lid, max +30%) en groepschat.",
       "Nieuwe crews starten direct met Crew HQ level 1 en alle opslaggebouwen op level 1, inclusief cash opslag, zodat crew bank en gedeelde opslag meteen bruikbaar zijn.",
       "Geldopslag level 1 houdt €1.000.000. De volgende upgrade van de geldopslag kost altijd minder dan wat de kluis nu aankan, zodat je die uit de crewbank kunt betalen.",
@@ -252,7 +252,7 @@
       "Crew HQ-progressie: hoe langer en actiever de crew, hoe meer gezamenlijke upgrades en buffs vrijkomen."
     ],
     "howEn": [
-      "Creating a crew costs €10.000. The Crew HQ determines how many members your crew can hold and scales up to 150 members. The leader can invite, kick and start heists.",
+      "Creating a crew costs €10.000. The Crew HQ determines how many members your crew can hold and scales up to 150 members. The leader can invite, kick and start heists. Territory slots: +1 region every 3 HQ levels, +1 every 5 extra members, the lowest counts, never more than 10.",
       "Crew benefits: access to large heists, shared storage, teamwork bonus (+10% success per extra member, max +30%) and group chat.",
       "New crews now start with Crew HQ level 1 and all storage buildings at level 1, including cash storage, so the crew bank and shared storage work immediately.",
       "Cash storage level 1 holds €1.000.000. The next cash-storage upgrade always costs less than that vault, so you can pay it from the crew bank instead of getting stuck at the cap.",
@@ -1421,6 +1421,7 @@
       "Timers in de regio-modal (jouw cooldown, wanneer je weer mag aanvallen, contest-fasen en garnizoen) lopen live af. Als de tijd op is, ververst het scherm de knoppen vanzelf; je hoeft de pagina niet handmatig te herladen.",
       "Op mobiel kun je nu met twee vingers in- en uitzoomen en de ingezoomde kaart direct verslepen, zodat kleine gebieden makkelijker aantikbaar worden zonder extra knoppen op de kaart.",
       "Territorium is crew-gebonden: je moet eerst een crew maken of joinen voordat de aanvalsknop beschikbaar wordt voor neutrale of vijandige gebieden.",
+      "Hoeveel gebieden je wereldwijd mag houden hangt af van HQ én echte leden: elke 3 HQ-niveaus +1 slot, elke 5 extra leden +1 slot, het laagste telt, nooit meer dan 10. Alleen HQ kopen of alleen leden werven is niet genoeg. Zit je aan de cap, dan kun je geen nieuwe contest starten tot je weer onder het maximum zit; verdedigen blijft mogelijk. Gebieden verdwijnen niet als iemand de crew verlaat.",
       "Elke regio kan door maximaal één crew tegelijk worden gecontroleerd. Eigenaarschap geeft passief inkomen per uur, maar Territory stopt met bijschrijven zodra de crew-bank de cashopslag-cap heeft bereikt.",
       "Start een contest in een vrije regio door de contest-knop te gebruiken. De contest doorloopt voorbereiding (prep-tijd), actief (acties), en lockdown (afronding) automatisch.",
       "Zodra de voorbereiding klaar is, krijgen aanvallende én verdedigende crewleden een push- en inboxbericht zodat je weet dat er nu aangevallen of verdedigd kan worden. Die melding komt via de minuut-cron, ook als niemand het Territory-scherm open heeft.",
@@ -1447,6 +1448,7 @@
       "Timers in the region modal (your cooldown, when you can attack again, contest phases, and garrison) count down live. When a timer hits zero, the screen refreshes the buttons by itself; you do not need to reload the page by hand.",
       "On mobile you can now pinch in and out with two fingers and drag the zoomed map directly, making smaller regions easier to tap without extra buttons on the map.",
       "Territory is crew-based: you must create or join a crew before the attack button becomes available for neutral or hostile regions.",
+      "How many regions you may hold worldwide depends on HQ and real members: +1 slot every 3 HQ levels, +1 slot every 5 extra members, the lowest counts, never more than 10. HQ alone or members alone is not enough. At the cap you cannot start a new contest until you are under the maximum again; defense stays possible. Regions are not dropped if someone leaves the crew.",
       "Each region can be controlled by at most one crew at a time. Ownership grants passive income per hour, but Territory stops paying into the crew bank once the cash storage cap has been reached.",
       "Start a contest in an unclaimed region using the contest button. The contest automatically progresses through preparation (prep time), active (actions), and lockdown (resolution).",
       "When preparation ends, attacking and defending crew members receive a push notification and inbox message so you know you can attack or defend. That alert is sent by the minute cron even if nobody has the Territory screen open.",

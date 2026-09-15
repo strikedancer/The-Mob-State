@@ -54,6 +54,7 @@
   - Territory bonus-label UX-fix: de regio-modal maakt nu expliciet dat `Actiebonussen` contestpunten per actie verhogen (niet de €-uitbetaling), en groepeert bonussen per actietype zodat dubbele bronlabels niet meer verwarrend als één lange regel verschijnen
   - Territory bonus-formule UX-fix: de regio-modal toont nu per actietype expliciet `basispunten + bonuspunten = totale contestpunten`, inclusief bronverdeling, zodat spelers direct zien waarom payout-bedragen gelijk blijven.
   - Territory progression-koppeling: contest-caps schalen nu mee met HQ global level (runtime-tunable), en actiebonussen kunnen nu naast regio/war pressure ook uit crew mission level en crew bijgebouwen komen (weapon/ammo/car/boat/drug storage), zodat crew progression en map-control elkaar logisch versterken
+  - Territory region-cap dual-key: `effectiveMaxRegions = min(hqSlots, memberSlots, hardCap)`. HQ-slots = `5 + min(5, floor(hqGlobalLevel / 3))`, leden-slots = `5 + min(5, floor(max(0, members - 5) / 5))`, harde wereldwijde cap 10. Nieuwe contests blokkeren bij over-cap; verdedigen blijft mogelijk; geen automatisch gebiedsverlies bij leave. Contest-frontage blijft HQ-only. Extra garnizoen vanaf 8 slots. `viewerCaps` toont HQ/leden-slots en de volgende drempel.
   - Territory HQ action-gates: geavanceerde contest-acties kunnen nu per actietype een minimaal HQ global level vereisen (runtime keys), met server-side enforcement en expliciete NL/EN lock-tekst in de regio-modal.
   - Territory admin telemetry: admin-overzicht bevat nu 24u economy/progression metrics voor reward per minuut, contest winrate per HQ-band, region growth per crew-size en bonus usage per HQ/building tier.
   - Territory pacing update: `TERRITORY_ACTION_DAILY_CAP` ondersteunt nu expliciet `0` als "geen harde dagcap", zodat actieve crews oneindig kunnen doorspelen binnen cooldown/anti-farm guardrails
@@ -199,6 +200,13 @@ Verplichte keys:
 - `TERRITORY_DECAY_PER_HOUR`
 - `TERRITORY_DECAY_GRACE_MINUTES`
 - `TERRITORY_MAX_REGIONS_PER_CREW`
+- `TERRITORY_HQ_REGION_LEVELS_PER_SLOT` (default `3`; integer HQ-stappen, vervangt de trage `0.2`-vermenigvuldiger)
+- `TERRITORY_HQ_REGION_CAP_BONUS_CAP` (default `5`)
+- `TERRITORY_MEMBER_REGION_BASE` (default `5`)
+- `TERRITORY_MEMBER_REGION_PER` (default `5`)
+- `TERRITORY_MEMBER_REGION_BONUS_CAP` (default `5`)
+- `TERRITORY_REGION_HARD_CAP` (default `10`, wereldwijd)
+- `TERRITORY_GARRISON_EXTRA_AT_REGION_CAP` (default `8`; +1 actief garnizoen)
 - `TERRITORY_MAX_CONCURRENT_CONTESTS_PER_CREW`
 - `TERRITORY_PRIME_TIME_START_HOUR_UTC`
 - `TERRITORY_PRIME_TIME_END_HOUR_UTC`
@@ -211,8 +219,7 @@ Verplichte keys:
 - `TERRITORY_PASSIVE_INCOME_TIER_2_CASH`
 - `TERRITORY_PASSIVE_INCOME_TIER_3_CASH`
 - `TERRITORY_PASSIVE_INCOME_TIER_4_CASH`
-- `TERRITORY_HQ_REGION_CAP_PER_LEVEL`
-- `TERRITORY_HQ_REGION_CAP_BONUS_CAP`
+- `TERRITORY_HQ_REGION_CAP_PER_LEVEL` (legacy fallback als `TERRITORY_HQ_REGION_LEVELS_PER_SLOT` `0` is)
 - `TERRITORY_HQ_CONTEST_CAP_PER_LEVEL`
 - `TERRITORY_HQ_CONTEST_CAP_BONUS_CAP`
 - `TERRITORY_HQ_ACTION_POINT_BONUS_PER_LEVEL`
@@ -327,14 +334,15 @@ Admin moderation:
 10. Multi-country browse: alle enabled landen renderen interactieve regio's; action endpoints blokkeren correct buiten de huidige Travel-locatie.
 11. HQ-locked actions tonen expliciet `vereist HQ level X` in NL/EN en server-side rejects blijven consistent met dezelfde locklogica.
 12. Admin telemetry toont valide 24u waarden voor reward/min, winrate per HQ-band, growth per crew-size en bonus usage per HQ/building tier.
-13. Map toont `viewerCaps` als chips (owned/effective regions + contests; near/at-cap kleuren) voor de eigen crew.
+13. Map toont `viewerCaps` als chips (owned/effective regions + contests; near/at-cap kleuren) plus HQ/leden-slots en de volgende drempel voor de eigen crew.
 14. Owned regio: start/contribute safehouse-project (HQ-gated); actief project verhoogt getoonde en uitgekeerde passieve income; building/active/damaged tonen progress- of HP-balken.
 15. Contest sabotage verlaagt project-HP / kan vernietigen; defender supply_run herstelt of bouwt voortgang.
 16. Admin (of auto op `endsAt`) close season deelt awards exact-once en toont payout-samenvatting.
 17. Region events roteren via runtime_config en zijn zichtbaar op map/overview/dashboard/public home.
 18. Drama-widget toont hot contests / recente captures / rising crews / war theaters zonder PII.
 19. Prep-ready: na `preparing` → `active` ontvangen attacker- én defender-crew push + inbox (`territory_contest_active`), ook zonder open Territory-scherm (cron).
-20. Owned regio: deploy garnizoen uit crew-bank; kaart toont `G`; tweede regio mag tot `TERRITORY_GARRISON_MAX_ACTIVE_PER_CREW`; derde wordt geblokkeerd; contest blijft startbaar; capture-drempel stijgt alleen zolang het effect loopt.
+20. Owned regio: deploy garnizoen uit crew-bank; kaart toont `G`; tweede regio mag tot `TERRITORY_GARRISON_MAX_ACTIVE_PER_CREW`; vanaf `effectiveMaxRegions >= TERRITORY_GARRISON_EXTRA_AT_REGION_CAP` (default 8) is een extra garnizoen toegestaan; contest blijft startbaar; capture-drempel stijgt alleen zolang het effect loopt.
+22. Region-cap: starter-crew (HQ 1, 5 leden) ziet 5; extra slot vereist zowel HQ-stap als leden-stap; `POST /territory/contest/start` weigert `REGIONS_CAP_REACHED` bij owned >= effective; `doAction` defense blijft toegestaan. Geen cap per land.
 21. Omsloten binnengebied: als alle buren van een owned regio van dezelfde crew zijn (min. 3 buren), verdwijnt de aanvalsknop en weigert `POST /territory/contest/start` met `territory.region_encircled`; een open buur maakt het weer aanvalbaar.
 
 ## When To Update This File

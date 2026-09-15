@@ -340,7 +340,13 @@ export interface AdminTerritoryOverview {
     maxConcurrentContestsPerCrew: number;
     passiveIncomeIntervalMinutes: number;
     hqRegionCapPerLevel?: number;
+    hqRegionLevelsPerSlot?: number;
     hqRegionCapBonusCap?: number;
+    memberRegionBase?: number;
+    memberRegionPer?: number;
+    memberRegionBonusCap?: number;
+    regionHardCap?: number;
+    garrisonExtraAtRegionCap?: number;
     hqContestCapPerLevel?: number;
     hqContestCapBonusCap?: number;
     hqActionPointBonusPerLevel?: number;

@@ -1983,31 +1983,97 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     final active = (viewerCaps['activeContests'] as num?)?.toInt() ?? 0;
     final maxContests =
         (viewerCaps['effectiveMaxContests'] as num?)?.toInt() ?? 0;
+    final hqSlots = (viewerCaps['hqSlots'] as num?)?.toInt() ?? maxRegions;
+    final memberSlots =
+        (viewerCaps['memberSlots'] as num?)?.toInt() ?? maxRegions;
+    final memberCount = (viewerCaps['memberCount'] as num?)?.toInt() ?? 0;
+    final nextHqLevel = (viewerCaps['nextHqLevel'] as num?)?.toInt();
+    final nextMemberCount = (viewerCaps['nextMemberCount'] as num?)?.toInt();
+    final hardCap = (viewerCaps['regionHardCap'] as num?)?.toInt() ?? 10;
+    final breakdown = _territoryCapsBreakdown(
+      hqSlots: hqSlots,
+      memberSlots: memberSlots,
+      memberCount: memberCount,
+      nextHqLevel: nextHqLevel,
+      nextMemberCount: nextMemberCount,
+      hardCap: hardCap,
+      effectiveMax: maxRegions,
+    );
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
       child: Semantics(
-        label: _l10n.territoryCapsLine(owned, maxRegions, active, maxContests),
-        child: Wrap(
-          spacing: 8,
-          runSpacing: 8,
+        label:
+            '${_l10n.territoryCapsLine(owned, maxRegions, active, maxContests)}. $breakdown',
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildCapChip(
-              icon: Icons.map_outlined,
-              label: _l10n.territoryCapsRegionsChip(owned, maxRegions),
-              used: owned,
-              max: maxRegions,
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                _buildCapChip(
+                  icon: Icons.map_outlined,
+                  label: _l10n.territoryCapsRegionsChip(owned, maxRegions),
+                  used: owned,
+                  max: maxRegions,
+                ),
+                _buildCapChip(
+                  icon: Icons.gavel_outlined,
+                  label: _l10n.territoryCapsContestsChip(active, maxContests),
+                  used: active,
+                  max: maxContests,
+                ),
+              ],
             ),
-            _buildCapChip(
-              icon: Icons.gavel_outlined,
-              label: _l10n.territoryCapsContestsChip(active, maxContests),
-              used: active,
-              max: maxContests,
+            const SizedBox(height: 8),
+            Text(
+              breakdown,
+              style: TextStyle(
+                color: Colors.grey[700],
+                fontSize: 12,
+                height: 1.35,
+              ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  String _territoryCapsBreakdown({
+    required int hqSlots,
+    required int memberSlots,
+    required int memberCount,
+    required int? nextHqLevel,
+    required int? nextMemberCount,
+    required int hardCap,
+    required int effectiveMax,
+  }) {
+    final parts = <String>[
+      _l10n.territoryCapsHqSlots(hqSlots),
+      _l10n.territoryCapsMemberSlots(memberSlots),
+    ];
+    if (effectiveMax >= hardCap) {
+      parts.add(_l10n.territoryCapsAtHardCap);
+      return parts.join(' · ');
+    }
+    final membersLimit = memberSlots <= hqSlots;
+    final hqLimits = hqSlots <= memberSlots;
+    if (membersLimit &&
+        nextMemberCount != null &&
+        nextMemberCount > memberCount) {
+      parts.add(
+        _l10n.territoryCapsNextMembers(
+          nextMemberCount - memberCount,
+          memberSlots + 1,
+        ),
+      );
+    }
+    if (hqLimits && nextHqLevel != null) {
+      parts.add(_l10n.territoryCapsNextHq(nextHqLevel, hqSlots + 1));
+    }
+    return parts.join(' · ');
   }
 
   Widget _buildCapChip({
