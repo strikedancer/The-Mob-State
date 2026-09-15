@@ -1,34 +1,39 @@
 <#
 .SYNOPSIS
-  Post a player-facing changelog embed to Discord #updates.
+  Post a player-facing changelog to Discord #updates (visible text + embed).
 
 .DESCRIPTION
   Reads DISCORD_UPDATES_WEBHOOK_URL from the environment or local .env.plesk.
   Never prints the webhook URL. Skip Crew Wars / staff channels — this is #updates only.
 
-.PARAMETER Title
-  Embed title (short, Dutch for live players).
+  Discord must get a real paragraph in `content` plus bullets in the embed.
+  Title-only posts are rejected.
 
-.PARAMETER Bullets
-  1–6 changelog lines (without leading bullets).
+.PARAMETER Title
+  Short embed title (Dutch). The title is a headline, not the update.
 
 .PARAMETER Intro
-  Optional lead paragraph above the bullets (player-facing Dutch).
+  Required player-facing Dutch paragraph: what changed, why it matters, what to do.
+  Minimum 180 characters.
+
+.PARAMETER Bullets
+  4–8 full sentences (without leading dashes). Each line is concrete, no jargon.
 
 .PARAMETER Url
   Optional link on the embed (default https://themobstate.com).
 
 .EXAMPLE
-  .\scripts\post_discord_update.ps1 -Title "HUD en handel" -Bullets @("Credits staan in de HUD","Koop-500 crash opgelost")
+  .\scripts\post_discord_update.ps1 -Title "Territorium" -Intro "Lange uitleg..." -Bullets @("Eerste volle zin.","Tweede volle zin.","Derde volle zin.","Vierde volle zin.")
 #>
 param(
     [Parameter(Mandatory = $true)]
     [string] $Title,
 
     [Parameter(Mandatory = $true)]
-    [string[]] $Bullets,
+    [string] $Intro,
 
-    [string] $Intro = "",
+    [Parameter(Mandatory = $true)]
+    [string[]] $Bullets,
 
     [string] $Url = "https://themobstate.com"
 )
@@ -59,8 +64,14 @@ if ([string]::IsNullOrWhiteSpace($webhook) -or $webhook -notmatch '^https://disc
 }
 
 $cleanTitle = $Title.Trim()
-if ($cleanTitle.Length -lt 1 -or $cleanTitle.Length -gt 120) {
-    Write-Error "Title must be 1–120 characters."
+if ($cleanTitle.Length -lt 8 -or $cleanTitle.Length -gt 120) {
+    Write-Error "Title must be 8-120 characters and cannot be the whole update."
+    exit 1
+}
+
+$introText = $Intro.Trim()
+if ($introText.Length -lt 180 -or $introText.Length -gt 1500) {
+    Write-Error "Intro is required: 180-1500 characters of player-facing Dutch. Do not post a title-only update."
     exit 1
 }
 
@@ -68,39 +79,47 @@ $lines = @()
 foreach ($item in $Bullets) {
     $text = ([string]$item).Trim()
     if ($text.Length -eq 0) { continue }
+    if ($text.Length -lt 24) {
+        Write-Error "Each bullet must be a full sentence (at least 24 characters): $text"
+        exit 1
+    }
+    if ($text.StartsWith("- ")) {
+        $text = $text.Substring(2).Trim()
+    }
     $lines += "- $text"
 }
-if ($lines.Count -lt 1 -or $lines.Count -gt 6) {
-    Write-Error "Provide 1–6 non-empty bullets."
+if ($lines.Count -lt 4 -or $lines.Count -gt 8) {
+    Write-Error "Provide 4-8 non-empty bullets (full sentences)."
     exit 1
 }
 
-$introText = $Intro.Trim()
-if ($introText.Length -gt 0) {
-    $description = $introText + "`n`n" + ($lines -join "`n")
-} else {
-    $description = $lines -join "`n"
-}
+$description = $lines -join "`n"
 if ($description.Length -gt 3500) {
-    Write-Error "Changelog text is too long."
+    Write-Error "Bullet text is too long."
     exit 1
 }
 
-function Escape-JsonString([string] $value) {
-    return $value.
-        Replace('\', '\\').
-        Replace('"', '\"').
-        Replace("`r", '').
-        Replace("`n", '\n')
+if ($introText.Length -gt 1900) {
+    Write-Error "Intro exceeds Discord content limit."
+    exit 1
 }
 
-$payload = '{"username":"The Mob State","embeds":[{"title":"' +
-    (Escape-JsonString $cleanTitle) +
-    '","description":"' +
-    (Escape-JsonString $description) +
-    '","url":"' +
-    (Escape-JsonString $Url) +
-    '","color":13938487,"footer":{"text":"themobstate.com"}}]}'
+$embed = @{
+    title       = $cleanTitle
+    description = $description
+    url         = $Url
+    color       = 13938487
+    footer      = @{ text = "themobstate.com" }
+}
+$payloadObject = @{
+    username = "The Mob State"
+    content  = $introText
+    embeds   = @($embed)
+}
+
+$json = $payloadObject | ConvertTo-Json -Depth 8 -Compress
+$utf8NoBom = New-Object System.Text.UTF8Encoding $false
+$bodyBytes = $utf8NoBom.GetBytes($json)
 
 $uri = $webhook
 if ($uri -notmatch '[?&]wait=') {
@@ -108,14 +127,23 @@ if ($uri -notmatch '[?&]wait=') {
 }
 
 try {
-    $posted = Invoke-RestMethod -Method Post -Uri $uri -ContentType "application/json; charset=utf-8" -Body ([System.Text.Encoding]::UTF8.GetBytes($payload))
+    $response = Invoke-WebRequest -Method Post -Uri $uri -ContentType "application/json; charset=utf-8" -Body $bodyBytes -UseBasicParsing
 } catch {
     Write-Error "Discord webhook post failed (URL not printed)."
     exit 1
 }
 
+$posted = $response.Content | ConvertFrom-Json
+$contentLen = ([string]$posted.content).Length
 $descLen = 0
-if ($posted -and $posted.embeds -and $posted.embeds.Count -gt 0) {
-    $descLen = ([string]$posted.embeds[0].description).Length
+$embedList = @($posted.embeds)
+if ($embedList.Count -gt 0) {
+    $descLen = ([string]$embedList[0].description).Length
 }
-Write-Output "Posted changelog to Discord #updates ($descLen chars in body)."
+
+if ($contentLen -lt 180 -or $descLen -lt 80) {
+    Write-Error ("Discord accepted the post but the body is too short (content={0}, embed={1}). Do not treat this as a successful player update." -f $contentLen, $descLen)
+    exit 1
+}
+
+Write-Output ("Posted changelog to Discord #updates (content {0} chars, embed {1} chars)." -f $contentLen, $descLen)

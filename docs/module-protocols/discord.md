@@ -16,7 +16,7 @@ Roles: `@everyone` can read info; talk only in play channels. Optional: `Speler`
 
 Permanent invite (no expiry), preferably `https://discord.gg/…` landing on `#regels` or `#algemeen`. Store it as `DISCORD_INVITE_URL` (never a random expiring link in git).
 
-`#updates`: only the updates webhook may post. Embed: title, 3–6 bullets, link to the game. No commit hashes, IPs, or player emails.
+`#updates`: only the updates webhook may post. Required: a Dutch **intro paragraph** (`content`, ≥180 chars) plus **4–8 full-sentence bullets** in the embed. A title without body is invalid — players must understand what changed and what to do in-game. No commit hashes, IPs, or player emails.
 
 ## Primary Frontend Entry
 - `client/lib/screens/login_screen.dart` — **Doorgaan met Discord** (web only, if API `loginEnabled`)
@@ -73,7 +73,7 @@ Without Client ID + Secret the login button stays hidden. Without a valid invite
 - Ban-check via `authService.issueSession`.
 - Crew Wars Discord transport stays in `crew-wars.md`. Public `#updates` never receives war events or world chat.
 - World chat Discord bridge is documented in `global-chat.md`. Bot token is not an extra player OAuth scope.
-- `scripts/post_discord_update.ps1` runs **after a player-facing live deploy**, not for docs-only or internal commits. Copy in Dutch, short pitch, no secrets.
+- `scripts/post_discord_update.ps1` runs **after a player-facing live deploy**, not for docs-only or internal commits. Required `-Intro` plus 4–8 sentence bullets in Dutch. Title-only posts are rejected. No secrets.
 
 ## Cross-Module Dependencies
 - Auth / email verification → verified Discord mail skips the mail-gate
@@ -97,7 +97,7 @@ Without Client ID + Secret the login button stays hidden. Without a valid invite
 4. User denies Discord consent → error copy, no 500
 5. Invite opens Discord in a new tab from landing, Help, and Settings
 6. Logged-in player without `discordId` can Link Discord from Settings; world chat then uses the in-game name
-7. Updates script posts an embed to `#updates` without printing the webhook URL
+7. Updates script posts intro + bullets to `#updates` (not title-only) without printing the webhook URL
 8. Unlinked web player sees the weekly Discord popup; decline hides it; close snoozes 7 days; already-linked players never see it
 9. First Settings/popup link of an existing account pays €5.000 once; new Discord registrations do not; already-linked players get no retroactive cash
 

@@ -1,25 +1,37 @@
 ---
-description: After a player-facing live deploy, post a short Dutch changelog to Discord #updates.
+description: After a player-facing live deploy, post a full Dutch explanation to Discord #updates — never a title-only headline.
 alwaysApply: true
 ---
 
 # Discord #updates na speler-gerichte deploy
 
-Na een **live** wijziging die spelers merken (gameplay, UI, login, Help), post een korte changelog naar Discord `#updates`:
+Na een **live** wijziging die spelers merken (gameplay, UI, login, Help), post een **volledige uitleg** naar Discord `#updates`. Een titel zoals "Territorium dieper" is geen update: mensen moeten na het lezen weten wat er veranderde, waarom het telt, en wat ze in het spel moeten doen.
 
 ```
-.\scripts\post_discord_update.ps1 -Title "Korte titel" -Bullets @("Wat er beter is","Tweede punt")
+.\scripts\post_discord_update.ps1 `
+  -Title "Korte kop" `
+  -Intro "Minimaal twee tot vier zinnen in speler-Nederlands: wat is er live, wat merkt de speler, waar in het spel." `
+  -Bullets @(
+    "Eerste volle zin over een concreet effect.",
+    "Tweede volle zin over een tweede effect.",
+    "Derde volle zin over waar je het ziet of hoe je het gebruikt.",
+    "Vierde volle zin over een randgeval of wat hetzelfde blijft."
+  )
 ```
 
-De webhook staat in `DISCORD_UPDATES_WEBHOOK_URL` (environment of `.env.plesk`). Print de URL nooit. Protocol: `docs/module-protocols/discord.md`.
+`-Intro` is verplicht (script weigert korter dan 180 tekens). Minimaal **4** bullets, elk een volle zin. Link blijft `https://themobstate.com` (default). Webhook: `DISCORD_UPDATES_WEBHOOK_URL` (environment of `.env.plesk`). Print de URL nooit.
+
+Als het script meldt dat content/embed te kort is of faalt: **niet** afronden. Eerst fixen, opnieuw posten.
 
 ## Wel posten
 
 - Verbeteringen, bugfixes en nieuwe spelerfeatures die net gedeployed zijn
-- Nederlands, 3–6 bullets, geen jargon, link blijft `https://themobstate.com`
+- Nederlands, geen jargon, geen commit-hashes
+- Uitleg die op zichzelf leesbaar is zonder deze chat
 
 ## Niet posten
 
 - Docs-only, interne refactors, lokaal-only werk
-- Crew Wars-events (die gaan naar het aparte ops-webhook)
-- Commit-hashes, IP-adressen, spelersmails, secrets
+- Crew Wars-events (aparte ops-webhook)
+- IP-adressen, spelersmails, secrets
+- Alleen een kopregel of 1–2 vage bullets

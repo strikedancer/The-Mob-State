@@ -430,7 +430,7 @@ Voor deze codebase geldt als standaard uitvoerflow na een functionele wijziging:
 3. Voer op VPS een `git pull origin main` uit (of het volledige Windows-deployscript dat dit voor je doet).
 4. Rebuild/herstart de relevante service(s) met `docker compose --env-file .env.plesk -f docker-compose.plesk.yml ...`.
 5. Controleer direct de service-logs.
-6. Als de wijziging **speler-gericht** is (gameplay/UI/login, niet docs-only): post een korte changelog naar Discord `#updates` met `.\scripts\post_discord_update.ps1` (webhook `DISCORD_UPDATES_WEBHOOK_URL`). Geen commit-hashes, IP’s of spelersmails. Crew Wars-events blijven op het aparte ops-webhook. Details: `discord.md`.
+6. Als de wijziging **speler-gericht** is (gameplay/UI/login, niet docs-only): post een **volledige** changelog naar Discord `#updates` met `.\scripts\post_discord_update.ps1` (`-Intro` verplicht, 4–8 zinnen als bullets; webhook `DISCORD_UPDATES_WEBHOOK_URL`). Geen titel-only koppen, commit-hashes, IP’s of spelersmails. Crew Wars-events blijven op het aparte ops-webhook. Details: `discord.md`.
 
 Verplichte uitzonderingsregel:
 - Alleen afwijken van deze flow als de gebruiker expliciet aangeeft dat iets lokaal-only, zonder commit, zonder push of zonder deploy moet blijven.
