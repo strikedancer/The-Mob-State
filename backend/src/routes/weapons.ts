@@ -1,5 +1,6 @@
 import { Router, Response } from 'express';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
+import { requireNotJailed } from '../middleware/requireNotJailed';
 import { weaponService } from '../services/weaponService';
 import { weaponSelectionService } from '../services/weaponSelectionService';
 
@@ -207,7 +208,7 @@ router.delete('/secondary-weapon', authenticate, async (req: AuthRequest, res: R
  * POST /weapons/buy/:weaponId
  * Buy a weapon from the black market
  */
-router.post('/buy/:weaponId', authenticate, async (req: AuthRequest, res: Response) => {
+router.post('/buy/:weaponId', authenticate, requireNotJailed, async (req: AuthRequest, res: Response) => {
   const { weaponId } = req.params;
 
   const result = await weaponService.buyWeapon(req.player!.id, String(weaponId));
@@ -261,7 +262,7 @@ router.post('/buy/:weaponId', authenticate, async (req: AuthRequest, res: Respon
  * POST /weapons/sell/:inventoryId
  * Sell a weapon
  */
-router.post('/sell/:inventoryId', authenticate, async (req: AuthRequest, res: Response) => {
+router.post('/sell/:inventoryId', authenticate, requireNotJailed, async (req: AuthRequest, res: Response) => {
   const inventoryId = parseInt(req.params.inventoryId as string);
 
   if (isNaN(inventoryId)) {
@@ -309,7 +310,7 @@ router.post('/sell/:inventoryId', authenticate, async (req: AuthRequest, res: Re
  * POST /weapons/repair/:inventoryId
  * Repair a weapon
  */
-router.post('/repair/:inventoryId', authenticate, async (req: AuthRequest, res: Response) => {
+router.post('/repair/:inventoryId', authenticate, requireNotJailed, async (req: AuthRequest, res: Response) => {
   const inventoryId = parseInt(req.params.inventoryId as string);
 
   if (isNaN(inventoryId)) {

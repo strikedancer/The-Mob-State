@@ -3,6 +3,7 @@ import { authenticate, AuthRequest } from '../middleware/authenticate';
 import { getTrainingComboReadinessPayload } from '../lib/trainingComboReadiness';
 import { gymService } from '../services/gymService';
 import { shootingRangeService } from '../services/shootingRangeService';
+import { checkIfJailed } from '../services/policeService';
 
 const router = Router();
 
@@ -13,9 +14,10 @@ const router = Router();
  */
 router.get('/status', authenticate, async (req: AuthRequest, res) => {
   const playerId = req.player!.id;
-  const [gym, shootingRange] = await Promise.all([
+  const [gym, shootingRange, jailTimeRemaining] = await Promise.all([
     gymService.getStatus(playerId),
     shootingRangeService.getStatus(playerId),
+    checkIfJailed(playerId),
   ]);
   const trainingComboReadiness = getTrainingComboReadinessPayload(
     (gym as { gymLastTrainedAt?: Date | null }).gymLastTrainedAt ??
@@ -27,6 +29,7 @@ router.get('/status', authenticate, async (req: AuthRequest, res) => {
     gym,
     shootingRange,
     trainingComboReadiness,
+    jailTimeRemaining,
   });
 });
 

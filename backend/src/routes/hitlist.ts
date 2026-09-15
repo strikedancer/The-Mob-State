@@ -6,6 +6,7 @@
 
 import express, { Response, NextFunction } from 'express';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
+import { requireNotJailed } from '../middleware/requireNotJailed';
 import * as hitlistService from '../services/hitlistService';
 import { applyReputationAction } from '../services/reputationService';
 
@@ -497,6 +498,7 @@ router.post(
 router.post(
   '/buy-bodyguards',
   authenticate,
+  requireNotJailed,
   async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       const playerId = req.player?.id;
@@ -602,6 +604,7 @@ router.post(
 router.post(
   '/buy-armor/:armorId',
   authenticate,
+  requireNotJailed,
   async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       const playerId = req.player?.id;
@@ -650,6 +653,7 @@ router.post(
 router.post(
   '/repair-armor',
   authenticate,
+  requireNotJailed,
   async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       const playerId = req.player?.id;

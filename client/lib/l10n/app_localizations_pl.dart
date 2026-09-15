@@ -10574,6 +10574,14 @@ class AppLocalizationsPl extends AppLocalizations {
       'Postęp strzelnicy zasila również obliczenia listy trafień na serwerze.';
 
   @override
+  String get trainingHubShootingJailed =>
+      'Podczas pobytu w więzieniu strzelnica jest zamknięta.';
+
+  @override
+  String get trainingHubGymAllowedInJail =>
+      'Na siłowni nadal możesz trenować siłę, szybkość i wytrzymałość.';
+
+  @override
   String trainingHubHitlistAccuracy(String pct) {
     return 'Hitlist accuracy: $pct%';
   }
@@ -18028,15 +18036,15 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicBlackMarketSummary =>
-      'Jedno centrum: najpierw towary przemytnicze (kwiaty, elektronika, diamenty, broń, farmaceutyki), następnie zakładka Rynek z pojazdami między graczami, przewożonymi narzędziami, partiami narkotyków, partiami kryptowalut, stosami towarów handlowych i zbywalnymi przedmiotami wydarzeń, a także plecakami, materiałami, rynkiem broni i amunicją.';
+      'Jedno centrum: najpierw przemyt towarów (kwiaty, elektronika, diamenty, broń, farmaceutyki), następnie zakładka Rynek z pojazdami między graczami i przewożonymi narzędziami, a także plecakami, materiałami, rynkiem broni i amunicją.';
 
   @override
   String get helpTopicBlackMarketHow =>
-      'Zakładka Towary handlowe: jedno ciągłe przewijanie — najpierw pięć linii kontrabandy (ceny, limity, żetony ryzyka: psucie się, zmienność, obrażenia spowodowane potknięciem, zajęcie), a następnie zapasy, z których można sprzedać. Kup/sprzedaj używa interfejsu API /trade; awarie częściowego obciążenia wyświetlają baner ostrzegawczy. Ceny uliczne każdego towaru w kraju pozostają takie same przez godzinę, więc płacisz podaną cenę zakupu. Zakup za Twoje akcje to Twój rzeczywisty średni koszt, a nie aktualna cena uliczna. \nCzarny rynek dzieli się na podrynki: Materiały (surowce), Broń (broń palna i noże), Amunicja (amunicja według kalibru), Pojazdy (pojazdy nielegalne). \nCeny i dostępność różnią się znacznie w zależności od kraju i czasu. Oferta może szybko się wyprzedać. \nTransakcje na czarnym rynku nie pozostawiają oficjalnego śladu, ale zwiększają temperaturę FBI w przypadku dużych zakupów. \nBroń kupioną tutaj można wykorzystać w przestępstwach, PvP i bezpieczeństwie. Lepsza broń daje większe obrażenia i szansę na sukces. \nFiltry według kategorii (rodzaj, kraj, cena, dostępność) pomagają szybko znaleźć właściwą ofertę. \nJako sprzedający możesz publikować własne oferty, w tym cenę i ilość. Inni gracze kupują od Ciebie. \nAukcje wygasają po pewnym czasie, jeśli nie zostaną sprzedane. Monitoruj swoje oferty za pośrednictwem swojego profilu. \nKarta Rynek: transakcje gotówkowe typu peer-to-peer. Zobaczysz pojazdy innych graczy na sprzedaż i przewożone narzędzia w jednym kanale (kraj + filtry cenowe). Stuknij Sprzedaj przedmiot, aby wystawić narzędzie, które nosisz; Moje aukcje wyświetlają Twoje aktywne ogłoszenia o pojazdach i narzędziach. Nie możesz kupić własnej reklamy. Sprzedaż narkotyków, kryptowalut lub nagród za wydarzenia specjalne pomiędzy graczami nie jest jeszcze dostępna.';
+      'Zakładka Towary handlowe: jedno ciągłe przewijanie — najpierw pięć linii kontrabandy (ceny, limity, żetony ryzyka: psucie się, zmienność, obrażenia spowodowane potknięciem, zajęcie), a następnie zapasy, z których można sprzedać. Kup/sprzedaj używa interfejsu API /trade; awarie częściowego obciążenia wyświetlają baner ostrzegawczy. Ceny uliczne każdego towaru w kraju pozostają takie same przez godzinę, więc płacisz podaną cenę zakupu. Zakup za Twoje akcje to Twój rzeczywisty średni koszt, a nie aktualna cena uliczna. \nCzarny rynek dzieli się na podrynki: Materiały (surowce), Broń (broń palna i noże), Amunicja (amunicja według kalibru), Pojazdy (pojazdy nielegalne). \nCeny i dostępność różnią się znacznie w zależności od kraju i czasu. Oferta może szybko się wyprzedać. \nTransakcje na czarnym rynku nie pozostawiają oficjalnego śladu, ale zwiększają temperaturę FBI w przypadku dużych zakupów. \nBroń kupioną tutaj można wykorzystać w przestępstwach, PvP i bezpieczeństwie. Lepsza broń daje większe obrażenia i szansę na sukces. \nFiltry według kategorii (rodzaj, kraj, cena, dostępność) pomagają szybko znaleźć właściwą ofertę. \nJako sprzedający możesz publikować własne oferty, w tym cenę i ilość. Inni gracze kupują od Ciebie. \nAukcje wygasają po pewnym czasie, jeśli nie zostaną sprzedane. Monitoruj swoje oferty za pośrednictwem swojego profilu. \nKarta Rynek: transakcje gotówkowe typu peer-to-peer. Zobaczysz pojazdy innych graczy na sprzedaż i przewożone narzędzia w jednym kanale (kraj + filtry cenowe). Stuknij Sprzedaj przedmiot, aby wystawić narzędzie, które nosisz; Moje aukcje wyświetlają Twoje aktywne ogłoszenia o pojazdach i narzędziach. Nie możesz kupić własnej reklamy. Sprzedaż narkotyków, kryptowalut lub nagród za wydarzenia specjalne pomiędzy graczami nie jest jeszcze dostępna. \nKiedy jesteś w więzieniu, cały Czarny Rynek jest zamknięty. Nie możesz tam kupować, sprzedawać ani wystawiać na ogłoszenia, dopóki nie zostaniesz zwolniony.';
 
   @override
   String get helpTopicBlackMarketTips =>
-      'Zakładka Handel: pociągnij, aby odświeżyć, jeśli segment się nie powiedzie; oglądaj ryzykowne żetony i Poszukiwany przed ryzykownym przemytem. \nKupuj broń i amunicję hurtowo, gdy ceny są niskie: dostępność jest tymczasowa. \nUnikaj dużych zakupów na czarnym rynku, gdy FBI Heat ma już powyżej 30 lat. \nRynek: odśwież po wystawieniu aukcji; wymień tylko to, co posiadasz — narzędzia muszą być przyniesione, narkotyki/krypto/towary handlowe pochodzą z Twojego ekwipunku/zasobów. Delist przywraca depozyt.';
+      'Zakładka Handel: pociągnij, aby odświeżyć, jeśli segment się nie powiedzie; oglądaj ryzykowne żetony i Poszukiwany przed ryzykownym przemytem. \nKupuj broń i amunicję hurtowo, gdy ceny są niskie: dostępność jest tymczasowa. \nUnikaj dużych zakupów na czarnym rynku, gdy FBI Heat ma już powyżej 30 lat. \nRynek: odśwież po wystawieniu aukcji; na sprzedaż można wystawiać tylko narzędzia znajdujące się w Twoim ekwipunku.';
 
   @override
   String get helpTopicDrugsCategory => 'Imperium';
@@ -18212,7 +18220,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicPrisonHow =>
-      'Po aresztowaniu rozpoczyna się odliczanie czasu w zależności od poziomu poszukiwanego. Poszukiwany stopień 1 = krótki wyrok (w minutach), Poszukiwany stopień 5+ = godziny więzienia. \nKaucja jest skalowana wraz z pozostałym wyrokiem i nigdy nie spada poniżej poziomu poszukiwanego × 1000 EUR. Dłuższe wyroki są zatem droższe w przypadku natychmiastowego wykupienia. \nUcieczka: możesz podjąć próbę ucieczki z więzienia, ale szansa na sukces jest niska. Niepowodzenie przedłuża karę o stałą kwotę. \nNa liście więzień i nakładce więzienia możesz zawsze zapłacić własną kaucję, a także podjąć próbę własnej ucieczki, będąc jeszcze w więzieniu. \nCzłonkowie załogi mogą cię odwiedzać i zapewniać drobne korzyści (statystyki, morale), gdy jesteś zamknięty. \nPo aresztowaniu Twoi przyjaciele i członkowie załogi otrzymają teraz powiadomienie push, że zostałeś złapany i czekasz na pomoc. \nCzat światowy publikuje także publiczną linię więzienną z Twoim imieniem i nazwiskiem. Jeśli inny gracz zapłaci kaucję lub cię wyrwie, oba nazwiska pojawią się tam. \nBroń i zbroje są konfiskowane w momencie aresztowania, jeśli nie masz dla nich ochrony prawnej. \nOpcja sądowa: zwrócić się do sądu o zmniejszenie kary za pośrednictwem prawnika (patrz Sąd). \nPo zablokowaniu liczniki produkcji (leki, fabryka amunicji) działają. Twoje imperium działa bez ciebie. \nW zamknięciu nie można odwiedzać szpitala. Odzyskiwanie HP czeka, aż będziesz wolny.';
+      'Po aresztowaniu rozpoczyna się odliczanie czasu w zależności od poziomu poszukiwanego. Poszukiwany stopień 1 = krótki wyrok (w minutach), Poszukiwany stopień 5+ = godziny więzienia. \nKaucja jest skalowana wraz z pozostałym wyrokiem i nigdy nie spada poniżej poziomu poszukiwanego × 1000 EUR. Dłuższe wyroki są zatem droższe w przypadku natychmiastowego wykupienia. \nUcieczka: możesz podjąć próbę ucieczki z więzienia, ale szansa na sukces jest niska. Niepowodzenie przedłuża karę o stałą kwotę. \nNa liście więzień i nakładce więzienia możesz zawsze zapłacić własną kaucję, a także podjąć próbę własnej ucieczki, będąc jeszcze w więzieniu. \nCzłonkowie załogi mogą cię odwiedzać i zapewniać drobne korzyści (statystyki, morale), gdy jesteś zamknięty. \nPo aresztowaniu Twoi przyjaciele i członkowie załogi otrzymają teraz powiadomienie push, że zostałeś złapany i czekasz na pomoc. \nCzat światowy publikuje także publiczną linię więzienną z Twoim imieniem i nazwiskiem. Jeśli inny gracz zapłaci kaucję lub cię wyrwie, oba nazwiska pojawią się tam. \nBroń i zbroje są konfiskowane w momencie aresztowania, jeśli nie masz dla nich ochrony prawnej. \nOpcja sądowa: zwrócić się do sądu o zmniejszenie kary za pośrednictwem prawnika (patrz Sąd). \nPo zablokowaniu liczniki produkcji (leki, fabryka amunicji) działają. Twoje imperium działa bez ciebie. \nW zamknięciu nie można odwiedzać szpitala. Odzyskiwanie HP czeka, aż będziesz wolny. \nPodczas pobytu w więzieniu Czarny Rynek jest zamknięty: nie można tam kupować, sprzedawać ani wystawiać. W centrum treningowym nadal możesz trenować siłę, szybkość i wytrzymałość; strzelnica pozostaje zamknięta do chwili zwolnienia.';
 
   @override
   String get helpTopicPrisonTips =>
@@ -18863,15 +18871,15 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicTrainingHubSummary =>
-      'Siłownia (siła) i strzelnica (celność) w jednym miejscu. Obydwa bonusy zwiększają Twoją szansę na powodzenie w przestępstwie; dokładność strzelania jest również wykorzystywana w akcjach na listach trafień. Każdy utwór ma swój własny czas odnowienia i limit 100 sesji.';
+      'Siłownia (trzy tory: siła, szybkość, wytrzymałość) i strzelnica w jednym miejscu. Premie zwiększają skuteczność przestępstwa; zakres zasila również listę hitów. Każda ścieżka ma swój własny czas odnowienia i limit 100 sesji.';
 
   @override
   String get helpTopicTrainingHubHow =>
-      'Siłownia: każda sesja zwiększa twoją stałą premię do siły łącznie do +8% (100 sesji). Czas odnowienia pomiędzy sesjami wynosi 1 godzinę (VIP może go skrócić).\nZasięg strzelania: każda sesja zwiększa stałą premię do celności łącznie do +10% (100 sesji). Czas odnowienia pomiędzy sesjami wynosi 1 godzinę (VIP może go skrócić).\nObydwa bonusy są dodawane przez serwer do obliczeń sukcesu przestępstwa.\nTrenujesz każdy tor osobno: dwa liczniki czasu i dwa przyciski pociągu — jeden ekran.\nPostęp nie zostanie zresetowany, chyba że personel zastosuje surową karę.';
+      'Siłownia: trzy tory — siła (+4%), szybkość (+2%), wytrzymałość (+2%) — łącznie do +8% (po 100 sesji). 1-godzinny czas odnowienia na ścieżkę (VIP może zostać skrócony). \nInteligentny pociąg wybiera pierwszy gotowy tor. \nZasięg strzelania: premia do celności do +10% (100 sesji). 1-godzinny czas odnowienia. Dokładność listy trafień skaluje się wraz z postępem zasięgu. \nW więzieniu nadal możesz trenować siłę, szybkość i wytrzymałość na siłowni. Strzelnica pozostaje zamknięta do czasu zwolnienia. \nTen sam dzień UTC: co najmniej jedna sesja na siłowni i jedna sesja na strzelnicy, aby uzyskać +0,5% dodatkowej kombinacji przestępczości. \nPostęp nie zostanie zresetowany, chyba że personel zastosuje surową karę.';
 
   @override
   String get helpTopicTrainingHubTips =>
-      'Zaplanuj codziennie obie ścieżki: małe kroki łączą się w wyraźną przewagę nad przestępczością.\nPrzejrzyj przestępstwa, w których zawodzisz najbardziej: siła i celność uzupełniają się – to nie ta sama statystyka.';
+      'Codziennie planuj wszystkie ścieżki: małe kroki składają się na wyraźną przewagę nad przestępczością. \nUżyj inteligentnego pociągu do szybkich sesji; trenuj poszczególne ścieżki, jeśli chcesz nadać priorytet jednej statystce.';
 
   @override
   String territoryCapsLine(

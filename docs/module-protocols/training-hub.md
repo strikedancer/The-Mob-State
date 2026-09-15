@@ -12,7 +12,8 @@ Single Flutter entry that combines **gym** (three tracks: strength / speed / sta
 
 - **Header:** Empire photo hero (`EmpireHubScaffold`) with title/subtitle; optional **combo chip** when `trainingComboReadiness.active` is true (shows `bonusFraction` as a crime success bonus percentage). Gold `i` lives in the hero.
 - **Gym section:** three tracks (**strength / speed / stamina**) with per-track progress, cooldown countdown, train button, aggregate gym bonus (+8% cap), and **Smart train** (first ready track). Client posts `POST /gym/train` with `{ "track": "strength"|"speed"|"stamina" }`.
-- **Shooting section:** accuracy bonus, hitlist accuracy line (`hitlistAccuracy` from status), train + cooldown.
+- **Shooting section:** accuracy bonus, hitlist accuracy line (`hitlistAccuracy` from status), train + cooldown. While jailed the train button is locked; gym tracks stay available.
+- `GET /training/status` also returns `jailTimeRemaining` so the hub can lock the range without a second round-trip.
 - **Live countdown:** hub ticks every second; silent refresh when a cooldown expires.
 - **Refresh:** reloads `GET /training/status` (and related state). Prefer **silent refresh** (no full-page blocking spinner) when the user taps refresh while already on the hub.
 - **“Open crimes” / misdaden:** optional `onOpenCrimes` callback (e.g. web dashboard embed) jumps to the crimes section so active bonuses are visible there too.
@@ -26,9 +27,9 @@ Legacy wrappers (same UI):
 
 ## Backend
 
-- `backend/src/routes/gym.ts`, `backend/src/services/gymService.ts` — train + status; gym status exposes per-track sessions, bonuses, cooldown gates and `gymLastTrainedAt` (max timestamp across tracks for combo-readiness).
-- `backend/src/routes/shootingRange.ts`, `backend/src/services/shootingRangeService.ts` — train + status (unchanged contract).
-- **`GET /training/status`** — `backend/src/routes/training.ts`: one authenticated round-trip returning `{ success, gym, shootingRange, trainingComboReadiness }` with the same gym/shooting objects as each module’s status endpoint (no nested `status` key). `trainingComboReadiness` is `{ active, bonusFraction }` for same-UTC-day gym+range combo (see `trainingComboReadiness.ts` + `balance-economy.md`). Used by `TrainingHubScreen` and the crimes screen bonus strip.
+- `backend/src/routes/gym.ts`, `backend/src/services/gymService.ts` — train + status; gym status exposes per-track sessions, bonuses, cooldown gates and `gymLastTrainedAt` (max timestamp across tracks for combo-readiness). Gym train stays allowed while jailed.
+- `backend/src/routes/shootingRange.ts`, `backend/src/services/shootingRangeService.ts` — train + status. Train is blocked while jailed (`error.jailed` / `JAILED`); status sets `canTrain` false and exposes `jailed` / `jailTimeRemaining`.
+- **`GET /training/status`** — `backend/src/routes/training.ts`: one authenticated round-trip returning `{ success, gym, shootingRange, trainingComboReadiness, jailTimeRemaining }` with the same gym/shooting objects as each module’s status endpoint (no nested `status` key). `trainingComboReadiness` is `{ active, bonusFraction }` for same-UTC-day gym+range combo (see `trainingComboReadiness.ts` + `balance-economy.md`). Used by `TrainingHubScreen` and the crimes screen bonus strip.
 - Player cooldown payload still exposes `cooldowns.gym` and `cooldowns.shooting_range` separately.
 
 ## Change rules
@@ -42,4 +43,5 @@ Legacy wrappers (same UI):
 
 - Wide layout: both columns scroll as one page; narrow: stacked sections.
 - Train success and failure paths for **both** APIs (gym uses `params.reason`; shooting range uses top-level `error`).
+- While jailed: gym train still works; shooting train is disabled in UI and `POST /shooting-range/train` returns `error.jailed`.
 - VIP shorter cooldown still applies to both tracks.

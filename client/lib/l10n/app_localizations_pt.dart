@@ -10570,6 +10570,14 @@ class AppLocalizationsPt extends AppLocalizations {
       'O progresso do campo de tiro também alimenta os cálculos da lista de acertos no servidor.';
 
   @override
+  String get trainingHubShootingJailed =>
+      'O campo de tiro está fechado enquanto você está na prisão.';
+
+  @override
+  String get trainingHubGymAllowedInJail =>
+      'Você ainda pode treinar força, velocidade e resistência na academia.';
+
+  @override
   String trainingHubHitlistAccuracy(String pct) {
     return 'Hitlist accuracy: $pct%';
   }
@@ -18028,15 +18036,15 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicBlackMarketSummary =>
-      'Um centro: primeiro mercadorias contrabandeadas (flores, eletrônicos, diamantes, armas, produtos farmacêuticos), depois a guia Mercado para veículos de jogador para jogador, ferramentas transportadas, lotes de drogas, lotes de criptomoedas, pilhas de mercadorias comerciais e itens de eventos transferíveis, além de mochilas, materiais, mercado de armas e munições.';
+      'Um centro: primeiro os produtos de contrabando (flores, eletrônicos, diamantes, armas, produtos farmacêuticos), depois a guia Mercado para veículos e ferramentas transportadas entre jogadores, além de mochilas, materiais, mercado de armas e munições.';
 
   @override
   String get helpTopicBlackMarketHow =>
-      'Guia Mercadorias comerciais: uma rolagem contínua – primeiro as cinco linhas de contrabando (preços, limites, fichas de risco: deterioração, volatilidade, danos de viagem, apreensão) e, em seguida, seu estoque para vender. Compra/venda usa a API /trade; falhas de carga parcial mostram um banner de aviso. Os preços de rua de cada bem em um país permanecem os mesmos por uma hora, então o preço de compra listado é o que você paga. O valor comprado em seu estoque é o seu custo médio real, não o preço de rua ao vivo. \nO mercado negro é dividido em submercados: Materiais (matérias-primas), Armas (armas de fogo e facas), Munições (munições por calibre), Veículos (veículos ilegais). \nOs preços e a disponibilidade variam muito de acordo com o país e o horário. Uma listagem pode esgotar rapidamente. \nAs transações no mercado negro não deixam rastros oficiais, mas aumentam o FBI Heat para grandes compras. \nAs armas compradas aqui podem ser usadas em crimes, PvP e segurança. Armas melhores proporcionam maiores danos e chances de sucesso. \nFiltros por categoria (tipo, país, preço, disponibilidade) ajudam você a encontrar rapidamente a listagem certa. \nVocê pode postar suas próprias listagens como vendedor, incluindo preço e quantidade. Outros jogadores compram de você. \nAs listagens expiram após um certo tempo se não forem vendidas. Monitore suas próprias ofertas através do seu perfil. \nGuia Marketplace: negociações em dinheiro peer-to-peer. Você verá os veículos de outros jogadores à venda e as ferramentas transportadas em um único feed (país + filtros de preço). Toque em Vender item para listar uma ferramenta que você está carregando; Minhas listagens mostram seus anúncios ativos de veículos e ferramentas. Você não pode comprar seu próprio anúncio. A venda de drogas, criptografia ou recompensas de eventos especiais de jogador para jogador aqui ainda não está disponível.';
+      'Guia Mercadorias comerciais: uma rolagem contínua – primeiro as cinco linhas de contrabando (preços, limites, fichas de risco: deterioração, volatilidade, danos de viagem, apreensão) e, em seguida, seu estoque para vender. Compra/venda usa a API /trade; falhas de carga parcial mostram um banner de aviso. Os preços de rua de cada bem em um país permanecem os mesmos por uma hora, então o preço de compra listado é o que você paga. O valor comprado em seu estoque é o seu custo médio real, não o preço de rua ao vivo. \nO mercado negro é dividido em submercados: Materiais (matérias-primas), Armas (armas de fogo e facas), Munições (munições por calibre), Veículos (veículos ilegais). \nOs preços e a disponibilidade variam muito de acordo com o país e o horário. Uma listagem pode esgotar rapidamente. \nAs transações no mercado negro não deixam rastros oficiais, mas aumentam o FBI Heat para grandes compras. \nAs armas compradas aqui podem ser usadas em crimes, PvP e segurança. Armas melhores proporcionam maiores danos e chances de sucesso. \nFiltros por categoria (tipo, país, preço, disponibilidade) ajudam você a encontrar rapidamente a listagem certa. \nVocê pode postar suas próprias listagens como vendedor, incluindo preço e quantidade. Outros jogadores compram de você. \nAs listagens expiram após um certo tempo se não forem vendidas. Monitore suas próprias ofertas através do seu perfil. \nGuia Marketplace: negociações em dinheiro peer-to-peer. Você verá os veículos de outros jogadores à venda e as ferramentas transportadas em um único feed (país + filtros de preço). Toque em Vender item para listar uma ferramenta que você está carregando; Minhas listagens mostram seus anúncios ativos de veículos e ferramentas. Você não pode comprar seu próprio anúncio. A venda de drogas, criptografia ou recompensas de eventos especiais de jogador para jogador aqui ainda não está disponível. \nEnquanto você estiver na prisão, todo o Mercado Negro estará fechado. Você não pode comprar, vender ou listar lá até ser liberado.';
 
   @override
   String get helpTopicBlackMarketTips =>
-      'Guia Trade: puxe para atualizar se um segmento falhar; observe fichas de risco e Procurado antes de contrabando arriscado. \nCompre armas e munições a granel quando os preços estiverem baixos: a disponibilidade é temporária. \nEvite grandes compras no mercado negro quando o FBI Heat já estiver acima de 30. \nMarketplace: atualização após listagem; liste apenas o que você possui – as ferramentas devem ser transportadas, drogas/criptomoedas/mercadorias comerciais vêm de seu inventário/arquivos. Excluir restaura o depósito.';
+      'Guia Trade: puxe para atualizar se um segmento falhar; observe fichas de risco e Procurado antes de contrabando arriscado. \nCompre armas e munições a granel quando os preços estiverem baixos: a disponibilidade é temporária. \nEvite grandes compras no mercado negro quando o FBI Heat já estiver acima de 30. \nMarketplace: atualização após listagem; apenas as ferramentas em seu inventário podem ser colocadas à venda.';
 
   @override
   String get helpTopicDrugsCategory => 'Império';
@@ -18212,7 +18220,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicPrisonHow =>
-      'Após a prisão, um cronômetro é iniciado com base no nível de procurado. Procurado Nível 1 = pena curta (minutos), Procurado Nível 5+ = horas de prisão. \nA fiança aumenta com a sentença restante e nunca cai abaixo do Nível de Procurado × € 1.000. Portanto, sentenças mais longas custam mais para serem compradas imediatamente. \nFuga: você pode tentar fugir da prisão, mas a chance de sucesso é baixa. A falha estende sua sentença por um valor fixo. \nNa lista de prisão e sobreposição de prisão, você sempre pode pagar sua própria fiança e também tentar escapar enquanto ainda está preso. \nOs membros da Crew podem visitá-lo e fornecer pequenos benefícios (estatísticas, moral) enquanto você estiver preso. \nAo serem presos, seus amigos e membros da Crew agora recebem uma notificação push de que você foi pego e está aguardando ajuda. \nO chat mundial também publica uma linha pública da prisão com o seu nome. Se outro jogador pagar sua fiança ou fugir, ambos os nomes aparecerão lá. \nArmas e armaduras são confiscadas na prisão se você não tiver cobertura legal para elas. \nOpção judicial: recorrer ao tribunal para redução da pena através de um advogado (ver Tribunal). \nEnquanto os cronômetros de produção bloqueados (drogas, fábrica de munições) continuam funcionando. Seu império funciona sem você. \nVocê não pode visitar o hospital enquanto estiver trancado. A recuperação da HP espera até que você esteja livre.';
+      'Após a prisão, um cronômetro é iniciado com base no nível de procurado. Procurado Nível 1 = pena curta (minutos), Procurado Nível 5+ = horas de prisão. \nA fiança aumenta com a sentença restante e nunca cai abaixo do Nível de Procurado × € 1.000. Portanto, sentenças mais longas custam mais para serem compradas imediatamente. \nFuga: você pode tentar fugir da prisão, mas a chance de sucesso é baixa. A falha estende sua sentença por um valor fixo. \nNa lista de prisão e sobreposição de prisão, você sempre pode pagar sua própria fiança e também tentar escapar enquanto ainda está preso. \nOs membros da Crew podem visitá-lo e fornecer pequenos benefícios (estatísticas, moral) enquanto você estiver preso. \nAo serem presos, seus amigos e membros da Crew agora recebem uma notificação push de que você foi pego e está aguardando ajuda. \nO chat mundial também publica uma linha pública da prisão com o seu nome. Se outro jogador pagar sua fiança ou fugir, ambos os nomes aparecerão lá. \nArmas e armaduras são confiscadas na prisão se você não tiver cobertura legal para elas. \nOpção judicial: recorrer ao tribunal para redução da pena através de um advogado (ver Tribunal). \nEnquanto os cronômetros de produção bloqueados (drogas, fábrica de munições) continuam funcionando. Seu império funciona sem você. \nVocê não pode visitar o hospital enquanto estiver trancado. A recuperação da HP espera até que você esteja livre. \nEnquanto estiver preso, o Mercado Negro está fechado: você não pode comprar, vender ou listar lá. No hub de Treinamento você ainda pode treinar força, velocidade e resistência; o campo de tiro permanece fechado até que você seja liberado.';
 
   @override
   String get helpTopicPrisonTips =>
@@ -18859,15 +18867,15 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicTrainingHubSummary =>
-      'Ginásio (força) e campo de tiro (precisão) em um só lugar. Ambos os bônus aumentam sua chance de sucesso no crime; a precisão do tiro também é usada em ações de lista de acertos. Cada faixa tem seu próprio tempo de espera e um limite de 100 sessões.';
+      'Ginásio (três pistas: força, velocidade, resistência) e campo de tiro em um só lugar. Os bônus aumentam o sucesso do crime; range também alimenta a lista de hits. Cada faixa tem seu próprio tempo de espera e limite de 100 sessões.';
 
   @override
   String get helpTopicTrainingHubHow =>
-      'Ginásio: cada sessão aumenta seu bônus permanente de força em até +8% do total (100 sessões). O tempo de espera entre as sessões é de 1 hora (o VIP pode encurtá-lo).\nCampo de tiro: cada sessão aumenta seu bônus permanente de precisão em até +10% do total (100 sessões). O tempo de espera entre as sessões é de 1 hora (o VIP pode encurtá-lo).\nAmbos os bônus são adicionados pelo servidor aos cálculos de sucesso do crime.\nVocê treina cada faixa separadamente: dois temporizadores e dois botões de trem – uma tela.\nO progresso não é reiniciado a menos que a equipe aplique uma penalidade pesada.';
+      'Ginásio: três pistas — força (+4%), velocidade (+2%), resistência (+2%) — até +8% combinadas (100 sessões cada). Tempo de espera de 1 hora por faixa (o VIP pode diminuir). \nO trem inteligente escolhe o primeiro trilho que está pronto. \nCampo de tiro: bônus de precisão de até +10% (100 sessões). Recarga de 1 hora. A precisão da lista de acertos é escalonada com o progresso do alcance. \nEnquanto estiver preso você ainda poderá treinar força, velocidade e resistência na academia. O campo de tiro permanece fechado até você ser liberado. \nMesmo dia UTC: pelo menos uma sessão de ginástica e uma sessão de treino para +0,5% de combo de crime extra. \nO progresso não é reiniciado a menos que a equipe aplique uma penalidade pesada.';
 
   @override
   String get helpTopicTrainingHubTips =>
-      'Programe ambas as trilhas diariamente: pequenos passos se acumulam em uma vantagem clara nos crimes.\nRevise os crimes onde você mais falha: força e precisão se complementam – eles não são a mesma estatística.';
+      'Programe todas as trilhas diariamente: pequenos passos se acumulam em uma vantagem clara nos crimes. \nUse o Smart train para sessões rápidas; treine trilhas individuais quando quiser priorizar uma estatística.';
 
   @override
   String territoryCapsLine(

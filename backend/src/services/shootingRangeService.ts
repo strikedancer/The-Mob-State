@@ -1,5 +1,6 @@
 import prisma from '../lib/prisma';
 import { applyVipTimeoutReductionMs, isVipStatusActive } from './vipBenefitsService';
+import { checkIfJailed } from './policeService';
 
 const MAX_SESSIONS = 100;
 const COOLDOWN_MS = 60 * 60 * 1000; // 1 hour
@@ -30,7 +31,9 @@ class ShootingRangeService {
     const lastTrainedAt = stats?.lastTrainedAt || null;
     const cooldownMs = applyVipTimeoutReductionMs(COOLDOWN_MS, isVipStatusActive(player));
     const nextTrainAt = lastTrainedAt ? new Date(lastTrainedAt.getTime() + cooldownMs) : null;
-    const canTrain = !nextTrainAt || nextTrainAt.getTime() <= Date.now();
+    const remainingJailTime = await checkIfJailed(playerId);
+    const canTrain =
+      remainingJailTime <= 0 && (!nextTrainAt || nextTrainAt.getTime() <= Date.now());
 
     const hitlistAccuracy = Number(
       Math.min(0.9, 0.5 + (sessionsCompleted / MAX_SESSIONS) * 0.4).toFixed(4),
@@ -43,10 +46,17 @@ class ShootingRangeService {
       lastTrainedAt,
       nextTrainAt,
       canTrain,
+      jailed: remainingJailTime > 0,
+      jailTimeRemaining: remainingJailTime,
     };
   }
 
   async train(playerId: number) {
+    const remainingJailTime = await checkIfJailed(playerId);
+    if (remainingJailTime > 0) {
+      return { success: false as const, error: 'JAILED' as const, remainingTime: remainingJailTime };
+    }
+
     const [stats, player] = await Promise.all([
       prisma.shootingRangeStats.findUnique({
         where: { playerId },

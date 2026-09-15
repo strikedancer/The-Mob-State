@@ -1,5 +1,6 @@
 import express from 'express';
 import { authenticate } from '../middleware/authenticate';
+import { requireNotJailed } from '../middleware/requireNotJailed';
 import backpackService from '../services/backpackService';
 import { worldEventService } from '../services/worldEventService';
 
@@ -95,7 +96,7 @@ router.get('/capacity', authenticate, async (req, res) => {
  * POST /backpacks/purchase/:backpackId
  * Purchase a backpack
  */
-router.post('/purchase/:backpackId', authenticate, async (req, res) => {
+router.post('/purchase/:backpackId', authenticate, requireNotJailed, async (req, res) => {
   try {
     const playerId = (req as any).player.id;
     const backpackId = req.params.backpackId;
@@ -135,7 +136,7 @@ router.post('/purchase/:backpackId', authenticate, async (req, res) => {
  * POST /backpacks/upgrade/:backpackId
  * Upgrade to a better backpack
  */
-router.post('/upgrade/:backpackId', authenticate, async (req, res) => {
+router.post('/upgrade/:backpackId', authenticate, requireNotJailed, async (req, res) => {
   try {
     const playerId = (req as any).player.id;
     const backpackId = req.params.backpackId;

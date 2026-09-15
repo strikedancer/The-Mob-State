@@ -1,5 +1,6 @@
 import express, { Response } from 'express';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
+import { requireNotJailed } from '../middleware/requireNotJailed';
 import drugService from '../services/drugService';
 import { drugSmugglingService } from '../services/drugSmugglingService';
 import { gameEventService } from '../services/gameEventService';
@@ -91,7 +92,7 @@ router.post('/materials/transfer', authenticate, async (req: AuthRequest, res: R
  * @desc    Buy production materials
  * @access  Private
  */
-router.post('/materials/buy/:materialId', authenticate, async (req: AuthRequest, res: Response) => {
+router.post('/materials/buy/:materialId', authenticate, requireNotJailed, async (req: AuthRequest, res: Response) => {
   try {
     const { materialId } = req.params;
     const { quantity } = req.body;
@@ -122,7 +123,7 @@ router.post('/materials/buy/:materialId', authenticate, async (req: AuthRequest,
  * @desc    VIP quick-buy all missing materials for one drug batch
  * @access  Private
  */
-router.post('/materials/buy-missing', authenticate, async (req: AuthRequest, res: Response) => {
+router.post('/materials/buy-missing', authenticate, requireNotJailed, async (req: AuthRequest, res: Response) => {
   try {
     const { drugId } = req.body;
 

@@ -7,6 +7,8 @@ import '../providers/auth_provider.dart';
 import '../models/vehicle.dart';
 import '../models/drug_models.dart';
 import '../l10n/app_localizations.dart';
+import '../services/jail_service.dart';
+import '../widgets/jail_screen.dart';
 import 'backpack_shop_screen.dart';
 import 'materials_shop_screen.dart';
 import 'weapons_market_screen.dart';
@@ -59,6 +61,8 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
   String? _filterVehicleType;
   double _minPrice = 0;
   double _maxPrice = 1000000;
+  int? _jailTime;
+  final JailService _jailService = JailService();
 
   @override
   void initState() {
@@ -93,6 +97,16 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
   }
 
   Future<void> _loadData() async {
+    final jailTime = await _jailService.checkJailStatus();
+    if (!mounted) return;
+    if (jailTime > 0) {
+      setState(() => _jailTime = jailTime);
+      return;
+    }
+    if (_jailTime != null) {
+      setState(() => _jailTime = null);
+    }
+
     final vehicleProvider = Provider.of<VehicleProvider>(
       context,
       listen: false,
@@ -373,7 +387,19 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
 
   Widget _buildPageInfoChild(BuildContext context) {
     final vehicleProvider = Provider.of<VehicleProvider>(context);
+    final authProvider = Provider.of<AuthProvider>(context);
     final l10n = AppLocalizations.of(context)!;
+    if (_jailTime != null && _jailTime! > 0) {
+      return JailOverlay(
+        embedded: widget.embedded,
+        remainingSeconds: _jailTime!,
+        wantedLevel: authProvider.currentPlayer?.wantedLevel,
+        onReleased: () {
+          setState(() => _jailTime = null);
+          _loadData();
+        },
+      );
+    }
     final showMarketFilter =
         _tabController.index == BlackMarketScreen.tabMarketplace ||
         _tabController.index == BlackMarketScreen.tabMyListings;

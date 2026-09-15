@@ -1,5 +1,6 @@
 import { Router, Response } from 'express';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
+import { requireNotJailed } from '../middleware/requireNotJailed';
 import toolService from '../services/toolService';
 import backpackService from '../services/backpackService';
 import prisma from '../lib/prisma';
@@ -42,7 +43,7 @@ router.get('/inventory', authenticate, async (req: AuthRequest, res: Response) =
  * POST /tools/buy/:toolId
  * Buy a tool from the black market
  */
-router.post('/buy/:toolId', authenticate, async (req: AuthRequest, res: Response) => {
+router.post('/buy/:toolId', authenticate, requireNotJailed, async (req: AuthRequest, res: Response) => {
   const { toolId } = req.params;
 
   const result = await toolService.buyTool(req.player!.id, String(toolId));
@@ -92,7 +93,7 @@ router.post('/buy/:toolId', authenticate, async (req: AuthRequest, res: Response
  * POST /tools/repair/:toolId
  * Repair a tool to maximum durability
  */
-router.post('/repair/:toolId', authenticate, async (req: AuthRequest, res: Response) => {
+router.post('/repair/:toolId', authenticate, requireNotJailed, async (req: AuthRequest, res: Response) => {
   const { toolId } = req.params;
 
   const result = await toolService.repairTool(req.player!.id, String(toolId));

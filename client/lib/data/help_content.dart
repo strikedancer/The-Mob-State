@@ -49,11 +49,6 @@ const List<HelpTopic> helpTopics = [
     protocolPath: 'docs/module-protocols/messages.md',
   ),
   HelpTopic(
-    id: 'world-chat',
-    icon: Icons.public,
-    protocolPath: 'docs/module-protocols/global-chat.md',
-  ),
-  HelpTopic(
     id: 'inventory',
     icon: Icons.inventory,
     protocolPath: 'docs/module-protocols/inventory.md',
@@ -142,11 +137,6 @@ const List<HelpTopic> helpTopics = [
     id: 'garage',
     icon: Icons.directions_car,
     protocolPath: 'docs/module-protocols/garage.md',
-  ),
-  HelpTopic(
-    id: 'motor',
-    icon: Icons.two_wheeler,
-    protocolPath: 'docs/module-protocols/motor.md',
   ),
   HelpTopic(
     id: 'marina',

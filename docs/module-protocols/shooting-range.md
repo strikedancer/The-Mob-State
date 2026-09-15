@@ -25,6 +25,7 @@ Combat training loop, training status, payout or xp and cooldown pacing.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
+- Shooting-range train is blocked while jailed; the training hub still lets the player use the gym tracks.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.

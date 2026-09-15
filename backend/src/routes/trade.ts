@@ -6,6 +6,7 @@
 
 import express, { Request, Response, NextFunction } from 'express';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
+import { requireNotJailed } from '../middleware/requireNotJailed';
 import * as tradeService from '../services/tradeService';
 import { applyReputationAction } from '../services/reputationService';
 
@@ -77,7 +78,7 @@ router.get(
  * POST /trade/buy
  * Buy goods in current country (authenticated)
  */
-router.post('/buy', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
+router.post('/buy', authenticate, requireNotJailed, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const playerId = req.player?.id;
     if (!playerId) {
@@ -150,7 +151,7 @@ router.post('/buy', authenticate, async (req: AuthRequest, res: Response, next: 
  * POST /trade/sell
  * Sell goods in current country (authenticated)
  */
-router.post('/sell', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
+router.post('/sell', authenticate, requireNotJailed, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const playerId = req.player?.id;
     if (!playerId) {

@@ -5,6 +5,7 @@
 
 import { Router, Response } from 'express';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
+import { requireNotJailed } from '../middleware/requireNotJailed';
 import { blackMarketService } from '../services/blackMarketService';
 import { playerMarketplaceService } from '../services/playerMarketplaceService';
 
@@ -141,7 +142,7 @@ router.get('/my-listings', authenticate, async (req: AuthRequest, res: Response)
  * POST /market/list-tool
  * Body: { playerToolId: number, price: number }
  */
-router.post('/list-tool', authenticate, async (req: AuthRequest, res: Response) => {
+router.post('/list-tool', authenticate, requireNotJailed, async (req: AuthRequest, res: Response) => {
   try {
     const playerToolId = parsePositiveInt(req.body?.playerToolId);
     const price = parsePrice(req.body?.price);
@@ -187,7 +188,7 @@ router.post('/list-tool', authenticate, async (req: AuthRequest, res: Response) 
  * Body: { drugInventoryId: number, quantity: number, price: number }
  * Escrows grams out of the seller's drug inventory until sold or delisted.
  */
-router.post('/list-drug', authenticate, async (req: AuthRequest, res: Response) => {
+router.post('/list-drug', authenticate, requireNotJailed, async (req: AuthRequest, res: Response) => {
   try {
     const drugInventoryId = parsePositiveInt(req.body?.drugInventoryId);
     const quantity = parsePositiveInt(req.body?.quantity);
@@ -242,7 +243,7 @@ router.post('/list-drug', authenticate, async (req: AuthRequest, res: Response) 
  * Body: { assetSymbol: string, quantity: number|string, price: number }
  * Escrows a decimal amount out of the seller's holdings until sold or delisted.
  */
-router.post('/list-crypto', authenticate, async (req: AuthRequest, res: Response) => {
+router.post('/list-crypto', authenticate, requireNotJailed, async (req: AuthRequest, res: Response) => {
   try {
     const assetSymbol = String(req.body?.assetSymbol ?? '').trim().toUpperCase();
     const quantity = Number(req.body?.quantity);
@@ -297,7 +298,7 @@ router.post('/list-crypto', authenticate, async (req: AuthRequest, res: Response
  * Body: { inventoryId: number, quantity: number, price: number }
  * Escrows units out of the seller's trade inventory until sold or delisted.
  */
-router.post('/list-trade-good', authenticate, async (req: AuthRequest, res: Response) => {
+router.post('/list-trade-good', authenticate, requireNotJailed, async (req: AuthRequest, res: Response) => {
   try {
     const inventoryId = parsePositiveInt(req.body?.inventoryId);
     const quantity = parsePositiveInt(req.body?.quantity);
@@ -352,7 +353,7 @@ router.post('/list-trade-good', authenticate, async (req: AuthRequest, res: Resp
  * Body: { eventItemId: number, quantity: number, price: number }
  * Escrows transferable event collectables until sold or delisted.
  */
-router.post('/list-event-item', authenticate, async (req: AuthRequest, res: Response) => {
+router.post('/list-event-item', authenticate, requireNotJailed, async (req: AuthRequest, res: Response) => {
   try {
     const eventItemId = parsePositiveInt(req.body?.eventItemId);
     const quantity = parsePositiveInt(req.body?.quantity);
@@ -406,7 +407,7 @@ router.post('/list-event-item', authenticate, async (req: AuthRequest, res: Resp
  * POST /market/delist-item/:listingId
  * Cancels a player market listing (non-vehicle) and returns any escrow.
  */
-router.post('/delist-item/:listingId', authenticate, async (req: AuthRequest, res: Response) => {
+router.post('/delist-item/:listingId', authenticate, requireNotJailed, async (req: AuthRequest, res: Response) => {
   try {
     const listingId = parseInt(req.params.listingId as string, 10);
     if (!Number.isFinite(listingId)) {
@@ -460,7 +461,7 @@ router.post('/delist-item/:listingId', authenticate, async (req: AuthRequest, re
  * POST /market/buy-item/:listingId
  * Purchase a non-vehicle listing (tool, drug lot, crypto lot or trade good lot).
  */
-router.post('/buy-item/:listingId', authenticate, async (req: AuthRequest, res: Response) => {
+router.post('/buy-item/:listingId', authenticate, requireNotJailed, async (req: AuthRequest, res: Response) => {
   try {
     const listingId = parseInt(req.params.listingId as string, 10);
     if (!Number.isFinite(listingId)) {
@@ -525,7 +526,7 @@ router.post('/buy-item/:listingId', authenticate, async (req: AuthRequest, res: 
  * POST /market/list/:inventoryId
  * List a vehicle for sale on the market
  */
-router.post('/list/:inventoryId', authenticate, async (req: AuthRequest, res: Response) => {
+router.post('/list/:inventoryId', authenticate, requireNotJailed, async (req: AuthRequest, res: Response) => {
   try {
     const inventoryId = parseInt(req.params.inventoryId as string);
     const { askingPrice } = req.body;
@@ -610,7 +611,7 @@ router.post('/list/:inventoryId', authenticate, async (req: AuthRequest, res: Re
  * POST /market/delist/:inventoryId
  * Remove vehicle from market listing
  */
-router.post('/delist/:inventoryId', authenticate, async (req: AuthRequest, res: Response) => {
+router.post('/delist/:inventoryId', authenticate, requireNotJailed, async (req: AuthRequest, res: Response) => {
   try {
     const inventoryId = parseInt(req.params.inventoryId as string);
 
@@ -666,7 +667,7 @@ router.post('/delist/:inventoryId', authenticate, async (req: AuthRequest, res: 
  * POST /market/buy/:inventoryId
  * Buy a vehicle from the market
  */
-router.post('/buy/:inventoryId', authenticate, async (req: AuthRequest, res: Response) => {
+router.post('/buy/:inventoryId', authenticate, requireNotJailed, async (req: AuthRequest, res: Response) => {
   try {
     const inventoryId = parseInt(req.params.inventoryId as string);
 

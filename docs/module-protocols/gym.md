@@ -31,6 +31,7 @@ Physical stat training, gym status, training cooldown and long-term combat growt
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
+- Gym train stays available while the player is jailed (strength / speed / stamina).
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.

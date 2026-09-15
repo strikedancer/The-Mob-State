@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../l10n/app_localizations.dart';
 import '../services/api_client.dart';
+import '../services/jail_service.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/game_page_info.dart';
 import '../widgets/empire_page_hero.dart';
@@ -43,6 +44,8 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
   Map<String, dynamic>? _shootingStatus;
   bool _comboActive = false;
   double _comboBonusFraction = 0;
+  int _jailTimeRemaining = 0;
+  final JailService _jailService = JailService();
 
   Timer? _tickTimer;
   DateTime _now = DateTime.now();
@@ -53,7 +56,17 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
     _loadAll();
     _tickTimer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (!mounted) return;
-      setState(() => _now = DateTime.now());
+      final wasJailed = _jailTimeRemaining > 0;
+      setState(() {
+        _now = DateTime.now();
+        if (_jailTimeRemaining > 0) {
+          _jailTimeRemaining -= 1;
+        }
+      });
+      if (wasJailed && _jailTimeRemaining <= 0) {
+        _loadAll(showFullPageLoader: false);
+        return;
+      }
       _maybeRefreshOnCooldownEnd();
     });
   }
@@ -77,11 +90,21 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
         final comboFrac =
             (combo?['bonusFraction'] as num?)?.toDouble() ?? 0.0;
         final comboOn = combo?['active'] == true && comboFrac > 0;
+        final shooting = data?['shootingRange'] as Map<String, dynamic>?;
+        var jailRemaining =
+            (data?['jailTimeRemaining'] as num?)?.toInt() ??
+            (shooting?['jailTimeRemaining'] as num?)?.toInt() ??
+            0;
+        if (jailRemaining <= 0 && shooting?['jailed'] == true) {
+          jailRemaining = await _jailService.checkJailStatus();
+        }
+        if (!mounted) return;
         setState(() {
           _gymStatus = data?['gym'] as Map<String, dynamic>?;
-          _shootingStatus = data?['shootingRange'] as Map<String, dynamic>?;
+          _shootingStatus = shooting;
           _comboActive = comboOn;
           _comboBonusFraction = comboFrac;
+          _jailTimeRemaining = jailRemaining;
           _isLoading = false;
           _now = DateTime.now();
         });
@@ -98,11 +121,18 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
       if (!mounted) return;
       final gymData = jsonDecode(results[0].body) as Map<String, dynamic>?;
       final shootData = jsonDecode(results[1].body) as Map<String, dynamic>?;
+      final shooting = shootData?['status'] as Map<String, dynamic>?;
+      var jailRemaining = (shooting?['jailTimeRemaining'] as num?)?.toInt() ?? 0;
+      if (jailRemaining <= 0) {
+        jailRemaining = await _jailService.checkJailStatus();
+      }
+      if (!mounted) return;
       setState(() {
         _gymStatus = gymData?['status'] as Map<String, dynamic>?;
-        _shootingStatus = shootData?['status'] as Map<String, dynamic>?;
+        _shootingStatus = shooting;
         _comboActive = false;
         _comboBonusFraction = 0;
+        _jailTimeRemaining = jailRemaining;
         _isLoading = false;
         _now = DateTime.now();
       });
@@ -166,6 +196,10 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
     Map<String, dynamic>? data,
   ) {
     if (data == null) return (null, null);
+    if (data['event']?.toString() == 'error.jailed' ||
+        data['error']?.toString() == 'JAILED') {
+      return ('JAILED', null);
+    }
     final reason = data['error']?.toString();
     final raw = data['nextTrainAt']?.toString();
     return (reason, _parseAt(raw));
@@ -291,6 +325,9 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
         final label =
             nextAt != null ? DateFormat('HH:mm').format(nextAt) : '-';
         return l10n?.shootingCooldownLabel(label) ?? 'Next session at: $label';
+      case 'JAILED':
+        return l10n?.trainingHubShootingJailed ??
+            'The shooting range is closed while you are in jail.';
       default:
         return data?['message']?.toString() ??
             (l10n?.unknownError ?? 'Error');
@@ -704,7 +741,9 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
     final hitlistPct =
         (((status['hitlistAccuracy'] as num?) ?? 0) * 100).toStringAsFixed(1);
     final nextTrainAt = _parseAt(status['nextTrainAt']?.toString());
-    final canTrain = status['canTrain'] == true;
+    final jailed =
+        _jailTimeRemaining > 0 || status['jailed'] == true;
+    final canTrain = !jailed && status['canTrain'] == true;
     final progress = (sessions as num) / 100.0;
     const maxBonus = 10.0;
 
@@ -808,14 +847,25 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
                 Row(
                   children: [
                     Icon(
-                      canTrain ? Icons.check_circle : Icons.schedule,
-                      color: canTrain ? Colors.green : Colors.orange,
+                      jailed
+                          ? Icons.lock
+                          : canTrain
+                              ? Icons.check_circle
+                              : Icons.schedule,
+                      color: jailed
+                          ? Colors.orange
+                          : canTrain
+                              ? Colors.green
+                              : Colors.orange,
                       size: 20,
                     ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        canTrain
+                        jailed
+                            ? (l10n?.trainingHubShootingJailed ??
+                                'The shooting range is closed while you are in jail.')
+                            : canTrain
                             ? (l10n?.shootingReadyToTrain ?? 'Ready to train')
                             : (l10n?.shootingTrainingCooldownTitle ??
                                 'Cooldown'),
@@ -827,7 +877,14 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
                     ),
                   ],
                 ),
-                if (!canTrain) ...[
+                if (jailed) ...[
+                  const SizedBox(height: 6),
+                  Text(
+                    l10n?.trainingHubGymAllowedInJail ??
+                        'You can still train strength, speed and stamina at the gym.',
+                    style: TextStyle(color: Colors.orange.shade200, fontSize: 12),
+                  ),
+                ] else if (!canTrain) ...[
                   const SizedBox(height: 6),
                   Text(
                     _formatCountdown(nextTrainAt, l10n),

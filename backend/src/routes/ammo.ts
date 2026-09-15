@@ -1,5 +1,6 @@
 import { Router, Response } from 'express';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
+import { requireNotJailed } from '../middleware/requireNotJailed';
 import { ammoService } from '../services/ammoService';
 import prisma from '../lib/prisma';
 
@@ -65,7 +66,7 @@ router.get('/market', authenticate, async (req: AuthRequest, res: Response) => {
  * Buy ammo boxes
  * Body: { ammoType: string, boxes: number }
  */
-router.post('/buy', authenticate, async (req: AuthRequest, res: Response) => {
+router.post('/buy', authenticate, requireNotJailed, async (req: AuthRequest, res: Response) => {
   const { ammoType, boxes } = req.body;
 
   if (!ammoType || !boxes) {
@@ -160,7 +161,7 @@ router.post('/buy', authenticate, async (req: AuthRequest, res: Response) => {
  * Sell ammo
  * Body: { ammoType: string, quantity: number }
  */
-router.post('/sell', authenticate, async (req: AuthRequest, res: Response) => {
+router.post('/sell', authenticate, requireNotJailed, async (req: AuthRequest, res: Response) => {
   const { ammoType, quantity } = req.body;
 
   if (!ammoType || !quantity) {

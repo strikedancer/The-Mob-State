@@ -557,7 +557,7 @@
     "summaryNl": "Één scherm: eerst contraband-handelswaren (bloemen, elektronica, diamanten, wapens, farmaceutica), daarna de tab Marktplaats voor P2P-verkoop van voertuigen en gedragen gereedschap, plus rugzakken, grondstoffen, wapenmarkt en munitie.",
     "summaryEn": "One hub: contraband trade goods first (flowers, electronics, diamonds, weapons, pharmaceuticals), then the Marketplace tab for player-to-player vehicles and carried tools, plus backpacks, materials, weapons market and ammo.",
     "howNl": [
-      "Tab Handelswaren: één doorlopende lijst — eerst de vijf smokkelgoederen (prijs, limiet, risicochips: bederf, volatiliteit, tripschade, inbeslagneming), daaronder je inventaris om te verkopen. Koop/verkoop via /trade-API; bij gedeeltelijke laadfout toont de UI een banner.",
+      "Tab Handelswaren: één doorlopende lijst — eerst de vijf smokkelgoederen (prijs, limiet, risicochips: bederf, volatiliteit, tripschade, inbeslagneming), daaronder je inventaris om te verkopen. Koop/verkoop via /trade-API; bij gedeeltelijke laadfout toont de UI een banner. De straatprijs per goed per land blijft één uur gelijk, dus de koopprijs die je ziet is de prijs die je betaalt. Gekocht voor op je voorraad is je echte gemiddelde inkoop, niet de live straatprijs.",
       "De zwarte markt is onderverdeeld in submarkten: Materials (grondstoffen), Weapons (vuurwapens en messen), Ammo (munitie per kaliber), Vehicles (illegale voertuigen).",
       "Prijzen en beschikbaarheid variëren sterk per land en per tijdstip. Een listing kan snel leeg zijn.",
       "Zwarte markt transacties laten geen officieel spoor achter maar verhogen FBI Heat bij grote aankopen.",
@@ -565,10 +565,11 @@
       "Filters per categorie (type, land, prijs, beschikbaarheid) helpen je snel de juiste listing te vinden.",
       "Je kunt zelf listings plaatsen als verkoper, inclusief prijs en hoeveelheid. Andere spelers kopen dan van jou.",
       "Listings verlopen na bepaalde tijd als ze niet worden gekocht. Monitor je eigen aanbiedingen via je profiel.",
-      "Tab Marktplaats: verkoop aan andere spelers met contant geld. Je ziet te koop staande voertuigen en gedragen gereedschappen in één lijst (filters op land en prijs). Gebruik Verkoop item om gereedschap te plaatsen dat je nu draagt; onder Mijn advertenties staan je actieve voertuig- en tool-advertenties. Je kunt je eigen advertentie niet kopen. P2P-verkoop van drugs, crypto of speciale event-beloningen zit hier (nog) niet in."
+      "Tab Marktplaats: verkoop aan andere spelers met contant geld. Je ziet te koop staande voertuigen en gedragen gereedschappen in één lijst (filters op land en prijs). Gebruik Verkoop item om gereedschap te plaatsen dat je nu draagt; onder Mijn advertenties staan je actieve voertuig- en tool-advertenties. Je kunt je eigen advertentie niet kopen. P2P-verkoop van drugs, crypto of speciale event-beloningen zit hier (nog) niet in.",
+      "Zolang je in de gevangenis zit is de hele Zwarte Markt dicht. Je kunt daar niet kopen, verkopen of advertenties plaatsen tot je vrijkomt."
     ],
     "howEn": [
-      "Trade goods tab: one continuous scroll — first the five contraband lines (pricing, caps, risk chips: spoilage, volatility, trip damage, seizure), then your inventory to sell from. Buy/sell uses the /trade API; partial load failures show a warning banner.",
+      "Trade goods tab: one continuous scroll — first the five contraband lines (pricing, caps, risk chips: spoilage, volatility, trip damage, seizure), then your inventory to sell from. Buy/sell uses the /trade API; partial load failures show a warning banner. Street prices for each good in a country stay the same for one hour, so the listed buy price is what you pay. Bought-for on your stock is your real average cost, not the live street price.",
       "The black market is divided into submarkets: Materials (raw materials), Weapons (firearms and knives), Ammo (ammo per caliber), Vehicles (illegal vehicles).",
       "Prices and availability vary heavily by country and time. A listing can sell out fast.",
       "Black market transactions leave no official trail but increase FBI Heat for large purchases.",
@@ -576,7 +577,8 @@
       "Filters by category (type, country, price, availability) help you quickly find the right listing.",
       "You can post your own listings as a seller, including price and quantity. Other players buy from you.",
       "Listings expire after a certain time if unsold. Monitor your own offers via your profile.",
-      "Marketplace tab: peer-to-peer cash trades. You’ll see other players’ vehicles for sale and carried tools in one feed (country + price filters). Tap Sell item to list a tool you are carrying; My listings shows your active vehicle and tool ads. You cannot buy your own ad. Selling drugs, crypto or special event rewards player-to-player here is not available yet."
+      "Marketplace tab: peer-to-peer cash trades. You’ll see other players’ vehicles for sale and carried tools in one feed (country + price filters). Tap Sell item to list a tool you are carrying; My listings shows your active vehicle and tool ads. You cannot buy your own ad. Selling drugs, crypto or special event rewards player-to-player here is not available yet.",
+      "While you are in jail the whole Black Market is closed. You cannot buy, sell or list there until you are released."
     ],
     "tipsNl": [
       "Handelswaren-tab: trek om te verversen als data gedeeltelijk faalt; let op risicochips en Wanted voor smokkelroutes.",
@@ -1032,10 +1034,12 @@
       "In de Gevangenis-list en de jail overlay kun je altijd jezelf vrijkopen met borg en ook zelf een uitbraakpoging doen zolang je nog vastzit.",
       "Crewleden kunnen je bezoeken en kleine voordelen geven (stats, moreel) terwijl je vastzit.",
       "Bij arrestatie ontvangen je vrienden en crewleden nu een pushmelding dat je bent opgepakt en op hulp wacht.",
+      "In de wereldchat komt ook een openbare Gevangenis-regel met je naam. Koopt of haalt een andere speler je eruit, dan staan beide namen erbij.",
       "Wapen- en armor-bezit wordt geconfisceerd bij arrest als je er geen legale dekking voor hebt.",
       "Rechtbank-optie: ga naar de rechtbank voor strafvermindering via advocaat (zie Rechtbank).",
       "Terwijl je vastzit lopen productie-timers (drugs, ammo-factory) gewoon door. Je empire werkt zonder je.",
-      "Je kunt het ziekenhuis niet bezoeken terwijl je vastzit. HP-herstel wacht tot je vrij bent."
+      "Je kunt het ziekenhuis niet bezoeken terwijl je vastzit. HP-herstel wacht tot je vrij bent.",
+      "Zolang je vastzit is de Zwarte Markt dicht: kopen, verkopen en advertenties plaatsen kan niet. Op het Trainingscircuit mag je wel kracht, snelheid en uithouding trainen; de schietbaan blijft dicht tot je vrijkomt."
     ],
     "howEn": [
       "After arrest a timer starts based on Wanted Level. Wanted Level 1 = short sentence (minutes), Wanted Level 5+ = hours in prison.",
@@ -1044,10 +1048,12 @@
       "In the Prison list and jail overlay you can always pay your own bail and also attempt your own escape while still jailed.",
       "Crew members can visit you and provide small benefits (stats, morale) while you are locked up.",
       "On arrest your friends and crew members now receive a push notification that you were caught and are waiting for help.",
+      "World chat also posts a public Prison line with your name. If another player pays your bail or breaks you out, both names appear there.",
       "Weapons and armor are confiscated on arrest if you have no legal cover for them.",
       "Court option: go to court for a sentence reduction via a lawyer (see Court).",
       "While locked up production timers (drugs, ammo factory) keep running. Your empire works without you.",
-      "You cannot visit the hospital while locked up. HP recovery waits until you are free."
+      "You cannot visit the hospital while locked up. HP recovery waits until you are free.",
+      "While jailed the Black Market is closed: you cannot buy, sell or list there. On the Training hub you can still train strength, speed and stamina; the shooting range stays closed until you are released."
     ],
     "tipsNl": [
       "Controleer borg direct na arrestatie: de knop hoort altijd zichtbaar te blijven zolang je nog vastzit, ook als je Wanted Level al is teruggelopen.",
@@ -1294,6 +1300,7 @@
       "Sportschool: drie lijnen — kracht (+4%), snelheid (+2%), uithouding (+2%) — tot maximaal +8% gecombineerd (100 sessies per lijn). Cooldown 1 uur per lijn (VIP kan verkorten).",
       "Slim trainen kiest automatisch de eerste lijn die klaar is.",
       "Schietschool: nauwkeurigheidsbonus tot +10% (100 sessies). Cooldown 1 uur (VIP kan verkorten). Hitlist-nauwkeurigheid loopt mee met voortgang.",
+      "Zolang je vastzit mag je in de sportschool nog kracht, snelheid en uithouding trainen. De schietbaan blijft dicht tot je vrijkomt.",
       "Zelfde UTC-dag: minstens één sportschool- én schietbaansessie voor +0,5% extra combo op misdaden.",
       "Voortgang reset niet, tenzij staff een zware correctie toepast."
     ],
@@ -1301,6 +1308,7 @@
       "Gym: three tracks — strength (+4%), speed (+2%), stamina (+2%) — up to +8% combined (100 sessions each). 1-hour cooldown per track (VIP may shorten).",
       "Smart train picks the first track that is ready.",
       "Shooting range: accuracy bonus up to +10% (100 sessions). 1-hour cooldown. Hitlist accuracy scales with range progress.",
+      "While jailed you can still train strength, speed and stamina at the gym. The shooting range stays closed until you are released.",
       "Same UTC day: at least one gym and one range session for +0.5% extra crime combo.",
       "Progress does not reset unless staff applies a heavy penalty."
     ],
