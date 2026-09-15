@@ -16,6 +16,7 @@ import '../utils/avatar_helper.dart';
 import '../utils/country_helper.dart';
 import '../utils/inventory_slot_split.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/inventory_crime_vehicle_slot.dart';
 import '../widgets/inventory_slot.dart';
 
 const _storageKinds = {
@@ -1300,15 +1301,21 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
                   ],
                 ),
                 const SizedBox(width: 12),
-                Padding(
-                  padding: const EdgeInsets.only(top: 18),
-                  child: CircleAvatar(
-                    radius: 48,
-                    backgroundImage: AvatarHelper.getAvatarImageProvider(
-                      avatar,
-                      activePortraitPath: portrait,
+                Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 18),
+                      child: CircleAvatar(
+                        radius: 48,
+                        backgroundImage: AvatarHelper.getAvatarImageProvider(
+                          avatar,
+                          activePortraitPath: portrait,
+                        ),
+                      ),
                     ),
-                  ),
+                    const SizedBox(height: 8),
+                    const InventoryCrimeVehicleSlot(),
+                  ],
                 ),
                 const SizedBox(width: 12),
                 _labeledEquipSlot(

@@ -516,11 +516,11 @@ class _GarageScreenState extends State<GarageScreen> {
       onSell: () => _sellVehicle(provider, vehicle.id),
       onScrap: () => _scrapVehicle(provider, vehicle.id),
       onList: () => _showListOnMarketDialog(provider, vehicle),
-      onSelectForCrimes: () => _selectForCrimes(vehicle),
-      onDeselectForCrimes: _selectedVehicleId == vehicle.id
+      onSelectForCrimes: _isMotorTab ? () => _selectForCrimes(vehicle) : null,
+      onDeselectForCrimes: _isMotorTab && _selectedVehicleId == vehicle.id
           ? _deselectForCrimes
           : null,
-      isSelectedForCrimes: _selectedVehicleId == vehicle.id,
+      isSelectedForCrimes: _isMotorTab && _selectedVehicleId == vehicle.id,
     );
   }
 
@@ -1022,11 +1022,14 @@ class _GarageScreenState extends State<GarageScreen> {
               onSell: () => _sellVehicle(provider, vehicle.id),
               onScrap: () => _scrapVehicle(provider, vehicle.id),
               onList: () => _showListOnMarketDialog(provider, vehicle),
-              onSelectForCrimes: () => _selectForCrimes(vehicle),
-              onDeselectForCrimes: _selectedVehicleId == vehicle.id
+              onSelectForCrimes: _isMotorTab
+                  ? () => _selectForCrimes(vehicle)
+                  : null,
+              onDeselectForCrimes: _isMotorTab && _selectedVehicleId == vehicle.id
                   ? _deselectForCrimes
                   : null,
-              isSelectedForCrimes: _selectedVehicleId == vehicle.id,
+              isSelectedForCrimes:
+                  _isMotorTab && _selectedVehicleId == vehicle.id,
             );
           }
 

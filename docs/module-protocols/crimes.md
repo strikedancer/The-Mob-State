@@ -47,7 +47,7 @@ Illegal action loop with rewards, failures, jail risk, cooldowns and supporting 
 - Drug requirement thresholds must stay aligned with gram-based drug inventory quantities; do not surface legacy `x` units in requirement feedback.
 - Requirement failures for vehicle, weapon selection, weapon suitability and ammo must surface the concrete reason instead of collapsing into a generic internal error.
 - If a crime requires a weapon, the attempt looks at both worn weapon slots (crime slot and second slot) and automatically uses the best eligible weapon for that crime (type, min damage/intimidation, ammo, then highest combat stats/condition). A backpack-only gun does not count. Catalog SMGs (`smg_compact`, `smg_suppressed`) have type `automatic`; crimes that list `smg` must treat that as the same family. Jobs that list SMG must keep `minDamage` at or below compact SMG damage (55) so a worn machine gun actually qualifies.
-- The Crimes screen must show both worn slots and, per crime card, which weapon will be used. Changing worn weapons happens in Inventory.
+- The Crimes screen must show both worn slots and, per crime card, which weapon will be used. Changing worn weapons happens in Inventory. The crime **car** is also chosen there (paper-doll slot). Boats stay on the Marina card; motorcycles stay on the motorcycle garage card.
 - When a player is arrested after a weapon-based crime, the used crime weapon must be confiscated consistently with the arrest consequences shown to the player; if that was the last copy, the saved slot selection for that weapon must no longer remain active.
 - A crime that ends in arrest may not still surface as a clean success result in the UI; if police/FBI catch the player after the attempt, the final response must resolve as an arrest outcome with consistent vehicle/weapon confiscation messaging.
 - Crime-specific special effects must be explicit in player feedback; if a crime wipes or alters judicial history, the success message must state that effect clearly.
@@ -72,6 +72,7 @@ Illegal action loop with rewards, failures, jail risk, cooldowns and supporting 
 - Verify the success result overlay is readable on mobile and desktop (gold title, white crime name, cash/XP values, gold Continue) and matches the dashboard noir/gold shell.
 - Verify weapon-required crimes pick the better of the two worn slots (for example a handgun crime uses the handgun, a rifle crime uses the rifle), treat worn SMGs (`automatic`) as `smg`, block cleanly when neither slot is suitable, and stay synced with Inventory after refresh/navigation.
 - Verify vehicle-required crimes only accept the selected crime vehicle when that vehicle is actually available in the player's current country and not in transit or market-listed.
+- Verify a crime car is assigned from Inventory (not from a garage car card) and still used by `GET /garage/crime-vehicle`.
 - Verify an arrest during a weapon-based crime confiscates the used weapon, clears the saved selection when no copy remains, and tells the player about the confiscation in the crime result feedback.
 - Opening Crimes on a slow/mobile connection must not sit on a full-page load error after one timeout; the client retries once and keeps a Retry button.
 - After pull-to-refresh, the training bonus strip (if shown) matches hub training progress for strength and accuracy.

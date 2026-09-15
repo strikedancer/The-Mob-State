@@ -9,7 +9,7 @@ Vehicle inventory, steal flow, sorting, condition, fuel, timed repairs, country 
 ## Primary Frontend Entry
 
 - client/lib/screens/vehicle_heist_screen.dart (tab: Auto)
-- client/lib/screens/garage_screen.dart (embedded tab content)
+- client/lib/screens/garage_screen.dart (embedded tab content). Crime-car assignment for **cars** is on the Inventory paper doll (`client/lib/widgets/inventory_crime_vehicle_slot.dart`), not on car cards. Motorcycle garage and marina boats keep Select/Deselect on the vehicle card.
 
 ## Change Rules
 
@@ -97,6 +97,7 @@ Vehicle inventory, steal flow, sorting, condition, fuel, timed repairs, country 
 - Start a repair and verify the vehicle becomes temporarily unavailable until the timer completes.
 - Verify repair concurrency cap shared across car/motorcycle/boat: non-VIP can start only 1 active repair, VIP can start up to 2.
 - Confirm transport actions are no longer offered from Garage and that players are pointed to Smuggling when relevant.
+- Verify car cards have no Select/Deselect for crimes; the Inventory paper doll crime-car slot is the car assignment UI.
 - Verify event-only police cars/motorcycles only appear during active event windows.
 - Verify a vehicle theft that ends in arrest does not show a success message, places the player in jail, and confirms that the stolen vehicle was confiscated.
 

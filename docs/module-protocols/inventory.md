@@ -9,7 +9,7 @@ Carried items, storage, loadouts and equipment used by multiple modules.
 - Same screen opens from a house/warehouse via **Open storage** (`InventoryScreen(initialPropertyId: …)`)
 
 ## Paper-doll inventory
-- Center: player avatar, crime-weapon slot (`GET/POST /weapons/crime-weapon`), second-weapon slot (`GET/POST /weapons/secondary-weapon`) and worn vest (`GET /security/status`).
+- Center: player avatar, crime-weapon slot (`GET/POST /weapons/crime-weapon`), second-weapon slot (`GET/POST /weapons/secondary-weapon`), worn vest (`GET /security/status`) and crime-car slot (`GET/POST/DELETE /garage/crime-vehicle`). The crime car is chosen here, not on garage car cards. Only cars in the current country that are not in repair, in transit or listed for sale can be selected.
 - A player can wear two weapons at once (for example a handgun and a rifle). When a crime is committed, both worn slots are compared and the best eligible weapon for that crime is used automatically. Worn SMGs (catalog type `automatic`) count for crimes that ask for `smg`.
 - Worn weapons are hidden from the backpack grid and do not count toward backpack capacity. Unequipped extra copies still do.
 - Backpack grid shows `capacity` squares from `GET /tools/carried` slot meter, filled with carried tools, unequipped weapons, ammo, materials, **finished drugs** and **trade goods**. Occupied stacks split into physical cells the same way as property storage (trade **10 per square**), so 19 perfume fill two backpack squares (10 + 9).
@@ -23,7 +23,7 @@ Carried items, storage, loadouts and equipment used by multiple modules.
 - Stacks with quantity > 1 (ammo, materials, stacked weapons/tools) open a quantity dialog: move 1, move all, or a custom amount.
 - Transfers: weapons `POST /properties/storage/:id/weapons/deposit|withdraw` (house-to-body may send `equip: true`), body slots `POST/DELETE /weapons/crime-weapon` and `/weapons/secondary-weapon`, tools `POST /tools/transfer`, materials/drugs/trade `POST /properties/storage/:id/materials|drugs|trade/deposit|withdraw` (backpack ↔ that property only), ammo/armor `POST /properties/storage/:id/ammo|armor/deposit|withdraw`.
 - Invalid drop surfaces the server reason (`INVENTORY_FULL`, `STORAGE_FULL`, `WRONG_COUNTRY`, `STORAGE_TYPE_NOT_ALLOWED`, `ARMOR_ALREADY_EQUIPPED`).
-- Out of scope here: nightclub venue stock (unprefixed `drugs` keys), crew storage, garage vehicles, cash-drag.
+- Out of scope here: nightclub venue stock (unprefixed `drugs` keys), crew storage, garage vehicle management (steal/repair/sell), cash-drag. Crime-car selection lives on the paper doll.
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.
@@ -43,7 +43,7 @@ Carried items, storage, loadouts and equipment used by multiple modules.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
-- Shared equipment choices that other modules depend on, such as worn weapon slots, must stay visible and must remain in sync with the consuming gameplay screen.
+- Shared equipment choices that other modules depend on, such as worn weapon slots and the crime-car slot, must stay visible and must remain in sync with the consuming gameplay screen.
 - Inventory storage is **current-country only** and only the building opened via **Open storage**. Do not show a house picker or unplaced-stock grid on the Inventory menu.
 - `refreshInventorySlotUsage` retries MariaDB 1020 on `player.update` so backpack seize/travel/trade can finish when another request touched the same player row.
 - Paper-doll property grids use catalog capacity by upgrade level. A new house is **10** slots, not 100. The grid always has `capacity` squares; multi-slot stacks occupy one icon per slot. The backpack grid uses the same split against `GET /tools/carried` capacity.
@@ -65,6 +65,7 @@ Carried items, storage, loadouts and equipment used by multiple modules.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
 - Verify the selected crime weapon shown in Inventory matches the selection used on the Crimes screen and survives refresh/navigation correctly.
+- Verify the crime-car slot on the paper doll sets `POST /garage/crime-vehicle` and that garage car cards no longer show Select/Deselect.
 - Verify a player can wear two different weapons at once (crime slot + second slot) and that worn weapons do not consume backpack capacity.
 - Verify drag and tap-to-move between backpack and the Open-storage property grid, including materials/drugs/trade and a rejected drop (full, wrong country).
 - Verify Open storage from a house or warehouse opens this screen with that property selected, and that the Inventory menu itself does not offer a house dropdown.
