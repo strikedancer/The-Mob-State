@@ -13,7 +13,7 @@ const PLAYER_DELETE_WINDOW_MS = 10 * 60 * 1000;
 const RATE_KEY_ENABLED = 'GLOBAL_CHAT_ENABLED';
 const RATE_KEY_BLOCKLIST = 'GLOBAL_CHAT_EXTRA_BLOCKLIST';
 
-type ChatSource = 'game' | 'discord';
+type ChatSource = 'game' | 'discord' | 'system';
 
 export type GlobalChatPublicMessage = {
   id: number;
@@ -76,7 +76,7 @@ function toPublic(row: {
     id: row.id,
     playerId: row.playerId,
     displayName: row.displayName,
-    source: row.source === 'discord' ? 'discord' : 'game',
+    source: row.source === 'discord' ? 'discord' : row.source === 'system' ? 'system' : 'game',
     message: row.message,
     stickerId: row.stickerId,
     stickerEmoji: sticker?.emoji ?? null,
@@ -191,6 +191,28 @@ export const globalChatService = {
     });
   },
 
+  async sendSystemAnnouncement(
+    displayName: string,
+    message: string,
+  ): Promise<GlobalChatPublicMessage | null> {
+    if (!(await isGlobalChatEnabled())) {
+      return null;
+    }
+    const body = message.trim().slice(0, MAX_BODY);
+    if (!body) {
+      return null;
+    }
+    return persistAndFanout({
+      playerId: null,
+      displayName: displayName.trim().slice(0, 64) || 'The Mob State',
+      source: 'system',
+      message: body,
+      stickerId: null,
+      filtered: false,
+      mirrorToDiscord: true,
+    });
+  },
+
   async ingestDiscordMessage(input: {
     discordUserId: string;
     discordMessageId: string;
@@ -273,7 +295,7 @@ export const globalChatService = {
     if (!row || row.deletedAt) {
       throw Object.assign(new Error('GLOBAL_CHAT_NOT_FOUND'), { code: 'GLOBAL_CHAT_NOT_FOUND' });
     }
-    if (row.playerId === reporterId) {
+    if (row.playerId === reporterId || row.source === 'system') {
       throw Object.assign(new Error('GLOBAL_CHAT_FORBIDDEN'), { code: 'GLOBAL_CHAT_FORBIDDEN' });
     }
     await prisma.globalChatReport.create({

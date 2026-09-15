@@ -32,6 +32,8 @@ class GlobalChatMessage {
     );
   }
 
+  bool get isSystem => source == 'system';
+
   String get formattedTime {
     try {
       final dateTime = DateTime.parse(createdAt).toLocal();
