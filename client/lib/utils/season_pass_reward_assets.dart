@@ -1,3 +1,7 @@
+import '../l10n/app_localizations.dart';
+import 'tool_display_name.dart';
+import 'weapon_display_name.dart';
+
 /// Maps Season Pass / event reward JSON to display assets and labels.
 class SeasonPassRewardDisplay {
   const SeasonPassRewardDisplay({
@@ -98,6 +102,7 @@ SeasonPassRewardDisplay seasonPassRewardDisplay(
   required String xpLabel,
   String? ammoWithLabel,
   String? partsWithLabel,
+  AppLocalizations? l10n,
 }) {
   if (rewards == null || rewards.isEmpty) {
     return SeasonPassRewardDisplay(
@@ -129,7 +134,13 @@ SeasonPassRewardDisplay seasonPassRewardDisplay(
     );
   }
   if (hasWeapon) {
-    final name = _weaponLabel(weaponId, weaponLabel);
+    final name = l10n != null
+        ? localizedWeaponDisplayName(
+            l10n,
+            weaponId,
+            _weaponLabels[weaponId],
+          )
+        : _weaponLabel(weaponId, weaponLabel);
     return SeasonPassRewardDisplay(
       imagePath: weaponPath,
       label: name,
@@ -138,9 +149,12 @@ SeasonPassRewardDisplay seasonPassRewardDisplay(
     );
   }
   if (hasTool) {
+    final name = l10n != null
+        ? localizedToolName(l10n, toolId, _toolLabels[toolId])
+        : _toolLabel(toolId, partsLabel);
     return SeasonPassRewardDisplay(
       imagePath: 'images/ui/materials_inventory.png',
-      label: _toolLabel(toolId, partsLabel),
+      label: name,
       subtitle: cash > 0 ? formatCash(cash) : null,
       kind: SeasonPassRewardKind.parts,
     );

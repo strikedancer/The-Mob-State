@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import '../l10n/app_localizations.dart';
+import 'tool_display_name.dart';
+import 'weapon_display_name.dart';
 
 class GameEventPrizeTier {
   final int minRank;
@@ -36,18 +38,39 @@ class GameEventPrizeTier {
   List<String> extendedPrizeLines(AppLocalizations l10n) {
     final lines = <String>[];
     for (final a in ammo) {
-      lines.add(l10n.gameScreenPrizeAmmoLine(a.ammoType, a.quantity.toString()));
+      lines.add(
+        l10n.gameScreenPrizeAmmoLine(
+          localizedAmmoCaliber(a.ammoType),
+          a.quantity.toString(),
+        ),
+      );
     }
     for (final t in tools) {
-      lines.add(l10n.gameScreenPrizeToolLine(t.toolId, t.quantity.toString()));
+      lines.add(
+        l10n.gameScreenPrizeToolLine(
+          _localizedOrHumanized(
+            t.toolId,
+            localizedToolName(l10n, t.toolId, null),
+          ),
+          t.quantity.toString(),
+        ),
+      );
     }
     for (final w in weapons) {
       lines.add(
-        l10n.gameScreenPrizeWeaponLine(w.weaponId, w.quantity.toString()),
+        l10n.gameScreenPrizeWeaponLine(
+          _localizedOrHumanized(
+            w.weaponId,
+            localizedWeaponDisplayName(l10n, w.weaponId, null),
+          ),
+          w.quantity.toString(),
+        ),
       );
     }
     for (final v in vehicles) {
-      lines.add(l10n.gameScreenPrizeVehicleLine(v.vehicleId));
+      lines.add(
+        l10n.gameScreenPrizeVehicleLine(catalogIdFallbackLabel(v.vehicleId)),
+      );
     }
     if (carParts > 0) {
       lines.add(l10n.gameScreenPrizeCarParts(carParts.toString()));
@@ -213,8 +236,64 @@ String eventItemDisplayName(AppLocalizations l10n, String itemKey) {
     case 'event_badge_rival':
       return l10n.eventItemName_event_badge_rival;
     default:
-      return itemKey;
+      return catalogIdFallbackLabel(itemKey);
   }
+}
+
+/// Player-facing caliber, never a raw catalog code like `45acp`.
+String localizedAmmoCaliber(String ammoType) {
+  switch (ammoType) {
+    case '9mm':
+      return '9mm';
+    case '45acp':
+      return '.45 ACP';
+    case '12gauge':
+      return '12 Gauge';
+    case '556mm':
+      return '5.56mm';
+    case '762mm':
+      return '7.62mm';
+    case '308':
+      return '.308';
+    default:
+      return catalogIdFallbackLabel(ammoType);
+  }
+}
+
+/// Last-resort label when a catalog id has no l10n (`honda_nsx_street` → `Honda NSX Street`).
+String catalogIdFallbackLabel(String id) {
+  const acronyms = {
+    'gps',
+    'nsx',
+    'acp',
+    'smg',
+    'vip',
+    'atv',
+    'suv',
+    'gto',
+    'gt',
+  };
+  final parts = id
+      .split(RegExp(r'[_\-]+'))
+      .where((part) => part.isNotEmpty)
+      .map((part) {
+        final lower = part.toLowerCase();
+        if (acronyms.contains(lower)) return lower.toUpperCase();
+        if (part.length <= 3 && RegExp(r'^[A-Za-z0-9]+$').hasMatch(part)) {
+          return part.toUpperCase();
+        }
+        return '${part[0].toUpperCase()}${part.substring(1).toLowerCase()}';
+      });
+  final label = parts.join(' ').trim();
+  return label.isEmpty ? id : label;
+}
+
+String _localizedOrHumanized(String id, String localized) {
+  final trimmed = localized.trim();
+  if (trimmed.isEmpty || trimmed == id) {
+    return catalogIdFallbackLabel(id);
+  }
+  return trimmed;
 }
 
 String formatPrizeRankLabel(AppLocalizations l10n, int minRank, int maxRank) {

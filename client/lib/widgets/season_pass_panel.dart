@@ -310,6 +310,7 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
       partsWithLabel: l10n.seasonPassRewardPartsWith,
       bundleLabel: l10n.seasonPassRewardBundle,
       xpLabel: l10n.seasonPassRewardXp,
+      l10n: l10n,
     );
   }
 
