@@ -48,6 +48,7 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 - Smuggling routes must enforce a visible backend cooldown window (no infinite repeat spam), with remaining lock time exposed in stats payload for UI feedback.
 - Bar & Kitchen management (drinks/food stock + menu pricing) must show stock state, spoilage risk and pricing impact in NL+EN before confirmation.
 - Open venues can host **Midnight Races** rake in their country (`races.md`); this is not a nightclub screen feature, but club owners receive the rake when a meeting settles.
+- Weekly season ranking (`weekly-nightclub-season`) only ranks clubs with **week sales > €0**. Crowd/staff with idle €0 turnover must not take a place or payout. If nobody sold, there is no winner that week.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
@@ -70,6 +71,7 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 - Verify Operations Timeline shows mixed event types (sales, thefts, staffing, events) with clear severity labels.
 - Verify Buy from players toggle is off by default, and Inventory Aan club lists no clubs until an owner enables it.
 - Verify a same-country sale moves grams into club stock, pays the seller, and leaves ownProduction false.
+- Verify a club with €0 weekly sales is absent from the season board and receives no season cash; a week with no sales at any club pays nobody.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

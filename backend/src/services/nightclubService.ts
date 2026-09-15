@@ -513,7 +513,12 @@ class NightclubService {
       })
     );
 
-    return scored
+    const eligible = scored.filter((entry) => entry.weeklyRevenue > 0);
+    if (eligible.length === 0) {
+      return [];
+    }
+
+    return eligible
       .sort((a, b) => b.score - a.score)
       .slice(0, Math.max(1, Math.min(limit, 50)))
       .map((entry, index) => ({
@@ -582,6 +587,7 @@ class NightclubService {
       );
 
       for (const entry of leaderboard) {
+        if (entry.weeklyRevenue <= 0) continue;
         const rewardAmount = this.SEASON_REWARD_BY_RANK[entry.rank] ?? 0;
         if (rewardAmount <= 0) continue;
 

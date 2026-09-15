@@ -3291,7 +3291,10 @@ class _NightclubScreenState extends State<NightclubScreen> {
             Text(
               '${_t.nightclubSeasonYourRewards}: €${season['yourTotalSeasonRewards'] ?? 0}',
             ),
-            if (seasonLeaders.isNotEmpty) ...[
+            if (seasonLeaders.isEmpty) ...[
+              const SizedBox(height: 8),
+              Text(_t.nightclubSeasonEmpty),
+            ] else ...[
               const SizedBox(height: 8),
               ...seasonLeaders.take(3).map((entry) {
                 final map = entry as Map<String, dynamic>;
