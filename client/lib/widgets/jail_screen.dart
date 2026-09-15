@@ -238,8 +238,9 @@ class _JailOverlayState extends State<JailOverlay> {
               money: playerData['money'] as int?,
               wantedLevel: playerData['wantedLevel'] as int?,
             );
+          } else {
+            await authProvider.refreshPlayer();
           }
-          await authProvider.refreshPlayer();
 
             final amount =
                 (data['params']?['amount'] as num?)?.toInt() ??

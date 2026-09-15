@@ -358,7 +358,8 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  /// Update specific player fields (useful after actions like crimes, jobs, etc.)
+  /// Patch HUD fields from an action response (cash, credits, wanted, FBI, …)
+  /// without a full GET /player. No-op when nothing visible changed.
   void updatePlayerStats({
     int? money,
     int? xp,
@@ -369,32 +370,23 @@ class AuthProvider with ChangeNotifier {
     int? premiumCredits,
     String? currentCountry,
   }) {
-    if (_currentPlayer == null) return;
+    final current = _currentPlayer;
+    if (current == null) return;
 
-    _currentPlayer = Player(
-      id: _currentPlayer!.id,
-      username: _currentPlayer!.username,
-      money: money ?? _currentPlayer!.money,
-      health: health ?? _currentPlayer!.health,
-      rank: rank ?? _currentPlayer!.rank,
-      xp: xp ?? _currentPlayer!.xp,
-      wantedLevel: wantedLevel ?? _currentPlayer!.wantedLevel,
-      fbiHeat: fbiHeat ?? _currentPlayer!.fbiHeat,
-      currentCountry: currentCountry ?? _currentPlayer!.currentCountry,
-      avatar: _currentPlayer!.avatar,
-      activePortraitId: _currentPlayer!.activePortraitId,
-      activePortraitPath: _currentPlayer!.activePortraitPath,
-      premiumCredits: premiumCredits ?? _currentPlayer!.premiumCredits,
-      gender: _currentPlayer!.gender,
-      isVip: _currentPlayer!.isVip,
-      preferredLanguage: _currentPlayer!.preferredLanguage,
-      wealthStatus: _currentPlayer!.wealthStatus,
-      wealthIcon: _currentPlayer!.wealthIcon,
-      createdAt: _currentPlayer!.createdAt,
-      updatedAt: _currentPlayer!.updatedAt,
-      lastTickAt: _currentPlayer!.lastTickAt,
+    final next = current.copyWith(
+      money: money,
+      xp: xp,
+      rank: rank,
+      health: health,
+      wantedLevel: wantedLevel,
+      fbiHeat: fbiHeat,
+      premiumCredits: premiumCredits,
+      currentCountry: currentCountry,
     );
-
+    if (next.hudSnapshot == current.hudSnapshot) {
+      return;
+    }
+    _currentPlayer = next;
     notifyListeners();
   }
 }

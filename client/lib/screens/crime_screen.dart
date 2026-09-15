@@ -1073,7 +1073,6 @@ class _CrimeScreenState extends State<CrimeScreen> {
                   ? null
                   : readInt(playerData['fbiHeat']),
             );
-            await authProvider.refreshPlayer();
           } else {
             await authProvider.refreshPlayer();
           }

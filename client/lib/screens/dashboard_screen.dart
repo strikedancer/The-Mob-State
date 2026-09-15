@@ -1007,14 +1007,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget _buildWebShell(
     BuildContext context,
     AppLocalizations l10n,
-    dynamic player,
   ) {
-    final countryName = CountryHelper.getLocalizedCountryName(
-      player.currentCountry,
-      l10n,
-      fallbackName: player.currentCountry?.toString(),
-    );
-
     final screenWidth = MediaQuery.of(context).size.width;
     final showLeftSidebar = screenWidth >= _tabletBreakpoint;
 
@@ -1078,13 +1071,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 ),
                 if (showLeftSidebar) ...[
-                  Text(
-                    player.username.toString(),
-                    style: const TextStyle(
-                      color: Colors.white70,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 0.2,
+                  Selector<AuthProvider, String>(
+                    selector: (_, auth) =>
+                        auth.currentPlayer?.username ?? '',
+                    builder: (_, username, __) => Text(
+                      username,
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.2,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -1094,7 +1091,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   onSelected: (value) async {
                     switch (value) {
                       case 'profile':
-                        _openPlayerProfile(player);
+                        final current =
+                            context.read<AuthProvider>().currentPlayer;
+                        if (current != null) {
+                          _openPlayerProfile(current);
+                        }
                         break;
                       case 'messages':
                         _selectWebSection(_WebSection.messages);
@@ -1130,10 +1131,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   itemBuilder: (BuildContext context) => [
                     PopupMenuItem<String>(
                       enabled: false,
-                      child: Text(
-                        player.username,
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
+                      child: Selector<AuthProvider, String>(
+                        selector: (_, auth) =>
+                            auth.currentPlayer?.username ?? '',
+                        builder: (_, username, __) => Text(
+                          username,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleSmall
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
@@ -1220,17 +1226,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           border: Border.all(color: _dashboardGold, width: 1.2),
                         ),
                         child: ClipOval(
-                          child: Image(
-                            image: AvatarHelper.getAvatarImageProvider(
-                              player.avatar,
-                              activePortraitPath: player.activePortraitPath,
-                            ),
+                          child: Selector<AuthProvider, PlayerHudSnapshot?>(
+                            selector: (_, auth) =>
+                                auth.currentPlayer?.hudSnapshot,
+                            builder: (_, hud, __) => Image(
+                              image: AvatarHelper.getAvatarImageProvider(
+                                hud?.avatar,
+                                activePortraitPath: hud?.activePortraitPath,
+                              ),
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) => Icon(
                               Icons.account_circle,
                               size: 28,
                               color: Colors.grey.shade400,
                             ),
+                          ),
                           ),
                         ),
                       ),
@@ -1296,7 +1306,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
                     child: Column(
                       children: [
-                        _buildCompactStatusBar(context, player, countryName),
+                        _buildLiveStatusBar(context, l10n),
                         const SizedBox(height: 10),
                         Expanded(
                           child: Container(
@@ -1846,6 +1856,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
+
+  Widget _buildLiveStatusBar(BuildContext context, AppLocalizations l10n) {
+    return Selector<AuthProvider, PlayerHudSnapshot?>(
+      selector: (_, auth) => auth.currentPlayer?.hudSnapshot,
+      builder: (context, hud, _) {
+        final player = context.read<AuthProvider>().currentPlayer;
+        if (player == null || hud == null) {
+          return const SizedBox.shrink();
+        }
+        final countryName = CountryHelper.getLocalizedCountryName(
+          hud.currentCountry,
+          l10n,
+          fallbackName: hud.currentCountry,
+        );
+        return _buildCompactStatusBar(context, player, countryName);
+      },
+    );
+  }
 
   Widget _buildCompactStatusBar(
     BuildContext context,
@@ -2421,19 +2449,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
               ],
             ),
-      body: Consumer<AuthProvider>(
-        builder: (context, authProvider, _) {
-          final player = authProvider.currentPlayer;
+      body: useEmbeddedWebShell
+          ? Selector<AuthProvider, bool>(
+              selector: (_, auth) =>
+                  auth.isAuthenticated && auth.currentPlayer != null,
+              builder: (context, ready, _) {
+                if (!ready) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                return _buildWebShell(context, l10n);
+              },
+            )
+          : Consumer<AuthProvider>(
+              builder: (context, authProvider, _) {
+                final player = authProvider.currentPlayer;
 
-          if (player == null) {
-            return const Center(child: CircularProgressIndicator());
-          }
+                if (player == null) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-          if (useEmbeddedWebShell) {
-            return _buildWebShell(context, l10n, player);
-          }
-
-          return SingleChildScrollView(
+                return SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
