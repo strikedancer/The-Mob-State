@@ -49,16 +49,62 @@ function loadSearchIndex() {
   return searchIndexPromise;
 }
 
+const STOP = new Set(
+  'hoe wat waar wanneer waarom welke wie is zijn de het een van voor met naar op in uit bij om tot dat die dit als kan kun moet mag wel niet ik je we ze en of maar ook nog al mijn jouw onze even iets help uitleg vertel leg werkt werk doe doet over how what where when why which who are the a an of for with to from at do does can you we my me tell explain about work works working please wie was der das und oder funktioniert comment quoi quel quelle est les des une pour avec dans como que cual donde para con una los las come cosa quale dove perche nel jak co gdzie dlaczego czy dla jest o onde uma os as'.split(
+    /\s+/
+  )
+);
+
+function tokensOf(raw) {
+  const words = String(raw || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/\p{M}/gu, '')
+    .replace(/[^\p{L}\p{N}]+/gu, ' ')
+    .split(/\s+/)
+    .filter(Boolean);
+  const kept = words.filter(
+    (t) => (t.length >= 3 || ['don', 'vip', 'xp', 'fbi', 'rld', 'hp'].includes(t)) && !STOP.has(t)
+  );
+  return kept.length ? kept : words.filter((t) => t.length >= 2);
+}
+
+function hay(value) {
+  return String(value || '')
+    .toLowerCase()
+    .replace(/-/g, ' ');
+}
+
 function scoreEntry(entry, query) {
-  const title = (entry.title || '').toLowerCase();
-  const snippet = (entry.snippet || '').toLowerCase();
-  const text = entry.text || '';
-  if (title === query) return 100;
-  if (title.startsWith(query)) return 90;
-  if (title.includes(query)) return 80;
-  if (snippet.includes(query)) return 50;
-  if (text.includes(query)) return 20;
+  if (!query) return 0;
+  const needle = hay(query);
+  const title = hay(entry.title);
+  const snippet = hay(entry.snippet);
+  const answer = hay(entry.answer);
+  const text = hay(entry.text);
+  if (title === needle) return 100;
+  if (title.startsWith(needle)) return 90;
+  if (title.includes(needle)) return 80;
+  if (snippet.includes(needle)) return 50;
+  if (answer.includes(needle)) return 36;
+  if (text.includes(needle)) return 20;
   return 0;
+}
+
+function rankEntries(index, raw, limit = 12) {
+  const query = (raw || '').trim().toLowerCase();
+  const tokens = tokensOf(query);
+  return index
+    .map((entry) => {
+      let score = scoreEntry(entry, query);
+      for (const token of tokens) score += scoreEntry(entry, token);
+      if (tokens.length > 1) score += scoreEntry(entry, tokens.join(' '));
+      if (score > 0 && (entry.kind === 'guide' || (entry.href || '').includes('/guide/'))) score += 14;
+      return { entry, score };
+    })
+    .filter((row) => row.score > 0)
+    .sort((a, b) => b.score - a.score || a.entry.title.localeCompare(b.entry.title))
+    .slice(0, limit);
 }
 
 function resultsBox() {
@@ -120,13 +166,7 @@ async function runSearch(raw) {
     return;
   }
   const index = await loadSearchIndex();
-  const ranked = index
-    .map((entry) => ({ entry, score: scoreEntry(entry, query) }))
-    .filter((row) => row.score > 0)
-    .sort((a, b) => b.score - a.score || a.entry.title.localeCompare(b.entry.title))
-    .slice(0, 12)
-    .map((row) => row.entry);
-  renderResults(ranked);
+  renderResults(rankEntries(index, query, 12).map((row) => row.entry));
 }
 
 if (SEARCH) {
@@ -185,3 +225,118 @@ if (select) {
     location.href = '/' + parts.join('/') + (parts.length === 1 ? '/' : '');
   });
 }
+
+function clip(value, max) {
+  const text = String(value || '').replace(/\s+/g, ' ').trim();
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max);
+  const at = Math.max(cut.lastIndexOf('. '), cut.lastIndexOf(' '));
+  return `${cut.slice(0, at > 40 ? at + 1 : max).trim()}…`;
+}
+
+function pickAnswer(entry, tokens) {
+  const blob = `${entry.snippet || ''} ${entry.answer || ''}`.replace(/\s+/g, ' ').trim();
+  if (!blob) return entry.title || '';
+  const sentences = blob
+    .split(/(?<=[.!?])\s+/)
+    .map((s) => s.trim())
+    .filter((s) => s.length > 24);
+  const scored = sentences
+    .map((sentence) => {
+      const lower = sentence.toLowerCase();
+      const hits = tokens.filter((t) => lower.includes(t)).length;
+      return { sentence, hits };
+    })
+    .sort((a, b) => b.hits - a.hits || b.sentence.length - a.sentence.length);
+  const chosen = (scored[0]?.hits ? scored.filter((s) => s.hits === scored[0].hits).slice(0, 2) : scored.slice(0, 2))
+    .map((s) => s.sentence)
+    .join(' ');
+  return clip(chosen || blob, 420);
+}
+
+function initAsk() {
+  const toggle = document.getElementById('almanac-ask');
+  const panel = document.getElementById('almanac-chat');
+  const log = document.getElementById('almanac-ask-log');
+  const form = document.getElementById('almanac-ask-form');
+  const input = document.getElementById('almanac-ask-input');
+  const close = document.getElementById('almanac-ask-close');
+  if (!toggle || !panel || !log || !form || !input) return;
+
+  const copy = {
+    welcome: panel.dataset.welcome || '',
+    empty: panel.dataset.empty || '',
+    read: panel.dataset.read || '→',
+    more: panel.dataset.more || '',
+  };
+
+  function addMsg(kind, html) {
+    const row = document.createElement('div');
+    row.className = `ask-msg ${kind}`;
+    row.innerHTML = html;
+    log.appendChild(row);
+    log.scrollTop = log.scrollHeight;
+  }
+
+  function openPanel() {
+    panel.hidden = false;
+    toggle.setAttribute('aria-expanded', 'true');
+    if (!log.childElementCount && copy.welcome) addMsg('bot', `<p>${escHtml(copy.welcome)}</p>`);
+    loadSearchIndex();
+    input.focus();
+  }
+
+  function closePanel() {
+    panel.hidden = true;
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.focus();
+  }
+
+  async function answerQuestion(raw) {
+    const question = (raw || '').trim();
+    if (!question) return;
+    addMsg('user', `<p>${escHtml(question)}</p>`);
+    const index = await loadSearchIndex();
+    const ranked = rankEntries(index, question, 4);
+    if (!ranked.length) {
+      addMsg('bot', `<p>${escHtml(copy.empty)}</p>`);
+      return;
+    }
+    const top = ranked[0].entry;
+    const related = ranked.slice(1, 3).map((row) => row.entry);
+    const body = pickAnswer(top, tokensOf(question));
+    const more = related.length
+      ? `<p class="ask-related">${escHtml(copy.more)}</p><ul>${related
+          .map((item) => `<li><a href="${escHtml(item.href)}">${escHtml(item.title)}</a></li>`)
+          .join('')}</ul>`
+      : '';
+    addMsg(
+      'bot',
+      `<p>${escHtml(body)}</p><p><a href="${escHtml(top.href)}">${escHtml(copy.read)}: ${escHtml(top.title)}</a></p>${more}`
+    );
+  }
+
+  toggle.addEventListener('click', () => {
+    if (panel.hidden) openPanel();
+    else closePanel();
+  });
+  close?.addEventListener('click', closePanel);
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !panel.hidden) closePanel();
+  });
+  panel.querySelectorAll('[data-ask]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      input.value = btn.dataset.ask || btn.textContent || '';
+      form.requestSubmit();
+    });
+  });
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const value = input.value;
+    input.value = '';
+    answerQuestion(value);
+  });
+}
+
+initAsk();
+

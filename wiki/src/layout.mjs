@@ -1,7 +1,7 @@
 import { LANGS, LANG_LABEL, ui } from './i18n.mjs';
 
 /** Query-bust CSS/JS; nginx caches those files for 7 days. */
-const ASSET_V = '20260916';
+const ASSET_V = '20260916c';
 
 export function esc(value) {
   return String(value ?? '')
@@ -103,6 +103,26 @@ export function page({ lang, title, path, hero, crumbs, body, description }) {
     ${body}
   </main>
   <footer class="footer">${esc(ui(lang, 'footer'))}</footer>
+  <button type="button" class="ask-toggle" id="almanac-ask" aria-expanded="false" aria-controls="almanac-chat">${esc(ui(lang, 'askOpen'))}</button>
+  <aside id="almanac-chat" class="ask-panel" hidden role="dialog" aria-labelledby="almanac-ask-title" data-welcome="${esc(ui(lang, 'askWelcome'))}" data-empty="${esc(ui(lang, 'askEmpty'))}" data-read="${esc(ui(lang, 'askRead'))}" data-more="${esc(ui(lang, 'askMore'))}">
+    <header class="ask-head">
+      <div>
+        <p class="ask-kicker">${esc(ui(lang, 'askKicker'))}</p>
+        <h2 id="almanac-ask-title">${esc(ui(lang, 'askTitle'))}</h2>
+      </div>
+      <button type="button" class="ask-close" id="almanac-ask-close" aria-label="${esc(ui(lang, 'askClose'))}">×</button>
+    </header>
+    <div class="ask-log" id="almanac-ask-log"></div>
+    <div class="ask-suggest">${ui(lang, 'askSuggest')
+      .split('|')
+      .map((q) => `<button type="button" data-ask="${esc(q.trim())}">${esc(q.trim())}</button>`)
+      .join('')}</div>
+    <form class="ask-form" id="almanac-ask-form">
+      <label class="skip" for="almanac-ask-input">${esc(ui(lang, 'askPlaceholder'))}</label>
+      <input id="almanac-ask-input" type="text" autocomplete="off" maxlength="200" placeholder="${esc(ui(lang, 'askPlaceholder'))}">
+      <button type="submit">${esc(ui(lang, 'askSend'))}</button>
+    </form>
+  </aside>
   <script src="/client.js?v=${ASSET_V}"></script>
 </body>
 </html>`;

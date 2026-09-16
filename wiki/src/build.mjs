@@ -913,20 +913,30 @@ function writeSearchIndexes() {
         const pageTitle = unesc((titleMatch?.[1] || '').trim());
         const descMatch = html.match(/name="description" content="([^"]*)"/);
         const snippet = unesc(descMatch?.[1] || '').trim();
-        const text = unesc(
-          html
-            .replace(/<script[\s\S]*?<\/script>/gi, ' ')
-            .replace(/<style[\s\S]*?<\/style>/gi, ' ')
-            .replace(/<[^>]+>/g, ' ')
-            .replace(/\s+/g, ' ')
-            .trim(),
-        ).toLowerCase();
+        const strip = (chunk) =>
+          unesc(
+            String(chunk || '')
+              .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+              .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+              .replace(/<[^>]+>/g, ' ')
+              .replace(/\s+/g, ' ')
+              .trim(),
+          );
+        const mainHtml = (html.match(/<main[^>]*>([\s\S]*?)<\/main>/i)?.[1] || '').replace(
+          /<div class="crumbs"[\s\S]*?<\/div>/i,
+          ' ',
+        );
+        const answer = strip(mainHtml);
+        const text = strip(html).toLowerCase();
         const rel = path.relative(langDir, full).replace(/\\/g, '/').replace(/index\.html$/, '');
         const href = `/${lang}/${rel}`.replace(/\/+$/, '/') || `/${lang}/`;
+        const kind = href.includes('/guide/') ? 'guide' : rel === '' ? 'home' : 'catalog';
         entries.push({
           href,
           title: pageTitle || unesc((html.match(/<title>([^<]+)/)?.[1] || '').split(' · ')[0]),
           snippet: snippet.slice(0, 180),
+          answer: answer.slice(0, 900),
+          kind,
           text: text.slice(0, 5000),
         });
       }
