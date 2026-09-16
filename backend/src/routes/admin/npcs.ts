@@ -1,8 +1,12 @@
 import express, { Request, Response } from 'express';
 import { NPCService } from '../../services/npcService';
 import { adminAuthMiddleware } from '../../middleware/adminAuth';
+import { denyPlayerStaff } from '../../middleware/staffAdminScope';
 
 const router = express.Router();
+
+router.use(adminAuthMiddleware);
+router.use(denyPlayerStaff);
 
 /**
  * Create a new NPC

@@ -2,6 +2,8 @@ import express from 'express';
 import prisma from '../lib/prisma';
 import { auditLog } from '../middleware/auditLog';
 import { adminAuthMiddleware, requireAdminRole, type AdminRequest } from '../middleware/adminAuth';
+import { restrictPlayerStaffAdminRoutes } from '../middleware/staffAdminScope';
+import { normalizeStaffRole, PLAYER_STAFF_ROLES } from '../utils/staffRole';
 import { z } from 'zod';
 import fs from 'fs/promises';
 import path from 'path';
@@ -326,6 +328,7 @@ const toCsvValue = (value: unknown): string => {
 
 // Apply admin authentication to all routes
 router.use(adminAuthMiddleware);
+router.use(restrictPlayerStaffAdminRoutes);
 
 // Validation schemas
 const banPlayerSchema = z.object({
@@ -1967,6 +1970,7 @@ router.get('/players', async (req, res) => {
           health: true,
           currentCountry: true,
           avatar: true,
+          staffRole: true,
           activePortrait: { select: { imagePath: true } },
           createdAt: true,
           updatedAt: true,
@@ -2060,6 +2064,7 @@ router.get('/players/:playerId/overview', async (req, res) => {
           wantedLevel: true,
           fbiHeat: true,
           reputation: true,
+          staffRole: true,
           premiumCredits: true,
           killCount: true,
           hitCount: true,
@@ -4043,6 +4048,48 @@ router.post(
   }
 );
 
+const staffRoleSchema = z.object({
+  playerId: z.number().int().positive(),
+  staffRole: z.enum(['NONE', 'MOD', 'OPS']),
+});
+
+router.post(
+  '/players/staff-role',
+  requireAdminRole(AdminRole.SUPER_ADMIN),
+  auditLog({ action: 'SET_PLAYER_STAFF_ROLE', targetType: 'Player' }),
+  async (req, res) => {
+    try {
+      const { playerId, staffRole } = staffRoleSchema.parse(req.body);
+      const player = await prisma.player.findUnique({
+        where: { id: playerId },
+        select: { id: true, username: true },
+      });
+      if (!player) {
+        return res.status(404).json({ error: 'Player not found' });
+      }
+      const nextRole = normalizeStaffRole(staffRole);
+      if (!PLAYER_STAFF_ROLES.includes(nextRole)) {
+        return res.status(400).json({ error: 'Invalid staff role' });
+      }
+      await prisma.$executeRawUnsafe(
+        'UPDATE players SET staffRole = ? WHERE id = ?',
+        nextRole,
+        playerId,
+      );
+      return res.json({
+        message: 'Staff role updated',
+        player: { id: player.id, username: player.username, staffRole: nextRole },
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: 'Invalid input', details: error.errors });
+      }
+      console.error('Admin set staff role error:', error);
+      return res.status(500).json({ error: 'Failed to set staff role' });
+    }
+  },
+);
+
 /**
  * GET /api/admin/config
  * Get current backend configuration
@@ -5627,7 +5674,10 @@ router.put('/global-chat/settings', async (req, res) => {
   }
 });
 
-router.delete('/global-chat/messages/:id', async (req, res) => {
+router.delete(
+  '/global-chat/messages/:id',
+  auditLog({ action: 'GLOBAL_CHAT_DELETE', targetType: 'GlobalChatMessage' }),
+  async (req, res) => {
   try {
     const messageId = Number(req.params.id);
     if (!Number.isFinite(messageId) || messageId <= 0) {
@@ -5645,7 +5695,10 @@ router.delete('/global-chat/messages/:id', async (req, res) => {
   }
 });
 
-router.post('/global-chat/mutes', async (req, res) => {
+router.post(
+  '/global-chat/mutes',
+  auditLog({ action: 'GLOBAL_CHAT_MUTE', targetType: 'Player' }),
+  async (req, res) => {
   try {
     const playerId = Number(req.body?.playerId);
     const minutes = Number(req.body?.minutes ?? 60);
@@ -5664,7 +5717,10 @@ router.post('/global-chat/mutes', async (req, res) => {
   }
 });
 
-router.delete('/global-chat/mutes/:playerId', async (req, res) => {
+router.delete(
+  '/global-chat/mutes/:playerId',
+  auditLog({ action: 'GLOBAL_CHAT_UNMUTE', targetType: 'Player' }),
+  async (req, res) => {
   try {
     const playerId = Number(req.params.playerId);
     if (!Number.isFinite(playerId) || playerId <= 0) {

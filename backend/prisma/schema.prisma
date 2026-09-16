@@ -83,6 +83,8 @@ model Player {
   premiumCredits                  Int                              @default(0)
   preferredLanguage               String                           @default("nl") @db.VarChar(5)
   reputation                      Int                              @default(0)
+  /// In-game + scoped admin staff: NONE | MOD | OPS
+  staffRole                       String                           @default("NONE") @db.VarChar(8)
   resetPasswordToken              String?                          @db.VarChar(255)
   resetPasswordTokenExpiry        DateTime?
   hitProtectionExpiresAt          DateTime?
@@ -1650,16 +1652,18 @@ model Admin {
 }
 
 model AuditLog {
-  id         Int      @id @default(autoincrement())
-  adminId    Int
-  action     String   @db.VarChar(100)
-  targetType String?  @db.VarChar(50)
-  targetId   String?  @db.VarChar(100)
-  details    String?  @db.Text
-  ipAddress  String?  @db.VarChar(45)
-  userAgent  String?  @db.VarChar(255)
-  createdAt  DateTime @default(now())
-  admin      Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  id             Int      @id @default(autoincrement())
+  adminId        Int?
+  action         String   @db.VarChar(100)
+  targetType     String?  @db.VarChar(50)
+  targetId       String?  @db.VarChar(100)
+  details        String?  @db.Text
+  ipAddress      String?  @db.VarChar(45)
+  userAgent      String?  @db.VarChar(255)
+  createdAt      DateTime @default(now())
+  actorPlayerId  Int?
+  actorStaffRole String?  @db.VarChar(8)
+  admin          Admin?   @relation(fields: [adminId], references: [id], onDelete: Cascade)
 
   @@index([adminId])
   @@index([action])

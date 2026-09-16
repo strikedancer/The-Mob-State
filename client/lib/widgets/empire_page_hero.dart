@@ -20,6 +20,7 @@ class EmpirePageHero extends StatelessWidget {
     this.topicId,
     this.onRefresh,
     this.refreshEnabled = true,
+    this.actions = const [],
     this.chips = const [],
     this.fallbackIcon = Icons.apartment,
     this.infoTooltip,
@@ -32,6 +33,7 @@ class EmpirePageHero extends StatelessWidget {
   final String? topicId;
   final VoidCallback? onRefresh;
   final bool refreshEnabled;
+  final List<Widget> actions;
   final List<Widget> chips;
   final IconData fallbackIcon;
   final String? infoTooltip;
@@ -115,6 +117,7 @@ class EmpirePageHero extends StatelessWidget {
                           topicId: topicId!,
                           tooltip: infoTooltip,
                         ),
+                      ...actions,
                       if (onRefresh != null) ...[
                         const SizedBox(width: 4),
                         IconButton(

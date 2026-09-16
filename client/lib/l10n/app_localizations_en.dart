@@ -5232,6 +5232,43 @@ class AppLocalizationsEn extends AppLocalizations {
       'That message can no longer be deleted.';
 
   @override
+  String get worldChatStaffMod => 'Mod';
+
+  @override
+  String get worldChatStaffOps => 'Ops';
+
+  @override
+  String get worldChatStaffDelete => 'Remove for everyone';
+
+  @override
+  String get worldChatStaffMute15 => 'Mute 15 min';
+
+  @override
+  String get worldChatStaffMute60 => 'Mute 1 hour';
+
+  @override
+  String get worldChatStaffUnmute => 'Unmute';
+
+  @override
+  String get worldChatStaffMuted => 'That player is muted in world chat.';
+
+  @override
+  String get worldChatStaffUnmuted => 'That player can speak again.';
+
+  @override
+  String get worldChatStaffDeleted => 'Message removed from world chat.';
+
+  @override
+  String get worldChatStaffReports => 'Reports';
+
+  @override
+  String get worldChatStaffReportsEmpty => 'No open reports right now.';
+
+  @override
+  String get worldChatStaffActionBody =>
+      'Remove this message, mute the sender, or send it to the report list.';
+
+  @override
   String get aviationUiBuyConfirmTitle => 'Buy aircraft?';
 
   @override
@@ -17979,7 +18016,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicWorldChatHow =>
-      'Open World chat under Social. Everyone who is logged in can read and send, including from jail.\nEnter sends; Shift+Enter starts a new line. Stickers sit next to the composer — no image uploads.\nSwear words in the game languages are filtered on the server. Staff can mute or delete.\nLong-press your own message to delete it for about 10 minutes. Long-press someone else to report.\nThere is no credit paywall. Direct messages and crew chat stay separate.\nWhen a player is arrested, World chat shows a Prison system line with their name. If another player buys them out or breaks them out, both names appear. Paying your own bail or escaping yourself stays off the lobby.\nWhen Discord is linked, the same lobby is mirrored to a Discord channel. Messages from Discord show a Discord tag in-game. You can link Discord later in Settings if you did not sign in with Discord. The first link of an existing account pays €5,000; a weekly prompt reminds you until you link or tap I don\'t have Discord.';
+      'Open World chat under Social. Everyone who is logged in can read and send, including from jail.\nEnter sends; Shift+Enter starts a new line. Stickers sit next to the composer — no image uploads.\nSwear words in the game languages are filtered on the server. Mods and Ops show a badge next to their name and can delete messages or mute someone in world chat.\nLong-press your own message to delete it for about 10 minutes. Long-press someone else to report.\nThere is no credit paywall. Direct messages and crew chat stay separate.\nWhen a player is arrested, World chat shows a Prison system line with their name. If another player buys them out or breaks them out, both names appear. Paying your own bail or escaping yourself stays off the lobby.\nWhen Discord is linked, the same lobby is mirrored to a Discord channel. Messages from Discord show a Discord tag in-game. You can link Discord later in Settings if you did not sign in with Discord. The first link of an existing account pays €5,000; a weekly prompt reminds you until you link or tap I don\'t have Discord.';
 
   @override
   String get helpTopicWorldChatTips =>

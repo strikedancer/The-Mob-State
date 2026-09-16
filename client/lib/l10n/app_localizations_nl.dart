@@ -5264,6 +5264,43 @@ class AppLocalizationsNl extends AppLocalizations {
       'Dit bericht kun je niet meer verwijderen.';
 
   @override
+  String get worldChatStaffMod => 'Mod';
+
+  @override
+  String get worldChatStaffOps => 'Ops';
+
+  @override
+  String get worldChatStaffDelete => 'Voor iedereen wissen';
+
+  @override
+  String get worldChatStaffMute15 => 'Mute 15 min';
+
+  @override
+  String get worldChatStaffMute60 => 'Mute 1 uur';
+
+  @override
+  String get worldChatStaffUnmute => 'Unmute';
+
+  @override
+  String get worldChatStaffMuted => 'Die speler is gemute in de wereldchat.';
+
+  @override
+  String get worldChatStaffUnmuted => 'Die speler kan weer praten.';
+
+  @override
+  String get worldChatStaffDeleted => 'Bericht uit de wereldchat gehaald.';
+
+  @override
+  String get worldChatStaffReports => 'Meldingen';
+
+  @override
+  String get worldChatStaffReportsEmpty => 'Geen open meldingen nu.';
+
+  @override
+  String get worldChatStaffActionBody =>
+      'Dit bericht wissen, de zender muten, of het in de meldingen zetten.';
+
+  @override
   String get aviationUiBuyConfirmTitle => 'Vliegtuigen kopen?';
 
   @override
@@ -18024,7 +18061,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicWorldChatHow =>
-      'Open Wereldchat onder Sociaal. Iedereen die is ingelogd kan lezen en sturen, ook vanuit de cel.\nEnter verstuurt; Shift+Enter maakt een nieuwe regel. Stickers staan naast het invoerveld — geen eigen plaatjes.\nScheldwoorden in de speltalen worden op de server gefilterd. Staf kan muten of wissen.\nHoud je eigen bericht ingedrukt om het tot ongeveer 10 minuten te verwijderen. Bij een ander bericht kun je melden.\nGeen credit-muur. Privéberichten en crew-chat blijven apart.\nAls een speler wordt opgepakt, verschijnt in de wereldchat een Gevangenis-regel met die naam. Koopt of haalt een andere speler diegene eruit, dan staan beide namen erbij. Eigen borg of eigen ontsnapping blijft uit de lobby.\nAls Discord gekoppeld is, spiegelt dezelfde lobby naar een Discord-kanaal. Berichten van Discord krijgen in de game een Discord-label. Je kunt Discord later in Instellingen koppelen als je niet via Discord bent ingelogd. De eerste koppeling van een bestaand account geeft €5.000; een wekelijkse popup herinnert je tot je koppelt of op Ik heb geen Discord tikt.';
+      'Open Wereldchat onder Sociaal. Iedereen die is ingelogd kan lezen en sturen, ook vanuit de cel.\nEnter verstuurt; Shift+Enter maakt een nieuwe regel. Stickers staan naast het invoerveld — geen eigen plaatjes.\nScheldwoorden in de speltalen worden op de server gefilterd. Mods en Ops herken je aan een badge naast hun naam; zij kunnen berichten wissen of iemand muten in de wereldchat.\nHoud je eigen bericht ingedrukt om het tot ongeveer 10 minuten te verwijderen. Bij een ander bericht kun je melden.\nGeen credit-muur. Privéberichten en crew-chat blijven apart.\nAls een speler wordt opgepakt, verschijnt in de wereldchat een Gevangenis-regel met die naam. Koopt of haalt een andere speler diegene eruit, dan staan beide namen erbij. Eigen borg of eigen ontsnapping blijft uit de lobby.\nAls Discord gekoppeld is, spiegelt dezelfde lobby naar een Discord-kanaal. Berichten van Discord krijgen in de game een Discord-label. Je kunt Discord later in Instellingen koppelen als je niet via Discord bent ingelogd. De eerste koppeling van een bestaand account geeft €5.000; een wekelijkse popup herinnert je tot je koppelt of op Ik heb geen Discord tikt.';
 
   @override
   String get helpTopicWorldChatTips =>

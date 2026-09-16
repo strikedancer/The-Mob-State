@@ -7,6 +7,7 @@ class GlobalChatMessage {
   final String? stickerId;
   final String? stickerEmoji;
   final String createdAt;
+  final String? staffRole;
 
   const GlobalChatMessage({
     required this.id,
@@ -17,6 +18,7 @@ class GlobalChatMessage {
     required this.stickerId,
     required this.stickerEmoji,
     required this.createdAt,
+    this.staffRole,
   });
 
   factory GlobalChatMessage.fromJson(Map<String, dynamic> json) {
@@ -29,8 +31,11 @@ class GlobalChatMessage {
       stickerId: json['stickerId'] as String?,
       stickerEmoji: json['stickerEmoji'] as String?,
       createdAt: json['createdAt'] as String? ?? '',
+      staffRole: json['staffRole'] as String?,
     );
   }
+
+  bool get isStaff => staffRole == 'MOD' || staffRole == 'OPS';
 
   bool get isSystem => source == 'system';
 

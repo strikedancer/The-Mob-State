@@ -3,19 +3,25 @@ import jwt from 'jsonwebtoken';
 import config from '../config';
 import prisma from '../lib/prisma';
 import { AdminRole } from '@prisma/client';
+import { isPlayerStaff, normalizeStaffRole, type PlayerStaffRole } from '../utils/staffRole';
 
 export interface AdminRequest extends Request {
   admin?: {
     id: number;
     username: string;
     role: AdminRole;
+    staffRole?: PlayerStaffRole;
+    playerId?: number;
   };
 }
 
 interface JwtPayload {
-  adminId: number;
+  adminId?: number;
+  playerId?: number;
   username: string;
-  role: AdminRole;
+  role?: AdminRole;
+  staffRole?: string;
+  type?: string;
 }
 
 export const adminAuthMiddleware = async (req: AdminRequest, res: Response, next: NextFunction) => {
@@ -29,12 +35,68 @@ export const adminAuthMiddleware = async (req: AdminRequest, res: Response, next
       });
     }
 
-    const token = authHeader.substring(7); // Remove 'Bearer ' prefix
+    const token = authHeader.substring(7);
 
-    // Verify JWT
     const decoded = jwt.verify(token, config.jwtSecret) as JwtPayload;
+    if (decoded.type && decoded.type !== 'admin') {
+      return res.status(403).json({
+        error: 'FORBIDDEN',
+        message: 'Not an admin token',
+      });
+    }
 
-    // Verify admin exists and is active
+    if (decoded.playerId && !decoded.adminId) {
+      const player = await prisma.player.findUnique({
+        where: { id: decoded.playerId },
+        select: {
+          id: true,
+          username: true,
+          isBanned: true,
+          bannedUntil: true,
+        },
+      });
+      if (!player) {
+        return res.status(401).json({
+          error: 'UNAUTHORIZED',
+          message: 'Staff player not found',
+        });
+      }
+      if (player.isBanned && (!player.bannedUntil || player.bannedUntil.getTime() > Date.now())) {
+        return res.status(403).json({
+          error: 'FORBIDDEN',
+          message: 'Player account is banned',
+        });
+      }
+
+      const staffRows = await prisma.$queryRawUnsafe<Array<{ staffRole: string }>>(
+        'SELECT staffRole FROM players WHERE id = ? LIMIT 1',
+        player.id,
+      );
+      const staffRole = normalizeStaffRole(staffRows?.[0]?.staffRole);
+      if (!isPlayerStaff(staffRole)) {
+        return res.status(403).json({
+          error: 'FORBIDDEN',
+          message: 'Staff role revoked',
+        });
+      }
+
+      req.admin = {
+        id: player.id,
+        username: player.username,
+        role: AdminRole.VIEWER,
+        staffRole,
+        playerId: player.id,
+      };
+      return next();
+    }
+
+    if (!decoded.adminId) {
+      return res.status(401).json({
+        error: 'UNAUTHORIZED',
+        message: 'Invalid token',
+      });
+    }
+
     const admin = await prisma.admin.findUnique({
       where: { id: decoded.adminId },
       select: {
@@ -59,7 +121,6 @@ export const adminAuthMiddleware = async (req: AdminRequest, res: Response, next
       });
     }
 
-    // Attach admin info to request
     req.admin = {
       id: admin.id,
       username: admin.username,
@@ -99,6 +160,13 @@ export const requireAdminRole = (...roles: AdminRole[]) => {
       return res.status(401).json({
         error: 'UNAUTHORIZED',
         message: 'Admin authentication required',
+      });
+    }
+
+    if (isPlayerStaff(req.admin.staffRole)) {
+      return res.status(403).json({
+        error: 'FORBIDDEN',
+        message: 'Player staff cannot use this admin action',
       });
     }
 

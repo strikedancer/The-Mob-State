@@ -9329,6 +9329,78 @@ abstract class AppLocalizations {
   /// **'That message can no longer be deleted.'**
   String get worldChatErrorDeleteExpired;
 
+  /// No description provided for @worldChatStaffMod.
+  ///
+  /// In en, this message translates to:
+  /// **'Mod'**
+  String get worldChatStaffMod;
+
+  /// No description provided for @worldChatStaffOps.
+  ///
+  /// In en, this message translates to:
+  /// **'Ops'**
+  String get worldChatStaffOps;
+
+  /// No description provided for @worldChatStaffDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove for everyone'**
+  String get worldChatStaffDelete;
+
+  /// No description provided for @worldChatStaffMute15.
+  ///
+  /// In en, this message translates to:
+  /// **'Mute 15 min'**
+  String get worldChatStaffMute15;
+
+  /// No description provided for @worldChatStaffMute60.
+  ///
+  /// In en, this message translates to:
+  /// **'Mute 1 hour'**
+  String get worldChatStaffMute60;
+
+  /// No description provided for @worldChatStaffUnmute.
+  ///
+  /// In en, this message translates to:
+  /// **'Unmute'**
+  String get worldChatStaffUnmute;
+
+  /// No description provided for @worldChatStaffMuted.
+  ///
+  /// In en, this message translates to:
+  /// **'That player is muted in world chat.'**
+  String get worldChatStaffMuted;
+
+  /// No description provided for @worldChatStaffUnmuted.
+  ///
+  /// In en, this message translates to:
+  /// **'That player can speak again.'**
+  String get worldChatStaffUnmuted;
+
+  /// No description provided for @worldChatStaffDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Message removed from world chat.'**
+  String get worldChatStaffDeleted;
+
+  /// No description provided for @worldChatStaffReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports'**
+  String get worldChatStaffReports;
+
+  /// No description provided for @worldChatStaffReportsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No open reports right now.'**
+  String get worldChatStaffReportsEmpty;
+
+  /// No description provided for @worldChatStaffActionBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove this message, mute the sender, or send it to the report list.'**
+  String get worldChatStaffActionBody;
+
   /// No description provided for @aviationUiBuyConfirmTitle.
   ///
   /// In en, this message translates to:
@@ -31014,7 +31086,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicWorldChatHow.
   ///
   /// In en, this message translates to:
-  /// **'Open World chat under Social. Everyone who is logged in can read and send, including from jail.\nEnter sends; Shift+Enter starts a new line. Stickers sit next to the composer — no image uploads.\nSwear words in the game languages are filtered on the server. Staff can mute or delete.\nLong-press your own message to delete it for about 10 minutes. Long-press someone else to report.\nThere is no credit paywall. Direct messages and crew chat stay separate.\nWhen a player is arrested, World chat shows a Prison system line with their name. If another player buys them out or breaks them out, both names appear. Paying your own bail or escaping yourself stays off the lobby.\nWhen Discord is linked, the same lobby is mirrored to a Discord channel. Messages from Discord show a Discord tag in-game. You can link Discord later in Settings if you did not sign in with Discord. The first link of an existing account pays €5,000; a weekly prompt reminds you until you link or tap I don\'t have Discord.'**
+  /// **'Open World chat under Social. Everyone who is logged in can read and send, including from jail.\nEnter sends; Shift+Enter starts a new line. Stickers sit next to the composer — no image uploads.\nSwear words in the game languages are filtered on the server. Mods and Ops show a badge next to their name and can delete messages or mute someone in world chat.\nLong-press your own message to delete it for about 10 minutes. Long-press someone else to report.\nThere is no credit paywall. Direct messages and crew chat stay separate.\nWhen a player is arrested, World chat shows a Prison system line with their name. If another player buys them out or breaks them out, both names appear. Paying your own bail or escaping yourself stays off the lobby.\nWhen Discord is linked, the same lobby is mirrored to a Discord channel. Messages from Discord show a Discord tag in-game. You can link Discord later in Settings if you did not sign in with Discord. The first link of an existing account pays €5,000; a weekly prompt reminds you until you link or tap I don\'t have Discord.'**
   String get helpTopicWorldChatHow;
 
   /// No description provided for @helpTopicWorldChatTips.

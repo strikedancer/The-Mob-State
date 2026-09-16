@@ -24,17 +24,23 @@ export function auditLog(logData: AuditLogData) {
       }
 
       let adminId: number | undefined;
+      let actorPlayerId: number | undefined;
+      let actorStaffRole: string | undefined;
       try {
         const decoded = jwt.verify(token, config.jwtSecret) as any;
         if (decoded.type === 'admin') {
           adminId = decoded.adminId;
+          if (!adminId && decoded.playerId && decoded.staffRole) {
+            actorPlayerId = Number(decoded.playerId);
+            actorStaffRole = String(decoded.staffRole);
+          }
         }
       } catch (err) {
         return next(); // Skip if invalid token
       }
 
-      if (!adminId) {
-        return next(); // Not an admin token
+      if (!adminId && !actorPlayerId) {
+        return next(); // Not an admin or staff token
       }
 
       // Extract IP address (handle proxy headers)
@@ -67,7 +73,9 @@ export function auditLog(logData: AuditLogData) {
 
       // Store in res.locals so we can log AFTER the action completes
       res.locals.auditLogData = {
-        adminId,
+        adminId: adminId ?? null,
+        actorPlayerId: actorPlayerId ?? null,
+        actorStaffRole: actorStaffRole ?? null,
         action,
         targetType,
         targetId: targetId?.toString(),
@@ -86,13 +94,52 @@ export function auditLog(logData: AuditLogData) {
             res.locals.auditLogData.details = JSON.stringify(overrideDetails);
           }
 
-          prisma.auditLog
-            .create({
-              data: res.locals.auditLogData,
-            })
-            .catch((err) => {
-              console.error('[Audit Log] Failed to create log:', err);
-            });
+          const logData = res.locals.auditLogData as {
+            adminId: number | null;
+            actorPlayerId: number | null;
+            actorStaffRole: string | null;
+            action: string;
+            targetType?: string;
+            targetId?: string;
+            details?: string;
+            ipAddress?: string;
+            userAgent?: string;
+          };
+          if (logData.adminId) {
+            prisma.auditLog
+              .create({
+                data: {
+                  adminId: logData.adminId,
+                  action: logData.action,
+                  targetType: logData.targetType,
+                  targetId: logData.targetId,
+                  details: logData.details,
+                  ipAddress: logData.ipAddress,
+                  userAgent: logData.userAgent,
+                },
+              })
+              .catch((err) => {
+                console.error('[Audit Log] Failed to create log:', err);
+              });
+          } else if (logData.actorPlayerId) {
+            prisma
+              .$executeRawUnsafe(
+                `INSERT INTO audit_logs
+                  (adminId, action, targetType, targetId, details, ipAddress, userAgent, createdAt, actorPlayerId, actorStaffRole)
+                 VALUES (NULL, ?, ?, ?, ?, ?, ?, NOW(), ?, ?)`,
+                logData.action,
+                logData.targetType ?? null,
+                logData.targetId ?? null,
+                logData.details ?? null,
+                logData.ipAddress ?? null,
+                logData.userAgent ?? null,
+                logData.actorPlayerId,
+                logData.actorStaffRole,
+              )
+              .catch((err) => {
+                console.error('[Audit Log] Failed to create staff log:', err);
+              });
+          }
         }
         return originalJson(body);
       };
@@ -109,26 +156,58 @@ export function auditLog(logData: AuditLogData) {
  * Helper function to manually create audit logs (for actions outside of HTTP requests)
  */
 export async function createAuditLog(data: {
-  adminId: number;
+  adminId?: number;
   action: string;
   targetType?: string;
   targetId?: string;
   details?: any;
   ipAddress?: string;
   userAgent?: string;
+  actorPlayerId?: number;
+  actorStaffRole?: string;
 }) {
   try {
-    await prisma.auditLog.create({
-      data: {
-        adminId: data.adminId,
-        action: data.action,
-        targetType: data.targetType,
-        targetId: data.targetId?.toString(),
-        details: data.details ? JSON.stringify(data.details) : null,
-        ipAddress: data.ipAddress || null,
-        userAgent: data.userAgent || null,
-      },
-    });
+    const actorPlayerId =
+      data.actorPlayerId ??
+      (data.details && typeof data.details === 'object'
+        ? Number(data.details.actorPlayerId || 0) || undefined
+        : undefined);
+    const actorStaffRole =
+      data.actorStaffRole ??
+      (data.details && typeof data.details === 'object'
+        ? String(data.details.actorStaffRole || '')
+        : undefined);
+
+    if (data.adminId && data.adminId > 0) {
+      await prisma.auditLog.create({
+        data: {
+          adminId: data.adminId,
+          action: data.action,
+          targetType: data.targetType,
+          targetId: data.targetId?.toString(),
+          details: data.details ? JSON.stringify(data.details) : null,
+          ipAddress: data.ipAddress || null,
+          userAgent: data.userAgent || null,
+        },
+      });
+      return;
+    }
+
+    if (actorPlayerId) {
+      await prisma.$executeRawUnsafe(
+        `INSERT INTO audit_logs
+          (adminId, action, targetType, targetId, details, ipAddress, userAgent, createdAt, actorPlayerId, actorStaffRole)
+         VALUES (NULL, ?, ?, ?, ?, ?, ?, NOW(), ?, ?)`,
+        data.action,
+        data.targetType ?? null,
+        data.targetId?.toString() ?? null,
+        data.details ? JSON.stringify(data.details) : null,
+        data.ipAddress || null,
+        data.userAgent || null,
+        actorPlayerId,
+        actorStaffRole || null,
+      );
+    }
   } catch (error) {
     console.error('[Audit Log] Failed to create manual log:', error);
   }

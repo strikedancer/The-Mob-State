@@ -61,6 +61,7 @@ export const playerService = {
       lastUsernameChange: player.lastUsernameChange,
       allowMessages: player.allowMessages,
       reputation: player.reputation,
+      staffRole: (player as { staffRole?: string }).staffRole ?? 'NONE',
       preferredLanguage: player.preferredLanguage,
       createdAt: player.createdAt,
       updatedAt: player.updatedAt,

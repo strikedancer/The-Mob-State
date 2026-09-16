@@ -101,6 +101,8 @@ interface AdminLoginResponse {
     id: number;
     username: string;
     role: string;
+    staffRole?: "NONE" | "MOD" | "OPS" | null;
+    playerId?: number;
   };
 }
 
@@ -197,6 +199,7 @@ export interface PlayerOverview {
     wantedLevel: number;
     fbiHeat: number;
     reputation: number;
+    staffRole?: "NONE" | "MOD" | "OPS" | null;
     premiumCredits: number;
     killCount: number;
     hitCount: number;
@@ -1161,6 +1164,11 @@ export const adminAuthService = {
     if (data?.admin?.id != null) {
       localStorage.setItem("admin_id", String(data.admin.id));
     }
+    if (data?.admin?.staffRole) {
+      localStorage.setItem("admin_staff_role", data.admin.staffRole);
+    } else {
+      localStorage.removeItem("admin_staff_role");
+    }
     return data;
   },
 
@@ -1168,6 +1176,7 @@ export const adminAuthService = {
     localStorage.removeItem("admin_token");
     localStorage.removeItem("admin_role");
     localStorage.removeItem("admin_id");
+    localStorage.removeItem("admin_staff_role");
   },
 
   getToken() {
@@ -1186,11 +1195,17 @@ export const adminAuthService = {
       | null;
   },
 
+  getStaffRole() {
+    return localStorage.getItem("admin_staff_role") as "MOD" | "OPS" | null;
+  },
+
   async getMe(timeoutMs = 8_000): Promise<{
     admin: {
       id: number;
       username: string;
       role: "SUPER_ADMIN" | "MODERATOR" | "VIEWER";
+      staffRole?: "NONE" | "MOD" | "OPS" | null;
+      playerId?: number;
       isActive: boolean;
     };
   }> {
@@ -1764,6 +1779,20 @@ export const adminService = {
     });
 
     await ensureOk(response, "Failed to execute bulk action");
+    return response.json();
+  },
+
+  async setPlayerStaffRole(playerId: number, staffRole: "NONE" | "MOD" | "OPS") {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/players/staff-role`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ playerId, staffRole }),
+    });
+    await ensureOk(response, "Failed to set staff role");
     return response.json();
   },
 

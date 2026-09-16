@@ -571,6 +571,9 @@ function App() {
   const [adminRole, setAdminRole] = useState<
     "SUPER_ADMIN" | "MODERATOR" | "VIEWER" | null
   >(adminAuthService.getAdminRole());
+  const [staffRole, setStaffRole] = useState<"MOD" | "OPS" | null>(
+    adminAuthService.getStaffRole(),
+  );
   const [currentAdminId, setCurrentAdminId] = useState<number | null>(() => {
     const stored = localStorage.getItem("admin_id");
     const parsed = stored ? Number(stored) : NaN;
@@ -1085,13 +1088,25 @@ function App() {
         setIsAuthenticated(true);
         setAdminRole(me.admin.role);
         setCurrentAdminId(me.admin.id);
+        const nextStaff =
+          me.admin.staffRole === "MOD" || me.admin.staffRole === "OPS"
+            ? me.admin.staffRole
+            : null;
+        setStaffRole(nextStaff);
         localStorage.setItem("admin_role", me.admin.role);
         localStorage.setItem("admin_id", String(me.admin.id));
+        if (nextStaff) {
+          localStorage.setItem("admin_staff_role", nextStaff);
+          setActiveTab("world-chat");
+        } else {
+          localStorage.removeItem("admin_staff_role");
+        }
       } catch {
         if (cancelled) return;
         adminAuthService.logout();
         setIsAuthenticated(false);
         setAdminRole(null);
+        setStaffRole(null);
         setCurrentAdminId(null);
       } finally {
         if (!cancelled) setSessionReady(true);
@@ -1104,7 +1119,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && !staffRole) {
       loadStats();
       loadSystemHealth();
       loadDashboardOverview();
@@ -1113,7 +1128,7 @@ function App() {
       loadVehicleOpsTelemetry(economyWindowHours);
       loadConfig();
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, staffRole]);
 
   useEffect(() => {
     if (!isAuthenticated || activeTab !== "dashboard") return;
@@ -1473,6 +1488,7 @@ function App() {
       adminAuthService.logout();
       setIsAuthenticated(false);
       setAdminRole(null);
+      setStaffRole(null);
       setError(
         l(
           "Je sessie is verlopen. Log opnieuw in.",
@@ -4132,7 +4148,23 @@ function App() {
   };
 
   const canManagePlayers =
-    adminRole === "SUPER_ADMIN" || adminRole === "MODERATOR";
+    !staffRole &&
+    (adminRole === "SUPER_ADMIN" || adminRole === "MODERATOR");
+
+  const handleSetPlayerStaffRole = async (nextRole: "NONE" | "MOD" | "OPS") => {
+    if (!selectedPlayerId || adminRole !== "SUPER_ADMIN" || staffRole) return;
+    try {
+      await adminService.setPlayerStaffRole(selectedPlayerId, nextRole);
+      const refreshed = await adminService.getPlayerOverview(selectedPlayerId);
+      setSelectedPlayerOverview(refreshed);
+    } catch (err) {
+      setApiError(
+        err instanceof Error
+          ? err.message
+          : l("Staffrol opslaan mislukt.", "Failed to save staff role."),
+      );
+    }
+  };
 
   const supportTicketStatusLabel = (status: SupportTicketSummary["status"]) => {
     switch (status) {
@@ -4898,10 +4930,17 @@ function App() {
     { id: "images", label: t.navImages, icon: "bi-images" },
     { id: "premium-offers", label: t.navPremium, icon: "bi-gem" },
     { id: "config", label: t.navConfig, icon: "bi-sliders" },
-  ].filter(
-    (item): item is { id: TabType; label: string; icon: string } =>
-      item.id !== "admins" || adminRole === "SUPER_ADMIN",
-  );
+  ].filter((item): item is { id: TabType; label: string; icon: string } => {
+    if (staffRole === "MOD") return item.id === "world-chat";
+    if (staffRole === "OPS") {
+      return (
+        item.id === "world-chat" ||
+        item.id === "tickets" ||
+        item.id === "players"
+      );
+    }
+    return item.id !== "admins" || adminRole === "SUPER_ADMIN";
+  });
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -4913,6 +4952,12 @@ function App() {
       setIsAuthenticated(true);
       setAdminRole(adminAuthService.getAdminRole());
       setCurrentAdminId(data.admin.id);
+      const nextStaff =
+        data.admin.staffRole === "MOD" || data.admin.staffRole === "OPS"
+          ? data.admin.staffRole
+          : null;
+      setStaffRole(nextStaff);
+      if (nextStaff) setActiveTab("world-chat");
     } catch (err) {
       const code = err instanceof Error ? err.message : "";
       if (code === "LOGIN_NETWORK" || code === "LOGIN_TIMEOUT") {
@@ -4932,8 +4977,8 @@ function App() {
       } else {
         setError(
           l(
-            "Inloggen mislukt. Gebruik exact de admin-gebruikersnaam op https://admin.themobstate.com — dit is niet het spel.",
-            "Login failed. Use the exact admin username at https://admin.themobstate.com — this is not the game.",
+            "Inloggen mislukt. Super-admins gebruiken hun admin-naam; Mods en Ops hun spelaccount op https://admin.themobstate.com.",
+            "Login failed. Super-admins use their admin name; Mods and Ops use their game account at https://admin.themobstate.com.",
           ),
         );
       }
@@ -4946,6 +4991,7 @@ function App() {
     adminAuthService.logout();
     setIsAuthenticated(false);
     setAdminRole(null);
+    setStaffRole(null);
     setCurrentAdminId(null);
     setUsername("");
     setPassword("");
@@ -4996,8 +5042,8 @@ function App() {
               <p className="text-muted mb-2">{t.loginSubtitle}</p>
               <p className="small text-muted mb-0">
                 {l(
-                  "Alleen via https://admin.themobstate.com. Dit is niet het spel, en de gebruikersnaam mag geen spatie hebben.",
-                  "Only via https://admin.themobstate.com. This is not the game, and the username cannot contain a space.",
+                  "Alleen via https://admin.themobstate.com. Super-admins gebruiken hun admin-account. Mods en Ops loggen in met hun gewone spelaccount.",
+                  "Only via https://admin.themobstate.com. Super-admins use their admin account. Mods and Ops sign in with their normal game account.",
                 )}
               </p>
             </div>
@@ -7091,8 +7137,9 @@ function App() {
 
                           {/* ── Nav tabs ── */}
                           <ul className="nav nav-tabs mb-3">
-                            {(["overview", "manage", "financial"] as const).map(
-                              (tab) => (
+                            {(["overview", "manage", "financial"] as const)
+                              .filter((tab) => !staffRole || tab === "overview")
+                              .map((tab) => (
                                 <li key={tab} className="nav-item">
                                   <button
                                     className={`nav-link ${playerDetailTab === tab ? "active" : ""}`}
@@ -7195,6 +7242,14 @@ function App() {
                                           : l("Nee", "No"),
                                       ],
                                       [
+                                        l("Staffrol", "Staff role"),
+                                        pl.staffRole === "MOD"
+                                          ? "Mod"
+                                          : pl.staffRole === "OPS"
+                                            ? "Ops"
+                                            : l("Geen", "None"),
+                                      ],
+                                      [
                                         l("Aangemaakt", "Created"),
                                         new Date(pl.createdAt).toLocaleString(),
                                       ],
@@ -7215,6 +7270,41 @@ function App() {
                                       </div>
                                     ))}
                                   </div>
+                                  {adminRole === "SUPER_ADMIN" && !staffRole ? (
+                                    <div className="mt-3">
+                                      <label className="form-label">
+                                        {l(
+                                          "In-game Mod / Ops",
+                                          "In-game Mod / Ops",
+                                        )}
+                                      </label>
+                                      <select
+                                        className="form-select"
+                                        style={{ maxWidth: 280 }}
+                                        value={pl.staffRole || "NONE"}
+                                        onChange={(event) =>
+                                          void handleSetPlayerStaffRole(
+                                            event.target.value as
+                                              | "NONE"
+                                              | "MOD"
+                                              | "OPS",
+                                          )
+                                        }
+                                      >
+                                        <option value="NONE">
+                                          {l("Geen staffrol", "No staff role")}
+                                        </option>
+                                        <option value="MOD">Mod</option>
+                                        <option value="OPS">Ops</option>
+                                      </select>
+                                      <div className="form-text">
+                                        {l(
+                                          "Mod ziet alleen Wereldchat. Ops ziet Wereldchat, Tickets en Spelers (lezen, geen geld of ban).",
+                                          "Mod sees World chat only. Ops sees World chat, Tickets and Players (read, no money or ban).",
+                                        )}
+                                      </div>
+                                    </div>
+                                  ) : null}
                                 </div>
                               </div>
 
@@ -11177,7 +11267,10 @@ function App() {
               )}
 
               {activeTab === "world-chat" && (
-                <WorldChatAdminPanel locale={language} />
+                <WorldChatAdminPanel
+                  locale={language}
+                  canConfigure={!staffRole}
+                />
               )}
 
               {activeTab === "crew-missions" && (

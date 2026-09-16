@@ -3,6 +3,7 @@ import { eventBroadcaster } from './eventBroadcaster';
 import { filterProfanity, parseExtraBlocklist } from '../utils/profanityFilter';
 import { getGlobalChatSticker, isGlobalChatStickerId } from '../data/globalChatStickers';
 import { globalChatDiscordBridge } from './globalChatDiscordBridge';
+import { isPlayerStaff, normalizeStaffRole, type PlayerStaffRole } from '../utils/staffRole';
 
 const MAX_BODY = 200;
 const HISTORY_LIMIT = 100;
@@ -24,6 +25,7 @@ export type GlobalChatPublicMessage = {
   stickerId: string | null;
   stickerEmoji: string | null;
   createdAt: string;
+  staffRole: 'MOD' | 'OPS' | null;
 };
 
 const sendTimes = new Map<number, number[]>();
@@ -62,15 +64,23 @@ function checkRateLimit(playerId: number): boolean {
   return true;
 }
 
-function toPublic(row: {
-  id: number;
-  playerId: number | null;
-  displayName: string;
-  source: string;
-  message: string;
-  stickerId: string | null;
-  createdAt: Date;
-}): GlobalChatPublicMessage {
+function publicStaffRole(raw: unknown): 'MOD' | 'OPS' | null {
+  const role = normalizeStaffRole(raw);
+  return isPlayerStaff(role) ? role : null;
+}
+
+function toPublic(
+  row: {
+    id: number;
+    playerId: number | null;
+    displayName: string;
+    source: string;
+    message: string;
+    stickerId: string | null;
+    createdAt: Date;
+  },
+  staffRole?: unknown,
+): GlobalChatPublicMessage {
   const sticker = getGlobalChatSticker(row.stickerId);
   return {
     id: row.id,
@@ -81,7 +91,22 @@ function toPublic(row: {
     stickerId: row.stickerId,
     stickerEmoji: sticker?.emoji ?? null,
     createdAt: row.createdAt.toISOString(),
+    staffRole: publicStaffRole(staffRole),
   };
+}
+
+async function staffRolesByPlayerIds(playerIds: Array<number | null | undefined>): Promise<Map<number, PlayerStaffRole>> {
+  const ids = [...new Set(playerIds.filter((id): id is number => Number.isInteger(id) && (id as number) > 0))];
+  const roles = new Map<number, PlayerStaffRole>();
+  if (ids.length === 0) return roles;
+  const rows = await prisma.$queryRawUnsafe<Array<{ id: number; staffRole: string }>>(
+    `SELECT id, staffRole FROM players WHERE id IN (${ids.map(() => '?').join(',')})`,
+    ...ids,
+  );
+  for (const row of rows) {
+    roles.set(row.id, normalizeStaffRole(row.staffRole));
+  }
+  return roles;
 }
 
 function broadcastMessage(message: GlobalChatPublicMessage): void {
@@ -131,7 +156,8 @@ async function persistAndFanout(input: {
       filtered: input.filtered,
     },
   });
-  const publicMessage = toPublic(row);
+  const roles = await staffRolesByPlayerIds([input.playerId]);
+  const publicMessage = toPublic(row, input.playerId ? roles.get(input.playerId) : null);
   broadcastMessage(publicMessage);
   if (input.mirrorToDiscord) {
     void globalChatDiscordBridge.mirrorGameMessage(publicMessage);
@@ -147,7 +173,8 @@ export const globalChatService = {
       orderBy: { createdAt: 'desc' },
       take,
     });
-    return rows.reverse().map(toPublic);
+    const roles = await staffRolesByPlayerIds(rows.map((row) => row.playerId));
+    return rows.reverse().map((row) => toPublic(row, row.playerId ? roles.get(row.playerId) : null));
   },
 
   async sendFromPlayer(
@@ -339,8 +366,51 @@ export const globalChatService = {
       enabled,
       extraBlocklist: extraBlocklist.join('\n'),
       discord: globalChatDiscordBridge.status(),
-      messages: messages.map(toPublic),
+      messages: await (async () => {
+        const roles = await staffRolesByPlayerIds(messages.map((row) => row.playerId));
+        return messages.map((row) => toPublic(row, row.playerId ? roles.get(row.playerId) : null));
+      })(),
       reports,
+      mutes: mutes.map((mute) => ({
+        playerId: mute.playerId,
+        username: mute.player.username,
+        mutedUntil: mute.mutedUntil?.toISOString() ?? null,
+        reason: mute.reason,
+      })),
+    };
+  },
+
+  async getStaffTools() {
+    const [reports, mutes] = await Promise.all([
+      prisma.globalChatReport.findMany({
+        orderBy: { createdAt: 'desc' },
+        take: 40,
+      }),
+      prisma.globalChatMute.findMany({
+        include: { player: { select: { id: true, username: true } } },
+        orderBy: { createdAt: 'desc' },
+        take: 40,
+      }),
+    ]);
+    const messageIds = [...new Set(reports.map((row) => row.messageId))];
+    const messages = messageIds.length
+      ? await prisma.globalChatMessage.findMany({ where: { id: { in: messageIds } } })
+      : [];
+    const roles = await staffRolesByPlayerIds(messages.map((row) => row.playerId));
+    const byId = new Map(messages.map((row) => [row.id, row]));
+    return {
+      reports: reports.map((row) => {
+        const message = byId.get(row.messageId);
+        return {
+          id: row.id,
+          messageId: row.messageId,
+          reporterId: row.reporterId,
+          createdAt: row.createdAt.toISOString(),
+          message: message
+            ? toPublic(message, message.playerId ? roles.get(message.playerId) : null)
+            : null,
+        };
+      }),
       mutes: mutes.map((mute) => ({
         playerId: mute.playerId,
         username: mute.player.username,

@@ -36,6 +36,8 @@ class _WorldChatScreenState extends State<WorldChatScreen> {
   bool _loadFailed = false;
   bool _showStickers = false;
   String? _selectedStickerId;
+  String? _viewerStaffRole;
+  List<Map<String, dynamic>> _staffReports = const [];
 
   @override
   void initState() {
@@ -87,7 +89,9 @@ class _WorldChatScreenState extends State<WorldChatScreen> {
         final data = jsonDecode(response.body) as Map<String, dynamic>;
         final params = data['params'] as Map<String, dynamic>;
         final list = params['messages'] as List? ?? [];
+        final role = params['viewerStaffRole'] as String?;
         setState(() {
+          _viewerStaffRole = role == 'MOD' || role == 'OPS' ? role : null;
           _messages
             ..clear()
             ..addAll(
@@ -98,6 +102,9 @@ class _WorldChatScreenState extends State<WorldChatScreen> {
               ),
             );
         });
+        if (_viewerStaffRole != null) {
+          await _loadStaffTools();
+        }
         _scrollToBottom();
       } else {
         setState(() => _loadFailed = true);
@@ -246,6 +253,163 @@ class _WorldChatScreenState extends State<WorldChatScreen> {
     }
   }
 
+  bool get _isStaff => _viewerStaffRole == 'MOD' || _viewerStaffRole == 'OPS';
+
+  Future<void> _loadStaffTools() async {
+    try {
+      final response = await AuthService().apiClient.get('/global-chat/staff/overview');
+      if (response.statusCode != 200) return;
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final params = data['params'] as Map<String, dynamic>? ?? {};
+      final reports = (params['reports'] as List? ?? [])
+          .whereType<Map>()
+          .map((row) => Map<String, dynamic>.from(row))
+          .toList();
+      if (!mounted) return;
+      setState(() {
+        _staffReports = reports;
+      });
+    } catch (_) {}
+  }
+
+  Future<void> _staffDelete(int messageId) async {
+    final l10n = AppLocalizations.of(context)!;
+    try {
+      final response = await AuthService().apiClient.delete(
+        '/global-chat/messages/$messageId/staff',
+      );
+      if (response.statusCode == 200) {
+        setState(() => _messages.removeWhere((row) => row.id == messageId));
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(content: Text(l10n.worldChatStaffDeleted)),
+        );
+      } else {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(content: Text(_errorCopy(l10n, _reasonFromBody(response.body)))),
+        );
+      }
+    } catch (_) {
+      if (mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(content: Text(l10n.worldChatErrorGeneric)),
+        );
+      }
+    }
+  }
+
+  Future<void> _staffMute(int playerId, int minutes) async {
+    final l10n = AppLocalizations.of(context)!;
+    try {
+      final response = await AuthService().apiClient.post(
+        '/global-chat/mutes',
+        {'playerId': playerId, 'minutes': minutes},
+      );
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            response.statusCode == 200
+                ? l10n.worldChatStaffMuted
+                : l10n.worldChatErrorGeneric,
+          ),
+        ),
+      );
+      if (response.statusCode == 200) await _loadStaffTools();
+    } catch (_) {
+      if (mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(content: Text(l10n.worldChatErrorGeneric)),
+        );
+      }
+    }
+  }
+
+  Future<void> _staffUnmute(int playerId) async {
+    final l10n = AppLocalizations.of(context)!;
+    try {
+      final response = await AuthService().apiClient.delete(
+        '/global-chat/mutes/$playerId',
+      );
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            response.statusCode == 200
+                ? l10n.worldChatStaffUnmuted
+                : l10n.worldChatErrorGeneric,
+          ),
+        ),
+      );
+      if (response.statusCode == 200) await _loadStaffTools();
+    } catch (_) {
+      if (mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(content: Text(l10n.worldChatErrorGeneric)),
+        );
+      }
+    }
+  }
+
+  Future<void> _showStaffReports() async {
+    await _loadStaffTools();
+    if (!mounted) return;
+    final loc = AppLocalizations.of(context)!;
+    await showDialog<void>(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          backgroundColor: const Color(0xFF2A2A2A),
+          title: Text(
+            loc.worldChatStaffReports,
+            style: const TextStyle(color: Colors.white),
+          ),
+          content: ResponsiveDialogContent(
+            phoneMaxWidth: 360,
+            tabletMaxWidth: 420,
+            desktopMaxWidth: 480,
+            child: SizedBox(
+              height: 320,
+              child: _staffReports.isEmpty
+                  ? Text(
+                      loc.worldChatStaffReportsEmpty,
+                      style: const TextStyle(color: Colors.grey),
+                    )
+                  : ListView(
+                      children: [
+                        for (final row in _staffReports)
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: Text(
+                              (row['message'] is Map
+                                      ? (row['message'] as Map)['message']
+                                      : null)
+                                  ?.toString() ??
+                                  '#${row['messageId']}',
+                              style: const TextStyle(color: Colors.white70),
+                            ),
+                          ),
+                      ],
+                    ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: Text(loc.crewChatCancel),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> _onLongPress(GlobalChatMessage message, bool isOwn) async {
     final action = await showDialog<String>(
       context: context,
@@ -262,7 +426,11 @@ class _WorldChatScreenState extends State<WorldChatScreen> {
             tabletMaxWidth: 380,
             desktopMaxWidth: 420,
             child: Text(
-              isOwn ? loc.worldChatDeleteBody : loc.worldChatReportBody,
+              isOwn
+                  ? loc.worldChatDeleteBody
+                  : _isStaff
+                      ? loc.worldChatStaffActionBody
+                      : loc.worldChatReportBody,
               style: const TextStyle(color: Colors.grey),
             ),
           ),
@@ -279,17 +447,51 @@ class _WorldChatScreenState extends State<WorldChatScreen> {
                   style: const TextStyle(color: Colors.red),
                 ),
               )
-            else
+            else ...[
               TextButton(
                 onPressed: () => Navigator.pop(ctx, 'report'),
                 child: Text(loc.worldChatReport),
               ),
+              if (_isStaff) ...[
+                TextButton(
+                  onPressed: () => Navigator.pop(ctx, 'staff-delete'),
+                  child: Text(
+                    loc.worldChatStaffDelete,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                ),
+                if (message.playerId != null) ...[
+                  TextButton(
+                    onPressed: () => Navigator.pop(ctx, 'mute-15'),
+                    child: Text(loc.worldChatStaffMute15),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(ctx, 'mute-60'),
+                    child: Text(loc.worldChatStaffMute60),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(ctx, 'unmute'),
+                    child: Text(loc.worldChatStaffUnmute),
+                  ),
+                ],
+              ],
+            ],
           ],
         );
       },
     );
     if (action == 'delete') await _deleteOwn(message.id);
     if (action == 'report') await _report(message.id);
+    if (action == 'staff-delete') await _staffDelete(message.id);
+    if (action == 'mute-15' && message.playerId != null) {
+      await _staffMute(message.playerId!, 15);
+    }
+    if (action == 'mute-60' && message.playerId != null) {
+      await _staffMute(message.playerId!, 60);
+    }
+    if (action == 'unmute' && message.playerId != null) {
+      await _staffUnmute(message.playerId!);
+    }
   }
 
   void _scrollToBottom() {
@@ -319,6 +521,22 @@ class _WorldChatScreenState extends State<WorldChatScreen> {
             fallbackIcon: Icons.public,
             onRefresh: _loading ? null : _loadMessages,
             refreshEnabled: !_loading,
+            actions: _isStaff
+                ? [
+                    IconButton(
+                      tooltip: l10n.worldChatStaffReports,
+                      onPressed: _showStaffReports,
+                      icon: Badge(
+                        isLabelVisible: _staffReports.isNotEmpty,
+                        label: Text('${_staffReports.length}'),
+                        child: const Icon(
+                          Icons.flag_outlined,
+                          color: Color(0xFFFFB347),
+                        ),
+                      ),
+                    ),
+                  ]
+                : const [],
           ),
         ),
         Expanded(child: _buildList(l10n, playerId)),
@@ -428,6 +646,11 @@ class _WorldChatScreenState extends State<WorldChatScreen> {
           stickerEmoji: message.stickerEmoji ??
               globalChatStickerById(message.stickerId)?.emoji,
           sourceLabel: message.source == 'discord' ? l10n.worldChatFromDiscord : null,
+          staffBadge: message.staffRole == 'OPS'
+              ? l10n.worldChatStaffOps
+              : message.staffRole == 'MOD'
+                  ? l10n.worldChatStaffMod
+                  : null,
           onLongPress: () => _onLongPress(message, isOwn),
         );
       },

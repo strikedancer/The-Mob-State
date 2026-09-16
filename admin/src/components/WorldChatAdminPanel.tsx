@@ -9,12 +9,13 @@ import { AdminPageIntro } from "./adminChrome";
 
 type Props = {
   locale: AdminLanguage;
+  canConfigure?: boolean;
 };
 
 const tr = (locale: AdminLanguage, nl: string, en: string) =>
   getAdminTr(locale, nl, en);
 
-export function WorldChatAdminPanel({ locale }: Props) {
+export function WorldChatAdminPanel({ locale, canConfigure = true }: Props) {
   const [view, setView] = useState<GlobalChatAdminOverview | null>(null);
   const [blocklist, setBlocklist] = useState("");
   const [mutePlayerId, setMutePlayerId] = useState("");
@@ -109,16 +110,19 @@ export function WorldChatAdminPanel({ locale }: Props) {
               {" · "}
               Discord in: {view.discord.inbound ? "on" : "off"}
             </p>
+            {canConfigure ? (
             <button type="button" disabled={saving} onClick={() => void toggleEnabled()}>
               {view.enabled
                 ? tr(locale, "Chat uitzetten", "Turn chat off")
                 : tr(locale, "Chat aanzetten", "Turn chat on")}
             </button>
+            ) : null}
             <button type="button" onClick={() => void load()} style={{ marginLeft: 8 }}>
               {tr(locale, "Vernieuwen", "Refresh")}
             </button>
           </div>
 
+          {canConfigure ? (
           <div className="runtime-card" style={{ marginBottom: 16 }}>
             <h3>{tr(locale, "Extra scheldwoorden", "Extra blocked words")}</h3>
             <p>
@@ -138,6 +142,7 @@ export function WorldChatAdminPanel({ locale }: Props) {
               {tr(locale, "Lijst opslaan", "Save list")}
             </button>
           </div>
+          ) : null}
 
           <div className="runtime-card" style={{ marginBottom: 16 }}>
             <h3>{tr(locale, "Mute", "Mute")}</h3>

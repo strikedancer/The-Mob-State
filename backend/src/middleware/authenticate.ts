@@ -11,6 +11,7 @@ export interface AuthRequest extends Request {
     rank: number;
     health: number;
     currentCountry: string;
+    staffRole?: 'NONE' | 'MOD' | 'OPS';
   };
 }
 

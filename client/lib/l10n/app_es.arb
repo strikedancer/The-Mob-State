@@ -12627,5 +12627,17 @@
   "casinoBlackjackHit": "Hit",
   "casinoBlackjackStand": "Stand",
   "casinoBlackjackPushTitle": "Push",
-  "casinoBlackjackPush": "Tie. Your bet is returned."
+  "casinoBlackjackPush": "Tie. Your bet is returned.",
+  "worldChatStaffMod": "Mod",
+  "worldChatStaffOps": "Ops",
+  "worldChatStaffDelete": "Remove for everyone",
+  "worldChatStaffMute15": "Mute 15 min",
+  "worldChatStaffMute60": "Mute 1 hour",
+  "worldChatStaffUnmute": "Unmute",
+  "worldChatStaffMuted": "That player is muted in world chat.",
+  "worldChatStaffUnmuted": "That player can speak again.",
+  "worldChatStaffDeleted": "Message removed from world chat.",
+  "worldChatStaffReports": "Reports",
+  "worldChatStaffReportsEmpty": "No open reports right now.",
+  "worldChatStaffActionBody": "Remove this message, mute the sender, or send it to the report list."
 }

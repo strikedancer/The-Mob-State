@@ -21,6 +21,7 @@ class MessageBubble extends StatelessWidget {
   final bool? isRead;
   final String? stickerEmoji;
   final String? sourceLabel;
+  final String? staffBadge;
 
   const MessageBubble({
     super.key,
@@ -37,6 +38,7 @@ class MessageBubble extends StatelessWidget {
     this.isRead,
     this.stickerEmoji,
     this.sourceLabel,
+    this.staffBadge,
   });
 
   /// Create from DirectMessage
@@ -204,6 +206,31 @@ class MessageBubble extends StatelessWidget {
                                   color: Color(0xFFFFD700),
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                          if (staffBadge != null && staffBadge!.isNotEmpty) ...[
+                            const SizedBox(width: 6),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 5,
+                                vertical: 1,
+                              ),
+                              decoration: BoxDecoration(
+                                color: const Color(0x33FFB347),
+                                borderRadius: BorderRadius.circular(3),
+                                border: Border.all(
+                                  color: const Color(0xFFFFB347),
+                                ),
+                              ),
+                              child: Text(
+                                staffBadge!,
+                                style: const TextStyle(
+                                  color: Color(0xFFFFB347),
+                                  fontSize: 9,
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: 0.4,
                                 ),
                               ),
                             ),

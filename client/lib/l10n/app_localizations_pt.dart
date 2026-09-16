@@ -5269,6 +5269,43 @@ class AppLocalizationsPt extends AppLocalizations {
       'Essa mensagem não pode mais ser excluída.';
 
   @override
+  String get worldChatStaffMod => 'Mod';
+
+  @override
+  String get worldChatStaffOps => 'Ops';
+
+  @override
+  String get worldChatStaffDelete => 'Remove for everyone';
+
+  @override
+  String get worldChatStaffMute15 => 'Mute 15 min';
+
+  @override
+  String get worldChatStaffMute60 => 'Mute 1 hour';
+
+  @override
+  String get worldChatStaffUnmute => 'Unmute';
+
+  @override
+  String get worldChatStaffMuted => 'That player is muted in world chat.';
+
+  @override
+  String get worldChatStaffUnmuted => 'That player can speak again.';
+
+  @override
+  String get worldChatStaffDeleted => 'Message removed from world chat.';
+
+  @override
+  String get worldChatStaffReports => 'Reports';
+
+  @override
+  String get worldChatStaffReportsEmpty => 'No open reports right now.';
+
+  @override
+  String get worldChatStaffActionBody =>
+      'Remove this message, mute the sender, or send it to the report list.';
+
+  @override
   String get aviationUiBuyConfirmTitle => 'Comprar aeronaves?';
 
   @override

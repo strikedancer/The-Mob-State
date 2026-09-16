@@ -5,6 +5,7 @@ import { z } from 'zod';
 import prisma from '../lib/prisma';
 import config from '../config';
 import { compactAdminUsername, normalizeAdminUsername } from '../utils/adminAccount';
+import { isPlayerStaff, normalizeStaffRole } from '../utils/staffRole';
 
 const router = express.Router();
 
@@ -39,9 +40,73 @@ router.post('/login', async (req, res) => {
 
     const admin = await findAdminForLogin(username);
 
-    if (!admin || !admin.isActive) {
+    if (admin && !admin.isActive) {
       console.log('[Admin Login] Invalid credentials - admin not found or inactive');
       return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    if (!admin) {
+      const player = await prisma.player.findUnique({
+        where: { username },
+        select: {
+          id: true,
+          username: true,
+          passwordHash: true,
+          isBanned: true,
+          bannedUntil: true,
+        },
+      });
+      if (!player) {
+        console.log('[Admin Login] Invalid credentials - admin not found or inactive');
+        return res.status(401).json({ error: 'Invalid credentials' });
+      }
+      const staffRows = await prisma.$queryRawUnsafe<Array<{ staffRole: string }>>(
+        'SELECT staffRole FROM players WHERE id = ? LIMIT 1',
+        player.id,
+      );
+      const staffRole = normalizeStaffRole(staffRows?.[0]?.staffRole);
+      if (!isPlayerStaff(staffRole)) {
+        console.log('[Admin Login] Invalid credentials - admin not found or inactive');
+        return res.status(401).json({ error: 'Invalid credentials' });
+      }
+      if (player.isBanned && (!player.bannedUntil || player.bannedUntil.getTime() > Date.now())) {
+        console.log('[Admin Login] Invalid credentials - staff player banned');
+        return res.status(401).json({ error: 'Invalid credentials' });
+      }
+      const playerPasswordOk = await bcrypt.compare(password, player.passwordHash);
+      if (!playerPasswordOk) {
+        console.log('[Admin Login] Invalid credentials - bad password');
+        return res.status(401).json({ error: 'Invalid credentials' });
+      }
+
+      const token = jwt.sign(
+        {
+          playerId: player.id,
+          username: player.username,
+          staffRole,
+          role: 'VIEWER',
+          type: 'admin',
+        },
+        config.jwtSecret,
+        { expiresIn: '8h' }
+      );
+
+      console.log('[Admin Login] Staff player success:', {
+        playerId: player.id,
+        username: player.username,
+        staffRole,
+      });
+
+      return res.json({
+        token,
+        admin: {
+          id: player.id,
+          username: player.username,
+          role: 'VIEWER',
+          staffRole,
+          playerId: player.id,
+        },
+      });
     }
 
     const isValidPassword = await bcrypt.compare(password, admin.passwordHash);
@@ -108,12 +173,48 @@ router.get('/me', async (req, res) => {
     }
 
     const decoded = jwt.verify(token, config.jwtSecret) as {
-      adminId: number;
+      adminId?: number;
+      playerId?: number;
       type: string;
     };
 
     if (decoded.type !== 'admin') {
       return res.status(403).json({ error: 'Not an admin token' });
+    }
+
+    if (decoded.playerId && !decoded.adminId) {
+      const player = await prisma.player.findUnique({
+        where: { id: decoded.playerId },
+        select: { id: true, username: true, isBanned: true, bannedUntil: true },
+      });
+      if (!player) {
+        return res.status(401).json({ error: 'Admin not found or inactive' });
+      }
+      const staffRows = await prisma.$queryRawUnsafe<Array<{ staffRole: string }>>(
+        'SELECT staffRole FROM players WHERE id = ? LIMIT 1',
+        player.id,
+      );
+      const staffRole = normalizeStaffRole(staffRows?.[0]?.staffRole);
+      if (!isPlayerStaff(staffRole)) {
+        return res.status(401).json({ error: 'Admin not found or inactive' });
+      }
+      if (player.isBanned && (!player.bannedUntil || player.bannedUntil.getTime() > Date.now())) {
+        return res.status(401).json({ error: 'Admin not found or inactive' });
+      }
+      return res.json({
+        admin: {
+          id: player.id,
+          username: player.username,
+          role: 'VIEWER',
+          staffRole,
+          playerId: player.id,
+          isActive: true,
+        },
+      });
+    }
+
+    if (!decoded.adminId) {
+      return res.status(401).json({ error: 'Invalid token' });
     }
 
     const admin = await prisma.admin.findUnique({
