@@ -265,35 +265,20 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
           style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: cards
-              .map(
-                (card) => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 2),
-                  child: Image.asset(
-                    _getCardImage(card),
-                    width: 40,
-                    height: 60,
-                    fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) => Container(
-                      width: 40,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Center(
-                        child: Text(
-                          '$card',
-                          style: const TextStyle(fontSize: 10),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              )
-              .toList(),
+        Wrap(
+          alignment: WrapAlignment.center,
+          spacing: 6,
+          runSpacing: 6,
+          children: [
+            for (var i = 0; i < cards.length; i++)
+              _buildCard(
+                cards[i],
+                i,
+                'dialog-$label',
+                width: 72,
+                height: 102,
+              ),
+          ],
         ),
         const SizedBox(height: 4),
         Text('${l10n.total}: $total', style: const TextStyle(fontSize: 12)),
@@ -651,46 +636,64 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
             l10n.casinoBlackjackDealerTotal(
               _holeHidden ? '?' : '$_dealerTotal',
             ),
-            style: const TextStyle(color: Colors.white, fontSize: 20),
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 22,
+              fontWeight: FontWeight.w700,
+            ),
           ),
-          const SizedBox(height: 10),
-          Wrap(
-            alignment: WrapAlignment.center,
-            spacing: 8,
-            runSpacing: 8,
-            children: _dealerCards
-                .asMap()
-                .entries
-                .map(
-                  (entry) => _buildCard(
-                    entry.value,
-                    entry.key,
-                    'dealer',
-                    faceDown: _holeHidden && entry.key == 1,
-                  ),
-                )
-                .toList(),
+          const SizedBox(height: 14),
+          _buildHand(
+            cards: _dealerCards,
+            owner: 'dealer',
+            hideHole: _holeHidden,
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 28),
           Text(
             l10n.casinoBlackjackYouTotal('$_playerTotal'),
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 20,
+              fontSize: 22,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 10),
-          Wrap(
-            alignment: WrapAlignment.center,
-            spacing: 8,
-            runSpacing: 8,
-            children: _playerCards
-                .asMap()
-                .entries
-                .map((entry) => _buildCard(entry.value, entry.key, 'player'))
-                .toList(),
-          ),
+          const SizedBox(height: 14),
+          _buildHand(cards: _playerCards, owner: 'player'),
+        ],
+      ),
+    );
+  }
+
+  static const double _tableCardWidth = 124;
+  static const double _tableCardHeight = 176;
+  static const double _handOverlap = 82;
+
+  Widget _buildHand({
+    required List<int> cards,
+    required String owner,
+    bool hideHole = false,
+  }) {
+    if (cards.isEmpty) {
+      return const SizedBox(height: _tableCardHeight);
+    }
+    final width =
+        _tableCardWidth + max(0, cards.length - 1) * _handOverlap;
+    return SizedBox(
+      width: width,
+      height: _tableCardHeight,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          for (var i = 0; i < cards.length; i++)
+            Positioned(
+              left: i * _handOverlap,
+              child: _buildCard(
+                cards[i],
+                i,
+                owner,
+                faceDown: hideHole && i == 1,
+              ),
+            ),
         ],
       ),
     );
@@ -701,39 +704,58 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
     int index,
     String owner, {
     bool faceDown = false,
+    double width = _tableCardWidth,
+    double height = _tableCardHeight,
   }) {
+    final radius = BorderRadius.circular(10);
     return Container(
-      key: ValueKey('$owner-$index-$value'),
-      width: 60,
-      height: 90,
-      margin: const EdgeInsets.symmetric(horizontal: 4),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
+      key: ValueKey('$owner-$index-$value-$faceDown'),
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        borderRadius: radius,
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x99000000),
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
       child: TweenAnimationBuilder<double>(
-        tween: Tween(begin: 0.72, end: 1.0),
+        tween: Tween(begin: 0.82, end: 1.0),
         duration: const Duration(milliseconds: 280),
         curve: Curves.easeOutBack,
         builder: (context, scale, child) {
           return Transform.scale(scale: scale, child: child);
         },
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(8),
-          child: Image.asset(
-            faceDown || value < 1
-                ? 'assets/images/casino/cards/card_back.png'
-                : _getCardImage(value),
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) => Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.grey[400]!, width: 2),
-              ),
-              child: Center(
-                child: Text(
-                  value.toString(),
-                  style: const TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
+          borderRadius: radius,
+          child: ColoredBox(
+            color: Colors.white,
+            child: Image.asset(
+              faceDown || value < 1
+                  ? 'assets/images/casino/cards/card_back.png'
+                  : _getCardImage(value),
+              fit: BoxFit.contain,
+              alignment: Alignment.center,
+              filterQuality: FilterQuality.high,
+              isAntiAlias: true,
+              cacheWidth: (width * 3).round(),
+              cacheHeight: (height * 3).round(),
+              errorBuilder: (context, error, stackTrace) => Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: radius,
+                  border: Border.all(color: Colors.grey[400]!, width: 2),
+                ),
+                child: Center(
+                  child: Text(
+                    value < 1 ? '' : value.toString(),
+                    style: TextStyle(
+                      fontSize: height * 0.28,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),

@@ -773,6 +773,7 @@ In **Voertuig stelen** kies je Auto / Motor / Boot via de drie lane-cards. Help 
 - **Bet range**: â‚¬100-â‚¬10,000
 - **House edge**: ~1% (with perfect play)
 - **Rules**: Standard blackjack — Hit or Stand after the deal
+- **Cards**: Large, sharp table cards so rank and suit stay readable; extra hits overlap instead of shrinking
 - **Dealer**: 1 card up, 1 card down until you stand; then stands on 17 (including soft 17)
 - **Payout**: 2× bet on win, stake back on push
 
