@@ -119,6 +119,8 @@ Scope-afbakening:
 - Map rendering met duidelijke fallback als SVG/region mapping deels faalt.
 - Initial `/territory` load failure must show retry (`MobileLoadError`), not an infinite spinner. TabBar is scrollable on narrow widths.
 - Region-modal timers (cooldown, contest phases, garrison, war pressure) tick live without a manual page refresh; expiry triggers a silent map refresh so action buttons follow server state.
+- Silent refresh must scan every loaded region, not only the open region modal, so `preparing` → `active` unlocks attack buttons after push/inbox without a manual refresh.
+- The map tab shows a live next-unlock chip for the soonest contest/cooldown the viewer has on the current map.
 
 ## Core Domain Model
 
@@ -341,6 +343,7 @@ Admin moderation:
 17. Region events roteren via runtime_config en zijn zichtbaar op map/overview/dashboard/public home.
 18. Drama-widget toont hot contests / recente captures / rising crews / war theaters zonder PII.
 19. Prep-ready: na `preparing` → `active` ontvangen attacker- én defender-crew push + inbox (`territory_contest_active`), ook zonder open Territory-scherm (cron).
+20. After prep or action cooldown expires, the map silently reloads even with the region modal closed, the next-unlock chip ticks live, and attack buttons appear without a manual refresh.
 20. Owned regio: deploy garnizoen uit crew-bank; kaart toont `G`; tweede regio mag tot `TERRITORY_GARRISON_MAX_ACTIVE_PER_CREW`; vanaf `effectiveMaxRegions >= TERRITORY_GARRISON_EXTRA_AT_REGION_CAP` (default 8) is een extra garnizoen toegestaan; contest blijft startbaar; capture-drempel stijgt alleen zolang het effect loopt.
 22. Region-cap: starter-crew (HQ 1, 5 leden) ziet 5; extra slot vereist zowel HQ-stap als leden-stap; `POST /territory/contest/start` weigert `REGIONS_CAP_REACHED` bij owned >= effective; `doAction` defense blijft toegestaan. Geen cap per land.
 21. Omsloten binnengebied: als alle buren van een owned regio van dezelfde crew zijn (min. 3 buren), verdwijnt de aanvalsknop en weigert `POST /territory/contest/start` met `territory.region_encircled`; een open buur maakt het weer aanvalbaar.

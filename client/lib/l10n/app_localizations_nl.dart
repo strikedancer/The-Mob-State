@@ -16072,6 +16072,14 @@ class AppLocalizationsNl extends AppLocalizations {
   String get territoryDetailYourCooldown => 'Jouw cooldown';
 
   @override
+  String territoryMapNextUnlock(String time) {
+    return 'Volgende ontgrendeling: $time';
+  }
+
+  @override
+  String get territoryMapActionsReady => 'Acties nu beschikbaar';
+
+  @override
   String get territoryNoticeCrewOnly =>
       'Territorium is alleen speelbaar voor crewleden. Maak eerst een crew aan of sluit je bij een crew aan, daarna kun je neutrale gebieden aanvallen.';
 

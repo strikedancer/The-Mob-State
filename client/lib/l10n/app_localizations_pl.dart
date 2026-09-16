@@ -16143,6 +16143,14 @@ class AppLocalizationsPl extends AppLocalizations {
   String get territoryDetailYourCooldown => 'Twój czas odnowienia';
 
   @override
+  String territoryMapNextUnlock(String time) {
+    return 'Next unlock: $time';
+  }
+
+  @override
+  String get territoryMapActionsReady => 'Actions ready now';
+
+  @override
   String get territoryNoticeCrewOnly =>
       'Na terytorium można grać tylko dla członków załogi. Najpierw utwórz lub dołącz do załogi, a następnie możesz atakować neutralne regiony.';
 

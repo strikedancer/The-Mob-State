@@ -10204,6 +10204,15 @@
   "territoryDetailContestEndsIn": "Contest ends in",
   "territoryDetailCooldownPerAction": "Cooldown per action",
   "territoryDetailYourCooldown": "Your cooldown",
+  "territoryMapNextUnlock": "Next unlock: {time}",
+  "@territoryMapNextUnlock": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryMapActionsReady": "Actions ready now",
   "territoryNoticeCrewOnly": "Territory is only playable for crew members. Create or join a crew first, then you can attack neutral regions.",
   "territoryNoticeWrongCountry": "You are viewing {viewingCountry}, but you are currently in {playerCountry}. You can browse this map, but attacks and contest actions only unlock after you travel to this country.",
   "territoryNoticeOwnRegion": "Your crew already controls this region.",

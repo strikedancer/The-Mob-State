@@ -16169,6 +16169,14 @@ class AppLocalizationsEs extends AppLocalizations {
   String get territoryDetailYourCooldown => 'Tu tiempo de reutilización';
 
   @override
+  String territoryMapNextUnlock(String time) {
+    return 'Next unlock: $time';
+  }
+
+  @override
+  String get territoryMapActionsReady => 'Actions ready now';
+
+  @override
   String get territoryNoticeCrewOnly =>
       'El territorio solo es jugable para los miembros de la Crew. Primero crea o únete a una Crew, luego podrás atacar regiones neutrales.';
 

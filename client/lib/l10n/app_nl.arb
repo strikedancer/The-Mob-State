@@ -8006,6 +8006,15 @@
   "territoryDetailContestEndsIn": "Contest eindigt over",
   "territoryDetailCooldownPerAction": "Cooldown per actie",
   "territoryDetailYourCooldown": "Jouw cooldown",
+  "territoryMapNextUnlock": "Volgende ontgrendeling: {time}",
+  "@territoryMapNextUnlock": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryMapActionsReady": "Acties nu beschikbaar",
   "territoryNoticeCrewOnly": "Territorium is alleen speelbaar voor crewleden. Maak eerst een crew aan of sluit je bij een crew aan, daarna kun je neutrale gebieden aanvallen.",
   "territoryNoticeWrongCountry": "Je bekijkt {viewingCountry}, maar je bent nu in {playerCountry}. Je kunt deze kaart wel bekijken, alleen aanvallen en contest-acties zijn pas beschikbaar zodra je naar dit land reist.",
   "territoryNoticeOwnRegion": "Je crew controleert dit gebied al.",

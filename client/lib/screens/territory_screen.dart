@@ -414,9 +414,12 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     if (regions is! List) return;
     for (final raw in regions) {
       if (raw is! Map) continue;
+      final nextAt = _parseApiDate(raw['viewerNextActionAt']);
       final remaining =
           (raw['viewerCooldownSecondsRemaining'] as num?)?.toInt() ?? 0;
-      if (remaining > 0) {
+      if (nextAt != null && nextAt.isAfter(fetchedAt)) {
+        raw['viewerCooldownUntil'] = nextAt.toIso8601String();
+      } else if (remaining > 0) {
         raw['viewerCooldownUntil'] =
             fetchedAt.add(Duration(seconds: remaining)).toIso8601String();
       } else {
@@ -435,9 +438,19 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   Future<void> _maybeSilentRefreshExpiredTimers([DateTime? clock]) async {
     if (!mounted || _isActing || _isLoading || _silentRefreshInFlight) return;
     final now = clock ?? DateTime.now();
-    final region = _regionDetailNotifier.value ?? _selectedRegion;
-    if (region == null) return;
-    final key = _expiredTimerRefreshKey(region, now);
+    String? key;
+    final regions = (_mapData['regions'] as List<dynamic>?) ?? [];
+    for (final raw in regions) {
+      if (raw is! Map) continue;
+      key = _expiredTimerRefreshKey(Map<String, dynamic>.from(raw), now);
+      if (key != null) break;
+    }
+    if (key == null) {
+      final open = _regionDetailNotifier.value ?? _selectedRegion;
+      if (open != null) {
+        key = _expiredTimerRefreshKey(open, now);
+      }
+    }
     if (key == null) return;
     if (key == _lastSilentRefreshKey) {
       final lastAt = _lastSilentRefreshAt;
@@ -962,6 +975,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       case 'territory.contest_already_resolved':
       case 'territory.not_in_contest':
       case 'territory.action_role_mismatch':
+      case 'territory.action_cooldown':
         return true;
       default:
         return false;
@@ -1962,6 +1976,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         physics: const AlwaysScrollableScrollPhysics(),
         children: [
           if (viewerCaps != null) _buildViewerCapsChips(viewerCaps),
+          _buildNextActionChip(),
           if (_crewTerritory != null) _buildCrewStatsCard(_crewTerritory!),
           _buildSvgMapOverview(regions),
           Padding(
@@ -1974,6 +1989,67 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         ],
       ),
     );
+  }
+
+  Widget _buildNextActionChip() {
+    return ValueListenableBuilder<DateTime>(
+      valueListenable: _nowNotifier,
+      builder: (context, now, _) {
+        final nextAt = _soonestViewerUnlockAt(now);
+        if (nextAt == null) return const SizedBox.shrink();
+        final remaining = nextAt.difference(now);
+        final ready = remaining.isNegative || remaining.inSeconds <= 0;
+        final label = ready
+            ? _l10n.territoryMapActionsReady
+            : _l10n.territoryMapNextUnlock(_formatLiveDuration(remaining));
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+          child: Chip(
+            avatar: Icon(
+              ready ? Icons.lock_open : Icons.timer_outlined,
+              size: 16,
+              color: ready ? Colors.green[200] : Colors.amber[200],
+            ),
+            label: Text(label),
+            backgroundColor: const Color(0xFF1E1414),
+            side: BorderSide(
+              color: ready ? Colors.green.shade700 : Colors.amber.shade800,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  DateTime? _soonestViewerUnlockAt(DateTime now) {
+    final regions = (_mapData['regions'] as List<dynamic>?) ?? [];
+    DateTime? soonest;
+    for (final raw in regions) {
+      if (raw is! Map) continue;
+      final region = Map<String, dynamic>.from(raw);
+      final status = (region['contestStatus'] as String?)?.toLowerCase();
+      final contestStartedAt = _parseApiDate(region['contestStartedAt']);
+      final prepMinutes =
+          (_overview['config']?['contestPrepMinutes'] as num?)?.toInt() ?? 0;
+      if (status == 'preparing') {
+        final contestActiveAt = _contestTimestampFromFallback(
+          startedAt: contestStartedAt,
+          primary: _parseApiDate(region['contestActiveAt']),
+          offsetMinutes: prepMinutes,
+        );
+        if (contestActiveAt != null &&
+            (soonest == null || contestActiveAt.isBefore(soonest))) {
+          soonest = contestActiveAt;
+        }
+      }
+      final cooldownUntil = _parseApiDate(region['viewerCooldownUntil']);
+      if (cooldownUntil != null &&
+          cooldownUntil.isAfter(now) &&
+          (soonest == null || cooldownUntil.isBefore(soonest))) {
+        soonest = cooldownUntil;
+      }
+    }
+    return soonest;
   }
 
   Widget _buildViewerCapsChips(Map<String, dynamic> viewerCaps) {
@@ -3640,7 +3716,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           duration: const Duration(seconds: 3),
         ),
       );
-      await _loadData();
+      await _reloadOpenRegionOrMap();
     } else {
       final rawEvent = result['event'] ?? result['message'];
       showTopRightFromSnackBar(
@@ -3652,9 +3728,19 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         ),
       );
       if (_shouldReloadAfterTerritoryError(rawEvent)) {
-        await _loadData();
+        await _reloadOpenRegionOrMap();
       }
     }
+  }
+
+  Future<void> _reloadOpenRegionOrMap() async {
+    final regionKey = (_selectedRegion?['regionKey'] as String?) ??
+        (_regionDetailNotifier.value?['regionKey'] as String?);
+    if (regionKey != null && regionKey.isNotEmpty) {
+      await _reloadRegionState(regionKey);
+      return;
+    }
+    await _loadData();
   }
 
   String _projectTypeLabel(String? projectType) {

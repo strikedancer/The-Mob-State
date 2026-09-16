@@ -12614,5 +12614,14 @@
         "type": "int"
       }
     }
-  }
+  },
+  "territoryMapNextUnlock": "Next unlock: {time}",
+  "@territoryMapNextUnlock": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryMapActionsReady": "Actions ready now"
 }

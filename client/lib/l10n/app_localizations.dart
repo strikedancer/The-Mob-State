@@ -27739,6 +27739,18 @@ abstract class AppLocalizations {
   /// **'Your cooldown'**
   String get territoryDetailYourCooldown;
 
+  /// No description provided for @territoryMapNextUnlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Next unlock: {time}'**
+  String territoryMapNextUnlock(String time);
+
+  /// No description provided for @territoryMapActionsReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Actions ready now'**
+  String get territoryMapActionsReady;
+
   /// No description provided for @territoryNoticeCrewOnly.
   ///
   /// In en, this message translates to:
