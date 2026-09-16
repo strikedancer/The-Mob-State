@@ -12778,5 +12778,7 @@
         "type": "int"
       }
     }
-  }
+  },
+  "nightclubStoreAllButton": "Tout déposer depuis le sac",
+  "nightclubStoreAllSuccess": "Toutes les drogues du sac sont stockées"
 }

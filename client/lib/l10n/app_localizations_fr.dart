@@ -13648,6 +13648,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get nightclubStoreButton => 'Magasin dans une discothèque';
 
   @override
+  String get nightclubStoreAllButton => 'Tout déposer depuis le sac';
+
+  @override
+  String get nightclubStoreAllSuccess =>
+      'Toutes les drogues du sac sont stockées';
+
+  @override
   String get nightclubHireDjSuccess => 'DJ embauché';
 
   @override

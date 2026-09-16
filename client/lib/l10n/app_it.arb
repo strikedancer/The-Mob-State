@@ -12778,5 +12778,7 @@
         "type": "int"
       }
     }
-  }
+  },
+  "nightclubStoreAllButton": "Conserva tutto dallo zaino",
+  "nightclubStoreAllSuccess": "Tutti i farmaci nello zaino sono conservati"
 }

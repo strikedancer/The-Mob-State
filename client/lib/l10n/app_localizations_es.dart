@@ -13612,6 +13612,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get nightclubStoreButton => 'Tienda en discoteca';
 
   @override
+  String get nightclubStoreAllButton => 'Guardar todo de la mochila';
+
+  @override
+  String get nightclubStoreAllSuccess =>
+      'Todas las drogas de la mochila están guardadas';
+
+  @override
   String get nightclubHireDjSuccess => 'DJ contratada';
 
   @override

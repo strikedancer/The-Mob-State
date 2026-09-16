@@ -128,16 +128,6 @@ export async function assertBackpackFits(
   }
 }
 
-export async function backpackHasRoom(playerId: number, extraSlots: number): Promise<boolean> {
-  try {
-    await assertBackpackFits(playerId, extraSlots);
-    return true;
-  } catch (error) {
-    if (error instanceof Error && error.message === 'INVENTORY_FULL') return false;
-    throw error;
-  }
-}
-
 export async function refreshInventorySlotUsage(playerId: number): Promise<void> {
   const toolService = (await import('./toolService')).default;
   const usage = await toolService.calculateInventoryUsage(playerId);

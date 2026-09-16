@@ -12778,5 +12778,7 @@
         "type": "int"
       }
     }
-  }
+  },
+  "nightclubStoreAllButton": "Alles aus dem Rucksack lagern",
+  "nightclubStoreAllSuccess": "Alle Drogen aus dem Rucksack eingelagert"
 }

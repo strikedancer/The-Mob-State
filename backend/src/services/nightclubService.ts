@@ -3252,17 +3252,25 @@ class NightclubService {
       };
     }
 
+    const qty = Math.floor(Number(quantity));
+    if (!Number.isFinite(qty) || qty <= 0) {
+      return {
+        success: false,
+        message: this.localize(language, 'Ongeldige hoeveelheid', 'Invalid quantity'),
+      };
+    }
+
     const playerInventory = await prisma.drugInventory.findFirst({
-      where: { playerId, drugType, quality },
+      where: { playerId, drugType, quality, quantity: { gt: 0 } },
     });
 
-    if (!playerInventory || playerInventory.quantity < quantity) {
+    if (!playerInventory || playerInventory.quantity < qty) {
       return {
         success: false,
         message: this.localize(
           language,
-          `Je hebt niet genoeg ${drugType} (${quality})`,
-          `You do not have enough ${drugType} (${quality})`
+          `Je hebt niet genoeg ${drugType} (${quality}) in je rugzak`,
+          `You do not have enough ${drugType} (${quality}) in your backpack`
         ),
       };
     }
@@ -3272,7 +3280,7 @@ class NightclubService {
     const ownProduction = Boolean(playerInventory.ownProduction);
 
     await prisma.$transaction(async (tx) => {
-      const remaining = playerInventory.quantity - quantity;
+      const remaining = playerInventory.quantity - qty;
       if (remaining > 0) {
         await tx.drugInventory.update({
           where: { id: playerInventory.id },
@@ -3283,41 +3291,137 @@ class NightclubService {
           where: { id: playerInventory.id },
         });
       }
-      const existing = await tx.nightclubDrugInventory.findUnique({
-        where: { venueId_drugType_quality: { venueId, drugType, quality } },
-      });
-      if (existing) {
-        await tx.nightclubDrugInventory.update({
-          where: { id: existing.id },
-          data: {
-            quantity: { increment: quantity },
-            ownProduction: existing.ownProduction || ownProduction,
-          },
-        });
-      } else {
-        await tx.nightclubDrugInventory.create({
-          data: {
-            venueId,
-            drugType,
-            quality,
-            quantity,
-            basePrice,
-            ownProduction,
-          },
-        });
+      await this.creditNightclubDrugLot(
+        tx,
+        venueId,
+        drugType,
+        quality,
+        qty,
+        ownProduction,
+        basePrice,
+      );
+    });
+    await refreshInventorySlotUsage(playerId);
+
+    const leftover = await prisma.drugInventory.aggregate({
+      where: { playerId, quantity: { gt: 0 } },
+      _sum: { quantity: true },
+    });
+    const leftoverGrams = leftover._sum.quantity ?? 0;
+    const leftoverNote =
+      leftoverGrams > 0
+        ? this.localize(
+            language,
+            ` Er ligt nog ${leftoverGrams}g in je rugzak (dat blijft plekken innemen).`,
+            ` ${leftoverGrams}g is still in your backpack (that still uses slots).`
+          )
+        : this.localize(
+            language,
+            ' Je rugzak is leeg van drugs; je kunt weer oogsten.',
+            ' Your backpack has no drugs left; you can collect again.'
+          );
+
+    return {
+      success: true,
+      message: this.localize(
+        language,
+        `✅ ${qty}g ${drugType} (${quality}) opgeslagen in je nightclub.${leftoverNote}`,
+        `✅ ${qty}g ${drugType} (${quality}) stored in your nightclub.${leftoverNote}`
+      ),
+      leftoverGrams,
+      newlyUnlockedAchievements: await this.buildAchievementPayloads(playerId),
+    };
+  }
+
+  async storeAllBackpackDrugsInNightclub(
+    playerId: number,
+    venueId: number
+  ): Promise<{ success: boolean; message: string; leftoverGrams?: number; newlyUnlockedAchievements?: any[] }> {
+    const language = await this.getPlayerLanguage(playerId);
+    const venue = await prisma.nightclubVenue.findUnique({ where: { id: venueId } });
+    if (!venue || venue.playerId !== playerId) {
+      return {
+        success: false,
+        message: this.localize(language, 'Nachtclub niet gevonden', 'Nightclub not found'),
+      };
+    }
+
+    const lots = await prisma.drugInventory.findMany({
+      where: { playerId, quantity: { gt: 0 } },
+    });
+    if (lots.length === 0) {
+      return {
+        success: false,
+        message: this.localize(
+          language,
+          'Er liggen geen drugs in je rugzak',
+          'There are no drugs in your backpack'
+        ),
+      };
+    }
+
+    const totalGrams = lots.reduce((sum, lot) => sum + lot.quantity, 0);
+    await prisma.$transaction(async (tx) => {
+      for (const lot of lots) {
+        await tx.drugInventory.delete({ where: { id: lot.id } });
+        await this.creditNightclubDrugLot(
+          tx,
+          venueId,
+          lot.drugType,
+          lot.quality ?? 'C',
+          lot.quantity,
+          Boolean(lot.ownProduction),
+          this.getDrugBasePrice(lot.drugType),
+        );
       }
     });
     await refreshInventorySlotUsage(playerId);
 
     return {
       success: true,
+      leftoverGrams: 0,
       message: this.localize(
         language,
-        `✅ ${quantity}g ${drugType} (${quality}) opgeslagen in je nightclub.`,
-        `✅ ${quantity}g ${drugType} (${quality}) stored in your nightclub.`
+        `✅ ${totalGrams}g uit je rugzak staat in de nachtclub. Je kunt weer oogsten.`,
+        `✅ ${totalGrams}g from your backpack is now in the nightclub. You can collect again.`
       ),
       newlyUnlockedAchievements: await this.buildAchievementPayloads(playerId),
     };
+  }
+
+  private async creditNightclubDrugLot(
+    tx: any,
+    venueId: number,
+    drugType: string,
+    quality: string,
+    quantity: number,
+    ownProduction: boolean,
+    basePrice: number,
+  ): Promise<void> {
+    if (quantity <= 0) return;
+    const existing = await tx.nightclubDrugInventory.findUnique({
+      where: { venueId_drugType_quality: { venueId, drugType, quality } },
+    });
+    if (existing) {
+      await tx.nightclubDrugInventory.update({
+        where: { id: existing.id },
+        data: {
+          quantity: { increment: quantity },
+          ownProduction: existing.ownProduction || ownProduction,
+        },
+      });
+      return;
+    }
+    await tx.nightclubDrugInventory.create({
+      data: {
+        venueId,
+        drugType,
+        quality,
+        quantity,
+        basePrice,
+        ownProduction,
+      },
+    });
   }
 
   /**

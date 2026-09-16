@@ -654,10 +654,15 @@ class _NightclubScreenState extends State<NightclubScreen> {
               if (_selectedDrugKey == null ||
                   !availableKeys.contains(_selectedDrugKey)) {
                 _selectedDrugKey = storeOptions.first['key'] as String;
-              }
-              final maxStore = _selectedStoreMax(storeOptions);
-              if (maxStore > 0 && _storeQuantity > maxStore) {
-                _setStoreQuantityValue(maxStore);
+                final maxStore = _selectedStoreMax(storeOptions);
+                if (maxStore > 0) {
+                  _setStoreQuantityValue(maxStore);
+                }
+              } else {
+                final maxStore = _selectedStoreMax(storeOptions);
+                if (maxStore > 0 && _storeQuantity > maxStore) {
+                  _setStoreQuantityValue(maxStore);
+                }
               }
             }
           });
@@ -833,7 +838,14 @@ class _NightclubScreenState extends State<NightclubScreen> {
     final message = (raw != null && raw.isNotEmpty)
         ? _localizeNightclubApiMessage(raw)
         : fallbackMessage;
-    showTopRightFromSnackBar(context, SnackBar(content: Text(message)));
+    final ok = result['success'] == true;
+    showTopRightFromSnackBar(
+      context,
+      SnackBar(
+        content: Text(message),
+        backgroundColor: ok ? Colors.green : Colors.red,
+      ),
+    );
   }
 
   Future<void> _hireDj() async {
@@ -898,6 +910,14 @@ class _NightclubScreenState extends State<NightclubScreen> {
     );
 
     _showResultMessage(result, _t.nightclubStoreDrugsSuccess);
+    _showAchievementsFromResult(result);
+    await _load();
+  }
+
+  Future<void> _storeAllBackpackDrugs() async {
+    if (_venueId == null) return;
+    final result = await _nightclubService.storeAllDrugs(venueId: _venueId!);
+    _showResultMessage(result, _t.nightclubStoreAllSuccess);
     _showAchievementsFromResult(result);
     await _load();
   }
@@ -2011,7 +2031,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                 setState(() {
                   _selectedDrugKey = v;
                   final max = _selectedStoreMax(options);
-                  if (max > 0 && _storeQuantity > max) {
+                  if (max > 0) {
                     _setStoreQuantityValue(max);
                   }
                 });
@@ -2083,6 +2103,12 @@ class _NightclubScreenState extends State<NightclubScreen> {
                     },
               icon: const Icon(Icons.inventory_2),
               label: Text(_t.nightclubStoreButton),
+            ),
+            const SizedBox(height: 8),
+            OutlinedButton.icon(
+              onPressed: options.isEmpty ? null : _storeAllBackpackDrugs,
+              icon: const Icon(Icons.unarchive),
+              label: Text(_t.nightclubStoreAllButton),
             ),
             const SizedBox(height: 12),
             Text(

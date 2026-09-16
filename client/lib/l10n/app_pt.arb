@@ -12778,5 +12778,7 @@
         "type": "int"
       }
     }
-  }
+  },
+  "nightclubStoreAllButton": "Guarde tudo da mochila",
+  "nightclubStoreAllSuccess": "Todos os medicamentos de mochila armazenados"
 }

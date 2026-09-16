@@ -666,6 +666,26 @@ router.post('/:venueId/drugs/store', authenticate, async (req: Request, res: Res
   }
 });
 
+/**
+ * POST /:venueId/drugs/store-all
+ * Move every backpack drug lot into this nightclub.
+ */
+router.post('/:venueId/drugs/store-all', authenticate, async (req: Request, res: Response) => {
+  try {
+    const playerId = (req as AuthRequest).player?.id;
+    if (!playerId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+    const venueId = parseInt(req.params.venueId);
+    const result = await nightclubService.storeAllBackpackDrugsInNightclub(playerId, venueId);
+    if (result.success) {
+      res.json(result);
+    } else {
+      res.status(400).json(result);
+    }
+  } catch (err) {
+    res.status(500).json({ success: false, message: (err as any).message });
+  }
+});
+
 // ═══════════════════════════════════════════════════════════════════════════════════════
 // PROSTITUTE STAFFING
 // ═══════════════════════════════════════════════════════════════════════════════════════

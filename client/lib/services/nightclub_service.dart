@@ -385,6 +385,20 @@ class NightclubService {
     }
   }
 
+  Future<Map<String, dynamic>> storeAllDrugs({
+    required int venueId,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '/nightclub/$venueId/drugs/store-all',
+        <String, dynamic>{},
+      );
+      return json.decode(response.body) as Map<String, dynamic>;
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
   Future<List<dynamic>> getAssignableProstitutes(int venueId) async {
     try {
       final response = await _apiClient.get(

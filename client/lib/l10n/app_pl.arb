@@ -12778,5 +12778,7 @@
         "type": "int"
       }
     }
-  }
+  },
+  "nightclubStoreAllButton": "Przechowuj wszystko z plecaka",
+  "nightclubStoreAllSuccess": "Wszystkie leki plecakowe przechowywane"
 }

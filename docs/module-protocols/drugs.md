@@ -16,8 +16,9 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 2. **Production** in country X consumes **depot(X) first** (legacy leftover), then **house/warehouse stock in X**, then **backpack** (`_carried_`).
 3. **Transfer** (`POST /drugs/materials/transfer`): `to_backpack` | `to_depot` still exists for leftover depot lots.
 4. **Backpack capacity**: materials, finished drugs and trade goods share slots with tools and unequipped weapons (`toolService.calculateInventoryUsage`). Worn crime/secondary weapons do not use backpack slots. Upgrade backpacks to carry more. Nightclub stock (`NightclubDrugInventory`) does **not** use backpack slots.
-5. **Collect overflow**: harvest (and raid-resolve grants) go to the backpack when there is room. If the backpack is full and the player owns a nightclub, the lot goes to that venue (current-country club first, otherwise any owned club) and the success message says so. Without a club, collect fails with a bilingual stash/upgrade hint — never a silent drop.
-6. **Travel / fly / arrest**:
+5. **Collect** always credits the **backpack**. A full backpack blocks harvest with used/capacity in the error. The player must store drugs in the nightclub (or a house) first; collect does **not** auto-dump into the club.
+6. **Nightclub store**: `POST /nightclub/:venueId/drugs/store` moves backpack grams into the venue and refreshes backpack slots. The UI defaults the gram field to the **full selected lot** (not 10g). `POST /nightclub/:venueId/drugs/store-all` dumps every backpack drug lot. Leftover backpack grams are named in the success message because they still occupy slots.
+7. **Travel / fly / arrest**:
    - Country depots and house stock are **safe** on travel.
    - Backpack materials, drugs and trade raise **arrest chance** and can be **partially confiscated** per leg or hangar flight.
    - Full travel arrest wipes carried goods. Police/FBI arrest seizes ~40% of the backpack. Warehouse search in the arrest country is separate.
@@ -145,8 +146,8 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - Verify owned facilities remain visible and upgrade options stay available after travel or refresh.
 - Verify no Prisma validation errors appear in backend logs while loading drugs screens.
 - Verify collect action removes only the collected production card without showing global loading spinner or reloading unrelated content blocks.
-- Verify collect with a full backpack and an owned nightclub credits `NightclubDrugInventory` (not `DrugInventory`) and does not show `Rugzak vol`.
-- Verify collect with a full backpack and no nightclub still fails with the stash/upgrade hint.
+- Verify collect always credits `DrugInventory` (backpack), never `NightclubDrugInventory`.
+- Verify storing all backpack drugs in the nightclub frees backpack slots so the next collect succeeds.
 - Verify credit speedup quote + confirm flow on an in-progress batch; insufficient credits and already-ready batches return clear errors; after success the batch becomes collectable without granting inventory automatically.
 - Buy materials in country A → stock only in depot A; production in A works; travel without loading backpack leaves depot A intact.
 - Transfer to backpack → slots increase; travel can confiscate/arrest carried stock; depot elsewhere untouched.

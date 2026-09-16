@@ -13630,6 +13630,13 @@ class AppLocalizationsIt extends AppLocalizations {
   String get nightclubStoreButton => 'Negozio in discoteca';
 
   @override
+  String get nightclubStoreAllButton => 'Conserva tutto dallo zaino';
+
+  @override
+  String get nightclubStoreAllSuccess =>
+      'Tutti i farmaci nello zaino sono conservati';
+
+  @override
   String get nightclubHireDjSuccess => 'DJ assunto';
 
   @override

@@ -13571,6 +13571,13 @@ class AppLocalizationsPl extends AppLocalizations {
   String get nightclubStoreButton => 'Przechowywać w nocnym klubie';
 
   @override
+  String get nightclubStoreAllButton => 'Przechowuj wszystko z plecaka';
+
+  @override
+  String get nightclubStoreAllSuccess =>
+      'Wszystkie leki plecakowe przechowywane';
+
+  @override
   String get nightclubHireDjSuccess => 'Zatrudniony DJ';
 
   @override
