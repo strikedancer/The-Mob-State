@@ -681,22 +681,34 @@ router.get('/prisoners', authenticate, async (req: AuthRequest, res: Response) =
   try {
     const viewerId = req.player!.id;
 
-    const [viewer, prisoners] = await Promise.all([
+    const [viewer, prisoners, crewBankBuyout] = await Promise.all([
       prisma.player.findUnique({
         where: { id: viewerId },
         select: { id: true, money: true },
       }),
       policeService.getJailedPrisoners(viewerId),
+      policeService.getCrewBankBuyoutContext(viewerId),
     ]);
+
+    const memberIds = new Set(crewBankBuyout.memberPlayerIds);
+    const prisonersWithCrew = prisoners.map((prisoner) => ({
+      ...prisoner,
+      sameCrew: memberIds.has(prisoner.playerId),
+    }));
 
     return res.status(200).json({
       event: 'prison.list',
       params: {
-        count: prisoners.length,
+        count: prisonersWithCrew.length,
       },
       viewerId,
       viewerMoney: viewer?.money ?? 0,
-      prisoners,
+      crewBankBuyout: {
+        allowed: crewBankBuyout.allowed,
+        crewBankBalance: crewBankBuyout.crewBankBalance,
+        arrestChancePercent: crewBankBuyout.arrestChancePercent,
+      },
+      prisoners: prisonersWithCrew,
     });
   } catch (error) {
     console.error('[Prison] Error loading prisoners:', error);
@@ -734,7 +746,9 @@ router.post('/prison/buyout/:targetId', authenticate, async (req: AuthRequest, r
       });
     }
 
-    const result = await policeService.buyOutPrisoner(buyerId, targetId);
+    const payFrom =
+      req.body?.payFrom === 'crew_bank' ? 'crew_bank' : 'personal';
+    const result = await policeService.buyOutPrisoner(buyerId, targetId, { payFrom });
     await markPrisonActionCooldown(buyerId, 'prison.cooldown.bail');
 
     let newlyUnlockedAchievements: any[] = [];
@@ -758,6 +772,9 @@ router.post('/prison/buyout/:targetId', authenticate, async (req: AuthRequest, r
       params: {
         amount: result.amount,
         targetUsername: result.targetUsername,
+        paidFrom: result.paidFrom,
+        buyerArrested: result.buyerArrested,
+        buyerJailTime: result.buyerJailTime,
         reputation: newReputation,
       },
       newlyUnlockedAchievements,
@@ -770,15 +787,35 @@ router.post('/prison/buyout/:targetId', authenticate, async (req: AuthRequest, r
           params: {},
         });
       }
-      if (error.message === 'INSUFFICIENT_MONEY') {
+      if (error.message === 'INSUFFICIENT_MONEY' || error.message === 'INSUFFICIENT_CREW_FUNDS') {
         return res.status(400).json({
-          event: 'error.insufficient_funds',
+          event: error.message === 'INSUFFICIENT_CREW_FUNDS'
+            ? 'error.insufficient_crew_funds'
+            : 'error.insufficient_funds',
           params: {},
         });
       }
       if (error.message === 'CANNOT_BUYOUT_SELF') {
         return res.status(400).json({
           event: 'error.cannot_buyout_self',
+          params: {},
+        });
+      }
+      if (error.message === 'NOT_CREW_BANK_BUYOUT_ROLE') {
+        return res.status(403).json({
+          event: 'error.not_crew_bank_buyout_role',
+          params: {},
+        });
+      }
+      if (error.message === 'NOT_SAME_CREW') {
+        return res.status(403).json({
+          event: 'error.not_same_crew',
+          params: {},
+        });
+      }
+      if (error.message === 'BUYER_JAILED') {
+        return res.status(400).json({
+          event: 'error.buyer_jailed',
           params: {},
         });
       }

@@ -215,7 +215,7 @@ Voorbeelden:
 - Wanted level 10: 100 minuten
 ```
 
-De gevangenislijst toont wie nu vastzit (`jailRelease` in de toekomst). Op mobiel kun je bij een laadfout opnieuw proberen of naar beneden trekken om te verversen. De **in-de-cel overlay** deelt dezelfde noir/goud-still als de gevangenis-help (`/images/cooldown_jail.png`). Arrestatie van een echte speler (en een geslaagde borg-uitkoop of jailbreak door een andere speler) verschijnt als systeemregel in de wereldchat. **Zolang je vastzit is de Zwarte Markt dicht** (kopen, verkopen en advertenties). Het **Trainingscircuit** blijft open voor **kracht, snelheid en uithouding**; de **schietbaan** is dicht tot je vrijkomt.
+De gevangenislijst toont wie nu vastzit (`jailRelease` in de toekomst). Op mobiel kun je bij een laadfout opnieuw proberen of naar beneden trekken om te verversen. De **in-de-cel overlay** deelt dezelfde noir/goud-still als de gevangenis-help (`/images/cooldown_jail.png`). Arrestatie van een echte speler (en een geslaagde borg-uitkoop of jailbreak door een andere speler) verschijnt als systeemregel in de wereldchat. **Eigenaar en co-eigenaar** kunnen een crewlid uitkopen met de **crewbank**; dat is zwart geld en kan de betaler zelf de cel in jagen. **Zolang je vastzit is de Zwarte Markt dicht** (kopen, verkopen en advertenties). Het **Trainingscircuit** blijft open voor **kracht, snelheid en uithouding**; de **schietbaan** is dicht tot je vrijkomt.
 
 #### Bail Amount
 ```
@@ -454,6 +454,8 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 - **Heists**: Toegang tot grote heists
 - **Shared rewards**: Verdeeld tussen crew members
 - **Teamwork bonus**: +10% success chance per extra member (max +30%)
+- **Gedeelde opslag**: auto’s, motoren, boten, wapens, munitie, drugs en handelswaren. Dit is crew-voorraad, geen extra persoonlijke garage. Auto’s/motoren/boten/wapens/munitie/handelswaren kun je niet terughalen voor eigen misdaden; ze gaan op aan crew-smokkel, missies, deals of raids. Drugs kun je wel terugpakken of groothandel. Territory-bonussen volgen het **gebouwniveau**, niet hoe vol de opslag is.
+- **Crewbank-uitkoop**: alleen eigenaar en co-eigenaren kunnen op Gevangenis een crewlid vrijkopen uit de crewbank. Soms word je zelf opgepakt wegens zwart geld (de ander is dan al vrij).
 - **HQ progression**: HQ-levels lopen door als globale reeks (L0 t/m L19) met oplopende upgradekosten zonder reset per stijltier. Als een stijltier op max staat en bijgebouwen voldoen aan de vereiste levels, gaat de volgende upgrade direct naar het volgende globale level.
 - **HQ & Upgrades visuals**: bijgebouw-afbeeldingen volgen altijd de level-tier van het bijgebouw zelf (niet de actuele HQ-stijl), zodat visuals en levelstatus consistent blijven.
 

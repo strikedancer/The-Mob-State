@@ -43,6 +43,8 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - Applicants must see pending state and be able to cancel (`POST /crews/:id/join/cancel`). Leaders toggle recruiting on the Members tab.
 - Each ISO week has one missable crew weekly goal (`crew_week_mission_1`, fallback `crew_week_crimes_15`). Unclaimed rewards expire at the end of the UTC week. No invite API in this flow.
 - Extra roles besides `leader` / `co_leader` / `member`: `consigliere` (Don crew overview, no bank withdraw) and `capo` with optional `capoCountry` (crew-bank tribute only in that country). Leader sets roles via `POST /crews/:id/members/:playerId/role`. See [don.md](don.md).
+- Shared crew storage is crew inventory, not a personal garage. Cars/motorcycles/boats/weapons/ammo/trade deposit into crew and are consumed by crew smuggling, missions, deals or enemy raids; they cannot be withdrawn for personal crimes. Drugs can be withdrawn or wholesaled. Territory action bonuses use storage **building levels**, not stock counts.
+- Leader and `co_leader` can buy a jailed crewmate out from Prison using the crew bank (`POST /player/prison/buyout/:targetId` with `payFrom: crew_bank`). Personal cash buyout stays available to everyone. Crew-bank payment has a dirty-money arrest risk on the payer (target is still freed). Members, consigliere and capo cannot pay from the vault.
 - Crew storage deals are officer-only escrow with another crew. Goods leave storage immediately; both crews confirm or the whole deal rolls back. Do not steal from your own crew or from personal inventories.
 
 ## i18n and Messaging
@@ -80,6 +82,7 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - Verify the weekly crew goal is visible on the crew overview and dashboard, and that an unclaimed goal is gone after the UTC week rolls.
 - Verify Storage shows crew deals, officers can lock an offer, and cancel returns the goods.
 - Verify a war raid asks which storage type to hit and refuses when attacker storage is full.
+- Verify Help / the gold `i` on Crew explains that stored cars, boats, weapons and trade goods are crew cargo (not a personal garage) and that only leader/co-leader can buy a crewmate out with the crew bank.
 - Verify a failed heist still jails the whole crew and applies XP loss without a 500, including crews larger than a handful of members.
 - Verify a failed heist on Crew shows the result popup (jail time + XP loss) and then the jail overlay, not only a toast.
 

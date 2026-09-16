@@ -3127,6 +3127,32 @@ class AppLocalizationsEn extends AppLocalizations {
   String get prisonBuyOutButton => 'Buy out';
 
   @override
+  String get prisonBuyOutCrewBankButton => 'Crew vault';
+
+  @override
+  String get prisonBuyOutCrewBankConfirmTitle => 'Buy out with crew money?';
+
+  @override
+  String prisonBuyOutCrewBankConfirmBody(
+    String username,
+    String amount,
+    String balance,
+    String chance,
+  ) {
+    return '$username costs €$amount. That comes from the crew vault (balance €$balance). There is a $chance% chance the police arrest you for dirty money. The other player still goes free.';
+  }
+
+  @override
+  String prisonBuyOutCrewBankSuccess(String username, String amount) {
+    return '✅ Bought out $username from the crew vault (€$amount)';
+  }
+
+  @override
+  String prisonBuyOutCrewBankArrested(String username, String minutes) {
+    return '🚔 You bought $username out with crew money, but the police arrested you for dirty money ($minutes min jail).';
+  }
+
+  @override
   String get prisonAttemptEscapeButton => 'Attempt escape';
 
   @override
@@ -3163,6 +3189,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get prisonErrorInsufficientFunds => '❌ Not enough money';
+
+  @override
+  String get prisonErrorInsufficientCrewFunds =>
+      '❌ Not enough money in the crew vault';
+
+  @override
+  String get prisonErrorNotCrewBankRole =>
+      '❌ Only the crew owner and co-owners can pay from the crew vault';
+
+  @override
+  String get prisonErrorNotSameCrew =>
+      '❌ You can only use the crew vault for your own crew members';
+
+  @override
+  String get prisonErrorBuyerJailed =>
+      '❌ You cannot pay from the crew vault while you are in jail';
 
   @override
   String get prisonErrorTargetNotJailed => '❌ Target is no longer in prison';
@@ -4708,7 +4750,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get crewUiHintStorageTab =>
-      'Use the Storage tab for deposits, balances and quick storage actions.';
+      'This is shared crew stock: smuggling, missions, deals and raids. Not an extra garage — you cannot take cars, boats or weapons back for your own crimes. Drugs can be withdrawn. Tap the gold i for the full explanation.';
 
   @override
   String get crewUiHintUpgradeHub =>
@@ -18023,11 +18065,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicCrewHow =>
-      'Creating a crew costs €10.000. The Crew HQ determines how many members your crew can hold and scales up to 150 members. The leader can invite, kick and start heists. Territory slots: +1 region every 3 HQ levels, +1 every 5 extra members, the lowest counts, never more than 10.\nCrew benefits: access to large heists, shared storage, teamwork bonus (+10% success per extra member, max +30%) and group chat.\nNew crews now start with Crew HQ level 1 and all storage buildings at level 1, including cash storage, so the crew bank and shared storage work immediately.\nCash storage level 1 holds €1.000.000. The next cash-storage upgrade always costs less than that vault, so you can pay it from the crew bank instead of getting stuck at the cap.\nCrew car storage now also accepts motorcycles, so land vehicles can be managed together from the same shared crew storage.\nWhen a crew member gets arrested, crew members now receive a push notification that the player is locked up and waiting for help.\nThe crew screen is now grouped into Overview, HQ & Upgrades, Storage, Members, War Room, Crew Missions, Crews and Chat so management feels calmer and more professional.\nCrew Missions shows tier templates, an active run card and recent runs. Leaders/co-leaders can start and resolve; reward claiming and cooldown speedup are handled in the same tab.\nThere are extra crew missions with bank-themed operations (night deposit, skim network, armored route, subsidiary vault, reserve vault and clearing house). There is no second casino crew mission alongside Casino Ledger Raid.\nCrew mission rewards come from the server-side mission economy; other players’ bank balances are not debited for these payouts.\nWhen starting a mission you can now assign a role per crew member (Planner, Enforcer, Logistics, Tech) for team bonuses.\nActive and recent mission cards now also show per-player role contributions with score and any payout multiplier.\nCrew members now also receive push/in-app alerts for mission start, mission result, and when a mission cooldown becomes ready again.\nWhile a mission cooldown is active you cannot start a new mission. At the top of Crew Missions a large timer counts down live until you can start again; the same remaining time also appears on Home under timeouts. You can speed the wait up with credits.\nFor cooldown speedup, you first see the exact credit cost and remaining minutes before you confirm.\nCrew Wars have their own War Room tab inside the crew screen. Only leaders can declare a war and at least 3 crew members are required to participate.\nWar types: Kill War, Economy War, Territory War and Total War. Each war moves through preparation, active phase, lockdown and resolution.\nDuring an active war, participants can perform actions like kills, mugs, sabotage, intel, raids, shields, boosts and territory claims. Targeted actions now let you pick directly from a list of opponent crew members instead of typing a player ID by hand.\nSeason points are aggregated into the Crew Wars leaderboard. The War Room also shows standings, recent actions and recent wars for your crew.\nIn Territory War and Total War you now claim real Territory regions from the territory system instead of generic placeholder targets.\nThose war regions now also show their strategic value in the War Room: claim bonus, tick points and tags such as harbor, capital or logistics. That makes it immediately clear which regions are worth more than a simple ownership swap.\nCrew Wars no longer picks Territory targets on value tier alone, but also on strategic tags and adjacent pressure from attacker or defender territory. That makes Territory War and Total War feel more like a real frontline than three random claims.\nHeists: Small Bank (2 players, 40%, €10.000-€30.000, 30 min cooldown), Jewelry Store (3 players, 35%, €20.000-€50.000, 45 min), Casino Heist (4 players, 25%, €50.000-€150.000, 2 hrs), Federal Reserve (5 players, 15%, €100.000-€500.000, 6 hrs, +20 FBI Heat).\nFor a heist all members must be online at start. If someone is absent the heist fails.\nFailed heist: jail time for everyone, Wanted Level +5, no reward.\nHeist reward is split equally among all participating members.\nCrew chat is available for fast coordination.\nCrew HQ progression: the longer and more active the crew, the more shared upgrades and buffs unlock.';
+      'Creating a crew costs €10.000. The Crew HQ determines how many members your crew can hold and scales up to 150 members. The leader can invite, kick and start heists. Territory slots: +1 region every 3 HQ levels, +1 every 5 extra members, the lowest counts, never more than 10.\nCrew benefits: access to large heists, shared storage, teamwork bonus (+10% success per extra member, max +30%) and group chat.\nNew crews now start with Crew HQ level 1 and all storage buildings at level 1, including cash storage, so the crew bank and shared storage work immediately.\nCash storage level 1 holds €1.000.000. The next cash-storage upgrade always costs less than that vault, so you can pay it from the crew bank instead of getting stuck at the cap.\nCrew car storage now also accepts motorcycles, so land vehicles can be managed together from the same shared crew storage.\nShared storage is not an extra personal garage. Cars, motorcycles, boats, weapons, ammo and trade goods you deposit belong to the crew: they are used for crew smuggling, crew missions (trade goods for Port Contraband Manifest and Warehouse Luxury Offload), deals between crews, or stolen in a raid by another crew. You cannot take them back for your own crimes or to drive or sail them yourself.\nDrugs in crew storage can go to wholesale (freight and payout through the crew bank) or back to your own inventory. Territory bonuses come from the storage building level, not from how full the shelves are.\nOnly the crew owner and co-owners can buy a crewmate out of prison with crew-bank money. Bail comes from the vault. Sometimes the police then arrest you for dirty money: the other player is free, you go to jail.\nWhen a crew member gets arrested, crew members now receive a push notification that the player is locked up and waiting for help.\nThe crew screen is now grouped into Overview, HQ & Upgrades, Storage, Members, War Room, Crew Missions, Crews and Chat so management feels calmer and more professional.\nCrew Missions shows tier templates, an active run card and recent runs. Leaders/co-leaders can start and resolve; reward claiming and cooldown speedup are handled in the same tab.\nThere are extra crew missions with bank-themed operations (night deposit, skim network, armored route, subsidiary vault, reserve vault and clearing house). There is no second casino crew mission alongside Casino Ledger Raid.\nCrew mission rewards come from the server-side mission economy; other players’ bank balances are not debited for these payouts.\nWhen starting a mission you can now assign a role per crew member (Planner, Enforcer, Logistics, Tech) for team bonuses.\nActive and recent mission cards now also show per-player role contributions with score and any payout multiplier.\nCrew members now also receive push/in-app alerts for mission start, mission result, and when a mission cooldown becomes ready again.\nWhile a mission cooldown is active you cannot start a new mission. At the top of Crew Missions a large timer counts down live until you can start again; the same remaining time also appears on Home under timeouts. You can speed the wait up with credits.\nFor cooldown speedup, you first see the exact credit cost and remaining minutes before you confirm.\nCrew Wars have their own War Room tab inside the crew screen. Only leaders can declare a war and at least 3 crew members are required to participate.\nWar types: Kill War, Economy War, Territory War and Total War. Each war moves through preparation, active phase, lockdown and resolution.\nDuring an active war, participants can perform actions like kills, mugs, sabotage, intel, raids, shields, boosts and territory claims. Targeted actions now let you pick directly from a list of opponent crew members instead of typing a player ID by hand.\nSeason points are aggregated into the Crew Wars leaderboard. The War Room also shows standings, recent actions and recent wars for your crew.\nIn Territory War and Total War you now claim real Territory regions from the territory system instead of generic placeholder targets.\nThose war regions now also show their strategic value in the War Room: claim bonus, tick points and tags such as harbor, capital or logistics. That makes it immediately clear which regions are worth more than a simple ownership swap.\nCrew Wars no longer picks Territory targets on value tier alone, but also on strategic tags and adjacent pressure from attacker or defender territory. That makes Territory War and Total War feel more like a real frontline than three random claims.\nHeists: Small Bank (2 players, 40%, €10.000-€30.000, 30 min cooldown), Jewelry Store (3 players, 35%, €20.000-€50.000, 45 min), Casino Heist (4 players, 25%, €50.000-€150.000, 2 hrs), Federal Reserve (5 players, 15%, €100.000-€500.000, 6 hrs, +20 FBI Heat).\nFor a heist all members must be online at start. If someone is absent the heist fails.\nFailed heist: jail time for everyone, Wanted Level +5, no reward.\nHeist reward is split equally among all participating members.\nCrew chat is available for fast coordination.\nCrew HQ progression: the longer and more active the crew, the more shared upgrades and buffs unlock.';
 
   @override
   String get helpTopicCrewTips =>
-      'New crews can deposit money and use shared storage immediately; after that, focus on upgrades for more capacity instead of a separate starter purchase.\nCheck the War Room first to see whether your crew is still on cooldown before trying to declare a new war.\nCoordinate target calls in crew chat so you do not keep farming the same opponent and trip the anti-farm guard.\nCoordinate heist start times in crew chat so everyone is online and nobody is in jail.\nChoose a crew in the same timezone or activity pattern for better heist success rates.\nUse shared crew storage to separate risky goods from your personal inventory.';
+      'New crews can deposit money and use shared storage immediately; after that, focus on upgrades for more capacity instead of a separate starter purchase.\nCheck the War Room first to see whether your crew is still on cooldown before trying to declare a new war.\nCoordinate target calls in crew chat so you do not keep farming the same opponent and trip the anti-farm guard.\nCoordinate heist start times in crew chat so everyone is online and nobody is in jail.\nChoose a crew in the same timezone or activity pattern for better heist success rates.\nUse shared crew storage to separate risky goods from your personal inventory.\nOnly deposit cars, motorcycles or boats into the crew if you really want them for smuggling, missions or deals; you cannot use them yourself afterwards.\nCrew-bank buyout helps when someone\'s bail is high, but expect that you yourself can go to jail for dirty money.';
 
   @override
   String get helpTopicFriendsCategory => 'Social';
@@ -18383,11 +18425,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicPrisonHow =>
-      'After arrest a timer starts based on Wanted Level. Wanted Level 1 = short sentence (minutes), Wanted Level 5+ = hours in prison.\nBail scales with your remaining sentence and never drops below Wanted Level × €1,000. Longer sentences therefore cost more to buy out immediately.\nEscape: you can attempt a prison break but success chance is low. Failure extends your sentence by a fixed amount.\nIn the Prison list and jail overlay you can always pay your own bail and also attempt your own escape while still jailed.\nCrew members can visit you and provide small benefits (stats, morale) while you are locked up.\nOn arrest your friends and crew members now receive a push notification that you were caught and are waiting for help.\nWorld chat also posts a public Prison line with your name. If another player pays your bail or breaks you out, both names appear there.\nWeapons and armor are confiscated on arrest if you have no legal cover for them.\nCourt option: go to court for a sentence reduction via a lawyer (see Court).\nWhile locked up production timers (drugs, ammo factory) keep running. Your empire works without you.\nYou cannot visit the hospital while locked up. HP recovery waits until you are free.\nWhile jailed the Black Market is closed: you cannot buy, sell or list there. On the Training hub you can still train strength, speed and stamina; the shooting range stays closed until you are released.';
+      'After arrest a timer starts based on Wanted Level. Wanted Level 1 = short sentence (minutes), Wanted Level 5+ = hours in prison.\nBail scales with your remaining sentence and never drops below Wanted Level × €1,000. Longer sentences therefore cost more to buy out immediately.\nEscape: you can attempt a prison break but success chance is low. Failure extends your sentence by a fixed amount.\nIn the Prison list and jail overlay you can always pay your own bail and also attempt your own escape while still jailed.\nAnyone can buy another player out with their own cash. Only the crew owner and co-owners see an extra button on a jailed crewmate to pay bail from the crew bank. You keep your own cash; the vault is charged.\nPaying from the crew bank is dirty money. Sometimes the police then arrest you (about 1 in 5 times, 30 to 45 minutes in jail). The other player is already free. You cannot use the crew bank while you yourself are jailed.\nCrew members can visit you and provide small benefits (stats, morale) while you are locked up.\nOn arrest your friends and crew members now receive a push notification that you were caught and are waiting for help.\nWorld chat also posts a public Prison line with your name. If another player pays your bail or breaks you out, both names appear there.\nWeapons and armor are confiscated on arrest if you have no legal cover for them.\nCourt option: go to court for a sentence reduction via a lawyer (see Court).\nWhile locked up production timers (drugs, ammo factory) keep running. Your empire works without you.\nYou cannot visit the hospital while locked up. HP recovery waits until you are free.\nWhile jailed the Black Market is closed: you cannot buy, sell or list there. On the Training hub you can still train strength, speed and stamina; the shooting range stays closed until you are released.';
 
   @override
   String get helpTopicPrisonTips =>
-      'Check bail immediately after arrest: the button should remain visible as long as you are still jailed, even if your Wanted Level has already dropped.\nStart production timers just before doing a high-risk crime run: if you get caught production keeps running anyway.';
+      'Check bail immediately after arrest: the button should remain visible as long as you are still jailed, even if your Wanted Level has already dropped.\nStart production timers just before doing a high-risk crime run: if you get caught production keeps running anyway.\nCrew-bank buyout warns you about dirty money first: confirm only if the crew can really spare the bail.';
 
   @override
   String get helpTopicVaultCategory => 'Events';

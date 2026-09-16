@@ -393,9 +393,14 @@ export async function setJailReleaseClock(
 /**
  * Jail a player (create crime attempt with jailed=true)
  */
-export async function jailPlayer(playerId: number, jailTime: number): Promise<void> {
+export async function jailPlayer(
+  playerId: number,
+  jailTime: number,
+  authority: string = 'Police',
+): Promise<void> {
   const now = new Date();
   const jailRelease = new Date(now.getTime() + jailTime * 60 * 1000);
+  const isBlackMoney = /black_money|zwart/i.test(authority);
 
   await withPrismaWriteRetry(() =>
     prisma.$transaction(async (tx: any) => {
@@ -422,9 +427,11 @@ export async function jailPlayer(playerId: number, jailTime: number): Promise<vo
     await activityService.logActivity(
       playerId,
       'ARREST',
-      `Arrested by police for ${jailTime} minutes`,
+      isBlackMoney
+        ? `Arrested for dirty crew-bank money for ${jailTime} minutes`
+        : `Arrested by police for ${jailTime} minutes`,
       {
-        authority: 'Police',
+        authority: isBlackMoney ? 'black_money' : 'Police',
         jailTime,
         jailedUntil: jailRelease.toISOString(),
       },
@@ -450,8 +457,8 @@ export async function jailPlayer(playerId: number, jailTime: number): Promise<vo
   void notificationService.sendArrestAwaitingHelpNotifications(
     playerId,
     jailTime,
-    'Police',
-    'POLICE'
+    isBlackMoney ? 'black_money' : authority,
+    isBlackMoney ? 'BLACK_MONEY' : 'POLICE'
   ).catch((error) => {
     console.error('[Police Service] arrest help notifications failed:', error);
   });
@@ -514,17 +521,77 @@ export async function getJailedPrisoners(viewerId: number): Promise<
   });
 }
 
+export const CREW_BANK_BUYOUT_ARREST_CHANCE_PERCENT = 20;
+const CREW_BANK_BUYOUT_ROLES = new Set(['leader', 'co_leader']);
+const CREW_BANK_BUYOUT_WANTED = 8;
+
+export type BuyOutPayFrom = 'personal' | 'crew_bank';
+
+export async function getCrewBankBuyoutContext(viewerId: number): Promise<{
+  allowed: boolean;
+  crewId: number | null;
+  crewBankBalance: number;
+  arrestChancePercent: number;
+  memberPlayerIds: number[];
+}> {
+  const membership = await prisma.crewMember.findFirst({
+    where: { playerId: viewerId },
+    select: { crewId: true, role: true },
+  });
+  if (!membership || !CREW_BANK_BUYOUT_ROLES.has(membership.role)) {
+    return {
+      allowed: false,
+      crewId: membership?.crewId ?? null,
+      crewBankBalance: 0,
+      arrestChancePercent: CREW_BANK_BUYOUT_ARREST_CHANCE_PERCENT,
+      memberPlayerIds: [],
+    };
+  }
+
+  const [crew, members] = await Promise.all([
+    prisma.crew.findUnique({
+      where: { id: membership.crewId },
+      select: { bankBalance: true },
+    }),
+    prisma.crewMember.findMany({
+      where: { crewId: membership.crewId },
+      select: { playerId: true },
+    }),
+  ]);
+
+  return {
+    allowed: true,
+    crewId: membership.crewId,
+    crewBankBalance: crew?.bankBalance ?? 0,
+    arrestChancePercent: CREW_BANK_BUYOUT_ARREST_CHANCE_PERCENT,
+    memberPlayerIds: members.map((member) => member.playerId),
+  };
+}
+
+function rollCrewBankBlackMoneyArrest(rng: () => number = Math.random): boolean {
+  return rng() * 100 < CREW_BANK_BUYOUT_ARREST_CHANCE_PERCENT;
+}
+
+function rollBlackMoneyJailMinutes(rng: () => number = Math.random): number {
+  return Math.floor(rng() * 16) + 30;
+}
+
 export async function buyOutPrisoner(
   buyerId: number,
-  targetId: number
+  targetId: number,
+  options?: { payFrom?: BuyOutPayFrom }
 ): Promise<{
   amount: number;
   targetUsername: string;
+  paidFrom: BuyOutPayFrom;
+  buyerArrested: boolean;
+  buyerJailTime?: number;
 }> {
   if (buyerId === targetId) {
     throw new Error('CANNOT_BUYOUT_SELF');
   }
 
+  const payFrom: BuyOutPayFrom = options?.payFrom === 'crew_bank' ? 'crew_bank' : 'personal';
   const remainingTime = await checkIfJailed(targetId);
   if (remainingTime <= 0) {
     throw new Error('TARGET_NOT_JAILED');
@@ -550,17 +617,92 @@ export async function buyOutPrisoner(
   }
 
   const bail = calculateJailBail(target.wantedLevel, remainingTime);
-  if (buyer.money < bail) {
-    throw new Error('INSUFFICIENT_MONEY');
+
+  if (payFrom === 'personal') {
+    if (buyer.money < bail) {
+      throw new Error('INSUFFICIENT_MONEY');
+    }
+
+    await prisma.$transaction(async (tx: any) => {
+      await tx.player.update({
+        where: { id: buyerId },
+        data: {
+          money: { decrement: bail },
+        },
+      });
+
+      await tx.player.update({
+        where: { id: targetId },
+        data: {
+          wantedLevel: Math.floor(target.wantedLevel / 2),
+          jailRelease: null,
+        },
+      });
+
+      await tx.crimeAttempt.updateMany({
+        where: {
+          playerId: targetId,
+          jailed: true,
+        },
+        data: {
+          jailed: false,
+        },
+      });
+
+      await tx.worldEvent.create({
+        data: {
+          eventKey: 'prison.buyout_success',
+          playerId: buyerId,
+          params: JSON.stringify({
+            targetId,
+            bail,
+            paidFrom: 'personal',
+          }),
+        },
+      });
+    });
+
+    void announcePlayerFreedBy(buyerId, targetId, 'buyout').catch((error) => {
+      console.error('[Police Service] world chat buyout announcement failed:', error);
+    });
+
+    return {
+      amount: bail,
+      targetUsername: target.username,
+      paidFrom: 'personal',
+      buyerArrested: false,
+    };
+  }
+
+  const buyerJailTime = await checkIfJailed(buyerId);
+  if (buyerJailTime > 0) {
+    throw new Error('BUYER_JAILED');
+  }
+
+  const buyerMembership = await prisma.crewMember.findFirst({
+    where: { playerId: buyerId },
+    select: { crewId: true, role: true },
+  });
+  if (!buyerMembership || !CREW_BANK_BUYOUT_ROLES.has(buyerMembership.role)) {
+    throw new Error('NOT_CREW_BANK_BUYOUT_ROLE');
+  }
+
+  const targetMembership = await prisma.crewMember.findFirst({
+    where: { playerId: targetId, crewId: buyerMembership.crewId },
+    select: { playerId: true },
+  });
+  if (!targetMembership) {
+    throw new Error('NOT_SAME_CREW');
   }
 
   await prisma.$transaction(async (tx: any) => {
-    await tx.player.update({
-      where: { id: buyerId },
-      data: {
-        money: { decrement: bail },
-      },
+    const paid = await tx.crew.updateMany({
+      where: { id: buyerMembership.crewId, bankBalance: { gte: bail } },
+      data: { bankBalance: { decrement: bail } },
     });
+    if (paid.count !== 1) {
+      throw new Error('INSUFFICIENT_CREW_FUNDS');
+    }
 
     await tx.player.update({
       where: { id: targetId },
@@ -587,18 +729,32 @@ export async function buyOutPrisoner(
         params: JSON.stringify({
           targetId,
           bail,
+          paidFrom: 'crew_bank',
+          crewId: buyerMembership.crewId,
         }),
       },
     });
   });
 
-  void announcePlayerFreedBy(buyerId, targetId, 'buyout').catch((error) => {
+  await announcePlayerFreedBy(buyerId, targetId, 'buyout').catch((error) => {
     console.error('[Police Service] world chat buyout announcement failed:', error);
   });
+
+  let buyerArrested = false;
+  let buyerNewJailTime: number | undefined;
+  if (rollCrewBankBlackMoneyArrest()) {
+    buyerArrested = true;
+    buyerNewJailTime = rollBlackMoneyJailMinutes();
+    await jailPlayer(buyerId, buyerNewJailTime, 'black_money');
+    await increaseWantedLevel(buyerId, CREW_BANK_BUYOUT_WANTED);
+  }
 
   return {
     amount: bail,
     targetUsername: target.username,
+    paidFrom: 'crew_bank',
+    buyerArrested,
+    buyerJailTime: buyerNewJailTime,
   };
 }
 

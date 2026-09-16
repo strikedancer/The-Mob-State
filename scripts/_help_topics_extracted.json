@@ -226,6 +226,9 @@
       "Nieuwe crews starten direct met Crew HQ level 1 en alle opslaggebouwen op level 1, inclusief cash opslag, zodat crew bank en gedeelde opslag meteen bruikbaar zijn.",
       "Geldopslag level 1 houdt €1.000.000. De volgende upgrade van de geldopslag kost altijd minder dan wat de kluis nu aankan, zodat je die uit de crewbank kunt betalen.",
       "Auto opslag in crew accepteert nu ook motoren, zodat landvoertuigen samen vanuit dezelfde gedeelde crew-opslag beheerd kunnen worden.",
+      "Gedeelde opslag is geen extra persoonlijke garage. Auto's, motoren, boten, wapens, munitie en handelswaren die je stort blijven van de crew: ze gaan op aan crew-smokkel, crew-missies (handelswaren voor Port Contraband Manifest en Warehouse Luxury Offload), deals tussen crews, of een raid van een andere crew. Je haalt ze niet terug voor eigen misdaden of om zelf te rijden of varen.",
+      "Drugs in crew-opslag kun je groothandel (vrachtgeld en opbrengst via de crewbank) of terug naar jezelf halen. Territory-bonussen komen van het level van het opslaggebouw, niet van hoe vol de schappen staan.",
+      "Alleen de crew-eigenaar en co-eigenaren kunnen op Gevangenis een crewlid uitkopen met geld uit de crewbank. De borg gaat van de pot. Soms pakt de politie jou dan op wegens zwart geld: de ander is vrij, jij zit vast.",
       "Als een crewlid wordt opgepakt krijgen crewleden nu een pushmelding dat die speler vastzit en op hulp wacht.",
       "Het crew-scherm is nu gegroepeerd in Overzicht, HQ & Upgrades, Opslag, Leden, War Room, Crew Missies, Crews en Chat zodat beheer rustiger en professioneler blijft.",
       "In Crew Missies zie je templates per tier, een actieve run-kaart en recente runs. Leaders/co-leaders kunnen starten en resolven; rewards claimen en cooldown speedup gaan via dezelfde tab.",
@@ -257,6 +260,9 @@
       "New crews now start with Crew HQ level 1 and all storage buildings at level 1, including cash storage, so the crew bank and shared storage work immediately.",
       "Cash storage level 1 holds €1.000.000. The next cash-storage upgrade always costs less than that vault, so you can pay it from the crew bank instead of getting stuck at the cap.",
       "Crew car storage now also accepts motorcycles, so land vehicles can be managed together from the same shared crew storage.",
+      "Shared storage is not an extra personal garage. Cars, motorcycles, boats, weapons, ammo and trade goods you deposit belong to the crew: they are used for crew smuggling, crew missions (trade goods for Port Contraband Manifest and Warehouse Luxury Offload), deals between crews, or stolen in a raid by another crew. You cannot take them back for your own crimes or to drive or sail them yourself.",
+      "Drugs in crew storage can go to wholesale (freight and payout through the crew bank) or back to your own inventory. Territory bonuses come from the storage building level, not from how full the shelves are.",
+      "Only the crew owner and co-owners can buy a crewmate out of prison with crew-bank money. Bail comes from the vault. Sometimes the police then arrest you for dirty money: the other player is free, you go to jail.",
       "When a crew member gets arrested, crew members now receive a push notification that the player is locked up and waiting for help.",
       "The crew screen is now grouped into Overview, HQ & Upgrades, Storage, Members, War Room, Crew Missions, Crews and Chat so management feels calmer and more professional.",
       "Crew Missions shows tier templates, an active run card and recent runs. Leaders/co-leaders can start and resolve; reward claiming and cooldown speedup are handled in the same tab.",
@@ -287,7 +293,9 @@
       "Verdeel target calls in de crew-chat zodat je niet steeds op dezelfde tegenstander focust en door de anti-farm guard wordt geblokkeerd.",
       "Coördineer heist-starttijden in de crew-chat zodat iedereen online is en niemand in de cel zit.",
       "Kies een crew die in dezelfde tijdzone of activiteitspatroon zit als jij voor betere heist-success rates.",
-      "Gebruik gedeelde crew-opslag om risicovolle goederen los te koppelen van je persoonlijke inventaris."
+      "Gebruik gedeelde crew-opslag om risicovolle goederen los te koppelen van je persoonlijke inventaris.",
+      "Stort alleen auto's, motoren of boten in de crew als je ze echt voor smokkel, missies of deals wilt inzetten; daarna kun je ze niet meer zelf gebruiken.",
+      "Crewbank-uitkoop is handig als iemands borg hoog is, maar reken erop dat jij zelf de cel in kunt gaan wegens zwart geld."
     ],
     "tipsEn": [
       "New crews can deposit money and use shared storage immediately; after that, focus on upgrades for more capacity instead of a separate starter purchase.",
@@ -295,7 +303,9 @@
       "Coordinate target calls in crew chat so you do not keep farming the same opponent and trip the anti-farm guard.",
       "Coordinate heist start times in crew chat so everyone is online and nobody is in jail.",
       "Choose a crew in the same timezone or activity pattern for better heist success rates.",
-      "Use shared crew storage to separate risky goods from your personal inventory."
+      "Use shared crew storage to separate risky goods from your personal inventory.",
+      "Only deposit cars, motorcycles or boats into the crew if you really want them for smuggling, missions or deals; you cannot use them yourself afterwards.",
+      "Crew-bank buyout helps when someone's bail is high, but expect that you yourself can go to jail for dirty money."
     ],
     "protocolPath": "docs/module-protocols/crew.md"
   },
@@ -1124,6 +1134,8 @@
       "Borgtocht schaalt met je resterende celstraf en valt nooit lager uit dan Wanted Level × €1.000. Lange straffen worden dus duurder om direct af te kopen.",
       "Ontsnappen: je kunt een ontsnappingspoging wagen maar de slagingskans is laag. Mislukking verlengt je straftijd met een vast bedrag.",
       "In de Gevangenis-list en de jail overlay kun je altijd jezelf vrijkopen met borg en ook zelf een uitbraakpoging doen zolang je nog vastzit.",
+      "Iedereen kan een andere speler uitkopen met eigen cash. Alleen de crew-eigenaar en co-eigenaren zien bij een vastzittend crewlid extra de knop om de borg uit de crewbank te betalen. Jij houdt je eigen cash; de pot gaat eraf.",
+      "Betalen uit de crewbank is zwart geld. Soms pakt de politie jou dan op (ongeveer 1 op 5 keer, 30 tot 45 minuten cel). De ander is dan al vrij. Zelf in de cel kun je de crewbank niet gebruiken.",
       "Crewleden kunnen je bezoeken en kleine voordelen geven (stats, moreel) terwijl je vastzit.",
       "Bij arrestatie ontvangen je vrienden en crewleden nu een pushmelding dat je bent opgepakt en op hulp wacht.",
       "In de wereldchat komt ook een openbare Gevangenis-regel met je naam. Koopt of haalt een andere speler je eruit, dan staan beide namen erbij.",
@@ -1138,6 +1150,8 @@
       "Bail scales with your remaining sentence and never drops below Wanted Level × €1,000. Longer sentences therefore cost more to buy out immediately.",
       "Escape: you can attempt a prison break but success chance is low. Failure extends your sentence by a fixed amount.",
       "In the Prison list and jail overlay you can always pay your own bail and also attempt your own escape while still jailed.",
+      "Anyone can buy another player out with their own cash. Only the crew owner and co-owners see an extra button on a jailed crewmate to pay bail from the crew bank. You keep your own cash; the vault is charged.",
+      "Paying from the crew bank is dirty money. Sometimes the police then arrest you (about 1 in 5 times, 30 to 45 minutes in jail). The other player is already free. You cannot use the crew bank while you yourself are jailed.",
       "Crew members can visit you and provide small benefits (stats, morale) while you are locked up.",
       "On arrest your friends and crew members now receive a push notification that you were caught and are waiting for help.",
       "World chat also posts a public Prison line with your name. If another player pays your bail or breaks you out, both names appear there.",
@@ -1149,11 +1163,13 @@
     ],
     "tipsNl": [
       "Controleer borg direct na arrestatie: de knop hoort altijd zichtbaar te blijven zolang je nog vastzit, ook als je Wanted Level al is teruggelopen.",
-      "Start productie-timers vlak voordat je een gevaarlijke crimerun doet: als je gepakt wordt loopt de productie in ieder geval door."
+      "Start productie-timers vlak voordat je een gevaarlijke crimerun doet: als je gepakt wordt loopt de productie in ieder geval door.",
+      "Crewbank-uitkoop waarschuwt je eerst over zwart geld: bevestig alleen als de crew de borg écht kan missen."
     ],
     "tipsEn": [
       "Check bail immediately after arrest: the button should remain visible as long as you are still jailed, even if your Wanted Level has already dropped.",
-      "Start production timers just before doing a high-risk crime run: if you get caught production keeps running anyway."
+      "Start production timers just before doing a high-risk crime run: if you get caught production keeps running anyway.",
+      "Crew-bank buyout warns you about dirty money first: confirm only if the crew can really spare the bail."
     ],
     "protocolPath": "docs/module-protocols/prison.md"
   },

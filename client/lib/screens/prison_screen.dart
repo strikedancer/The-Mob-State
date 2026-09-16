@@ -3,7 +3,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+
 import '../l10n/app_localizations.dart';
+import '../providers/auth_provider.dart';
 import '../services/api_client.dart';
 import '../utils/formatters.dart';
 import '../utils/player_profile_navigation.dart';
@@ -34,6 +37,9 @@ class _PrisonScreenState extends State<PrisonScreen> {
   bool _isActing = false;
   String? _error;
   int _viewerId = 0;
+  bool _crewBankBuyoutAllowed = false;
+  int _crewBankBalance = 0;
+  int _crewBankArrestChance = 20;
   List<Map<String, dynamic>> _prisoners = [];
 
   @override
@@ -178,9 +184,19 @@ class _PrisonScreenState extends State<PrisonScreen> {
             .map((entry) => Map<String, dynamic>.from(entry))
             .toList();
 
+        final crewBank =
+            data['crewBankBuyout'] is Map
+                ? Map<String, dynamic>.from(data['crewBankBuyout'] as Map)
+                : const <String, dynamic>{};
+
         setState(() {
           _viewerId = (data['viewerId'] as num?)?.toInt() ?? 0;
           _prisoners = prisoners;
+          _crewBankBuyoutAllowed = crewBank['allowed'] == true;
+          _crewBankBalance =
+              (crewBank['crewBankBalance'] as num?)?.toInt() ?? 0;
+          _crewBankArrestChance =
+              (crewBank['arrestChancePercent'] as num?)?.toInt() ?? 20;
           _error = null;
         });
       } else {
@@ -208,7 +224,44 @@ class _PrisonScreenState extends State<PrisonScreen> {
     }
   }
 
-  Future<void> _buyOut(int targetId) async {
+  Future<void> _confirmCrewBankBuyOut(
+    int targetId,
+    String username,
+    int bailCost,
+  ) async {
+    final l10n = AppLocalizations.of(context)!;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(l10n.prisonBuyOutCrewBankConfirmTitle),
+          content: Text(
+            l10n.prisonBuyOutCrewBankConfirmBody(
+              username,
+              bailCost.toString(),
+              _crewBankBalance.toString(),
+              _crewBankArrestChance.toString(),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: Text(l10n.cancel),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: Text(l10n.prisonBuyOutCrewBankButton),
+            ),
+          ],
+        );
+      },
+    );
+    if (confirmed == true) {
+      await _buyOut(targetId, payFromCrewBank: true);
+    }
+  }
+
+  Future<void> _buyOut(int targetId, {bool payFromCrewBank = false}) async {
     if (_isActing) {
       return;
     }
@@ -220,7 +273,7 @@ class _PrisonScreenState extends State<PrisonScreen> {
     try {
       final response = await _apiClient.post(
         '/player/prison/buyout/$targetId',
-        {},
+        {if (payFromCrewBank) 'payFrom': 'crew_bank'},
       );
       final data = jsonDecode(response.body) as Map<String, dynamic>;
       final event = data['event'] as String? ?? 'error.internal';
@@ -233,20 +286,41 @@ class _PrisonScreenState extends State<PrisonScreen> {
       if (response.statusCode >= 200 &&
           response.statusCode < 300 &&
           event == 'prison.buyout_success') {
-        final targetUsername =
-            (data['params'] as Map<String, dynamic>?)?['targetUsername']
-                as String? ??
-            '-';
-        final amount =
-            ((data['params'] as Map<String, dynamic>?)?['amount'] as num?)
-                ?.toInt() ??
-            0;
+        final params = (data['params'] as Map<String, dynamic>?) ?? {};
+        final targetUsername = params['targetUsername'] as String? ?? '-';
+        final amount = (params['amount'] as num?)?.toInt() ?? 0;
+        final buyerArrested = params['buyerArrested'] == true;
+        final buyerJailTime = (params['buyerJailTime'] as num?)?.toInt() ?? 0;
 
-        _showTopRightNotification(
-          l10n.prisonBuyoutSuccess(targetUsername, amount.toString()),
-          backgroundColor: Colors.green.shade700,
-          icon: Icons.check_circle_outline,
-        );
+        if (buyerArrested) {
+          _showTopRightNotification(
+            l10n.prisonBuyOutCrewBankArrested(
+              targetUsername,
+              buyerJailTime.toString(),
+            ),
+            backgroundColor: Colors.orange.shade800,
+            icon: Icons.local_police_outlined,
+          );
+        } else if (payFromCrewBank) {
+          _showTopRightNotification(
+            l10n.prisonBuyOutCrewBankSuccess(
+              targetUsername,
+              amount.toString(),
+            ),
+            backgroundColor: Colors.green.shade700,
+            icon: Icons.check_circle_outline,
+          );
+        } else {
+          _showTopRightNotification(
+            l10n.prisonBuyoutSuccess(targetUsername, amount.toString()),
+            backgroundColor: Colors.green.shade700,
+            icon: Icons.check_circle_outline,
+          );
+        }
+
+        if (mounted) {
+          unawaited(context.read<AuthProvider>().refreshPlayer());
+        }
       } else {
         final params = (data['params'] as Map<String, dynamic>?) ?? {};
         final message = _resolveActionError(event, l10n, params);
@@ -478,6 +552,14 @@ class _PrisonScreenState extends State<PrisonScreen> {
     switch (event) {
       case 'error.insufficient_funds':
         return l10n.prisonErrorInsufficientFunds;
+      case 'error.insufficient_crew_funds':
+        return l10n.prisonErrorInsufficientCrewFunds;
+      case 'error.not_crew_bank_buyout_role':
+        return l10n.prisonErrorNotCrewBankRole;
+      case 'error.not_same_crew':
+        return l10n.prisonErrorNotSameCrew;
+      case 'error.buyer_jailed':
+        return l10n.prisonErrorBuyerJailed;
       case 'error.cooldown':
         final remaining = (params['remainingSeconds'] as num?)?.toInt() ?? 0;
         return l10n.prisonCooldownActive(
@@ -562,6 +644,16 @@ class _PrisonScreenState extends State<PrisonScreen> {
         (prisoner['maxEscapeAttempts'] as num?)?.toInt() ?? 2;
     final canSelfEscape =
         isCurrentViewer && !_isActing && escapeAttempts > 0 && escapeCooldown <= 0;
+    final viewerIsJailed = _prisoners.any(
+      (entry) => ((entry['playerId'] as num?)?.toInt() ?? 0) == _viewerId,
+    );
+    final sameCrew = prisoner['sameCrew'] == true;
+    final showCrewBankBuyout =
+        !isCurrentViewer &&
+        _crewBankBuyoutAllowed &&
+        sameCrew &&
+        !viewerIsJailed &&
+        playerId > 0;
 
     return Card(
       child: Padding(
@@ -637,6 +729,23 @@ class _PrisonScreenState extends State<PrisonScreen> {
                 ),
               ],
             ),
+            if (showCrewBankBuyout) ...[
+              const SizedBox(height: 8),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  onPressed: _isActing
+                      ? null
+                      : () => _confirmCrewBankBuyOut(
+                          playerId,
+                          username,
+                          bailCost,
+                        ),
+                  icon: const Icon(Icons.account_balance),
+                  label: Text(l10n.prisonBuyOutCrewBankButton),
+                ),
+              ),
+            ],
           ],
         ),
       ),

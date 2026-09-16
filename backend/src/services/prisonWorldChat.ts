@@ -13,6 +13,7 @@ function authorityPhrase(authority?: string): string {
   const key = (authority ?? '').toLowerCase();
   if (key.includes('fbi')) return 'de FBI';
   if (key.includes('border') || key.includes('grens')) return 'de grenspolitie';
+  if (key.includes('black_money') || key.includes('zwart')) return 'de politie wegens zwart geld';
   return 'de politie';
 }
 
@@ -36,6 +37,11 @@ export async function announcePlayerJailed(
     select: { username: true },
   });
   if (!player?.username) {
+    return;
+  }
+  const key = (authority ?? '').toLowerCase();
+  if (key.includes('black_money') || key.includes('zwart')) {
+    await post(`${safeName(player.username)} is opgepakt wegens zwart geld.`);
     return;
   }
   await post(`${safeName(player.username)} is opgepakt door ${authorityPhrase(authority)}.`);
