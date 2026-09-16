@@ -11757,6 +11757,139 @@ class AppLocalizationsDe extends AppLocalizations {
   String get prostitutionTierVip => 'VIP';
 
   @override
+  String get rldTierLounge => 'Lounge';
+
+  @override
+  String get rldTierPrestige => 'Prestige';
+
+  @override
+  String get rldTierPenthouse => 'Penthouse';
+
+  @override
+  String get rldUpgradeRooms => 'Mehr Zimmer';
+
+  @override
+  String get rldUpgradeRoomsSubtitle =>
+      'Kaufen Sie zusätzliche Räume, bevor Sie hier weitere Rekruten unterbringen können.';
+
+  @override
+  String rldUpgradeRoomsButton(String cost) {
+    return 'Räume bauen · $cost';
+  }
+
+  @override
+  String rldUpgradeRoomsConfirm(String rooms, String cost) {
+    return '$rooms Zimmer für $cost € hinzufügen?';
+  }
+
+  @override
+  String get rldMaxRooms => 'Dieser Bezirk ist an seiner Grenze.';
+
+  @override
+  String get rldRoomsFullHint =>
+      'Alle Räume sind voll. Rüsten Sie zuerst die Zimmer auf.';
+
+  @override
+  String get rldOccupancyBusy => 'Ein geschäftiges Haus zieht die Polizei an';
+
+  @override
+  String get rldOccupancyFull =>
+      'Ein überfüllter Bezirk erregt zusätzliche Aufmerksamkeit der Polizei';
+
+  @override
+  String get rldGuard => 'Bewachen';
+
+  @override
+  String get rldGuardConfirm =>
+      'Diesen Rekruten 8 Stunden lang bewachen (12 mit VIP)? Sie verdient die Hälfte, während sie bewacht wird.';
+
+  @override
+  String get rldSteal => 'Stehlen';
+
+  @override
+  String get rldStealConfirm =>
+      'Diesen Rekruten stehlen? Kostet Bargeld und Wärme. Wenn es funktioniert, bleibt sie 12 Stunden auf der Straße.';
+
+  @override
+  String get rldSabotage => 'Sabotage';
+
+  @override
+  String get rldSabotageConfirm =>
+      'Diesen Raum schließen, bis der Wettbewerb endet? Keine Miete, solange es geschlossen ist.';
+
+  @override
+  String get rldContestBannerPrep =>
+      'Der Wettbewerb beginnt bald. Der Besitzer kann weiterhin upgraden oder bewachen.';
+
+  @override
+  String get rldContestBannerActive =>
+      'Der Kampf ist live. Diebstahl und Sabotage zählen.';
+
+  @override
+  String get rldContestBannerLockdown =>
+      'Der Kampf geht zu Ende. Keine neuen Aktionen.';
+
+  @override
+  String get rldContestStart => 'Bewerben Sie sich in diesem Bezirk';
+
+  @override
+  String get rldContestStartConfirm =>
+      '100.000 € einsetzen, um diesen Bezirk zu bestreiten? Der Eigentümer erhält zunächst ein kurzes Fenster.';
+
+  @override
+  String get rldContestHold => 'Halten';
+
+  @override
+  String rldContestScore(String attack, String defense) {
+    return 'Punktzahl $attack – $defense';
+  }
+
+  @override
+  String get rldReclaim => 'Zurücknehmen';
+
+  @override
+  String get rldReclaimHint =>
+      'Von dir gestohlen. Bringen Sie sie innerhalb von 12 Stunden zurück.';
+
+  @override
+  String get rldHotHint =>
+      'Gerade gestohlen. Sie kann nicht 12 Stunden lang in einem Viertel oder Nightclub arbeiten.';
+
+  @override
+  String get rldGuardedHint => 'Bewacht';
+
+  @override
+  String get rldSabotagedHint => 'Dieser Wettbewerb wurde geschlossen';
+
+  @override
+  String get rldEventsStreet => 'Straßennächte';
+
+  @override
+  String get rldEventsVipSalon => 'VIP-Salon';
+
+  @override
+  String get rldEventsBusyTonight =>
+      'Heute Abend ist viel los – zusätzliches Geld, zusätzliches Risiko';
+
+  @override
+  String get rldEventTouristNight => 'Touristennacht';
+
+  @override
+  String get rldEventHarborShift => 'Hafenverschiebung';
+
+  @override
+  String get rldEventCityFestival => 'Stadtfest';
+
+  @override
+  String get rldEventPrivateSalon => 'Privater Salon';
+
+  @override
+  String get rldEventYachtParty => 'Yachtparty';
+
+  @override
+  String get rldVipOnly => 'VIP';
+
+  @override
   String get prostitutionSecurityLevel => 'Sicherheitsstufe';
 
   @override
@@ -11865,14 +11998,14 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get vipEventsTitle => 'VIP-Events';
+  String get vipEventsTitle => 'Veranstaltungen';
 
   @override
-  String get vipEventsTabTitle => 'VIP-Events';
+  String get vipEventsTabTitle => 'Veranstaltungen';
 
   @override
   String get vipEventsDescription =>
-      'Weisen Sie Prostituierte VIP-Events zu, um Bonuseinnahmen zu erzielen!';
+      'Schicken Sie einen Rekruten zu einer Nacht, um zusätzliches Einkommen zu erzielen. Auch geschäftige Nächte locken Polizei und Diebe an.';
 
   @override
   String get vipEventsActive => 'Aktive Ereignisse';
@@ -18861,15 +18994,15 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicProstitutionSummary =>
-      'Bauen Sie ein Prostitutionsnetzwerk mit Rekruten, Events und VIP-Kunden auf. Ein gut geführtes Netzwerk generiert passives Einkommen, erfordert jedoch ein aktives Management, um Rivalität und polizeiliche Aufmerksamkeit zu kontrollieren.';
+      'Rekrutieren Sie Arbeiter, platzieren Sie sie auf der Straße oder in einem Rotlichtviertel, veranstalten Sie Abende und beobachten Sie die Polizeieinsätze. Andere Spieler können einen Rekruten stehlen; Du hast 12 Stunden Zeit, sie zurückzuholen.';
 
   @override
   String get helpTopicProstitutionHow =>
-      'Sie verwalten die Rekruten jeweils mit ihren eigenen Statistiken (Erfahrung, Beliebtheit, Verfügbarkeit). Mehr Rekruten = höheres passives Einkommen. \nSie können nur in dem Land rekrutieren, in dem Sie sich befinden, und auch nur, wenn Sie dort ein Haus oder eine Wohnung besitzen. Freie Wohnplätze in anderen Ländern ermöglichen es Ihnen nicht, hier zu rekrutieren. \nDie Arbeitsschichten dauern pro Rekrut 8 Stunden: Nach einer Schicht benötigt dieser Rekrut Ruhezeit, bevor er wieder anfangen kann. \nDie Standortverwaltung ist flexibel: Sie können Rekruten mithilfe der Aktionsschaltflächen auf jeder Karte zwischen Straße, Rotlichtviertel und Nightclub bewegen. \nEvents sind vorübergehende Booster: Sondershows, VIP-Abende und Partys erhöhen die Einnahmen pro Tick für die Dauer der Veranstaltung. \nRivalität: Andere Spieler oder NPC-Konkurrenten können Ihre Rekruten abwerben oder Events sabotieren. Höhere Sicherheit verringert dieses Risiko. \nVIP-Kunden zahlen deutlich mehr, benötigen aber Rekruten mit hoher Beliebtheit (80+) und einem gesicherten Standort. \nBei Großtransaktionen und Razzien steigt die Aufmerksamkeit (Hitze) der Polizei. Hohe Hitze führt zur Beschlagnahme von Einkommen oder zur vorübergehenden Schließung. \nKombination mit Nightclub: Ein Nightclub bietet rechtlichen Schutz für Aktivitäten, die den Hitzeanstieg verlangsamen. \nNutzen Sie das Einnahmen-Einblicksfenster oben, um schnell die Stundenleistung für Straße, RLD und Nightclub zu vergleichen. \nBestenliste: Der höchste wöchentliche Gesamtumsatz gewinnt eine wöchentliche Geldprämie und ein Abzeichen.';
+      'Sie rekrutieren in dem Land, in dem Sie sich befinden, und nur, wenn Sie dort ein Haus oder eine Wohnung besitzen. Freie Wohnplätze in anderen Ländern ermöglichen es Ihnen nicht, hier zu rekrutieren. \nJeder Rekrut hat eine Stufe aus Arbeitsschichten. Die Schichten dauern 8 Stunden, danach braucht sie Ruhe.\n Bewegen Sie Rekruten zwischen Straße, Rotlichtviertel und Nightclub. Ein Bezirk hat nur so viele Räume, wie sein Besitzer durch Upgrades freigeschaltet hat. Wenn die Räume voll sind, bleibt sie auf der Straße. \nEin gestohlener Rekrut sitzt 12 Stunden lang auf der Straße. Der alte Chef kann sie in diesem Fenster zurückbringen. Der Dieb kann sie noch nicht in ein Viertel oder einen Nightclub bringen.\n Veranstaltungen sind arbeitsreiche Nächte: zusätzliche Einnahmen, zusätzliche Polizei, einfacherer Diebstahl. Straßennächte sind für alle da. VIP-Salonabende erfordern Spieler-VIP. \nRivalry on Social stiehlt immer noch Bargeld oder gibt der Polizei Trinkgeld. Das Stehlen eines Rekruten ist eine separate Aktion in einem Bezirksraum.\n Die Hitze der Polizei nimmt mit einem überfüllten Bezirk und den Ereignissen zu. Hohe FBI-Hitze kann zu Überfällen auf Arbeiter führen.';
 
   @override
   String get helpTopicProstitutionTips =>
-      'Investieren Sie frühzeitig in Sicherheit: Ein Rivalitätsangriff, der Ihren besten Rekruten abwirbt, kostet mehr als die Sicherheitsinvestition. \nOrganisieren Sie VIP-Events nur, wenn die Rekruten einen Beliebtheitsgrad von über 80 haben. Unter diesem Schwellenwert zahlen VIP-Kunden einfach den Standardpreis.';
+      'Füllen Sie nicht jeden Raum, wenn die Hitze bereits hoch ist: Ein überfülltes Haus lockt Polizei und Diebe an. \nBewachen Sie Ihren besten Rekruten, wenn ein Wettbewerb bevorsteht: Er verdient weniger, ist aber viel schwerer zu stehlen.';
 
   @override
   String get helpTopicRedLightDistrictsCategory => 'Reich';
@@ -18879,15 +19012,15 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicRedLightDistrictsSummary =>
-      'Beanspruchen und verwalten Sie Territorialbezirke pro Land. Der Besitz eines Bezirks verschafft passives Einkommen und Kontrolle über Prostitutionsaktivitäten in dieser Region.';
+      'Jedes Land hat einen Rotlichtbezirk. Der Eigentümer kassiert die Zimmermiete, verbessert die Zimmer und das Einkommen und kann das Gebäude in einem seltenen Wettbewerb verlieren.';
 
   @override
   String get helpTopicRedLightDistrictsHow =>
-      'In jedem Land gibt es einen oder mehrere Rotlichtbezirke, die beansprucht werden können. Beanspruchen Sie einen Bezirk, indem Sie einen festgelegten Kaufbetrag bezahlen.\nAls Eigentümer eines Bezirks erhalten Sie einen Prozentsatz aller Prostitutionseinnahmen in diesem Land – auch von anderen dort tätigen Akteuren.\nAndere Spieler können Ihren Bezirk angreifen, um den Besitz zu übernehmen. Höhere Sicherheit verringert die Angriffswahrscheinlichkeit.\nIn den Bezirksdetails können Sie die Stufe (Einnahmen) und die Sicherheit (Überfallrisiko) verbessern und Live-Überfallstatistiken (FBI-Hitze, Überfallchance) anzeigen. Höhere Sicherheit verringert die Wahrscheinlichkeit von Überfällen.\nSie können bis zu 3 Bezirke gleichzeitig besitzen. Eine strategische Länderauswahl ist von entscheidender Bedeutung.\nDie geschäftigsten Länder (Kolumbien, Dubai, Japan) bieten das höchste passive Einkommen, sind aber auch die am stärksten umkämpften Länder.\nDurch den Verlust eines Bezirks wird der Kaufpreis nicht zurückerstattet: Er geht dauerhaft verloren, wenn ein Feind ihn erfolgreich beansprucht.';
+      'Kaufen Sie den Bezirk in dem Land, in dem Sie sich befinden. Ein neuer Kauf beginnt mit vier Zimmern. Zusätzliche Räume entstehen durch die Raumaufwertung, nicht durch die Unterbringung weiterer Rekruten. \nEinkommenssteigerungen erhöhen die Miete pro Zimmer (Basic, Lounge, Luxury, Prestige, Penthouse). Penthouse braucht Spieler-VIP. Sicherheit verringert das Risiko von Überfällen und erschwert Diebstahl. \nEin volles Haus zahlt mehr Miete und zieht mehr Polizei an. Bewachen Sie einen Star, um den Diebstahl für ein paar Stunden bei halbem Verdienst nahezu zu verhindern. \nAndere Spieler im selben Land können einen Rekruten aus einem besetzten Raum stehlen. Ein seltener Wettbewerb kann den Besitzer wechseln. Zimmer, Upgrades und Mieter bleiben im Gebäude; Miete geht an den neuen Chef. \nEin Wettbewerb besteht aus einer kurzen Vorbereitung, einem Live-Kampf und einem Abschluss. Diebstahl- und Sabotagepunktzahl für den Herausforderer; Der Eigentümer kann für Bargeld und Wärme zurückhalten. \nPolizeirazzien finden immer noch statt, wenn der Druck auf das FBI groß ist. Ereignisse in diesem Land erhöhen die Wahrscheinlichkeit von Razzien und Diebstählen.';
 
   @override
   String get helpTopicRedLightDistrictsTips =>
-      'Beginnen Sie für Ihren ersten Distrikt mit einem weniger beliebten Land: Ein geringerer Angriffsdruck gibt Ihnen Zeit, die Sicherheit vor der echten Konkurrenz zu verbessern. \nVerbessern Sie die Sicherheit jedes Bezirks sofort nach dem Kauf: Die ersten 24 Stunden sind am anfälligsten für eine Übernahme.';
+      'Werten Sie Räume nur dann auf, wenn Sie Rekruten bereit haben: Leere Räume kosten keinen Unterhalt, aber ein überfülltes Haus ist ein Ziel. \nWenn Ihnen jemand Konkurrenz macht, verbringen Sie das Vorbereitungsfenster mit der Sicherheit oder einem Wachmann und nicht damit, den letzten leeren Raum zu füllen.';
 
   @override
   String get helpTopicAchievementsCategory => 'Meta';

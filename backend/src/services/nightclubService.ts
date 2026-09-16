@@ -4053,6 +4053,7 @@ class NightclubService {
         nightclubVenueId: true,
         isBusted: true,
         bustedUntil: true,
+        hotUntil: true,
       },
     });
 
@@ -4070,6 +4071,17 @@ class NightclubService {
           language,
           'Deze prostituee is tijdelijk busted en niet inzetbaar',
           'This crew member is temporarily busted and cannot be assigned'
+        ),
+      };
+    }
+
+    if (prostitute.hotUntil && prostitute.hotUntil > new Date()) {
+      return {
+        success: false,
+        message: this.localize(
+          language,
+          'Deze prostituee is net gestolen en kan 12 uur niet in een nachtclub.',
+          'This recruit was just stolen and cannot work a nightclub for 12 hours.'
         ),
       };
     }

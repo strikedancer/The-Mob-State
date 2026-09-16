@@ -11719,6 +11719,139 @@ class AppLocalizationsEs extends AppLocalizations {
   String get prostitutionTierVip => 'personaje';
 
   @override
+  String get rldTierLounge => 'Salón';
+
+  @override
+  String get rldTierPrestige => 'Prestigio';
+
+  @override
+  String get rldTierPenthouse => 'Ático';
+
+  @override
+  String get rldUpgradeRooms => 'Más habitaciones';
+
+  @override
+  String get rldUpgradeRoomsSubtitle =>
+      'Compra habitaciones adicionales antes de poder colocar más reclutas aquí.';
+
+  @override
+  String rldUpgradeRoomsButton(String cost) {
+    return 'Construir habitaciones · €$cost';
+  }
+
+  @override
+  String rldUpgradeRoomsConfirm(String rooms, String cost) {
+    return '¿Añadir $rooms habitaciones por $cost€?';
+  }
+
+  @override
+  String get rldMaxRooms => 'Este distrito está en su límite de habitaciones.';
+
+  @override
+  String get rldRoomsFullHint =>
+      'Todas las salas están llenas. Primero actualice las habitaciones.';
+
+  @override
+  String get rldOccupancyBusy => 'Una casa ocupada atrae a la policía';
+
+  @override
+  String get rldOccupancyFull =>
+      'Un distrito abarrotado atrae más atención policial';
+
+  @override
+  String get rldGuard => 'Guardia';
+
+  @override
+  String get rldGuardConfirm =>
+      '¿Proteger a este recluta durante 8 horas (12 con VIP)? Ella gana la mitad mientras está vigilada.';
+
+  @override
+  String get rldSteal => 'Robar';
+
+  @override
+  String get rldStealConfirm =>
+      '¿Robar este recluta? Cuesta dinero en efectivo y calefacción. Si funciona se queda en la calle 12 horas.';
+
+  @override
+  String get rldSabotage => 'Sabotaje';
+
+  @override
+  String get rldSabotageConfirm =>
+      '¿Cerrar esta sala hasta que termine el concurso? No hay alquiler mientras esté cerrado.';
+
+  @override
+  String get rldContestBannerPrep =>
+      'El concurso comienza pronto. El propietario aún puede mejorar o proteger.';
+
+  @override
+  String get rldContestBannerActive =>
+      'La pelea es en vivo. El robo y el sabotaje cuentan.';
+
+  @override
+  String get rldContestBannerLockdown =>
+      'La pelea se está cerrando. Sin nuevas acciones.';
+
+  @override
+  String get rldContestStart => 'Competir en este distrito';
+
+  @override
+  String get rldContestStartConfirm =>
+      '¿Apostar 100.000 € para disputar este distrito? El propietario tiene primero un breve periodo de tiempo.';
+
+  @override
+  String get rldContestHold => 'Sostener';
+
+  @override
+  String rldContestScore(String attack, String defense) {
+    return 'Puntuación $attack – $defense';
+  }
+
+  @override
+  String get rldReclaim => 'Devolver';
+
+  @override
+  String get rldReclaimHint =>
+      'Te lo robaron. Llévala de vuelta dentro de 12 horas.';
+
+  @override
+  String get rldHotHint =>
+      'Recién robado. No puede trabajar en un distrito o discoteca durante 12 horas.';
+
+  @override
+  String get rldGuardedHint => 'Guardado';
+
+  @override
+  String get rldSabotagedHint => 'Cerrado este concurso';
+
+  @override
+  String get rldEventsStreet => 'Noches de calle';
+
+  @override
+  String get rldEventsVipSalon => 'salón vip';
+
+  @override
+  String get rldEventsBusyTonight =>
+      'Ocupada esta noche - dinero extra, riesgo adicional';
+
+  @override
+  String get rldEventTouristNight => 'Noche turística';
+
+  @override
+  String get rldEventHarborShift => 'cambio de puerto';
+
+  @override
+  String get rldEventCityFestival => 'fiesta de la ciudad';
+
+  @override
+  String get rldEventPrivateSalon => 'salón privado';
+
+  @override
+  String get rldEventYachtParty => 'Fiesta en yate';
+
+  @override
+  String get rldVipOnly => 'personaje';
+
+  @override
   String get prostitutionSecurityLevel => 'Nivel de seguridad';
 
   @override
@@ -11827,14 +11960,14 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get vipEventsTitle => 'Eventos VIP';
+  String get vipEventsTitle => 'Eventos';
 
   @override
-  String get vipEventsTabTitle => 'Eventos VIP';
+  String get vipEventsTabTitle => 'Eventos';
 
   @override
   String get vipEventsDescription =>
-      '¡Asigna prostitutas a eventos VIP para obtener ganancias adicionales!';
+      'Envíe un recluta a una noche para obtener ganancias adicionales. Las noches ocupadas también atraen a policías y ladrones.';
 
   @override
   String get vipEventsActive => 'Eventos activos';
@@ -18800,15 +18933,15 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicProstitutionSummary =>
-      'Construye una red de prostitución con reclutas, eventos y clientes VIP. Una red bien administrada genera ingresos pasivos pero requiere una gestión activa para controlar la rivalidad y la atención policial.';
+      'Recluta trabajadores, colócalos en la calle o en un Barrio Rojo, corre de noche y observa el calor de la policía. Otros jugadores pueden robar un recluta; Tienes 12 horas para recuperarla.';
 
   @override
   String get helpTopicProstitutionHow =>
-      'Gestionas reclutas, cada uno con sus propias estadísticas (experiencia, popularidad, disponibilidad). Más reclutas = mayores ingresos pasivos. \nSólo puedes contratar en el país en el que te encuentras y sólo si eres propietario de una casa o apartamento allí. Las plazas de alojamiento disponibles en otros países no permiten contratar aquí. \nLos turnos de trabajo duran 8 horas por recluta: después de un turno, ese recluta necesita tiempo de descanso antes de poder comenzar de nuevo. \nLa gestión de la ubicación es flexible: puedes mover reclutas entre la calle, el Barrio Rojo y el Nightclub usando los botones de acción en cada tarjeta. \nLos eventos son impulsores temporales: espectáculos especiales, noches VIP y fiestas aumentan los ingresos por tick durante la duración del evento. \nRivalidad: otros jugadores o competidores NPC pueden robar a tus reclutas o sabotear eventos. Una mayor seguridad reduce este riesgo. \nLos clientes VIP pagan considerablemente más, pero requieren reclutas con gran popularidad (más de 80) y una ubicación segura. \nLa atención policial (calor) aumenta con grandes transacciones y redadas. Las altas temperaturas conducen a la confiscación de ingresos o al cierre temporal. \nCombinación con discoteca: una discoteca proporciona cobertura legal para actividades que hacen que el calor suba más lentamente. \nUtilice el panel de información de ganancias en la parte superior para comparar rápidamente la producción por hora de calle, RLD y Nightclub. \nTabla de clasificación: la facturación semanal total más alta gana una recompensa en efectivo semanal y una insignia.';
+      'Contratas en el país en el que te encuentras y sólo si eres propietario de una casa o apartamento allí. Las plazas de alojamiento disponibles en otros países no permiten contratar aquí. \nCada recluta tiene un nivel por turnos de trabajo. Los turnos duran 8 horas, luego necesita descansar. \nMueve a los reclutas entre la calle, el Barrio Rojo y la discoteca. Un distrito solo tiene tantas habitaciones como las que su propietario haya desbloqueado con mejoras. Si las habitaciones están llenas, se queda en la calle. \nUn recluta robado permanece en la calle durante 12 horas. El viejo jefe puede llevarla de regreso a esa ventana. El ladrón todavía no puede llevarla a ningún barrio ni a una discoteca. \nLos eventos son noches ocupadas: ganancias adicionales, policía adicional, robos más fáciles. Las noches de calle son para todos. Las noches de salón VIP necesitan Player VIP. \nRivalry on Social todavía roba dinero en efectivo o da propina a la policía. Robar un recluta es una acción separada en una sala de distrito. \nLa tensión policial aumenta con un distrito abarrotado y con eventos. El alto calor del FBI puede atacar a los trabajadores.';
 
   @override
   String get helpTopicProstitutionTips =>
-      'Invierta temprano en seguridad: un ataque de rivalidad que robe a su mejor recluta cuesta más que la inversión en seguridad. \nSolo organice eventos VIP cuando los reclutas tengan más de 80 de popularidad: por debajo de ese umbral, los clientes VIP simplemente pagan la tarifa estándar.';
+      'No llenes todas las habitaciones si la calefacción ya está alta: una casa llena atrae a policías y ladrones. \nProtege a tu mejor recluta cuando se avecina una competencia: gana menos, pero es mucho más difícil de robar.';
 
   @override
   String get helpTopicRedLightDistrictsCategory => 'Imperio';
@@ -18818,15 +18951,15 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicRedLightDistrictsSummary =>
-      'Reclamar y gestionar distritos territoriales por país. Ser propietario de un distrito proporciona ingresos pasivos y control sobre las actividades de prostitución en esa región.';
+      'Cada país tiene un Barrio Rojo. El propietario cobra el alquiler de la habitación, mejora las habitaciones y los ingresos, y puede perder el edificio en un concurso poco común.';
 
   @override
   String get helpTopicRedLightDistrictsHow =>
-      'Cada país tiene uno o más Barrios Rojos que se pueden reclamar. Reclama un distrito pagando un monto de compra fijo.\nComo propietario de un distrito, recibes un porcentaje de todos los ingresos por prostitución en ese país, incluidos los de otros jugadores que operan allí.\nOtros jugadores pueden atacar tu distrito para hacerse cargo de la propiedad. Una mayor seguridad reduce la posibilidad de ataque.\nEn los detalles del distrito, puede actualizar el nivel (ganancias) y la seguridad (riesgo de incursión) y ver estadísticas de incursiones en vivo (calor del FBI, probabilidad de incursiones). Una mayor seguridad reduce las posibilidades de incursión.\nPuedes poseer hasta 3 distritos simultáneamente. La elección estratégica del país es esencial.\nLos países más ocupados (Colombia, Dubai, Japón) generan los ingresos pasivos más altos, pero también son los más controvertidos.\nPerder un distrito no reembolsa el precio de compra: se pierde permanentemente si un enemigo lo reclama con éxito.';
+      'Compra el distrito del país en el que te encuentras. Una nueva compra comienza con cuatro habitaciones. Las habitaciones adicionales provienen de la mejora de la habitación, no de la colocación de más reclutas. \nLas mejoras de ingresos aumentan el alquiler por habitación (Básica, Lounge, Lujo, Prestige, Penthouse). Penthouse necesita jugador VIP. La seguridad reduce las posibilidades de redadas y dificulta el robo. \nUna casa llena paga más alquiler y atrae más policía. Guarde una estrella para casi bloquear el robo durante unas horas con la mitad de las ganancias. \nOtros jugadores del mismo país pueden robar un recluta de una habitación ocupada. Un concurso poco común puede cambiar de propietario. Las habitaciones, las mejoras y los inquilinos se quedan en el edificio; El alquiler va al nuevo jefe. \nUna competencia tiene una breve preparación, una pelea en vivo y luego un cierre. Robo y sabotaje de puntuación para el retador; el propietario puede reservar para recibir dinero en efectivo y calefacción. \nLas redadas policiales todavía se realizan cuando el FBI está en auge. Los acontecimientos en ese país hacen que las redadas y los robos sean más probables.';
 
   @override
   String get helpTopicRedLightDistrictsTips =>
-      'Comience con un país menos popular para su primer distrito: una menor presión de ataque le dará tiempo para mejorar la seguridad antes que la competencia real. \nActualice la seguridad de cada distrito inmediatamente después de la compra: las primeras 24 horas son las más vulnerables a una adquisición.';
+      'Mejora las habitaciones sólo cuando tengas reclutas listos: las habitaciones vacías no cuestan mantenimiento, pero una casa llena es un objetivo. \nSi alguien te cuestiona, dedica el tiempo de preparación a seguridad o un guardia, no a llenar la última habitación vacía.';
 
   @override
   String get helpTopicAchievementsCategory => 'Meta';

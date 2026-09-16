@@ -11622,6 +11622,136 @@ class AppLocalizationsEn extends AppLocalizations {
   String get prostitutionTierVip => 'VIP';
 
   @override
+  String get rldTierLounge => 'Lounge';
+
+  @override
+  String get rldTierPrestige => 'Prestige';
+
+  @override
+  String get rldTierPenthouse => 'Penthouse';
+
+  @override
+  String get rldUpgradeRooms => 'More rooms';
+
+  @override
+  String get rldUpgradeRoomsSubtitle =>
+      'Buy extra rooms before you can place more recruits here.';
+
+  @override
+  String rldUpgradeRoomsButton(String cost) {
+    return 'Build rooms · €$cost';
+  }
+
+  @override
+  String rldUpgradeRoomsConfirm(String rooms, String cost) {
+    return 'Add $rooms rooms for €$cost?';
+  }
+
+  @override
+  String get rldMaxRooms => 'This district is at its room cap.';
+
+  @override
+  String get rldRoomsFullHint => 'All rooms are full. Upgrade rooms first.';
+
+  @override
+  String get rldOccupancyBusy => 'Busy house draws police';
+
+  @override
+  String get rldOccupancyFull =>
+      'A packed district draws extra police attention';
+
+  @override
+  String get rldGuard => 'Guard';
+
+  @override
+  String get rldGuardConfirm =>
+      'Guard this recruit for 8 hours (12 with VIP)? She earns half while guarded.';
+
+  @override
+  String get rldSteal => 'Steal';
+
+  @override
+  String get rldStealConfirm =>
+      'Steal this recruit? Costs cash and heat. If it works she stays on the street for 12 hours.';
+
+  @override
+  String get rldSabotage => 'Sabotage';
+
+  @override
+  String get rldSabotageConfirm =>
+      'Close this room until the contest ends? No rent while it is shut.';
+
+  @override
+  String get rldContestBannerPrep =>
+      'Contest starting soon. The owner can still upgrade or guard.';
+
+  @override
+  String get rldContestBannerActive =>
+      'Fight is live. Stealing and sabotage count.';
+
+  @override
+  String get rldContestBannerLockdown => 'Fight is closing. No new actions.';
+
+  @override
+  String get rldContestStart => 'Contest this district';
+
+  @override
+  String get rldContestStartConfirm =>
+      'Stake €100,000 to contest this district? The owner gets a short window first.';
+
+  @override
+  String get rldContestHold => 'Hold';
+
+  @override
+  String rldContestScore(String attack, String defense) {
+    return 'Score $attack – $defense';
+  }
+
+  @override
+  String get rldReclaim => 'Take back';
+
+  @override
+  String get rldReclaimHint =>
+      'Stolen from you. Take her back within 12 hours.';
+
+  @override
+  String get rldHotHint =>
+      'Just stolen. She cannot work a district or nightclub for 12 hours.';
+
+  @override
+  String get rldGuardedHint => 'Guarded';
+
+  @override
+  String get rldSabotagedHint => 'Closed this contest';
+
+  @override
+  String get rldEventsStreet => 'Street nights';
+
+  @override
+  String get rldEventsVipSalon => 'VIP salon';
+
+  @override
+  String get rldEventsBusyTonight => 'Busy tonight — extra cash, extra risk';
+
+  @override
+  String get rldEventTouristNight => 'Tourist night';
+
+  @override
+  String get rldEventHarborShift => 'Harbor shift';
+
+  @override
+  String get rldEventCityFestival => 'City festival';
+
+  @override
+  String get rldEventPrivateSalon => 'Private salon';
+
+  @override
+  String get rldEventYachtParty => 'Yacht party';
+
+  @override
+  String get rldVipOnly => 'VIP';
+
+  @override
   String get prostitutionSecurityLevel => 'Security Level';
 
   @override
@@ -11728,14 +11858,14 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get vipEventsTitle => 'VIP Events';
+  String get vipEventsTitle => 'Events';
 
   @override
-  String get vipEventsTabTitle => 'VIP Events';
+  String get vipEventsTabTitle => 'Events';
 
   @override
   String get vipEventsDescription =>
-      'Assign prostitutes to VIP events for bonus earnings!';
+      'Send a recruit to a night for extra earnings. Busy nights also draw police and thieves.';
 
   @override
   String get vipEventsActive => 'Active Events';
@@ -18638,15 +18768,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicProstitutionSummary =>
-      'Build a prostitution network with recruits, events and VIP clients. A well-run network generates passive income but requires active management to control rivalry and police attention.';
+      'Recruit workers, place them on the street or in a Red Light District, run nights, and watch police heat. Other players can steal a recruit; you have 12 hours to take her back.';
 
   @override
   String get helpTopicProstitutionHow =>
-      'You manage recruits each with their own stats (experience, popularity, availability). More recruits = higher passive income.\nYou can only recruit in the country you are in, and only if you own a house or apartment there. Spare housing slots in other countries do not let you recruit here.\nWork shifts run for 8 hours per recruit: after a shift, that recruit needs rest time before you can start again.\nLocation management is flexible: you can move recruits between street, Red Light District and nightclub using the action buttons on each card.\nEvents are temporary boosters: special shows, VIP nights and parties raise income per tick for the duration of the event.\nRivalry: other players or NPC competitors can poach your recruits or sabotage events. Higher security lowers this risk.\nVIP clients pay considerably more but require recruits with high popularity (80+) and a secured location.\nPolice attention (heat) rises with large transactions and raids. High heat leads to income confiscation or temporary shutdown.\nCombination with nightclub: a nightclub provides legal cover for activities making heat rise more slowly.\nUse the earnings insight panel at the top to quickly compare hourly output for street, RLD and nightclub.\nLeaderboard: highest total weekly turnover wins a weekly cash reward and a badge.';
+      'You recruit in the country you are in, and only if you own a house or apartment there. Spare housing slots in other countries do not let you recruit here.\nEach recruit has a level from work shifts. Shifts last 8 hours, then she needs rest.\nMove recruits between street, Red Light District and nightclub. A district only has as many rooms as its owner has unlocked with upgrades. If rooms are full, she stays on the street.\nA stolen recruit sits on the street for 12 hours. The old boss can take her back in that window. The thief cannot put her in a district or nightclub yet.\nEvents are busy nights: extra earnings, extra police, easier theft. Street nights are for everyone. VIP salon nights need Player VIP.\nRivalry on Social still steals cash or tips police. Stealing a recruit is a separate action on a district room.\nPolice heat rises with a packed district and with events. High FBI heat can raid workers.';
 
   @override
   String get helpTopicProstitutionTips =>
-      'Invest early in security: a rivalry attack that poaches your best recruit costs more than the security investment.\nOnly organise VIP events when recruits are above 80 popularity: below that threshold VIP clients simply pay the standard rate.';
+      'Do not fill every room if your heat is already high: a packed house draws police and thieves.\nGuard your best recruit when a contest is coming: she earns less, but she is much harder to steal.';
 
   @override
   String get helpTopicRedLightDistrictsCategory => 'Empire';
@@ -18656,15 +18786,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicRedLightDistrictsSummary =>
-      'Claim and manage territorial districts per country. Owning a district gives passive income and control over prostitution activities in that region.';
+      'Each country has one Red Light District. The owner collects room rent, upgrades rooms and income, and can lose the building in a rare contest.';
 
   @override
   String get helpTopicRedLightDistrictsHow =>
-      'Each country has one or more Red Light Districts that can be claimed. Claim a district by paying a set purchase amount.\nAs owner of a district you receive a percentage of all prostitution income in that country — including from other players operating there.\nOther players can attack your district to take over ownership. Higher security lowers the attack chance.\nDistrict upgrades (security, marketing, infrastructure) raise your income percentage and lower the chance of losing ownership.\nYou can own up to 3 districts simultaneously. Strategic country choice is essential.\nBusiest countries (Colombia, Dubai, Japan) give the highest passive income but are also the most contested.\nLosing a district does not refund the purchase price: it is permanently lost if an enemy successfully claims it.';
+      'Buy the district in the country you are in. A new buy starts with four rooms. Extra rooms come from the room upgrade, not from placing more recruits.\nIncome upgrades raise rent per room (Basic, Lounge, Luxury, Prestige, Penthouse). Penthouse needs Player VIP. Security lowers raid chance and makes theft harder.\nA full house pays more rent and draws more police. Guard a star to almost block theft for a few hours at half earnings.\nOther players in the same country can steal a recruit from an occupied room. A rare contest can change the owner. Rooms, upgrades and tenants stay with the building; rent goes to the new boss.\nA contest has a short prep, a live fight, then a close. Stealing and sabotage score for the challenger; the owner can Hold for cash and heat.\nPolice raids still run when FBI heat is high. Events in that country make raids and theft more likely.';
 
   @override
   String get helpTopicRedLightDistrictsTips =>
-      'Start with a less popular country for your first district: lower attack pressure gives you time to upgrade security before the real competition.\nUpgrade security of each district immediately after purchase: the first 24 hours are the most vulnerable to a takeover.';
+      'Upgrade rooms only when you have recruits ready: empty rooms do not cost upkeep, but a packed house is a target.\nIf someone contests you, spend the prep window on security or a guard, not on filling the last empty room.';
 
   @override
   String get helpTopicAchievementsCategory => 'Meta';

@@ -203,6 +203,38 @@ const notificationDE: Translations['notification'] = {
         'Diese Region wurde von einer anderen Crew übernommen.',
       ].join('\n'),
   },
+  rldStolen: {
+    title: 'Rekrut gestohlen',
+    pushBody: (thiefName, workerName) => `${thiefName} hat ${workerName} aus deinem Rotlichtviertel gestohlen.`,
+    inboxMessage: (thiefName, workerName) =>
+      `${thiefName} hat ${workerName} aus einem Zimmer genommen.\nDu hast 12 Stunden, um sie zurückzuholen, solange sie auf der Straße ist.`,
+  },
+  rldReclaimed: {
+    title: 'Rekrut zurückgeholt',
+    pushBody: (ownerName, workerName) => `${ownerName} hat ${workerName} zurückgeholt.`,
+    inboxMessage: (ownerName, workerName) => `${ownerName} holte ${workerName} innerhalb von 12 Stunden zurück.`,
+  },
+  rldContestPrep: {
+    title: 'Viertel umkämpft',
+    pushBody: (challengerName, country) => `${challengerName} fordert dein Rotlichtviertel in ${country} heraus.`,
+    inboxMessage: (challengerName, country) =>
+      `${challengerName} startet einen Kampf um dein Viertel in ${country}.\nDu hast kurz Zeit für Sicherheit oder eine Wache.`,
+  },
+  rldContestActive: {
+    title: 'Viertelkampf läuft',
+    pushBody: (country) => `Der Kampf um das Rotlichtviertel in ${country} läuft.`,
+    inboxMessage: (country) => `Stehlen, Sabotage und Halten zählen jetzt in ${country}.`,
+  },
+  rldContestWon: {
+    title: 'Du besitzt das Viertel',
+    pushBody: (country) => `Du besitzt jetzt das Rotlichtviertel in ${country}.`,
+    inboxMessage: (country) => `Zimmer, Upgrades und Mieter bleiben. Die Miete in ${country} geht an dich.`,
+  },
+  rldContestLost: {
+    title: 'Viertel verloren',
+    pushBody: (winnerName, country) => `${winnerName} hat dein Rotlichtviertel in ${country} übernommen.`,
+    inboxMessage: (winnerName, country) => `${winnerName} gewann den Kampf in ${country}. Zimmer und Mieter bleiben im Gebäude.`,
+  },
   raceResult: {
     title: 'Midnight Races',
     systemSender: 'Midnight Races',
@@ -412,6 +444,38 @@ const notificationFR: Translations['notification'] = {
         'Cette région a été prise par une autre crew.',
       ].join('\n'),
   },
+  rldStolen: {
+    title: 'Recrue volée',
+    pushBody: (thiefName, workerName) => `${thiefName} a volé ${workerName} dans ton quartier rouge.`,
+    inboxMessage: (thiefName, workerName) =>
+      `${thiefName} a emmené ${workerName} hors d'une chambre.\nTu as 12 heures pour la récupérer tant qu'elle est dans la rue.`,
+  },
+  rldReclaimed: {
+    title: 'Recrue reprise',
+    pushBody: (ownerName, workerName) => `${ownerName} a repris ${workerName}.`,
+    inboxMessage: (ownerName, workerName) => `${ownerName} a repris ${workerName} en moins de 12 heures.`,
+  },
+  rldContestPrep: {
+    title: 'Quartier contesté',
+    pushBody: (challengerName, country) => `${challengerName} conteste ton quartier rouge à ${country}.`,
+    inboxMessage: (challengerName, country) =>
+      `${challengerName} lance un contest pour ton quartier à ${country}.\nTu as un court délai pour renforcer la sécurité.`,
+  },
+  rldContestActive: {
+    title: 'Le combat est lancé',
+    pushBody: (country) => `Le contest du quartier rouge à ${country} est en cours.`,
+    inboxMessage: (country) => `Vol, sabotage et tenue comptent maintenant à ${country}.`,
+  },
+  rldContestWon: {
+    title: 'Le quartier est à toi',
+    pushBody: (country) => `Tu possèdes maintenant le quartier rouge à ${country}.`,
+    inboxMessage: (country) => `Chambres, améliorations et locataires restent. Le loyer à ${country} t'appartient.`,
+  },
+  rldContestLost: {
+    title: 'Quartier perdu',
+    pushBody: (winnerName, country) => `${winnerName} a pris ton quartier rouge à ${country}.`,
+    inboxMessage: (winnerName, country) => `${winnerName} a gagné le contest à ${country}. Chambres et locataires restent dans l'immeuble.`,
+  },
   raceResult: {
     title: 'Midnight Races',
     systemSender: 'Midnight Races',
@@ -619,6 +683,38 @@ const notificationES: Translations['notification'] = {
         `Región: ${regionKey}`,
         'Esta región fue tomada por otra crew.',
       ].join('\n'),
+  },
+  rldStolen: {
+    title: 'Recluta robada',
+    pushBody: (thiefName, workerName) => `${thiefName} robó a ${workerName} de tu barrio rojo.`,
+    inboxMessage: (thiefName, workerName) =>
+      `${thiefName} se llevó a ${workerName} de una habitación.\nTienes 12 horas para recuperarla mientras esté en la calle.`,
+  },
+  rldReclaimed: {
+    title: 'Recluta recuperada',
+    pushBody: (ownerName, workerName) => `${ownerName} recuperó a ${workerName}.`,
+    inboxMessage: (ownerName, workerName) => `${ownerName} recuperó a ${workerName} en menos de 12 horas.`,
+  },
+  rldContestPrep: {
+    title: 'Barrio en disputa',
+    pushBody: (challengerName, country) => `${challengerName} disputa tu barrio rojo en ${country}.`,
+    inboxMessage: (challengerName, country) =>
+      `${challengerName} empezó un contest por tu barrio en ${country}.\nTienes un momento para subir la seguridad.`,
+  },
+  rldContestActive: {
+    title: 'La pelea está en marcha',
+    pushBody: (country) => `El contest del barrio rojo en ${country} ya corre.`,
+    inboxMessage: (country) => `Robar, sabotear y aguantar ya cuentan en ${country}.`,
+  },
+  rldContestWon: {
+    title: 'El barrio es tuyo',
+    pushBody: (country) => `Ahora eres dueño del barrio rojo en ${country}.`,
+    inboxMessage: (country) => `Habitaciones, mejoras e inquilinos se quedan. El alquiler en ${country} va a ti.`,
+  },
+  rldContestLost: {
+    title: 'Barrio perdido',
+    pushBody: (winnerName, country) => `${winnerName} tomó tu barrio rojo en ${country}.`,
+    inboxMessage: (winnerName, country) => `${winnerName} ganó el contest en ${country}. Habitaciones e inquilinos se quedan en el edificio.`,
   },
   raceResult: {
     title: 'Midnight Races',
@@ -829,6 +925,38 @@ const notificationIT: Translations['notification'] = {
         'Questa regione è stata presa da un’altra crew.',
       ].join('\n'),
   },
+  rldStolen: {
+    title: 'Recluta rubata',
+    pushBody: (thiefName, workerName) => `${thiefName} ha rubato ${workerName} dal tuo quartiere a luci rosse.`,
+    inboxMessage: (thiefName, workerName) =>
+      `${thiefName} ha portato via ${workerName} da una stanza.\nHai 12 ore per riprenderla finché è in strada.`,
+  },
+  rldReclaimed: {
+    title: 'Recluta ripresa',
+    pushBody: (ownerName, workerName) => `${ownerName} ha ripreso ${workerName}.`,
+    inboxMessage: (ownerName, workerName) => `${ownerName} ha ripreso ${workerName} entro 12 ore.`,
+  },
+  rldContestPrep: {
+    title: 'Quartiere contestato',
+    pushBody: (challengerName, country) => `${challengerName} contesta il tuo quartiere a luci rosse in ${country}.`,
+    inboxMessage: (challengerName, country) =>
+      `${challengerName} ha avviato un contest per il tuo quartiere in ${country}.\nHai poco tempo per alzare la sicurezza.`,
+  },
+  rldContestActive: {
+    title: 'Lo scontro è vivo',
+    pushBody: (country) => `Il contest del quartiere a luci rosse in ${country} è iniziato.`,
+    inboxMessage: (country) => `Furto, sabotaggio e tenuta contano ora in ${country}.`,
+  },
+  rldContestWon: {
+    title: 'Il quartiere è tuo',
+    pushBody: (country) => `Ora possiedi il quartiere a luci rosse in ${country}.`,
+    inboxMessage: (country) => `Stanze, upgrade e inquilini restano. L'affitto in ${country} va a te.`,
+  },
+  rldContestLost: {
+    title: 'Quartiere perso',
+    pushBody: (winnerName, country) => `${winnerName} ha preso il tuo quartiere a luci rosse in ${country}.`,
+    inboxMessage: (winnerName, country) => `${winnerName} ha vinto il contest in ${country}. Stanze e inquilini restano nell'edificio.`,
+  },
   raceResult: {
     title: 'Midnight Races',
     systemSender: 'Midnight Races',
@@ -1032,6 +1160,38 @@ const notificationPL: Translations['notification'] = {
         `Region: ${regionKey}`,
         'Ten region został przejęty przez inną ekipę.',
       ].join('\n'),
+  },
+  rldStolen: {
+    title: 'Rekrut ukradziony',
+    pushBody: (thiefName, workerName) => `${thiefName} ukradł ${workerName} z twojej dzielnicy czerwonych latarni.`,
+    inboxMessage: (thiefName, workerName) =>
+      `${thiefName} zabrał ${workerName} z pokoju.\nMasz 12 godzin, by ją odzyskać, póki jest na ulicy.`,
+  },
+  rldReclaimed: {
+    title: 'Rekrut odzyskany',
+    pushBody: (ownerName, workerName) => `${ownerName} odzyskał ${workerName}.`,
+    inboxMessage: (ownerName, workerName) => `${ownerName} odzyskał ${workerName} w ciągu 12 godzin.`,
+  },
+  rldContestPrep: {
+    title: 'Dzielnica sporna',
+    pushBody: (challengerName, country) => `${challengerName} kwestionuje twoją dzielnicę w ${country}.`,
+    inboxMessage: (challengerName, country) =>
+      `${challengerName} zaczął contest o twoją dzielnicę w ${country}.\nMasz chwilę na ochronę.`,
+  },
+  rldContestActive: {
+    title: 'Walka trwa',
+    pushBody: (country) => `Contest o dzielnicę czerwonych latarni w ${country} trwa.`,
+    inboxMessage: (country) => `Kradzież, sabotaż i utrzymanie liczą się teraz w ${country}.`,
+  },
+  rldContestWon: {
+    title: 'Dzielnica jest twoja',
+    pushBody: (country) => `Jesteś teraz właścicielem dzielnicy w ${country}.`,
+    inboxMessage: (country) => `Pokoje, ulepszenia i najemcy zostają. Czynsz w ${country} idzie do ciebie.`,
+  },
+  rldContestLost: {
+    title: 'Dzielnica stracona',
+    pushBody: (winnerName, country) => `${winnerName} zajął twoją dzielnicę w ${country}.`,
+    inboxMessage: (winnerName, country) => `${winnerName} wygrał contest w ${country}. Pokoje i najemcy zostają w budynku.`,
   },
   raceResult: {
     title: 'Midnight Races',
@@ -1238,6 +1398,38 @@ const notificationPT: Translations['notification'] = {
         `Região: ${regionKey}`,
         'Esta região foi tomada por outra crew.',
       ].join('\n'),
+  },
+  rldStolen: {
+    title: 'Recruta roubada',
+    pushBody: (thiefName, workerName) => `${thiefName} roubou ${workerName} do teu bairro vermelho.`,
+    inboxMessage: (thiefName, workerName) =>
+      `${thiefName} levou ${workerName} de um quarto.\nTens 12 horas para a recuperar enquanto estiver na rua.`,
+  },
+  rldReclaimed: {
+    title: 'Recruta recuperada',
+    pushBody: (ownerName, workerName) => `${ownerName} recuperou ${workerName}.`,
+    inboxMessage: (ownerName, workerName) => `${ownerName} recuperou ${workerName} em menos de 12 horas.`,
+  },
+  rldContestPrep: {
+    title: 'Bairro contestado',
+    pushBody: (challengerName, country) => `${challengerName} contesta o teu bairro vermelho em ${country}.`,
+    inboxMessage: (challengerName, country) =>
+      `${challengerName} começou um contest pelo teu bairro em ${country}.\nTens um momento para reforçar a segurança.`,
+  },
+  rldContestActive: {
+    title: 'A luta está ao vivo',
+    pushBody: (country) => `O contest do bairro vermelho em ${country} está a decorrer.`,
+    inboxMessage: (country) => `Roubar, sabotagem e aguentar contam agora em ${country}.`,
+  },
+  rldContestWon: {
+    title: 'O bairro é teu',
+    pushBody: (country) => `Agora és dono do bairro vermelho em ${country}.`,
+    inboxMessage: (country) => `Quartos, melhorias e inquilinos ficam. A renda em ${country} vai para ti.`,
+  },
+  rldContestLost: {
+    title: 'Bairro perdido',
+    pushBody: (winnerName, country) => `${winnerName} ficou com o teu bairro vermelho em ${country}.`,
+    inboxMessage: (winnerName, country) => `${winnerName} ganhou o contest em ${country}. Quartos e inquilinos ficam no prédio.`,
   },
   raceResult: {
     title: 'Midnight Races',

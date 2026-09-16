@@ -39,6 +39,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
   final ProstitutionService _service = ProstitutionService();
 
   List<Prostitute> _prostitutes = [];
+  List<Map<String, dynamic>> _reclaimable = [];
   ProstituteHousingSummary? _housingSummary;
   ProstituteStats? _stats;
   bool _loadFailed = false;
@@ -161,6 +162,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
       _housingSummary = result['housingSummary'] as ProstituteHousingSummary?;
       _stats = result['stats'] as ProstituteStats?;
       _loadFailed = false;
+      _reclaimable = await _service.getReclaimableWorkers();
 
       if (mounted && _housingSummary?.betrayalTriggered == true) {
         final l10n = AppLocalizations.of(context)!;
@@ -222,7 +224,9 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
 
   Future<void> _loadVipEvents() async {
     final activeResult = await _service.getActiveEvents(_currentCountry);
-    final upcomingResult = await _service.getUpcomingEvents();
+    final upcomingResult = await _service.getUpcomingEvents(
+      countryCode: _currentCountry,
+    );
     final participationsResult = await _service.getMyParticipations();
 
     final activeJson = (activeResult['events'] as List?) ?? [];
@@ -1197,10 +1201,15 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
             return ListView.separated(
               physics: const AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.all(16),
-              itemCount: _prostitutes.length,
+              itemCount: _prostitutes.length + (_reclaimable.isEmpty ? 0 : 1),
               separatorBuilder: (context, index) => const SizedBox(height: 12),
-              itemBuilder: (context, index) =>
-                  _buildProstituteCard(_prostitutes[index]),
+              itemBuilder: (context, index) {
+                if (_reclaimable.isNotEmpty && index == 0) {
+                  return _buildReclaimPanel();
+                }
+                final pIndex = _reclaimable.isEmpty ? index : index - 1;
+                return _buildProstituteCard(_prostitutes[pIndex]);
+              },
             );
           }
 
@@ -1218,6 +1227,11 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.all(16),
             children: [
+              if (_reclaimable.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: _buildReclaimPanel(),
+                ),
               Wrap(
                 spacing: spacing,
                 runSpacing: spacing,
@@ -1233,6 +1247,58 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
             ],
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildReclaimPanel() {
+    final l10n = AppLocalizations.of(context)!;
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: Colors.red.shade900.withOpacity(0.35),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.orangeAccent.withOpacity(0.5)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(l10n.rldReclaimHint, style: const TextStyle(fontWeight: FontWeight.w700)),
+          const SizedBox(height: 8),
+          ..._reclaimable.map((row) {
+            final name = row['name']?.toString() ?? '';
+            final id = row['id'] as int?;
+            final thief = (row['player'] is Map)
+                ? (row['player']['username']?.toString() ?? '')
+                : '';
+            return ListTile(
+              dense: true,
+              contentPadding: EdgeInsets.zero,
+              title: Text(name),
+              subtitle: Text(thief),
+              trailing: TextButton(
+                onPressed: id == null
+                    ? null
+                    : () async {
+                        final result = await _service.reclaimWorker(id);
+                        if (!mounted) return;
+                        showTopRightFromSnackBar(
+                          context,
+                          SnackBar(
+                            content: Text(result['message']?.toString() ?? l10n.rldReclaim),
+                            backgroundColor: result['success'] == true
+                                ? Colors.green
+                                : Colors.red,
+                          ),
+                        );
+                        if (result['success'] == true) await _loadData();
+                      },
+                child: Text(l10n.rldReclaim),
+              ),
+            );
+          }),
+        ],
       ),
     );
   }
@@ -1486,6 +1552,14 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          if (prostitute.isHotStolen)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+              child: Text(
+                l10n.rldHotHint,
+                style: const TextStyle(color: Colors.orangeAccent, fontSize: 12),
+              ),
+            ),
           AspectRatio(
             aspectRatio: 1.05,
             child: Stack(
@@ -1896,7 +1970,11 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
       case 2:
         return 100.0;
       case 3:
-        return 150.0;
+        return 130.0;
+      case 4:
+        return 170.0;
+      case 5:
+        return 220.0;
       default:
         return 75.0;
     }
@@ -1953,6 +2031,12 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
 
   Widget _buildEventsTab() {
     final l10n = AppLocalizations.of(context)!;
+    final streetActive =
+        _activeEvents.where((e) => !e.vipOnly).toList();
+    final vipActive = _activeEvents.where((e) => e.vipOnly).toList();
+    final streetUpcoming =
+        _upcomingEvents.where((e) => !e.vipOnly).toList();
+    final vipUpcoming = _upcomingEvents.where((e) => e.vipOnly).toList();
 
     if (_isLoading) return const Center(child: CircularProgressIndicator());
 
@@ -1961,24 +2045,36 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
       child: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          if (_activeEvents.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: Text(
+                l10n.rldEventsBusyTonight,
+                style: const TextStyle(color: kProstitutionGold),
+              ),
+            ),
           ProstitutionSectionHeader(
-            icon: Icons.celebration,
-            title: l10n.vipEventsActive,
+            icon: Icons.nightlife,
+            title: l10n.rldEventsStreet,
             subtitle: l10n.vipEventsDescription,
           ),
-          if (_activeEvents.isEmpty)
+          if (streetActive.isEmpty && streetUpcoming.isEmpty)
             _buildEventsPlaceholder(l10n.vipEventNoActive)
-          else
-            ..._activeEvents.map(_buildEventCard),
+          else ...[
+            ...streetActive.map(_buildEventCard),
+            ...streetUpcoming.map(_buildEventCard),
+          ],
           const SizedBox(height: 16),
           ProstitutionSectionHeader(
-            icon: Icons.upcoming,
-            title: l10n.vipEventsUpcoming,
+            icon: Icons.workspace_premium,
+            title: l10n.rldEventsVipSalon,
           ),
-          if (_upcomingEvents.isEmpty)
+          if (vipActive.isEmpty && vipUpcoming.isEmpty)
             _buildEventsPlaceholder(l10n.vipEventNoUpcoming)
-          else
-            ..._upcomingEvents.map(_buildEventCard),
+          else ...[
+            ...vipActive.map(_buildEventCard),
+            ...vipUpcoming.map(_buildEventCard),
+          ],
           const SizedBox(height: 16),
           if (_myParticipations.isNotEmpty) ...[
             ProstitutionSectionHeader(
@@ -2007,7 +2103,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '${event.eventTypeIcon} ${event.title}',
+            '${event.eventTypeIcon} ${_localizedEventType(event.eventType, l10n)}${event.vipOnly ? ' · ${l10n.rldVipOnly}' : ''}',
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               color: kProstitutionGold,
@@ -2122,6 +2218,16 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
 
   String _localizedEventType(String eventType, AppLocalizations l10n) {
     switch (eventType) {
+      case 'tourist_night':
+        return l10n.rldEventTouristNight;
+      case 'harbor_shift':
+        return l10n.rldEventHarborShift;
+      case 'city_festival':
+        return l10n.rldEventCityFestival;
+      case 'private_salon':
+        return l10n.rldEventPrivateSalon;
+      case 'yacht_party':
+        return l10n.rldEventYachtParty;
       case 'celebrity_visit':
         return l10n.vipEventCelebrity;
       case 'bachelor_party':

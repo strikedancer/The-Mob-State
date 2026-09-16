@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../models/prostitute.dart';
+import '../providers/auth_provider.dart';
 import '../services/prostitution_service.dart';
 
 import '../l10n/app_localizations.dart';
@@ -79,7 +81,7 @@ class _RedLightDistrictDetailScreenState
     final l10n = AppLocalizations.of(context)!;
 
     final streetProstitutes =
-        _allProstitutes.where((p) => p.location == 'street').toList();
+        _allProstitutes.where((p) => p.location == 'street' && !p.isHotStolen).toList();
 
     if (streetProstitutes.isEmpty) {
       showTopRightFromSnackBar(
@@ -160,12 +162,90 @@ class _RedLightDistrictDetailScreenState
   String _tierLabel(int tier, AppLocalizations l10n) {
     switch (tier) {
       case 2:
-        return l10n.prostitutionTierLuxury;
+        return l10n.rldTierLounge;
       case 3:
-        return l10n.prostitutionTierVip;
+        return l10n.prostitutionTierLuxury;
+      case 4:
+        return l10n.rldTierPrestige;
+      case 5:
+        return l10n.rldTierPenthouse;
       default:
         return l10n.prostitutionTierBasic;
     }
+  }
+
+  String? _occupancyHeatText(AppLocalizations l10n) {
+    final level = (_raidStats?['occupancyLevel'] ?? _raidStats?['occupancyNote'] ?? '')
+        .toString();
+    if (level == 'full') return l10n.rldOccupancyFull;
+    if (level == 'busy') return l10n.rldOccupancyBusy;
+    return null;
+  }
+
+  String? _contestRemaining(Map<String, dynamic>? contest, String status) {
+    if (contest == null) return null;
+    final key = status == 'preparing'
+        ? 'activeAt'
+        : status == 'active'
+            ? 'lockdownAt'
+            : 'resolveAt';
+    final at = DateTime.tryParse(contest[key]?.toString() ?? '');
+    if (at == null) return null;
+    final remaining = at.difference(DateTime.now());
+    if (remaining.isNegative) return null;
+    final minutes = remaining.inMinutes;
+    if (minutes >= 60) {
+      return '${minutes ~/ 60}h ${minutes % 60}m';
+    }
+    return '${minutes}m';
+  }
+
+  String _contestBannerText(AppLocalizations l10n, String status) {
+    if (status == 'preparing') return l10n.rldContestBannerPrep;
+    if (status == 'lockdown') return l10n.rldContestBannerLockdown;
+    return l10n.rldContestBannerActive;
+  }
+
+  void _showResult(Map<String, dynamic> result, {String? fallbackOk, String? fallbackFail}) {
+    final l10n = AppLocalizations.of(context)!;
+    final ok = result['success'] == true;
+    showTopRightFromSnackBar(
+      context,
+      SnackBar(
+        content: Text(
+          result['message']?.toString() ??
+              (ok ? (fallbackOk ?? l10n.prostitutionUpgradeSuccess) : (fallbackFail ?? l10n.prostitutionUpgradeFailed)),
+        ),
+        backgroundColor: ok ? Colors.green : Colors.red,
+      ),
+    );
+  }
+
+  Future<bool> _confirm(String title, String body) async {
+    final l10n = AppLocalizations.of(context)!;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: Colors.grey.shade900,
+        title: Text(title),
+        content: Text(body),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            style: FilledButton.styleFrom(
+              backgroundColor: kProstitutionGold,
+              foregroundColor: Colors.black,
+            ),
+            child: Text(title),
+          ),
+        ],
+      ),
+    );
+    return confirmed == true;
   }
 
   Future<void> _confirmUpgradeTier() async {
@@ -265,6 +345,29 @@ class _RedLightDistrictDetailScreenState
       if (result['success'] == true) {
         await _loadData();
       }
+    } finally {
+      if (mounted) setState(() => _isUpgrading = false);
+    }
+  }
+
+  Future<void> _confirmUpgradeRooms() async {
+    final l10n = AppLocalizations.of(context)!;
+    final expansion = _upgradeInfo?['expansion'] as Map<String, dynamic>?;
+    if (expansion == null || expansion['canUpgrade'] != true) return;
+    final cost = (expansion['upgradeCost'] as num?)?.toInt() ?? 0;
+    final extra = (expansion['extraRooms'] as num?)?.toInt() ?? 2;
+    if (!await _confirm(
+      l10n.rldUpgradeRooms,
+      l10n.rldUpgradeRoomsConfirm('$extra', '$cost'),
+    )) {
+      return;
+    }
+    setState(() => _isUpgrading = true);
+    try {
+      final result = await _service.upgradeExpansion(_district!.id);
+      if (!mounted) return;
+      _showResult(result);
+      if (result['success'] == true) await _loadData();
     } finally {
       if (mounted) setState(() => _isUpgrading = false);
     }
@@ -385,6 +488,11 @@ class _RedLightDistrictDetailScreenState
     final occupied = rooms.where((r) => r.occupied).length;
     final tierInfo = _upgradeInfo?['tier'] as Map<String, dynamic>?;
     final securityInfo = _upgradeInfo?['security'] as Map<String, dynamic>?;
+    final expansionInfo = _upgradeInfo?['expansion'] as Map<String, dynamic>?;
+    final contestStatus = (district.contest?['status'] ?? 'idle').toString();
+    final myId = context.read<AuthProvider>().currentPlayer?.id;
+    final isOwner = district.ownerId == myId;
+    final isChallenger = district.contest?['challengerId'] == myId;
     final currentNet =
         (tierInfo?['currentEarnings'] as Map?)?['net']?.toString() ?? '—';
     final nextNet =
@@ -425,6 +533,71 @@ class _RedLightDistrictDetailScreenState
                 ),
               ],
             ),
+            if (contestStatus != 'idle') ...[
+              const SizedBox(height: 12),
+              _panel(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _contestBannerText(l10n, contestStatus),
+                      style: const TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    if (_contestRemaining(district.contest, contestStatus) != null) ...[
+                      const SizedBox(height: 4),
+                      Text(
+                        '${l10n.vipEventEndsIn} ${_contestRemaining(district.contest, contestStatus)}',
+                      ),
+                    ],
+                    const SizedBox(height: 6),
+                    Text(
+                      l10n.rldContestScore(
+                        '${district.contest?['attackerScore'] ?? 0}',
+                        '${district.contest?['defenderScore'] ?? 0}',
+                      ),
+                    ),
+                    if (isOwner && contestStatus == 'active') ...[
+                      const SizedBox(height: 8),
+                      FilledButton(
+                        onPressed: _isUpgrading
+                            ? null
+                            : () async {
+                                final result = await _service
+                                    .holdDistrictContest(district.id);
+                                if (!mounted) return;
+                                _showResult(result);
+                                if (result['success'] == true) {
+                                  await _loadData();
+                                }
+                              },
+                        child: Text(l10n.rldContestHold),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ] else if (!isOwner && district.ownerId != null) ...[
+              const SizedBox(height: 12),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton(
+                  onPressed: () async {
+                    if (!await _confirm(
+                      l10n.rldContestStart,
+                      l10n.rldContestStartConfirm,
+                    )) {
+                      return;
+                    }
+                    final result =
+                        await _service.startDistrictContest(district.id);
+                    if (!mounted) return;
+                    _showResult(result);
+                    if (result['success'] == true) await _loadData();
+                  },
+                  child: Text(l10n.rldContestStart),
+                ),
+              ),
+            ],
             const SizedBox(height: 16),
             _panel(
               child: Column(
@@ -503,6 +676,43 @@ class _RedLightDistrictDetailScreenState
               ),
             ),
             const SizedBox(height: 12),
+            _panel(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ProstitutionSectionHeader(
+                    icon: Icons.meeting_room,
+                    title: l10n.rldUpgradeRooms,
+                    subtitle: l10n.rldUpgradeRoomsSubtitle,
+                  ),
+                  if (expansionInfo?['canUpgrade'] == true)
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton.icon(
+                        onPressed: _isUpgrading ? null : _confirmUpgradeRooms,
+                        icon: const Icon(Icons.add_home_work),
+                        label: Text(
+                          l10n.rldUpgradeRoomsButton(
+                            '${expansionInfo?['upgradeCost'] ?? '—'}',
+                          ),
+                        ),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: kProstitutionGold,
+                          side: BorderSide(
+                            color: kProstitutionGold.withOpacity(0.6),
+                          ),
+                        ),
+                      ),
+                    )
+                  else
+                    Text(
+                      l10n.rldMaxRooms,
+                      style: TextStyle(color: Colors.grey.shade400),
+                    ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
             if (_raidStats != null)
               _panel(
                 child: Column(
@@ -540,6 +750,20 @@ class _RedLightDistrictDetailScreenState
                         ),
                       ],
                     ),
+                    if (_occupancyHeatText(l10n) != null) ...[
+                      const SizedBox(height: 8),
+                      Text(
+                        _occupancyHeatText(l10n)!,
+                        style: const TextStyle(color: Colors.orangeAccent),
+                      ),
+                    ],
+                    if (_raidStats!['eventHeat'] == true) ...[
+                      const SizedBox(height: 4),
+                      Text(
+                        l10n.rldEventsBusyTonight,
+                        style: const TextStyle(color: Colors.orangeAccent),
+                      ),
+                    ],
                   ],
                 ),
               ),
@@ -572,7 +796,7 @@ class _RedLightDistrictDetailScreenState
                   crossAxisCount: 2,
                   mainAxisSpacing: 10,
                   crossAxisSpacing: 10,
-                  childAspectRatio: 1.35,
+                  childAspectRatio: 0.95,
                 ),
                 itemBuilder: (context, index) {
                   final room = rooms[index];
@@ -641,15 +865,85 @@ class _RedLightDistrictDetailScreenState
                               child: Text(l10n.prostitutionSelectProstitute),
                             ),
                           )
-                        else
-                          Text(
-                            l10n.prostitutionOccupiedShort,
-                            style: const TextStyle(
-                              fontSize: 11,
-                              color: kProstitutionGold,
-                              fontWeight: FontWeight.w600,
+                        else ...[
+                          if (room.isGuarded)
+                            Text(
+                              l10n.rldGuardedHint,
+                              style: const TextStyle(
+                                fontSize: 11,
+                                color: kProstitutionGold,
+                              ),
                             ),
+                          if (room.isSabotaged)
+                            Text(
+                              l10n.rldSabotagedHint,
+                              style: const TextStyle(fontSize: 11, color: Colors.orangeAccent),
+                            ),
+                          Wrap(
+                            spacing: 4,
+                            children: [
+                              if (isOwner &&
+                                  room.prostitute?.playerId == myId)
+                                TextButton(
+                                  onPressed: () async {
+                                    if (!await _confirm(
+                                      l10n.rldGuard,
+                                      l10n.rldGuardConfirm,
+                                    )) {
+                                      return;
+                                    }
+                                    final result =
+                                        await _service.guardRoom(room.id);
+                                    if (!mounted) return;
+                                    _showResult(result);
+                                    if (result['success'] == true) {
+                                      await _loadData();
+                                    }
+                                  },
+                                  child: Text(l10n.rldGuard),
+                                ),
+                              if (room.prostitute != null &&
+                                  room.prostitute!.playerId != myId)
+                                TextButton(
+                                  onPressed: () async {
+                                    if (!await _confirm(
+                                      l10n.rldSteal,
+                                      l10n.rldStealConfirm,
+                                    )) {
+                                      return;
+                                    }
+                                    final result =
+                                        await _service.stealFromRoom(room.id);
+                                    if (!mounted) return;
+                                    _showResult(result);
+                                    if (result['success'] == true) {
+                                      await _loadData();
+                                    }
+                                  },
+                                  child: Text(l10n.rldSteal),
+                                ),
+                              if (isChallenger && contestStatus == 'active')
+                                TextButton(
+                                  onPressed: () async {
+                                    if (!await _confirm(
+                                      l10n.rldSabotage,
+                                      l10n.rldSabotageConfirm,
+                                    )) {
+                                      return;
+                                    }
+                                    final result =
+                                        await _service.sabotageRoom(room.id);
+                                    if (!mounted) return;
+                                    _showResult(result);
+                                    if (result['success'] == true) {
+                                      await _loadData();
+                                    }
+                                  },
+                                  child: Text(l10n.rldSabotage),
+                                ),
+                            ],
                           ),
+                        ],
                       ],
                     ),
                   );

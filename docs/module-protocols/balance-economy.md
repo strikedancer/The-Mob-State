@@ -51,6 +51,14 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 - **Contracts:** bid = 20% of catalog payout. Off-books +`DON_CONTRACT_OFFBOOKS_PERCENT` (12) per owned racket in that country (cap 3). Greedy +25% payout and extra wanted.
 - See [don.md](don.md).
 
+## Documented static modifiers (red light districts)
+- **Start rooms:** 4 on a new buy. Expansion 0–8 adds 2 rooms per step (€40k → €500k). Existing rooms are grandfathered.
+- **Income tiers:** Basic → Lounge → Luxury → Prestige → Penthouse (VIP). Gross/rent per room in `rldConfig.ts`.
+- **Security:** 0–5, escalating cost. Lowers raid chance (~3%/level) and steal chance.
+- **Occupancy:** ≥70% occupancy raises rent and raid/steal chance; 100% also ticks FBI heat on the owner.
+- **Steal:** €15k + heat, 7h cooldown, 12h reclaim window. Contest stake €100k, rank 4+, 15 min prep / 60 min fight / 10 min close, 48h district cooldown after.
+- See [red-light-districts.md](red-light-districts.md) and [prostitution.md](prostitution.md).
+
 ## Documented static modifiers (ammo factory)
 - **Claim interval:** `PRODUCTION_INTERVAL_MINUTES = 20` in `ammoFactoryService.ts` (was 10 after Apr 2026; originally 5).
 - **Base output:** `BASE_ROUNDS_PER_TICK = 3` rounds per ammo type at level 1 (was 5). Level curve unchanged (`1 + (level-1)*2.46`). Session backlog still 8 hours for **player** claims. NPC caretaker factories produce on the game tick at the same cadence into `ammoMarketStock`, capped at `NPC_MARKET_STOCK_CAP` (180) per type. UI copy + `ammo_factory_screen.dart` estimate constants must match. See `ammo-factory.md`.

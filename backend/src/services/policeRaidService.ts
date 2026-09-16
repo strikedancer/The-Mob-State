@@ -1,5 +1,7 @@
 import prisma from '../lib/prisma';
 import { applyReputationAction } from './reputationService';
+import { occupancyRaidBonus, occupancyRate } from './rldConfig';
+import { countryEventActive } from './rldPvpService';
 
 // Raid Configuration
 const BASE_RAID_CHANCE = 0.10; // 10% base chance per hour if FBI heat > 50
@@ -12,24 +14,37 @@ export const policeRaidService = {
   /**
    * Calculate raid chance based on FBI heat and security
    */
-  calculateRaidChance(fbiHeat: number, securityLevel: number = 0): number {
+  calculateRaidChance(
+    fbiHeat: number,
+    securityLevel: number = 0,
+    extras: { occupancyBonus?: number; eventBonus?: number } = {}
+  ): number {
     if (fbiHeat < FBI_HEAT_THRESHOLD) {
       return 0;
     }
 
     const heatBonus = (fbiHeat - FBI_HEAT_THRESHOLD) * FBI_HEAT_MULTIPLIER;
     const securityReduction = securityLevel * SECURITY_REDUCTION;
-    
-    const raidChance = Math.max(0, BASE_RAID_CHANCE + heatBonus - securityReduction);
-    
-    return Math.min(1, raidChance); // Cap at 100%
+    const occupancyBonus = extras.occupancyBonus ?? 0;
+    const eventBonus = extras.eventBonus ?? 0;
+
+    const raidChance = Math.max(
+      0,
+      BASE_RAID_CHANCE + heatBonus - securityReduction + occupancyBonus + eventBonus
+    );
+
+    return Math.min(1, raidChance);
   },
 
   /**
    * Check if a raid should occur for a player
    */
-  shouldRaidOccur(fbiHeat: number, securityLevel: number = 0): boolean {
-    const raidChance = this.calculateRaidChance(fbiHeat, securityLevel);
+  shouldRaidOccur(
+    fbiHeat: number,
+    securityLevel: number = 0,
+    extras: { occupancyBonus?: number; eventBonus?: number } = {}
+  ): boolean {
+    const raidChance = this.calculateRaidChance(fbiHeat, securityLevel, extras);
     return Math.random() < raidChance;
   },
 
@@ -174,15 +189,25 @@ export const policeRaidService = {
     // Get max security level from owned districts
     const districts = await prisma.redLightDistrict.findMany({
       where: { ownerId: playerId },
-      select: { securityLevel: true }
+      include: { rooms: { select: { occupied: true } } },
     });
 
     const maxSecurity = districts.length > 0
       ? Math.max(...districts.map(d => d.securityLevel || 0))
       : 0;
 
-    // Determine if raid should occur
-    if (this.shouldRaidOccur(player.fbiHeat, maxSecurity)) {
+    let occupancyBonus = 0;
+    let eventBonus = 0;
+    for (const district of districts) {
+      const occupied = district.rooms.filter((r) => r.occupied).length;
+      const total = district.rooms.length || district.roomCount || 1;
+      occupancyBonus = Math.max(occupancyBonus, occupancyRaidBonus(occupancyRate(occupied, total)));
+      if (await countryEventActive(district.countryCode)) {
+        eventBonus = 0.04;
+      }
+    }
+
+    if (this.shouldRaidOccur(player.fbiHeat, maxSecurity, { occupancyBonus, eventBonus })) {
       const result = await this.executeRaid(playerId);
       return {
         raidOccurred: result.raidOccurred,
@@ -215,14 +240,34 @@ export const policeRaidService = {
 
     const districts = await prisma.redLightDistrict.findMany({
       where: { ownerId: playerId },
-      select: { securityLevel: true, countryCode: true }
+      include: { rooms: { select: { occupied: true } } },
     });
 
     const maxSecurity = districts.length > 0
       ? Math.max(...districts.map(d => d.securityLevel || 0))
       : 0;
 
-    const raidChance = this.calculateRaidChance(player.fbiHeat, maxSecurity);
+    let occupancyBonus = 0;
+    let eventBonus = 0;
+    let occupancyLevel: 'full' | 'busy' | '' = '';
+    for (const district of districts) {
+      const occupied = district.rooms.filter((r) => r.occupied).length;
+      const total = district.rooms.length || district.roomCount || 1;
+      const rate = occupancyRate(occupied, total);
+      const bonus = occupancyRaidBonus(rate);
+      if (bonus > occupancyBonus) {
+        occupancyBonus = bonus;
+        occupancyLevel = rate >= 100 ? 'full' : 'busy';
+      }
+      if (await countryEventActive(district.countryCode)) {
+        eventBonus = 0.04;
+      }
+    }
+
+    const raidChance = this.calculateRaidChance(player.fbiHeat, maxSecurity, {
+      occupancyBonus,
+      eventBonus,
+    });
 
     // Count busted prostitutes
     const bustedProstitutes = await prisma.prostitute.count({
@@ -235,10 +280,13 @@ export const policeRaidService = {
 
     return {
       fbiHeat: player.fbiHeat,
-      raidChance: Math.round(raidChance * 100), // As percentage
+      raidChance: Math.round(raidChance * 100),
       maxSecurity,
       districtCount: districts.length,
-      bustedProstitutes
+      bustedProstitutes,
+      occupancyLevel,
+      occupancyNote: occupancyLevel,
+      eventHeat: eventBonus > 0,
     };
   }
 };

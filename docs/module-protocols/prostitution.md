@@ -42,15 +42,17 @@ Deze waarden sturen housing capaciteit/risico en weekhuur in de prostitutieflow.
 - Rivaliteit starten accepteert **spelersnaam of numeriek ID** (`POST /rivalries/start` met `rivalUsername` en/of `rivalPlayerId`); het challenge-veld mag geen puur-numeriek toetsenbord forceren.
 - 8u work / 8u rest shifts; earnings verschillen per locatie (street / RLD / nightclub).
 - Worker cards: hoogte volgt content (geen bottom-clip op web/tablet/desktop).
+- Gestolen worker: 12u hot op straat (niet RLD/nightclub); oude baas kan terughalen. Housing-slot vereist bij steal.
+- Events: 1 actief + 1 aankomend per land (slug = `player.currentCountry`); hourly `settleEventEarnings`; event verhoogt raid/steal-kans.
 
 ## Empire hub IA
 - Tab 0 Workers: KPI strip (workers S/RLD/NC, €/h, collectable, housing, recruit CD), Collect → `settleEarnings`, recruit result via **`CrimeResultOverlay`** (same pattern as jobs/crimes; success + fail), Move menu + Work primary.
 - Tab 1 RLD: embedded `RedLightDistrictsScreen` (mobile RLD-menu and web sidebar deep-link hierheen, niet VIP Events).
-- Tab 2 Events: dark VIP event cards with participate/leave.
+- Tab 2 Events: street nights for everyone and VIP salon (`vipOnly`) with participate/leave. Events use country slugs matching `player.currentCountry`.
 - Tab 3 Social: Rivalry + Leaderboard segments (no nested chaos beyond existing period tabs).
 
 ## i18n and Messaging
-- Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
+- Any new labels, warnings, helper text or dialogs must exist in all allowlist languages (`nl`, `en`, `de`, `fr`, `es`, `it`, `pl`, `pt`).
 - If this module emits notifications, push messages or inbox events, keep the wording aligned across all channels.
 - If player behavior changes, update the player help entry for this module.
 - Rivalry challenge copy (`rivalryChallengeHint`, `rivalryPlayerIdHint`) must mention name (and optional ID), not ID-only.
@@ -64,6 +66,8 @@ Deze waarden sturen housing capaciteit/risico en weekhuur in de prostitutieflow.
 - Verify prostitute cards in Workers are never bottom-clipped; card height must follow content (auto height) on web/tablet/desktop.
 - Verify Collect settles pending earnings and refreshes KPI; empty collect shows empty copy.
 - Verify mobile “Red Light Districts” opens hub tab RLD (index 1), not Events.
+- Verify Events tab lists street nights and VIP salon (country slug, not ISO-2).
+- Verify reclaim panel appears for a hot stolen worker and that she cannot be placed in RLD/nightclub until cool.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

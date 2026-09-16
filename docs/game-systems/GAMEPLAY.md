@@ -646,8 +646,10 @@ interest = 0
 - Eén entry **Prostitution** met tabs Workers | RLD | Events | Social. Web-zijmenu “Red Light Districts” deep-linkt naar hub-tab RLD; mobiel RLD-menu idem (niet VIP Events).
 - **Collect** int openstaande inkomsten (`settleEarnings`); KPI-strip toont o.a. collectable, housing slots, recruit-cooldown en €/uur.
 - **Werven** vereist een huis of appartement **in het huidige land**. Plekken uit woningen in andere landen tellen niet om hier te werven. Totale netwerk-capaciteit blijft wereldwijd (slots/huur).
-- RLD-detail: tier- en security-upgrades + raid-risicopaneel (bestaande APIs). Geen speelregelwijzigingen — alleen UI.
+- Events-tab: straatavonden voor iedereen, VIP-salon alleen met actieve Player VIP. Events gebruiken land-slugs (`netherlands`), niet ISO-2. Scheduler houdt per land 1 actief + 1 aankomend event; `settleEventEarnings` elk uur.
+- RLD-detail: kamer-upgrade, inkomsten-tier (tot Penthouse/VIP) en beveiliging 0–5. Nieuwe koop start met 4 kamers; plaatsen maakt geen extra kamers meer.
 - Rivaliteit starten: vul **spelersnaam** in (numeriek ID blijft ook werken). Server: `POST /rivalries/start` met `rivalUsername` en/of `rivalPlayerId`. Zie `docs/module-protocols/prostitution.md`.
+- RLD PvP: stelen van een recruit (12u op straat, terughalen) en zeldzame district-contest (voorbereiding → gevecht → wissel van eigenaar). Huurders en kamers blijven bij het pand.
 
 ### Tradable Goods (huidige build)
 Contraband-handelsgoederen met eigen caps en risico’s (server + UI):
@@ -678,7 +680,7 @@ Contraband-handelsgoederen met eigen caps en risico’s (server + UI):
 - Crew-smokkel van **handelswaren** gebruikt gedeelde `CrewTradeInventory`. Stort eerst via crew-opslag; daarna catalog/send/claim op het crew-netwerk.
 - Het dashboard toont een **Markt**-tegel met het aantal actieve advertenties en de categorie (bijv. gereedschap), niet interne codes zoals `player_tool`. Tik op Markt opent **Zwarte Markt → Marktplaats in het contentpaneel** (zijbalk blijft staan), niet een losse fullscreen-pagina. Recente eigen acties staan in **Sessie-overzicht** (`GET /events` + SSE van alleen jouw speler), niet als vaste lijst op Home. Privéberichten (`direct_message.*`) komen niet in dat overzicht (wel live voor chat/badge). Aankomstregels tonen het land (niet een streepje).
 - Nightclub opent met een **Tonight**-kaart (crowd, stock, Restock, Boost crowd); de rest van Ops Lab zit onder Geavanceerd. Omzet blijft via de tick. Clubbaas kan **Koop van spelers** aanzetten; producenten in hetzelfde land verkopen via Inventaris **Aan club** tegen groothandelsprijs. De **wekelijkse nightclub-ranking** telt alleen clubs met echte weekomzet; €0 omzet wint niet en levert geen prijs. Was er die week nergens omzet, dan is er geen winnaar.
-- RLD-raids draaien op de tick bij hoge FBI-heat. Collect heet **Nu ophalen**. Er is geen PvP-districtovername.
+- RLD-raids draaien op de tick bij hoge FBI-heat; een volle zaak en een actief event verhogen de kans. Collect heet **Nu ophalen**. Een zeldzame contest kan de eigenaar van een district wisselen.
 - Publieke profielen openen **in de dashboard-content** (niet fullscreen over de hele app). Ze tonen **behaalde badges** (alle unlocked, gegroepeerd per categorie; geen locked voortgang), **event chips** (goud/zilver/brons, ook 0), een tappable crew-naam en **eigendommen** (catalogusfoto + niveau, geen land of opslag). Het oude landgoed-composiet staat niet meer op het profiel. Chips zijn prestige en te koop op Marktplaats, geen extra power. **Online** betekent dat die speler de laatste 5 minuten een echte sessie had; een world-tick of het openen van het profiel telt niet als inloggen.
 
 ### Trade Risk Factors (legacy / algemeen)

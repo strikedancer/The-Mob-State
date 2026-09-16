@@ -11761,6 +11761,139 @@ class AppLocalizationsFr extends AppLocalizations {
   String get prostitutionTierVip => 'VIP';
 
   @override
+  String get rldTierLounge => 'Salon';
+
+  @override
+  String get rldTierPrestige => 'Prestige';
+
+  @override
+  String get rldTierPenthouse => 'Attique';
+
+  @override
+  String get rldUpgradeRooms => 'Plus de chambres';
+
+  @override
+  String get rldUpgradeRoomsSubtitle =>
+      'Achetez des chambres supplémentaires avant de pouvoir placer plus de recrues ici.';
+
+  @override
+  String rldUpgradeRoomsButton(String cost) {
+    return 'Construire des pièces · $cost €';
+  }
+
+  @override
+  String rldUpgradeRoomsConfirm(String rooms, String cost) {
+    return 'Ajouter $rooms chambres pour $cost€ ?';
+  }
+
+  @override
+  String get rldMaxRooms => 'Ce quartier est à son plafond de pièce.';
+
+  @override
+  String get rldRoomsFullHint =>
+      'Toutes les salles sont pleines. Améliorez d\'abord les chambres.';
+
+  @override
+  String get rldOccupancyBusy => 'Une maison animée attire la police';
+
+  @override
+  String get rldOccupancyFull =>
+      'Un quartier bondé attire une attention particulière de la police';
+
+  @override
+  String get rldGuard => 'Garde';
+
+  @override
+  String get rldGuardConfirm =>
+      'Garder cette recrue pendant 8 heures (12 avec VIP) ? Elle gagne la moitié lorsqu\'elle est gardée.';
+
+  @override
+  String get rldSteal => 'Voler';
+
+  @override
+  String get rldStealConfirm =>
+      'Voler cette recrue ? Coûte en espèces et en chauffage. Si ça marche, elle reste dans la rue pendant 12 heures.';
+
+  @override
+  String get rldSabotage => 'Sabotage';
+
+  @override
+  String get rldSabotageConfirm =>
+      'Fermer cette salle jusqu\'à la fin du concours ? Pas de loyer pendant la fermeture.';
+
+  @override
+  String get rldContestBannerPrep =>
+      'Le concours commence bientôt. Le propriétaire peut toujours améliorer ou garder.';
+
+  @override
+  String get rldContestBannerActive =>
+      'Le combat est en direct. Le vol et le sabotage comptent.';
+
+  @override
+  String get rldContestBannerLockdown =>
+      'Le combat touche à sa fin. Aucune nouvelle action.';
+
+  @override
+  String get rldContestStart => 'Contester ce quartier';
+
+  @override
+  String get rldContestStartConfirm =>
+      'Miser 100 000 € pour contester ce quartier ? Le propriétaire bénéficie d’abord d’une courte fenêtre.';
+
+  @override
+  String get rldContestHold => 'Prise';
+
+  @override
+  String rldContestScore(String attack, String defense) {
+    return 'Score $attack – $defense';
+  }
+
+  @override
+  String get rldReclaim => 'Reprendre';
+
+  @override
+  String get rldReclaimHint =>
+      'Je vous ai volé. Ramenez-la dans les 12 heures.';
+
+  @override
+  String get rldHotHint =>
+      'Je viens de le voler. Elle ne peut pas travailler dans un quartier ou une discothèque pendant 12 heures.';
+
+  @override
+  String get rldGuardedHint => 'Gardée';
+
+  @override
+  String get rldSabotagedHint => 'Clôturé ce concours';
+
+  @override
+  String get rldEventsStreet => 'Nuits de rue';
+
+  @override
+  String get rldEventsVipSalon => 'Salon VIP';
+
+  @override
+  String get rldEventsBusyTonight =>
+      'Occupé ce soir : plus d\'argent, plus de risques';
+
+  @override
+  String get rldEventTouristNight => 'Nuit touristique';
+
+  @override
+  String get rldEventHarborShift => 'Changement de port';
+
+  @override
+  String get rldEventCityFestival => 'Fête de la ville';
+
+  @override
+  String get rldEventPrivateSalon => 'Salon privé';
+
+  @override
+  String get rldEventYachtParty => 'Fête sur un yacht';
+
+  @override
+  String get rldVipOnly => 'VIP';
+
+  @override
   String get prostitutionSecurityLevel => 'Niveau de sécurité';
 
   @override
@@ -11868,14 +12001,14 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get vipEventsTitle => 'Événements VIP';
+  String get vipEventsTitle => 'Événements';
 
   @override
-  String get vipEventsTabTitle => 'Événements VIP';
+  String get vipEventsTabTitle => 'Événements';
 
   @override
   String get vipEventsDescription =>
-      'Assignez des prostituées à des événements VIP pour gagner des bonus !';
+      'Envoyez une recrue passer une nuit pour obtenir des gains supplémentaires. Les nuits chargées attirent également la police et les voleurs.';
 
   @override
   String get vipEventsActive => 'Événements actifs';
@@ -18856,15 +18989,15 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicProstitutionSummary =>
-      'Construisez un réseau de prostitution avec des recrues, des événements et des clients VIP. Un réseau bien géré génère des revenus passifs mais nécessite une gestion active pour contrôler les rivalités et surveiller l’attention.';
+      'Recrutez des travailleurs, placez-les dans la rue ou dans un quartier chaud, dirigez la nuit et surveillez la police. D\'autres joueurs peuvent voler une recrue ; tu as 12 heures pour la reprendre.';
 
   @override
   String get helpTopicProstitutionHow =>
-      'Vous gérez les recrues chacune avec leurs propres statistiques (expérience, popularité, disponibilité). Plus de recrues = revenu passif plus élevé. \nVous ne pouvez recruter que dans le pays dans lequel vous vous trouvez et uniquement si vous y possédez une maison ou un appartement. Les logements disponibles dans d\'autres pays ne vous permettent pas de recruter ici. \nLes quarts de travail durent 8 heures par recrue : après un quart de travail, cette recrue a besoin de temps de repos avant de pouvoir recommencer. \nLa gestion des emplacements est flexible : vous pouvez déplacer les recrues entre la rue, le quartier rouge et la discothèque à l\'aide des boutons d\'action présents sur chaque carte. \nLes événements sont des boosters temporaires : des spectacles spéciaux, des soirées VIP et des fêtes augmentent les revenus par tick pendant la durée de l\'événement. \nRivalité : d\'autres joueurs ou PNJ concurrents peuvent débaucher vos recrues ou saboter des événements. Une sécurité plus élevée réduit ce risque. \nLes clients VIP paient beaucoup plus mais nécessitent des recrues très populaires (80+) et un emplacement sécurisé. \nL\'attention (la chaleur) de la police augmente avec les transactions et les perquisitions importantes. La forte chaleur entraîne une confiscation des revenus ou une fermeture temporaire. \nCombinaison avec une discothèque : une discothèque offre une couverture légale aux activités faisant monter plus lentement la chaleur. \nUtilisez le panneau d\'informations sur les revenus en haut pour comparer rapidement la production horaire pour la rue, le RLD et la discothèque. \nClassement : le chiffre d\'affaires total hebdomadaire le plus élevé remporte une récompense hebdomadaire en espèces et un badge.';
+      'Vous recrutez dans le pays dans lequel vous vous trouvez et uniquement si vous y êtes propriétaire d\'une maison ou d\'un appartement. Les logements disponibles dans d\'autres pays ne vous permettent pas de recruter ici. \nChaque recrue a un niveau issu des quarts de travail. Les quarts de travail durent 8 heures, puis elle a besoin de repos. \nDéplacez les recrues entre la rue, le quartier rouge et la discothèque. Un quartier ne dispose que du nombre de pièces débloqué par son propriétaire grâce aux améliorations. Si les chambres sont pleines, elle reste dans la rue. \nUne recrue volée reste assise dans la rue pendant 12 heures. L\'ancien patron peut la ramener par cette fenêtre. Le voleur ne peut pas encore la mettre dans un quartier ou une discothèque. \nLes événements sont des nuits chargées : gains supplémentaires, police supplémentaire, vols plus faciles. Les soirées dans la rue sont pour tout le monde. Les soirées dans les salons VIP nécessitent Player VIP. \nLa rivalité sur les réseaux sociaux vole toujours de l\'argent ou donne des pourboires à la police. Voler une recrue est une action distincte sur une salle de district. \nLa chaleur policière monte avec un quartier bondé et avec des événements. La chaleur élevée du FBI peut attaquer les travailleurs.';
 
   @override
   String get helpTopicProstitutionTips =>
-      'Investissez tôt dans la sécurité : une attaque de rivalité qui détourne votre meilleure recrue coûte plus cher que l’investissement dans la sécurité. \nN\'organisez des événements VIP que lorsque les recrues dépassent 80 de popularité : en dessous de ce seuil, les clients VIP paient simplement le tarif standard.';
+      'Ne remplissez pas toutes les pièces si la chaleur est déjà forte : une salle comble attire la police et les voleurs. \nProtégez votre meilleure recrue lorsqu\'un concours approche : elle gagne moins, mais elle est beaucoup plus difficile à voler.';
 
   @override
   String get helpTopicRedLightDistrictsCategory => 'Empire';
@@ -18874,15 +19007,15 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicRedLightDistrictsSummary =>
-      'Revendiquez et gérez les circonscriptions territoriales par pays. Posséder un district donne un revenu passif et un contrôle sur les activités de prostitution dans cette région.';
+      'Chaque pays possède un quartier rouge. Le propriétaire perçoit le loyer des chambres, améliore les chambres et les revenus, et peut perdre le bâtiment dans un concours rare.';
 
   @override
   String get helpTopicRedLightDistrictsHow =>
-      'Chaque pays possède un ou plusieurs quartiers rouges qui peuvent être revendiqués. Réclamez un quartier en payant un montant d’achat fixe.\nEn tant que propriétaire d\'un district, vous recevez un pourcentage de tous les revenus de la prostitution dans ce pays, y compris ceux des autres acteurs qui y opèrent.\nD\'autres joueurs peuvent attaquer votre quartier pour en prendre possession. Une sécurité plus élevée réduit les risques d’attaque.\nDans les détails du district, vous pouvez améliorer le niveau (gains) et la sécurité (risque de raid), et afficher les statistiques de raid en direct (chaleur du FBI, chances de raid). Une sécurité plus élevée réduit les risques de raid.\nVous pouvez posséder jusqu\'à 3 quartiers simultanément. Le choix stratégique du pays est essentiel.\nLes pays les plus actifs (Colombie, Dubaï, Japon) offrent les revenus passifs les plus élevés mais sont aussi les plus contestés.\nLa perte d\'un quartier ne rembourse pas le prix d\'achat : il est définitivement perdu si un ennemi parvient à s\'en emparer.';
+      'Achetez le quartier dans le pays dans lequel vous vous trouvez. Un nouvel achat commence avec quatre pièces. Les chambres supplémentaires proviennent du surclassement des chambres et non du placement de nouvelles recrues. \nLes augmentations de revenus augmentent le loyer par chambre (Basic, Lounge, Luxury, Prestige, Penthouse). Penthouse a besoin d\'un joueur VIP. La sécurité réduit les risques de raid et rend le vol plus difficile. \nUne salle comble paie plus de loyer et attire plus de policiers. Gardez une étoile pour bloquer presque le vol pendant quelques heures à moitié revenu. \nD\'autres joueurs du même pays peuvent voler une recrue dans une salle occupée. Un concours rare peut changer de propriétaire. Les chambres, les surclassements et les locataires restent dans le bâtiment ; le loyer revient au nouveau patron. \nUn concours comporte une courte préparation, un combat en direct, puis une clôture. Score de vol et de sabotage pour le challenger ; le propriétaire peut détenir de l\'argent et du chauffage. \nLes descentes de police se poursuivent lorsque la pression du FBI est forte. Les événements dans ce pays rendent les raids et les vols plus probables.';
 
   @override
   String get helpTopicRedLightDistrictsTips =>
-      'Commencez par un pays moins populaire pour votre première circonscription : une pression d’attaque plus faible vous donne le temps d’améliorer la sécurité avant la vraie concurrence. \nAméliorez la sécurité de chaque quartier immédiatement après l\'achat : les premières 24 heures sont les plus vulnérables à une OPA.';
+      'Améliorez les salles uniquement lorsque vous avez des recrues prêtes : les salles vides ne coûtent pas d\'entretien, mais une salle comble est une cible. \nSi quelqu\'un vous conteste, consacrez la période de préparation à la sécurité ou à un gardien, pas à remplir la dernière pièce vide.';
 
   @override
   String get helpTopicAchievementsCategory => 'Méta';

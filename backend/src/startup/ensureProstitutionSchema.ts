@@ -88,6 +88,154 @@ export async function ensureProstitutionSchema(): Promise<void> {
     'CREATE INDEX idx_prostitutes_nightclubVenueId ON prostitutes(nightclubVenueId)'
   );
 
+  await ensureColumn(
+    'prostitutes',
+    'stolenFromPlayerId',
+    'ALTER TABLE prostitutes ADD COLUMN stolenFromPlayerId INT NULL AFTER nightclubAssignedAt'
+  );
+  await ensureColumn(
+    'prostitutes',
+    'hotUntil',
+    'ALTER TABLE prostitutes ADD COLUMN hotUntil DATETIME NULL AFTER stolenFromPlayerId'
+  );
+  await ensureIndex(
+    'prostitutes',
+    'idx_prostitutes_hotUntil',
+    'CREATE INDEX idx_prostitutes_hotUntil ON prostitutes(hotUntil)'
+  );
+
+  await ensureColumn(
+    'red_light_districts',
+    'expansionLevel',
+    'ALTER TABLE red_light_districts ADD COLUMN expansionLevel INT NOT NULL DEFAULT 0 AFTER securityLevel'
+  );
+  await ensureColumn(
+    'red_light_districts',
+    'contestStatus',
+    "ALTER TABLE red_light_districts ADD COLUMN contestStatus VARCHAR(20) NOT NULL DEFAULT 'idle' AFTER expansionLevel"
+  );
+  await ensureColumn(
+    'red_light_districts',
+    'contestChallengerId',
+    'ALTER TABLE red_light_districts ADD COLUMN contestChallengerId INT NULL AFTER contestStatus'
+  );
+  await ensureColumn(
+    'red_light_districts',
+    'contestAttackerScore',
+    'ALTER TABLE red_light_districts ADD COLUMN contestAttackerScore INT NOT NULL DEFAULT 0 AFTER contestChallengerId'
+  );
+  await ensureColumn(
+    'red_light_districts',
+    'contestDefenderScore',
+    'ALTER TABLE red_light_districts ADD COLUMN contestDefenderScore INT NOT NULL DEFAULT 0 AFTER contestAttackerScore'
+  );
+  await ensureColumn(
+    'red_light_districts',
+    'contestHoldCount',
+    'ALTER TABLE red_light_districts ADD COLUMN contestHoldCount INT NOT NULL DEFAULT 0 AFTER contestDefenderScore'
+  );
+  await ensureColumn(
+    'red_light_districts',
+    'contestStake',
+    'ALTER TABLE red_light_districts ADD COLUMN contestStake INT NOT NULL DEFAULT 0 AFTER contestHoldCount'
+  );
+  await ensureColumn(
+    'red_light_districts',
+    'contestPrepAt',
+    'ALTER TABLE red_light_districts ADD COLUMN contestPrepAt DATETIME NULL AFTER contestStake'
+  );
+  await ensureColumn(
+    'red_light_districts',
+    'contestActiveAt',
+    'ALTER TABLE red_light_districts ADD COLUMN contestActiveAt DATETIME NULL AFTER contestPrepAt'
+  );
+  await ensureColumn(
+    'red_light_districts',
+    'contestLockdownAt',
+    'ALTER TABLE red_light_districts ADD COLUMN contestLockdownAt DATETIME NULL AFTER contestActiveAt'
+  );
+  await ensureColumn(
+    'red_light_districts',
+    'contestResolveAt',
+    'ALTER TABLE red_light_districts ADD COLUMN contestResolveAt DATETIME NULL AFTER contestLockdownAt'
+  );
+  await ensureColumn(
+    'red_light_districts',
+    'contestCooldownUntil',
+    'ALTER TABLE red_light_districts ADD COLUMN contestCooldownUntil DATETIME NULL AFTER contestResolveAt'
+  );
+  await ensureColumn(
+    'red_light_districts',
+    'lastOccupancyHeatAt',
+    'ALTER TABLE red_light_districts ADD COLUMN lastOccupancyHeatAt DATETIME NULL AFTER contestCooldownUntil'
+  );
+  await ensureIndex(
+    'red_light_districts',
+    'idx_rld_contest_status',
+    'CREATE INDEX idx_rld_contest_status ON red_light_districts(contestStatus)'
+  );
+
+  await ensureColumn(
+    'red_light_rooms',
+    'guardUntil',
+    'ALTER TABLE red_light_rooms ADD COLUMN guardUntil DATETIME NULL AFTER tier'
+  );
+  await ensureColumn(
+    'red_light_rooms',
+    'guardCooldownUntil',
+    'ALTER TABLE red_light_rooms ADD COLUMN guardCooldownUntil DATETIME NULL AFTER guardUntil'
+  );
+  await ensureColumn(
+    'red_light_rooms',
+    'sabotagedUntil',
+    'ALTER TABLE red_light_rooms ADD COLUMN sabotagedUntil DATETIME NULL AFTER guardCooldownUntil'
+  );
+
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS rld_steal_cooldowns (
+      id INT NOT NULL AUTO_INCREMENT,
+      attackerId INT NOT NULL,
+      districtId INT NOT NULL,
+      \`until\` DATETIME NOT NULL,
+      PRIMARY KEY (id),
+      UNIQUE KEY rld_steal_attacker_district (attackerId, districtId),
+      KEY idx_rld_steal_until (\`until\`),
+      CONSTRAINT fk_rld_steal_attacker FOREIGN KEY (attackerId) REFERENCES players(id) ON DELETE CASCADE,
+      CONSTRAINT fk_rld_steal_district FOREIGN KEY (districtId) REFERENCES red_light_districts(id) ON DELETE CASCADE
+    )
+  `);
+
+  await ensureColumn(
+    'vip_events',
+    'vipOnly',
+    'ALTER TABLE vip_events ADD COLUMN vipOnly TINYINT(1) NOT NULL DEFAULT 0 AFTER currentParticipants'
+  );
+  await ensureColumn(
+    'vip_events',
+    'eventKey',
+    'ALTER TABLE vip_events ADD COLUMN eventKey VARCHAR(50) NULL AFTER vipOnly'
+  );
+
+  try {
+    await prisma.$executeRawUnsafe(
+      'ALTER TABLE vip_events MODIFY COLUMN countryCode VARCHAR(50) NOT NULL'
+    );
+  } catch (error) {
+    console.warn('[StartupSchema] vip_events.countryCode widen skipped:', error);
+  }
+
+  await prisma.$executeRawUnsafe(`
+    UPDATE red_light_districts d
+    SET expansionLevel = LEAST(
+      8,
+      GREATEST(
+        0,
+        CEIL((GREATEST((SELECT COUNT(*) FROM red_light_rooms r WHERE r.redLightDistrictId = d.id), d.roomCount) - 4) / 2.0)
+      )
+    )
+    WHERE expansionLevel = 0
+  `);
+
   // Backfill existing records so upkeep/recruit flows have valid baseline values.
   await prisma.$executeRawUnsafe(`
     UPDATE prostitutes

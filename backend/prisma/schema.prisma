@@ -168,12 +168,15 @@ model Player {
   midnightRaceBets                MidnightRaceBet[]
   midnightRaceHostMeetings        MidnightRaceMeeting[]            @relation("MidnightRaceHost")
   prostitutes                     Prostitute[]
+  stolenProstitutesFromMe         Prostitute[]                     @relation("ProstituteStolenFrom")
   prostitutionAchievements        ProstitutionAchievement[]
   leaderboardEntries              ProstitutionLeaderboard[]
   prostitutionProtectionInsurance ProstitutionProtectionInsurance?
   rivalriesAsPlayer               ProstitutionRivalry[]            @relation("RivalriesAsPlayer")
   rivalriesAsRival                ProstitutionRivalry[]            @relation("RivalriesAsRival")
   ownedRedLightDistricts          RedLightDistrict[]
+  rldContestChallenges            RedLightDistrict[]               @relation("RldContestChallenger")
+  rldStealCooldowns               RldStealCooldown[]
   sabotageAsAttacker              SabotageAction[]                 @relation("SabotageAttacker")
   sabotageAsVictim                SabotageAction[]                 @relation("SabotageVictim")
   shootingStats                   ShootingRangeStats?
@@ -2025,10 +2028,13 @@ model Prostitute {
   lastWorkedAt         DateTime?                       @db.DateTime(0)
   nightclubVenueId     Int?
   nightclubAssignedAt  DateTime?                       @db.DateTime(0)
+  stolenFromPlayerId   Int?
+  hotUntil             DateTime?                       @db.DateTime(0)
   eventParticipations  EventParticipation[]
   nightclubAssignments NightclubProstituteAssignment[]
   nightclubVenue       NightclubVenue?                 @relation(fields: [nightclubVenueId], references: [id], onUpdate: Restrict, map: "fk_prostitutes_nightclubVenueId")
   player               Player                          @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  stolenFrom           Player?                         @relation("ProstituteStolenFrom", fields: [stolenFromPlayerId], references: [id], onDelete: SetNull)
   redLightRoom         RedLightRoom?                   @relation(fields: [redLightRoomId], references: [id])
 
   @@index([playerId])
@@ -2038,19 +2044,35 @@ model Prostitute {
 }
 
 model RedLightDistrict {
-  id            Int            @id @default(autoincrement())
-  countryCode   String         @unique @db.VarChar(50)
-  ownerId       Int?
-  purchasePrice Int            @default(500000)
-  purchasedAt   DateTime?
-  roomCount     Int            @default(8)
-  tier          Int            @default(1)
-  securityLevel Int            @default(0)
-  owner         Player?        @relation(fields: [ownerId], references: [id])
-  rooms         RedLightRoom[]
+  id                   Int                @id @default(autoincrement())
+  countryCode          String             @unique @db.VarChar(50)
+  ownerId              Int?
+  purchasePrice        Int                @default(500000)
+  purchasedAt          DateTime?
+  roomCount            Int                @default(4)
+  tier                 Int                @default(1)
+  securityLevel        Int                @default(0)
+  expansionLevel       Int                @default(0)
+  contestStatus        String             @default("idle") @db.VarChar(20)
+  contestChallengerId  Int?
+  contestAttackerScore Int                @default(0)
+  contestDefenderScore Int                @default(0)
+  contestHoldCount     Int                @default(0)
+  contestStake         Int                @default(0)
+  contestPrepAt        DateTime?
+  contestActiveAt      DateTime?
+  contestLockdownAt    DateTime?
+  contestResolveAt     DateTime?
+  contestCooldownUntil DateTime?
+  lastOccupancyHeatAt  DateTime?
+  owner                Player?            @relation(fields: [ownerId], references: [id])
+  contestChallenger    Player?            @relation("RldContestChallenger", fields: [contestChallengerId], references: [id], onDelete: SetNull)
+  rooms                RedLightRoom[]
+  stealCooldowns       RldStealCooldown[]
 
   @@index([countryCode])
   @@index([ownerId])
+  @@index([contestStatus])
   @@map("red_light_districts")
 }
 
@@ -2061,6 +2083,9 @@ model RedLightRoom {
   occupied           Boolean          @default(false)
   lastEarningsAt     DateTime         @default(now())
   tier               Int              @default(1)
+  guardUntil         DateTime?
+  guardCooldownUntil DateTime?
+  sabotagedUntil     DateTime?
   prostitute         Prostitute?
   redLightDistrict   RedLightDistrict @relation(fields: [redLightDistrictId], references: [id], onDelete: Cascade)
 
@@ -2069,18 +2094,33 @@ model RedLightRoom {
   @@map("red_light_rooms")
 }
 
+model RldStealCooldown {
+  id         Int              @id @default(autoincrement())
+  attackerId Int
+  districtId Int
+  until      DateTime
+  attacker   Player           @relation(fields: [attackerId], references: [id], onDelete: Cascade)
+  district   RedLightDistrict @relation(fields: [districtId], references: [id], onDelete: Cascade)
+
+  @@unique([attackerId, districtId])
+  @@index([until])
+  @@map("rld_steal_cooldowns")
+}
+
 model VipEvent {
   id                  Int                  @id @default(autoincrement())
   title               String               @db.VarChar(255)
   description         String?              @db.Text
   eventType           String               @db.VarChar(50)
-  countryCode         String               @db.VarChar(2)
+  countryCode         String               @db.VarChar(50)
   startTime           DateTime
   endTime             DateTime
   bonusMultiplier     Float                @default(2)
   minLevelRequired    Int                  @default(1)
   maxParticipants     Int                  @default(50)
   currentParticipants Int                  @default(0)
+  vipOnly             Boolean              @default(false)
+  eventKey            String?              @db.VarChar(50)
   createdAt           DateTime             @default(now())
   participations      EventParticipation[]
 

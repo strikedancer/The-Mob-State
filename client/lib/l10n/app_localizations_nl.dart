@@ -11671,6 +11671,136 @@ class AppLocalizationsNl extends AppLocalizations {
   String get prostitutionTierVip => 'VIP';
 
   @override
+  String get rldTierLounge => 'Lounge';
+
+  @override
+  String get rldTierPrestige => 'Prestige';
+
+  @override
+  String get rldTierPenthouse => 'Penthouse';
+
+  @override
+  String get rldUpgradeRooms => 'Meer kamers';
+
+  @override
+  String get rldUpgradeRoomsSubtitle =>
+      'Koop extra kamers voordat je hier meer recruits plaatst.';
+
+  @override
+  String rldUpgradeRoomsButton(String cost) {
+    return 'Kamers bouwen · €$cost';
+  }
+
+  @override
+  String rldUpgradeRoomsConfirm(String rooms, String cost) {
+    return '$rooms kamers erbij voor €$cost?';
+  }
+
+  @override
+  String get rldMaxRooms => 'Dit district zit aan het maximum kamers.';
+
+  @override
+  String get rldRoomsFullHint => 'Alle kamers zijn vol. Upgrade eerst kamers.';
+
+  @override
+  String get rldOccupancyBusy => 'Drukke zaak trekt politie';
+
+  @override
+  String get rldOccupancyFull => 'Een vol district trekt extra politie';
+
+  @override
+  String get rldGuard => 'Bewaken';
+
+  @override
+  String get rldGuardConfirm =>
+      'Deze recruit 8 uur bewaken (12 met VIP)? Ze verdient de helft zolang je waakt.';
+
+  @override
+  String get rldSteal => 'Stelen';
+
+  @override
+  String get rldStealConfirm =>
+      'Deze recruit stelen? Kost cash en heat. Lukt het, blijft ze 12 uur op straat.';
+
+  @override
+  String get rldSabotage => 'Sabotage';
+
+  @override
+  String get rldSabotageConfirm =>
+      'Deze kamer sluiten tot de contest klaar is? Geen huur zolang ze dicht is.';
+
+  @override
+  String get rldContestBannerPrep =>
+      'Contest start zo. De eigenaar kan nog upgraden of bewaken.';
+
+  @override
+  String get rldContestBannerActive =>
+      'Het gevecht loopt. Stelen en sabotage tellen.';
+
+  @override
+  String get rldContestBannerLockdown =>
+      'Het gevecht sluit. Geen nieuwe acties.';
+
+  @override
+  String get rldContestStart => 'Betwist dit district';
+
+  @override
+  String get rldContestStartConfirm =>
+      'Zet €100.000 in om dit district te betwisten? De eigenaar krijgt eerst een kort venster.';
+
+  @override
+  String get rldContestHold => 'Houden';
+
+  @override
+  String rldContestScore(String attack, String defense) {
+    return 'Stand $attack – $defense';
+  }
+
+  @override
+  String get rldReclaim => 'Terughalen';
+
+  @override
+  String get rldReclaimHint =>
+      'Van jou gestolen. Haal haar binnen 12 uur terug.';
+
+  @override
+  String get rldHotHint =>
+      'Net gestolen. Ze mag 12 uur niet in een district of nachtclub.';
+
+  @override
+  String get rldGuardedHint => 'Bewaakt';
+
+  @override
+  String get rldSabotagedHint => 'Dicht deze contest';
+
+  @override
+  String get rldEventsStreet => 'Straatavonden';
+
+  @override
+  String get rldEventsVipSalon => 'VIP-salon';
+
+  @override
+  String get rldEventsBusyTonight => 'Vanavond druk — extra geld, extra risico';
+
+  @override
+  String get rldEventTouristNight => 'Toeristennacht';
+
+  @override
+  String get rldEventHarborShift => 'Havenploeg';
+
+  @override
+  String get rldEventCityFestival => 'Stadsfeest';
+
+  @override
+  String get rldEventPrivateSalon => 'Privésalon';
+
+  @override
+  String get rldEventYachtParty => 'Jachtfeest';
+
+  @override
+  String get rldVipOnly => 'VIP';
+
+  @override
   String get prostitutionSecurityLevel => 'Beveiligingsniveau';
 
   @override
@@ -11778,14 +11908,14 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get vipEventsTitle => 'VIP-evenementen';
+  String get vipEventsTitle => 'Events';
 
   @override
-  String get vipEventsTabTitle => 'VIP-evenementen';
+  String get vipEventsTabTitle => 'Events';
 
   @override
   String get vipEventsDescription =>
-      'Wijs prostituees toe aan VIP events voor bonus inkomsten!';
+      'Stuur een recruit naar een avond voor extra inkomsten. Drukke avonden trekken ook politie en dieven.';
 
   @override
   String get vipEventsActive => 'Actieve Events';
@@ -18683,15 +18813,15 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicProstitutionSummary =>
-      'Bouw een prostitutie-netwerk met recruits, events en VIP-klanten. Een goed gerund netwerk genereert passief geld maar vereist actief management om rivaliteit en politie-aandacht te beheersen.';
+      'Werf recruits, zet ze op straat of in een Red Light District, draai avonden en let op politie-heat. Andere spelers kunnen een recruit stelen; je hebt 12 uur om haar terug te halen.';
 
   @override
   String get helpTopicProstitutionHow =>
-      'Je beheert recruits met elk hun eigen stats (ervaring, populariteit, beschikbaarheid). Meer recruits = hoger passief inkomen.\nWerven kan alleen in het land waar je nu bent, en alleen als je daar een huis of appartement hebt. Vrije woonplekken uit andere landen tellen niet voor werven hier.\nWerk-shifts duren 8 uur per recruit: na een shift heeft dezelfde recruit eerst rusttijd voordat je opnieuw kunt starten.\nLocatiebeheer is flexibel: je kunt recruits verplaatsen tussen straat, Red Light District en nightclub via de actieknoppen op de kaart.\nEvents zijn tijdelijke boosters: speciale optredens, VIP-avonden en feesten verhogen het inkomen per tick voor de duur van het event.\nRivaliteit: andere spelers of NPC-concurrenten kunnen je recruits afpakken of events saboteren. Hogere beveiliging verlaagt dit risico.\nVIP-klanten betalen aanzienlijk meer maar vereisen recruits met hoge populariteit (80+) en een beveiligde locatie.\nPolitie-aandacht (heat) stijgt bij grote transacties en raids. Hoge heat leidt tot confiscatie van inkomen of tijdelijke sluiting.\nCombinatie met nightclub: een nightclub biedt een legale dekking voor de activiteiten wat heat langzamer laat stijgen.\nGebruik het opbrengst-overzicht bovenin om snel te zien wat straat, RLD en nightclub per uur opleveren.\nLeaderboard: hoogste totale weekomzet wint een wekelijkse geldbeloning en een badge.';
+      'Je werft in het land waar je nu bent, en alleen als je daar een huis of appartement hebt. Vrije woonplekken uit andere landen tellen niet.\nElke recruit krijgt level via werk-shifts van 8 uur, daarna rust.\nVerplaats recruits tussen straat, Red Light District en nachtclub. Een district heeft alleen zoveel kamers als de eigenaar heeft vrijgespeeld. Is het vol, blijft ze op straat.\nEen gestolen recruit staat 12 uur op straat. De oude baas kan haar in dat venster terughalen. De dief mag haar nog niet in een district of nachtclub zetten.\nEvents zijn drukke avonden: extra geld, extra politie, makkelijker stelen. Straatavonden zijn voor iedereen. VIP-salon is voor Player VIP.\nRivaliteit onder Sociaal steelt nog cash of tipt de politie. Een recruit stelen is een aparte knop op een kamerschaal.\nPolitie-heat stijgt bij een vol district en bij events. Hoge FBI-heat kan raids geven.';
 
   @override
   String get helpTopicProstitutionTips =>
-      'Investeer vroeg in beveiliging: een rivaliteits-aanval die je beste recruit wegpakt kost je meer dan de beveiligingskosten.\nOrganiseer VIP-events alleen als je recruits boven 80 populariteit hebt: onder die drempel betalen VIP-klanten gewoon normaaltarief.';
+      'Zet niet elk kamertje vol als je heat al hoog is: een volle zaak trekt politie en dieven.\nBewaak je beste recruit als er een contest aankomt: ze verdient minder, maar is veel lastiger te stelen.';
 
   @override
   String get helpTopicRedLightDistrictsCategory => 'Empire';
@@ -18701,15 +18831,15 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicRedLightDistrictsSummary =>
-      'Claim en beheer territoriale districten per land. Eigenaarschap van een district geeft passief inkomen en controle over prostitutie-activiteiten in die regio.';
+      'Elk land heeft één Red Light District. De eigenaar int kamerhuur, upgrade kamers en inkomsten, en kan het pand bij een zeldzame contest verliezen.';
 
   @override
   String get helpTopicRedLightDistrictsHow =>
-      'Elk land heeft één of meerdere Red Light Districts die geclaimd kunnen worden. Claim een district door een vastgesteld aankoopbedrag te betalen.\nAls eigenaar van een district ontvang je een percentage van alle prostitutie-inkomsten in dat land — ook van andere spelers die er opereren.\nAndere spelers kunnen jouw district aanvallen om de ownership over te nemen. Hogere beveiliging verlaagt de aanvalskans.\nDistrict-upgrades (beveiliging, marketing, infrastructuur) verhogen je inkomenspercentage en verlagen de kans op verlies van ownership.\nJe kunt maximaal 3 districten tegelijk bezitten. Strategische keuze per land is essentieel.\nDrukste landen (Colombia, Dubai, Japan) geven het hoogste passieve inkomen maar zijn ook het vaakst omstreden.\nVerlies van een district kost je het aankoopbedrag niet terug: het is definitief verloren als een vijand succesvol claimt.';
+      'Koop het district in het land waar je nu bent. Een nieuwe koop start met vier kamers. Extra kamers komen uit de kamer-upgrade, niet door extra recruits te plaatsen.\nInkomsten-upgrades verhogen de huur per kamer (Basic, Lounge, Luxury, Prestige, Penthouse). Penthouse vraagt Player VIP. Beveiliging verlaagt raid-kans en maakt stelen lastiger.\nEen volle zaak betaalt meer huur en trekt meer politie. Bewaak een ster om diefstal bijna te blokken, tegen de helft van de verdienste.\nAndere spelers in hetzelfde land kunnen een recruit uit een bezette kamer stelen. Een zeldzame contest kan de eigenaar wisselen. Kamers, upgrades en huurders blijven bij het pand; huur gaat naar de nieuwe baas.\nEen contest heeft een korte voorbereiding, een live gevecht en een slot. Stelen en sabotage scoren voor de uitdager; de eigenaar kan Houden voor cash en heat.\nPolitieraids lopen nog bij hoge FBI-heat. Events in dat land maken raids en diefstal waarschijnlijker.';
 
   @override
   String get helpTopicRedLightDistrictsTips =>
-      'Begin met een minder populair land voor je eerste district: lagere aanvalsdruk geeft je tijd om security te upgraden voor het echte werk.\nUpgrade beveiliging van elk district direct na aankoop: de eerste 24 uur zijn het kwetsbaarst voor een takeover.';
+      'Upgrade kamers pas als je recruits klaar hebt: lege kamers kosten geen onderhoud, maar een vol huis is een doelwit.\nWordt je betwist, gebruik de voorbereiding voor beveiliging of een wacht, niet om het laatste kamertje te vullen.';
 
   @override
   String get helpTopicAchievementsCategory => 'Meta';

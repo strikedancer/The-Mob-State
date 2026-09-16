@@ -1,6 +1,8 @@
 import express from 'express';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
 import { prostituteService } from '../services/prostituteService';
+import { rldPvpService } from '../services/rldPvpService';
+import prisma from '../lib/prisma';
 
 const router = express.Router();
 
@@ -165,6 +167,37 @@ router.get('/can-recruit', authenticate, async (req: AuthRequest, res) => {
     res.json(canRecruit);
   } catch (error) {
     console.error('Error checking recruitment status:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+router.get('/reclaimable', authenticate, async (req: AuthRequest, res) => {
+  try {
+    const now = new Date();
+    const workers = await prisma.prostitute.findMany({
+      where: {
+        stolenFromPlayerId: req.player!.id,
+        hotUntil: { gt: now },
+      },
+      include: {
+        player: { select: { id: true, username: true } },
+      },
+    });
+    res.json({ success: true, prostitutes: workers });
+  } catch (error) {
+    console.error('Error listing reclaimable workers:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+router.post('/:id/reclaim', authenticate, async (req: AuthRequest, res) => {
+  try {
+    const prostituteId = parseInt(String(req.params.id), 10);
+    const result = await rldPvpService.reclaimWorker(req.player!.id, prostituteId);
+    if (!result.success) return res.status(400).json(result);
+    res.json(result);
+  } catch (error) {
+    console.error('Error reclaiming worker:', error);
     res.status(500).json({ success: false, message: 'Server error' });
   }
 });

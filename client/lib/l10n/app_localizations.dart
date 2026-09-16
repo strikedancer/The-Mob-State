@@ -20363,6 +20363,234 @@ abstract class AppLocalizations {
   /// **'VIP'**
   String get prostitutionTierVip;
 
+  /// No description provided for @rldTierLounge.
+  ///
+  /// In en, this message translates to:
+  /// **'Lounge'**
+  String get rldTierLounge;
+
+  /// No description provided for @rldTierPrestige.
+  ///
+  /// In en, this message translates to:
+  /// **'Prestige'**
+  String get rldTierPrestige;
+
+  /// No description provided for @rldTierPenthouse.
+  ///
+  /// In en, this message translates to:
+  /// **'Penthouse'**
+  String get rldTierPenthouse;
+
+  /// No description provided for @rldUpgradeRooms.
+  ///
+  /// In en, this message translates to:
+  /// **'More rooms'**
+  String get rldUpgradeRooms;
+
+  /// No description provided for @rldUpgradeRoomsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy extra rooms before you can place more recruits here.'**
+  String get rldUpgradeRoomsSubtitle;
+
+  /// No description provided for @rldUpgradeRoomsButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Build rooms · €{cost}'**
+  String rldUpgradeRoomsButton(String cost);
+
+  /// No description provided for @rldUpgradeRoomsConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Add {rooms} rooms for €{cost}?'**
+  String rldUpgradeRoomsConfirm(String rooms, String cost);
+
+  /// No description provided for @rldMaxRooms.
+  ///
+  /// In en, this message translates to:
+  /// **'This district is at its room cap.'**
+  String get rldMaxRooms;
+
+  /// No description provided for @rldRoomsFullHint.
+  ///
+  /// In en, this message translates to:
+  /// **'All rooms are full. Upgrade rooms first.'**
+  String get rldRoomsFullHint;
+
+  /// No description provided for @rldOccupancyBusy.
+  ///
+  /// In en, this message translates to:
+  /// **'Busy house draws police'**
+  String get rldOccupancyBusy;
+
+  /// No description provided for @rldOccupancyFull.
+  ///
+  /// In en, this message translates to:
+  /// **'A packed district draws extra police attention'**
+  String get rldOccupancyFull;
+
+  /// No description provided for @rldGuard.
+  ///
+  /// In en, this message translates to:
+  /// **'Guard'**
+  String get rldGuard;
+
+  /// No description provided for @rldGuardConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Guard this recruit for 8 hours (12 with VIP)? She earns half while guarded.'**
+  String get rldGuardConfirm;
+
+  /// No description provided for @rldSteal.
+  ///
+  /// In en, this message translates to:
+  /// **'Steal'**
+  String get rldSteal;
+
+  /// No description provided for @rldStealConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Steal this recruit? Costs cash and heat. If it works she stays on the street for 12 hours.'**
+  String get rldStealConfirm;
+
+  /// No description provided for @rldSabotage.
+  ///
+  /// In en, this message translates to:
+  /// **'Sabotage'**
+  String get rldSabotage;
+
+  /// No description provided for @rldSabotageConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Close this room until the contest ends? No rent while it is shut.'**
+  String get rldSabotageConfirm;
+
+  /// No description provided for @rldContestBannerPrep.
+  ///
+  /// In en, this message translates to:
+  /// **'Contest starting soon. The owner can still upgrade or guard.'**
+  String get rldContestBannerPrep;
+
+  /// No description provided for @rldContestBannerActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Fight is live. Stealing and sabotage count.'**
+  String get rldContestBannerActive;
+
+  /// No description provided for @rldContestBannerLockdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Fight is closing. No new actions.'**
+  String get rldContestBannerLockdown;
+
+  /// No description provided for @rldContestStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Contest this district'**
+  String get rldContestStart;
+
+  /// No description provided for @rldContestStartConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Stake €100,000 to contest this district? The owner gets a short window first.'**
+  String get rldContestStartConfirm;
+
+  /// No description provided for @rldContestHold.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold'**
+  String get rldContestHold;
+
+  /// No description provided for @rldContestScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Score {attack} – {defense}'**
+  String rldContestScore(String attack, String defense);
+
+  /// No description provided for @rldReclaim.
+  ///
+  /// In en, this message translates to:
+  /// **'Take back'**
+  String get rldReclaim;
+
+  /// No description provided for @rldReclaimHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Stolen from you. Take her back within 12 hours.'**
+  String get rldReclaimHint;
+
+  /// No description provided for @rldHotHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Just stolen. She cannot work a district or nightclub for 12 hours.'**
+  String get rldHotHint;
+
+  /// No description provided for @rldGuardedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Guarded'**
+  String get rldGuardedHint;
+
+  /// No description provided for @rldSabotagedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed this contest'**
+  String get rldSabotagedHint;
+
+  /// No description provided for @rldEventsStreet.
+  ///
+  /// In en, this message translates to:
+  /// **'Street nights'**
+  String get rldEventsStreet;
+
+  /// No description provided for @rldEventsVipSalon.
+  ///
+  /// In en, this message translates to:
+  /// **'VIP salon'**
+  String get rldEventsVipSalon;
+
+  /// No description provided for @rldEventsBusyTonight.
+  ///
+  /// In en, this message translates to:
+  /// **'Busy tonight — extra cash, extra risk'**
+  String get rldEventsBusyTonight;
+
+  /// No description provided for @rldEventTouristNight.
+  ///
+  /// In en, this message translates to:
+  /// **'Tourist night'**
+  String get rldEventTouristNight;
+
+  /// No description provided for @rldEventHarborShift.
+  ///
+  /// In en, this message translates to:
+  /// **'Harbor shift'**
+  String get rldEventHarborShift;
+
+  /// No description provided for @rldEventCityFestival.
+  ///
+  /// In en, this message translates to:
+  /// **'City festival'**
+  String get rldEventCityFestival;
+
+  /// No description provided for @rldEventPrivateSalon.
+  ///
+  /// In en, this message translates to:
+  /// **'Private salon'**
+  String get rldEventPrivateSalon;
+
+  /// No description provided for @rldEventYachtParty.
+  ///
+  /// In en, this message translates to:
+  /// **'Yacht party'**
+  String get rldEventYachtParty;
+
+  /// No description provided for @rldVipOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'VIP'**
+  String get rldVipOnly;
+
   /// No description provided for @prostitutionSecurityLevel.
   ///
   /// In en, this message translates to:
@@ -20546,19 +20774,19 @@ abstract class AppLocalizations {
   /// No description provided for @vipEventsTitle.
   ///
   /// In en, this message translates to:
-  /// **'VIP Events'**
+  /// **'Events'**
   String get vipEventsTitle;
 
   /// No description provided for @vipEventsTabTitle.
   ///
   /// In en, this message translates to:
-  /// **'VIP Events'**
+  /// **'Events'**
   String get vipEventsTabTitle;
 
   /// No description provided for @vipEventsDescription.
   ///
   /// In en, this message translates to:
-  /// **'Assign prostitutes to VIP events for bonus earnings!'**
+  /// **'Send a recruit to a night for extra earnings. Busy nights also draw police and thieves.'**
   String get vipEventsDescription;
 
   /// No description provided for @vipEventsActive.
@@ -32093,19 +32321,19 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicProstitutionSummary.
   ///
   /// In en, this message translates to:
-  /// **'Build a prostitution network with recruits, events and VIP clients. A well-run network generates passive income but requires active management to control rivalry and police attention.'**
+  /// **'Recruit workers, place them on the street or in a Red Light District, run nights, and watch police heat. Other players can steal a recruit; you have 12 hours to take her back.'**
   String get helpTopicProstitutionSummary;
 
   /// No description provided for @helpTopicProstitutionHow.
   ///
   /// In en, this message translates to:
-  /// **'You manage recruits each with their own stats (experience, popularity, availability). More recruits = higher passive income.\nYou can only recruit in the country you are in, and only if you own a house or apartment there. Spare housing slots in other countries do not let you recruit here.\nWork shifts run for 8 hours per recruit: after a shift, that recruit needs rest time before you can start again.\nLocation management is flexible: you can move recruits between street, Red Light District and nightclub using the action buttons on each card.\nEvents are temporary boosters: special shows, VIP nights and parties raise income per tick for the duration of the event.\nRivalry: other players or NPC competitors can poach your recruits or sabotage events. Higher security lowers this risk.\nVIP clients pay considerably more but require recruits with high popularity (80+) and a secured location.\nPolice attention (heat) rises with large transactions and raids. High heat leads to income confiscation or temporary shutdown.\nCombination with nightclub: a nightclub provides legal cover for activities making heat rise more slowly.\nUse the earnings insight panel at the top to quickly compare hourly output for street, RLD and nightclub.\nLeaderboard: highest total weekly turnover wins a weekly cash reward and a badge.'**
+  /// **'You recruit in the country you are in, and only if you own a house or apartment there. Spare housing slots in other countries do not let you recruit here.\nEach recruit has a level from work shifts. Shifts last 8 hours, then she needs rest.\nMove recruits between street, Red Light District and nightclub. A district only has as many rooms as its owner has unlocked with upgrades. If rooms are full, she stays on the street.\nA stolen recruit sits on the street for 12 hours. The old boss can take her back in that window. The thief cannot put her in a district or nightclub yet.\nEvents are busy nights: extra earnings, extra police, easier theft. Street nights are for everyone. VIP salon nights need Player VIP.\nRivalry on Social still steals cash or tips police. Stealing a recruit is a separate action on a district room.\nPolice heat rises with a packed district and with events. High FBI heat can raid workers.'**
   String get helpTopicProstitutionHow;
 
   /// No description provided for @helpTopicProstitutionTips.
   ///
   /// In en, this message translates to:
-  /// **'Invest early in security: a rivalry attack that poaches your best recruit costs more than the security investment.\nOnly organise VIP events when recruits are above 80 popularity: below that threshold VIP clients simply pay the standard rate.'**
+  /// **'Do not fill every room if your heat is already high: a packed house draws police and thieves.\nGuard your best recruit when a contest is coming: she earns less, but she is much harder to steal.'**
   String get helpTopicProstitutionTips;
 
   /// No description provided for @helpTopicRedLightDistrictsCategory.
@@ -32123,19 +32351,19 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicRedLightDistrictsSummary.
   ///
   /// In en, this message translates to:
-  /// **'Claim and manage territorial districts per country. Owning a district gives passive income and control over prostitution activities in that region.'**
+  /// **'Each country has one Red Light District. The owner collects room rent, upgrades rooms and income, and can lose the building in a rare contest.'**
   String get helpTopicRedLightDistrictsSummary;
 
   /// No description provided for @helpTopicRedLightDistrictsHow.
   ///
   /// In en, this message translates to:
-  /// **'Each country has one or more Red Light Districts that can be claimed. Claim a district by paying a set purchase amount.\nAs owner of a district you receive a percentage of all prostitution income in that country — including from other players operating there.\nOther players can attack your district to take over ownership. Higher security lowers the attack chance.\nDistrict upgrades (security, marketing, infrastructure) raise your income percentage and lower the chance of losing ownership.\nYou can own up to 3 districts simultaneously. Strategic country choice is essential.\nBusiest countries (Colombia, Dubai, Japan) give the highest passive income but are also the most contested.\nLosing a district does not refund the purchase price: it is permanently lost if an enemy successfully claims it.'**
+  /// **'Buy the district in the country you are in. A new buy starts with four rooms. Extra rooms come from the room upgrade, not from placing more recruits.\nIncome upgrades raise rent per room (Basic, Lounge, Luxury, Prestige, Penthouse). Penthouse needs Player VIP. Security lowers raid chance and makes theft harder.\nA full house pays more rent and draws more police. Guard a star to almost block theft for a few hours at half earnings.\nOther players in the same country can steal a recruit from an occupied room. A rare contest can change the owner. Rooms, upgrades and tenants stay with the building; rent goes to the new boss.\nA contest has a short prep, a live fight, then a close. Stealing and sabotage score for the challenger; the owner can Hold for cash and heat.\nPolice raids still run when FBI heat is high. Events in that country make raids and theft more likely.'**
   String get helpTopicRedLightDistrictsHow;
 
   /// No description provided for @helpTopicRedLightDistrictsTips.
   ///
   /// In en, this message translates to:
-  /// **'Start with a less popular country for your first district: lower attack pressure gives you time to upgrade security before the real competition.\nUpgrade security of each district immediately after purchase: the first 24 hours are the most vulnerable to a takeover.'**
+  /// **'Upgrade rooms only when you have recruits ready: empty rooms do not cost upkeep, but a packed house is a target.\nIf someone contests you, spend the prep window on security or a guard, not on filling the last empty room.'**
   String get helpTopicRedLightDistrictsTips;
 
   /// No description provided for @helpTopicAchievementsCategory.

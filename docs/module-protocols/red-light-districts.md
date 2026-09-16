@@ -22,22 +22,24 @@ District ownership, country-level expansion and prostitution territory progressi
 - Does this module depend on assets, videos, icons or generated media?
 
 ## Must Preserve
-- Help mag geen PvP-districtovername beloven. Politieraids lopen via de tick (`checkAndExecuteRaid`) bij FBI-heat ≥ 50.
+- Politieraids lopen via de tick (`checkAndExecuteRaid`) bij FBI-heat ≥ 50, beïnvloed door bezetting en events.
+- Nieuwe aankoop start met 4 kamers; extra kamers alleen via expansion-upgrade. Bestaande kamers niet uitzetten.
+- PvP: recruit stelen (straat, 12u terughalen) en zeldzame 1v1 district-contest. Geen Territory-kaart.
+- Client-copy in alle allowlist-talen; Help topics `prostitution` en `red-light-districts` voeden de Almanak-handleiding.
 - Clear success and failure feedback for the player.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
 - District data integrity: country districts must always exist (idempotent seed/repair on read paths) so RLD purchase flow cannot dead-end after an empty DB state.
-- Upgrade and raid UI use existing APIs only: `getUpgradeInfo` / `upgradeTier` / `upgradeSecurity` / `getRaidStats` — no new raid mechanics from the client.
 
 ## District detail UI
-- Header: country, rooms occupied/empty, tier, security level.
-- Upgrade panels with confirm dialogs (cost + effect from upgrade-info).
-- Room grid: occupied vs empty with assign CTA.
-- Raid risk panel: FBI heat, raid chance %, max security, district count, busted workers.
+- Header: country, rooms occupied/empty, income tier, security, contest banner.
+- Upgrade panels: rooms (expansion), income tier (5 steps, Penthouse VIP), security 0–5.
+- Room grid: assign, steal, guard, sabotage during contest.
+- Raid risk panel: FBI heat, raid chance %, occupancy note, busted workers.
 
 ## i18n and Messaging
-- Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
+- Labels, Help and push/inbox in nl/en/de/fr/es/it/pl/pt.
 - If this module emits notifications, push messages or inbox events, keep the wording aligned across all channels.
 - If player behavior changes, update the player help entry for this module.
 

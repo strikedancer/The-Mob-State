@@ -3,7 +3,7 @@
 ## Scope
 Public, read-only player almanac generated from `backend/content/*.json` and served at `https://wiki.themobstate.com`. Pages are regenerated automatically when those catalogs (or wiki templates) change on the VPS. Noir/gold static HTML in all player locales (`nl`, `en`, `de`, `fr`, `es`, `it`, `pl`, `pt`). Original game images come from the same `runtime/client-images` mount as the Flutter client (`/images/...`). Home titles/descriptions name **The Mob State** plus a local “text-based mafia game” phrase (`seoDocumentTitle` / `seoDocumentDescription` in `wiki/src/i18n.mjs`). Sitemap: `https://wiki.themobstate.com/sitemap.xml` (also listed from `themobstate.com/robots.txt`). Search Console: aparte URL-prefix property — zie `docs/seo.md`.
 
-This is a catalogue and typical-relative guide, not live Black Market quotes. Street prices still move in-game. The **Handleiding** chapter (`/{lang}/guide/`) publishes the full in-game Help & Uitleg, including **Don**, **Midnight Races**, and **Profiel & avatar** (preset swap + selfie→portrait). Search in the header uses `/{lang}/search.json` and matches every generated page, not only the cards on the current screen. A bottom-right **Ask the Almanac** panel answers player questions from that same index (handbook first); it is not a live-price bot and does not call the game API.
+This is a catalogue and typical-relative guide, not live Black Market quotes. Street prices still move in-game. The **Handleiding** chapter (`/{lang}/guide/`) publishes the full in-game Help & Uitleg, including **Don**, **Midnight Races**, **Profiel & avatar**, **Prostitutie** and **Red Light Districts**. Search in the header uses `/{lang}/search.json` and matches every generated page, not only the cards on the current screen. A bottom-right **Ask the Almanac** panel answers player questions from that same index (handbook first); it is not a live-price bot and does not call the game API.
 
 ## Primary Frontend Entry
 - Generator: `wiki/src/build.mjs` (one-shot), `wiki/src/watch.mjs` (rebuild on file change) and `wiki/src/guides.mjs` (Help handbook)
@@ -28,6 +28,7 @@ This is a catalogue and typical-relative guide, not live Black Market quotes. St
 - Almanac -> Frontend Platform (same image library mount)
 - Almanac -> Marketing web (footer + SEO subdomain)
 - Almanac -> Help & Uitleg (CTA + published handbook pages from `app_*.arb` / `help_content.dart`)
+- Almanac -> Prostitution / Red Light Districts (`/{lang}/guide/prostitution/` and `/{lang}/guide/red-light-districts/`): room upgrades, occupancy heat, events, steal/reclaim, contest phases. Those sentences must land in `/{lang}/search.json` so header search and Ask the Almanac find them.
 - Almanac -> Player Profile / Player Portraits (guide topic `profile`)
 - Almanac -> Balance & Economy (do not leak live economy; typical factors only)
 
@@ -44,7 +45,7 @@ This is a catalogue and typical-relative guide, not live Black Market quotes. St
 6. Help button and landing footer open the matching locale home.
 7. Changing a file under `backend/content/` on the VPS rebuilds HTML without a wiki image rebuild (container logs show `wiki: rebuilding`).
 8. `/{lang}/guide/` lists every Help topic; `/guide/don/` covers rackets, loans, officials and contracts; `/guide/profile/` covers public profile, preset avatars and selfie portraits.
-9. Header search on any page finds Don, handbook topics and catalog items via `/{lang}/search.json`. After changing `wiki/src/client.js` or `theme.css`, bump `ASSET_V` in `layout.mjs` so browsers skip the 7-day static cache.
+9. Header search on any page finds Don, handbook topics (including Red Light District rooms, occupancy heat, events, steal/reclaim and contest) and catalog items via `/{lang}/search.json`. After changing `wiki/src/client.js` or `theme.css`, bump `ASSET_V` in `layout.mjs` so browsers skip the 7-day static cache.
 10. The Ask the Almanac button answers “how does Don work?”-style questions from `search.json` (handbook pages ranked first) and links to the matching page. It must not invent live prices or account state.
 
 ## i18n and Messaging

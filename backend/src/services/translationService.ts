@@ -231,6 +231,36 @@ export interface Translations {
       pushBody: (regionKey: string) => string;
       inboxMessage: (regionKey: string) => string;
     };
+    rldStolen: {
+      title: string;
+      pushBody: (thiefName: string, workerName: string) => string;
+      inboxMessage: (thiefName: string, workerName: string) => string;
+    };
+    rldReclaimed: {
+      title: string;
+      pushBody: (ownerName: string, workerName: string) => string;
+      inboxMessage: (ownerName: string, workerName: string) => string;
+    };
+    rldContestPrep: {
+      title: string;
+      pushBody: (challengerName: string, country: string) => string;
+      inboxMessage: (challengerName: string, country: string) => string;
+    };
+    rldContestActive: {
+      title: string;
+      pushBody: (country: string) => string;
+      inboxMessage: (country: string) => string;
+    };
+    rldContestWon: {
+      title: string;
+      pushBody: (country: string) => string;
+      inboxMessage: (country: string) => string;
+    };
+    rldContestLost: {
+      title: string;
+      pushBody: (winnerName: string, country: string) => string;
+      inboxMessage: (winnerName: string, country: string) => string;
+    };
     raceResult: {
       title: string;
       systemSender: string;
@@ -247,6 +277,7 @@ export interface Translations {
     automatedMessage: string;
     appName: string;
     territorySystemSender: string;
+    rldSystemSender: string;
   };
 }
 
@@ -518,6 +549,68 @@ const translations: Record<'en' | 'nl', Translations> = {
             'This region was taken by another crew.',
           ].join('\n'),
       },
+      rldStolen: {
+        title: 'Recruit stolen',
+        pushBody: (thiefName, workerName) => `${thiefName} stole ${workerName} from your Red Light District.`,
+        inboxMessage: (thiefName, workerName) =>
+          [
+            'Recruit stolen',
+            '',
+            `${thiefName} took ${workerName} from a district room.`,
+            'You have 12 hours to take her back while she is still on the street.',
+          ].join('\n'),
+      },
+      rldReclaimed: {
+        title: 'Recruit taken back',
+        pushBody: (ownerName, workerName) => `${ownerName} took ${workerName} back.`,
+        inboxMessage: (ownerName, workerName) =>
+          [
+            'Recruit taken back',
+            '',
+            `${ownerName} reclaimed ${workerName} within 12 hours.`,
+          ].join('\n'),
+      },
+      rldContestPrep: {
+        title: 'District contested',
+        pushBody: (challengerName, country) => `${challengerName} is contesting your Red Light District in ${country}.`,
+        inboxMessage: (challengerName, country) =>
+          [
+            'District contested',
+            '',
+            `${challengerName} started a contest for your district in ${country}.`,
+            'You have a short window to upgrade security or guard a star before the fight starts.',
+          ].join('\n'),
+      },
+      rldContestActive: {
+        title: 'District fight is live',
+        pushBody: (country) => `The Red Light District contest in ${country} is live.`,
+        inboxMessage: (country) =>
+          [
+            'District fight is live',
+            '',
+            `Stealing, sabotage and holding now count in ${country}.`,
+          ].join('\n'),
+      },
+      rldContestWon: {
+        title: 'You own the district',
+        pushBody: (country) => `You now own the Red Light District in ${country}.`,
+        inboxMessage: (country) =>
+          [
+            'You own the district',
+            '',
+            `Rooms, upgrades and tenants stayed. Rent in ${country} now goes to you.`,
+          ].join('\n'),
+      },
+      rldContestLost: {
+        title: 'District lost',
+        pushBody: (winnerName, country) => `${winnerName} took your Red Light District in ${country}.`,
+        inboxMessage: (winnerName, country) =>
+          [
+            'District lost',
+            '',
+            `${winnerName} won the contest in ${country}. Rooms and tenants stayed with the building.`,
+          ].join('\n'),
+      },
       raceResult: {
         title: 'Midnight Races',
         systemSender: 'Midnight Races',
@@ -534,6 +627,7 @@ const translations: Record<'en' | 'nl', Translations> = {
       automatedMessage: 'This is an automated message, please do not reply.',
       appName: 'THE MOB STATE',
       territorySystemSender: 'Territory Control',
+      rldSystemSender: 'Red Light District',
     },
   },
   nl: {
@@ -803,6 +897,68 @@ const translations: Record<'en' | 'nl', Translations> = {
             'Deze regio is overgenomen door een andere crew.',
           ].join('\n'),
       },
+      rldStolen: {
+        title: 'Recruit gestolen',
+        pushBody: (thiefName, workerName) => `${thiefName} stal ${workerName} uit jouw Red Light District.`,
+        inboxMessage: (thiefName, workerName) =>
+          [
+            'Recruit gestolen',
+            '',
+            `${thiefName} nam ${workerName} mee uit een kamer.`,
+            'Je hebt 12 uur om haar terug te halen zolang ze nog op straat staat.',
+          ].join('\n'),
+      },
+      rldReclaimed: {
+        title: 'Recruit teruggehaald',
+        pushBody: (ownerName, workerName) => `${ownerName} haalde ${workerName} terug.`,
+        inboxMessage: (ownerName, workerName) =>
+          [
+            'Recruit teruggehaald',
+            '',
+            `${ownerName} haalde ${workerName} binnen 12 uur terug.`,
+          ].join('\n'),
+      },
+      rldContestPrep: {
+        title: 'District betwist',
+        pushBody: (challengerName, country) => `${challengerName} betwist jouw Red Light District in ${country}.`,
+        inboxMessage: (challengerName, country) =>
+          [
+            'District betwist',
+            '',
+            `${challengerName} startte een contest om jouw district in ${country}.`,
+            'Je hebt even tijd om beveiliging te kopen of een ster te bewaken.',
+          ].join('\n'),
+      },
+      rldContestActive: {
+        title: 'Districtgevecht is live',
+        pushBody: (country) => `De contest om het Red Light District in ${country} is begonnen.`,
+        inboxMessage: (country) =>
+          [
+            'Districtgevecht is live',
+            '',
+            `Stelen, sabotage en houden tellen nu in ${country}.`,
+          ].join('\n'),
+      },
+      rldContestWon: {
+        title: 'Jij bent de baas',
+        pushBody: (country) => `Je bent nu eigenaar van het Red Light District in ${country}.`,
+        inboxMessage: (country) =>
+          [
+            'Jij bent de baas',
+            '',
+            `Kamers, upgrades en huurders blijven. Huur in ${country} gaat nu naar jou.`,
+          ].join('\n'),
+      },
+      rldContestLost: {
+        title: 'District verloren',
+        pushBody: (winnerName, country) => `${winnerName} nam jouw Red Light District in ${country} over.`,
+        inboxMessage: (winnerName, country) =>
+          [
+            'District verloren',
+            '',
+            `${winnerName} won de contest in ${country}. Kamers en huurders blijven bij het pand.`,
+          ].join('\n'),
+      },
       raceResult: {
         title: 'Midnight Races',
         systemSender: 'Midnight Races',
@@ -819,6 +975,7 @@ const translations: Record<'en' | 'nl', Translations> = {
       automatedMessage: 'Dit is een geautomatiseerd bericht, gelieve niet te antwoorden.',
       appName: 'THE MOB STATE',
       territorySystemSender: 'Territoriumbeheer',
+      rldSystemSender: 'Red Light District',
     },
   },
 };

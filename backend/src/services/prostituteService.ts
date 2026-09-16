@@ -10,6 +10,11 @@ import {
   applyVipTimeoutReductionSeconds,
   isVipStatusActive,
 } from './vipBenefitsService';
+import {
+  getTierConfig,
+  occupancyRate,
+  occupancyRentMultiplier,
+} from './rldConfig';
 
 const RECRUITMENT_COOLDOWN_MINUTES = 5;
 const RECRUITMENT_SUCCESS_CHANCE = 0.75; // 75% kans op succesvolle werving
@@ -215,12 +220,10 @@ function getProstitutionEconomyPreset() {
   return getProstitutionBalancePreset().preset;
 }
 
-// Tier-based earnings (for districts)
-const TIER_MULTIPLIERS = {
-  1: { gross: 75, rent: 20 }, // Basic: €75/h gross, €20/h rent
-  2: { gross: 100, rent: 30 }, // Luxury: €100/h gross, €30/h rent
-  3: { gross: 150, rent: 50 }, // VIP: €150/h gross, €50/h rent
-};
+function tierEarnings(tier: number) {
+  const config = getTierConfig(tier);
+  return { gross: config.gross, rent: config.rent };
+}
 
 const PROSTITUTE_NAMES = [
   'Scarlett',
@@ -1160,7 +1163,9 @@ export const prostituteService = {
       include: {
         redLightRoom: {
           include: {
-            redLightDistrict: true,
+            redLightDistrict: {
+              include: { rooms: { select: { occupied: true } } },
+            },
           },
         },
       },
@@ -1209,19 +1214,30 @@ export const prostituteService = {
         : 1;
 
       if (prostitute.location === 'redlight' && prostitute.redLightRoom) {
-        // In red light district - use tier-based earnings
-        const tier = prostitute.redLightRoom.tier || 1;
-        const tierConfig =
-          TIER_MULTIPLIERS[tier as keyof typeof TIER_MULTIPLIERS] || TIER_MULTIPLIERS[1];
-
-        const grossEarnings = Math.floor(tierConfig.gross * fullHoursElapsed * levelBonus);
-        rentPaid = Math.floor(tierConfig.rent * fullHoursElapsed);
+        const room = prostitute.redLightRoom;
+        if (room.sabotagedUntil && room.sabotagedUntil > now) {
+          await prisma.prostitute.update({
+            where: { id: prostitute.id },
+            data: { lastEarningsAt: settledUntil },
+          });
+          continue;
+        }
+        const tier = room.tier || 1;
+        const tierConfig = tierEarnings(tier);
+        const occupied = room.redLightDistrict.rooms.filter((r) => r.occupied).length;
+        const totalRooms =
+          room.redLightDistrict.rooms.length || room.redLightDistrict.roomCount || 1;
+        const rentMult = occupancyRentMultiplier(occupancyRate(occupied, totalRooms));
+        const guardMult = room.guardUntil && room.guardUntil > now ? 0.5 : 1;
+        const grossEarnings = Math.floor(
+          tierConfig.gross * fullHoursElapsed * levelBonus * rentMult * guardMult
+        );
+        rentPaid = Math.floor(tierConfig.rent * fullHoursElapsed * rentMult * guardMult);
         earnings = Math.floor((grossEarnings - rentPaid) * vipMultiplier);
 
-        // Pay rent to RLD owner
-        if (prostitute.redLightRoom.redLightDistrict.ownerId) {
+        if (room.redLightDistrict.ownerId) {
           await prisma.player.update({
-            where: { id: prostitute.redLightRoom.redLightDistrict.ownerId },
+            where: { id: room.redLightDistrict.ownerId },
             data: { money: { increment: rentPaid } },
           });
         }
@@ -1300,6 +1316,13 @@ export const prostituteService = {
       return { success: false, message: 'Deze prostituee staat al in een Red Light District' };
     }
 
+    if (prostitute.hotUntil && prostitute.hotUntil > new Date()) {
+      return {
+        success: false,
+        message: 'Deze prostituee is net gestolen en kan 12 uur niet in een district of nachtclub.',
+      };
+    }
+
     if (prostitute.location === 'nightclub' || prostitute.nightclubVenueId) {
       return {
         success: false,
@@ -1371,41 +1394,11 @@ export const prostituteService = {
       if (availableRoom) {
         room = availableRoom;
       } else {
-        // Check room count limit (3 million rooms per district)
-        const roomCount = await prisma.redLightRoom.count({
-          where: { redLightDistrictId: district.id },
-        });
-
-        if (roomCount >= 3000000) {
-          return {
-            success: false,
-            message: 'Maximum aantal kamers (3.000.000) bereikt voor dit district',
-          };
-        }
-
-        const lastRoom = await prisma.redLightRoom.findFirst({
-          where: { redLightDistrictId: district.id },
-          orderBy: { roomNumber: 'desc' },
-          select: { roomNumber: true },
-        });
-
-        const nextRoomNumber = (lastRoom?.roomNumber ?? 0) + 1;
-        room = await prisma.redLightRoom.create({
-          data: {
-            redLightDistrictId: district.id,
-            roomNumber: nextRoomNumber,
-          },
-          include: {
-            prostitute: true,
-            redLightDistrict: {
-              select: {
-                id: true,
-                ownerId: true,
-                countryCode: true,
-              },
-            },
-          },
-        });
+        return {
+          success: false,
+          message:
+            'Alle kamers zijn vol. De eigenaar moet eerst kamers upgraden voordat je hier kunt plaatsen.',
+        };
       }
     }
 
@@ -1544,8 +1537,7 @@ export const prostituteService = {
 
       if (prostitute.location === 'redlight' && prostitute.redLightRoom) {
         const tier = prostitute.redLightRoom.tier || 1;
-        const tierConfig =
-          TIER_MULTIPLIERS[tier as keyof typeof TIER_MULTIPLIERS] || TIER_MULTIPLIERS[1];
+        const tierConfig = tierEarnings(tier);
 
         const grossEarnings = Math.floor(tierConfig.gross * hoursElapsed * levelBonus);
         const rentPaid = Math.floor(tierConfig.rent * hoursElapsed);
@@ -1567,7 +1559,7 @@ export const prostituteService = {
       potentialEarnings,
       hourlyRate: {
         street: STREET_EARNINGS_PER_HOUR,
-        redlight: TIER_MULTIPLIERS[1].gross - TIER_MULTIPLIERS[1].rent, // Net earnings tier 1
+        redlight: tierEarnings(1).gross - tierEarnings(1).rent,
       },
     };
   },
@@ -1736,8 +1728,7 @@ export const prostituteService = {
     // Calculate earnings based on location
     if (location === 'redlight' && prostitute.redLightRoom) {
       const tier = prostitute.redLightRoom.tier || 1;
-      const tierConfig =
-        TIER_MULTIPLIERS[tier as keyof typeof TIER_MULTIPLIERS] || TIER_MULTIPLIERS[1];
+      const tierConfig = tierEarnings(tier);
 
       const grossEarnings = Math.floor(tierConfig.gross * WORK_SHIFT_HOURS * levelBonus);
       rentPaid = Math.floor(tierConfig.rent * WORK_SHIFT_HOURS);

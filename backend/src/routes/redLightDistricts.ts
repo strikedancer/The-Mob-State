@@ -1,6 +1,7 @@
 import express from 'express';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
-import { redLightDistrictService } from '../services/redLightDistrictService';
+import { redLightDistrictService, serializeContest } from '../services/redLightDistrictService';
+import { rldPvpService } from '../services/rldPvpService';
 
 const router = express.Router();
 
@@ -77,7 +78,10 @@ router.get('/country/:countryCode', authenticate, async (req: AuthRequest, res) 
 
     res.json({
       success: true,
-      district,
+      district: {
+        ...district,
+        contest: serializeContest(district),
+      },
       stats
     });
   } catch (error) {
@@ -154,7 +158,10 @@ router.get('/:id', authenticate, async (req: AuthRequest, res) => {
 
     res.json({
       success: true,
-      district,
+      district: {
+        ...district,
+        contest: serializeContest(district),
+      },
       stats
     });
   } catch (error) {
@@ -302,6 +309,78 @@ router.get('/:id/upgrade-info', authenticate, async (req: AuthRequest, res) => {
     });
   } catch (error) {
     console.error('Error fetching upgrade info:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+router.post('/:id/upgrade-expansion', authenticate, async (req: AuthRequest, res) => {
+  try {
+    const districtId = parseInt(String(req.params.id), 10);
+    const result = await redLightDistrictService.upgradeExpansion(districtId, req.player!.id);
+    if (!result.success) return res.status(400).json(result);
+    res.json(result);
+  } catch (error) {
+    console.error('Error upgrading expansion:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+router.post('/:id/contest', authenticate, async (req: AuthRequest, res) => {
+  try {
+    const districtId = parseInt(String(req.params.id), 10);
+    const result = await rldPvpService.startContest(req.player!.id, districtId);
+    if (!result.success) return res.status(400).json(result);
+    res.json(result);
+  } catch (error) {
+    console.error('Error starting RLD contest:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+router.post('/:id/hold', authenticate, async (req: AuthRequest, res) => {
+  try {
+    const districtId = parseInt(String(req.params.id), 10);
+    const result = await rldPvpService.holdContest(req.player!.id, districtId);
+    if (!result.success) return res.status(400).json(result);
+    res.json(result);
+  } catch (error) {
+    console.error('Error holding RLD contest:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+router.post('/rooms/:roomId/guard', authenticate, async (req: AuthRequest, res) => {
+  try {
+    const roomId = parseInt(String(req.params.roomId), 10);
+    const result = await rldPvpService.guardRoom(req.player!.id, roomId);
+    if (!result.success) return res.status(400).json(result);
+    res.json(result);
+  } catch (error) {
+    console.error('Error guarding RLD room:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+router.post('/rooms/:roomId/steal', authenticate, async (req: AuthRequest, res) => {
+  try {
+    const roomId = parseInt(String(req.params.roomId), 10);
+    const result = await rldPvpService.stealFromRoom(req.player!.id, roomId);
+    if (!result.success) return res.status(400).json(result);
+    res.json(result);
+  } catch (error) {
+    console.error('Error stealing RLD worker:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+router.post('/rooms/:roomId/sabotage', authenticate, async (req: AuthRequest, res) => {
+  try {
+    const roomId = parseInt(String(req.params.roomId), 10);
+    const result = await rldPvpService.sabotageRoom(req.player!.id, roomId);
+    if (!result.success) return res.status(400).json(result);
+    res.json(result);
+  } catch (error) {
+    console.error('Error sabotaging RLD room:', error);
     res.status(500).json({ success: false, message: 'Server error' });
   }
 });

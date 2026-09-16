@@ -24,6 +24,8 @@ class Prostitute {
   final int housingRentPerDay;
   final DateTime? housingPaidUntil;
   final DateTime? lastWorkedAt;
+  final DateTime? hotUntil;
+  final int? stolenFromPlayerId;
 
   // Housing quality -> happiness
   final int happinessScore;
@@ -48,6 +50,8 @@ class Prostitute {
     this.housingRentPerDay = 35,
     this.housingPaidUntil,
     this.lastWorkedAt,
+    this.hotUntil,
+    this.stolenFromPlayerId,
     this.happinessScore = 50,
     this.happinessLabel = 'stable',
     this.happinessEarningsMultiplier = 1.0,
@@ -80,6 +84,10 @@ class Prostitute {
       lastWorkedAt: json['lastWorkedAt'] != null
           ? DateTime.parse(json['lastWorkedAt'] as String)
           : null,
+      hotUntil: json['hotUntil'] != null
+          ? DateTime.parse(json['hotUntil'] as String)
+          : null,
+      stolenFromPlayerId: json['stolenFromPlayerId'] as int?,
       happinessScore: json['happinessScore'] as int? ?? 50,
       happinessLabel: json['happinessLabel'] as String? ?? 'stable',
       happinessEarningsMultiplier:
@@ -106,6 +114,8 @@ class Prostitute {
       'housingRentPerDay': housingRentPerDay,
       'housingPaidUntil': housingPaidUntil?.toIso8601String(),
       'lastWorkedAt': lastWorkedAt?.toIso8601String(),
+      'hotUntil': hotUntil?.toIso8601String(),
+      'stolenFromPlayerId': stolenFromPlayerId,
       'happinessScore': happinessScore,
       'happinessLabel': happinessLabel,
       'happinessEarningsMultiplier': happinessEarningsMultiplier,
@@ -137,6 +147,11 @@ class Prostitute {
   }
 
   // Raid helpers
+  bool get isHotStolen {
+    if (hotUntil == null) return false;
+    return DateTime.now().isBefore(hotUntil!);
+  }
+
   bool get isCurrentlyBusted {
     if (!isBusted) return false;
     if (bustedUntil == null) return false;
@@ -327,9 +342,11 @@ class RedLightDistrict {
   final int roomCount;
   final int tier;
   final int securityLevel;
+  final int expansionLevel;
   final Map<String, dynamic>? owner;
   final List<RedLightRoom>? rooms;
   final DistrictStats? stats;
+  final Map<String, dynamic>? contest;
 
   RedLightDistrict({
     required this.id,
@@ -340,9 +357,11 @@ class RedLightDistrict {
     required this.roomCount,
     this.tier = 1,
     this.securityLevel = 0,
+    this.expansionLevel = 0,
     this.owner,
     this.rooms,
     this.stats,
+    this.contest,
   });
 
   factory RedLightDistrict.fromJson(Map<String, dynamic> json) {
@@ -357,6 +376,7 @@ class RedLightDistrict {
       roomCount: json['roomCount'] as int,
       tier: json['tier'] as int? ?? 1,
       securityLevel: json['securityLevel'] as int? ?? 0,
+      expansionLevel: json['expansionLevel'] as int? ?? 0,
       owner: json['owner'] as Map<String, dynamic>?,
       rooms: json['rooms'] != null
           ? (json['rooms'] as List)
@@ -368,22 +388,32 @@ class RedLightDistrict {
       stats: json['stats'] != null
           ? DistrictStats.fromJson(json['stats'] as Map<String, dynamic>)
           : null,
+      contest: json['contest'] as Map<String, dynamic>? ??
+          (json['stats'] is Map ? (json['stats'] as Map)['contest'] as Map<String, dynamic>? : null),
     );
   }
 
   String get tierName {
     switch (tier) {
       case 2:
-        return 'Luxury';
+        return 'Lounge';
       case 3:
-        return 'VIP';
+        return 'Luxury';
+      case 4:
+        return 'Prestige';
+      case 5:
+        return 'Penthouse';
       default:
         return 'Basic';
     }
   }
 
-  bool get canUpgradeTier => tier < 3;
-  bool get canUpgradeSecurity => securityLevel < 3;
+  bool get canUpgradeTier => tier < 5;
+  bool get canUpgradeSecurity => securityLevel < 5;
+  bool get contestIsLive {
+    final status = contest?['status']?.toString() ?? 'idle';
+    return status == 'preparing' || status == 'active' || status == 'lockdown';
+  }
 
   Map<String, dynamic> toJson() {
     return {
@@ -395,9 +425,11 @@ class RedLightDistrict {
       'roomCount': roomCount,
       'tier': tier,
       'securityLevel': securityLevel,
+      'expansionLevel': expansionLevel,
       'owner': owner,
       'rooms': rooms?.map((r) => r.toJson()).toList(),
       'stats': stats?.toJson(),
+      'contest': contest,
     };
   }
 
@@ -413,6 +445,8 @@ class RedLightRoom {
   final DateTime lastEarningsAt;
   final int tier;
   final Prostitute? prostitute;
+  final DateTime? guardUntil;
+  final DateTime? sabotagedUntil;
 
   RedLightRoom({
     required this.id,
@@ -422,6 +456,8 @@ class RedLightRoom {
     required this.lastEarningsAt,
     this.tier = 1,
     this.prostitute,
+    this.guardUntil,
+    this.sabotagedUntil,
   });
 
   factory RedLightRoom.fromJson(Map<String, dynamic> json) {
@@ -434,6 +470,12 @@ class RedLightRoom {
       tier: json['tier'] as int? ?? 1,
       prostitute: json['prostitute'] != null
           ? Prostitute.fromJson(json['prostitute'] as Map<String, dynamic>)
+          : null,
+      guardUntil: json['guardUntil'] != null
+          ? DateTime.parse(json['guardUntil'] as String)
+          : null,
+      sabotagedUntil: json['sabotagedUntil'] != null
+          ? DateTime.parse(json['sabotagedUntil'] as String)
           : null,
     );
   }
@@ -458,8 +500,15 @@ class RedLightRoom {
       'lastEarningsAt': lastEarningsAt.toIso8601String(),
       'tier': tier,
       'prostitute': prostitute?.toJson(),
+      'guardUntil': guardUntil?.toIso8601String(),
+      'sabotagedUntil': sabotagedUntil?.toIso8601String(),
     };
   }
+
+  bool get isGuarded =>
+      guardUntil != null && DateTime.now().isBefore(guardUntil!);
+  bool get isSabotaged =>
+      sabotagedUntil != null && DateTime.now().isBefore(sabotagedUntil!);
 }
 
 class DistrictStats {
@@ -532,6 +581,7 @@ class VipEvent {
   final int maxParticipants;
   final int currentParticipants;
   final DateTime createdAt;
+  final bool vipOnly;
 
   VipEvent({
     required this.id,
@@ -546,6 +596,7 @@ class VipEvent {
     required this.maxParticipants,
     required this.currentParticipants,
     required this.createdAt,
+    this.vipOnly = false,
   });
 
   factory VipEvent.fromJson(Map<String, dynamic> json) {
@@ -562,6 +613,7 @@ class VipEvent {
       maxParticipants: json['maxParticipants'] as int,
       currentParticipants: json['currentParticipants'] as int,
       createdAt: DateTime.parse(json['createdAt'] as String),
+      vipOnly: json['vipOnly'] == true,
     );
   }
 
@@ -641,6 +693,16 @@ class VipEvent {
         return '💼';
       case 'festival':
         return '🎵';
+      case 'tourist_night':
+        return '🌃';
+      case 'harbor_shift':
+        return '⚓';
+      case 'city_festival':
+        return '🎆';
+      case 'private_salon':
+        return '🥂';
+      case 'yacht_party':
+        return '🛥️';
       default:
         return '📅';
     }

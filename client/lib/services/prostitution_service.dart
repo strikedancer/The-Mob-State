@@ -465,6 +465,106 @@ class ProstitutionService {
     }
   }
 
+  Future<Map<String, dynamic>> upgradeExpansion(int districtId) async {
+    try {
+      final response = await _apiClient.post(
+        '/red-light-districts/$districtId/upgrade-expansion',
+        {},
+      );
+      return json.decode(response.body);
+    } catch (e) {
+      return {'success': false, 'message': 'Error upgrading rooms'};
+    }
+  }
+
+  Future<Map<String, dynamic>> startDistrictContest(int districtId) async {
+    try {
+      final response = await _apiClient.post(
+        '/red-light-districts/$districtId/contest',
+        {},
+      );
+      return json.decode(response.body);
+    } catch (e) {
+      return {'success': false, 'message': 'Error starting contest'};
+    }
+  }
+
+  Future<Map<String, dynamic>> holdDistrictContest(int districtId) async {
+    try {
+      final response = await _apiClient.post(
+        '/red-light-districts/$districtId/hold',
+        {},
+      );
+      return json.decode(response.body);
+    } catch (e) {
+      return {'success': false, 'message': 'Error holding district'};
+    }
+  }
+
+  Future<Map<String, dynamic>> guardRoom(int roomId) async {
+    try {
+      final response = await _apiClient.post(
+        '/red-light-districts/rooms/$roomId/guard',
+        {},
+      );
+      return json.decode(response.body);
+    } catch (e) {
+      return {'success': false, 'message': 'Error guarding room'};
+    }
+  }
+
+  Future<Map<String, dynamic>> stealFromRoom(int roomId) async {
+    try {
+      final response = await _apiClient.post(
+        '/red-light-districts/rooms/$roomId/steal',
+        {},
+      );
+      return json.decode(response.body);
+    } catch (e) {
+      return {'success': false, 'message': 'Error stealing'};
+    }
+  }
+
+  Future<Map<String, dynamic>> sabotageRoom(int roomId) async {
+    try {
+      final response = await _apiClient.post(
+        '/red-light-districts/rooms/$roomId/sabotage',
+        {},
+      );
+      return json.decode(response.body);
+    } catch (e) {
+      return {'success': false, 'message': 'Error sabotaging'};
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getReclaimableWorkers() async {
+    try {
+      final response = await _apiClient.get('/prostitutes/reclaimable');
+      final data = json.decode(response.body);
+      if (data['success'] == true && data['prostitutes'] is List) {
+        return (data['prostitutes'] as List)
+            .whereType<Map>()
+            .map((e) => Map<String, dynamic>.from(e))
+            .toList();
+      }
+    } catch (e) {
+      print('Error loading reclaimable workers: $e');
+    }
+    return const [];
+  }
+
+  Future<Map<String, dynamic>> reclaimWorker(int prostituteId) async {
+    try {
+      final response = await _apiClient.post(
+        '/prostitutes/$prostituteId/reclaim',
+        {},
+      );
+      return json.decode(response.body);
+    } catch (e) {
+      return {'success': false, 'message': 'Error reclaiming'};
+    }
+  }
+
   // Get upgrade information for a district
   Future<Map<String, dynamic>?> getUpgradeInfo(int districtId) async {
     try {

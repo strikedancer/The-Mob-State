@@ -1,46 +1,71 @@
 import prisma from '../lib/prisma';
 import { checkAndUnlockAchievements, serializeAchievementForClient } from './achievementService';
-
-// Upgrade Costs
-const TIER_UPGRADE_COSTS = {
-  1: 0,      // Basic (starting tier)
-  2: 50000,  // Luxury upgrade: €50k
-  3: 150000  // VIP upgrade: €150k
-};
-
-const SECURITY_UPGRADE_COST = 25000; // €25k per security level
-
-// Tier Configuration
-const TIER_CONFIG = {
-  1: { name: 'Basic', gross: 75, rent: 20 },
-  2: { name: 'Luxury', gross: 100, rent: 30 },
-  3: { name: 'VIP', gross: 150, rent: 50 }
-};
+import { increaseFBIHeat } from './fbiService';
+import { isVipStatusActive } from './vipBenefitsService';
+import {
+  RLD_COUNTRY_SLUGS,
+  RLD_EXPANSION_COSTS,
+  RLD_EXPANSION_MAX,
+  RLD_OCCUPANCY_FULL,
+  RLD_OCCUPANCY_FULL_HEAT,
+  RLD_PENTHOUSE_TIER,
+  RLD_SECURITY_COSTS,
+  RLD_SECURITY_MAX,
+  RLD_START_ROOMS,
+  RLD_TIER_MAX,
+  RLD_TIER_UPGRADE_COSTS,
+  expansionTargetRooms,
+  getTierConfig,
+  occupancyRaidBonus,
+  occupancyRate,
+  occupancyRentMultiplier,
+} from './rldConfig';
 
 const DEFAULT_RED_LIGHT_DISTRICTS = [
-  { countryCode: 'netherlands', purchasePrice: 750000, roomCount: 10 },
-  { countryCode: 'belgium', purchasePrice: 650000, roomCount: 8 },
-  { countryCode: 'germany', purchasePrice: 800000, roomCount: 10 },
-  { countryCode: 'france', purchasePrice: 850000, roomCount: 10 },
-  { countryCode: 'spain', purchasePrice: 700000, roomCount: 8 },
-  { countryCode: 'italy', purchasePrice: 750000, roomCount: 8 },
-  { countryCode: 'uk', purchasePrice: 900000, roomCount: 10 },
-  { countryCode: 'switzerland', purchasePrice: 1150000, roomCount: 12 },
-  { countryCode: 'usa', purchasePrice: 1000000, roomCount: 12 },
-  { countryCode: 'mexico', purchasePrice: 600000, roomCount: 8 },
-  { countryCode: 'colombia', purchasePrice: 650000, roomCount: 8 },
-  { countryCode: 'brazil', purchasePrice: 700000, roomCount: 10 },
-  { countryCode: 'argentina', purchasePrice: 650000, roomCount: 8 },
-  { countryCode: 'japan', purchasePrice: 950000, roomCount: 10 },
-  { countryCode: 'china', purchasePrice: 900000, roomCount: 10 },
-  { countryCode: 'russia', purchasePrice: 750000, roomCount: 10 },
-  { countryCode: 'turkey', purchasePrice: 600000, roomCount: 8 },
-  { countryCode: 'united_arab_emirates', purchasePrice: 1200000, roomCount: 12 },
-  { countryCode: 'south_africa', purchasePrice: 600000, roomCount: 8 },
-  { countryCode: 'australia', purchasePrice: 850000, roomCount: 8 }
+  { countryCode: 'netherlands', purchasePrice: 750000, roomCount: RLD_START_ROOMS },
+  { countryCode: 'belgium', purchasePrice: 650000, roomCount: RLD_START_ROOMS },
+  { countryCode: 'germany', purchasePrice: 800000, roomCount: RLD_START_ROOMS },
+  { countryCode: 'france', purchasePrice: 850000, roomCount: RLD_START_ROOMS },
+  { countryCode: 'spain', purchasePrice: 700000, roomCount: RLD_START_ROOMS },
+  { countryCode: 'italy', purchasePrice: 750000, roomCount: RLD_START_ROOMS },
+  { countryCode: 'uk', purchasePrice: 900000, roomCount: RLD_START_ROOMS },
+  { countryCode: 'switzerland', purchasePrice: 1150000, roomCount: RLD_START_ROOMS },
+  { countryCode: 'usa', purchasePrice: 1000000, roomCount: RLD_START_ROOMS },
+  { countryCode: 'mexico', purchasePrice: 600000, roomCount: RLD_START_ROOMS },
+  { countryCode: 'colombia', purchasePrice: 650000, roomCount: RLD_START_ROOMS },
+  { countryCode: 'brazil', purchasePrice: 700000, roomCount: RLD_START_ROOMS },
+  { countryCode: 'argentina', purchasePrice: 650000, roomCount: RLD_START_ROOMS },
+  { countryCode: 'japan', purchasePrice: 950000, roomCount: RLD_START_ROOMS },
+  { countryCode: 'china', purchasePrice: 900000, roomCount: RLD_START_ROOMS },
+  { countryCode: 'russia', purchasePrice: 750000, roomCount: RLD_START_ROOMS },
+  { countryCode: 'turkey', purchasePrice: 600000, roomCount: RLD_START_ROOMS },
+  { countryCode: 'united_arab_emirates', purchasePrice: 1200000, roomCount: RLD_START_ROOMS },
+  { countryCode: 'south_africa', purchasePrice: 600000, roomCount: RLD_START_ROOMS },
+  { countryCode: 'australia', purchasePrice: 850000, roomCount: RLD_START_ROOMS },
 ];
 
 let districtSeedPromise: Promise<void> | null = null;
+
+const DISTRICT_INCLUDE = {
+  owner: {
+    select: { id: true, username: true },
+  },
+  contestChallenger: {
+    select: { id: true, username: true },
+  },
+  rooms: {
+    include: {
+      prostitute: {
+        include: {
+          player: {
+            select: { id: true, username: true },
+          },
+        },
+      },
+    },
+    orderBy: { roomNumber: 'asc' as const },
+  },
+};
 
 async function ensureDistrictSeedData() {
   if (districtSeedPromise) {
@@ -51,7 +76,7 @@ async function ensureDistrictSeedData() {
   districtSeedPromise = (async () => {
     await prisma.redLightDistrict.createMany({
       data: DEFAULT_RED_LIGHT_DISTRICTS,
-      skipDuplicates: true
+      skipDuplicates: true,
     });
   })();
 
@@ -62,115 +87,100 @@ async function ensureDistrictSeedData() {
   }
 }
 
+async function createMissingRooms(
+  districtId: number,
+  targetCount: number,
+  tier: number
+): Promise<number> {
+  const existing = await prisma.redLightRoom.findMany({
+    where: { redLightDistrictId: districtId },
+    select: { roomNumber: true },
+    orderBy: { roomNumber: 'desc' },
+  });
+  const have = existing.length;
+  if (have >= targetCount) return have;
+  let nextNumber = (existing[0]?.roomNumber ?? 0) + 1;
+  const toCreate = targetCount - have;
+  await prisma.redLightRoom.createMany({
+    data: Array.from({ length: toCreate }, (_, i) => ({
+      redLightDistrictId: districtId,
+      roomNumber: nextNumber + i,
+      tier,
+    })),
+  });
+  return targetCount;
+}
+
+export function serializeContest(district: {
+  contestStatus?: string | null;
+  contestChallengerId?: number | null;
+  contestAttackerScore?: number | null;
+  contestDefenderScore?: number | null;
+  contestHoldCount?: number | null;
+  contestStake?: number | null;
+  contestPrepAt?: Date | null;
+  contestActiveAt?: Date | null;
+  contestLockdownAt?: Date | null;
+  contestResolveAt?: Date | null;
+  contestCooldownUntil?: Date | null;
+  contestChallenger?: { id: number; username: string } | null;
+}) {
+  const status = district.contestStatus || 'idle';
+  return {
+    status,
+    challengerId: district.contestChallengerId ?? null,
+    challengerName: district.contestChallenger?.username ?? null,
+    attackerScore: district.contestAttackerScore ?? 0,
+    defenderScore: district.contestDefenderScore ?? 0,
+    holdCount: district.contestHoldCount ?? 0,
+    stake: district.contestStake ?? 0,
+    prepAt: district.contestPrepAt?.toISOString() ?? null,
+    activeAt: district.contestActiveAt?.toISOString() ?? null,
+    lockdownAt: district.contestLockdownAt?.toISOString() ?? null,
+    resolveAt: district.contestResolveAt?.toISOString() ?? null,
+    cooldownUntil: district.contestCooldownUntil?.toISOString() ?? null,
+    isLive: status === 'preparing' || status === 'active' || status === 'lockdown',
+  };
+}
+
 export const redLightDistrictService = {
-  /**
-   * Get red light district for a country
-   */
   async getByCountry(countryCode: string) {
+    await ensureDistrictSeedData();
+
+    return prisma.redLightDistrict.findUnique({
+      where: { countryCode },
+      include: DISTRICT_INCLUDE,
+    });
+  },
+
+  async getDistrictById(districtId: number) {
+    return prisma.redLightDistrict.findUnique({
+      where: { id: districtId },
+      include: DISTRICT_INCLUDE,
+    });
+  },
+
+  async getPlayerDistricts(playerId: number) {
+    return prisma.redLightDistrict.findMany({
+      where: { ownerId: playerId },
+      include: DISTRICT_INCLUDE,
+    });
+  },
+
+  async purchaseDistrict(
+    playerId: number,
+    countryCode: string
+  ): Promise<{
+    success: boolean;
+    message: string;
+    district?: any;
+    newlyUnlockedAchievements?: any[];
+  }> {
     await ensureDistrictSeedData();
 
     const district = await prisma.redLightDistrict.findUnique({
       where: { countryCode },
-      include: {
-        owner: {
-          select: {
-            id: true,
-            username: true
-          }
-        },
-        rooms: {
-          include: {
-            prostitute: {
-              include: {
-                player: {
-                  select: {
-                    id: true,
-                    username: true
-                  }
-                }
-              }
-            }
-          },
-          orderBy: { roomNumber: 'asc' }
-        }
-      }
-    });
-
-    return district;
-  },
-
-  /**
-   * Get red light district by ID
-   */
-  async getDistrictById(districtId: number) {
-    const district = await prisma.redLightDistrict.findUnique({
-      where: { id: districtId },
-      include: {
-        owner: {
-          select: {
-            id: true,
-            username: true
-          }
-        },
-        rooms: {
-          include: {
-            prostitute: {
-              include: {
-                player: {
-                  select: {
-                    id: true,
-                    username: true
-                  }
-                }
-              }
-            }
-          },
-          orderBy: { roomNumber: 'asc' }
-        }
-      }
-    });
-
-    return district;
-  },
-
-  /**
-   * Get all districts owned by a player
-   */
-  async getPlayerDistricts(playerId: number) {
-    const districts = await prisma.redLightDistrict.findMany({
-      where: { ownerId: playerId },
-      include: {
-        rooms: {
-          include: {
-            prostitute: {
-              include: {
-                player: {
-                  select: {
-                    id: true,
-                    username: true
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    });
-
-    return districts;
-  },
-
-  /**
-   * Purchase a red light district
-   */
-  async purchaseDistrict(
-    playerId: number,
-    countryCode: string
-  ): Promise<{ success: boolean; message: string; district?: any; newlyUnlockedAchievements?: any[] }> {
-    await ensureDistrictSeedData();
-
-    const district = await prisma.redLightDistrict.findUnique({
-      where: { countryCode }
+      include: { rooms: { select: { id: true } } },
     });
 
     if (!district) {
@@ -183,7 +193,7 @@ export const redLightDistrictService = {
 
     const player = await prisma.player.findUnique({
       where: { id: playerId },
-      select: { money: true }
+      select: { money: true },
     });
 
     if (!player) {
@@ -193,44 +203,47 @@ export const redLightDistrictService = {
     if (player.money < district.purchasePrice) {
       return {
         success: false,
-        message: `Je hebt €${district.purchasePrice.toLocaleString('nl-NL')} nodig om dit Red Light District te kopen`
+        message: `Je hebt €${district.purchasePrice.toLocaleString('nl-NL')} nodig om dit Red Light District te kopen`,
       };
     }
 
-    // Purchase district
-    const updatedDistrict = await prisma.redLightDistrict.update({
-      where: { id: district.id },
-      data: {
-        ownerId: playerId,
-        purchasedAt: new Date()
-      }
+    const existingRooms = district.rooms.length;
+    const startRooms = existingRooms > 0 ? existingRooms : RLD_START_ROOMS;
+
+    await prisma.$transaction(async (tx) => {
+      await tx.player.update({
+        where: { id: playerId },
+        data: { money: { decrement: district.purchasePrice } },
+      });
+      await tx.redLightDistrict.update({
+        where: { id: district.id },
+        data: {
+          ownerId: playerId,
+          purchasedAt: new Date(),
+          roomCount: startRooms,
+          expansionLevel: district.expansionLevel || 0,
+          contestStatus: 'idle',
+          contestChallengerId: null,
+          contestAttackerScore: 0,
+          contestDefenderScore: 0,
+          contestHoldCount: 0,
+          contestStake: 0,
+        },
+      });
     });
 
-    // Deduct money
-    await prisma.player.update({
-      where: { id: playerId },
-      data: { money: { decrement: district.purchasePrice } }
-    });
-
-    // Create rooms for the district
-    const roomPromises = [];
-    for (let i = 1; i <= district.roomCount; i++) {
-      roomPromises.push(
-        prisma.redLightRoom.create({
-          data: {
-            redLightDistrictId: district.id,
-            roomNumber: i
-          }
-        })
-      );
+    if (existingRooms === 0) {
+      await createMissingRooms(district.id, RLD_START_ROOMS, district.tier || 1);
     }
-    await Promise.all(roomPromises);
 
-    // Check for achievement unlocks and get newly unlocked ones
+    const updatedDistrict = await prisma.redLightDistrict.findUnique({
+      where: { id: district.id },
+    });
+
     let newlyUnlockedAchievements: any[] = [];
     try {
       const achievementResults = await checkAndUnlockAchievements(playerId);
-      newlyUnlockedAchievements = achievementResults.map(r =>
+      newlyUnlockedAchievements = achievementResults.map((r) =>
         serializeAchievementForClient(r.achievement)
       );
     } catch (err) {
@@ -241,37 +254,29 @@ export const redLightDistrictService = {
       success: true,
       message: `Je bent nu eigenaar van het Red Light District in ${countryCode}!`,
       district: updatedDistrict,
-      newlyUnlockedAchievements
+      newlyUnlockedAchievements,
     };
   },
 
-  /**
-   * Get available rooms in a district
-   */
   async getAvailableRooms(districtId: number) {
-    const rooms = await prisma.redLightRoom.findMany({
+    return prisma.redLightRoom.findMany({
       where: {
         redLightDistrictId: districtId,
-        occupied: false
+        occupied: false,
       },
-      orderBy: { roomNumber: 'asc' }
+      orderBy: { roomNumber: 'asc' },
     });
-
-    return rooms;
   },
 
-  /**
-   * Calculate rental income for district owner
-   */
   async calculateRentalIncome(districtId: number): Promise<number> {
     const district = await prisma.redLightDistrict.findUnique({
       where: { id: districtId },
       include: {
         rooms: {
           where: { occupied: true },
-          include: { prostitute: true }
-        }
-      }
+          include: { prostitute: true },
+        },
+      },
     });
 
     if (!district || !district.ownerId) {
@@ -279,22 +284,24 @@ export const redLightDistrictService = {
     }
 
     const now = new Date();
+    const occupied = district.rooms.length;
+    const rate = occupancyRate(occupied, district.roomCount || occupied);
+    const rentMult = occupancyRentMultiplier(rate);
+    const tierRent = getTierConfig(district.tier).rent;
     let totalIncome = 0;
-    const RENT_PER_HOUR = 20;
 
     for (const room of district.rooms) {
-      if (room.prostitute) {
-        const hoursElapsed = (now.getTime() - room.lastEarningsAt.getTime()) / (1000 * 60 * 60);
-        totalIncome += Math.floor(RENT_PER_HOUR * hoursElapsed);
-      }
+      if (!room.prostitute) continue;
+      if (room.sabotagedUntil && room.sabotagedUntil > now) continue;
+      const hoursElapsed = (now.getTime() - room.lastEarningsAt.getTime()) / (1000 * 60 * 60);
+      const guardMult =
+        room.guardUntil && room.guardUntil > now ? 0.5 : 1;
+      totalIncome += Math.floor(tierRent * hoursElapsed * rentMult * guardMult);
     }
 
     return totalIncome;
   },
 
-  /**
-   * Get district statistics
-   */
   async getDistrictStats(districtId: number) {
     const district = await prisma.redLightDistrict.findUnique({
       where: { id: districtId },
@@ -304,74 +311,69 @@ export const redLightDistrictService = {
             prostitute: {
               include: {
                 player: {
-                  select: {
-                    id: true,
-                    username: true
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+                  select: { id: true, username: true },
+                },
+              },
+            },
+          },
+        },
+        contestChallenger: { select: { id: true, username: true } },
+      },
     });
 
     if (!district) {
       return null;
     }
 
-    const occupiedRooms = district.rooms.filter(r => r.occupied).length;
-    const availableRooms = district.rooms.filter(r => !r.occupied).length;
-    const occupancyRate = (occupiedRooms / district.roomCount) * 100;
+    const occupiedRooms = district.rooms.filter((r) => r.occupied).length;
+    const availableRooms = district.rooms.filter((r) => !r.occupied).length;
+    const totalRooms = district.rooms.length || district.roomCount;
+    const rate = occupancyRate(occupiedRooms, totalRooms);
+    const tierRent = getTierConfig(district.tier).rent;
+    const hourlyIncome = Math.floor(
+      occupiedRooms * tierRent * occupancyRentMultiplier(rate)
+    );
 
-    // Calculate potential hourly income based on district tier
-    const tierRent = district.tier === 3 ? 50 : district.tier === 2 ? 30 : 20;
-    const hourlyIncome = occupiedRooms * tierRent;
-
-    // Get unique tenants (players with prostitutes in this district)
     const tenants = new Set(
       district.rooms
-        .filter(r => r.prostitute)
-        .map(r => r.prostitute!.player.username)
+        .filter((r) => r.prostitute)
+        .map((r) => r.prostitute!.player.username)
     );
 
     return {
       districtId: district.id,
       countryCode: district.countryCode,
-      totalRooms: district.roomCount,
+      totalRooms,
       occupiedRooms,
       availableRooms,
-      occupancyRate: Math.round(occupancyRate),
+      occupancyRate: Math.round(rate),
+      occupancyBusy: rate >= 70,
+      occupancyFull: rate >= 100,
+      occupancyRentMultiplier: occupancyRentMultiplier(rate),
+      occupancyRaidBonus: occupancyRaidBonus(rate),
       hourlyIncome,
       tenantCount: tenants.size,
-      tenants: Array.from(tenants)
+      tenants: Array.from(tenants),
+      contest: serializeContest(district),
+      expansionLevel: district.expansionLevel ?? 0,
     };
   },
 
-  /**
-   * Get all available districts (not owned)
-   */
   async getAvailableDistricts() {
     await ensureDistrictSeedData();
 
-    const districts = await prisma.redLightDistrict.findMany({
+    return prisma.redLightDistrict.findMany({
       where: { ownerId: null },
-      orderBy: { purchasePrice: 'asc' }
+      orderBy: { purchasePrice: 'asc' },
     });
-
-    return districts;
   },
 
-  /**
-   * Upgrade district tier (Basic -> Luxury -> VIP)
-   */
   async upgradeTier(
     districtId: number,
     playerId: number
   ): Promise<{ success: boolean; message: string; newTier?: number }> {
     const district = await prisma.redLightDistrict.findUnique({
       where: { id: districtId },
-      include: { rooms: true }
     });
 
     if (!district) {
@@ -382,17 +384,31 @@ export const redLightDistrictService = {
       return { success: false, message: 'Je bent niet de eigenaar van dit district' };
     }
 
-    if (district.tier >= 3) {
-      return { success: false, message: 'District is al op maximale tier (VIP)' };
+    if (district.tier >= RLD_TIER_MAX) {
+      return { success: false, message: 'District is al op maximale inkomsten-tier (Penthouse)' };
     }
 
     const newTier = district.tier + 1;
-    const upgradeCost = TIER_UPGRADE_COSTS[newTier as keyof typeof TIER_UPGRADE_COSTS];
+    if (newTier === RLD_PENTHOUSE_TIER) {
+      const playerVip = await prisma.player.findUnique({
+        where: { id: playerId },
+        select: { isVip: true, vipExpiresAt: true, money: true },
+      });
+      if (!playerVip) {
+        return { success: false, message: 'Speler niet gevonden' };
+      }
+      if (!isVipStatusActive(playerVip)) {
+        return {
+          success: false,
+          message: 'Penthouse is alleen voor actieve VIP-leden',
+        };
+      }
+    }
 
-    // Check player money
+    const upgradeCost = RLD_TIER_UPGRADE_COSTS[newTier];
     const player = await prisma.player.findUnique({
       where: { id: playerId },
-      select: { money: true }
+      select: { money: true },
     });
 
     if (!player) {
@@ -402,48 +418,39 @@ export const redLightDistrictService = {
     if (player.money < upgradeCost) {
       return {
         success: false,
-        message: `Je hebt €${upgradeCost.toLocaleString('nl-NL')} nodig voor deze upgrade`
+        message: `Je hebt €${upgradeCost.toLocaleString('nl-NL')} nodig voor deze upgrade`,
       };
     }
 
-    // Perform upgrade
     await prisma.$transaction(async (tx) => {
-      // Deduct money
       await tx.player.update({
         where: { id: playerId },
-        data: { money: { decrement: upgradeCost } }
+        data: { money: { decrement: upgradeCost } },
       });
-
-      // Upgrade district
       await tx.redLightDistrict.update({
         where: { id: districtId },
-        data: { tier: newTier }
+        data: { tier: newTier },
       });
-
-      // Upgrade all rooms
       await tx.redLightRoom.updateMany({
         where: { redLightDistrictId: districtId },
-        data: { tier: newTier }
+        data: { tier: newTier },
       });
     });
 
-    const tierName = TIER_CONFIG[newTier as keyof typeof TIER_CONFIG].name;
+    const tierName = getTierConfig(newTier).nameNl;
     return {
       success: true,
       message: `District geüpgraded naar ${tierName}!`,
-      newTier
+      newTier,
     };
   },
 
-  /**
-   * Upgrade district security (0 -> 1 -> 2 -> 3)
-   */
   async upgradeSecurity(
     districtId: number,
     playerId: number
   ): Promise<{ success: boolean; message: string; newSecurityLevel?: number }> {
     const district = await prisma.redLightDistrict.findUnique({
-      where: { id: districtId }
+      where: { id: districtId },
     });
 
     if (!district) {
@@ -454,57 +461,120 @@ export const redLightDistrictService = {
       return { success: false, message: 'Je bent niet de eigenaar van dit district' };
     }
 
-    if (district.securityLevel >= 3) {
-      return { success: false, message: 'Security is al op maximaal niveau' };
+    if (district.securityLevel >= RLD_SECURITY_MAX) {
+      return { success: false, message: 'Beveiliging is al op maximaal niveau' };
     }
 
-    // Check player money
+    const upgradeCost = RLD_SECURITY_COSTS[district.securityLevel] ?? 25000;
     const player = await prisma.player.findUnique({
       where: { id: playerId },
-      select: { money: true }
+      select: { money: true },
     });
 
     if (!player) {
       return { success: false, message: 'Speler niet gevonden' };
     }
 
-    if (player.money < SECURITY_UPGRADE_COST) {
+    if (player.money < upgradeCost) {
       return {
         success: false,
-        message: `Je hebt €${SECURITY_UPGRADE_COST.toLocaleString('nl-NL')} nodig voor deze upgrade`
+        message: `Je hebt €${upgradeCost.toLocaleString('nl-NL')} nodig voor deze upgrade`,
       };
     }
 
     const newSecurityLevel = district.securityLevel + 1;
 
-    // Perform upgrade
     await prisma.$transaction(async (tx) => {
-      // Deduct money
       await tx.player.update({
         where: { id: playerId },
-        data: { money: { decrement: SECURITY_UPGRADE_COST } }
+        data: { money: { decrement: upgradeCost } },
       });
-
-      // Upgrade security
       await tx.redLightDistrict.update({
         where: { id: districtId },
-        data: { securityLevel: newSecurityLevel }
+        data: { securityLevel: newSecurityLevel },
       });
     });
 
     return {
       success: true,
-      message: `Security geüpgraded naar level ${newSecurityLevel}!`,
-      newSecurityLevel
+      message: `Beveiliging geüpgraded naar level ${newSecurityLevel}!`,
+      newSecurityLevel,
     };
   },
 
-  /**
-   * Get upgrade information for a district
-   */
+  async upgradeExpansion(
+    districtId: number,
+    playerId: number
+  ): Promise<{ success: boolean; message: string; newExpansionLevel?: number; roomCount?: number }> {
+    const district = await prisma.redLightDistrict.findUnique({
+      where: { id: districtId },
+      include: { rooms: { select: { id: true } } },
+    });
+
+    if (!district) {
+      return { success: false, message: 'District niet gevonden' };
+    }
+
+    if (district.ownerId !== playerId) {
+      return { success: false, message: 'Je bent niet de eigenaar van dit district' };
+    }
+
+    if (district.expansionLevel >= RLD_EXPANSION_MAX) {
+      return { success: false, message: 'Dit district heeft al het maximum aantal kamers via upgrades' };
+    }
+
+    const nextLevel = district.expansionLevel + 1;
+    const upgradeCost = RLD_EXPANSION_COSTS[district.expansionLevel] ?? 500000;
+    const targetRooms = Math.max(district.rooms.length, expansionTargetRooms(nextLevel));
+
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { money: true },
+    });
+
+    if (!player) {
+      return { success: false, message: 'Speler niet gevonden' };
+    }
+
+    if (player.money < upgradeCost) {
+      return {
+        success: false,
+        message: `Je hebt €${upgradeCost.toLocaleString('nl-NL')} nodig voor extra kamers`,
+      };
+    }
+
+    await prisma.$transaction(async (tx) => {
+      await tx.player.update({
+        where: { id: playerId },
+        data: { money: { decrement: upgradeCost } },
+      });
+      await tx.redLightDistrict.update({
+        where: { id: districtId },
+        data: {
+          expansionLevel: nextLevel,
+          roomCount: targetRooms,
+        },
+      });
+    });
+
+    await createMissingRooms(districtId, targetRooms, district.tier || 1);
+    const added = targetRooms - district.rooms.length;
+
+    return {
+      success: true,
+      message:
+        added > 0
+          ? `Twee extra kamers gebouwd. Totaal ${targetRooms} kamers.`
+          : `Kamer-upgrade voltooid (niveau ${nextLevel}).`,
+      newExpansionLevel: nextLevel,
+      roomCount: targetRooms,
+    };
+  },
+
   async getUpgradeInfo(districtId: number) {
     const district = await prisma.redLightDistrict.findUnique({
-      where: { id: districtId }
+      where: { id: districtId },
+      include: { rooms: { select: { occupied: true } } },
     });
 
     if (!district) {
@@ -513,47 +583,90 @@ export const redLightDistrictService = {
 
     const currentTier = district.tier;
     const currentSecurity = district.securityLevel;
-
-    const canUpgradeTier = currentTier < 3;
-    const canUpgradeSecurity = currentSecurity < 3;
-
-    const nextTierCost = canUpgradeTier
-      ? TIER_UPGRADE_COSTS[(currentTier + 1) as keyof typeof TIER_UPGRADE_COSTS]
-      : null;
-
-    const currentTierConfig = TIER_CONFIG[currentTier as keyof typeof TIER_CONFIG];
-    const nextTierConfig = canUpgradeTier
-      ? TIER_CONFIG[(currentTier + 1) as keyof typeof TIER_CONFIG]
-      : null;
+    const expansionLevel = district.expansionLevel ?? 0;
+    const currentRooms = district.rooms.length || district.roomCount;
+    const canUpgradeTier = currentTier < RLD_TIER_MAX;
+    const canUpgradeSecurity = currentSecurity < RLD_SECURITY_MAX;
+    const canUpgradeExpansion = expansionLevel < RLD_EXPANSION_MAX;
+    const nextTier = canUpgradeTier ? currentTier + 1 : null;
+    const nextTierNeedsVip = nextTier === RLD_PENTHOUSE_TIER;
+    const currentTierConfig = getTierConfig(currentTier);
+    const nextTierConfig = nextTier ? getTierConfig(nextTier) : null;
+    const nextRooms = canUpgradeExpansion
+      ? Math.max(currentRooms, expansionTargetRooms(expansionLevel + 1))
+      : currentRooms;
 
     return {
       districtId: district.id,
       countryCode: district.countryCode,
       tier: {
         current: currentTier,
-        currentName: currentTierConfig.name,
+        currentName: currentTierConfig.nameNl,
+        currentKey: currentTierConfig.key,
         canUpgrade: canUpgradeTier,
-        nextTier: canUpgradeTier ? currentTier + 1 : null,
-        nextTierName: nextTierConfig?.name,
-        upgradeCost: nextTierCost,
+        nextTier,
+        nextTierName: nextTierConfig?.nameNl,
+        nextTierKey: nextTierConfig?.key,
+        nextTierNeedsVip,
+        upgradeCost: nextTier ? RLD_TIER_UPGRADE_COSTS[nextTier] : null,
         currentEarnings: {
           gross: currentTierConfig.gross,
           rent: currentTierConfig.rent,
-          net: currentTierConfig.gross - currentTierConfig.rent
+          net: currentTierConfig.gross - currentTierConfig.rent,
         },
-        nextEarnings: nextTierConfig ? {
-          gross: nextTierConfig.gross,
-          rent: nextTierConfig.rent,
-          net: nextTierConfig.gross - nextTierConfig.rent
-        } : null
+        nextEarnings: nextTierConfig
+          ? {
+              gross: nextTierConfig.gross,
+              rent: nextTierConfig.rent,
+              net: nextTierConfig.gross - nextTierConfig.rent,
+            }
+          : null,
       },
       security: {
         current: currentSecurity,
         canUpgrade: canUpgradeSecurity,
         nextLevel: canUpgradeSecurity ? currentSecurity + 1 : null,
-        upgradeCost: canUpgradeSecurity ? SECURITY_UPGRADE_COST : null,
-        raidReduction: `${currentSecurity * 3}%`
-      }
+        upgradeCost: canUpgradeSecurity ? RLD_SECURITY_COSTS[currentSecurity] : null,
+        raidReduction: `${currentSecurity * 3}%`,
+      },
+      expansion: {
+        current: expansionLevel,
+        currentRooms,
+        canUpgrade: canUpgradeExpansion,
+        nextLevel: canUpgradeExpansion ? expansionLevel + 1 : null,
+        nextRooms: canUpgradeExpansion ? nextRooms : null,
+        extraRooms: canUpgradeExpansion ? Math.max(0, nextRooms - currentRooms) : 0,
+        upgradeCost: canUpgradeExpansion ? RLD_EXPANSION_COSTS[expansionLevel] : null,
+      },
     };
-  }
+  },
+
+  async processOccupancyHeat(): Promise<number> {
+    const owned = await prisma.redLightDistrict.findMany({
+      where: { ownerId: { not: null } },
+      include: { rooms: { select: { occupied: true } } },
+    });
+    const now = new Date();
+    const hourAgo = new Date(now.getTime() - 60 * 60 * 1000);
+    let heated = 0;
+
+    for (const district of owned) {
+      if (!district.ownerId) continue;
+      const occupied = district.rooms.filter((r) => r.occupied).length;
+      const total = district.rooms.length || district.roomCount || 1;
+      const rate = occupancyRate(occupied, total);
+      if (rate < RLD_OCCUPANCY_FULL) continue;
+      if (district.lastOccupancyHeatAt && district.lastOccupancyHeatAt > hourAgo) continue;
+      await increaseFBIHeat(district.ownerId, RLD_OCCUPANCY_FULL_HEAT);
+      await prisma.redLightDistrict.update({
+        where: { id: district.id },
+        data: { lastOccupancyHeatAt: now },
+      });
+      heated += 1;
+    }
+
+    return heated;
+  },
 };
+
+export const RLD_COUNTRY_LIST = RLD_COUNTRY_SLUGS;

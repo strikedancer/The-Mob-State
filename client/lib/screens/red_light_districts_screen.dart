@@ -97,6 +97,27 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
     PlayerProfileNavigation.open(context, playerId, username);
   }
 
+  String _contestListBanner(AppLocalizations l10n, RedLightDistrict district) {
+    final status = district.contest?['status']?.toString() ?? 'active';
+    final banner = status == 'preparing'
+        ? l10n.rldContestBannerPrep
+        : status == 'lockdown'
+            ? l10n.rldContestBannerLockdown
+            : l10n.rldContestBannerActive;
+    final key = status == 'preparing'
+        ? 'activeAt'
+        : status == 'active'
+            ? 'lockdownAt'
+            : 'resolveAt';
+    final at = DateTime.tryParse(district.contest?[key]?.toString() ?? '');
+    if (at == null) return banner;
+    final remaining = at.difference(DateTime.now());
+    if (remaining.isNegative) return banner;
+    final minutes = remaining.inMinutes;
+    final clock = minutes >= 60 ? '${minutes ~/ 60}h ${minutes % 60}m' : '${minutes}m';
+    return '$banner · ${l10n.vipEventEndsIn} $clock';
+  }
+
   Future<void> _purchaseDistrict(RedLightDistrict district) async {
     final l10n = AppLocalizations.of(context)!;
 
@@ -609,6 +630,17 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  if (district.contestIsLive)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4),
+                      child: Text(
+                        _contestListBanner(l10n, district),
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: Colors.orangeAccent,
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),

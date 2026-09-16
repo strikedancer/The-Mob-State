@@ -15,6 +15,9 @@ import { processDueVehicleRepairCompletions } from './vehicleService';
 import { processDueLaunderJobs } from './launderService';
 import { tickStockPrices } from './stockMarketService';
 import { expireStaleVipFlags, isVipStatusActive } from './vipBenefitsService';
+import { vipEventService } from './vipEventService';
+import { rldPvpService } from './rldPvpService';
+import { redLightDistrictService } from './redLightDistrictService';
 
 const prisma = new PrismaClient();
 
@@ -31,6 +34,7 @@ const prisma = new PrismaClient();
 // Track job execution for debugging
 let lastJobExecutions: Record<string, Date> = {};
 let territoryContestProcessorRunning = false;
+let rldContestProcessorRunning = false;
 
 /**
  * Check and end expired VIP events
@@ -58,6 +62,11 @@ export async function checkExpiredEvents(): Promise<void> {
     if (expiredEvents.length === 0) {
       console.log('[CRON] No expired events found');
       lastJobExecutions['expiredEvents'] = now;
+      try {
+        await vipEventService.scheduleCountryEvents();
+      } catch (scheduleError) {
+        console.error('[CRON ERROR] scheduleCountryEvents:', scheduleError);
+      }
       return;
     }
 
@@ -83,6 +92,15 @@ export async function checkExpiredEvents(): Promise<void> {
 
     console.log(`[CRON] Processed ${expiredEvents.length} expired events`);
     lastJobExecutions['expiredEvents'] = now;
+
+    try {
+      const created = await vipEventService.scheduleCountryEvents();
+      if (created > 0) {
+        console.log(`[CRON] Scheduled ${created} RLD events`);
+      }
+    } catch (scheduleError) {
+      console.error('[CRON ERROR] scheduleCountryEvents:', scheduleError);
+    }
   } catch (error) {
     console.error('[CRON ERROR] checkExpiredEvents:', error);
   }
@@ -528,6 +546,35 @@ export function initializeCronJobs(): void {
 
   cron.schedule('* * * * *', async () => {
     await runTerritoryContestProcessor();
+  });
+
+  cron.schedule('* * * * *', async () => {
+    if (rldContestProcessorRunning) return;
+    rldContestProcessorRunning = true;
+    try {
+      const result = await rldPvpService.processContests();
+      if (result.advanced > 0 || result.resolved > 0) {
+        console.log(
+          `[CRON JOB] rldContestProcessor advanced=${result.advanced} resolved=${result.resolved}`
+        );
+      }
+      lastJobExecutions['rldContestProcessor'] = new Date();
+    } catch (error) {
+      console.error('[CRON ERROR] rldContestProcessor:', error);
+    } finally {
+      rldContestProcessorRunning = false;
+    }
+  });
+
+  cron.schedule('0 * * * *', async () => {
+    try {
+      const settled = await vipEventService.settleEventEarnings();
+      const heated = await redLightDistrictService.processOccupancyHeat();
+      console.log(`[CRON JOB] rldHourly settle=${settled} occupancyHeat=${heated}`);
+      lastJobExecutions['rldHourly'] = new Date();
+    } catch (error) {
+      console.error('[CRON ERROR] rldHourly:', error);
+    }
   });
 
   cron.schedule('* * * * *', async () => {
