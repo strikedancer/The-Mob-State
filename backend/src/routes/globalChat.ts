@@ -47,6 +47,7 @@ router.get('/messages', authenticate, async (req: AuthRequest, res) => {
       params: {
         messages,
         viewerStaffRole: isPlayerStaff(viewerStaffRole) ? viewerStaffRole : null,
+        serverNow: new Date().toISOString(),
       },
     });
   } catch (error) {
@@ -71,7 +72,7 @@ router.post('/messages', authenticate, async (req: AuthRequest, res) => {
     );
     return res.status(201).json({
       event: 'global_chat.message_sent',
-      params: { message: created },
+      params: { message: created, serverNow: new Date().toISOString() },
     });
   } catch (error) {
     const code = (error as { code?: string }).code;

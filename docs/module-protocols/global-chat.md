@@ -23,10 +23,11 @@ One public in-game lobby for every logged-in player, with a curated sticker pack
 ## Change Rules
 - Keep DMs and crew chat unchanged.
 - Filter on the server, never only in the client.
-- Live updates use SSE `global_chat.message` / `global_chat.message_deleted` via `eventBroadcaster.broadcast`. Do not write world-chat lines into the personal activity feed. No push per public message.
+- Live updates use SSE `global_chat.message` / `global_chat.message_deleted` via `eventBroadcaster.broadcast`. `global_chat.message` also sends `serverNow` so clients can correct device-clock skew on relative times. Do not write world-chat lines into the personal activity feed. No push per public message.
 - System lines (`source: system`, sender `Gevangenis`) announce when a **real player** is jailed, bought out, or jailbroken. Names are in the body. NPCs are skipped. Own bail / self-escape stay silent. These lines still mirror to the Discord wereldchat lobby; they never go to `#updates`.
 - Hide the live-event rail on World chat (same as Messages / Crew) so it cannot cover send.
 - World chat stays open before rank 5.
+- Relative timestamps (`Nu` / `5m`) use UTC instants plus `serverNow` from `GET/POST /global-chat/messages` and SSE `global_chat.message`. Do not diff `DateTime.parse(...).toLocal()` against the device clock; a skewed phone clock shows “51m” on a just-sent line.
 - Discord outbound uses `GLOBAL_CHAT_DISCORD_WEBHOOK_URL`. Inbound polling uses `GLOBAL_CHAT_DISCORD_BOT_TOKEN` + `GLOBAL_CHAT_DISCORD_CHANNEL_ID`. Empty env = in-game only. Never post this lobby into `#updates` or the Crew Wars ops webhook.
 - Game → Discord webhook names use `[Ops]` / `[Mod]` when the player is staff. Discord-native staff lines get a 🛡️ / 🔨 reaction.
 - Linked Mods/Ops can moderate in `#wereldchat`: reply `!wis` (or `!delete`) to remove a line in-game and on Discord; `!mute @name 15|60`, `!unmute @name`, `!hulp`. Commands are not ingested as chat. Bot invite needs Send Messages + Manage Messages + Add Reactions for those tools; the `[Ops]`/`[Mod]` name prefix works with the webhook alone.

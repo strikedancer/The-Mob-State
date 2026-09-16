@@ -123,7 +123,7 @@ async function staffRolesByPlayerIds(playerIds: Array<number | null | undefined>
 function broadcastMessage(message: GlobalChatPublicMessage): void {
   eventBroadcaster.broadcast({
     event: 'global_chat.message',
-    params: { message },
+    params: { message, serverNow: new Date().toISOString() },
   });
 }
 

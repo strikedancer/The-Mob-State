@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import '../utils/chat_relative_time.dart';
+
 part 'direct_message.g.dart';
 
 @JsonSerializable()
@@ -27,27 +29,8 @@ class DirectMessage {
       _$DirectMessageFromJson(json);
   Map<String, dynamic> toJson() => _$DirectMessageToJson(this);
 
-  String get formattedTime {
-    try {
-      final dateTime = DateTime.parse(createdAt).toLocal();
-      final now = DateTime.now();
-      final difference = now.difference(dateTime);
-
-      if (difference.inMinutes < 1) {
-        return 'Nu';
-      } else if (difference.inMinutes < 60) {
-        return '${difference.inMinutes}m';
-      } else if (difference.inHours < 24) {
-        return '${difference.inHours}u';
-      } else if (difference.inDays < 7) {
-        return '${difference.inDays}d';
-      } else {
-        return '${dateTime.day}/${dateTime.month}';
-      }
-    } catch (e) {
-      return '';
-    }
-  }
+  String get formattedTime =>
+      formatChatRelativeTime(createdAt, style: ChatRelativeStyle.thread);
 
   String get formattedDateTime {
     try {

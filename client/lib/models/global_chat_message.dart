@@ -1,3 +1,5 @@
+import '../utils/chat_relative_time.dart';
+
 class GlobalChatMessage {
   final int id;
   final int? playerId;
@@ -39,17 +41,5 @@ class GlobalChatMessage {
 
   bool get isSystem => source == 'system';
 
-  String get formattedTime {
-    try {
-      final dateTime = DateTime.parse(createdAt).toLocal();
-      final now = DateTime.now();
-      final difference = now.difference(dateTime);
-      if (difference.inMinutes < 1) return 'Nu';
-      if (difference.inMinutes < 60) return '${difference.inMinutes}m';
-      if (difference.inHours < 24) return '${difference.inHours}u';
-      return '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
-    } catch (_) {
-      return '';
-    }
-  }
+  String get formattedTime => formatChatRelativeTime(createdAt);
 }

@@ -10,6 +10,7 @@ import '../models/global_chat_message.dart';
 import '../providers/auth_provider.dart';
 import '../providers/event_provider.dart';
 import '../services/auth_service.dart';
+import '../utils/chat_relative_time.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/empire_page_hero.dart';
 import '../widgets/game_page_info.dart';
@@ -31,6 +32,7 @@ class _WorldChatScreenState extends State<WorldChatScreen> {
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   StreamSubscription? _eventSubscription;
+  Timer? _ageTicker;
   bool _loading = false;
   bool _sending = false;
   bool _loadFailed = false;
@@ -44,11 +46,15 @@ class _WorldChatScreenState extends State<WorldChatScreen> {
     super.initState();
     _loadMessages();
     _setupSse();
+    _ageTicker = Timer.periodic(const Duration(seconds: 30), (_) {
+      if (mounted && _messages.isNotEmpty) setState(() {});
+    });
   }
 
   @override
   void dispose() {
     _eventSubscription?.cancel();
+    _ageTicker?.cancel();
     _messageController.dispose();
     _scrollController.dispose();
     super.dispose();
@@ -67,6 +73,7 @@ class _WorldChatScreenState extends State<WorldChatScreen> {
         final message = GlobalChatMessage.fromJson(
           Map<String, dynamic>.from(raw),
         );
+        ServerClock.syncFromIso(params['serverNow'] as String?);
         if (_messages.any((row) => row.id == message.id)) return;
         setState(() => _messages.add(message));
         _scrollToBottom();
@@ -90,6 +97,7 @@ class _WorldChatScreenState extends State<WorldChatScreen> {
         final params = data['params'] as Map<String, dynamic>;
         final list = params['messages'] as List? ?? [];
         final role = params['viewerStaffRole'] as String?;
+        ServerClock.syncFromIso(params['serverNow'] as String?);
         setState(() {
           _viewerStaffRole = role == 'MOD' || role == 'OPS' ? role : null;
           _messages
@@ -167,6 +175,7 @@ class _WorldChatScreenState extends State<WorldChatScreen> {
       if (response.statusCode == 201) {
         final data = jsonDecode(response.body) as Map<String, dynamic>;
         final params = data['params'] as Map<String, dynamic>;
+        ServerClock.syncFromIso(params['serverNow'] as String?);
         final created = GlobalChatMessage.fromJson(
           Map<String, dynamic>.from(params['message'] as Map),
         );
