@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import prisma from '../lib/prisma';
+import { isVipStatusActive } from './vipBenefitsService';
 
 interface Backpack {
   id: string;
@@ -122,10 +123,10 @@ export async function purchaseBackpack(
     };
   }
 
-  // Get player info
   const player = await prisma.player.findUnique({
-    where: { id: playerId }
-  }) as any;
+    where: { id: playerId },
+    select: { rank: true, money: true, isVip: true, vipExpiresAt: true },
+  });
 
   if (!player) {
     return { 
@@ -148,8 +149,7 @@ export async function purchaseBackpack(
     };
   }
 
-  // Check VIP requirement
-  if (backpackDef.vipOnly && (!player.vipStatus || player.vipStatus === 'NONE')) {
+  if (backpackDef.vipOnly && !isVipStatusActive(player)) {
     return {
       success: false,
       event: 'backpack.purchase_failed',
@@ -248,10 +248,10 @@ export async function upgradeBackpack(
     };
   }
 
-  // Get player info
   const player = await prisma.player.findUnique({
-    where: { id: playerId }
-  }) as any;
+    where: { id: playerId },
+    select: { rank: true, money: true, isVip: true, vipExpiresAt: true },
+  });
 
   if (!player) {
     return { 
@@ -274,8 +274,7 @@ export async function upgradeBackpack(
     };
   }
 
-  // Check VIP requirement
-  if (newBackpackDef.vipOnly && (!player.vipStatus || player.vipStatus === 'NONE')) {
+  if (newBackpackDef.vipOnly && !isVipStatusActive(player)) {
     return {
       success: false,
       event: 'backpack.upgrade_failed',

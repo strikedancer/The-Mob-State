@@ -8,7 +8,7 @@ Unified **illegal / grey economy hub** under **Economie → Zwarte Markt**: deal
 - Tools and Security are no longer separate sidebar items (Assets / Meer). Search still finds those labels and opens the matching shop. `/security` opens this hub on the Security shop.
 - While the player is jailed the hub is replaced by the jail overlay. Mutating shop and marketplace APIs (`/trade`, `/weapons` buy/sell/repair, `/ammo` buy/sell, `/tools` buy/repair, `/backpacks` purchase/upgrade, `/market` list/buy/delist, `/drugs/materials/buy*`, `/security` buy-armor/bodyguards/repair) return `error.jailed`.
 - `client/lib/screens/trade_goods_tab.dart` — eerste zwarte-markt-tab: **voorraad hier** bovenaan, daarna andere landen (read-only), daarna catalogus in **één scroll** (`/trade/*` APIs; geen aparte sub-tabs meer). Koop/verkoop als compacte rijen (naam, risico-pills, prijs, aantal, actie); aantal is typbaar met **Max** (lang indrukken van −/+ springt 10). Lange flavor-tekst zit in tooltip. Handelswaren blijven in het land van koop/claim; verkopen kan alleen daar.
-- Alle dealer- en P2P-shops volgen datzelfde patroon: **één scroll**, geen inner Shop/Mijn-tabs, compacte rijen via `client/lib/widgets/market_compact.dart` (`MarketCompactRow`, `marketSectionHeader`). Wapens, munitie, gereedschap, beveiliging, materialen, rugzakken, marktplaats en mijn advertenties. Koop/verkoop-API’s, rank/VIP-gates en dialogen ongewijzigd.
+- Alle dealer- en P2P-shops volgen datzelfde patroon: **één scroll**, geen inner Shop/Mijn-tabs, compacte rijen via `client/lib/widgets/market_compact.dart` (`MarketCompactRow`, `marketSectionHeader`). Wapens, munitie, gereedschap, beveiliging, materialen, rugzakken, marktplaats en mijn advertenties. Koop/verkoop-API’s, rank/VIP-gates en dialogen ongewijzigd. VIP-only backpacks use `isVipStatusActive` (`isVip` + `vipExpiresAt`); there is no Player `vipStatus` field.
 - Legacy route `TradeScreen` redirects to this screen with `initialTabIndex: 0`
 
 ## Marktplaats (P2P)
@@ -46,6 +46,7 @@ Speler-tegen-speler verkoop op de **Marktplaats**-tab: **voertuigen** (auto/moto
 - Verify the screen refreshes correctly after actions.
 - Verify the listed buy price on a contraband row matches the charged `pricePerUnit` for a buy in the same UTC hour (no fresh random roll).
 - Verify jailed players see the jail overlay instead of shops, and buy/sell/list APIs return `error.jailed`.
+- Verify an active VIP at rank 25 can buy/upgrade VIP Tactical; `vip_only` must not fire on a live VIP.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
 

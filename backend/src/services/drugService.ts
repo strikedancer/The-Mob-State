@@ -19,6 +19,7 @@ import { getPlayerCarryingCapacity } from './backpackService';
 import toolService from './toolService';
 import {
   assertBackpackFits,
+  backpackHasRoom,
   extraSlotsForDrugAdd,
   refreshInventorySlotUsage,
 } from './carriedInventory';
@@ -1056,6 +1057,104 @@ class DrugService {
     });
   }
 
+  private async findOwnedNightclubVenue(playerId: number, country?: string | null) {
+    if (country) {
+      const local = await prisma.nightclubVenue.findFirst({
+        where: { playerId, country },
+        select: { id: true },
+      });
+      if (local) return local;
+    }
+    return prisma.nightclubVenue.findFirst({
+      where: { playerId },
+      select: { id: true },
+    });
+  }
+
+  private async grantNightclubDrugInventory(
+    tx: any,
+    venueId: number,
+    drugType: string,
+    quality: string,
+    quantity: number,
+    ownProduction: boolean
+  ): Promise<void> {
+    if (quantity <= 0) return;
+    const drug = this.drugs.get(drugType);
+    const basePrice = Math.max(0, Math.round(Number(drug?.basePrice) || 0));
+    const existing = await tx.nightclubDrugInventory.findUnique({
+      where: { venueId_drugType_quality: { venueId, drugType, quality } },
+    });
+    if (existing) {
+      await tx.nightclubDrugInventory.update({
+        where: { id: existing.id },
+        data: {
+          quantity: { increment: quantity },
+          ownProduction: existing.ownProduction || ownProduction,
+        },
+      });
+      return;
+    }
+    await tx.nightclubDrugInventory.create({
+      data: {
+        venueId,
+        drugType,
+        quality,
+        quantity,
+        basePrice,
+        ownProduction,
+      },
+    });
+  }
+
+  private async resolveCollectDestination(
+    playerId: number,
+    drugType: string,
+    quality: string,
+    quantity: number,
+  ): Promise<{ destination: 'backpack' | 'nightclub'; venueId?: number; error?: string }> {
+    const extra = await extraSlotsForDrugAdd(playerId, drugType, quality, quantity);
+    if (await backpackHasRoom(playerId, extra)) {
+      return { destination: 'backpack' };
+    }
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { currentCountry: true },
+    });
+    const venue = await this.findOwnedNightclubVenue(playerId, player?.currentCountry);
+    if (venue) {
+      return { destination: 'nightclub', venueId: venue.id };
+    }
+    return {
+      destination: 'backpack',
+      error:
+        'Rugzak vol. Zet drugs in je nachtclub of huis, of koop een grotere rugzak. / Backpack full. Store drugs in your nightclub or house, or upgrade your backpack.',
+    };
+  }
+
+  private async grantCollectedLot(
+    tx: any,
+    playerId: number,
+    destination: { destination: 'backpack' | 'nightclub'; venueId?: number },
+    drugType: string,
+    quality: string,
+    quantity: number,
+    ownProduction: boolean,
+  ): Promise<void> {
+    if (destination.destination === 'nightclub' && destination.venueId) {
+      await this.grantNightclubDrugInventory(
+        tx,
+        destination.venueId,
+        drugType,
+        quality,
+        quantity,
+        ownProduction,
+      );
+      return;
+    }
+    await this.grantDrugInventory(tx, playerId, drugType, quality, quantity, ownProduction);
+  }
+
   private buildRaidPayload(production: {
     id: number;
     quantity: number;
@@ -1163,19 +1262,14 @@ class DrugService {
     }
 
     const ownProduction = Boolean(production.facilityId);
-
-    try {
-      await assertBackpackFits(
-        playerId,
-        await extraSlotsForDrugAdd(
-          playerId,
-          production.drugType,
-          quality,
-          production.quantity,
-        ),
-      );
-    } catch {
-      return { success: false, message: 'Rugzak vol / Backpack full' };
+    const destination = await this.resolveCollectDestination(
+      playerId,
+      production.drugType,
+      quality,
+      production.quantity,
+    );
+    if (destination.error) {
+      return { success: false, message: destination.error };
     }
 
     // Atomic collect: never mark as collected unless inventory update succeeds.
@@ -1188,13 +1282,14 @@ class DrugService {
           raidPending: false,
         },
       });
-      await this.grantDrugInventory(
+      await this.grantCollectedLot(
         tx,
         playerId,
+        destination,
         production.drugType,
         quality,
         production.quantity,
-        ownProduction
+        ownProduction,
       );
     });
     await refreshInventorySlotUsage(playerId);
@@ -1213,6 +1308,10 @@ class DrugService {
     }
 
     const drugName = drug?.displayName || production.drugType;
+    const destNote =
+      destination.destination === 'nightclub'
+        ? ' in je nachtclub / into your nightclub'
+        : '';
     await worldEventService.createEvent(
       'drugs.production_collected',
       {
@@ -1227,7 +1326,9 @@ class DrugService {
     await activityService.logActivity(
       playerId,
       'DRUG_PRODUCTION_COLLECTED',
-      `${production.quantity}g ${drugName} (${qualityLabel}) opgehaald`,
+      `${production.quantity}g ${drugName} (${qualityLabel}) opgehaald${
+        destination.destination === 'nightclub' ? ' in nachtclub' : ''
+      }`,
       {
         drugType: production.drugType,
         drugName,
@@ -1254,7 +1355,7 @@ class DrugService {
 
     return {
       success: true,
-      message: `${production.quantity}g ${drugName} (${qualityLabel}) opgehaald!`,
+      message: `${production.quantity}g ${drugName} (${qualityLabel}) opgehaald${destNote}!`,
       quantity: production.quantity,
       drugType: production.drugType,
     };
@@ -2490,13 +2591,19 @@ class DrugService {
       return { success: false, message: 'Ongeldige keuze' };
     }
 
-    try {
-      await assertBackpackFits(
+    let destination: { destination: 'backpack' | 'nightclub'; venueId?: number; error?: string } = {
+      destination: 'backpack',
+    };
+    if (granted > 0) {
+      destination = await this.resolveCollectDestination(
         playerId,
-        await extraSlotsForDrugAdd(playerId, production.drugType, quality, granted),
+        production.drugType,
+        quality,
+        granted,
       );
-    } catch {
-      return { success: false, message: 'Rugzak vol / Backpack full' };
+      if (destination.error) {
+        return { success: false, message: destination.error };
+      }
     }
 
     await prisma.$transaction(async (tx) => {
@@ -2508,13 +2615,14 @@ class DrugService {
           raidPending: false,
         },
       });
-      await this.grantDrugInventory(
+      await this.grantCollectedLot(
         tx,
         playerId,
+        destination,
         production.drugType,
         quality,
         granted,
-        ownProduction
+        ownProduction,
       );
     });
 
@@ -2542,7 +2650,9 @@ class DrugService {
       success: true,
       quantity: granted,
       drugType: production.drugType,
-      message: `Inval afgehandeld:${extraMessage}. ${granted}g ${drugName} (${qualityLabel}) behouden.`,
+      message: `Inval afgehandeld:${extraMessage}. ${granted}g ${drugName} (${qualityLabel}) behouden${
+        destination.destination === 'nightclub' ? ' in je nachtclub / in your nightclub' : ''
+      }.`,
     };
   }
 

@@ -3,6 +3,7 @@ import { directMessageService } from './directMessageService';
 import { activityService } from './activityService';
 import { checkAndUnlockAchievements, serializeAchievementForClient } from './achievementService';
 import { translationService } from './translationService';
+import { refreshInventorySlotUsage } from './carriedInventory';
 
 interface CrowdState {
   size: number; // 0-100 (percentage)
@@ -3271,10 +3272,17 @@ class NightclubService {
     const ownProduction = Boolean(playerInventory.ownProduction);
 
     await prisma.$transaction(async (tx) => {
-      await tx.drugInventory.update({
-        where: { id: playerInventory.id },
-        data: { quantity: { decrement: quantity } },
-      });
+      const remaining = playerInventory.quantity - quantity;
+      if (remaining > 0) {
+        await tx.drugInventory.update({
+          where: { id: playerInventory.id },
+          data: { quantity: remaining },
+        });
+      } else {
+        await tx.drugInventory.delete({
+          where: { id: playerInventory.id },
+        });
+      }
       const existing = await tx.nightclubDrugInventory.findUnique({
         where: { venueId_drugType_quality: { venueId, drugType, quality } },
       });
@@ -3299,6 +3307,7 @@ class NightclubService {
         });
       }
     });
+    await refreshInventorySlotUsage(playerId);
 
     return {
       success: true,

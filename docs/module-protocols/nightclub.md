@@ -36,6 +36,7 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 - Live staffing selectors must never depend on manual seed steps alone; DJ/security availability data needs a production-safe bootstrap or fallback so empty staff tables do not leave selectors blank.
 - Drug storage controls must keep grams visible on mobile (selected item + available grams), so players can make quantity decisions without hidden or truncated unit info.
 - Own-production lots stored in the nightclub get a capped sale-margin bonus (`DRUG_NIGHTCLUB_OWN_PROD_BONUS_PERCENT`); this is not a credit/VIP yield boost.
+- Nightclub drug stock is **not** backpack inventory. Harvest overflow from a full backpack credits `NightclubDrugInventory` on an owned venue (current country first). Storing from the backpack into the club must free backpack slots (`refreshInventorySlotUsage`).
 - **Player supply (opt-in):** owner toggles `playerSupplyEnabled`. Same-country players sell grams at a server wholesale quote (`NIGHTCLUB_PLAYER_SUPPLY_PRICE_PERCENT`, default 55% of base×quality). Owner pays cash; stock is not marked `ownProduction`. Min/max grams via runtime keys. Self-sale is blocked (use Store).
 - Nightclub management UI must keep one primary vertical page scroll on mobile; the compact photo hero (`EmpirePageHero` + `NestedScrollView`) scrolls away. Do not embed fixed-height subpanels with independent scrollbars.
 - DJ status must reflect real active shift state; expired contracts must be cleaned up server-side so hire actions are not blocked by stale `currentDJId`.
