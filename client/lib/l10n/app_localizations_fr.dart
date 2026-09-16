@@ -7224,6 +7224,18 @@ class AppLocalizationsFr extends AppLocalizations {
   String get casinoBlackjackPlayButton => 'JOUER!';
 
   @override
+  String get casinoBlackjackHit => 'Hit';
+
+  @override
+  String get casinoBlackjackStand => 'Stand';
+
+  @override
+  String get casinoBlackjackPushTitle => 'Push';
+
+  @override
+  String get casinoBlackjackPush => 'Tie. Your bet is returned.';
+
+  @override
   String get casinoSlotSpinButton => 'ROTATION!';
 
   @override

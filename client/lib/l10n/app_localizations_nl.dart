@@ -7155,6 +7155,18 @@ class AppLocalizationsNl extends AppLocalizations {
   String get casinoBlackjackPlayButton => 'SPELEN!';
 
   @override
+  String get casinoBlackjackHit => 'Kaart';
+
+  @override
+  String get casinoBlackjackStand => 'Passen';
+
+  @override
+  String get casinoBlackjackPushTitle => 'Gelijkspel';
+
+  @override
+  String get casinoBlackjackPush => 'Gelijk. Je inzet komt terug.';
+
+  @override
   String get casinoSlotSpinButton => 'SPIN!';
 
   @override
@@ -18120,7 +18132,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicCasinoHow =>
-      'Beschikbare spellen: Slots (lage inzet, willekeurige uitbetaling), Blackjack (strategie telt), Roulette (buiten/binnenkansen met eigen odds), Dice (hoge variantie), Baccarat (speler/bankier/gelijkspel), Video Poker (5 kaarten, handrank uitbetaling).\nElke game heeft een minimum inzet. Uitkeringsratio verschilt per speltype (bijv. roulette buiten kans ~1.97x, vol getal 35x).\nCasino gebruikt alleen contant geld, niet je banksaldo. Zorg dat je cash bij je hebt voor je speelt.\nEr is geen cooldown tussen rondes: je kunt onbeperkt snel achter elkaar spelen.\nGrote winsten boven een drempelwaarde kunnen een event triggeren zichtbaar voor andere spelers.\nVerloren inzetten zijn definitief weg; er is geen verzekering of terugkoop.\nLege-land casino\'s worden gerund door NPC-uitbaters zodat de zaak openblijft; je kunt het casino nog steeds van hen kopen tegen de vraagprijs.';
+      'Beschikbare spellen: Slots (lage inzet, willekeurige uitbetaling), Blackjack (Kaart of Passen; de bank houdt één kaart dicht tot je past), Roulette (buiten/binnenkansen met eigen odds), Dice (hoge variantie), Baccarat (speler/bankier/gelijkspel), Video Poker (5 kaarten, handrank uitbetaling).\nElke game heeft een minimum inzet. Uitkeringsratio verschilt per speltype (bijv. roulette buiten kans ~1.97x, vol getal 35x).\nCasino gebruikt alleen contant geld, niet je banksaldo. Zorg dat je cash bij je hebt voor je speelt.\nEr is geen cooldown tussen rondes: je kunt onbeperkt snel achter elkaar spelen.\nGrote winsten boven een drempelwaarde kunnen een event triggeren zichtbaar voor andere spelers.\nVerloren inzetten zijn definitief weg; er is geen verzekering of terugkoop.\nLege-land casino\'s worden gerund door NPC-uitbaters zodat de zaak openblijft; je kunt het casino nog steeds van hen kopen tegen de vraagprijs.';
 
   @override
   String get helpTopicCasinoTips =>

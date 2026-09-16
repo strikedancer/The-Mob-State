@@ -92,6 +92,7 @@ export async function settleCasinoBet(params: {
   result: unknown;
   seed: string;
   skipMinBetCheck?: boolean;
+  betAlreadyReserved?: boolean;
 }): Promise<{
   newBalance: number;
   casinoBankrupt: boolean;
@@ -130,7 +131,7 @@ export async function settleCasinoBet(params: {
   if (!player) {
     throw new Error('PLAYER_NOT_FOUND');
   }
-  if (player.money < betAmount) {
+  if (!params.betAlreadyReserved && player.money < betAmount) {
     throw new Error('INSUFFICIENT_FUNDS');
   }
   if (!params.skipMinBetCheck && betAmount < 10) {
@@ -152,10 +153,12 @@ export async function settleCasinoBet(params: {
   }
 
   await prisma.$transaction(async (tx) => {
-    await tx.player.update({
-      where: { id: playerId },
-      data: { money: { decrement: betAmount } },
-    });
+    if (!params.betAlreadyReserved) {
+      await tx.player.update({
+        where: { id: playerId },
+        data: { money: { decrement: betAmount } },
+      });
+    }
     await tx.casinoOwnership.update({
       where: { casinoId },
       data: {
@@ -204,7 +207,7 @@ export async function settleCasinoBet(params: {
   await casinoOwnershipService.checkLowBalance(countryId);
 
   return {
-    newBalance: player.money - betAmount + payout,
+    newBalance: player.money - (params.betAlreadyReserved ? 0 : betAmount) + payout,
     casinoBankrupt,
     ownerCut,
     payout,
@@ -290,28 +293,124 @@ export async function playSlots(
   };
 }
 
+const BLACKJACK_HAND_TTL_MS = 30 * 60 * 1000;
+
+type StoredBlackjackHand = {
+  playerId: number;
+  casinoId: string;
+  betAmount: number;
+  playerHand: number[];
+  dealerHand: number[];
+  createdAt: Date;
+};
+
+async function loadActiveBlackjackHand(playerId: number): Promise<StoredBlackjackHand | null> {
+  const rows = await prisma.$queryRawUnsafe<
+    Array<{
+      playerId: number;
+      casinoId: string;
+      betAmount: number;
+      playerHand: string;
+      dealerHand: string;
+      createdAt: Date;
+    }>
+  >(
+    `SELECT playerId, casinoId, betAmount, playerHand, dealerHand, createdAt
+     FROM casino_active_hands WHERE playerId = ? LIMIT 1`,
+    playerId
+  );
+  const row = rows[0];
+  if (!row) return null;
+  return {
+    playerId: Number(row.playerId),
+    casinoId: row.casinoId,
+    betAmount: Number(row.betAmount),
+    playerHand: JSON.parse(row.playerHand) as number[],
+    dealerHand: JSON.parse(row.dealerHand) as number[],
+    createdAt: new Date(row.createdAt),
+  };
+}
+
+async function saveActiveBlackjackHand(hand: Omit<StoredBlackjackHand, 'createdAt'>): Promise<void> {
+  const playerJson = JSON.stringify(hand.playerHand);
+  const dealerJson = JSON.stringify(hand.dealerHand);
+  await prisma.$executeRawUnsafe(
+    `INSERT INTO casino_active_hands (playerId, casinoId, betAmount, playerHand, dealerHand)
+     VALUES (?, ?, ?, ?, ?)
+     ON DUPLICATE KEY UPDATE
+       casinoId = VALUES(casinoId),
+       betAmount = VALUES(betAmount),
+       playerHand = VALUES(playerHand),
+       dealerHand = VALUES(dealerHand)`,
+    hand.playerId,
+    hand.casinoId,
+    hand.betAmount,
+    playerJson,
+    dealerJson
+  );
+}
+
+async function deleteActiveBlackjackHand(playerId: number): Promise<void> {
+  await prisma.$executeRawUnsafe(`DELETE FROM casino_active_hands WHERE playerId = ?`, playerId);
+}
+
+function isBlackjackHandExpired(hand: StoredBlackjackHand): boolean {
+  return Date.now() - hand.createdAt.getTime() > BLACKJACK_HAND_TTL_MS;
+}
+
+function hideDealerHole(dealerHand: number[]): { dealerHand: number[]; dealerTotal: number; holeHidden: boolean } {
+  return {
+    dealerHand: [dealerHand[0], -1],
+    dealerTotal: calculateBlackjackTotal([dealerHand[0]]),
+    holeHidden: true,
+  };
+}
+
+function compareBlackjackHands(
+  playerHand: number[],
+  dealerHand: number[]
+): 'win' | 'lose' | 'push' {
+  const playerTotal = calculateBlackjackTotal(playerHand);
+  const dealerTotal = calculateBlackjackTotal(dealerHand);
+  if (dealerTotal > 21) return 'win';
+  if (playerTotal > dealerTotal) return 'win';
+  if (playerTotal < dealerTotal) return 'lose';
+  return 'push';
+}
+
+function continueBlackjackView(
+  playerHand: number[],
+  dealerHand: number[]
+) {
+  const hidden = hideDealerHole(dealerHand);
+  return {
+    playerHand,
+    dealerHand: hidden.dealerHand,
+    playerTotal: calculateBlackjackTotal(playerHand),
+    dealerTotal: hidden.dealerTotal,
+    holeHidden: true,
+    gameOver: false,
+    payout: 0,
+    profit: 0,
+  };
+}
+
 /**
- * Play blackjack (simplified: player vs dealer, hit/stand only)
- * @param playerId - Player ID
- * @param casinoId - Casino property ID
- * @param betAmount - Bet amount
- * @param action - 'hit' or 'stand'
- * @param playerHand - Current player hand (for continuation)
- * @param dealerHand - Current dealer hand (for continuation)
- * @returns Game result
+ * Play blackjack: start deals and waits for hit/stand. Hands live on the server.
  */
 export async function playBlackjack(
   playerId: number,
   casinoId: string,
   betAmount: number,
   action: 'start' | 'hit' | 'stand',
-  playerHand?: number[],
-  dealerHand?: number[]
+  _playerHand?: number[],
+  _dealerHand?: number[]
 ): Promise<{
   playerHand: number[];
   dealerHand: number[];
   playerTotal: number;
   dealerTotal: number;
+  holeHidden?: boolean;
   gameOver: boolean;
   result?: 'win' | 'lose' | 'push';
   payout: number;
@@ -330,7 +429,6 @@ export async function playBlackjack(
     throw new Error('NOT_A_CASINO');
   }
 
-  // Get player
   const player = await prisma.player.findUnique({
     where: { id: playerId },
     select: { money: true },
@@ -340,131 +438,110 @@ export async function playBlackjack(
     throw new Error('PLAYER_NOT_FOUND');
   }
 
-  // Start new game
+  const resolveStand = async (hand: StoredBlackjackHand) => {
+    const dealerHand = [...hand.dealerHand];
+    let dealerTotal = calculateBlackjackTotal(dealerHand);
+    while (dealerTotal < 17) {
+      dealerHand.push(drawCard());
+      dealerTotal = calculateBlackjackTotal(dealerHand);
+    }
+    const result = compareBlackjackHands(hand.playerHand, dealerHand);
+    return finalizeBlackjack(
+      playerId,
+      hand.casinoId,
+      hand.betAmount,
+      hand.playerHand,
+      dealerHand,
+      result,
+      player.money,
+      true
+    );
+  };
+
+  let active = await loadActiveBlackjackHand(playerId);
+  if (active && isBlackjackHandExpired(active)) {
+    const expiredResult = await resolveStand(active);
+    if (action !== 'start') {
+      return expiredResult;
+    }
+    active = null;
+  }
+
   if (action === 'start') {
+    if (active) {
+      return continueBlackjackView(active.playerHand, active.dealerHand);
+    }
+
     if (player.money < betAmount) {
       throw new Error('INSUFFICIENT_FUNDS');
     }
-
     if (betAmount < 10) {
       throw new Error('MIN_BET_10');
     }
 
-    // Deal initial cards (2 to player, 2 to dealer)
-    playerHand = [drawCard(), drawCard()];
-    dealerHand = [drawCard(), drawCard()];
-
+    const playerHand = [drawCard(), drawCard()];
+    const dealerHand = [drawCard(), drawCard()];
     const playerTotal = calculateBlackjackTotal(playerHand);
-    let dealerTotal = calculateBlackjackTotal(dealerHand);
 
-    // Check for natural blackjack
     if (playerTotal === 21) {
-      // Player wins automatically
-      return await finalizeBlackjack(
+      const dealerTotal = calculateBlackjackTotal(dealerHand);
+      const result = dealerTotal === 21 ? 'push' : 'win';
+      return finalizeBlackjack(
         playerId,
         casinoId,
         betAmount,
         playerHand,
         dealerHand,
-        'win',
-        player.money
+        result,
+        player.money,
+        false
       );
     }
 
-    // Auto-play: dealer draws to 17+
-    while (dealerTotal < 17) {
-      dealerHand.push(drawCard());
-      dealerTotal = calculateBlackjackTotal(dealerHand);
-    }
-
-    // Determine winner
-    let result: 'win' | 'lose' | 'push';
-    if (dealerTotal > 21) {
-      result = 'win'; // Dealer busts
-    } else if (playerTotal > dealerTotal) {
-      result = 'win';
-    } else if (playerTotal < dealerTotal) {
-      result = 'lose';
-    } else {
-      result = 'push'; // Tie
-    }
-
-    return await finalizeBlackjack(
+    await prisma.player.update({
+      where: { id: playerId },
+      data: { money: { decrement: betAmount } },
+    });
+    await saveActiveBlackjackHand({
       playerId,
       casinoId,
       betAmount,
       playerHand,
       dealerHand,
-      result,
-      player.money
-    );
+    });
+    return continueBlackjackView(playerHand, dealerHand);
   }
 
-  // Continue existing game
-  if (!playerHand || !dealerHand) {
+  if (!active) {
     throw new Error('INVALID_GAME_STATE');
   }
 
   if (action === 'hit') {
-    // Player draws a card
-    playerHand.push(drawCard());
-    const playerTotal = calculateBlackjackTotal(playerHand);
-
-    // Check if player busts
-    if (playerTotal > 21) {
-      return await finalizeBlackjack(
+    const playerHand = [...active.playerHand, drawCard()];
+    if (calculateBlackjackTotal(playerHand) > 21) {
+      return finalizeBlackjack(
         playerId,
-        casinoId,
-        betAmount,
+        active.casinoId,
+        active.betAmount,
         playerHand,
-        dealerHand,
+        active.dealerHand,
         'lose',
-        player.money
+        player.money,
+        true
       );
     }
-
-    return {
+    await saveActiveBlackjackHand({
+      playerId,
+      casinoId: active.casinoId,
+      betAmount: active.betAmount,
       playerHand,
-      dealerHand,
-      playerTotal,
-      dealerTotal: calculateBlackjackTotal(dealerHand),
-      gameOver: false,
-      payout: 0,
-      profit: 0,
-    };
+      dealerHand: active.dealerHand,
+    });
+    return continueBlackjackView(playerHand, active.dealerHand);
   }
 
   if (action === 'stand') {
-    // Dealer plays (hits on <17)
-    let dealerTotal = calculateBlackjackTotal(dealerHand);
-    while (dealerTotal < 17) {
-      dealerHand.push(drawCard());
-      dealerTotal = calculateBlackjackTotal(dealerHand);
-    }
-
-    const playerTotal = calculateBlackjackTotal(playerHand);
-
-    // Determine winner
-    let result: 'win' | 'lose' | 'push';
-    if (dealerTotal > 21) {
-      result = 'win'; // Dealer busts
-    } else if (playerTotal > dealerTotal) {
-      result = 'win';
-    } else if (playerTotal < dealerTotal) {
-      result = 'lose';
-    } else {
-      result = 'push'; // Tie
-    }
-
-    return await finalizeBlackjack(
-      playerId,
-      casinoId,
-      betAmount,
-      playerHand,
-      dealerHand,
-      result,
-      player.money
-    );
+    return resolveStand(active);
   }
 
   throw new Error('INVALID_ACTION');
@@ -480,13 +557,15 @@ async function finalizeBlackjack(
   playerHand: number[],
   dealerHand: number[],
   result: 'win' | 'lose' | 'push',
-  playerMoney: number
+  playerMoney: number,
+  betAlreadyReserved = false
 ): Promise<{
   playerHand: number[];
   dealerHand: number[];
   playerTotal: number;
   dealerTotal: number;
   gameOver: boolean;
+  holeHidden?: boolean;
   result: 'win' | 'lose' | 'push';
   payout: number;
   profit: number;
@@ -503,7 +582,9 @@ async function finalizeBlackjack(
     payout: rawPayout,
     result: { playerHand, dealerHand, result },
     seed,
+    betAlreadyReserved,
   });
+  await deleteActiveBlackjackHand(playerId);
   const payout = settled.payout;
   const casinoBankrupt = settled.casinoBankrupt;
   const newBalance = settled.newBalance;
@@ -515,6 +596,7 @@ async function finalizeBlackjack(
     playerTotal: calculateBlackjackTotal(playerHand),
     dealerTotal: calculateBlackjackTotal(dealerHand),
     gameOver: true,
+    holeHidden: false,
     result,
     payout,
     profit,

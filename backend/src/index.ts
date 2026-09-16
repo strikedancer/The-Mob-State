@@ -31,6 +31,7 @@ import { playerStartService } from './services/playerStartService';
 import { ensureVenueNpcOccupancy } from './services/venueNpcOccupancyService';
 import { ensureCrewTradeStorageSchema } from './startup/ensureCrewTradeStorageSchema';
 import { ensureCrewDealSchema } from './startup/ensureCrewDealSchema';
+import { ensureCasinoBlackjackSchema } from './startup/ensureCasinoBlackjackSchema';
 import { ensureGameEventPresets } from './services/gameEventPresets';
 import path from 'path';
 import fs from 'fs';
@@ -80,6 +81,7 @@ async function startServer() {
   await ensureGlobalChatSchema();
   await ensureCrewTradeStorageSchema();
   await ensureCrewDealSchema();
+  await ensureCasinoBlackjackSchema();
   try {
     await playerStartService.ensureStarterCrew();
   } catch (error) {

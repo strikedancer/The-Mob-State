@@ -12597,6 +12597,30 @@ abstract class AppLocalizations {
   /// **'PLAY!'**
   String get casinoBlackjackPlayButton;
 
+  /// No description provided for @casinoBlackjackHit.
+  ///
+  /// In en, this message translates to:
+  /// **'Hit'**
+  String get casinoBlackjackHit;
+
+  /// No description provided for @casinoBlackjackStand.
+  ///
+  /// In en, this message translates to:
+  /// **'Stand'**
+  String get casinoBlackjackStand;
+
+  /// No description provided for @casinoBlackjackPushTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Push'**
+  String get casinoBlackjackPushTitle;
+
+  /// No description provided for @casinoBlackjackPush.
+  ///
+  /// In en, this message translates to:
+  /// **'Tie. Your bet is returned.'**
+  String get casinoBlackjackPush;
+
   /// No description provided for @casinoSlotSpinButton.
   ///
   /// In en, this message translates to:
@@ -31170,7 +31194,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicCasinoHow.
   ///
   /// In en, this message translates to:
-  /// **'Available games: Slots (low stake, random payout), Blackjack (strategy matters), Roulette (outside/inside bets with own odds), Dice (high variance), Baccarat (player/banker/tie), Video Poker (5-card hand-rank payouts).\nEach game has a minimum bet. Payout ratios differ per game type (e.g. roulette outside bet ~1.97x, single number 35x).\nCasino uses cash only, not your bank balance. Make sure you have cash before you play.\nThere is no cooldown between rounds: you can play as fast as you want.\nLarge wins above a threshold can trigger an event visible to other players.\nLost bets are permanently gone; there is no insurance or buyback.\nVacant-country houses are run by NPC operators so the floor stays open; you can still buy the casino from them at the listed price.'**
+  /// **'Available games: Slots (low stake, random payout), Blackjack (Hit or Stand; dealer has one card face-down until you stand), Roulette (outside/inside bets with own odds), Dice (high variance), Baccarat (player/banker/tie), Video Poker (5-card hand-rank payouts).\nEach game has a minimum bet. Payout ratios differ per game type (e.g. roulette outside bet ~1.97x, single number 35x).\nCasino uses cash only, not your bank balance. Make sure you have cash before you play.\nThere is no cooldown between rounds: you can play as fast as you want.\nLarge wins above a threshold can trigger an event visible to other players.\nLost bets are permanently gone; there is no insurance or buyback.\nVacant-country houses are run by NPC operators so the floor stays open; you can still buy the casino from them at the listed price.'**
   String get helpTopicCasinoHow;
 
   /// No description provided for @helpTopicCasinoTips.

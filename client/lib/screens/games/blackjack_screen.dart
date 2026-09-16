@@ -23,6 +23,8 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
 
   int _betAmount = 100;
   bool _isPlaying = false;
+  bool _inHand = false;
+  bool _holeHidden = false;
   List<int> _playerCards = [];
   List<int> _dealerCards = [];
   int _playerTotal = 0;
@@ -35,23 +37,43 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
   }
 
   Future<void> _play() async {
+    await _sendBlackjackAction('start', betAmount: _betAmount);
+  }
+
+  Future<void> _hit() async {
+    await _sendBlackjackAction('hit');
+  }
+
+  Future<void> _stand() async {
+    await _sendBlackjackAction('stand');
+  }
+
+  Future<void> _sendBlackjackAction(
+    String action, {
+    int? betAmount,
+  }) async {
     if (_isPlaying) return;
 
     setState(() {
       _isPlaying = true;
-      _playerCards = [];
-      _dealerCards = [];
-      _playerTotal = 0;
-      _dealerTotal = 0;
+      if (action == 'start') {
+        _playerCards = [];
+        _dealerCards = [];
+        _playerTotal = 0;
+        _dealerTotal = 0;
+        _holeHidden = false;
+        _inHand = false;
+      }
     });
 
     final l10n = AppLocalizations.of(context)!;
 
     try {
-      final response = await _apiClient.post('/casino/blackjack/play', {
-        'betAmount': _betAmount,
-        'action': 'start',
-      });
+      final body = <String, dynamic>{'action': action};
+      if (betAmount != null) {
+        body['betAmount'] = betAmount;
+      }
+      final response = await _apiClient.post('/casino/blackjack/play', body);
       final data = jsonDecode(response.body);
 
       if (data['event'] != null && data['params'] != null) {
@@ -66,25 +88,50 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
           return;
         }
 
-        final params = data['params'];
-        final won = params['won'] ?? false;
+        final params = data['params'] as Map<String, dynamic>;
+        final eventKey = data['event']?.toString() ?? '';
+        final gameOver =
+            eventKey != 'casino.blackjack.continue' && params['gameOver'] != false;
         final playerCards = List<int>.from(
           params['playerHand'] ?? params['playerCards'] ?? [],
         );
         final dealerCards = List<int>.from(
           params['dealerHand'] ?? params['dealerCards'] ?? [],
         );
-        final playerTotal = params['playerTotal'] ?? 0;
-        final dealerTotal = params['dealerTotal'] ?? 0;
-        final payout = params['payout'] ?? 0;
-        final profit =
-            params['profit'] ?? (won ? payout - _betAmount : -_betAmount);
-        final casinoBankrupt = params['casinoBankrupt'] ?? false;
+        final playerTotal = (params['playerTotal'] as num?)?.toInt() ?? 0;
+        final dealerTotal = (params['dealerTotal'] as num?)?.toInt() ?? 0;
+        final payout = (params['payout'] as num?)?.toInt() ?? 0;
+        final result = params['result']?.toString();
+        final won = result == 'win' || params['won'] == true;
+        final isPush = result == 'push' || eventKey == 'casino.blackjack.push';
+        final profit = (params['profit'] as num?)?.toInt() ??
+            (isPush ? 0 : (won ? payout - _betAmount : -_betAmount));
+        final casinoBankrupt = params['casinoBankrupt'] == true;
+        final holeHidden = params['holeHidden'] == true;
 
-        await _animateDealSequence(
-          playerCards: playerCards,
-          dealerCards: dealerCards,
-        );
+        if (action == 'start' && !gameOver) {
+          await _animateDealSequence(
+            playerCards: playerCards,
+            dealerCards: dealerCards,
+            hideDealerHole: holeHidden,
+          );
+        } else if (action == 'hit' && !gameOver) {
+          setState(() {
+            _playerCards = playerCards;
+            _playerTotal = playerTotal;
+            _dealerCards = dealerCards;
+            _dealerTotal = dealerTotal;
+            _holeHidden = holeHidden;
+          });
+        } else {
+          setState(() {
+            _playerCards = playerCards;
+            _playerTotal = playerTotal;
+            _dealerCards = dealerCards;
+            _dealerTotal = dealerTotal;
+            _holeHidden = false;
+          });
+        }
 
         if (!mounted) return;
 
@@ -92,7 +139,13 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
           _playerTotal = playerTotal;
           _dealerTotal = dealerTotal;
           _isPlaying = false;
+          _inHand = !gameOver;
+          _holeHidden = holeHidden && !gameOver;
         });
+
+        if (!gameOver) {
+          return;
+        }
 
         if (casinoBankrupt) {
           await Future.delayed(const Duration(milliseconds: 500));
@@ -100,8 +153,15 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
           return;
         }
 
-        await Future.delayed(const Duration(milliseconds: 500));
-        _showResultDialog(won, payout, profit, playerTotal, dealerTotal);
+        await Future.delayed(const Duration(milliseconds: 400));
+        _showResultDialog(
+          won,
+          payout,
+          profit,
+          playerTotal,
+          dealerTotal,
+          isPush: isPush,
+        );
       } else {
         setState(() {
           _isPlaying = false;
@@ -125,6 +185,7 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
   Future<void> _animateDealSequence({
     required List<int> playerCards,
     required List<int> dealerCards,
+    bool hideDealerHole = false,
   }) async {
     if (!mounted) return;
 
@@ -151,7 +212,10 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
       if (i < dealerCards.length) {
         setState(() {
           _dealerCards = [..._dealerCards, dealerCards[i]];
-          _dealerTotal = _calculateHandTotal(_dealerCards);
+          _holeHidden = hideDealerHole && _dealerCards.length > 1;
+          _dealerTotal = hideDealerHole
+              ? _calculateHandTotal(_dealerCards.take(1).toList())
+              : _calculateHandTotal(_dealerCards);
         });
         await Future.delayed(const Duration(milliseconds: 260));
       }
@@ -159,8 +223,9 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
   }
 
   int _calculateHandTotal(List<int> cards) {
-    int total = cards.fold(0, (sum, card) => sum + card);
-    int aces = cards.where((card) => card == 1).length;
+    final visible = cards.where((card) => card > 0).toList();
+    int total = visible.fold(0, (sum, card) => sum + card);
+    int aces = visible.where((card) => card == 1).length;
 
     while (aces > 0 && total + 10 <= 21) {
       total += 10;
@@ -241,12 +306,15 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
     int payout,
     int profit,
     int playerTotal,
-    int dealerTotal,
-  ) {
+    int dealerTotal, {
+    bool isPush = false,
+  }) {
     final l10n = AppLocalizations.of(context)!;
-    String message = won
-        ? l10n.casinoBlackjackWinAmount(formatCompactNumber(payout))
-        : l10n.casinoYouLostPlain;
+    String message = isPush
+        ? l10n.casinoBlackjackPush
+        : won
+            ? l10n.casinoBlackjackWinAmount(formatCompactNumber(payout))
+            : l10n.casinoYouLostPlain;
 
     if (playerTotal == 21) {
       message = l10n.casinoBlackjackCelebrate(formatCompactNumber(payout));
@@ -255,7 +323,13 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(won ? l10n.casinoResultYouWon : l10n.casinoResultYouLost),
+        title: Text(
+          isPush
+              ? l10n.casinoBlackjackPushTitle
+              : won
+                  ? l10n.casinoResultYouWon
+                  : l10n.casinoResultYouLost,
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -456,33 +530,74 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
                       ),
                     ),
                     const SizedBox(height: 18),
-                    ElevatedButton(
-                      onPressed: _isPlaying ? null : _play,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.amber,
-                        foregroundColor: Colors.black,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 60,
-                          vertical: 20,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      child: _isPlaying
-                          ? const SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            )
-                          : Text(
-                              l10n.casinoBlackjackPlayButton,
-                              style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
+                    if (_inHand)
+                      Row(
+                        children: [
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: _isPlaying ? null : _hit,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.amber,
+                                foregroundColor: Colors.black,
+                                padding: const EdgeInsets.symmetric(vertical: 18),
+                              ),
+                              child: Text(
+                                l10n.casinoBlackjackHit,
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                    ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: _isPlaying ? null : _stand,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white24,
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(vertical: 18),
+                              ),
+                              child: Text(
+                                l10n.casinoBlackjackStand,
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    else
+                      ElevatedButton(
+                        onPressed: _isPlaying ? null : _play,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.amber,
+                          foregroundColor: Colors.black,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 60,
+                            vertical: 20,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                        child: _isPlaying
+                            ? const SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(strokeWidth: 2),
+                              )
+                            : Text(
+                                l10n.casinoBlackjackPlayButton,
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                      ),
                   ],
                 ),
               ),
@@ -533,7 +648,9 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
       child: Column(
         children: [
           Text(
-            l10n.casinoBlackjackDealerTotal('$_dealerTotal'),
+            l10n.casinoBlackjackDealerTotal(
+              _holeHidden ? '?' : '$_dealerTotal',
+            ),
             style: const TextStyle(color: Colors.white, fontSize: 20),
           ),
           const SizedBox(height: 10),
@@ -544,7 +661,14 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
             children: _dealerCards
                 .asMap()
                 .entries
-                .map((entry) => _buildCard(entry.value, entry.key, 'dealer'))
+                .map(
+                  (entry) => _buildCard(
+                    entry.value,
+                    entry.key,
+                    'dealer',
+                    faceDown: _holeHidden && entry.key == 1,
+                  ),
+                )
                 .toList(),
           ),
           const SizedBox(height: 24),
@@ -572,7 +696,12 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
     );
   }
 
-  Widget _buildCard(int value, int index, String owner) {
+  Widget _buildCard(
+    int value,
+    int index,
+    String owner, {
+    bool faceDown = false,
+  }) {
     return Container(
       key: ValueKey('$owner-$index-$value'),
       width: 60,
@@ -589,7 +718,9 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: Image.asset(
-            _getCardImage(value),
+            faceDown || value < 1
+                ? 'assets/images/casino/cards/card_back.png'
+                : _getCardImage(value),
             fit: BoxFit.cover,
             errorBuilder: (context, error, stackTrace) => Container(
               decoration: BoxDecoration(
@@ -616,7 +747,9 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
   Widget _buildBetButton(String label, int amount) {
     final isSelected = _betAmount == amount;
     return ElevatedButton(
-      onPressed: () => setState(() => _betAmount = amount),
+      onPressed: (_inHand || _isPlaying)
+          ? null
+          : () => setState(() => _betAmount = amount),
       style: ElevatedButton.styleFrom(
         backgroundColor: isSelected ? Colors.amber : Colors.white24,
         foregroundColor: isSelected ? Colors.black : Colors.white,

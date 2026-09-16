@@ -7119,6 +7119,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get casinoBlackjackPlayButton => 'PLAY!';
 
   @override
+  String get casinoBlackjackHit => 'Hit';
+
+  @override
+  String get casinoBlackjackStand => 'Stand';
+
+  @override
+  String get casinoBlackjackPushTitle => 'Push';
+
+  @override
+  String get casinoBlackjackPush => 'Tie. Your bet is returned.';
+
+  @override
   String get casinoSlotSpinButton => 'SPIN!';
 
   @override
@@ -18075,7 +18087,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicCasinoHow =>
-      'Available games: Slots (low stake, random payout), Blackjack (strategy matters), Roulette (outside/inside bets with own odds), Dice (high variance), Baccarat (player/banker/tie), Video Poker (5-card hand-rank payouts).\nEach game has a minimum bet. Payout ratios differ per game type (e.g. roulette outside bet ~1.97x, single number 35x).\nCasino uses cash only, not your bank balance. Make sure you have cash before you play.\nThere is no cooldown between rounds: you can play as fast as you want.\nLarge wins above a threshold can trigger an event visible to other players.\nLost bets are permanently gone; there is no insurance or buyback.\nVacant-country houses are run by NPC operators so the floor stays open; you can still buy the casino from them at the listed price.';
+      'Available games: Slots (low stake, random payout), Blackjack (Hit or Stand; dealer has one card face-down until you stand), Roulette (outside/inside bets with own odds), Dice (high variance), Baccarat (player/banker/tie), Video Poker (5-card hand-rank payouts).\nEach game has a minimum bet. Payout ratios differ per game type (e.g. roulette outside bet ~1.97x, single number 35x).\nCasino uses cash only, not your bank balance. Make sure you have cash before you play.\nThere is no cooldown between rounds: you can play as fast as you want.\nLarge wins above a threshold can trigger an event visible to other players.\nLost bets are permanently gone; there is no insurance or buyback.\nVacant-country houses are run by NPC operators so the floor stays open; you can still buy the casino from them at the listed price.';
 
   @override
   String get helpTopicCasinoTips =>

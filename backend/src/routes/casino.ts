@@ -178,16 +178,18 @@ router.post('/slots/spin', authenticate, async (req: AuthRequest, res: Response)
  */
 router.post('/blackjack/play', authenticate, async (req: AuthRequest, res: Response) => {
   try {
-    const { betAmount } = req.body;
+    const { betAmount, action } = req.body;
+    const playAction =
+      action === 'hit' || action === 'stand' || action === 'start' ? action : 'start';
 
-    if (!betAmount || typeof betAmount !== 'number' || betAmount <= 0) {
+    if (playAction === 'start' && (!betAmount || typeof betAmount !== 'number' || betAmount <= 0)) {
       return res.status(400).json({
         event: 'casino.error',
         params: { reason: 'Ongeldig inzetbedrag' },
       });
     }
 
-    if (betAmount < 10) {
+    if (playAction === 'start' && betAmount < 10) {
       return res.status(400).json({
         event: 'casino.error',
         params: { reason: 'Minimum inzet is €10' },
@@ -214,24 +216,25 @@ router.post('/blackjack/play', authenticate, async (req: AuthRequest, res: Respo
     const result = await casinoService.playBlackjack(
       req.player!.id,
       casinoId,
-      betAmount,
-      'start'
+      typeof betAmount === 'number' ? betAmount : 0,
+      playAction
     );
 
-    console.log('🃏 Blackjack result:', {
-      playerHand: result.playerHand,
-      dealerHand: result.dealerHand,
-      playerTotal: result.playerTotal,
-      dealerTotal: result.dealerTotal,
-      result: result.result,
-      payout: result.payout
-    });
+    const resolvedBet = result.gameOver
+      ? (typeof betAmount === 'number' && betAmount > 0 ? betAmount : 0)
+      : (typeof betAmount === 'number' ? betAmount : 0);
+    const profit = result.gameOver ? result.payout - (resolvedBet || result.payout) : 0;
 
-    const won = result.result === 'win';
-    const profit = result.payout - betAmount;
+    const eventKey = !result.gameOver
+      ? 'casino.blackjack.continue'
+      : result.result === 'win'
+        ? 'casino.blackjack.win'
+        : result.result === 'push'
+          ? 'casino.blackjack.push'
+          : 'casino.blackjack.lose';
 
     return res.status(200).json({
-      event: won ? 'casino.blackjack.win' : 'casino.blackjack.lose',
+      event: eventKey,
       params: {
         playerHand: result.playerHand,
         dealerHand: result.dealerHand,
@@ -239,10 +242,13 @@ router.post('/blackjack/play', authenticate, async (req: AuthRequest, res: Respo
         dealerCards: result.dealerHand,
         playerTotal: result.playerTotal,
         dealerTotal: result.dealerTotal,
-        won,
+        holeHidden: result.holeHidden === true,
+        gameOver: result.gameOver,
+        won: result.result === 'win',
+        result: result.result,
         payout: result.payout,
-        profit,
-        betAmount,
+        profit: result.gameOver ? result.profit : 0,
+        betAmount: resolvedBet,
         newBalance: result.newBalance,
         casinoBankrupt: result.casinoBankrupt,
       },
@@ -253,6 +259,20 @@ router.post('/blackjack/play', authenticate, async (req: AuthRequest, res: Respo
         event: 'casino.error',
         params: { reason: error.code, message: error.message, code: error.code },
       });
+    }
+    if (error instanceof Error) {
+      if (
+        error.message === 'INSUFFICIENT_FUNDS' ||
+        error.message === 'MIN_BET_10' ||
+        error.message === 'INVALID_GAME_STATE' ||
+        error.message === 'HAND_EXPIRED' ||
+        error.message === 'INVALID_ACTION'
+      ) {
+        return res.status(400).json({
+          event: 'casino.error',
+          params: { reason: error.message },
+        });
+      }
     }
     console.error('Casino blackjack error:', error);
     return res.status(500).json({

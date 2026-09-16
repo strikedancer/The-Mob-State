@@ -12623,5 +12623,9 @@
       }
     }
   },
-  "territoryMapActionsReady": "Actions ready now"
+  "territoryMapActionsReady": "Actions ready now",
+  "casinoBlackjackHit": "Hit",
+  "casinoBlackjackStand": "Stand",
+  "casinoBlackjackPushTitle": "Push",
+  "casinoBlackjackPush": "Tie. Your bet is returned."
 }

@@ -45,6 +45,7 @@ House loop (Casino 2.0): one casino per country, floors (public/VIP/private), vi
 - Casino aankoop moet altijd een valide `Property` record kunnen schrijven met actuele Prisma velden (inclusief verplichte `purchasePrice`); legacy velden die niet meer in schema staan mogen niet in create/upsert payloads blijven.
 - Casino minigames moeten vanuit het casino-overzicht in dezelfde dashboard/content-shell openen (embedded route), niet als los fullpage scherm buiten de game-content.
 - Nieuwe casino game-types (zoals `baccarat` en `video_poker`) moeten dezelfde backend bankroll- en transactielogica gebruiken als bestaande games; resultaten in `casinoTransaction.result` altijd als JSON-string opslaan.
+- Blackjack is interactive Hit/Stand with a server-side `casino_active_hands` session (never trust client hands). Dealer shows one upcard and one hole card until stand. Open hands older than 30 minutes auto-stand. Push uses `casino.blackjack.push`. Payout stays 2× bet.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
@@ -58,6 +59,7 @@ House loop (Casino 2.0): one casino per country, floors (public/VIP/private), vi
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
+- Verify blackjack deals two player cards and one dealer upcard plus a face-down hole card, then Hit/Stand work, and stand reveals the hole and plays the dealer to 17.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.
