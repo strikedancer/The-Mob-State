@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { getGlobalChatSticker } from '../data/globalChatStickers';
 import type { GlobalChatPublicMessage } from './globalChatService';
+import { parseDiscordStaffCommand, staffDiscordUsername } from '../utils/globalChatDiscordStaff';
+import { createAuditLog } from '../middleware/auditLog';
 
 type DiscordChannelMessage = {
   id: string;
@@ -15,9 +17,19 @@ type DiscordChannelMessage = {
   member?: {
     nick?: string | null;
   };
+  message_reference?: {
+    message_id?: string | null;
+  };
+  referenced_message?: {
+    id?: string | null;
+  };
+  mentions?: Array<{ id: string }>;
   stickers?: Array<{ name?: string }>;
   sticker_items?: Array<{ name?: string }>;
 };
+
+const STAFF_HELP =
+  'Mod/Ops in dit kanaal: berichten uit de game tonen [Ops] of [Mod] bij de naam. Beantwoord een bericht met !wis om het in game en Discord te wissen. !mute @naam 15 of 60 dempt de wereldchat. !unmute @naam haalt dat weg. Discord moet in het spel gekoppeld zijn.';
 
 function discordDisplayName(item: DiscordChannelMessage): string {
   const username = item.author?.username?.trim();
@@ -128,9 +140,9 @@ class GlobalChatDiscordBridge {
     this.started = false;
   }
 
-  async mirrorGameMessage(message: GlobalChatPublicMessage): Promise<void> {
+  async mirrorGameMessage(message: GlobalChatPublicMessage): Promise<string | null> {
     const url = webhookUrl();
-    if (!url) return;
+    if (!url) return null;
     const sticker = getGlobalChatSticker(message.stickerId);
     const content = sticker && !message.message.trim()
       ? sticker.emoji
@@ -138,24 +150,39 @@ class GlobalChatDiscordBridge {
           .filter(Boolean)
           .join(' ')
           .slice(0, 1800);
-    if (!content.trim()) return;
+    if (!content.trim()) return null;
     try {
-      await axios.post(
-        `${url}?wait=false`,
+      const response = await axios.post<{ id?: string }>(
+        `${url}?wait=true`,
         {
-          username: safeWebhookUsername(message.displayName),
+          username: safeWebhookUsername(
+            staffDiscordUsername(message.displayName, message.staffRole),
+          ),
           content,
           allowed_mentions: { parse: [] },
         },
         { timeout: 8000 },
       );
+      return String(response.data?.id || '').trim() || null;
     } catch (error) {
       console.warn('[GlobalChat] Discord outbound failed', error instanceof Error ? error.message : error);
+      return null;
     }
   }
 
-  async deleteMirroredMessage(_discordMessageId: string | null): Promise<void> {
-    // Game-originated posts go out as webhooks without storing Discord's copy id.
+  async deleteMirroredMessage(discordMessageId: string | null): Promise<void> {
+    const id = String(discordMessageId || '').trim();
+    if (!id) return;
+    const url = webhookUrl();
+    if (url) {
+      try {
+        await axios.delete(`${url}/messages/${id}`, { timeout: 8000 });
+        return;
+      } catch {
+        // Webhook can only delete its own copies; user messages use the bot token.
+      }
+    }
+    await this.deleteChannelMessage(id);
   }
 
   private async poll(): Promise<void> {
@@ -183,6 +210,8 @@ class GlobalChatDiscordBridge {
           continue;
         }
         if (item.author?.bot) continue;
+        const handled = await this.handleStaffCommand(item, globalChatService);
+        if (handled) continue;
         const stickerName = item.sticker_items?.[0]?.name ?? item.stickers?.[0]?.name;
         const ingested = await globalChatService.ingestDiscordMessage({
           discordUserId: item.author?.id ?? '0',
@@ -191,8 +220,8 @@ class GlobalChatDiscordBridge {
           message: item.content ?? '',
           stickerId: stickerNameToId(stickerName),
         });
-        if (ingested) {
-          // already fanned out
+        if (ingested?.staffRole) {
+          void this.addStaffReaction(item.id, ingested.staffRole);
         }
       }
     } catch (error) {
@@ -214,6 +243,156 @@ class GlobalChatDiscordBridge {
       }
       console.warn('[GlobalChat] Discord poll failed', error instanceof Error ? error.message : error);
     }
+  }
+
+  private botHeaders(): Record<string, string> {
+    return {
+      Authorization: `Bot ${botToken()}`,
+      'User-Agent': DISCORD_USER_AGENT,
+    };
+  }
+
+  private async deleteChannelMessage(messageId: string): Promise<void> {
+    const token = botToken();
+    const channel = channelId();
+    if (!token || !channel || !messageId) return;
+    try {
+      await axios.delete(`${DISCORD_API}/channels/${channel}/messages/${messageId}`, {
+        headers: this.botHeaders(),
+        timeout: 8000,
+      });
+    } catch {
+      // Missing Manage Messages is expected until the bot invite is refreshed.
+    }
+  }
+
+  private async postStaffReply(content: string): Promise<void> {
+    const token = botToken();
+    const channel = channelId();
+    if (!token || !channel || !content.trim()) return;
+    try {
+      await axios.post(
+        `${DISCORD_API}/channels/${channel}/messages`,
+        { content: content.slice(0, 1800), allowed_mentions: { parse: [] } },
+        { headers: this.botHeaders(), timeout: 8000 },
+      );
+    } catch (error) {
+      console.warn('[GlobalChat] Discord staff reply failed', error instanceof Error ? error.message : error);
+    }
+  }
+
+  private async addStaffReaction(messageId: string, role: 'MOD' | 'OPS'): Promise<void> {
+    const token = botToken();
+    const channel = channelId();
+    if (!token || !channel || !messageId) return;
+    const emoji = role === 'OPS' ? encodeURIComponent('🛡️') : encodeURIComponent('🔨');
+    try {
+      await axios.put(
+        `${DISCORD_API}/channels/${channel}/messages/${messageId}/reactions/${emoji}/@me`,
+        {},
+        { headers: this.botHeaders(), timeout: 8000 },
+      );
+    } catch {
+      // Add Reactions is optional until the bot invite is refreshed.
+    }
+  }
+
+  private async handleStaffCommand(
+    item: DiscordChannelMessage,
+    globalChatService: typeof import('./globalChatService').globalChatService,
+  ): Promise<boolean> {
+    const parsed = parseDiscordStaffCommand(item.content ?? '');
+    if (!parsed) return false;
+    const staff = await globalChatService.getLinkedStaffByDiscordId(item.author?.id ?? '');
+    if (!staff) return false;
+
+    const replyId =
+      item.message_reference?.message_id || item.referenced_message?.id || null;
+    const mentionId = parsed.kind === 'mute' || parsed.kind === 'unmute'
+      ? parsed.mentionId || item.mentions?.[0]?.id || null
+      : null;
+
+    if (parsed.kind === 'help') {
+      await this.postStaffReply(STAFF_HELP);
+      await this.deleteChannelMessage(item.id);
+      return true;
+    }
+
+    if (parsed.kind === 'delete') {
+      if (!replyId) {
+        await this.postStaffReply('Beantwoord het bericht dat je wilt wissen met !wis.');
+        return true;
+      }
+      const deleted = await globalChatService.deleteByDiscordMessageId(replyId);
+      await this.deleteChannelMessage(replyId);
+      await this.deleteChannelMessage(item.id);
+      void createAuditLog({
+        action: 'GLOBAL_CHAT_DELETE',
+        targetType: 'GlobalChatMessage',
+        targetId: replyId,
+        actorPlayerId: staff.id,
+        actorStaffRole: staff.staffRole,
+        details: { source: 'discord', actorPlayerId: staff.id, actorStaffRole: staff.staffRole },
+      });
+      await this.postStaffReply(
+        deleted
+          ? `Bericht gewist door ${staff.staffRole === 'OPS' ? 'Ops' : 'Mod'} ${staff.username}.`
+          : 'Dat bericht stond niet (meer) in de wereldchat; ik heb de Discord-regel wel weggehaald als dat mocht.',
+      );
+      return true;
+    }
+
+    const target = await globalChatService.findPlayerForStaffTarget({
+      mentionDiscordId: mentionId,
+      username: parsed.kind === 'mute' || parsed.kind === 'unmute' ? parsed.username : null,
+    });
+    if (!target) {
+      await this.postStaffReply('Geen gekoppeld spelaccount gevonden. Tag iemand of gebruik de in-game naam.');
+      return true;
+    }
+    if (target.id === staff.id) {
+      await this.postStaffReply('Je kunt jezelf niet muten.');
+      return true;
+    }
+    if (await globalChatService.isPlayerStaffMember(target.id)) {
+      await this.postStaffReply('Mods en Ops kun je niet muten.');
+      return true;
+    }
+
+    if (parsed.kind === 'mute') {
+      await globalChatService.mutePlayer(target.id, parsed.minutes, `discord:${staff.username}`);
+      void createAuditLog({
+        action: 'GLOBAL_CHAT_MUTE',
+        targetType: 'Player',
+        targetId: String(target.id),
+        actorPlayerId: staff.id,
+        actorStaffRole: staff.staffRole,
+        details: {
+          source: 'discord',
+          actorPlayerId: staff.id,
+          actorStaffRole: staff.staffRole,
+          minutes: parsed.minutes,
+        },
+      });
+      await this.deleteChannelMessage(item.id);
+      await this.postStaffReply(
+        `${target.username} is ${parsed.minutes} minuten gedempt in de wereldchat.`,
+      );
+      return true;
+    }
+
+    await globalChatService.unmutePlayer(target.id);
+    void createAuditLog({
+      action: 'GLOBAL_CHAT_UNMUTE',
+      targetType: 'Player',
+      targetId: String(target.id),
+      actorPlayerId: staff.id,
+      actorStaffRole: staff.staffRole,
+      details: { source: 'discord', actorPlayerId: staff.id, actorStaffRole: staff.staffRole },
+    });
+    await this.deleteChannelMessage(item.id);
+    await this.postStaffReply(`${target.username} mag weer in de wereldchat.`);
+    return true;
   }
 }
 

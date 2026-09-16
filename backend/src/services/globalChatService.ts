@@ -4,6 +4,7 @@ import { filterProfanity, parseExtraBlocklist } from '../utils/profanityFilter';
 import { getGlobalChatSticker, isGlobalChatStickerId } from '../data/globalChatStickers';
 import { globalChatDiscordBridge } from './globalChatDiscordBridge';
 import { isPlayerStaff, normalizeStaffRole, asPlayerId, type PlayerStaffRole } from '../utils/staffRole';
+import { readPlayerStaffRole } from '../middleware/requirePlayerStaff';
 
 const MAX_BODY = 200;
 const HISTORY_LIMIT = 100;
@@ -170,7 +171,15 @@ async function persistAndFanout(input: {
   const publicMessage = toPublic(row, staffRoleOf(roles, input.playerId));
   broadcastMessage(publicMessage);
   if (input.mirrorToDiscord) {
-    void globalChatDiscordBridge.mirrorGameMessage(publicMessage);
+    void globalChatDiscordBridge.mirrorGameMessage(publicMessage).then((mirroredId) => {
+      if (!mirroredId || mirroredId === row.discordMessageId) return;
+      return prisma.globalChatMessage
+        .update({
+          where: { id: row.id },
+          data: { discordMessageId: mirroredId },
+        })
+        .catch(() => undefined);
+    });
   }
   return publicMessage;
 }
@@ -351,6 +360,59 @@ export const globalChatService = {
 
   async unmutePlayer(playerId: number): Promise<void> {
     await prisma.globalChatMute.delete({ where: { playerId } }).catch(() => undefined);
+  },
+
+  async getLinkedStaffByDiscordId(
+    discordUserId: string,
+  ): Promise<{ id: number; username: string; staffRole: 'MOD' | 'OPS' } | null> {
+    const id = String(discordUserId || '').trim();
+    if (!id) return null;
+    const player = await prisma.player.findFirst({
+      where: { discordId: id },
+      select: { id: true, username: true, isBanned: true },
+    });
+    if (!player || player.isBanned) return null;
+    const staffRole = publicStaffRole(await readPlayerStaffRole(player.id));
+    if (!staffRole) return null;
+    return { id: player.id, username: player.username, staffRole };
+  },
+
+  async findPlayerForStaffTarget(input: {
+    mentionDiscordId?: string | null;
+    username?: string | null;
+  }): Promise<{ id: number; username: string } | null> {
+    const mention = String(input.mentionDiscordId || '').trim();
+    if (mention) {
+      const byDiscord = await prisma.player.findFirst({
+        where: { discordId: mention },
+        select: { id: true, username: true },
+      });
+      if (byDiscord) return byDiscord;
+    }
+    const name = String(input.username || '').trim();
+    if (!name) return null;
+    const rows = await prisma.$queryRawUnsafe<Array<{ id: unknown; username: string }>>(
+      'SELECT id, username FROM players WHERE username = ? LIMIT 1',
+      name,
+    );
+    const id = asPlayerId(rows?.[0]?.id);
+    if (id == null) return null;
+    return { id, username: rows[0].username };
+  },
+
+  async deleteByDiscordMessageId(discordMessageId: string): Promise<boolean> {
+    const key = String(discordMessageId || '').trim();
+    if (!key) return false;
+    const row = await prisma.globalChatMessage.findUnique({
+      where: { discordMessageId: key },
+    });
+    if (!row || row.deletedAt) return false;
+    await this.adminDelete(row.id);
+    return true;
+  },
+
+  async isPlayerStaffMember(playerId: number): Promise<boolean> {
+    return isPlayerStaff(await readPlayerStaffRole(playerId));
   },
 
   async getAdminOverview() {

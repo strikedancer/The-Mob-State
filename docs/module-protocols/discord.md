@@ -72,7 +72,7 @@ Without Client ID + Secret the login button stays hidden. Without a valid invite
 - Discord-only accounts get a random `passwordHash`; later logins go through Discord.
 - Ban-check via `authService.issueSession`.
 - Crew Wars Discord transport stays in `crew-wars.md`. Public `#updates` never receives war events or world chat.
-- World chat Discord bridge is documented in `global-chat.md`. Bot token is not an extra player OAuth scope.
+- World chat Discord bridge is documented in `global-chat.md`. Bot token is not an extra player OAuth scope. Game posts from Mod/Ops use `[Ops]`/`[Mod]` on the webhook name. Linked staff can `!wis` / `!mute` / `!unmute` in the play channel; that needs bot Send Messages + Manage Messages + Add Reactions (`permissions=76864`).
 - `scripts/post_discord_update.ps1` runs **after a player-facing live deploy**, not for docs-only or internal commits. Required `-Intro` plus 4–8 sentence bullets in Dutch. Title-only posts are rejected. No secrets.
 
 ## Cross-Module Dependencies

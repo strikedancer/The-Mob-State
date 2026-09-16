@@ -27,6 +27,8 @@ One public in-game lobby for every logged-in player, with a curated sticker pack
 - Hide the live-event rail on World chat (same as Messages / Crew) so it cannot cover send.
 - World chat stays open before rank 5.
 - Discord outbound uses `GLOBAL_CHAT_DISCORD_WEBHOOK_URL`. Inbound polling uses `GLOBAL_CHAT_DISCORD_BOT_TOKEN` + `GLOBAL_CHAT_DISCORD_CHANNEL_ID`. Empty env = in-game only. Never post this lobby into `#updates` or the Crew Wars ops webhook.
+- Game → Discord webhook names use `[Ops]` / `[Mod]` when the player is staff. Discord-native staff lines get a 🛡️ / 🔨 reaction.
+- Linked Mods/Ops can moderate in `#wereldchat`: reply `!wis` (or `!delete`) to remove a line in-game and on Discord; `!mute @name 15|60`, `!unmute @name`, `!hulp`. Commands are not ingested as chat. Bot invite needs Send Messages + Manage Messages + Add Reactions for those tools; the `[Ops]`/`[Mod]` name prefix works with the webhook alone.
 - Game → Discord does not bounce back (skip webhook/bot authors). Discord → game is not re-posted to Discord.
 - Strip `@everyone` / `@here` / user mentions. `allowed_mentions.parse` is empty on outbound webhooks.
 - Inbound Discord poll starts from “now” on boot (no history dump).
@@ -35,8 +37,8 @@ One public in-game lobby for every logged-in player, with a curated sticker pack
 1. Create a play channel such as `#wereldchat` (not Info, not `#updates`, not `#ops`).
 2. Channel → Integrations → Webhook → copy URL into `GLOBAL_CHAT_DISCORD_WEBHOOK_URL` on the VPS (`.env.plesk`).
 3. Discord Developer Portal → Bot: enable **Message Content Intent**, then invite the bot:
-   `https://discord.com/oauth2/authorize?client_id=1549017603706716160&permissions=66560&scope=bot`
-   (View Channel + Read Message History). Missing Access (403) until the bot is in the guild and can see `#wereldchat`. Inbound polling keeps retrying on 403 after invite; 401 (bad token) still stops.
+   `https://discord.com/oauth2/authorize?client_id=1549017603706716160&permissions=76864&scope=bot`
+   (View Channel, Send Messages, Manage Messages, Add Reactions, Read Message History). Missing Access (403) until the bot is in the guild and can see `#wereldchat`. Inbound polling keeps retrying on 403 after invite; 401 (bad token) still stops. Re-invite if the bot was added with the older 66560 permission set, otherwise `!wis` / mute replies cannot delete Discord lines.
 4. Put the bot token in `GLOBAL_CHAT_DISCORD_BOT_TOKEN` and the channel snowflake in `GLOBAL_CHAT_DISCORD_CHANNEL_ID`.
 5. Recreate the backend container so env is picked up. Admin → Wereldchat shows outbound/inbound on/off.
 
@@ -63,14 +65,15 @@ Player OAuth stays `identify` + `email` only. The chat bot is a separate token.
 2. Filter replaces blocked words with `***` instead of rejecting the whole line.
 3. Own delete within 10 minutes; later delete fails.
 4. Report someone else’s line; it shows in Admin.
-5. Mute blocks send with `GLOBAL_CHAT_MUTED`. A Mod/Ops badge appears on their lines, including their own bubbles; they can delete another player's line and mute from long-press.
+5. Mute blocks send with `GLOBAL_CHAT_MUTED`. A Mod/Ops badge appears on their lines, including their own bubbles; they can delete another player's line and mute from long-press. Discord copies of those lines show `[Ops]` / `[Mod]` on the webhook name.
 6. Live-event rail hidden on the screen; Enter sends.
 7. Without Discord env, in-game chat still works.
 8. With webhook only: game posts appear in Discord; Discord replies do not enter the game until bot+channel are set.
 9. Jail a real player (or buy out / jailbreak another): a `Gevangenis` system line appears live. An NPC arrest does not.
+10. Linked Mod/Ops in `#wereldchat`: `!hulp` lists commands; reply `!wis` deletes; `!mute Name 15` mutes world chat. A player without staffRole cannot run those commands.
 
 ## i18n and Messaging
 ARB prefix `worldChat*` plus Help `helpTopicWorldChat*`.
 
 ## When To Update This File
-Update when adding rooms, custom sticker assets, push, or extra Discord intents/scopes.
+Update when adding rooms, custom sticker assets, push, extra Discord intents/scopes, or Discord staff commands.

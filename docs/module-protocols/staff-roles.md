@@ -5,6 +5,7 @@ A player account can be given `staffRole` `NONE` (default), `MOD`, or `OPS`. Sup
 
 ## In the game
 - World chat badge next to the name (`Mod` / `Ops`), including on your own bubbles.
+- Discord `#wereldchat` prefixes game posts with `[Ops]` / `[Mod]`. Linked Mods/Ops can reply with `!wis` to delete, or `!mute @name 15` / `!unmute`.
 - Long-press another world-chat message: delete for everyone, mute 15 min / 1 hour, unmute.
 - Staff can open the report list from the world-chat header.
 - No crew-chat or DM moderation in this pass. No permanent ban from the game UI.
@@ -36,6 +37,7 @@ A player account can be given `staffRole` `NONE` (default), `MOD`, or `OPS`. Sup
 3. Change the role to Ops: Tickets and Players appear; Manage / money / ban stay hidden.
 4. A player with `NONE` cannot open staff routes (403) and cannot log into admin.
 5. Super-admin can set the role back to None; the next login and JWT refresh lose access.
+6. Linked Mod/Ops in Discord `#wereldchat` see `[Ops]`/`[Mod]` on game posts and can `!wis` / `!mute` / `!unmute`.
 
 ## When To Update This File
-When adding crew-chat/DM tools, extra admin pages for Ops, or a dedicated staff password.
+When adding crew-chat/DM tools, extra admin pages for Ops, a dedicated staff password, or Discord staff commands.
