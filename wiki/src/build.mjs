@@ -888,6 +888,54 @@ function robotsAndSitemap() {
   );
 }
 
+function unesc(value) {
+  return String(value ?? '')
+    .replace(/&quot;/g, '"')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&');
+}
+
+function writeSearchIndexes() {
+  for (const lang of LANGS) {
+    const langDir = path.join(OUT, lang);
+    const entries = [];
+    const walk = (dir) => {
+      for (const name of fs.readdirSync(dir)) {
+        const full = path.join(dir, name);
+        if (fs.statSync(full).isDirectory()) {
+          walk(full);
+          continue;
+        }
+        if (name !== 'index.html') continue;
+        const html = fs.readFileSync(full, 'utf8');
+        const titleMatch = html.match(/<h1>([^<]+)<\/h1>/);
+        const pageTitle = unesc((titleMatch?.[1] || '').trim());
+        const descMatch = html.match(/name="description" content="([^"]*)"/);
+        const snippet = unesc(descMatch?.[1] || '').trim();
+        const text = unesc(
+          html
+            .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+            .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+            .replace(/<[^>]+>/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim(),
+        ).toLowerCase();
+        const rel = path.relative(langDir, full).replace(/\\/g, '/').replace(/index\.html$/, '');
+        const href = `/${lang}/${rel}`.replace(/\/+$/, '/') || `/${lang}/`;
+        entries.push({
+          href,
+          title: pageTitle || unesc((html.match(/<title>([^<]+)/)?.[1] || '').split(' · ')[0]),
+          snippet: snippet.slice(0, 180),
+          text: text.slice(0, 5000),
+        });
+      }
+    };
+    walk(langDir);
+    write(`${lang}/search.json`, JSON.stringify(entries));
+  }
+}
+
 const data = load();
 const help = loadHelpTopics(HELP_PATHS.l10n, HELP_PATHS.helpIndex);
 fs.rmSync(OUT, { recursive: true, force: true });
@@ -924,4 +972,5 @@ for (const lang of LANGS) {
   guidePages(help, lang, write);
 }
 
+writeSearchIndexes();
 console.log(`Almanac built → ${OUT}`);

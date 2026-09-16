@@ -85,7 +85,7 @@ export function page({ lang, title, path, hero, crumbs, body, description }) {
     </a>
     <div class="nav-links">${nav}</div>
     <div class="nav-tools">
-      <input class="search" id="almanac-search" type="search" placeholder="${esc(ui(lang, 'search'))}">
+      <input class="search" id="almanac-search" type="search" placeholder="${esc(ui(lang, 'search'))}" autocomplete="off" data-empty="${esc(ui(lang, 'empty'))}" data-index="/${lang}/search.json">
       <label class="lang">
         <select id="lang-switch">${LANGS.map(
           (l) => `<option value="${l}" ${l === lang ? 'selected' : ''}>${esc(LANG_LABEL[l])}</option>`

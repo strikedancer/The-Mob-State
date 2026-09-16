@@ -55,6 +55,8 @@ function bullets(text) {
 
 function topicImage(id) {
   if (id === 'profile') return '/images/wiki/hubs/profile.png';
+  if (id === 'don') return '/images/don/hub.png';
+  if (id === 'races') return '/images/races/hub.png';
   return '/images/wiki/hubs/guide.png';
 }
 
@@ -71,7 +73,7 @@ export function guidePages(help, lang, write) {
     groups.get(category).push(id);
   }
 
-  const featured = help.ids.includes('profile') ? ['profile'] : [];
+  const featured = help.ids.filter((id) => id === 'profile' || id === 'don' || id === 'races');
   const featuredHtml = featured
     .map((id) =>
       card({

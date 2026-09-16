@@ -179,6 +179,16 @@ const List<HelpTopic> helpTopics = [
     protocolPath: 'docs/module-protocols/territory.md',
   ),
   HelpTopic(
+    id: 'don',
+    icon: Icons.account_balance_wallet,
+    protocolPath: 'docs/module-protocols/don.md',
+  ),
+  HelpTopic(
+    id: 'races',
+    icon: Icons.flag,
+    protocolPath: 'docs/module-protocols/races.md',
+  ),
+  HelpTopic(
     id: 'prostitution',
     icon: Icons.favorite,
     protocolPath: 'docs/module-protocols/prostitution.md',
