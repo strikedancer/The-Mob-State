@@ -16209,6 +16209,54 @@ class AppLocalizationsNl extends AppLocalizations {
   String get territorySeasonEnd => 'Einde';
 
   @override
+  String get territorySeasonBlurb =>
+      'De maandronde. Crews die veroveren, verdedigen of het oorlogsfront vasthouden krijgen extra crew-bankgeld als het seizoen sluit.';
+
+  @override
+  String get territorySeasonStatusActive => 'Live';
+
+  @override
+  String get territorySeasonStatusClosed => 'Afgesloten';
+
+  @override
+  String get territorySeasonStatusScheduled => 'Start binnenkort';
+
+  @override
+  String territorySeasonEndsIn(String countdown) {
+    return 'Eindigt over $countdown';
+  }
+
+  @override
+  String territorySeasonStartedOn(String date) {
+    return 'Gestart $date';
+  }
+
+  @override
+  String territoryDramaCaptureTook(String crew, String region) {
+    return '$crew nam $region';
+  }
+
+  @override
+  String territoryDramaContestVs(String attacker, String defender) {
+    return '$attacker vs $defender';
+  }
+
+  @override
+  String territoryDramaRisingCaptures(int count) {
+    return '$count veroveringen deze week';
+  }
+
+  @override
+  String territoryEventAttackBonusChip(int points) {
+    return '+$points contestpunten';
+  }
+
+  @override
+  String territoryEventIncomePenaltyChip(int percent) {
+    return '-$percent% uurloon';
+  }
+
+  @override
   String get territoryDialogAttackTitle => 'Aanvallen?';
 
   @override
@@ -19148,7 +19196,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'Projectbevoorrading staat op cooldown.';
 
   @override
-  String get territoryDramaTitle => 'Territory-drama';
+  String get territoryDramaTitle => 'Wat er nu speelt';
 
   @override
   String get territoryDramaHotContests => 'Hete contests';

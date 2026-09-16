@@ -3513,6 +3513,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   }
 
   Widget _buildSeasonTabBody(DateTime now) {
+    final t = _l10n;
     final season = _overview['activeSeason'] as Map<String, dynamic>?;
     final drama = (_overview['drama'] as Map?)?.cast<String, dynamic>();
     final events =
@@ -3523,87 +3524,464 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         (drama?['hottestContests'] as List<dynamic>?) ?? const [];
     final captures =
         (drama?['recentCaptures'] as List<dynamic>?) ?? const [];
+    final rising = (drama?['risingCrews'] as List<dynamic>?) ?? const [];
+    final wars = (drama?['activeWarTheaters'] as List<dynamic>?) ?? const [];
+    final hasDrama = hottest.isNotEmpty ||
+        captures.isNotEmpty ||
+        events.isNotEmpty ||
+        rising.isNotEmpty ||
+        wars.isNotEmpty;
 
-    if (season == null && hottest.isEmpty && events.isEmpty) {
+    if (season == null && !hasDrama) {
       return Center(
-        child: Text(
-          _l10n.territorySeasonNone,
-        ),
+        child: Text(t.territorySeasonNone, style: TextStyle(color: Colors.grey[400])),
       );
     }
 
-    final key = season?['seasonKey'] as String? ?? '-';
-    final status = season?['status'] as String? ?? '-';
-    final startsAt = season?['startsAt'] as String? ?? '-';
-    final endsAtRaw = season?['endsAt'];
-    final endsAtDate = _parseApiDate(endsAtRaw);
-    final endsAt = endsAtDate != null
-        ? _countdownLabel(endsAtDate, now)
-        : (endsAtRaw as String? ?? '-');
-
     return ListView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 28),
       children: [
-        if (season != null) ...[
-          Text(
-            _l10n.territorySeasonCurrent,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 16),
-          _detailRow(_l10n.territorySeasonKey, key),
-          _detailRow(_l10n.territorySeasonStatus, status),
-          _detailRow(_l10n.territorySeasonStart, startsAt),
-          _detailRow(_l10n.territorySeasonEnd, endsAt),
-          const SizedBox(height: 20),
-        ],
+        if (season != null) _buildSeasonHeroCard(season, now),
+        if (season != null) const SizedBox(height: 18),
         Text(
-          _l10n.territoryDramaTitle,
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          t.territoryDramaTitle,
+          style: const TextStyle(
+            color: kEmpireGold,
+            fontSize: 18,
+            fontWeight: FontWeight.w800,
+          ),
         ),
         const SizedBox(height: 12),
-        if (hottest.isNotEmpty)
-          _detailRow(
-            _l10n.territoryDramaHotContests,
-            hottest
-                .whereType<Map>()
-                .map((c) => c['regionKey']?.toString() ?? '')
-                .where((v) => v.isNotEmpty)
-                .take(3)
-                .join(' · '),
-          ),
-        if (captures.isNotEmpty)
-          _detailRow(
-            _l10n.territoryDramaRecentCaptures,
-            captures
-                .whereType<Map>()
-                .map((c) {
-                  final winner = c['winnerCrewName']?.toString() ?? '-';
-                  final region = c['regionKey']?.toString() ?? '-';
-                  return '$winner → $region';
-                })
-                .take(3)
-                .join(' · '),
-          ),
-        if (events.isNotEmpty)
-          _detailRow(
-            _l10n.territoryDramaRegionEvents,
-            events
-                .whereType<Map>()
-                .map((e) {
-                  final region = e['regionKey']?.toString() ?? '-';
-                  final keyName = e['eventKey']?.toString() ?? 'event';
-                  return '$region ($keyName)';
-                })
-                .take(3)
-                .join(' · '),
-          ),
-        if (hottest.isEmpty && captures.isEmpty && events.isEmpty)
-          Text(
-            _l10n.territoryDramaEmpty,
-            style: TextStyle(color: Colors.grey[700], fontSize: 13),
-          ),
+        if (!hasDrama)
+          _seasonEmptyCard(t.territoryDramaEmpty)
+        else ...[
+          if (captures.isNotEmpty)
+            _seasonSection(
+              icon: Icons.flag,
+              title: t.territoryDramaRecentCaptures,
+              children: [
+                for (final raw in captures.whereType<Map>().take(5))
+                  _seasonFeedTile(
+                    icon: Icons.emoji_events_outlined,
+                    accent: kEmpireGold,
+                    title: t.territoryDramaCaptureTook(
+                      (raw['winnerCrewName'] as String?)?.trim().isNotEmpty == true
+                          ? raw['winnerCrewName'] as String
+                          : t.unknown,
+                      _dramaRegionName(raw),
+                    ),
+                    subtitle: _formatShortDate(raw['resolvedAt']),
+                  ),
+              ],
+            ),
+          if (events.isNotEmpty)
+            _seasonSection(
+              icon: Icons.bolt,
+              title: t.territoryDramaRegionEvents,
+              children: [
+                for (final raw in events.whereType<Map>().take(5))
+                  _seasonEventTile(Map<String, dynamic>.from(raw), now),
+              ],
+            ),
+          if (hottest.isNotEmpty)
+            _seasonSection(
+              icon: Icons.local_fire_department,
+              title: t.territoryDramaHotContests,
+              children: [
+                for (final raw in hottest.whereType<Map>().take(5))
+                  _seasonFeedTile(
+                    icon: Icons.whatshot,
+                    accent: Colors.orange.shade400,
+                    title: t.territoryDramaContestVs(
+                      (raw['attackerCrewName'] as String?)?.trim().isNotEmpty == true
+                          ? raw['attackerCrewName'] as String
+                          : t.unknown,
+                      (raw['defenderCrewName'] as String?)?.trim().isNotEmpty == true
+                          ? raw['defenderCrewName'] as String
+                          : t.territoryNeutralTerritory,
+                    ),
+                    subtitle: _dramaRegionName(raw),
+                    trailing: _contestStatusChip(raw['status']?.toString()),
+                  ),
+              ],
+            ),
+          if (rising.isNotEmpty)
+            _seasonSection(
+              icon: Icons.trending_up,
+              title: t.territoryDramaRisingCrews,
+              children: [
+                for (var i = 0; i < rising.length && i < 5; i++)
+                  _seasonFeedTile(
+                    icon: Icons.groups_2_outlined,
+                    accent: const Color(0xFF8BC34A),
+                    title: (rising[i] as Map)['crewName']?.toString() ?? t.unknown,
+                    subtitle: t.territoryDramaRisingCaptures(
+                      ((rising[i] as Map)['captures'] as num?)?.toInt() ?? 0,
+                    ),
+                    leadingLabel: '${i + 1}',
+                  ),
+              ],
+            ),
+          if (wars.isNotEmpty)
+            _seasonSection(
+              icon: Icons.military_tech_outlined,
+              title: t.territoryDramaWarTheaters,
+              children: [
+                for (final raw in wars.whereType<Map>().take(5))
+                  _seasonFeedTile(
+                    icon: Icons.public,
+                    accent: Colors.red.shade300,
+                    title: t.territoryDramaContestVs(
+                      (raw['attackerCrewName'] as String?)?.trim().isNotEmpty == true
+                          ? raw['attackerCrewName'] as String
+                          : t.unknown,
+                      (raw['defenderCrewName'] as String?)?.trim().isNotEmpty == true
+                          ? raw['defenderCrewName'] as String
+                          : t.unknown,
+                    ),
+                    subtitle: _dramaRegionName(
+                      raw,
+                      fallbackKey: raw['theaterRegionKey']?.toString(),
+                    ),
+                  ),
+              ],
+            ),
+        ],
       ],
     );
+  }
+
+  Widget _buildSeasonHeroCard(Map<String, dynamic> season, DateTime now) {
+    final t = _l10n;
+    final key = season['seasonKey'] as String? ?? '';
+    final status = (season['status'] as String? ?? '').toLowerCase();
+    final startsAt = _parseApiDate(season['startsAt']);
+    final endsAt = _parseApiDate(season['endsAt']);
+    final remaining = endsAt?.difference(now);
+    final live = status == 'active';
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFF2A1616), Color(0xFF140A0A)],
+        ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: kEmpireGold.withValues(alpha: 0.45)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.calendar_month, color: kEmpireGold, size: 22),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  _seasonPrettyTitle(key),
+                  style: const TextStyle(
+                    color: kEmpireGold,
+                    fontSize: 22,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+              _seasonStatusChip(status),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Text(
+            t.territorySeasonBlurb,
+            style: TextStyle(color: Colors.grey[300], height: 1.35, fontSize: 13),
+          ),
+          if (live && remaining != null) ...[
+            const SizedBox(height: 16),
+            Text(
+              t.territorySeasonEndsIn(_formatSeasonCountdown(remaining)),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ],
+          if (startsAt != null) ...[
+            const SizedBox(height: 8),
+            Text(
+              t.territorySeasonStartedOn(_formatShortDate(startsAt.toIso8601String()) ?? ''),
+              style: TextStyle(color: Colors.grey[500], fontSize: 12),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _seasonStatusChip(String status) {
+    final t = _l10n;
+    final label = switch (status) {
+      'active' => t.territorySeasonStatusActive,
+      'closed' => t.territorySeasonStatusClosed,
+      'scheduled' => t.territorySeasonStatusScheduled,
+      _ => status,
+    };
+    final color = switch (status) {
+      'active' => const Color(0xFF2E7D32),
+      'closed' => Colors.grey,
+      _ => Colors.blueGrey,
+    };
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.22),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: color),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(color: color, fontWeight: FontWeight.w700, fontSize: 12),
+      ),
+    );
+  }
+
+  Widget _contestStatusChip(String? status) {
+    final raw = (status ?? '').toLowerCase();
+    final label = switch (raw) {
+      'preparing' => _l10n.territoryContestStatusPreparing,
+      'active' => _l10n.territoryContestStatusActive,
+      'lockdown' => _l10n.territoryContestStatusLockdown,
+      _ => status ?? '',
+    };
+    if (label.isEmpty) return const SizedBox.shrink();
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      decoration: BoxDecoration(
+        color: Colors.white10,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Text(
+        label,
+        style: const TextStyle(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.w600),
+      ),
+    );
+  }
+
+  Widget _seasonSection({
+    required IconData icon,
+    required String title,
+    required List<Widget> children,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(icon, color: kEmpireGold, size: 18),
+              const SizedBox(width: 8),
+              Text(
+                title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 15,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          ...children,
+        ],
+      ),
+    );
+  }
+
+  Widget _seasonEmptyCard(String text) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1A1010),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.white10),
+      ),
+      child: Text(text, style: TextStyle(color: Colors.grey[500])),
+    );
+  }
+
+  Widget _seasonFeedTile({
+    required IconData icon,
+    required Color accent,
+    required String title,
+    String? subtitle,
+    Widget? trailing,
+    String? leadingLabel,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1A1010),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: accent.withValues(alpha: 0.28)),
+      ),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 18,
+            backgroundColor: accent.withValues(alpha: 0.18),
+            child: leadingLabel != null
+                ? Text(
+                    leadingLabel,
+                    style: TextStyle(color: accent, fontWeight: FontWeight.w800),
+                  )
+                : Icon(icon, color: accent, size: 18),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 14,
+                  ),
+                ),
+                if (subtitle != null && subtitle.isNotEmpty) ...[
+                  const SizedBox(height: 2),
+                  Text(
+                    subtitle,
+                    style: TextStyle(color: Colors.grey[400], fontSize: 12),
+                  ),
+                ],
+              ],
+            ),
+          ),
+          ?trailing,
+        ],
+      ),
+    );
+  }
+
+  Widget _seasonEventTile(Map<String, dynamic> event, DateTime now) {
+    final t = _l10n;
+    final attack = (event['attackBonusPoints'] as num?)?.toInt() ?? 0;
+    final penalty = (event['incomePenaltyPercent'] as num?)?.toInt() ?? 0;
+    final endsAt = _parseApiDate(event['endsAt']);
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1A1010),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.amber.withValues(alpha: 0.35)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.flash_on, color: Colors.amber, size: 18),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  _regionEventTitle(event),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            _dramaRegionName(event),
+            style: TextStyle(color: Colors.grey[300], fontSize: 13),
+          ),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 8,
+            runSpacing: 6,
+            children: [
+              if (attack > 0)
+                _seasonInfoChip(t.territoryEventAttackBonusChip(attack)),
+              if (penalty > 0)
+                _seasonInfoChip(t.territoryEventIncomePenaltyChip(penalty)),
+              if (endsAt != null)
+                _seasonInfoChip(
+                  t.territorySeasonEndsIn(_countdownLabel(endsAt, now)),
+                ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _seasonInfoChip(String label) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.white10,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Text(
+        label,
+        style: const TextStyle(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.w600),
+      ),
+    );
+  }
+
+  String _seasonPrettyTitle(String key) {
+    final match = RegExp(r'^(\d{4})-(\d{2})$').firstMatch(key);
+    if (match == null) return key;
+    final year = int.tryParse(match.group(1)!);
+    final month = int.tryParse(match.group(2)!);
+    if (year == null || month == null || month < 1 || month > 12) return key;
+    return MaterialLocalizations.of(context).formatMonthYear(DateTime(year, month));
+  }
+
+  String _formatSeasonCountdown(Duration remaining) {
+    final safe = remaining.isNegative ? Duration.zero : remaining;
+    if (safe.inDays >= 1) {
+      return _l10n.territoryHoldDurationDaysHours(
+        safe.inDays,
+        safe.inHours.remainder(24),
+      );
+    }
+    return _formatLiveDuration(safe);
+  }
+
+  String? _formatShortDate(dynamic raw) {
+    final parsed = raw is DateTime ? raw.toLocal() : _parseApiDate(raw);
+    if (parsed == null) return null;
+    return MaterialLocalizations.of(context).formatMediumDate(parsed);
+  }
+
+  String _dramaRegionName(Map raw, {String? fallbackKey}) {
+    final lang = Localizations.localeOf(context).languageCode.toLowerCase();
+    final nl = raw['regionNameNl'] as String?;
+    final en = raw['regionNameEn'] as String?;
+    final key = (raw['regionKey'] as String?) ?? fallbackKey ?? '';
+    if (lang == 'nl') return (nl?.trim().isNotEmpty == true) ? nl! : (en ?? key);
+    return (en?.trim().isNotEmpty == true) ? en! : (nl ?? key);
+  }
+
+  String _regionEventTitle(Map<String, dynamic> event) {
+    final key = (event['eventKey'] as String?) ?? 'event';
+    return switch (key) {
+      'police_offensive' => _l10n.territoryEventPoliceOffensive,
+      'harbor_strike' => _l10n.territoryEventHarborStrike,
+      'blackout_rumor' => _l10n.territoryEventBlackoutRumor,
+      _ => key,
+    };
   }
 
   // â”€â”€ Actions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

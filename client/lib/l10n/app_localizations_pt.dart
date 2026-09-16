@@ -16282,6 +16282,54 @@ class AppLocalizationsPt extends AppLocalizations {
   String get territorySeasonEnd => 'Fim';
 
   @override
+  String get territorySeasonBlurb =>
+      'This month’s round. Crews that capture, defend, or hold the war front get extra crew-bank cash when the season closes.';
+
+  @override
+  String get territorySeasonStatusActive => 'Live';
+
+  @override
+  String get territorySeasonStatusClosed => 'Closed';
+
+  @override
+  String get territorySeasonStatusScheduled => 'Starts soon';
+
+  @override
+  String territorySeasonEndsIn(String countdown) {
+    return 'Ends in $countdown';
+  }
+
+  @override
+  String territorySeasonStartedOn(String date) {
+    return 'Started $date';
+  }
+
+  @override
+  String territoryDramaCaptureTook(String crew, String region) {
+    return '$crew took $region';
+  }
+
+  @override
+  String territoryDramaContestVs(String attacker, String defender) {
+    return '$attacker vs $defender';
+  }
+
+  @override
+  String territoryDramaRisingCaptures(int count) {
+    return '$count captures this week';
+  }
+
+  @override
+  String territoryEventAttackBonusChip(int points) {
+    return '+$points contest points';
+  }
+
+  @override
+  String territoryEventIncomePenaltyChip(int percent) {
+    return '-$percent% hourly income';
+  }
+
+  @override
   String get territoryDialogAttackTitle => 'Ataque?';
 
   @override

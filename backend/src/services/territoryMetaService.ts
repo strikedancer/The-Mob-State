@@ -32,12 +32,16 @@ export type TerritoryDramaSnapshot = {
   hottestContests: Array<{
     contestId: number;
     regionKey: string;
+    regionNameNl: string | null;
+    regionNameEn: string | null;
     status: string;
     attackerCrewName: string | null;
     defenderCrewName: string | null;
   }>;
   recentCaptures: Array<{
     regionKey: string;
+    regionNameNl: string | null;
+    regionNameEn: string | null;
     winnerCrewName: string | null;
     resolvedAt: Date | null;
   }>;
@@ -47,6 +51,8 @@ export type TerritoryDramaSnapshot = {
   }>;
   activeWarTheaters: Array<{
     theaterRegionKey: string;
+    regionNameNl: string | null;
+    regionNameEn: string | null;
     attackerCrewName: string | null;
     defenderCrewName: string | null;
   }>;
@@ -577,22 +583,35 @@ export async function getTerritoryDramaSnapshot(now: Date = new Date()): Promise
     if (activeWarTheaters.some((t) => t.theaterRegionKey === theaterRegionKey)) continue;
     activeWarTheaters.push({
       theaterRegionKey,
+      regionNameNl: null,
+      regionNameEn: null,
       attackerCrewName: row.attackerCrewName,
       defenderCrewName: row.defenderCrewName,
     });
     if (activeWarTheaters.length >= 5) break;
   }
 
+  const nameKeys = [
+    ...hottestContests.map((row) => row.regionKey),
+    ...recentCaptures.map((row) => row.regionKey),
+    ...activeWarTheaters.map((row) => row.theaterRegionKey),
+  ];
+  const names = await loadRegionDisplayNames(nameKeys);
+
   return {
     hottestContests: hottestContests.map((row) => ({
       contestId: toNumeric(row.id),
       regionKey: row.regionKey,
+      regionNameNl: names.get(row.regionKey)?.nl ?? null,
+      regionNameEn: names.get(row.regionKey)?.en ?? null,
       status: row.status,
       attackerCrewName: row.attackerCrewName,
       defenderCrewName: row.defenderCrewName,
     })),
     recentCaptures: recentCaptures.map((row) => ({
       regionKey: row.regionKey,
+      regionNameNl: names.get(row.regionKey)?.nl ?? null,
+      regionNameEn: names.get(row.regionKey)?.en ?? null,
       winnerCrewName: row.winnerCrewName,
       resolvedAt: row.resolvedAt,
     })),
@@ -600,7 +619,32 @@ export async function getTerritoryDramaSnapshot(now: Date = new Date()): Promise
       crewName: row.crewName,
       captures: toNumeric(row.captures),
     })),
-    activeWarTheaters,
+    activeWarTheaters: activeWarTheaters.map((row) => ({
+      ...row,
+      regionNameNl: names.get(row.theaterRegionKey)?.nl ?? null,
+      regionNameEn: names.get(row.theaterRegionKey)?.en ?? null,
+    })),
     activeRegionEvents: activeRegionEvents.slice(0, 5),
   };
+}
+
+async function loadRegionDisplayNames(
+  keys: string[],
+): Promise<Map<string, { nl: string | null; en: string | null }>> {
+  const unique = [...new Set(keys.map((key) => String(key || '').trim()).filter(Boolean))];
+  const names = new Map<string, { nl: string | null; en: string | null }>();
+  if (unique.length === 0) return names;
+  const placeholders = unique.map(() => '?').join(',');
+  const rows = await prisma.$queryRawUnsafe<Array<{
+    regionKey: string;
+    nameNl: string | null;
+    nameEn: string | null;
+  }>>(
+    `SELECT regionKey, nameNl, nameEn FROM territory_regions WHERE regionKey IN (${placeholders})`,
+    ...unique,
+  );
+  for (const row of rows) {
+    names.set(row.regionKey, { nl: row.nameNl, en: row.nameEn });
+  }
+  return names;
 }

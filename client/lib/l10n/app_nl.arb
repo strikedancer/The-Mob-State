@@ -8037,6 +8037,72 @@
   "territorySeasonStatus": "Status",
   "territorySeasonStart": "Start",
   "territorySeasonEnd": "Einde",
+  "territorySeasonBlurb": "De maandronde. Crews die veroveren, verdedigen of het oorlogsfront vasthouden krijgen extra crew-bankgeld als het seizoen sluit.",
+  "territorySeasonStatusActive": "Live",
+  "territorySeasonStatusClosed": "Afgesloten",
+  "territorySeasonStatusScheduled": "Start binnenkort",
+  "territorySeasonEndsIn": "Eindigt over {countdown}",
+  "@territorySeasonEndsIn": {
+    "placeholders": {
+      "countdown": {
+        "type": "String"
+      }
+    }
+  },
+  "territorySeasonStartedOn": "Gestart {date}",
+  "@territorySeasonStartedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryDramaCaptureTook": "{crew} nam {region}",
+  "@territoryDramaCaptureTook": {
+    "placeholders": {
+      "crew": {
+        "type": "String"
+      },
+      "region": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryDramaContestVs": "{attacker} vs {defender}",
+  "@territoryDramaContestVs": {
+    "placeholders": {
+      "attacker": {
+        "type": "String"
+      },
+      "defender": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryDramaRisingCaptures": "{count} veroveringen deze week",
+  "@territoryDramaRisingCaptures": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "territoryEventAttackBonusChip": "+{points} contestpunten",
+  "@territoryEventAttackBonusChip": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
+  "territoryEventIncomePenaltyChip": "-{percent}% uurloon",
+  "@territoryEventIncomePenaltyChip": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "territoryDialogAttackTitle": "Aanvallen?",
   "territoryDialogAttackBody": "Wil je een contest starten voor {regionKey}?",
   "territorySnackJoinCrewFirst": "Sluit je eerst aan bij een crew om territorium aan te vallen.",
@@ -11882,7 +11948,7 @@
   "territoryErrorProjectDestroyed": "Project vernietigd - start een nieuw project.",
   "territoryErrorProjectActive": "Project is al actief.",
   "territoryErrorProjectCooldown": "Projectbevoorrading staat op cooldown.",
-  "territoryDramaTitle": "Territory-drama",
+  "territoryDramaTitle": "Wat er nu speelt",
   "territoryDramaHotContests": "Hete contests",
   "territoryDramaRecentCaptures": "Recente veroveringen",
   "territoryDramaRisingCrews": "Stijgende crews",

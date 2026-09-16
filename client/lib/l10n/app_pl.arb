@@ -12639,5 +12639,71 @@
   "worldChatStaffDeleted": "Message removed from world chat.",
   "worldChatStaffReports": "Reports",
   "worldChatStaffReportsEmpty": "No open reports right now.",
-  "worldChatStaffActionBody": "Remove this message, mute the sender, or send it to the report list."
+  "worldChatStaffActionBody": "Remove this message, mute the sender, or send it to the report list.",
+  "territorySeasonBlurb": "This month’s round. Crews that capture, defend, or hold the war front get extra crew-bank cash when the season closes.",
+  "territorySeasonStatusActive": "Live",
+  "territorySeasonStatusClosed": "Closed",
+  "territorySeasonStatusScheduled": "Starts soon",
+  "territorySeasonEndsIn": "Ends in {countdown}",
+  "@territorySeasonEndsIn": {
+    "placeholders": {
+      "countdown": {
+        "type": "String"
+      }
+    }
+  },
+  "territorySeasonStartedOn": "Started {date}",
+  "@territorySeasonStartedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryDramaCaptureTook": "{crew} took {region}",
+  "@territoryDramaCaptureTook": {
+    "placeholders": {
+      "crew": {
+        "type": "String"
+      },
+      "region": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryDramaContestVs": "{attacker} vs {defender}",
+  "@territoryDramaContestVs": {
+    "placeholders": {
+      "attacker": {
+        "type": "String"
+      },
+      "defender": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryDramaRisingCaptures": "{count} captures this week",
+  "@territoryDramaRisingCaptures": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "territoryEventAttackBonusChip": "+{points} contest points",
+  "@territoryEventAttackBonusChip": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
+  "territoryEventIncomePenaltyChip": "-{percent}% hourly income",
+  "@territoryEventIncomePenaltyChip": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  }
 }

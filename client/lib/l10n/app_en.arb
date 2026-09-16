@@ -10251,6 +10251,72 @@
   "territorySeasonStatus": "Status",
   "territorySeasonStart": "Start",
   "territorySeasonEnd": "End",
+  "territorySeasonBlurb": "This month’s round. Crews that capture, defend, or hold the war front get extra crew-bank cash when the season closes.",
+  "territorySeasonStatusActive": "Live",
+  "territorySeasonStatusClosed": "Closed",
+  "territorySeasonStatusScheduled": "Starts soon",
+  "territorySeasonEndsIn": "Ends in {countdown}",
+  "@territorySeasonEndsIn": {
+    "placeholders": {
+      "countdown": {
+        "type": "String"
+      }
+    }
+  },
+  "territorySeasonStartedOn": "Started {date}",
+  "@territorySeasonStartedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryDramaCaptureTook": "{crew} took {region}",
+  "@territoryDramaCaptureTook": {
+    "placeholders": {
+      "crew": {
+        "type": "String"
+      },
+      "region": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryDramaContestVs": "{attacker} vs {defender}",
+  "@territoryDramaContestVs": {
+    "placeholders": {
+      "attacker": {
+        "type": "String"
+      },
+      "defender": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryDramaRisingCaptures": "{count} captures this week",
+  "@territoryDramaRisingCaptures": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "territoryEventAttackBonusChip": "+{points} contest points",
+  "@territoryEventAttackBonusChip": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
+  "territoryEventIncomePenaltyChip": "-{percent}% hourly income",
+  "@territoryEventIncomePenaltyChip": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "territoryDialogAttackTitle": "Attack?",
   "territoryDialogAttackBody": "Start a contest for {regionKey}?",
   "territorySnackJoinCrewFirst": "Join a crew first to attack territory.",
@@ -12027,7 +12093,7 @@
   "territoryErrorProjectDestroyed": "Project destroyed - start a new one.",
   "territoryErrorProjectActive": "Project is already active.",
   "territoryErrorProjectCooldown": "Project supply is on cooldown.",
-  "territoryDramaTitle": "Territory drama",
+  "territoryDramaTitle": "What's happening now",
   "territoryDramaHotContests": "Hot contests",
   "territoryDramaRecentCaptures": "Recent captures",
   "territoryDramaRisingCrews": "Rising crews",

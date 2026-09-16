@@ -343,6 +343,7 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 - Als de voorbereiding van een Territory-contest klaar is, krijgen aanvallende en verdedigende crewleden een push- en inboxbericht dat de strijd live is en acties ontgrendeld zijn.
 - Op mobiel ondersteunt de Territory-kaart pinch-zoom en pannen zodat kleine regio's bruikbaar blijven.
 - Per crew zie je Territory-statistieken (gewonnen, verdedigd, verloren, contests, totale hold-tijd) zowel all-time als voor het actieve seizoen: op de leaderboard via een all-time/seizoen-toggle, en als crew-statsblok op de kaarttab.
+- Het tabblad **Seizoen** toont de maandronde als kaart (naam, live-status, countdown) plus recente veroveringen, tijdelijke regio-events en hete contests — geen kale ISO-tekst.
 
 ---
 

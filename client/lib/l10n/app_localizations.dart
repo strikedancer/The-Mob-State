@@ -27982,6 +27982,72 @@ abstract class AppLocalizations {
   /// **'End'**
   String get territorySeasonEnd;
 
+  /// No description provided for @territorySeasonBlurb.
+  ///
+  /// In en, this message translates to:
+  /// **'This month’s round. Crews that capture, defend, or hold the war front get extra crew-bank cash when the season closes.'**
+  String get territorySeasonBlurb;
+
+  /// No description provided for @territorySeasonStatusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Live'**
+  String get territorySeasonStatusActive;
+
+  /// No description provided for @territorySeasonStatusClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get territorySeasonStatusClosed;
+
+  /// No description provided for @territorySeasonStatusScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Starts soon'**
+  String get territorySeasonStatusScheduled;
+
+  /// No description provided for @territorySeasonEndsIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends in {countdown}'**
+  String territorySeasonEndsIn(String countdown);
+
+  /// No description provided for @territorySeasonStartedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Started {date}'**
+  String territorySeasonStartedOn(String date);
+
+  /// No description provided for @territoryDramaCaptureTook.
+  ///
+  /// In en, this message translates to:
+  /// **'{crew} took {region}'**
+  String territoryDramaCaptureTook(String crew, String region);
+
+  /// No description provided for @territoryDramaContestVs.
+  ///
+  /// In en, this message translates to:
+  /// **'{attacker} vs {defender}'**
+  String territoryDramaContestVs(String attacker, String defender);
+
+  /// No description provided for @territoryDramaRisingCaptures.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} captures this week'**
+  String territoryDramaRisingCaptures(int count);
+
+  /// No description provided for @territoryEventAttackBonusChip.
+  ///
+  /// In en, this message translates to:
+  /// **'+{points} contest points'**
+  String territoryEventAttackBonusChip(int points);
+
+  /// No description provided for @territoryEventIncomePenaltyChip.
+  ///
+  /// In en, this message translates to:
+  /// **'-{percent}% hourly income'**
+  String territoryEventIncomePenaltyChip(int percent);
+
   /// No description provided for @territoryDialogAttackTitle.
   ///
   /// In en, this message translates to:
@@ -32909,7 +32975,7 @@ abstract class AppLocalizations {
   /// No description provided for @territoryDramaTitle.
   ///
   /// In en, this message translates to:
-  /// **'Territory drama'**
+  /// **'What\'s happening now'**
   String get territoryDramaTitle;
 
   /// No description provided for @territoryDramaHotContests.
