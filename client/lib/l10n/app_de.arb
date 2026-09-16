@@ -12606,5 +12606,13 @@
     }
   },
   "territoryCapsAtHardCap": "Maximum erreicht",
-  "territoryHqUpgradeHint": "Gebietsplätze: +1 alle 3 HQ-Stufen, +1 alle 5 zusätzlichen Mitglieder, der niedrigste Wert, nie mehr als 10."
+  "territoryHqUpgradeHint": "Gebietsplätze: +1 alle 3 HQ-Stufen, +1 alle 5 zusätzlichen Mitglieder, der niedrigste Wert, nie mehr als 10.",
+  "crewHeistsFailedJailed": "The heist failed. The whole crew is locked up for {minutes} minutes.",
+  "@crewHeistsFailedJailed": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  }
 }

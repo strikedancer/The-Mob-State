@@ -11260,6 +11260,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get crewHeistsLoadError => 'Could not load crew heists.';
 
   @override
+  String crewHeistsFailedJailed(int minutes) {
+    return 'The heist failed. The whole crew is locked up for $minutes minutes.';
+  }
+
+  @override
   String get crimeOutcomeRowReward => 'Récompense:';
 
   @override

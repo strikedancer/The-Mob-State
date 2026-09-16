@@ -12,11 +12,13 @@ class CrewHeistsPanel extends StatefulWidget {
     required this.crewId,
     required this.isLeader,
     required this.memberCount,
+    this.onHeistResolved,
   });
 
   final int crewId;
   final bool isLeader;
   final int memberCount;
+  final void Function(Map<String, dynamic> result)? onHeistResolved;
 
   @override
   State<CrewHeistsPanel> createState() => _CrewHeistsPanelState();
@@ -140,6 +142,26 @@ class _CrewHeistsPanelState extends State<CrewHeistsPanel> {
         } else if (reason == 'NO_FUEL') {
           message = l10n.crimeErrorNoFuel;
         }
+      }
+
+      if (response.statusCode == 200 && widget.onHeistResolved != null) {
+        widget.onHeistResolved!({
+          'success': success,
+          'heistName': heistName,
+          'payout': (params['payout'] as num?)?.toInt() ?? 0,
+          'xpGained': (params['xpGained'] as num?)?.toInt() ?? 0,
+          'xpLost': (params['xpLost'] as num?)?.toInt() ?? 0,
+          'jailed': params['jailed'] == true,
+          'jailTime': (params['jailTime'] as num?)?.toInt() ?? 0,
+          'vehicleConditionLoss':
+              ((params['vehicleConditionLoss'] as num?)?.round() ?? 0) +
+              ((params['vehicleChaseDamage'] as num?)?.round() ?? 0),
+          'vehicleFuelUsed': (params['vehicleFuelUsed'] as num?)?.round() ?? 0,
+        });
+        if (success) {
+          await _load();
+        }
+        return;
       }
 
       showTopRightFromSnackBar(

@@ -53,6 +53,7 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 ## Backend Guardrails
 - Heist resolve (`startHeist` fail/success) must not run per-member Prisma writes inside an interactive `$transaction`. Jail rows go through `crimeAttempt.createMany`; payouts/XP use `updateMany` or a short array transaction. Nested `playerService.loseXP` inside `$transaction` expires the default 5s timeout and 500s the whole heist (`Transaction already closed`).
 - Failed heists must still jail every crew member and apply the XP loss (clamped at 0). Do not drop those penalties to make the write faster.
+- Failed heists must also set `player.jailRelease` so `/player/jail-status`, the dashboard HUD and other screens see the sentence immediately. The Crew UI must show the result popup plus `JailOverlay`, not only a snackbar.
 
 ## Notification Guardrails
 - Crew-gerelateerde arrestatie-alerts moeten alle overige crewleden bereiken wanneer een lid vast komt te zitten.
@@ -80,6 +81,7 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - Verify Storage shows crew deals, officers can lock an offer, and cancel returns the goods.
 - Verify a war raid asks which storage type to hit and refuses when attacker storage is full.
 - Verify a failed heist still jails the whole crew and applies XP loss without a 500, including crews larger than a handful of members.
+- Verify a failed heist on Crew shows the result popup (jail time + XP loss) and then the jail overlay, not only a toast.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

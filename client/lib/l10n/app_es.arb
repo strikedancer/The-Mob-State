@@ -12606,5 +12606,13 @@
     }
   },
   "territoryCapsAtHardCap": "máximo alcanzado",
-  "territoryHqUpgradeHint": "Espacios territoriales: +1 cada 3 niveles de HQ, +1 cada 5 miembros adicionales, los conteos más bajos, nunca más de 10."
+  "territoryHqUpgradeHint": "Espacios territoriales: +1 cada 3 niveles de HQ, +1 cada 5 miembros adicionales, los conteos más bajos, nunca más de 10.",
+  "crewHeistsFailedJailed": "The heist failed. The whole crew is locked up for {minutes} minutes.",
+  "@crewHeistsFailedJailed": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  }
 }

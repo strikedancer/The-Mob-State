@@ -12606,5 +12606,13 @@
     }
   },
   "territoryCapsAtHardCap": "osiągnięto maksimum",
-  "territoryHqUpgradeHint": "Miejsca na terytoriach: +1 na każde 3 poziomy Kwatery Głównej, +1 na każde 5 dodatkowych członków, najniższa liczba, nigdy więcej niż 10."
+  "territoryHqUpgradeHint": "Miejsca na terytoriach: +1 na każde 3 poziomy Kwatery Głównej, +1 na każde 5 dodatkowych członków, najniższa liczba, nigdy więcej niż 10.",
+  "crewHeistsFailedJailed": "The heist failed. The whole crew is locked up for {minutes} minutes.",
+  "@crewHeistsFailedJailed": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  }
 }

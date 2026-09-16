@@ -17,6 +17,9 @@ import '../utils/trade_good_l10n.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/country_helper.dart';
 import '../widgets/crew_heists_panel.dart';
+import '../widgets/crime_result_overlay.dart';
+import '../widgets/jail_screen.dart';
+import '../services/jail_service.dart';
 import '../widgets/drug_wholesale_export_dialog.dart';
 import '../services/drug_service.dart';
 import '../utils/drug_localizations.dart';
@@ -100,6 +103,17 @@ class _CrewScreenState extends State<CrewScreen>
   Timer? _crewMissionTick;
   String _selectedWarType = 'kill_war';
   int? _selectedWarTargetCrewId;
+  final JailService _jailService = JailService();
+  int? _jailTime;
+  bool _showHeistResult = false;
+  bool _heistResultSuccess = false;
+  String? _heistResultName;
+  String? _heistResultFlavor;
+  int _heistResultPayout = 0;
+  int _heistResultXpGained = 0;
+  int _heistResultXpLost = 0;
+  int? _heistVehicleConditionLoss;
+  int? _heistVehicleFuelUsed;
 
   AppLocalizations get l10n => AppLocalizations.of(context)!;
 
@@ -1517,9 +1531,45 @@ class _CrewScreenState extends State<CrewScreen>
     super.dispose();
   }
 
+  Future<void> _onHeistResolved(Map<String, dynamic> result) async {
+    final success = result['success'] == true;
+    final heistName = result['heistName']?.toString() ?? '—';
+    final jailMinutes = (result['jailTime'] as num?)?.toInt() ?? 0;
+    final jailed = result['jailed'] == true || jailMinutes > 0;
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    try {
+      await authProvider.refreshPlayer();
+    } catch (_) {}
+    if (!mounted) return;
+
+    setState(() {
+      _showHeistResult = true;
+      _heistResultSuccess = success;
+      _heistResultName = heistName;
+      _heistResultPayout = (result['payout'] as num?)?.toInt() ?? 0;
+      _heistResultXpGained = (result['xpGained'] as num?)?.toInt() ?? 0;
+      _heistResultXpLost = (result['xpLost'] as num?)?.toInt() ?? 0;
+      _heistVehicleConditionLoss =
+          (result['vehicleConditionLoss'] as num?)?.toInt();
+      _heistVehicleFuelUsed = (result['vehicleFuelUsed'] as num?)?.toInt();
+      _heistResultFlavor = success
+          ? null
+          : jailed
+              ? l10n.crewHeistsFailedJailed(jailMinutes)
+              : l10n.evStreamHeistFail(heistName);
+      if (!success && jailed && jailMinutes > 0) {
+        _jailTime = jailMinutes * 60;
+      }
+    });
+  }
+
   Future<void> _loadData() async {
     setState(() => _loading = true);
     try {
+      final jailSeconds = await _jailService.checkJailStatus();
+      if (mounted && jailSeconds > 0) {
+        setState(() => _jailTime = jailSeconds);
+      }
       await _loadMyCrew();
 
       final futures = <Future<void>>[
@@ -4496,6 +4546,37 @@ class _CrewScreenState extends State<CrewScreen>
   }
 
   Widget _buildPageInfoChild(BuildContext context) {
+    if (_showHeistResult) {
+      return CrimeResultOverlay(
+        crimeName: _heistResultName ?? '—',
+        reward: _heistResultPayout,
+        xpGained: _heistResultXpGained,
+        xpLost: _heistResultXpLost,
+        isSuccess: _heistResultSuccess,
+        flavorLine: _heistResultFlavor,
+        vehicleConditionLoss: _heistVehicleConditionLoss,
+        vehicleFuelUsed: _heistVehicleFuelUsed,
+        embedded: kIsWeb || widget.embedded,
+        onContinue: () {
+          setState(() => _showHeistResult = false);
+          if (_heistResultSuccess) {
+            unawaited(_loadCrewStats());
+          }
+        },
+      );
+    }
+    if (_jailTime != null && _jailTime! > 0) {
+      final player = Provider.of<AuthProvider>(context).currentPlayer;
+      return JailOverlay(
+        embedded: kIsWeb || widget.embedded,
+        remainingSeconds: _jailTime!,
+        wantedLevel: player?.wantedLevel,
+        onReleased: () {
+          setState(() => _jailTime = null);
+        },
+      );
+    }
+
     return EmpireHubScaffold(
       embedded: widget.embedded,
       title: _t(l10n, 'app.crews'),
@@ -4805,6 +4886,7 @@ class _CrewScreenState extends State<CrewScreen>
                           crewId: _myCrew!.id,
                           isLeader: isLeader,
                           memberCount: _myCrew!.memberCount,
+                          onHeistResolved: _onHeistResolved,
                         ),
                         if (!isLeader) ...[
                           const SizedBox(height: 16),

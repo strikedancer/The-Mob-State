@@ -12606,5 +12606,13 @@
     }
   },
   "territoryCapsAtHardCap": "massimo raggiunto",
-  "territoryHqUpgradeHint": "Slot territorio: +1 ogni 3 livelli HQ, +1 ogni 5 membri extra, il numero più basso, mai più di 10."
+  "territoryHqUpgradeHint": "Slot territorio: +1 ogni 3 livelli HQ, +1 ogni 5 membri extra, il numero più basso, mai più di 10.",
+  "crewHeistsFailedJailed": "The heist failed. The whole crew is locked up for {minutes} minutes.",
+  "@crewHeistsFailedJailed": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  }
 }

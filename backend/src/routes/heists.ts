@@ -135,7 +135,9 @@ router.post(
         return res.json({
           event: result.sabotaged ? 'heist.failure_sabotaged' : 'heist.failure',
           params: {
+            jailed: true,
             jailTime: result.jailTime,
+            xpLost: result.xpLost,
             sabotaged: result.sabotaged,
             sabotagedBy: result.sabotagedBy,
             reputation: newReputation,

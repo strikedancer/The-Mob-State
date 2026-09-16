@@ -387,6 +387,7 @@ export async function startHeist(
     // Jail rows in one write. XP stays outside the transaction: nested prisma
     // calls inside $transaction expire the default 5s interactive timeout and
     // 500 the whole heist (seen live as Transaction already closed).
+    const jailRelease = new Date(Date.now() + heist.jailTimeOnFailure * 60 * 1000);
     await prisma.crimeAttempt.createMany({
       data: memberIds.map((playerId) => ({
         playerId,
@@ -397,6 +398,10 @@ export async function startHeist(
         jailed: true,
         jailTime: heist.jailTimeOnFailure,
       })),
+    });
+    await prisma.player.updateMany({
+      where: { id: { in: memberIds } },
+      data: { jailRelease },
     });
 
     if (xpLossPerMember > 0) {
