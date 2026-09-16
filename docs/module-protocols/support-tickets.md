@@ -54,7 +54,7 @@ Player support intake, admin ticket handling, reply loop, todo tracking and push
 
 ## QA Checklist
 - Player creates ticket successfully (bug/question/feedback/other).
-- Player can include optional module context, reference code and screenshot.
+- Player can include optional module context, reference code and up to 5 screenshots.
 - Player sees existing tickets in Support and can reopen a thread after refresh/navigation.
 - Support menu badge appears after a new admin reply or ticket status change and clears after the player opens Support.
 - Admin sees ticket, triage metadata, attachments, assignee and priority.

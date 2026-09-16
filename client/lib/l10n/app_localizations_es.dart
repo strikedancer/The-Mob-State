@@ -14418,7 +14418,12 @@ class AppLocalizationsEs extends AppLocalizations {
       'Por ejemplo id de pedido, nombre de pantalla, país o contexto breve';
 
   @override
-  String get supportAddScreenshot => 'Añadir captura';
+  String get supportAddScreenshot => 'Agregar capturas de pantalla';
+
+  @override
+  String supportMaxScreenshots(int count) {
+    return 'Puedes adjuntar hasta $count capturas de pantalla.';
+  }
 
   @override
   String get supportSubmit => 'Enviar';
@@ -18790,7 +18795,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicSupportTicketsHow =>
-      'Abra el elemento de menú separado \"Soporte\" para revisar sus tickets o crear uno nuevo. \nElija una categoría (error, pregunta, comentario u otro), seleccione el módulo relacionado si es necesario y describa su problema lo más específicamente posible. \nOpcionalmente, puede agregar una referencia, como una identificación de pedido, un nombre de pantalla o un contexto breve, además de una captura de pantalla si eso ayuda. \nDespués del envío, recibirá inmediatamente un número de ticket y su ticket aparecerá en su descripción general de soporte, donde el soporte puede responder y crear tareas pendientes internas. \nCuando el soporte responde o el estado del ticket cambia, lo verá directamente dentro de la misma conversación de soporte y, opcionalmente, puede recibir una notificación automática (si las notificaciones están habilitadas). \nEl elemento del menú Soporte muestra una insignia tan pronto como un ticket recibe una nueva respuesta de soporte o una actualización de estado desde su última visita a la descripción general de soporte. \nEl soporte utiliza estados como nuevo, clasificación, en progreso, en espera de jugador, bloqueado y resuelto para realizar un seguimiento interno de su informe.';
+      'Abra el elemento de menú separado \"Soporte\" para revisar sus tickets o crear uno nuevo. \nElija una categoría (error, pregunta, comentario u otro), seleccione el módulo relacionado si es necesario y describa su problema lo más específicamente posible. \nOpcionalmente, puedes agregar una referencia como una identificación de pedido, un nombre de pantalla o un contexto breve, además de hasta 5 capturas de pantalla si eso te ayuda. \nDespués del envío, recibirá inmediatamente un número de ticket y su ticket aparecerá en su descripción general de soporte, donde el soporte puede responder y crear tareas pendientes internas. \nCuando el soporte responde o el estado del ticket cambia, lo verá directamente dentro de la misma conversación de soporte y, opcionalmente, puede recibir una notificación automática (si las notificaciones están habilitadas). \nEl elemento del menú Soporte muestra una insignia tan pronto como un ticket recibe una nueva respuesta de soporte o una actualización de estado desde su última visita a la descripción general de soporte. \nEl soporte utiliza estados como nuevo, clasificación, en progreso, en espera de jugador, bloqueado y resuelto para realizar un seguimiento interno de su informe.';
 
   @override
   String get helpTopicSupportTicketsTips =>

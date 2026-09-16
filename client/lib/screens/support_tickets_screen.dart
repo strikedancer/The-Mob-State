@@ -104,6 +104,18 @@ class _SupportTicketAttachment {
   }
 }
 
+class _PendingSupportImage {
+  const _PendingSupportImage({
+    required this.bytes,
+    required this.name,
+    required this.mimeType,
+  });
+
+  final Uint8List bytes;
+  final String name;
+  final String mimeType;
+}
+
 class _SupportTicketDetail {
   const _SupportTicketDetail({
     required this.ticket,
@@ -291,9 +303,8 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
   final _messageController = TextEditingController();
   final _referenceController = TextEditingController();
   final _replyController = TextEditingController();
-  Uint8List? _attachmentBytes;
-  String? _attachmentName;
-  String? _attachmentMimeType;
+  static const int _maxScreenshots = 5;
+  final List<_PendingSupportImage> _pendingImages = [];
   int? _lastCreatedTicketId;
   String? _authToken;
   int? _selectedTicketId;
@@ -436,26 +447,50 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
   }
 
   Future<void> _pickAttachment() async {
+    final l10n = AppLocalizations.of(context)!;
+    if (_pendingImages.length >= _maxScreenshots) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(l10n.supportMaxScreenshots(_maxScreenshots)),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+
     try {
-      final file = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
+      final remaining = _maxScreenshots - _pendingImages.length;
+      final files = await _imagePicker.pickMultiImage(
         imageQuality: 85,
         maxWidth: 2200,
+        limit: remaining,
       );
-      if (file == null) return;
+      if (files.isEmpty) return;
 
-      final bytes = await file.readAsBytes();
-      if (bytes.isEmpty) return;
+      final added = <_PendingSupportImage>[];
+      for (final file in files.take(remaining)) {
+        final bytes = await file.readAsBytes();
+        if (bytes.isEmpty) continue;
+        added.add(
+          _PendingSupportImage(
+            bytes: bytes,
+            name: file.name,
+            mimeType: file.mimeType ?? 'image/jpeg',
+          ),
+        );
+      }
+      if (added.isEmpty || !mounted) return;
 
       setState(() {
-        _attachmentBytes = bytes;
-        _attachmentName = file.name;
-        _attachmentMimeType = file.mimeType ?? 'image/jpeg';
+        _pendingImages.addAll(added);
+        if (_pendingImages.length > _maxScreenshots) {
+          _pendingImages.removeRange(_maxScreenshots, _pendingImages.length);
+        }
       });
     } catch (e, st) {
       debugPrint('_pickAttachment failed: $e\n$st');
       if (!mounted) return;
-      final l10n = AppLocalizations.of(context)!;
       showTopRightFromSnackBar(
         context,
         SnackBar(
@@ -504,15 +539,13 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
         request.headers['Authorization'] = 'Bearer $token';
       }
 
-      if (_attachmentBytes != null && _attachmentName != null) {
-        final contentTypeParts = (_attachmentMimeType ?? 'image/jpeg').split(
-          '/',
-        );
+      for (final image in _pendingImages.take(_maxScreenshots)) {
+        final contentTypeParts = image.mimeType.split('/');
         request.files.add(
           http.MultipartFile.fromBytes(
             'attachment',
-            _attachmentBytes!,
-            filename: _attachmentName,
+            image.bytes,
+            filename: image.name,
             contentType: contentTypeParts.length == 2
                 ? MediaType(contentTypeParts[0], contentTypeParts[1])
                 : MediaType('image', 'jpeg'),
@@ -537,9 +570,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
       _referenceController.clear();
       setState(() {
         _lastCreatedTicketId = ticketId;
-        _attachmentBytes = null;
-        _attachmentName = null;
-        _attachmentMimeType = null;
+        _pendingImages.clear();
       });
 
       await _loadTickets(preferredTicketId: ticketId);
@@ -795,6 +826,49 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
   Map<String, String>? get _attachmentHeaders {
     if (_authToken == null || _authToken!.isEmpty) return null;
     return {'Authorization': 'Bearer $_authToken'};
+  }
+
+  Widget _buildPendingScreenshotThumb(int index) {
+    final image = _pendingImages[index];
+    return SizedBox(
+      width: 88,
+      height: 88,
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.memory(
+                image.bytes,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Positioned(
+            top: 0,
+            right: 0,
+            child: Material(
+              color: Colors.black54,
+              shape: const CircleBorder(),
+              child: InkWell(
+                customBorder: const CircleBorder(),
+                onTap: _isSubmitting
+                    ? null
+                    : () {
+                        setState(() {
+                          _pendingImages.removeAt(index);
+                        });
+                      },
+                child: const Padding(
+                  padding: EdgeInsets.all(4),
+                  child: Icon(Icons.close, size: 16, color: Colors.white),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   void _openAttachmentPreview(_SupportTicketAttachment attachment) {
@@ -1385,48 +1459,22 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        OutlinedButton.icon(
-                          onPressed: _isSubmitting ? null : _pickAttachment,
-                          icon: const Icon(Icons.image_outlined),
-                          label: Text(
-                            l10n.supportAddScreenshot,
-                          ),
-                        ),
-                        if (_attachmentName != null) ...[
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              _attachmentName!,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: _isSubmitting
-                                ? null
-                                : () {
-                                    setState(() {
-                                      _attachmentBytes = null;
-                                      _attachmentName = null;
-                                      _attachmentMimeType = null;
-                                    });
-                                  },
-                            icon: const Icon(Icons.close),
-                          ),
-                        ],
-                      ],
+                    OutlinedButton.icon(
+                      onPressed: _isSubmitting ? null : _pickAttachment,
+                      icon: const Icon(Icons.image_outlined),
+                      label: Text(
+                        l10n.supportAddScreenshot,
+                      ),
                     ),
-                    if (_attachmentBytes != null) ...[
+                    if (_pendingImages.isNotEmpty) ...[
                       const SizedBox(height: 10),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Image.memory(
-                          _attachmentBytes!,
-                          height: 160,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
+                      Wrap(
+                        spacing: 10,
+                        runSpacing: 10,
+                        children: [
+                          for (var i = 0; i < _pendingImages.length; i++)
+                            _buildPendingScreenshotThumb(i),
+                        ],
                       ),
                     ],
                     const SizedBox(height: 10),

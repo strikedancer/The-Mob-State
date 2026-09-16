@@ -14327,7 +14327,12 @@ class AppLocalizationsNl extends AppLocalizations {
       'Bijv. order-id, schermnaam, land of korte context';
 
   @override
-  String get supportAddScreenshot => 'Screenshot toevoegen';
+  String get supportAddScreenshot => 'Screenshots toevoegen';
+
+  @override
+  String supportMaxScreenshots(int count) {
+    return 'Je kunt tot $count screenshots meesturen.';
+  }
 
   @override
   String get supportSubmit => 'Versturen';
@@ -18675,7 +18680,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicSupportTicketsHow =>
-      'Open het aparte menu-item `Support` om je tickets te bekijken of een nieuw ticket te maken.\nKies categorie (bug, vraag, feedback of overig), selecteer indien nodig het onderdeel en beschrijf je probleem zo concreet mogelijk.\nJe kunt optioneel een referentie toevoegen, zoals een order-id, schermnaam of korte context, plus een screenshot als dat helpt.\nNa verzending krijg je direct een ticketnummer en komt je ticket in je supportoverzicht te staan, waar support kan reageren en interne todo-items kan aanmaken.\nAls support antwoordt of de ticketstatus wijzigt, zie je dat direct terug in hetzelfde supportgesprek en kun je optioneel een pushmelding krijgen (indien notificaties actief zijn).\nHet menu-item Support toont een badge zodra er een nieuwe supportreactie of statusupdate op een ticket is sinds je laatste bezoek aan het supportoverzicht.\nSupport gebruikt statussen zoals nieuw, triage, in behandeling, wacht op speler, geblokkeerd en opgelost om je melding intern op te volgen.';
+      'Open het aparte menu-item `Support` om je tickets te bekijken of een nieuw ticket te maken.\nKies categorie (bug, vraag, feedback of overig), selecteer indien nodig het onderdeel en beschrijf je probleem zo concreet mogelijk.\nJe kunt optioneel een referentie toevoegen, zoals een order-id, schermnaam of korte context, plus tot 5 screenshots als dat helpt.\nNa verzending krijg je direct een ticketnummer en komt je ticket in je supportoverzicht te staan, waar support kan reageren en interne todo-items kan aanmaken.\nAls support antwoordt of de ticketstatus wijzigt, zie je dat direct terug in hetzelfde supportgesprek en kun je optioneel een pushmelding krijgen (indien notificaties actief zijn).\nHet menu-item Support toont een badge zodra er een nieuwe supportreactie of statusupdate op een ticket is sinds je laatste bezoek aan het supportoverzicht.\nSupport gebruikt statussen zoals nieuw, triage, in behandeling, wacht op speler, geblokkeerd en opgelost om je melding intern op te volgen.';
 
   @override
   String get helpTopicSupportTicketsTips =>

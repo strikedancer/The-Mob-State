@@ -14466,7 +14466,12 @@ class AppLocalizationsDe extends AppLocalizations {
       'Zum Beispiel Bestell-ID, Bildschirmname, Land oder kurzer Kontext';
 
   @override
-  String get supportAddScreenshot => 'Screenshot hinzufügen';
+  String get supportAddScreenshot => 'Screenshots hinzufügen';
+
+  @override
+  String supportMaxScreenshots(int count) {
+    return 'Sie können bis zu $count Screenshots anhängen.';
+  }
 
   @override
   String get supportSubmit => 'Einreichen';
@@ -18851,7 +18856,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicSupportTicketsHow =>
-      'Öffnen Sie den separaten Menüpunkt „Support“, um Ihre Tickets zu überprüfen oder ein neues zu erstellen. \nWählen Sie eine Kategorie (Fehler, Frage, Feedback oder anderes), wählen Sie bei Bedarf das zugehörige Modul aus und beschreiben Sie Ihr Problem so konkret wie möglich. \nSie können optional eine Referenz wie eine Bestell-ID, einen Bildschirmnamen oder einen kurzen Kontext sowie einen Screenshot hinzufügen, falls dies hilfreich ist. \nNach dem Absenden erhalten Sie sofort eine Ticketnummer und Ihr Ticket erscheint in Ihrer Support-Übersicht, wo der Support antworten und interne Aufgaben erstellen kann. \nWenn der Support antwortet oder sich der Ticketstatus ändert, sehen Sie dies direkt in derselben Support-Konversation und können optional eine Push-Benachrichtigung erhalten (sofern Benachrichtigungen aktiviert sind). \nDer Menüpunkt „Support“ zeigt ein Abzeichen an, sobald ein Ticket seit Ihrem letzten Besuch der Support-Übersicht eine neue Support-Antwort oder ein Status-Update erhält. \nDer Support verwendet Status wie „Neu“, „Triage“, „In Bearbeitung“, „Warten auf Spieler“, „Blockiert“ und „Gelöst“, um Ihren Bericht intern zu verfolgen.';
+      'Öffnen Sie den separaten Menüpunkt „Support“, um Ihre Tickets zu überprüfen oder ein neues zu erstellen. \nWählen Sie eine Kategorie (Fehler, Frage, Feedback oder anderes), wählen Sie bei Bedarf das zugehörige Modul aus und beschreiben Sie Ihr Problem so konkret wie möglich. \nSie können optional eine Referenz wie eine Bestell-ID, einen Bildschirmnamen oder einen kurzen Kontext sowie bis zu 5 Screenshots hinzufügen, falls dies hilfreich ist. \nNach dem Absenden erhalten Sie sofort eine Ticketnummer und Ihr Ticket erscheint in Ihrer Support-Übersicht, wo der Support antworten und interne Aufgaben erstellen kann. \nWenn der Support antwortet oder sich der Ticketstatus ändert, sehen Sie dies direkt in derselben Support-Konversation und können optional eine Push-Benachrichtigung erhalten (sofern Benachrichtigungen aktiviert sind). \nDer Menüpunkt „Support“ zeigt ein Abzeichen an, sobald ein Ticket seit Ihrem letzten Besuch der Support-Übersicht eine neue Support-Antwort oder ein Status-Update erhält. \nDer Support verwendet Status wie „Neu“, „Triage“, „In Bearbeitung“, „Warten auf Spieler“, „Blockiert“ und „Gelöst“, um Ihren Bericht intern zu verfolgen.';
 
   @override
   String get helpTopicSupportTicketsTips =>

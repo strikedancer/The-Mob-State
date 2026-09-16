@@ -3060,7 +3060,7 @@
   "supportFieldMessage": "Messaggio",
   "supportReferenceOptional": "Riferimento (facoltativo)",
   "supportReferenceHint": "Ad esempio ID ordine, nome visualizzato, paese o contesto breve",
-  "supportAddScreenshot": "Aggiungi schermata",
+  "supportAddScreenshot": "Aggiungi screenshot",
   "supportSubmit": "Invia",
   "supportLastMessagePrefix": "Scorsa:",
   "supportReferenceLabel": "Riferimento",
@@ -8386,7 +8386,7 @@
   "helpTopicSupportTicketsCategory": "Supporto",
   "helpTopicSupportTicketsTitle": "Rapporti e ticket",
   "helpTopicSupportTicketsSummary": "Segnala bug, domande o feedback tramite il sistema di ticket. Il supporto e gli amministratori possono rispondere, gestire il follow-up interno e inviare aggiornamenti tramite la conversazione di supporto stessa e notifiche push opzionali.",
-  "helpTopicSupportTicketsHow": "Apri la voce di menu separata \"Supporto\" per rivedere i tuoi ticket o crearne uno nuovo. \nScegli una categoria (bug, domanda, feedback o altro), seleziona il modulo correlato se necessario e descrivi il tuo problema nel modo più specifico possibile. \nFacoltativamente, puoi aggiungere un riferimento come un ID ordine, un nome visualizzato o un breve contesto, oltre a uno screenshot se ciò aiuta. \nDopo l'invio riceverai immediatamente un numero di ticket e il tuo ticket apparirà nella panoramica del supporto, dove il supporto può rispondere e creare attività interne da fare. \nQuando l'assistenza risponde o lo stato del ticket cambia, lo vedi direttamente all'interno della stessa conversazione di assistenza e puoi facoltativamente ricevere una notifica push (se le notifiche sono abilitate). \nLa voce di menu Supporto mostra un badge non appena un ticket riceve una nuova risposta di supporto o un aggiornamento di stato dall'ultima visita alla panoramica del supporto. \nIl supporto utilizza stati come nuovo, valutazione, in corso, in attesa del giocatore, bloccato e risolto per tenere traccia della segnalazione internamente.",
+  "helpTopicSupportTicketsHow": "Apri la voce di menu separata \"Supporto\" per rivedere i tuoi ticket o crearne uno nuovo. \nScegli una categoria (bug, domanda, feedback o altro), seleziona il modulo correlato se necessario e descrivi il tuo problema nel modo più specifico possibile. \nFacoltativamente, puoi aggiungere un riferimento come un ID ordine, un nome visualizzato o un breve contesto, oltre a un massimo di 5 screenshot, se ciò aiuta. \nDopo l'invio riceverai immediatamente un numero di ticket e il tuo ticket apparirà nella panoramica del supporto, dove il supporto può rispondere e creare attività interne da fare. \nQuando l'assistenza risponde o lo stato del ticket cambia, lo vedi direttamente all'interno della stessa conversazione di assistenza e puoi facoltativamente ricevere una notifica push (se le notifiche sono abilitate). \nLa voce di menu Supporto mostra un badge non appena un ticket riceve una nuova risposta di supporto o un aggiornamento di stato dall'ultima visita alla panoramica del supporto. \nIl supporto utilizza stati come nuovo, valutazione, in corso, in attesa del giocatore, bloccato e risolto per tenere traccia della segnalazione internamente.",
   "helpTopicSupportTicketsTips": "Includi sempre il tuo Paese, l'azione e il messaggio di errore esatto; questo accelera le correzioni per gli sviluppatori. \nUtilizza un ticket per tipo di problema in modo che l'elenco delle cose da fare e il follow-up rimangano chiari.",
   "helpTopicSettingsCategory": "Nucleo",
   "helpTopicSettingsTitle": "Impostazioni",
@@ -12712,5 +12712,13 @@
   "helpTopicModOpsTitle": "Mod e Ops",
   "helpTopicModOpsSummary": "Manuale per mod e operatori: rimuovi messaggi, disattiva l'audio dei giocatori, leggi i rapporti e gli stessi strumenti su Discord. I giocatori abituali premono a lungo un messaggio per segnalarlo.",
   "helpTopicModOpsHow": "Un super amministratore ti imposta su Mod o Op su Admin → Giocatori. Continui a giocare con lo stesso account. Nessuna seconda password. \nApri Social → Chat mondiale. Un chip Mod o Ops dorato si trova nell'intestazione. Gli altri giocatori vedono quel badge accanto al tuo nome, anche sulle tue bolle. \nPremi a lungo il messaggio di qualcun altro. Il menu include Rimuovi per tutti, Disattiva audio 15 minuti, Disattiva audio 1 ora, Attiva audio o Segnala. Non esiste un pulsante mobile del rigo: risiede in quel menu a pressione prolungata. \nPremendo a lungo le tue bolle verdi cancelli solo la tua linea (circa 10 minuti). Disattiva audio e Rimuovi per tutti non sono presenti nella tua bolla. \nIl flag nell'intestazione apre l'elenco dei report. Questi sono i messaggi segnalati dai giocatori. Gestiscili in chat: premi a lungo per eliminare o disattivare l'audio. \nMute per 15 minuti è un avvertimento. Muto per 1 ora se continua. Riattiva lo solleva. Un silenziamento attiva il gioco e Discord se l'account è collegato. \nNon puoi silenziare un altro Mod o Ops. Divieti, denaro, rango o permanenza VIP Super-amministratore. \nDiscord: collega Discord nelle Impostazioni. I post dei giochi mostrano [Ops] o [Mod] sul nome. Rispondi con !wis per eliminare nel gioco e su Discord. !mute name 15 o 60 mute. !unmute nome lo solleva. !Help elenca i comandi. \nSito amministratore admin.themobstate.com: accedi con il tuo account di gioco. Il mod vede solo la chat mondiale. Ops vede la chat mondiale, i biglietti e i giocatori (leggi). Nessuna configurazione, nessun pulsante di divieto, nessuno strumento di pagamento. \nGiocatori abituali: premi a lungo il messaggio di qualcun altro e scegli Segnala. Questo è l'unico modo per inviarlo allo staff.",
-  "helpTopicModOpsTips": "Leggi prima i rapporti, quindi elimina o disattiva solo ciò che non appartiene alla lobby. \nDigita!Help su Discord se dimentichi i comandi. La discordia deve essere collegata nel gioco. \nQuesto non è un account da poliziotto: giochi comunque, tieni solo in riga la chat mondiale."
+  "helpTopicModOpsTips": "Leggi prima i rapporti, quindi elimina o disattiva solo ciò che non appartiene alla lobby. \nDigita!Help su Discord se dimentichi i comandi. La discordia deve essere collegata nel gioco. \nQuesto non è un account da poliziotto: giochi comunque, tieni solo in riga la chat mondiale.",
+  "supportMaxScreenshots": "Puoi allegare fino a {count} screenshot.",
+  "@supportMaxScreenshots": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

@@ -14455,7 +14455,12 @@ class AppLocalizationsFr extends AppLocalizations {
       'Par exemple, l\'identifiant de la commande, le nom d\'écran, le pays ou un bref contexte';
 
   @override
-  String get supportAddScreenshot => 'Ajouter une capture d\'écran';
+  String get supportAddScreenshot => 'Ajouter des captures d\'écran';
+
+  @override
+  String supportMaxScreenshots(int count) {
+    return 'Vous pouvez joindre jusqu\'à $count captures d\'écran.';
+  }
 
   @override
   String get supportSubmit => 'Soumettre';
@@ -18846,7 +18851,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicSupportTicketsHow =>
-      'Ouvrez l\'élément de menu « Support » distinct pour examiner vos tickets ou en créer un nouveau. \nChoisissez une catégorie (bug, question, feedback ou autre), sélectionnez le module associé si nécessaire et décrivez votre problématique le plus précisément possible. \nVous pouvez éventuellement ajouter une référence telle qu\'un identifiant de commande, un nom d\'écran ou un bref contexte, ainsi qu\'une capture d\'écran si cela peut vous aider. \nAprès la soumission, vous recevez immédiatement un numéro de ticket et votre ticket apparaît dans votre aperçu de l\'assistance, où l\'assistance peut répondre et créer des tâches internes. \nLorsque l\'assistance répond ou que le statut du ticket change, vous le voyez directement dans la même conversation d\'assistance et pouvez éventuellement recevoir une notification push (si les notifications sont activées). \nL\'élément de menu Support affiche un badge dès qu\'un ticket reçoit une nouvelle réponse de support ou une mise à jour de statut depuis votre dernière visite à l\'aperçu du support. \nLe support utilise des statuts tels que nouveau, triage, en cours, en attente de joueur, bloqué et résolu pour suivre votre rapport en interne.';
+      'Ouvrez l\'élément de menu « Support » séparé pour examiner vos tickets ou en créer un nouveau. \nChoisissez une catégorie (bug, question, feedback ou autre), sélectionnez le module associé si nécessaire et décrivez votre problématique le plus précisément possible. \nVous pouvez éventuellement ajouter une référence telle qu\'un identifiant de commande, un nom d\'écran ou un bref contexte, ainsi que jusqu\'à 5 captures d\'écran si cela peut vous aider. \nAprès la soumission, vous recevez immédiatement un numéro de ticket et votre ticket apparaît dans votre aperçu de l\'assistance, où l\'assistance peut répondre et créer des tâches internes. \nLorsque l\'assistance répond ou que le statut du ticket change, vous le voyez directement dans la même conversation d\'assistance et pouvez éventuellement recevoir une notification push (si les notifications sont activées). \nL\'élément de menu Support affiche un badge dès qu\'un ticket reçoit une nouvelle réponse d\'assistance ou une mise à jour de statut depuis votre dernière visite à l\'aperçu du support. \nLe support utilise des statuts tels que nouveau, triage, en cours, en attente de joueur, bloqué et résolu pour suivre votre rapport en interne.';
 
   @override
   String get helpTopicSupportTicketsTips =>

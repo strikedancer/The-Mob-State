@@ -14376,7 +14376,12 @@ class AppLocalizationsPl extends AppLocalizations {
       'Na przykład identyfikator zamówienia, nazwa ekranowa, kraj lub krótki kontekst';
 
   @override
-  String get supportAddScreenshot => 'Dodaj zrzut ekranu';
+  String get supportAddScreenshot => 'Dodaj zrzuty ekranu';
+
+  @override
+  String supportMaxScreenshots(int count) {
+    return 'Możesz dołączyć maksymalnie $count zrzutów ekranu.';
+  }
 
   @override
   String get supportSubmit => 'Składać';
@@ -18761,7 +18766,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicSupportTicketsHow =>
-      'Otwórz osobną pozycję menu „Wsparcie”, aby sprawdzić swoje zgłoszenia lub utworzyć nowe. \nWybierz kategorię (błąd, pytanie, opinia lub inna), w razie potrzeby wybierz powiązany moduł i opisz swój problem tak szczegółowo, jak to możliwe. \nOpcjonalnie możesz dodać odniesienie, takie jak identyfikator zamówienia, nazwa ekranowa lub krótki kontekst, a także zrzut ekranu, jeśli to pomoże. \nPo przesłaniu natychmiast otrzymasz numer zgłoszenia, a Twoje zgłoszenie pojawi się w przeglądzie wsparcia, gdzie zespół wsparcia może odpowiedzieć i utworzyć wewnętrzne zadania do wykonania. \nKiedy odpowiedzi na pomoc techniczną lub status zgłoszenia się zmienią, zobaczysz to bezpośrednio w tej samej rozmowie z pomocą techniczną i opcjonalnie możesz otrzymać powiadomienie push (jeśli powiadomienia są włączone). \nPozycja menu Wsparcie wyświetla plakietkę, gdy tylko zgłoszenie otrzyma nową odpowiedź pomocy technicznej lub aktualizację statusu od Twojej ostatniej wizyty w przeglądzie pomocy technicznej. \nWsparcie wykorzystuje statusy takie jak nowy, selekcja, w toku, oczekiwanie na gracza, zablokowany i rozwiązany, aby wewnętrznie śledzić Twoje zgłoszenie.';
+      'Otwórz osobną pozycję menu „Wsparcie”, aby sprawdzić swoje zgłoszenia lub utworzyć nowe. \nWybierz kategorię (błąd, pytanie, opinia lub inna), w razie potrzeby wybierz powiązany moduł i opisz swój problem tak szczegółowo, jak to możliwe. \nOpcjonalnie możesz dodać odniesienie, takie jak identyfikator zamówienia, nazwa ekranowa lub krótki kontekst, a także maksymalnie 5 zrzutów ekranu, jeśli to pomoże. \nPo przesłaniu natychmiast otrzymasz numer zgłoszenia, a Twoje zgłoszenie pojawi się w przeglądzie wsparcia, gdzie zespół wsparcia może odpowiedzieć i utworzyć wewnętrzne zadania do wykonania. \nKiedy odpowiedzi na pomoc techniczną lub status zgłoszenia się zmienią, zobaczysz to bezpośrednio w tej samej rozmowie z pomocą techniczną i opcjonalnie możesz otrzymać powiadomienie push (jeśli powiadomienia są włączone). \nPozycja menu Wsparcie wyświetla plakietkę, gdy tylko zgłoszenie otrzyma nową odpowiedź pomocy technicznej lub aktualizację statusu od Twojej ostatniej wizyty w przeglądzie pomocy technicznej. \nWsparcie wykorzystuje statusy takie jak nowy, selekcja, w toku, oczekiwanie na gracza, zablokowany i rozwiązany, aby wewnętrznie śledzić Twoje zgłoszenie.';
 
   @override
   String get helpTopicSupportTicketsTips =>

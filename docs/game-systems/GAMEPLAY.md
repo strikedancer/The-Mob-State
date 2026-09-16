@@ -1263,12 +1263,12 @@ Selfie→portretgeneratie op de API hangt af van een geldige `LEONARDO_API_KEY` 
 
 ## Support & Community
 
-In-game **Support**-tickets: categorie-labels komen uit ARB (`supportCategoryBug` e.d.). **Bug** blijft de softwareterm (niet vertalen als insect: NL *Beestje*, DE *Insekt*, IT *Insetto*).
+In-game **Support**-tickets: categorie-labels komen uit ARB (`supportCategoryBug` e.d.). **Bug** blijft de softwareterm (niet vertalen als insect: NL *Beestje*, DE *Insekt*, IT *Insetto*). Bij een nieuw ticket kun je tot **5 screenshots** meesturen.
 
 Voor vragen, bugs, of suggesties:
 - In-game **Support** (tickets)
 - Discord-community (invite via `DISCORD_INVITE_URL`; knop op landing, Help en Instellingen). Wie niet via Discord is ingelogd kan Discord later **koppelen in Instellingen** of via de wekelijkse popup; de eerste koppeling op een bestaand account geeft **€5.000**. Patch notes staan in `#updates`.
 - Wiki / Almanak: `https://wiki.themobstate.com`
 
-**Laatst bijgewerkt**: 14 september 2026
+**Laatst bijgewerkt**: 16 september 2026
 

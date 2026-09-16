@@ -301,7 +301,7 @@ export const supportTicketService = {
       attachments?: TicketAttachmentInput[];
     }
   ) {
-    const attachments = payload.attachments || [];
+    const attachments = (payload.attachments || []).slice(0, 5);
     await prisma.$executeRawUnsafe(
       `
       INSERT INTO support_tickets (playerId, category, subject, status, priority, sourceModule, referenceCode, metadataJson, lastPlayerMessageAt)

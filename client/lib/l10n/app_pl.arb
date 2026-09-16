@@ -3060,7 +3060,7 @@
   "supportFieldMessage": "Wiadomość",
   "supportReferenceOptional": "Odniesienie (opcjonalnie)",
   "supportReferenceHint": "Na przykład identyfikator zamówienia, nazwa ekranowa, kraj lub krótki kontekst",
-  "supportAddScreenshot": "Dodaj zrzut ekranu",
+  "supportAddScreenshot": "Dodaj zrzuty ekranu",
   "supportSubmit": "Składać",
   "supportLastMessagePrefix": "Ostatni:",
   "supportReferenceLabel": "Odniesienie",
@@ -8386,7 +8386,7 @@
   "helpTopicSupportTicketsCategory": "Wsparcie",
   "helpTopicSupportTicketsTitle": "Raporty i bilety",
   "helpTopicSupportTicketsSummary": "Zgłaszaj błędy, pytania lub opinie za pośrednictwem systemu zgłoszeń. Wsparcie i administratorzy mogą odpowiadać, zarządzać wewnętrznymi działaniami następczymi i wysyłać aktualizacje za pośrednictwem samej rozmowy z pomocą techniczną i opcjonalnych powiadomień push.",
-  "helpTopicSupportTicketsHow": "Otwórz osobną pozycję menu „Wsparcie”, aby sprawdzić swoje zgłoszenia lub utworzyć nowe. \nWybierz kategorię (błąd, pytanie, opinia lub inna), w razie potrzeby wybierz powiązany moduł i opisz swój problem tak szczegółowo, jak to możliwe. \nOpcjonalnie możesz dodać odniesienie, takie jak identyfikator zamówienia, nazwa ekranowa lub krótki kontekst, a także zrzut ekranu, jeśli to pomoże. \nPo przesłaniu natychmiast otrzymasz numer zgłoszenia, a Twoje zgłoszenie pojawi się w przeglądzie wsparcia, gdzie zespół wsparcia może odpowiedzieć i utworzyć wewnętrzne zadania do wykonania. \nKiedy odpowiedzi na pomoc techniczną lub status zgłoszenia się zmienią, zobaczysz to bezpośrednio w tej samej rozmowie z pomocą techniczną i opcjonalnie możesz otrzymać powiadomienie push (jeśli powiadomienia są włączone). \nPozycja menu Wsparcie wyświetla plakietkę, gdy tylko zgłoszenie otrzyma nową odpowiedź pomocy technicznej lub aktualizację statusu od Twojej ostatniej wizyty w przeglądzie pomocy technicznej. \nWsparcie wykorzystuje statusy takie jak nowy, selekcja, w toku, oczekiwanie na gracza, zablokowany i rozwiązany, aby wewnętrznie śledzić Twoje zgłoszenie.",
+  "helpTopicSupportTicketsHow": "Otwórz osobną pozycję menu „Wsparcie”, aby sprawdzić swoje zgłoszenia lub utworzyć nowe. \nWybierz kategorię (błąd, pytanie, opinia lub inna), w razie potrzeby wybierz powiązany moduł i opisz swój problem tak szczegółowo, jak to możliwe. \nOpcjonalnie możesz dodać odniesienie, takie jak identyfikator zamówienia, nazwa ekranowa lub krótki kontekst, a także maksymalnie 5 zrzutów ekranu, jeśli to pomoże. \nPo przesłaniu natychmiast otrzymasz numer zgłoszenia, a Twoje zgłoszenie pojawi się w przeglądzie wsparcia, gdzie zespół wsparcia może odpowiedzieć i utworzyć wewnętrzne zadania do wykonania. \nKiedy odpowiedzi na pomoc techniczną lub status zgłoszenia się zmienią, zobaczysz to bezpośrednio w tej samej rozmowie z pomocą techniczną i opcjonalnie możesz otrzymać powiadomienie push (jeśli powiadomienia są włączone). \nPozycja menu Wsparcie wyświetla plakietkę, gdy tylko zgłoszenie otrzyma nową odpowiedź pomocy technicznej lub aktualizację statusu od Twojej ostatniej wizyty w przeglądzie pomocy technicznej. \nWsparcie wykorzystuje statusy takie jak nowy, selekcja, w toku, oczekiwanie na gracza, zablokowany i rozwiązany, aby wewnętrznie śledzić Twoje zgłoszenie.",
   "helpTopicSupportTicketsTips": "Zawsze podawaj swój kraj, działanie i dokładny komunikat o błędzie; przyspiesza to wprowadzanie poprawek dla programistów. \nUżyj jednego biletu na każdy rodzaj problemu, aby lista rzeczy do zrobienia i działania następcze pozostały przejrzyste.",
   "helpTopicSettingsCategory": "Rdzeń",
   "helpTopicSettingsTitle": "Ustawienia",
@@ -12712,5 +12712,13 @@
   "helpTopicModOpsTitle": "Mod i Ops",
   "helpTopicModOpsSummary": "Podręcznik modów i operacji: usuwaj wiadomości, wyciszaj graczy, czytaj raporty i korzystaj z tych samych narzędzi na Discordzie. Zwykli gracze długo naciskają wiadomość, aby ją zgłosić.",
   "helpTopicModOpsHow": "Superadministrator ustawia Cię w trybie Mod lub Ops w zakładce Admin → Gracze. Grasz dalej na tym samym koncie. Brak drugiego hasła. \nOtwórz Społeczności → Czat światowy. W nagłówku znajduje się złoty chip Mod lub Ops. Inni gracze widzą tę odznakę obok Twojego imienia i nazwiska, także na Twoich własnych bąbelkach. \nNaciśnij i przytrzymaj wiadomość innej osoby. W menu znajdują się opcje Usuń dla wszystkich, Wycisz na 15 minut, Wycisz na 1 godzinę, Wyłącz wyciszenie lub Zgłoś. Nie ma pływającego przycisku personelu: znajduje się on w menu, które można nacisnąć długo. \nDługie naciśnięcie własnych zielonych bąbelków powoduje jedynie usunięcie linii (około 10 minut). Wyciszanie i usuwanie dla wszystkich nie są dostępne w Twojej własnej bańce. \nFlaga w nagłówku otwiera listę raportów. To są wiadomości, które zgłosili gracze. Obsługuj je na czacie: naciśnij długo, aby usunąć lub wyciszyć. \nWyciszenie na 15 minut oznacza ostrzeżenie. Wyciszenie na 1 godzinę, jeśli będzie się powtarzać. Wyłącz wyciszenie podnosi to. Wyciszenie powoduje wyłączenie gry i Discorda, jeśli konto jest połączone. \nNie możesz wyciszyć innego Modu ani Opsa. Bany, pieniądze, ranga lub pobyt VIP Super-administrator. \nDiscord: połącz Discord w Ustawieniach. W postach z grami w nazwie znajduje się [Ops] lub [Mod]. Odpowiedz za pomocą !wis, aby usunąć w grze i na Discordzie. !mute nazwa 15 lub 60 wyciszeń. !unmute nazwa podnosi to. !hulp wyświetla listę poleceń. \nStrona administracyjna admin.themobstate.com: zaloguj się na swoje konto gry. Mod widzi tylko czat światowy. Ops widzi czat światowy, bilety i graczy (czytaj). Bez konfiguracji, bez przycisku bana, bez narzędzi finansowych. \nZwykli gracze: naciśnij i przytrzymaj wiadomość od innej osoby i wybierz Zgłoś. To jedyny sposób, aby wysłać go do personelu.",
-  "helpTopicModOpsTips": "Najpierw przeczytaj raporty, a następnie usuń lub wycisz tylko te, które nie należą do lobby. \nJeśli zapomnisz poleceń, wpisz !hulp na Discordzie. Discord musi być powiązany w grze. \nTo nie jest konto policjanta: nadal grasz, tylko utrzymujesz kontakt z czatem światowym."
+  "helpTopicModOpsTips": "Najpierw przeczytaj raporty, a następnie usuń lub wycisz tylko te, które nie należą do lobby. \nJeśli zapomnisz poleceń, wpisz !hulp na Discordzie. Discord musi być powiązany w grze. \nTo nie jest konto policjanta: nadal grasz, tylko utrzymujesz kontakt z czatem światowym.",
+  "supportMaxScreenshots": "Możesz dołączyć maksymalnie {count} zrzutów ekranu.",
+  "@supportMaxScreenshots": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

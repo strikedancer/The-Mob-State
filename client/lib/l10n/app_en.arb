@@ -8709,7 +8709,15 @@
   "supportFieldMessage": "Message",
   "supportReferenceOptional": "Reference (optional)",
   "supportReferenceHint": "For example order id, screen name, country or short context",
-  "supportAddScreenshot": "Add screenshot",
+  "supportAddScreenshot": "Add screenshots",
+  "supportMaxScreenshots": "You can attach up to {count} screenshots.",
+  "@supportMaxScreenshots": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "supportSubmit": "Submit",
   "supportLastMessagePrefix": "Last: ",
   "supportReferenceLabel": "Reference",
@@ -11855,7 +11863,7 @@
   "helpTopicSupportTicketsCategory": "Support",
   "helpTopicSupportTicketsTitle": "Reports & Tickets",
   "helpTopicSupportTicketsSummary": "Report bugs, questions or feedback via the ticket system. Support and admins can reply, manage internal follow-up and send updates back through the support conversation itself and optional push notifications.",
-  "helpTopicSupportTicketsHow": "Open the separate `Support` menu item to review your tickets or create a new one.\nChoose a category (bug, question, feedback or other), select the related module if needed, and describe your issue as specifically as possible.\nYou can optionally add a reference such as an order id, screen name or short context, plus a screenshot if that helps.\nAfter submission you immediately receive a ticket number and your ticket appears in your support overview, where support can reply and create internal todo tasks.\nWhen support replies or the ticket status changes, you see that directly inside the same support conversation and can optionally receive a push notification (if notifications are enabled).\nThe Support menu item shows a badge as soon as a ticket gets a new support reply or status update since your last visit to the support overview.\nSupport uses statuses such as new, triage, in progress, waiting for player, blocked and resolved to track your report internally.",
+  "helpTopicSupportTicketsHow": "Open the separate `Support` menu item to review your tickets or create a new one.\nChoose a category (bug, question, feedback or other), select the related module if needed, and describe your issue as specifically as possible.\nYou can optionally add a reference such as an order id, screen name or short context, plus up to 5 screenshots if that helps.\nAfter submission you immediately receive a ticket number and your ticket appears in your support overview, where support can reply and create internal todo tasks.\nWhen support replies or the ticket status changes, you see that directly inside the same support conversation and can optionally receive a push notification (if notifications are enabled).\nThe Support menu item shows a badge as soon as a ticket gets a new support reply or status update since your last visit to the support overview.\nSupport uses statuses such as new, triage, in progress, waiting for player, blocked and resolved to track your report internally.",
   "helpTopicSupportTicketsTips": "Always include your country, action and exact error message; this speeds up fixes for developers.\nUse one ticket per issue type so the todo list and follow-up stay clear.",
   "helpTopicSettingsCategory": "Core",
   "helpTopicSettingsTitle": "Settings",

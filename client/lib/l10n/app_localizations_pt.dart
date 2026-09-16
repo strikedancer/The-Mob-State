@@ -14389,7 +14389,12 @@ class AppLocalizationsPt extends AppLocalizations {
       'Por exemplo, ID do pedido, nome de tela, país ou contexto curto';
 
   @override
-  String get supportAddScreenshot => 'Adicionar captura de tela';
+  String get supportAddScreenshot => 'Adicionar capturas de tela';
+
+  @override
+  String supportMaxScreenshots(int count) {
+    return 'Você pode anexar até $count capturas de tela.';
+  }
 
   @override
   String get supportSubmit => 'Enviar';
@@ -18761,7 +18766,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicSupportTicketsHow =>
-      'Abra o item de menu separado `Suporte` para revisar seus tickets ou criar um novo. \nEscolha uma categoria (bug, pergunta, feedback ou outro), selecione o módulo relacionado, se necessário, e descreva seu problema da forma mais específica possível. \nOpcionalmente, você pode adicionar uma referência, como ID do pedido, nome de tela ou contexto curto, além de uma captura de tela, se isso ajudar. \nApós o envio, você recebe imediatamente um número de ticket e seu ticket aparece na visão geral do suporte, onde o suporte pode responder e criar tarefas internas. \nQuando as respostas do suporte ou o status do ticket mudam, você vê isso diretamente na mesma conversa de suporte e pode, opcionalmente, receber uma notificação push (se as notificações estiverem habilitadas). \nO item de menu Suporte mostra um selo assim que um ticket recebe uma nova resposta de suporte ou atualização de status desde sua última visita à visão geral do suporte. \nO suporte utiliza status como novo, triagem, em andamento, aguardando jogador, bloqueado e resolvido para rastrear seu relato internamente.';
+      'Abra o item de menu separado `Suporte` para revisar seus tickets ou criar um novo. \nEscolha uma categoria (bug, pergunta, feedback ou outro), selecione o módulo relacionado, se necessário, e descreva seu problema da forma mais específica possível. \nOpcionalmente, você pode adicionar uma referência, como ID do pedido, nome de tela ou contexto curto, além de até 5 capturas de tela, se isso ajudar. \nApós o envio, você recebe imediatamente um número de ticket e seu ticket aparece na visão geral do suporte, onde o suporte pode responder e criar tarefas internas. \nQuando as respostas do suporte ou o status do ticket mudam, você vê isso diretamente na mesma conversa de suporte e pode, opcionalmente, receber uma notificação push (se as notificações estiverem habilitadas). \nO item de menu Suporte mostra um selo assim que um ticket recebe uma nova resposta de suporte ou atualização de status desde sua última visita à visão geral do suporte. \nO suporte utiliza status como novo, triagem, em andamento, aguardando jogador, bloqueado e resolvido para rastrear seu relato internamente.';
 
   @override
   String get helpTopicSupportTicketsTips =>

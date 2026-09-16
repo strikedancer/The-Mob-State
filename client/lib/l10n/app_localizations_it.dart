@@ -14439,7 +14439,12 @@ class AppLocalizationsIt extends AppLocalizations {
       'Ad esempio ID ordine, nome visualizzato, paese o contesto breve';
 
   @override
-  String get supportAddScreenshot => 'Aggiungi schermata';
+  String get supportAddScreenshot => 'Aggiungi screenshot';
+
+  @override
+  String supportMaxScreenshots(int count) {
+    return 'Puoi allegare fino a $count screenshot.';
+  }
 
   @override
   String get supportSubmit => 'Invia';
@@ -18820,7 +18825,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicSupportTicketsHow =>
-      'Apri la voce di menu separata \"Supporto\" per rivedere i tuoi ticket o crearne uno nuovo. \nScegli una categoria (bug, domanda, feedback o altro), seleziona il modulo correlato se necessario e descrivi il tuo problema nel modo più specifico possibile. \nFacoltativamente, puoi aggiungere un riferimento come un ID ordine, un nome visualizzato o un breve contesto, oltre a uno screenshot se ciò aiuta. \nDopo l\'invio riceverai immediatamente un numero di ticket e il tuo ticket apparirà nella panoramica del supporto, dove il supporto può rispondere e creare attività interne da fare. \nQuando l\'assistenza risponde o lo stato del ticket cambia, lo vedi direttamente all\'interno della stessa conversazione di assistenza e puoi facoltativamente ricevere una notifica push (se le notifiche sono abilitate). \nLa voce di menu Supporto mostra un badge non appena un ticket riceve una nuova risposta di supporto o un aggiornamento di stato dall\'ultima visita alla panoramica del supporto. \nIl supporto utilizza stati come nuovo, valutazione, in corso, in attesa del giocatore, bloccato e risolto per tenere traccia della segnalazione internamente.';
+      'Apri la voce di menu separata \"Supporto\" per rivedere i tuoi ticket o crearne uno nuovo. \nScegli una categoria (bug, domanda, feedback o altro), seleziona il modulo correlato se necessario e descrivi il tuo problema nel modo più specifico possibile. \nFacoltativamente, puoi aggiungere un riferimento come un ID ordine, un nome visualizzato o un breve contesto, oltre a un massimo di 5 screenshot, se ciò aiuta. \nDopo l\'invio riceverai immediatamente un numero di ticket e il tuo ticket apparirà nella panoramica del supporto, dove il supporto può rispondere e creare attività interne da fare. \nQuando l\'assistenza risponde o lo stato del ticket cambia, lo vedi direttamente all\'interno della stessa conversazione di assistenza e puoi facoltativamente ricevere una notifica push (se le notifiche sono abilitate). \nLa voce di menu Supporto mostra un badge non appena un ticket riceve una nuova risposta di supporto o un aggiornamento di stato dall\'ultima visita alla panoramica del supporto. \nIl supporto utilizza stati come nuovo, valutazione, in corso, in attesa del giocatore, bloccato e risolto per tenere traccia della segnalazione internamente.';
 
   @override
   String get helpTopicSupportTicketsTips =>

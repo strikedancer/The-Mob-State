@@ -25023,8 +25023,14 @@ abstract class AppLocalizations {
   /// No description provided for @supportAddScreenshot.
   ///
   /// In en, this message translates to:
-  /// **'Add screenshot'**
+  /// **'Add screenshots'**
   String get supportAddScreenshot;
+
+  /// No description provided for @supportMaxScreenshots.
+  ///
+  /// In en, this message translates to:
+  /// **'You can attach up to {count} screenshots.'**
+  String supportMaxScreenshots(int count);
 
   /// No description provided for @supportSubmit.
   ///
@@ -32094,7 +32100,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicSupportTicketsHow.
   ///
   /// In en, this message translates to:
-  /// **'Open the separate `Support` menu item to review your tickets or create a new one.\nChoose a category (bug, question, feedback or other), select the related module if needed, and describe your issue as specifically as possible.\nYou can optionally add a reference such as an order id, screen name or short context, plus a screenshot if that helps.\nAfter submission you immediately receive a ticket number and your ticket appears in your support overview, where support can reply and create internal todo tasks.\nWhen support replies or the ticket status changes, you see that directly inside the same support conversation and can optionally receive a push notification (if notifications are enabled).\nThe Support menu item shows a badge as soon as a ticket gets a new support reply or status update since your last visit to the support overview.\nSupport uses statuses such as new, triage, in progress, waiting for player, blocked and resolved to track your report internally.'**
+  /// **'Open the separate `Support` menu item to review your tickets or create a new one.\nChoose a category (bug, question, feedback or other), select the related module if needed, and describe your issue as specifically as possible.\nYou can optionally add a reference such as an order id, screen name or short context, plus up to 5 screenshots if that helps.\nAfter submission you immediately receive a ticket number and your ticket appears in your support overview, where support can reply and create internal todo tasks.\nWhen support replies or the ticket status changes, you see that directly inside the same support conversation and can optionally receive a push notification (if notifications are enabled).\nThe Support menu item shows a badge as soon as a ticket gets a new support reply or status update since your last visit to the support overview.\nSupport uses statuses such as new, triage, in progress, waiting for player, blocked and resolved to track your report internally.'**
   String get helpTopicSupportTicketsHow;
 
   /// No description provided for @helpTopicSupportTicketsTips.

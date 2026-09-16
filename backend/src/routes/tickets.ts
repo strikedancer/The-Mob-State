@@ -1,13 +1,14 @@
-import { Router, Response } from 'express';
+import { Router, Response, NextFunction } from 'express';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
 import { z } from 'zod';
 import multer from 'multer';
 import { supportTicketService } from '../services/supportTicketService';
 
 const router = Router();
+const MAX_SUPPORT_ATTACHMENTS = 5;
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 5 * 1024 * 1024 },
+  limits: { fileSize: 5 * 1024 * 1024, files: MAX_SUPPORT_ATTACHMENTS },
   fileFilter: (_req, file, cb) => {
     cb(null, file.mimetype.startsWith('image/'));
   },
@@ -33,7 +34,14 @@ router.get('/my', authenticate, async (req: AuthRequest, res: Response) => {
   return res.json({ event: 'tickets.list', params: { tickets } });
 });
 
-router.post('/', authenticate, upload.single('attachment'), async (req: AuthRequest, res: Response) => {
+router.post('/', authenticate, (req: AuthRequest, res: Response, next: NextFunction) => {
+  upload.array('attachment', MAX_SUPPORT_ATTACHMENTS)(req, res, (err) => {
+    if (err) {
+      return res.status(400).json({ event: 'tickets.invalid_attachment', params: {} });
+    }
+    return next();
+  });
+}, async (req: AuthRequest, res: Response) => {
   const playerId = req.player!.id;
   const parsed = createTicketSchema.safeParse(req.body);
   if (!parsed.success) {
@@ -41,14 +49,13 @@ router.post('/', authenticate, upload.single('attachment'), async (req: AuthRequ
   }
 
   const { category, subject, message, sourceModule, referenceCode, clientPlatform, appLocale } = parsed.data;
-  const attachment = req.file
-    ? [{
-        originalName: req.file.originalname,
-        mimeType: req.file.mimetype,
-        fileSize: req.file.size,
-        data: req.file.buffer,
-      }]
-    : [];
+  const uploaded = Array.isArray(req.files) ? req.files : [];
+  const attachments = uploaded.slice(0, MAX_SUPPORT_ATTACHMENTS).map((file) => ({
+    originalName: file.originalname,
+    mimeType: file.mimetype,
+    fileSize: file.size,
+    data: file.buffer,
+  }));
 
   const ticketId = await supportTicketService.createTicket(playerId, {
     category,
@@ -59,9 +66,10 @@ router.post('/', authenticate, upload.single('attachment'), async (req: AuthRequ
     metadataJson: JSON.stringify({
       clientPlatform: clientPlatform || req.get('user-agent') || null,
       appLocale: appLocale || null,
-      hasAttachment: attachment.length > 0,
+      hasAttachment: attachments.length > 0,
+      attachmentCount: attachments.length,
     }),
-    attachments: attachment,
+    attachments,
   });
   return res.status(201).json({ event: 'tickets.created', params: { ticketId } });
 });
