@@ -18148,7 +18148,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicFriendsTips =>
-      'Fügen Sie Freunde hinzu, die Ihren Spielstil teilen: Raubüberfallpartner, Händlernetzwerke oder Kriminalitätsunterstützung. \nVerwenden Sie den Link „Teilen“ für Facebook, Nachrichten oder andere Chats – Facebook gibt uns Ihre Freundesliste nicht weiter. \nEin Freund, der einen Gefängnisausbruch durchführt, erhält bei Erfolg eine Belohnung von 500 bis 2.000 €. Vereinbaren Sie dies für Notfälle.';
+      'Fügen Sie Freunde hinzu, die Ihren Spielstil teilen: Raubüberfallpartner, Händlernetzwerke oder Kriminalitätsunterstützung. \nVerwenden Sie den Link „Teilen“ für Facebook, Nachrichten oder andere Chats – Facebook gibt uns Ihre Freundesliste nicht weiter. \nEin Freund, der dich ausbricht oder freikauft, erhält bei Erfolg +15 Ruf. Vereinbaren Sie dies für Notfälle.';
 
   @override
   String get helpTopicMessagesCategory => 'Sozial';

@@ -18117,7 +18117,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicFriendsTips =>
-      'Aggiungi amici che condividono il tuo stile di gioco: partner nelle rapine, reti di commercianti o supporto al crimine. \nUtilizza il collegamento Condividi per Facebook, messaggi o qualsiasi chat: Facebook non ci fornisce il tuo elenco di amici. \nUn amico che esegue una fuga di prigione guadagna una ricompensa di € 500-€ 2.000 in caso di successo. Organizzalo per le emergenze.';
+      'Aggiungi amici che condividono il tuo stile di gioco: partner nelle rapine, reti di commercianti o supporto al crimine. \nUtilizza il collegamento Condividi per Facebook, messaggi o qualsiasi chat: Facebook non ci fornisce il tuo elenco di amici. \nUn amico che ti fa evadere o paga la cauzione guadagna +15 reputazione. Organizzalo per le emergenze.';
 
   @override
   String get helpTopicMessagesCategory => 'Sociale';

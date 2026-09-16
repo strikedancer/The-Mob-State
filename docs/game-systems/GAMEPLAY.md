@@ -247,7 +247,7 @@ Voorbeelden:
 - **Success chance**: 30-50% (afhankelijk van helper rank)
 - **Bij succes**: 
   - Target vrij
-  - Helper â‚¬500-â‚¬2,000 reward
+  - Helper +15 reputatie (uitbraak of uitkopen)
 - **Bij falen**:
   - Helper gaat ook naar jail (30-60 minuten)
   - Target blijft in jail

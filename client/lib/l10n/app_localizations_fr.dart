@@ -18143,7 +18143,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicFriendsTips =>
-      'Ajoutez des amis qui partagent votre style de jeu : partenaires de braquage, réseaux de commerçants ou soutien au crime. \nUtilisez le lien Partager pour Facebook, les messages ou tout autre chat – Facebook ne nous donne pas votre liste d\'amis. \nUn ami qui réussit une évasion de prison gagne entre 500 et 2 000 € de récompense. Organisez-le en cas d\'urgence.';
+      'Ajoutez des amis qui partagent votre style de jeu : partenaires de braquage, réseaux de commerçants ou soutien au crime. \nUtilisez le lien Partager pour Facebook, les messages ou tout autre chat – Facebook ne nous donne pas votre liste d\'amis. \nUn ami qui vous fait évader ou paie votre caution gagne +15 de réputation. Organisez-le en cas d\'urgence.';
 
   @override
   String get helpTopicMessagesCategory => 'Sociale';

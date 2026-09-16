@@ -30,6 +30,7 @@ import {
 } from '../config/supportedLanguages';
 import { getPublicEventChipShowcase } from '../services/eventItemService';
 import { crewMissionService } from '../services/crewMissionService';
+import { applyReputationAction } from '../services/reputationService';
 
 function emptyCrewWarHub() {
   return {
@@ -556,7 +557,13 @@ router.post('/jailbreak/:targetId', authenticate, async (req: AuthRequest, res: 
     await markPrisonActionCooldown(rescuerId, 'prison.cooldown.jailbreak');
 
     let newlyUnlockedAchievements: any[] = [];
+    let newReputation: number | undefined;
     if (result.success) {
+      try {
+        newReputation = await applyReputationAction(rescuerId, 'player_helped', true);
+      } catch (err) {
+        console.error('[Reputation] Error after jailbreak:', err);
+      }
       try {
         const achievementResults = await checkAndUnlockAchievements(rescuerId);
         newlyUnlockedAchievements = achievementResults.map((r) =>
@@ -580,6 +587,7 @@ router.post('/jailbreak/:targetId', authenticate, async (req: AuthRequest, res: 
         rescuerCaught: result.rescuerCaught,
         rescuerJailTime: result.rescuerJailTime,
         message: result.message,
+        reputation: newReputation,
       },
       newlyUnlockedAchievements,
     });
@@ -730,6 +738,12 @@ router.post('/prison/buyout/:targetId', authenticate, async (req: AuthRequest, r
     await markPrisonActionCooldown(buyerId, 'prison.cooldown.bail');
 
     let newlyUnlockedAchievements: any[] = [];
+    let newReputation: number | undefined;
+    try {
+      newReputation = await applyReputationAction(buyerId, 'player_helped', true);
+    } catch (err) {
+      console.error('[Reputation] Error after prison buyout:', err);
+    }
     try {
       const achievementResults = await checkAndUnlockAchievements(buyerId);
       newlyUnlockedAchievements = achievementResults.map((r) =>
@@ -744,6 +758,7 @@ router.post('/prison/buyout/:targetId', authenticate, async (req: AuthRequest, r
       params: {
         amount: result.amount,
         targetUsername: result.targetUsername,
+        reputation: newReputation,
       },
       newlyUnlockedAchievements,
     });

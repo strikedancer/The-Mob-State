@@ -18058,7 +18058,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicFriendsTips =>
-      'Dodaj znajomych, którzy podzielają Twój styl gry: partnerów do napadów, sieci handlarzy lub wsparcie przestępczości. \nUżyj linku Udostępnij na Facebooku, w wiadomościach lub na dowolnym czacie — Facebook nie udostępnia nam Twojej listy znajomych. \nPrzyjaciel, który ucieknie z więzienia, za sukces otrzyma nagrodę w wysokości 500–2000 euro. Zorganizuj to na wypadek sytuacji awaryjnych.';
+      'Dodaj znajomych, którzy podzielają Twój styl gry: partnerów do napadów, sieci handlarzy lub wsparcie przestępczości. \nUżyj linku Udostępnij na Facebooku, w wiadomościach lub na dowolnym czacie — Facebook nie udostępnia nam Twojej listy znajomych. \nPrzyjaciel, który cię uwolni lub wykupi, dostaje +15 reputacji. Zorganizuj to na wypadek sytuacji awaryjnych.';
 
   @override
   String get helpTopicMessagesCategory => 'Społeczny';

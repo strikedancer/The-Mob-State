@@ -32,6 +32,7 @@ Jail state, prisoner list, actions while jailed and release-related flow.
 - Jail- en cooldown-overlays moeten op mobiel compacte header-typografie en zichtbare snackbar/toast feedback houden.
 - `GET /player/prisoners` moet licht blijven: alleen spelers met `jailRelease > now` (max. 100), geen N+1 `checkIfJailed` over oude `crime_attempts`. Index `players.jailRelease` dekt die filter. Mobiel toont bij een laadfout een retry en pull-to-refresh.
 - Arrestatieflows moeten vrienden en crewleden kunnen signaleren dat iemand op hulp wacht, zonder dat het vrijlaten, borg of sentence-state in de gevangenis breekt.
+- A successful helper jailbreak (`POST /player/jailbreak/:targetId`) or buyout (`POST /player/prison/buyout/:targetId`) awards the helper `player_helped` reputation (+15). Self-escape and paying your own bail do not.
 - Wereldchat krijgt een systeemregel wanneer een echte speler de cel in gaat, en wanneer een andere speler diegene uitkoopt of uitbreekt (beide namen). Eigen borg en eigen ontsnapping blijven stil. NPC-arrestaties niet in de lobby.
 - Jail-clock `player.update` (checkIfJailed, setJailReleaseClock, jailPlayer) retries MariaDB 1020 write conflicts; backpack-seize slot refresh does the same so concurrent dashboard/arrest writes do not 500.
 - Succesvolle rechteromkoping, borg en ontsnapping moeten dezelfde jail-lock wissen (`jailed=false` op alle actieve rijen + `jailRelease=null`). Crime-outcomes die al `jailed` op de poging zetten mogen geen tweede `police_arrest` / `federal_arrest` rij aanmaken.
@@ -47,6 +48,7 @@ Jail state, prisoner list, actions while jailed and release-related flow.
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
+- Verify a successful jailbreak or buyout awards the helper +15 reputation, and that self-escape / own bail does not.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.
