@@ -231,7 +231,7 @@ router.post('/buy/:weaponId', authenticate, requireNotJailed, async (req: AuthRe
         statusCode = 403;
         break;
       case 'INVENTORY_FULL':
-        message = 'Your inventory is full. Upgrade your backpack or free slots.';
+        message = 'Your backpack is full. Store items in a house (Properties → Open storage) or upgrade your backpack.';
         statusCode = 403;
         break;
       case 'VIP_ONLY':

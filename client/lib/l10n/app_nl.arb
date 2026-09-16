@@ -9796,6 +9796,17 @@
   },
   "inventoryOpenStorage": "Open opslag",
   "inventoryTransferOk": "Item verplaatst",
+  "inventoryTransferPartial": "Huis was bijna vol: {deposited} opgeslagen, {remaining} bleef in je rugzak.",
+  "@inventoryTransferPartial": {
+    "placeholders": {
+      "deposited": {
+        "type": "int"
+      },
+      "remaining": {
+        "type": "int"
+      }
+    }
+  },
   "inventoryTransferFailed": "Verplaatsen mislukt",
   "inventoryWrongDrop": "Die drop is hier niet toegestaan",
   "inventoryMoveOne": "Verplaats 1",
@@ -11118,7 +11129,7 @@
   "helpTopicInventoryCategory": "Beheer",
   "helpTopicInventoryTitle": "Inventaris",
   "helpTopicInventorySummary": "Beheer alles wat je draagt, opslaat en inzet: wapens, tools, voertuigen, drugs en handelsgoederen.",
-  "helpTopicInventoryHow": "Het materialendepot en pandopslag tonen alleen het land waar je nu bent. Voorraad in andere landen blijft daar tot je erheen reist.\nGekochte of opgehaalde materialen, drugs en handelswaren staan eerst bij niet-geplaatste voorraad. Zet ze in een huis of loods tot de prijs beter is; haal ze daar weer uit vóór je verkoopt. Handelswaren gaan niet in de rugzak.\nEen nieuw huis heeft 10 opslagvakjes; upgraden vergroot dat. Een appartement start op 5, een magazijn op 100.\nJe inventaris is verdeeld in carried items (bij je), opgeslagen items (in warehouse/crew storage) en actieve loadouts.\nGewicht bepaalt je draagcapaciteit. Sommige crimes of reizen blokkeren als je te zwaar bent.\nDrugs worden in inventaris en opslag als gram bijgehouden en getoond; 351 betekent 351g.\nItem-conditie verslechtert bij gebruik. Wapens in slechte conditie presteren minder goed en tools kunnen kapotgaan.\nBovenaan Inventaris kun je ook je vaste crime-wapen kiezen. Alleen gedragen, bruikbare wapens tellen mee voor die selectie.\nLoadouts laten je snel wisselen tussen een \"crime set\" (tool + weapon) en een \"travel set\" (licht, waardevolle goederen min).\nBij arrestatie kan de politie items confisqueren. Draag geen waardevolle goederen als je een hoog Wanted Level hebt.\nDrugs in je inventaris verhogen de kans op FBI-interventie bij internationale reizen.\nCrew-opslag is een veilige bewaarplaats buiten je persoonlijke carrying-risico.",
+  "helpTopicInventoryHow": "Het materialendepot en pandopslag tonen alleen het land waar je nu bent. Voorraad in andere landen blijft daar tot je erheen reist.\nGekochte of opgehaalde materialen, drugs en handelswaren gaan eerst in je rugzak. Zet ze via Vastgoed → Open opslag in een huis of loods in hetzelfde land, anders blijft je rugzak vol en kun je niets nieuws kopen. Haal ze daar weer uit vóór je verkoopt of reist. Oude handelswaar die nog in dit land ligt (niet in de rugzak) kun je hier verkopen of stallen; die telt niet mee voor rugzakplekken.\nEen nieuw huis heeft 10 opslagvakjes; upgraden vergroot dat. Een appartement start op 5, een magazijn op 100.\nJe inventaris is verdeeld in carried items (bij je), opgeslagen items (in warehouse/crew storage) en actieve loadouts.\nGewicht bepaalt je draagcapaciteit. Sommige crimes of reizen blokkeren als je te zwaar bent.\nDrugs worden in inventaris en opslag als gram bijgehouden en getoond; 351 betekent 351g.\nItem-conditie verslechtert bij gebruik. Wapens in slechte conditie presteren minder goed en tools kunnen kapotgaan.\nBovenaan Inventaris kun je ook je vaste crime-wapen kiezen. Alleen gedragen, bruikbare wapens tellen mee voor die selectie.\nLoadouts laten je snel wisselen tussen een \"crime set\" (tool + weapon) en een \"travel set\" (licht, waardevolle goederen min).\nBij arrestatie kan de politie items confisqueren. Draag geen waardevolle goederen als je een hoog Wanted Level hebt.\nDrugs in je inventaris verhogen de kans op FBI-interventie bij internationale reizen.\nCrew-opslag is een veilige bewaarplaats buiten je persoonlijke carrying-risico.",
   "helpTopicInventoryTips": "Hou je carrying load licht als je gaat reizen of een hogere crime-serie plant met arrestatierisico.\nGebruik loadouts zodat je voor elk scenario snel de juiste gear aan hebt.\nCheck item-conditie regelmatig: kapotte tools blokkeren crimes stil, zonder duidelijke foutmelding.",
   "helpTopicPropertiesCategory": "Economie",
   "helpTopicPropertiesTitle": "Eigendommen",
@@ -11810,6 +11821,8 @@
     }
   },
   "tradeGoodNotAvailableHere": "Dit product is niet te koop in je huidige land. Reis naar een bronland.",
+  "tradeErrBackpackFull": "Je rugzak is vol. Leg spullen in je huis via Vastgoed → Open opslag, of koop een grotere rugzak.",
+  "tradeErrStockCap": "Je hebt het maximum van dit product, ook wat al in je huis in dit land ligt. Verkoop eerst of neem minder mee.",
   "tradeNoBuyableGoodsInCountry": "Geen handelswaren te koop in dit land. Reis naar een bronland om contraband in te slaan.",
   "tradeUnavailableGoodsTitle": "Niet te koop hier",
   "tradeUnavailableGoodsSubtitle": "{count} producten alleen in bronlanden",

@@ -118,6 +118,10 @@ router.post('/buy', authenticate, requireNotJailed, async (req: AuthRequest, res
         message = 'Maximum ammo inventory capacity reached';
         statusCode = 403;
         break;
+      case 'INVENTORY_FULL':
+        message = 'Your backpack is full. Store ammo in a house (Properties → Open storage) or upgrade your backpack.';
+        statusCode = 403;
+        break;
       case 'INSUFFICIENT_STOCK':
         message = 'Not enough ammo stock in this country';
         statusCode = 409;

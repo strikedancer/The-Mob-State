@@ -8035,6 +8035,14 @@ class AppLocalizationsEs extends AppLocalizations {
       'Este producto no se vende en tu país actual. Viaja a un país fuente.';
 
   @override
+  String get tradeErrBackpackFull =>
+      'Your backpack is full. Store goods in your house via Properties → Open storage, or buy a larger backpack.';
+
+  @override
+  String get tradeErrStockCap =>
+      'You already have the maximum of this product, including what is stored in your house in this country. Sell first or take less.';
+
+  @override
   String get tradeNoBuyableGoodsInCountry =>
       'No hay mercancías a la venta en este país. Viaja a un país fuente.';
 
@@ -8881,6 +8889,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get inventoryTransferOk => 'Artículo movido';
+
+  @override
+  String inventoryTransferPartial(int deposited, int remaining) {
+    return 'House was almost full: stored $deposited, $remaining stayed in your backpack.';
+  }
 
   @override
   String get inventoryTransferFailed => 'Movimiento fallido';

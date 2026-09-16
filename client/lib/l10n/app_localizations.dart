@@ -14048,6 +14048,18 @@ abstract class AppLocalizations {
   /// **'This product is not for sale in your current country. Travel to a source country.'**
   String get tradeGoodNotAvailableHere;
 
+  /// No description provided for @tradeErrBackpackFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Your backpack is full. Store goods in your house via Properties → Open storage, or buy a larger backpack.'**
+  String get tradeErrBackpackFull;
+
+  /// No description provided for @tradeErrStockCap.
+  ///
+  /// In en, this message translates to:
+  /// **'You already have the maximum of this product, including what is stored in your house in this country. Sell first or take less.'**
+  String get tradeErrStockCap;
+
   /// No description provided for @tradeNoBuyableGoodsInCountry.
   ///
   /// In en, this message translates to:
@@ -15415,6 +15427,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Item moved'**
   String get inventoryTransferOk;
+
+  /// No description provided for @inventoryTransferPartial.
+  ///
+  /// In en, this message translates to:
+  /// **'House was almost full: stored {deposited}, {remaining} stayed in your backpack.'**
+  String inventoryTransferPartial(int deposited, int remaining);
 
   /// No description provided for @inventoryTransferFailed.
   ///
@@ -31259,7 +31277,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicInventoryHow.
   ///
   /// In en, this message translates to:
-  /// **'The materials depot and property storage show only the country you are in. Stock in other countries stays there until you travel.\nBought or collected materials, drugs and trade goods first sit in unplaced stock. Place them in a house or warehouse to hold for a better price; withdraw them before you sell. Trade goods cannot go in the backpack.\nA new house has 10 storage slots; upgrades raise that. An apartment starts at 5, a warehouse at 100.\nInventory is split into carried items (on you), stored items (warehouse/crew storage) and active loadouts.\nWeight determines your carrying capacity. Some crimes or travel block if you are overloaded.\nDrugs are stored and shown in inventory and storage as grams; 351 means 351g.\nItem condition degrades with use. Weapons in poor condition perform worse and tools can break.\nAt the top of Inventory you can also choose your default crime weapon. Only carried, usable weapons count for that selection.\nLoadouts let you switch quickly between a crime set (tool + weapon) and a travel set (light, minimal valuables).\nOn arrest police can confiscate items. Do not carry valuables with a high Wanted Level.\nDrugs in inventory increase the chance of FBI intervention during international travel.\nCrew storage is a safe place to keep items outside your personal carrying risk.'**
+  /// **'The materials depot and property storage show only the country you are in. Stock in other countries stays there until you travel.\nBought or collected materials, drugs and trade goods go into your backpack first. Store them via Properties → Open storage in a house or warehouse in the same country, or your backpack stays full and you cannot buy more. Withdraw them before you sell or travel. Leftover trade still sitting in this country (not in the backpack) can be sold or stored here; it does not use backpack slots.\nA new house has 10 storage slots; upgrades raise that. An apartment starts at 5, a warehouse at 100.\nInventory is split into carried items (on you), stored items (warehouse/crew storage) and active loadouts.\nWeight determines your carrying capacity. Some crimes or travel block if you are overloaded.\nDrugs are stored and shown in inventory and storage as grams; 351 means 351g.\nItem condition degrades with use. Weapons in poor condition perform worse and tools can break.\nAt the top of Inventory you can also choose your default crime weapon. Only carried, usable weapons count for that selection.\nLoadouts let you switch quickly between a crime set (tool + weapon) and a travel set (light, minimal valuables).\nOn arrest police can confiscate items. Do not carry valuables with a high Wanted Level.\nDrugs in inventory increase the chance of FBI intervention during international travel.\nCrew storage is a safe place to keep items outside your personal carrying risk.'**
   String get helpTopicInventoryHow;
 
   /// No description provided for @helpTopicInventoryTips.

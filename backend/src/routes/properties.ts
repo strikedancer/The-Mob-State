@@ -141,11 +141,17 @@ router.post('/storage/:propertyId/weapons/deposit', authenticate, async (req: Au
       });
     }
 
-    await propertyStorageService.depositWeapon(req.player!.id, propertyId, weaponId, quantity);
+    const result = await propertyStorageService.depositWeapon(req.player!.id, propertyId, weaponId, quantity);
 
     return res.status(200).json({
       event: 'properties.weapon_deposited',
-      params: { propertyId, weaponId, quantity },
+      params: {
+        propertyId,
+        weaponId,
+        quantity: result.deposited,
+        requested: result.requested,
+        remaining: Math.max(0, result.requested - result.deposited),
+      },
     });
   } catch (error) {
     const reason = error instanceof Error ? error.message : 'UNKNOWN';
@@ -253,10 +259,16 @@ router.post('/storage/:propertyId/ammo/deposit', authenticate, async (req: AuthR
     if (isNaN(propertyId) || !ammoType || quantity <= 0) {
       return res.status(400).json({ event: 'error.validation', params: {} });
     }
-    await propertyStorageService.depositAmmo(req.player!.id, propertyId, ammoType, quantity);
+    const result = await propertyStorageService.depositAmmo(req.player!.id, propertyId, ammoType, quantity);
     return res.status(200).json({
       event: 'properties.ammo_deposited',
-      params: { propertyId, ammoType, quantity },
+      params: {
+        propertyId,
+        ammoType,
+        quantity: result.deposited,
+        requested: result.requested,
+        remaining: Math.max(0, result.requested - result.deposited),
+      },
     });
   } catch (error) {
     const reason = error instanceof Error ? error.message : 'UNKNOWN';
@@ -459,7 +471,7 @@ router.post('/storage/:propertyId/trade/deposit', authenticate, async (req: Auth
     if (isNaN(propertyId) || !goodType || quantity <= 0) {
       return res.status(400).json({ event: 'error.validation', params: {} });
     }
-    await propertyStorageService.depositTrade(
+    const result = await propertyStorageService.depositTrade(
       req.player!.id,
       propertyId,
       goodType,
@@ -467,7 +479,13 @@ router.post('/storage/:propertyId/trade/deposit', authenticate, async (req: Auth
     );
     return res.status(200).json({
       event: 'properties.trade_deposited',
-      params: { propertyId, goodType, quantity },
+      params: {
+        propertyId,
+        goodType,
+        quantity: result.deposited,
+        requested: result.requested,
+        remaining: Math.max(0, result.requested - result.deposited),
+      },
     });
   } catch (error) {
     const reason = error instanceof Error ? error.message : 'UNKNOWN';

@@ -12765,5 +12765,18 @@
   "prisonErrorInsufficientCrewFunds": "❌Non ci sono abbastanza soldi nel caveau dell'Crew",
   "prisonErrorNotCrewBankRole": "❌ Solo il proprietario dell'Crew e i comproprietari possono pagare dal caveau dell'Crew",
   "prisonErrorNotSameCrew": "❌ You can only use the crew vault for your own crew members",
-  "prisonErrorBuyerJailed": "❌ Non puoi pagare dal caveau dell'Crew mentre sei in prigione"
+  "prisonErrorBuyerJailed": "❌ Non puoi pagare dal caveau dell'Crew mentre sei in prigione",
+  "tradeErrBackpackFull": "Your backpack is full. Store goods in your house via Properties → Open storage, or buy a larger backpack.",
+  "tradeErrStockCap": "You already have the maximum of this product, including what is stored in your house in this country. Sell first or take less.",
+  "inventoryTransferPartial": "House was almost full: stored {deposited}, {remaining} stayed in your backpack.",
+  "@inventoryTransferPartial": {
+    "placeholders": {
+      "deposited": {
+        "type": "int"
+      },
+      "remaining": {
+        "type": "int"
+      }
+    }
+  }
 }

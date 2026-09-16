@@ -12765,5 +12765,18 @@
   "prisonErrorInsufficientCrewFunds": "❌ No hay suficiente dinero en la bóveda de la Crew",
   "prisonErrorNotCrewBankRole": "❌ Solo el propietario y los copropietarios de la Crew pueden pagar desde la bóveda de la Crew.",
   "prisonErrorNotSameCrew": "❌ You can only use the crew vault for your own crew members",
-  "prisonErrorBuyerJailed": "❌ No puedes pagar desde la bóveda de la Crew mientras estás en la cárcel."
+  "prisonErrorBuyerJailed": "❌ No puedes pagar desde la bóveda de la Crew mientras estás en la cárcel.",
+  "tradeErrBackpackFull": "Your backpack is full. Store goods in your house via Properties → Open storage, or buy a larger backpack.",
+  "tradeErrStockCap": "You already have the maximum of this product, including what is stored in your house in this country. Sell first or take less.",
+  "inventoryTransferPartial": "House was almost full: stored {deposited}, {remaining} stayed in your backpack.",
+  "@inventoryTransferPartial": {
+    "placeholders": {
+      "deposited": {
+        "type": "int"
+      },
+      "remaining": {
+        "type": "int"
+      }
+    }
+  }
 }

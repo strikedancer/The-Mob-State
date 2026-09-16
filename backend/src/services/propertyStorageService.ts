@@ -387,6 +387,7 @@ class PropertyStorageService {
       throw new Error('STORAGE_TYPE_NOT_ALLOWED');
     }
 
+    const requested = quantity;
     const weapon = await prisma.weaponInventory.findUnique({
       where: {
         playerId_weaponId: {
@@ -441,6 +442,8 @@ class PropertyStorageService {
         });
       }
     });
+    await refreshInventorySlotUsage(playerId);
+    return { deposited: quantity, requested };
   }
 
   async withdrawWeapon(
@@ -955,6 +958,7 @@ class PropertyStorageService {
       throw new Error('UNKNOWN_GOOD');
     }
 
+    const requested = quantity;
     const ownedQty = await getBackpackTradeQuantity(
       playerId,
       goodType,
@@ -998,6 +1002,7 @@ class PropertyStorageService {
         player.currentCountry,
         goodType,
         quantity,
+        { preferLeftover: true },
       );
       const nextQty = oldQty + quantity;
       const averagePrice = Math.floor(
@@ -1007,6 +1012,7 @@ class PropertyStorageService {
       await this.setTradeAveragePrice(tx, propertyId, goodType, nextQty, averagePrice);
     });
     await refreshInventorySlotUsage(playerId);
+    return { deposited: quantity, requested };
   }
 
   async withdrawTrade(
@@ -1164,6 +1170,7 @@ class PropertyStorageService {
       throw new Error('AMMO_NOT_FOUND');
     }
 
+    const requested = quantity;
     const inv = await prisma.ammoInventory.findUnique({
       where: { playerId_ammoType: { playerId, ammoType } },
     });
@@ -1197,6 +1204,8 @@ class PropertyStorageService {
       }
       await this.bumpStorageKey(tx, propertyId, `ammo:${ammoType}`, quantity);
     });
+    await refreshInventorySlotUsage(playerId);
+    return { deposited: quantity, requested };
   }
 
   async withdrawAmmo(playerId: number, propertyId: number, ammoType: string, quantity: number) {
@@ -1239,6 +1248,7 @@ class PropertyStorageService {
         });
       }
     });
+    await refreshInventorySlotUsage(playerId);
   }
 
   async depositArmor(playerId: number, propertyId: number) {

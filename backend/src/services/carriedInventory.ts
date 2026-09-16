@@ -1,6 +1,7 @@
 import prisma from '../lib/prisma';
 import { withPrismaWriteRetry } from '../lib/prismaRetry';
 import {
+  ammoSlotsForRounds,
   CARRIED_TRADE_LOCATION,
   drugSlotsForGrams,
   tradeSlotsForLots,
@@ -32,28 +33,51 @@ export async function getCarriedTradeSlots(playerId: number): Promise<number> {
   return tradeSlotsForLots(rows);
 }
 
+export async function getCarriedTradeQuantity(
+  playerId: number,
+  goodType: string,
+): Promise<number> {
+  const row = await prisma.inventory.findUnique({
+    where: {
+      playerId_goodType_country: {
+        playerId,
+        goodType,
+        country: CARRIED_TRADE_LOCATION,
+      },
+    },
+    select: { quantity: true },
+  });
+  return row?.quantity ?? 0;
+}
+
 /**
- * Backpack trade slots: carried lots plus leftover current-country warehouse
- * lots (legacy stock still usable here until stashed or sold).
+ * Backpack trade slots: only `_carried_` lots. Leftover current-country warehouse
+ * lots stay sellable/storable here like a depot and do not block new buys.
  */
 export async function getBackpackTradeSlots(playerId: number): Promise<number> {
-  const player = await prisma.player.findUnique({
-    where: { id: playerId },
-    select: { currentCountry: true },
+  return getCarriedTradeSlots(playerId);
+}
+
+export async function getCarriedAmmoSlots(playerId: number): Promise<number> {
+  const rows = await prisma.ammoInventory.findMany({
+    where: { playerId, quantity: { gt: 0 } },
+    select: { quantity: true },
   });
-  const currentCountry = player?.currentCountry;
-  const rows = await prisma.inventory.findMany({
-    where: {
-      playerId,
-      quantity: { gt: 0 },
-      OR: [
-        { country: CARRIED_TRADE_LOCATION },
-        ...(currentCountry ? [{ country: currentCountry }] : []),
-      ],
-    },
-    select: { goodType: true, quantity: true },
+  return rows.reduce((sum, row) => sum + ammoSlotsForRounds(row.quantity), 0);
+}
+
+export async function extraSlotsForAmmoAdd(
+  playerId: number,
+  ammoType: string,
+  rounds: number,
+): Promise<number> {
+  if (rounds <= 0) return 0;
+  const existing = await prisma.ammoInventory.findUnique({
+    where: { playerId_ammoType: { playerId, ammoType } },
+    select: { quantity: true },
   });
-  return tradeSlotsForLots(rows);
+  const current = existing?.quantity ?? 0;
+  return ammoSlotsForRounds(current + rounds) - ammoSlotsForRounds(current);
 }
 
 export async function getRiskyBackpackSlots(playerId: number): Promise<number> {
@@ -86,15 +110,7 @@ export async function extraSlotsForTradeAdd(
   goodType: string,
 ): Promise<number> {
   if (quantity <= 0) return 0;
-  const player = await prisma.player.findUnique({
-    where: { id: playerId },
-    select: { currentCountry: true },
-  });
-  const current = await getBackpackTradeQuantity(
-    playerId,
-    goodType,
-    player?.currentCountry ?? '',
-  );
+  const current = await getCarriedTradeQuantity(playerId, goodType);
   return tradeSlotsForQuantity(current + quantity) - tradeSlotsForQuantity(current);
 }
 
@@ -204,6 +220,7 @@ export async function debitBackpackTrade(
   currentCountry: string,
   goodType: string,
   quantity: number,
+  options?: { preferLeftover?: boolean },
 ): Promise<{ purchasePrice: number; condition: number; purchasedAt: Date | null }> {
   if (quantity <= 0) {
     throw new Error('INVALID_QUANTITY');
@@ -259,8 +276,13 @@ export async function debitBackpackTrade(
     }
   };
 
-  await takeFrom(carried);
-  await takeFrom(leftover);
+  if (options?.preferLeftover) {
+    await takeFrom(leftover);
+    await takeFrom(carried);
+  } else {
+    await takeFrom(carried);
+    await takeFrom(leftover);
+  }
 
   return {
     purchasePrice: Math.floor(value / Math.max(1, quantity)),

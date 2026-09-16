@@ -289,7 +289,7 @@ export async function buyGoods(
   );
 
   if (currentQuantity + storedQuantity + quantity > good.maxInventory) {
-    throw new Error('INVENTORY_FULL');
+    throw new Error('TRADE_STOCK_CAP');
   }
 
   await assertBackpackFits(playerId, await extraSlotsForTradeAdd(playerId, quantity, goodType));

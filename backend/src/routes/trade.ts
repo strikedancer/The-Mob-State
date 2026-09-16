@@ -131,7 +131,15 @@ router.post('/buy', authenticate, requireNotJailed, async (req: AuthRequest, res
       return res.status(400).json({
         success: false,
         error: 'INVENTORY_FULL',
-        message: 'Je inventaris is vol. Verkoop eerst items voordat je meer koopt.',
+        message: 'Je rugzak is vol. Leg spullen in je huis via Vastgoed → Open opslag, of koop een grotere rugzak.',
+      });
+    }
+
+    if (error.message === 'TRADE_STOCK_CAP') {
+      return res.status(400).json({
+        success: false,
+        error: 'TRADE_STOCK_CAP',
+        message: 'Je hebt het maximum van dit product, ook wat al in je huis in dit land ligt. Verkoop eerst of neem minder mee.',
       });
     }
 

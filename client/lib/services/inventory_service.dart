@@ -9,6 +9,24 @@ class InventoryService {
   InventoryService({ApiClient? apiClient})
     : _apiClient = apiClient ?? ApiClient();
 
+  Map<String, dynamic> _okDeposit(dynamic response, int requested) {
+    var deposited = requested;
+    try {
+      final body = json.decode(response.body);
+      final params = body is Map ? body['params'] : null;
+      if (params is Map && params['quantity'] != null) {
+        deposited = (params['quantity'] as num).toInt();
+      }
+    } catch (_) {}
+    final remaining = (requested - deposited).clamp(0, requested);
+    return {
+      'success': true,
+      'deposited': deposited,
+      'requested': requested,
+      'remaining': remaining,
+    };
+  }
+
   // Get carried inventory
   Future<Map<String, dynamic>> getCarriedTools() async {
     try {
@@ -128,7 +146,7 @@ class InventoryService {
       );
 
       if (response.statusCode == 200) {
-        return {'success': true};
+        return _okDeposit(response, quantity);
       }
 
       final error = json.decode(response.body);
@@ -290,7 +308,7 @@ class InventoryService {
         '/properties/storage/$propertyId/ammo/deposit',
         {'ammoType': ammoType, 'quantity': quantity},
       );
-      if (response.statusCode == 200) return {'success': true};
+      if (response.statusCode == 200) return _okDeposit(response, quantity);
       final error = json.decode(response.body);
       return {
         'success': false,
@@ -459,7 +477,7 @@ class InventoryService {
         '/properties/storage/$propertyId/trade/deposit',
         {'goodType': goodType, 'quantity': quantity},
       );
-      if (response.statusCode == 200) return {'success': true};
+      if (response.statusCode == 200) return _okDeposit(response, quantity);
       final error = json.decode(response.body);
       return {
         'success': false,

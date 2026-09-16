@@ -62,7 +62,7 @@ router.post('/buy/:toolId', authenticate, requireNotJailed, async (req: AuthRequ
         statusCode = 403;
         break;
       case 'INVENTORY_FULL':
-        message = 'Your inventory is full. Store some tools or upgrade capacity';
+        message = 'Your backpack is full. Store tools in a house (Properties → Open storage) or upgrade your backpack.';
         statusCode = 403;
         break;
       case 'DATABASE_ERROR':
@@ -259,7 +259,7 @@ router.post('/transfer', authenticate, async (req: AuthRequest, res: Response) =
         message = 'Not enough tools to transfer';
         break;
       case 'INVENTORY_FULL':
-        message = 'Your inventory is full. Store some tools or upgrade capacity';
+        message = 'Your backpack is full. Store tools in a house (Properties → Open storage) or upgrade your backpack.';
         statusCode = 403;
         break;
       case 'NOT_PROPERTY_OWNER':

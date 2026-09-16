@@ -8003,6 +8003,14 @@ class AppLocalizationsNl extends AppLocalizations {
       'Dit product is niet te koop in je huidige land. Reis naar een bronland.';
 
   @override
+  String get tradeErrBackpackFull =>
+      'Je rugzak is vol. Leg spullen in je huis via Vastgoed → Open opslag, of koop een grotere rugzak.';
+
+  @override
+  String get tradeErrStockCap =>
+      'Je hebt het maximum van dit product, ook wat al in je huis in dit land ligt. Verkoop eerst of neem minder mee.';
+
+  @override
   String get tradeNoBuyableGoodsInCountry =>
       'Geen handelswaren te koop in dit land. Reis naar een bronland om contraband in te slaan.';
 
@@ -8846,6 +8854,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get inventoryTransferOk => 'Item verplaatst';
+
+  @override
+  String inventoryTransferPartial(int deposited, int remaining) {
+    return 'Huis was bijna vol: $deposited opgeslagen, $remaining bleef in je rugzak.';
+  }
 
   @override
   String get inventoryTransferFailed => 'Verplaatsen mislukt';
@@ -18182,7 +18195,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicInventoryHow =>
-      'Het materialendepot en pandopslag tonen alleen het land waar je nu bent. Voorraad in andere landen blijft daar tot je erheen reist.\nGekochte of opgehaalde materialen, drugs en handelswaren staan eerst bij niet-geplaatste voorraad. Zet ze in een huis of loods tot de prijs beter is; haal ze daar weer uit vóór je verkoopt. Handelswaren gaan niet in de rugzak.\nEen nieuw huis heeft 10 opslagvakjes; upgraden vergroot dat. Een appartement start op 5, een magazijn op 100.\nJe inventaris is verdeeld in carried items (bij je), opgeslagen items (in warehouse/crew storage) en actieve loadouts.\nGewicht bepaalt je draagcapaciteit. Sommige crimes of reizen blokkeren als je te zwaar bent.\nDrugs worden in inventaris en opslag als gram bijgehouden en getoond; 351 betekent 351g.\nItem-conditie verslechtert bij gebruik. Wapens in slechte conditie presteren minder goed en tools kunnen kapotgaan.\nBovenaan Inventaris kun je ook je vaste crime-wapen kiezen. Alleen gedragen, bruikbare wapens tellen mee voor die selectie.\nLoadouts laten je snel wisselen tussen een \"crime set\" (tool + weapon) en een \"travel set\" (licht, waardevolle goederen min).\nBij arrestatie kan de politie items confisqueren. Draag geen waardevolle goederen als je een hoog Wanted Level hebt.\nDrugs in je inventaris verhogen de kans op FBI-interventie bij internationale reizen.\nCrew-opslag is een veilige bewaarplaats buiten je persoonlijke carrying-risico.';
+      'Het materialendepot en pandopslag tonen alleen het land waar je nu bent. Voorraad in andere landen blijft daar tot je erheen reist.\nGekochte of opgehaalde materialen, drugs en handelswaren gaan eerst in je rugzak. Zet ze via Vastgoed → Open opslag in een huis of loods in hetzelfde land, anders blijft je rugzak vol en kun je niets nieuws kopen. Haal ze daar weer uit vóór je verkoopt of reist. Oude handelswaar die nog in dit land ligt (niet in de rugzak) kun je hier verkopen of stallen; die telt niet mee voor rugzakplekken.\nEen nieuw huis heeft 10 opslagvakjes; upgraden vergroot dat. Een appartement start op 5, een magazijn op 100.\nJe inventaris is verdeeld in carried items (bij je), opgeslagen items (in warehouse/crew storage) en actieve loadouts.\nGewicht bepaalt je draagcapaciteit. Sommige crimes of reizen blokkeren als je te zwaar bent.\nDrugs worden in inventaris en opslag als gram bijgehouden en getoond; 351 betekent 351g.\nItem-conditie verslechtert bij gebruik. Wapens in slechte conditie presteren minder goed en tools kunnen kapotgaan.\nBovenaan Inventaris kun je ook je vaste crime-wapen kiezen. Alleen gedragen, bruikbare wapens tellen mee voor die selectie.\nLoadouts laten je snel wisselen tussen een \"crime set\" (tool + weapon) en een \"travel set\" (licht, waardevolle goederen min).\nBij arrestatie kan de politie items confisqueren. Draag geen waardevolle goederen als je een hoog Wanted Level hebt.\nDrugs in je inventaris verhogen de kans op FBI-interventie bij internationale reizen.\nCrew-opslag is een veilige bewaarplaats buiten je persoonlijke carrying-risico.';
 
   @override
   String get helpTopicInventoryTips =>

@@ -1124,12 +1124,16 @@ class _InventoryPaperDollTabState extends State<InventoryPaperDollTab> {
 
     if (!mounted) return;
     final ok = result['success'] == true;
+    final remaining = (result['remaining'] as num?)?.toInt() ?? 0;
+    final deposited = (result['deposited'] as num?)?.toInt() ?? 0;
     showTopRightFromSnackBar(
       context,
       SnackBar(
         content: Text(
           ok
-              ? l10n.inventoryTransferOk
+              ? (remaining > 0
+                  ? l10n.inventoryTransferPartial(deposited, remaining)
+                  : l10n.inventoryTransferOk)
               : '${l10n.inventoryTransferFailed}: ${result['error'] ?? result['reason'] ?? result['message'] ?? ''}',
         ),
         backgroundColor: ok ? Colors.green : Colors.red,

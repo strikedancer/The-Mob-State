@@ -226,6 +226,10 @@ class _TradeGoodsTabState extends State<TradeGoodsTab> {
             if (body is Map) {
               if (body['error'] == 'GOOD_NOT_AVAILABLE_IN_COUNTRY') {
                 message = l10n.tradeGoodNotAvailableHere;
+              } else if (body['error'] == 'INVENTORY_FULL') {
+                message = l10n.tradeErrBackpackFull;
+              } else if (body['error'] == 'TRADE_STOCK_CAP') {
+                message = l10n.tradeErrStockCap;
               } else if (body['message'] != null) {
                 message = body['message'].toString();
               }

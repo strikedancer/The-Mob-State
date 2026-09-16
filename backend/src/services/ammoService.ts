@@ -2,6 +2,11 @@ import prisma from '../lib/prisma';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { applyVipTimeoutReductionMs, isVipStatusActive } from './vipBenefitsService';
+import {
+  assertBackpackFits,
+  extraSlotsForAmmoAdd,
+  refreshInventorySlotUsage,
+} from './carriedInventory';
 
 interface AmmoDefinition {
   type: string;
@@ -178,6 +183,18 @@ class AmmoService {
       return { success: false, error: 'MAX_INVENTORY_REACHED' };
     }
 
+    try {
+      await assertBackpackFits(
+        playerId,
+        await extraSlotsForAmmoAdd(playerId, ammoType, roundsPurchased),
+      );
+    } catch (error) {
+      if (error instanceof Error && error.message === 'INVENTORY_FULL') {
+        return { success: false, error: 'INVENTORY_FULL' };
+      }
+      throw error;
+    }
+
     const newQuality = existing
       ? (existing.quality * currentQuantity + quality * roundsPurchased) / newQuantity
       : quality;
@@ -212,6 +229,8 @@ class AmmoService {
         lastAmmoPurchaseAt: new Date(),
       },
     });
+
+    await refreshInventorySlotUsage(playerId);
 
     return { success: true, totalCost, roundsPurchased, quality: newQuality };
   }
@@ -268,6 +287,8 @@ class AmmoService {
       where: { id: playerId },
       data: { money: { increment: sellPrice } },
     });
+
+    await refreshInventorySlotUsage(playerId);
 
     return { success: true, sellPrice };
   }
