@@ -4,9 +4,10 @@
 A player account can be given `staffRole` `NONE` (default), `MOD`, or `OPS`. Super-admins assign this on Admin → Players. Mods and Ops keep playing with their normal account. They can also sign in at admin.themobstate.com with that same game username and password. No second admin password. Super-admin table accounts stay separate.
 
 ## In the game
+- Help & Uitleg → **Mod en Ops** is the staff handbook. The gold `i` on World chat opens that topic for Mods/Ops and the player World chat topic for everyone else.
 - World chat badge next to the name (`Mod` / `Ops`), including on your own bubbles.
 - Discord `#wereldchat` prefixes game posts with `[Ops]` / `[Mod]`. Linked Mods/Ops can reply with `!wis` to delete, or `!mute @name 15` / `!unmute`.
-- Long-press another world-chat message: delete for everyone, mute 15 min / 1 hour, unmute.
+- Long-press another world-chat message: delete for everyone, mute 15 min / 1 hour, unmute. Regular players long-press to **report**.
 - Staff can open the report list from the world-chat header.
 - No crew-chat or DM moderation in this pass. No permanent ban from the game UI.
 

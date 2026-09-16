@@ -517,7 +517,7 @@ class _WorldChatScreenState extends State<WorldChatScreen> {
             title: l10n.worldChatTitle,
             subtitle: l10n.worldChatSubtitle,
             imageAsset: 'assets/images/backgrounds/login_background.png',
-            topicId: 'world-chat',
+            topicId: _isStaff ? 'mod-ops' : 'world-chat',
             fallbackIcon: Icons.public,
             onRefresh: _loading ? null : _loadMessages,
             refreshEnabled: !_loading,
@@ -551,6 +551,15 @@ class _WorldChatScreenState extends State<WorldChatScreen> {
         ),
         Expanded(child: _buildList(l10n, playerId)),
         if (_showStickers) _buildStickerTray(),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 6),
+          child: Text(
+            _isStaff
+                ? l10n.worldChatStaffLongPressHint
+                : l10n.worldChatLongPressHint,
+            style: TextStyle(color: Colors.grey[500], fontSize: 12, height: 1.3),
+          ),
+        ),
         if (_selectedStickerId != null)
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
@@ -587,7 +596,7 @@ class _WorldChatScreenState extends State<WorldChatScreen> {
     );
 
     return GamePageInfoHost(
-      topicId: 'world-chat',
+      topicId: _isStaff ? 'mod-ops' : 'world-chat',
       showOverlay: false,
       child: widget.embedded
           ? ColoredBox(color: kEmpireBgEnd, child: body)

@@ -6,7 +6,8 @@ One public in-game lobby for every logged-in player, with a curated sticker pack
 ## Primary Frontend Entry
 - `client/lib/screens/world_chat_screen.dart`
 - Dashboard: Sociaal → Wereldchat (`_WebSection.worldChat`)
-- Help topic `world-chat`
+- Help topics `world-chat` (spelers: lang indrukken om te melden) and `mod-ops` (staff-handleiding)
+- Almanac / Help & Uitleg uses the same `helpTopicWorldChat*` / `helpTopicModOps*` keys
 
 ## Primary Backend Entry
 - `GET /global-chat/messages`
@@ -73,7 +74,7 @@ Player OAuth stays `identify` + `email` only. The chat bot is a separate token.
 10. Linked Mod/Ops in `#wereldchat`: `!hulp` lists commands; reply `!wis` deletes; `!mute Name 15` mutes world chat. A player without staffRole cannot run those commands.
 
 ## i18n and Messaging
-ARB prefix `worldChat*` plus Help `helpTopicWorldChat*`.
+ARB prefix `worldChat*` plus Help `helpTopicWorldChat*` and `helpTopicModOps*`.
 
 ## When To Update This File
 Update when adding rooms, custom sticker assets, push, extra Discord intents/scopes, or Discord staff commands.

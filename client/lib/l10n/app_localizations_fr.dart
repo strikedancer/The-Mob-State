@@ -5347,6 +5347,14 @@ class AppLocalizationsFr extends AppLocalizations {
       'Remove this message, mute the sender, or send it to the report list.';
 
   @override
+  String get worldChatLongPressHint =>
+      'Appuyez longuement sur le message de quelqu\'un d\'autre pour le signaler.';
+
+  @override
+  String get worldChatStaffLongPressHint =>
+      'Appuyez longuement sur le message de quelqu\'un d\'autre pour le supprimer, le désactiver ou le signaler.';
+
+  @override
   String get aviationUiBuyConfirmTitle => 'Acheter un avion ?';
 
   @override
@@ -18276,15 +18284,15 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicWorldChatSummary =>
-      'Un lobby public pour chaque joueur, avec des autocollants et un pont Discord en option pour que vous puissiez parler sans ouvrir le jeu.';
+      'Un lobby public pour chaque joueur. Appuyez longuement sur le message de quelqu\'un d\'autre pour le signaler. Des autocollants, un filtre de jurons et Discord en option sont inclus.';
 
   @override
   String get helpTopicWorldChatHow =>
-      'Chat en monde ouvert sous Social. Toute personne connectée peut lire et envoyer des messages, y compris depuis la prison. \nEntrez les envois ; Shift+Entrée démarre une nouvelle ligne. Les autocollants sont placés à côté du compositeur – aucun téléchargement d’image. \nLes gros mots dans les langues du jeu sont filtrés sur le serveur. Le personnel peut désactiver ou supprimer. \nAppuyez longuement sur votre propre message pour le supprimer pendant environ 10 minutes. Appuyez longuement sur quelqu\'un d\'autre pour signaler. \nIl n’y a pas de paywall de crédit. Les messages directs et les discussions en équipe restent séparés. \nLorsqu\'un joueur est arrêté, le chat mondial affiche une ligne du système de prison avec son nom. Si un autre joueur les rachète ou les éclate, les deux noms apparaissent. Payer votre propre caution ou vous échapper reste en dehors du hall. \nLorsque Discord est lié, le même lobby est reflété sur une chaîne Discord. Les messages de Discord affichent un tag Discord dans le jeu. Vous pouvez lier Discord plus tard dans Paramètres si vous ne vous êtes pas connecté avec Discord. Le premier lien d\'un compte existant rapporte 5 000 € ; une invite hebdomadaire vous le rappelle jusqu\'à ce que vous liez ou appuyiez sur Je n\'ai pas Discord.';
+      'Chat en monde ouvert sous Social. Toute personne connectée peut lire et envoyer des messages, y compris depuis la prison. \nIl n’y a pas de bouton Rapport distinct à l’écran. Appuyez longuement sur le message de quelqu\'un d\'autre jusqu\'à ce que le menu s\'ouvre, puis appuyez sur Signaler. L\'abus de signalements peut être sanctionné. \nAppuyez longuement sur votre propre message pour le supprimer pendant environ 10 minutes. \nEntrez les envois ; Shift+Entrée démarre une nouvelle ligne. Les autocollants sont placés à côté du compositeur – aucun téléchargement d’image. \nLes gros mots dans les langues du jeu sont filtrés sur le serveur. Les Mods et Ops affichent un badge à côté de leur nom. \nIl n’y a pas de paywall de crédit. Les messages directs et les discussions en équipe restent séparés. \nLorsqu\'un joueur est arrêté, le chat mondial affiche une ligne du système de prison avec son nom. Si un autre joueur les rachète ou les éclate, les deux noms apparaissent. Payer votre propre caution ou vous échapper reste en dehors du hall. \nLorsque Discord est lié, le même lobby est reflété sur une chaîne Discord. Les messages de Discord affichent un tag Discord dans le jeu. \nSi vous êtes Mod ou Ops : ouvrez Aide → Mod et Ops, ou appuyez sur le i doré sur le chat mondial pour accéder au manuel du personnel.';
 
   @override
   String get helpTopicWorldChatTips =>
-      'Restez civil : une sourdine frappe à la fois le jeu et le côté Discord si vos comptes sont liés. \nUtilisez des autocollants pour réagir rapidement sans inonder la pièce. \nLes accords privés appartiennent toujours aux messages directs et non au lobby public.';
+      'Si vous voyez quelque chose d’anormal : appuyez longuement sur ce message et choisissez Signaler. Le personnel l\'obtient dans sa liste de rapports. \nRestez courtois : une sourdine frappe à la fois le jeu et Discord si vos comptes sont liés. \nLes accords privés appartiennent toujours aux messages directs et non au lobby public.';
 
   @override
   String get helpTopicInventoryCategory => 'Gestion';
@@ -20151,4 +20159,22 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get helpTopicProfileTips =>
       'Utilisez un gros plan net de votre visage ; les lunettes de soleil, les photos de groupe ou les filtres épais donnent un portrait plus faible. \nVous n\'avez plus de crédits ? Commencez par changer un préréglage gratuit. Les portraits en selfie sont une perte de crédit, pas une exigence. \nSupprimez un portrait qui enfreint les règles ; le personnel peut supprimer des portraits personnalisés.';
+
+  @override
+  String get helpTopicModOpsCategory => 'Sociale';
+
+  @override
+  String get helpTopicModOpsTitle => 'Mod et Ops';
+
+  @override
+  String get helpTopicModOpsSummary =>
+      'Manuel pour les mods et les opérations : supprimez les messages, coupez le son des joueurs, lisez les rapports et les mêmes outils sur Discord. Les joueurs réguliers appuient longuement sur un message pour le signaler.';
+
+  @override
+  String get helpTopicModOpsHow =>
+      'Un super-administrateur vous définit sur Mod ou Ops sur Admin → Joueurs. Vous continuez à jouer sur le même compte. Pas de deuxième mot de passe. \nOuvrez Social → Chat mondial. Une puce dorée Mod ou Ops se trouve dans l’en-tête. Les autres joueurs voient ce badge à côté de votre nom, y compris sur vos propres bulles. \nAppuyez longuement sur le message de quelqu\'un d\'autre. Le menu propose Supprimer pour tout le monde, Muet 15 min, Muet 1 heure, Réactiver le son ou Rapport. Il n’y a pas de bouton de portée flottant : il réside dans ce menu à pression longue. \nUn appui long sur vos propres bulles vertes supprime uniquement votre ligne (environ 10 minutes). La mise en sourdine et la suppression pour tout le monde ne relèvent pas de votre propre bulle. \nLe drapeau dans l\'en-tête ouvre la liste des rapports. Ce sont des messages signalés par les joueurs. Gérez-les dans le chat : appuyez longuement pour supprimer ou désactiver le son. \nMuet 15 minutes est un avertissement. Muet 1 heure si ça continue. Réactiver le son le soulève. Un muet frappe le jeu et Discord si ce compte est lié. \nVous ne pouvez pas désactiver un autre Mod ou Ops. Les bannissements, l\'argent, le rang ou le VIP restent Super-admin. \nDiscord : associez Discord dans Paramètres. Les messages du jeu affichent [Ops] ou [Mod] sur le nom. Répondez avec !wis pour supprimer dans le jeu et sur Discord. !mute nomme 15 ou 60 sourdines. !unmute name le soulève. !hulp répertorie les commandes. \nSite d\'administration admin.themobstate.com : connectez-vous avec votre compte de jeu. Le mod ne voit que le chat mondial. Ops voit le chat mondial, les billets et les joueurs (lire). Pas de configuration, pas de bouton d\'interdiction, pas d\'outils financiers. \nJoueurs réguliers : appuyez longuement sur le message de quelqu’un d’autre et choisissez Signaler. C\'est la seule façon de l\'envoyer au personnel.';
+
+  @override
+  String get helpTopicModOpsTips =>
+      'Lisez d’abord les rapports, puis supprimez ou désactivez uniquement ce qui n’appartient pas au lobby. \nTapez !hulp sur Discord si vous oubliez les commandes. La discorde doit être liée dans le jeu. \nCe n\'est pas un compte policier : vous jouez toujours, vous ne faites que suivre le chat mondial.';
 }

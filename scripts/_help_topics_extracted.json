@@ -378,6 +378,94 @@
     "protocolPath": "docs/module-protocols/messages.md"
   },
   {
+    "id": "world-chat",
+    "icon": "Icons.public",
+    "categoryNl": "Sociaal",
+    "categoryEn": "Social",
+    "titleNl": "Wereldchat",
+    "titleEn": "World chat",
+    "summaryNl": "Eén open lobby voor alle spelers. Houd een bericht van iemand anders ingedrukt om het te melden. Stickers, filter en optioneel Discord horen erbij.",
+    "summaryEn": "One public lobby for every player. Long-press someone else’s message to report it. Stickers, a swear filter and optional Discord are included.",
+    "howNl": [
+      "Open Wereldchat onder Sociaal. Iedereen die is ingelogd kan lezen en sturen, ook vanuit de cel.",
+      "Er is geen aparte Melden-knop in beeld. Houd een bericht van iemand anders ingedrukt tot het menu opent, en kies Melden. Misbruik van meldingen kan worden bestraft.",
+      "Houd je eigen bericht ingedrukt om het tot ongeveer 10 minuten te verwijderen.",
+      "Enter verstuurt; Shift+Enter maakt een nieuwe regel. Stickers staan naast het invoerveld — geen eigen plaatjes.",
+      "Scheldwoorden in de speltalen worden op de server gefilterd. Mods en Ops herken je aan een badge naast hun naam.",
+      "Geen credit-muur. Privéberichten en crew-chat blijven apart.",
+      "Als een speler wordt opgepakt, verschijnt een Gevangenis-regel met die naam. Koopt of haalt een andere speler diegene eruit, dan staan beide namen erbij. Eigen borg of eigen ontsnapping blijft uit de lobby.",
+      "Als Discord gekoppeld is, spiegelt dezelfde lobby naar een Discord-kanaal. Berichten van Discord krijgen in de game een Discord-label.",
+      "Ben je zelf Mod of Ops: open in Help het onderwerp Mod en Ops, of tik op de gouden i in Wereldchat voor de staff-handleiding."
+    ],
+    "howEn": [
+      "Open World chat under Social. Everyone who is logged in can read and send, including from jail.",
+      "There is no separate Report button on screen. Long-press someone else’s message until the menu opens, then tap Report. Abuse of reports can be punished.",
+      "Long-press your own message to delete it for about 10 minutes.",
+      "Enter sends; Shift+Enter starts a new line. Stickers sit next to the composer — no image uploads.",
+      "Swear words in the game languages are filtered on the server. Mods and Ops show a badge next to their name.",
+      "There is no credit paywall. Direct messages and crew chat stay separate.",
+      "When a player is arrested, World chat shows a Prison system line with their name. If another player buys them out or breaks them out, both names appear. Paying your own bail or escaping yourself stays off the lobby.",
+      "When Discord is linked, the same lobby is mirrored to a Discord channel. Messages from Discord show a Discord tag in-game.",
+      "If you are Mod or Ops: open Help → Mod and Ops, or tap the gold i on World chat for the staff handbook."
+    ],
+    "tipsNl": [
+      "Zie je iets ongepasts: houd dat bericht ingedrukt en kies Melden. De staf krijgt het in hun meldingenlijst.",
+      "Blijf fatsoenlijk: een mute geldt in de game én op Discord als je accounts gekoppeld zijn.",
+      "Privé-deals horen in privéberichten, niet in de open lobby."
+    ],
+    "tipsEn": [
+      "See something out of line: long-press that message and choose Report. Staff get it in their report list.",
+      "Keep it civil: a mute hits both the game and Discord if your accounts are linked.",
+      "Private deals still belong in direct messages, not the public lobby."
+    ],
+    "protocolPath": "docs/module-protocols/global-chat.md"
+  },
+  {
+    "id": "mod-ops",
+    "icon": "Icons.shield_outlined",
+    "categoryNl": "Sociaal",
+    "categoryEn": "Social",
+    "titleNl": "Mod en Ops",
+    "titleEn": "Mod and Ops",
+    "summaryNl": "Handleiding voor Mods en Ops: berichten wissen, spelers muten, meldingen lezen, en dezelfde tools in Discord. Gewone spelers houden een bericht ingedrukt om te melden.",
+    "summaryEn": "Handbook for Mods and Ops: remove messages, mute players, read reports, and the same tools on Discord. Regular players long-press a message to report it.",
+    "howNl": [
+      "Super-admin zet je op Mod of Ops via Admin → Spelers. Daarna speel je gewoon verder met hetzelfde account. Geen tweede wachtwoord.",
+      "Open Sociaal → Wereldchat. Bovenin staat een gouden chip Mod of Ops. Andere spelers zien die badge naast je naam, ook op je eigen berichten.",
+      "Houd een bericht van iemand anders ingedrukt. In het menu: Voor iedereen wissen, Mute 15 min, Mute 1 uur, Unmute, of Melden. Er is geen zwevende staff-knop: het zit in dat lang-indruk-menu.",
+      "Je eigen groene berichten lang indrukken wist alleen jouw regel (ongeveer 10 minuten). Mute en wissen-voor-iedereen zitten niet op je eigen bubbel.",
+      "Het vlaggetje bovenin opent de meldingenlijst. Daar staan berichten die spelers hebben gemeld. Handel ze af in de chat: wissen of muten via lang indrukken.",
+      "Mute 15 minuten is een waarschuwing. Mute 1 uur als het aanhoudt. Unmute haalt het weer weg. Een mute geldt in de game én op Discord als dat account gekoppeld is.",
+      "Je kunt geen andere Mod of Ops muten. Bannen, geld, rank of VIP wijzigen blijft Super-admin.",
+      "Discord: koppel Discord in Instellingen. Berichten uit de game tonen [Ops] of [Mod] bij de naam. Beantwoord een bericht met !wis om het in game en Discord te wissen. !mute naam 15 of 60 dempt. !unmute naam haalt dat weg. !hulp toont de commando's.",
+      "Admin-site admin.themobstate.com: log in met je spelaccount. Mod ziet alleen Wereldchat. Ops ziet Wereldchat, Tickets en Spelers (lezen). Geen config, geen ban-knop, geen geld zetten.",
+      "Gewone spelers: houd een bericht van iemand anders ingedrukt en kies Melden. Dat is de enige manier om iets bij de staf te krijgen."
+    ],
+    "howEn": [
+      "A Super-admin sets you to Mod or Ops on Admin → Players. You keep playing on the same account. No second password.",
+      "Open Social → World chat. A gold Mod or Ops chip sits in the header. Other players see that badge next to your name, including on your own bubbles.",
+      "Long-press someone else’s message. The menu has Remove for everyone, Mute 15 min, Mute 1 hour, Unmute, or Report. There is no floating staff button: it lives in that long-press menu.",
+      "Long-pressing your own green bubbles only deletes your line (about 10 minutes). Mute and remove-for-everyone are not on your own bubble.",
+      "The flag in the header opens the report list. Those are messages players reported. Handle them in chat: long-press to delete or mute.",
+      "Mute 15 minutes is a warning. Mute 1 hour if it continues. Unmute lifts it. A mute hits the game and Discord if that account is linked.",
+      "You cannot mute another Mod or Ops. Bans, money, rank or VIP stay Super-admin.",
+      "Discord: link Discord in Settings. Game posts show [Ops] or [Mod] on the name. Reply with !wis to delete in-game and on Discord. !mute name 15 or 60 mutes. !unmute name lifts it. !hulp lists the commands.",
+      "Admin site admin.themobstate.com: sign in with your game account. Mod only sees World chat. Ops sees World chat, Tickets and Players (read). No config, no ban button, no money tools.",
+      "Regular players: long-press someone else’s message and choose Report. That is the only way to send it to staff."
+    ],
+    "tipsNl": [
+      "Lees eerst de meldingen, wis of mute daarna alleen wat écht niet in de lobby hoort.",
+      "Zeg in Discord !hulp als je de commando's even kwijt bent. Discord moet in het spel gekoppeld zijn.",
+      "Dit is geen politie-account: je speelt mee, je ruimt alleen de wereldchat op."
+    ],
+    "tipsEn": [
+      "Read reports first, then delete or mute only what does not belong in the lobby.",
+      "Type !hulp on Discord if you forget the commands. Discord must be linked in the game.",
+      "This is not a cop account: you still play, you only keep world chat in line."
+    ],
+    "protocolPath": "docs/module-protocols/staff-roles.md"
+  },
+  {
     "id": "inventory",
     "icon": "Icons.inventory",
     "categoryNl": "Beheer",
