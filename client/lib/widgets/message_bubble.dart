@@ -175,20 +175,26 @@ class MessageBubble extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     // Sender info (for group chats)
-                    if (showSenderInfo && !isMe && senderName != null) ...[
+                    if (showSenderInfo &&
+                        ((senderName != null && senderName!.isNotEmpty) ||
+                            (staffBadge != null && staffBadge!.isNotEmpty)) &&
+                        (!isMe || (staffBadge != null && staffBadge!.isNotEmpty))) ...[
                       Row(
                         children: [
-                          GestureDetector(
-                            onTap: senderId != null ? openSenderProfile : null,
-                            child: Text(
-                              senderName!,
-                              style: TextStyle(
-                                color: _getColorForName(senderName!),
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
+                          if (senderName != null && senderName!.isNotEmpty)
+                            GestureDetector(
+                              onTap: senderId != null ? openSenderProfile : null,
+                              child: Text(
+                                senderName!,
+                                style: TextStyle(
+                                  color: isMe
+                                      ? Colors.white
+                                      : _getColorForName(senderName!),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                          ),
                           if (senderRank != null) ...[
                             const SizedBox(width: 4),
                             Container(
@@ -214,11 +220,13 @@ class MessageBubble extends StatelessWidget {
                             const SizedBox(width: 6),
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 5,
-                                vertical: 1,
+                                horizontal: 6,
+                                vertical: 2,
                               ),
                               decoration: BoxDecoration(
-                                color: const Color(0x33FFB347),
+                                color: isMe
+                                    ? const Color(0xFFFFB347)
+                                    : const Color(0x33FFB347),
                                 borderRadius: BorderRadius.circular(3),
                                 border: Border.all(
                                   color: const Color(0xFFFFB347),
@@ -226,9 +234,11 @@ class MessageBubble extends StatelessWidget {
                               ),
                               child: Text(
                                 staffBadge!,
-                                style: const TextStyle(
-                                  color: Color(0xFFFFB347),
-                                  fontSize: 9,
+                                style: TextStyle(
+                                  color: isMe
+                                      ? const Color(0xFF1A0F0A)
+                                      : const Color(0xFFFFB347),
+                                  fontSize: 10,
                                   fontWeight: FontWeight.w800,
                                   letterSpacing: 0.4,
                                 ),

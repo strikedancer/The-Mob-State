@@ -4,7 +4,7 @@
 A player account can be given `staffRole` `NONE` (default), `MOD`, or `OPS`. Super-admins assign this on Admin → Players. Mods and Ops keep playing with their normal account. They can also sign in at admin.themobstate.com with that same game username and password. No second admin password. Super-admin table accounts stay separate.
 
 ## In the game
-- World chat badge next to the name (`Mod` / `Ops`).
+- World chat badge next to the name (`Mod` / `Ops`), including on your own bubbles.
 - Long-press another world-chat message: delete for everyone, mute 15 min / 1 hour, unmute.
 - Staff can open the report list from the world-chat header.
 - No crew-chat or DM moderation in this pass. No permanent ban from the game UI.
@@ -31,7 +31,7 @@ A player account can be given `staffRole` `NONE` (default), `MOD`, or `OPS`. Sup
 - Clearing House runtime stays 3. Event Pass qty stays 1.
 
 ## QA
-1. Super-admin sets a player to Mod. That player sees a badge and can delete someone else's world-chat line.
+1. Super-admin sets a player to Mod. That player sees a badge on their own world-chat lines and on other players' views of those lines, and can delete someone else's world-chat line.
 2. The same player logs into admin.themobstate.com with the game password and only sees World chat.
 3. Change the role to Ops: Tickets and Players appear; Manage / money / ban stay hidden.
 4. A player with `NONE` cannot open staff routes (403) and cannot log into admin.

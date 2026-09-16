@@ -521,6 +521,16 @@ class _WorldChatScreenState extends State<WorldChatScreen> {
             fallbackIcon: Icons.public,
             onRefresh: _loading ? null : _loadMessages,
             refreshEnabled: !_loading,
+            chips: _isStaff
+                ? [
+                    EmpireStatChip(
+                      icon: Icons.shield_outlined,
+                      label: _viewerStaffRole == 'OPS'
+                          ? l10n.worldChatStaffOps
+                          : l10n.worldChatStaffMod,
+                    ),
+                  ]
+                : const [],
             actions: _isStaff
                 ? [
                     IconButton(
@@ -636,6 +646,10 @@ class _WorldChatScreenState extends State<WorldChatScreen> {
           return _SystemChatLine(message: message);
         }
         final isOwn = playerId != null && message.playerId == playerId;
+        final staffRole = message.staffRole ??
+            (isOwn && (_viewerStaffRole == 'MOD' || _viewerStaffRole == 'OPS')
+                ? _viewerStaffRole
+                : null);
         return MessageBubble(
           message: message.message,
           time: message.formattedTime,
@@ -646,9 +660,9 @@ class _WorldChatScreenState extends State<WorldChatScreen> {
           stickerEmoji: message.stickerEmoji ??
               globalChatStickerById(message.stickerId)?.emoji,
           sourceLabel: message.source == 'discord' ? l10n.worldChatFromDiscord : null,
-          staffBadge: message.staffRole == 'OPS'
+          staffBadge: staffRole == 'OPS'
               ? l10n.worldChatStaffOps
-              : message.staffRole == 'MOD'
+              : staffRole == 'MOD'
                   ? l10n.worldChatStaffMod
                   : null,
           onLongPress: () => _onLongPress(message, isOwn),

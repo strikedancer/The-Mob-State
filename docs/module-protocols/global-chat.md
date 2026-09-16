@@ -63,7 +63,7 @@ Player OAuth stays `identify` + `email` only. The chat bot is a separate token.
 2. Filter replaces blocked words with `***` instead of rejecting the whole line.
 3. Own delete within 10 minutes; later delete fails.
 4. Report someone else’s line; it shows in Admin.
-5. Mute blocks send with `GLOBAL_CHAT_MUTED`. A Mod/Ops badge appears on their lines; they can delete another player's line and mute from long-press.
+5. Mute blocks send with `GLOBAL_CHAT_MUTED`. A Mod/Ops badge appears on their lines, including their own bubbles; they can delete another player's line and mute from long-press.
 6. Live-event rail hidden on the screen; Enter sends.
 7. Without Discord env, in-game chat still works.
 8. With webhook only: game posts appear in Discord; Discord replies do not enter the game until bot+channel are set.

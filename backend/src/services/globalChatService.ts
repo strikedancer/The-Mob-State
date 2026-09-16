@@ -3,7 +3,7 @@ import { eventBroadcaster } from './eventBroadcaster';
 import { filterProfanity, parseExtraBlocklist } from '../utils/profanityFilter';
 import { getGlobalChatSticker, isGlobalChatStickerId } from '../data/globalChatStickers';
 import { globalChatDiscordBridge } from './globalChatDiscordBridge';
-import { isPlayerStaff, normalizeStaffRole, type PlayerStaffRole } from '../utils/staffRole';
+import { isPlayerStaff, normalizeStaffRole, asPlayerId, type PlayerStaffRole } from '../utils/staffRole';
 
 const MAX_BODY = 200;
 const HISTORY_LIMIT = 100;
@@ -69,6 +69,14 @@ function publicStaffRole(raw: unknown): 'MOD' | 'OPS' | null {
   return isPlayerStaff(role) ? role : null;
 }
 
+function staffRoleOf(
+  roles: Map<number, PlayerStaffRole>,
+  playerId: unknown,
+): PlayerStaffRole | undefined {
+  const id = asPlayerId(playerId);
+  return id == null ? undefined : roles.get(id);
+}
+
 function toPublic(
   row: {
     id: number;
@@ -96,15 +104,17 @@ function toPublic(
 }
 
 async function staffRolesByPlayerIds(playerIds: Array<number | null | undefined>): Promise<Map<number, PlayerStaffRole>> {
-  const ids = [...new Set(playerIds.filter((id): id is number => Number.isInteger(id) && (id as number) > 0))];
+  const ids = [...new Set(playerIds.map(asPlayerId).filter((id): id is number => id != null))];
   const roles = new Map<number, PlayerStaffRole>();
   if (ids.length === 0) return roles;
-  const rows = await prisma.$queryRawUnsafe<Array<{ id: number; staffRole: string }>>(
+  const rows = await prisma.$queryRawUnsafe<Array<{ id: unknown; staffRole: unknown }>>(
     `SELECT id, staffRole FROM players WHERE id IN (${ids.map(() => '?').join(',')})`,
     ...ids,
   );
   for (const row of rows) {
-    roles.set(row.id, normalizeStaffRole(row.staffRole));
+    const id = asPlayerId(row.id);
+    if (id == null) continue;
+    roles.set(id, normalizeStaffRole(row.staffRole));
   }
   return roles;
 }
@@ -157,7 +167,7 @@ async function persistAndFanout(input: {
     },
   });
   const roles = await staffRolesByPlayerIds([input.playerId]);
-  const publicMessage = toPublic(row, input.playerId ? roles.get(input.playerId) : null);
+  const publicMessage = toPublic(row, staffRoleOf(roles, input.playerId));
   broadcastMessage(publicMessage);
   if (input.mirrorToDiscord) {
     void globalChatDiscordBridge.mirrorGameMessage(publicMessage);
@@ -174,7 +184,7 @@ export const globalChatService = {
       take,
     });
     const roles = await staffRolesByPlayerIds(rows.map((row) => row.playerId));
-    return rows.reverse().map((row) => toPublic(row, row.playerId ? roles.get(row.playerId) : null));
+    return rows.reverse().map((row) => toPublic(row, staffRoleOf(roles, row.playerId)));
   },
 
   async sendFromPlayer(
@@ -368,7 +378,7 @@ export const globalChatService = {
       discord: globalChatDiscordBridge.status(),
       messages: await (async () => {
         const roles = await staffRolesByPlayerIds(messages.map((row) => row.playerId));
-        return messages.map((row) => toPublic(row, row.playerId ? roles.get(row.playerId) : null));
+        return messages.map((row) => toPublic(row, staffRoleOf(roles, row.playerId)));
       })(),
       reports,
       mutes: mutes.map((mute) => ({
@@ -407,7 +417,7 @@ export const globalChatService = {
           reporterId: row.reporterId,
           createdAt: row.createdAt.toISOString(),
           message: message
-            ? toPublic(message, message.playerId ? roles.get(message.playerId) : null)
+            ? toPublic(message, staffRoleOf(roles, message.playerId))
             : null,
         };
       }),

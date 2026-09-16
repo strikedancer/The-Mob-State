@@ -12,3 +12,15 @@ export function isPlayerStaff(raw: unknown): raw is 'MOD' | 'OPS' {
   const value = normalizeStaffRole(raw);
   return value === 'MOD' || value === 'OPS';
 }
+
+export function asPlayerId(value: unknown): number | null {
+  if (typeof value === 'bigint') {
+    const n = Number(value);
+    return Number.isSafeInteger(n) && n > 0 ? n : null;
+  }
+  if (typeof value === 'number') {
+    return Number.isInteger(value) && value > 0 ? value : null;
+  }
+  const n = Number(value);
+  return Number.isInteger(n) && n > 0 ? n : null;
+}
