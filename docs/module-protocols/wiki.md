@@ -44,7 +44,7 @@ This is a catalogue and typical-relative guide, not live Black Market quotes. St
 6. Help button and landing footer open the matching locale home.
 7. Changing a file under `backend/content/` on the VPS rebuilds HTML without a wiki image rebuild (container logs show `wiki: rebuilding`).
 8. `/{lang}/guide/` lists every Help topic; `/guide/don/` covers rackets, loans, officials and contracts; `/guide/profile/` covers public profile, preset avatars and selfie portraits.
-9. Header search on any page finds Don, handbook topics and catalog items via `/{lang}/search.json`.
+9. Header search on any page finds Don, handbook topics and catalog items via `/{lang}/search.json`. After changing `wiki/src/client.js` or `theme.css`, bump `ASSET_V` in `layout.mjs` so browsers skip the 7-day static cache.
 
 ## i18n and Messaging
 - Wiki UI: `wiki/src/i18n.mjs`

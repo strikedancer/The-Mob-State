@@ -1,5 +1,8 @@
 import { LANGS, LANG_LABEL, ui } from './i18n.mjs';
 
+/** Query-bust CSS/JS; nginx caches those files for 7 days. */
+const ASSET_V = '20260916';
+
 export function esc(value) {
   return String(value ?? '')
     .replace(/&/g, '&amp;')
@@ -74,7 +77,7 @@ export function page({ lang, title, path, hero, crumbs, body, description }) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/theme.css">
+  <link rel="stylesheet" href="/theme.css?v=${ASSET_V}">
 </head>
 <body>
   <a class="skip" href="#main">Skip</a>
@@ -100,7 +103,7 @@ export function page({ lang, title, path, hero, crumbs, body, description }) {
     ${body}
   </main>
   <footer class="footer">${esc(ui(lang, 'footer'))}</footer>
-  <script src="/client.js"></script>
+  <script src="/client.js?v=${ASSET_V}"></script>
 </body>
 </html>`;
 }
