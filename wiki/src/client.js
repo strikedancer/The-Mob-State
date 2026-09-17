@@ -235,7 +235,7 @@ function clip(value, max) {
 }
 
 function pickAnswer(entry, tokens) {
-  const blob = `${entry.snippet || ''} ${entry.answer || ''}`.replace(/\s+/g, ' ').trim();
+  const blob = `${entry.snippet || ''} ${entry.answer || ''} ${entry.text || ''}`.replace(/\s+/g, ' ').trim();
   if (!blob) return entry.title || '';
   const sentences = blob
     .split(/(?<=[.!?])\s+/)

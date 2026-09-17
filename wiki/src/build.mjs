@@ -935,9 +935,9 @@ function writeSearchIndexes() {
           href,
           title: pageTitle || unesc((html.match(/<title>([^<]+)/)?.[1] || '').split(' · ')[0]),
           snippet: snippet.slice(0, 180),
-          answer: answer.slice(0, 900),
+          answer: answer.slice(0, 8000),
           kind,
-          text: text.slice(0, 5000),
+          text: text.slice(0, 24000),
         });
       }
     };

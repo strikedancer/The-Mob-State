@@ -29,7 +29,7 @@ This is a catalogue and typical-relative guide, not live Black Market quotes. St
 - Almanac -> Marketing web (footer + SEO subdomain)
 - Almanac -> Help & Uitleg (CTA + published handbook pages from `app_*.arb` / `help_content.dart`)
 - Almanac -> Prostitution / Red Light Districts (`/{lang}/guide/prostitution/` and `/{lang}/guide/red-light-districts/`): room upgrades, occupancy heat, events, steal/reclaim, contest phases. Those sentences must land in `/{lang}/search.json` so header search and Ask the Almanac find them.
-- Almanac -> Territory / Crew (`/{lang}/guide/territory/` and `/{lang}/guide/crew/`): HQ reserve vs frontline arms cache, ammo spend, weapon wear, type match, long supply tax, loot/burn on region loss, personal inventory does not count. Those sentences must land in `/{lang}/search.json` so header search and Ask the Almanac find them.
+- Almanac -> Territory / Crew (`/{lang}/guide/territory/` and `/{lang}/guide/crew/`): HQ reserve vs frontline arms cache, ammo spend, weapon wear, type match, long supply tax, loot/burn on region loss, personal inventory does not count. Those sentences must land in `/{lang}/search.json` so header search and Ask the Almanac find them. `writeSearchIndexes` keeps handbook `answer` (8000) and page `text` (24000); Ask the Almanac scores snippet + answer + text. Do not shrink those slices without checking that `/guide/territory/` still matches “wapendepot” / “frontline arsenal”.
 - Almanac -> Player Profile / Player Portraits (guide topic `profile`)
 - Almanac -> Balance & Economy (do not leak live economy; typical factors only)
 

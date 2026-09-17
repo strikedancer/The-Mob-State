@@ -1,7 +1,7 @@
 import { LANGS, LANG_LABEL, ui } from './i18n.mjs';
 
 /** Query-bust CSS/JS; nginx caches those files for 7 days. */
-const ASSET_V = '20260916c';
+const ASSET_V = '20260917a';
 
 export function esc(value) {
   return String(value ?? '')
