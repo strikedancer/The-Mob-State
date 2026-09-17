@@ -352,6 +352,12 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
     final district = _currentCountryDistrict!;
     final isAvailable = district.ownerId == null;
     final hasStats = district.stats != null;
+    final occupiedRoomsLabel = hasStats
+        ? '${district.stats!.occupiedRooms}'
+        : l10n.prostitutionNotApplicable;
+    final totalRooms = hasStats
+        ? district.stats!.totalRooms
+        : district.roomCount;
 
     return SingleChildScrollView(
       child: Padding(
@@ -479,7 +485,7 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          '${hasStats ? district.stats!.occupiedRooms : l10n.prostitutionNotApplicable} / 3.000.000',
+                          '$occupiedRoomsLabel / $totalRooms',
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,

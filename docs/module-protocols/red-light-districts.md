@@ -24,6 +24,7 @@ District ownership, country-level expansion and prostitution territory progressi
 ## Must Preserve
 - Politieraids lopen via de tick (`checkAndExecuteRaid`) bij FBI-heat ≥ 50, beïnvloed door bezetting en events.
 - Nieuwe aankoop start met 4 kamers; extra kamers alleen via expansion-upgrade. Bestaande kamers niet uitzetten.
+- Occupancy on Current RLD is `occupied / total` from district stats (`roomCount`, start 4, max 20 at expansion 8). Never a hardcoded millions placeholder.
 - PvP: recruit stelen (straat, 12u terughalen) en zeldzame 1v1 district-contest. Geen Territory-kaart.
 - Client-copy in alle allowlist-talen; Help topics `prostitution` en `red-light-districts` voeden de Almanak-handleiding.
 - Clear success and failure feedback for the player.
@@ -52,6 +53,7 @@ District ownership, country-level expansion and prostitution territory progressi
 - Verify `/red-light-districts/country/{currentCountry}` returns a district after fresh/empty database startup (no persistent 404 due to missing seed rows).
 - Verify tier/security upgrade confirm → success/failure snackbar → refreshed levels.
 - Verify raid stats panel loads when player owns districts (or shows zeros safely).
+- Verify Current RLD occupancy is occupied/total rooms of that district (e.g. `2 / 4`), not `… / 3.000.000`.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.
