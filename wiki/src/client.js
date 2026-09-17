@@ -244,12 +244,18 @@ function pickAnswer(entry, tokens) {
   const scored = sentences
     .map((sentence) => {
       const lower = sentence.toLowerCase();
-      const hits = tokens.filter((t) => lower.includes(t)).length;
-      return { sentence, hits };
+      const matched = tokens.filter((t) => lower.includes(t));
+      return {
+        sentence,
+        hits: matched.length,
+        weight: matched.reduce((sum, token) => sum + token.length, 0),
+      };
     })
-    .sort((a, b) => b.hits - a.hits || b.sentence.length - a.sentence.length);
-  const chosen = (scored[0]?.hits ? scored.filter((s) => s.hits === scored[0].hits).slice(0, 2) : scored.slice(0, 2))
-    .map((s) => s.sentence)
+    .sort((a, b) => b.hits - a.hits || b.weight - a.weight || b.sentence.length - a.sentence.length);
+  const chosen = scored
+    .filter((row) => row.hits > 0)
+    .slice(0, 2)
+    .map((row) => row.sentence)
     .join(' ');
   return clip(chosen || blob, 420);
 }
