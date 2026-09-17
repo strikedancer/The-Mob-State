@@ -117,7 +117,7 @@ Scope-afbakening:
 
 ### Raid loot, sabotage and peacetime deals
 - `raid` steals from the **enemy crew storage** during an active war only (not peacetime, not personal inventory). The actor picks one loot type: cash, car/moto, boat, weapons, ammo, drugs or trade goods. Take is partial, must fit attacker storage, or the action fails. A successful `crew_shield` in the last 75 minutes reduces loot (~40%). Cash cap stays €75k / 8% of bank.
-- `attack_sabotage` can drop **one side building** (not HQ) by one level per building per war, never below level 1. Surplus over the new cap stays; deposits block until they rebuild. Shield can block the level drop but still awards the action. Building visual style follows the new level tier.
+- `attack_sabotage` can drop **one side building** (not HQ) by one level per building per war, never below level 1. Surplus over the new cap stays; deposits block until they rebuild. Shield can block the level drop but still awards the action. Building visual style follows the new level tier. The sabotage lookup must use `input.warId` (a bare `warId` identifier 500s the War Room action).
 - Crew storage deals (`/crew-deals`) are **peacetime escrow**: leader/co-leader only. Goods leave storage immediately, the other crew adds their side, both confirm, then swap. Cancel, ~2h timeout or no capacity rolls everything back.
 
 Elke action vereist:

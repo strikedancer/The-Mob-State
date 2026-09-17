@@ -1282,9 +1282,13 @@ type AircraftDef = z.infer<typeof aircraftSchema>;
 const readAircraftFile = async (): Promise<AircraftDef[]> => {
   try {
     const content = await fs.readFile(aircraftFilePath, 'utf-8');
-    const parsed = JSON.parse(content);
+    const parsed = JSON.parse(content.replace(/^\uFEFF/, '').trim());
     return Array.isArray(parsed) ? parsed : [];
   } catch (error) {
+    if (error instanceof SyntaxError) {
+      console.warn('Aircraft catalog JSON is invalid; using empty list until the file is repaired.');
+      return [];
+    }
     console.error('Error reading aircraft file:', error);
     return [];
   }
@@ -1950,7 +1954,7 @@ router.get('/players', async (req, res) => {
     const where: Prisma.PlayerWhereInput = search
       ? {
           OR: [
-            { username: { contains: search, mode: 'insensitive' } },
+            { username: { contains: search } },
             ...(Number.isFinite(Number(search)) ? [{ id: Number(search) }] : []),
           ],
         }
@@ -2548,8 +2552,8 @@ router.get('/players/:playerId/recent-activities', async (req, res) => {
       ...(search
         ? {
             OR: [
-              { activityType: { contains: search, mode: 'insensitive' } },
-              { description: { contains: search, mode: 'insensitive' } },
+              { activityType: { contains: search } },
+              { description: { contains: search } },
             ],
           }
         : {}),
@@ -2654,8 +2658,8 @@ router.get('/players/:playerId/recent-activities/export', async (req, res) => {
       ...(search
         ? {
             OR: [
-              { activityType: { contains: search, mode: 'insensitive' } },
-              { description: { contains: search, mode: 'insensitive' } },
+              { activityType: { contains: search } },
+              { description: { contains: search } },
             ],
           }
         : {}),

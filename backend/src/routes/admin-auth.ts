@@ -233,6 +233,10 @@ router.get('/me', async (req, res) => {
 
     res.json({ admin });
   } catch (error) {
+    const name = error instanceof Error ? error.name : '';
+    if (name === 'TokenExpiredError' || name === 'JsonWebTokenError' || name === 'NotBeforeError') {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
     console.error('Get admin error:', error);
     res.status(401).json({ error: 'Invalid token' });
   }

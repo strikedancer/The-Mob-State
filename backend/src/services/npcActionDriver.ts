@@ -166,6 +166,16 @@ async function tryContinueTravel(npcId: number, playerId: number): Promise<boole
     );
     return true;
   } catch (error) {
+    const reason = error instanceof Error ? error.message : '';
+    if (
+      reason === 'JAILED_IN_TRANSIT' ||
+      reason === 'NOT_IN_TRANSIT' ||
+      reason === 'JOURNEY_COMPLETE' ||
+      reason === 'INVALID_ROUTE' ||
+      reason === 'COOLDOWN_ACTIVE'
+    ) {
+      return false;
+    }
     console.error('[NPC live] Continue travel failed:', error);
     return false;
   }

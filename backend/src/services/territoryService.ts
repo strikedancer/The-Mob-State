@@ -12,6 +12,7 @@ import {
   computeTerritoryRegionCaps,
   garrisonMaxActiveForRegionCap,
 } from './territoryRegionCaps';
+import { withPrismaWriteRetry } from '../lib/prismaRetry';
 
 // ---------------------------------------------------------------------------
 // Territory Service
@@ -1212,7 +1213,7 @@ async function processPassiveTerritoryIncome(
   }
 
   for (const [ownerCrewId, crewPayout] of payoutsByCrew.entries()) {
-    await prisma.$transaction(async (tx) => {
+    await withPrismaWriteRetry(() => prisma.$transaction(async (tx) => {
       const cashCapacity = await getCrewStorageCapacity(ownerCrewId, 'cash_storage');
       const crew = await tx.crew.findUnique({
         where: { id: ownerCrewId },
@@ -1269,7 +1270,7 @@ async function processPassiveTerritoryIncome(
           ownerCrewId,
         );
       }
-    });
+    }));
   }
 }
 

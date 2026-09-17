@@ -460,7 +460,7 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 - **HQ & Upgrades visuals**: bijgebouw-afbeeldingen volgen altijd de level-tier van het bijgebouw zelf (niet de actuele HQ-stijl), zodat visuals en levelstatus consistent blijven.
 
 ### Crew Wars
-- Crew Wars lopen via de **War Room** in het crew-scherm. Alleen leaders kunnen een war declareren. Het leden-minimum is runtime (`CREW_WAR_MIN_MEMBERS`, code-default **1** voor de startpopulatie; later via Admin → Crew Wars op 3 of hoger).
+- Crew Wars lopen via de **War Room** in het crew-scherm. Alleen leaders kunnen een war declareren. Het leden-minimum is runtime (`CREW_WAR_MIN_MEMBERS`, code-default **1** voor de startpopulatie; later via Admin → Crew Wars op 3 of hoger). Sabotage van een vijandelijk bijgebouw mag de actie niet laten crashen.
 - Na een afgelopen war geldt een cooldown (code-default 8 uur, `CREW_WAR_COOLDOWN_HOURS` in Admin → Crew Wars). De War Room zegt dan waarom je niet kunt declareren (geen leider, te weinig leden, al in een war, of cooldown) en grijst doelcrews die nog in cooldown zitten.
 - Fases: **preparing** (join, aanvallen starten na `CREW_WAR_PREPARATION_MINUTES`, default 15), **active** (aanvallen, default 24 uur), **lockdown** (geen nieuwe aanvallen, default 30 min). Territory-claim staat alleen bij Territory War en Total War.
 - Discord `#crew-wars` meldt verklaring, start, lockdown en einde met **crew-namen**, war-type, en bij afloop de **winnaar plus stand**. Geen ruwe IDs.
@@ -717,7 +717,7 @@ Er zijn **drie landvoertuig-omgevingen** plus vliegtuigen:
 
 In **Voertuig stelen** kies je Auto / Motor / Boot via de drie lane-cards. Help & Uitleg (gouden `i`) en de Almanak-handleiding hebben voor elk van die omgevingen een eigen hoofdstuk. Admin → Voertuigen toont dezelfde vier catalogi (auto's, motoren, boten, vliegtuigen); nieuw/vies/defect als klikbare thumbs, geen bestandsnamen.
 
-- Bij beschadigde voertuigen in Garage / Motorstalling / Marina staat op de voertuigkaart een contextuele credits-knop voor instant repair; als reparatie nog niet loopt wordt die eerst gestart en meteen daarna afgerond. Een reparatiejob waarvan de auto al weg is (verkocht, gesloopt of in beslag) mag de garage-inventaris niet laten crashen.
+- Bij beschadigde voertuigen in Garage / Motorstalling / Marina staat op de voertuigkaart een contextuele credits-knop voor instant repair; als reparatie nog niet loopt wordt die eerst gestart en meteen daarna afgerond. Een reparatiejob waarvan de auto al weg is (verkocht, gesloopt of in beslag) mag de garage-inventaris niet laten crashen. Hetzelfde geldt als een voertuig in transport intussen is verdwenen: de garage-lijst blijft laden.
 - Voertuigkaarten in Garage / Motorstalling / Marina tonen linksboven op de voertuigfoto een korte **zeldzaamheid-badge** (Gewoon/Ongewoon/Zeldzaam/Episch/Legendarisch).
 
 ---
@@ -1071,7 +1071,7 @@ Bob: â‚¬300K counter-hit
 - Kill-reset zonder actieve Player VIP: volledige progression reset naar baseline (incl. bank/crypto/opleidingen/achievements).
 - Op ondersteunde timeout-schermen (crime, jobs, school, voertuig-, motor- en bootdiefstal) staat een directe `versnel met credits` knop, zodat spelers een actieve cooldown contextueel kunnen resetten zonder eerst naar `Premium & Credits` te navigeren. Die overlays (plus reizen en hoger beroep) gebruiken noir/goud-stills (`/images/cooldown_*.png`).
 - Voor school geldt: een credit-speedup reset alleen de cooldowntimer; XP wordt verdiend bij de trainingsactie zelf. Na reset start je direct een nieuwe training voor extra XP.
-- Bij beschadigde voertuigen in Garage / Motorstalling / Marina staat op de voertuigkaart een contextuele credits-knop voor instant repair; als reparatie nog niet loopt wordt die eerst gestart en meteen daarna afgerond. Een reparatiejob waarvan de auto al weg is (verkocht, gesloopt of in beslag) mag de garage-inventaris niet laten crashen.
+- Bij beschadigde voertuigen in Garage / Motorstalling / Marina staat op de voertuigkaart een contextuele credits-knop voor instant repair; als reparatie nog niet loopt wordt die eerst gestart en meteen daarna afgerond. Een reparatiejob waarvan de auto al weg is (verkocht, gesloopt of in beslag) mag de garage-inventaris niet laten crashen. Hetzelfde geldt als een voertuig in transport intussen is verdwenen: de garage-lijst blijft laden.
 - De instant-repair knop gebruikt een gecombineerd icoon (steeksleutel + bliksem) om de actie visueel duidelijk te maken zonder extra tekstdruk op de kaart.
 - Voertuigkaarten in Garage / Motorstalling / Marina tonen linksboven op de voertuigfoto een korte **zeldzaamheid-badge** (Gewoon/Ongewoon/Zeldzaam/Episch/Legendarisch) zodat je sneller ziet welke voertuigen het waard zijn om te houden of te verkopen.
 - Tijdelijke premium boosts zijn bewust non pay-to-win en capped: kleine utility bonussen voor crime success/payout, hitlist attack/defense en event contribution, zonder event-reward tiers te overrulen.

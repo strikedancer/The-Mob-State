@@ -1,5 +1,6 @@
 import prisma from '../lib/prisma';
 import config from '../config';
+import { withPrismaWriteRetry } from '../lib/prismaRetry';
 
 export type PassivePlayerTickStats = {
   healed: number;
@@ -34,29 +35,35 @@ export async function applyPassivePlayerTickBatch(): Promise<PassivePlayerTickSt
 
   const healed =
     healAmount > 0
-      ? await prisma.$executeRaw`
+      ? await withPrismaWriteRetry(
+          () => prisma.$executeRaw`
           UPDATE players
           SET health = LEAST(100, health + ${healAmount})
           WHERE health > 0 AND health < 100
-        `
+        `,
+        )
       : 0;
 
   const wantedDecayed =
     wantedDecay > 0
-      ? await prisma.$executeRaw`
+      ? await withPrismaWriteRetry(
+          () => prisma.$executeRaw`
           UPDATE players
           SET wantedLevel = GREATEST(0, wantedLevel - ${wantedDecay})
           WHERE wantedLevel > 0
-        `
+        `,
+        )
       : 0;
 
   const fbiHeatDecayed =
     fbiSteps > 0
-      ? await prisma.$executeRaw`
+      ? await withPrismaWriteRetry(
+          () => prisma.$executeRaw`
           UPDATE players
           SET fbiHeat = GREATEST(0, fbiHeat - ${fbiSteps})
           WHERE fbiHeat > 0
-        `
+        `,
+        )
       : 0;
 
   return {

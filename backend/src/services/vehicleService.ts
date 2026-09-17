@@ -4512,20 +4512,17 @@ export const vehicleService = {
       return;
     }
 
-    // Update all arrived vehicles
-    await prisma.$transaction(
-      arrivedVehicles.map((vehicle) =>
-        prisma.vehicleInventory.update({
-          where: { id: vehicle.id },
-          data: {
-            currentLocation: vehicle.transportDestination!,
-            transportStatus: null,
-            transportArrivalTime: null,
-            transportDestination: null,
-          },
-        })
-      )
-    );
+    for (const vehicle of arrivedVehicles) {
+      await prisma.vehicleInventory.updateMany({
+        where: { id: vehicle.id },
+        data: {
+          currentLocation: vehicle.transportDestination!,
+          transportStatus: null,
+          transportArrivalTime: null,
+          transportDestination: null,
+        },
+      });
+    }
   },
 
   /**

@@ -56,17 +56,16 @@ export function auditLog(logData: AuditLogData) {
 
       // Merge static log data with dynamic data from request
       const action = logData.action;
-      const targetType = logData.targetType || req.body.targetType;
+      const targetType = logData.targetType || req.body?.targetType;
       // Try multiple sources for targetId
-      const targetId = logData.targetId || 
-                       req.body.playerId?.toString() ||
-                       req.body.targetId?.toString() || 
+      const targetId = logData.targetId ||
+                       req.body?.playerId?.toString() ||
+                       req.body?.targetId?.toString() ||
                        req.params.id;
       
       // Include request body as details (sanitize sensitive data)
       const details = logData.details || {
-        ...req.body,
-        // Remove sensitive fields
+        ...(req.body && typeof req.body === 'object' ? req.body : {}),
         password: undefined,
         passwordHash: undefined,
       };

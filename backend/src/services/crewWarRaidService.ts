@@ -402,7 +402,7 @@ export async function applyWarSabotage(
 ): Promise<{ metadata: Record<string, unknown> }> {
   const prior = await tx.crewWarAction.findMany({
     where: {
-      warId,
+      warId: input.warId,
       targetCrewId: input.defenderCrewId,
       actionType: 'attack_sabotage',
       result: 'success',
