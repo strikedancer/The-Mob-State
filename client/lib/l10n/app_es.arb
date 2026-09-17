@@ -7934,7 +7934,7 @@
   "crewUiTr32": "Esta acción requiere una jugadora objetivo.",
   "crewUiTr33": "Ya usaste este movimiento con este oponente. Elija a otra persona o espere un poco y vuelva a intentarlo.",
   "crewUiTr34": "Se requiere un jugador VIP para esta acción.",
-  "crewUiTr35": "Se requiere un equipo VIP para esta acción.",
+  "crewUiTr35": "Shield necesita Jugador VIP o Equipo VIP.",
   "crewUiTr36": "Límite de acción alcanzado por ahora.",
   "crewUiTr37": "Enfriamiento activo: espera {remaining} minutos más.",
   "@crewUiTr37": {
@@ -12943,6 +12943,19 @@
       },
       "total": {
         "type": "int"
+      }
+    }
+  },
+  "crewUiLabelMissionOutcome": "Resultado",
+  "crewUiMissionOutcomeSuccess": "Éxito",
+  "crewUiMissionOutcomePartial": "Parcial",
+  "crewUiMissionOutcomeFail": "Fallida",
+  "crewUiMissionFailNoJail": "No te envían a la cárcel. El banco de Crew paga la penalización por fallar y luego comienza el tiempo de reutilización de la misión.",
+  "crewUiMissionFailPenalty": "Penalización por fallar: {amount} del banco de Crew (sin cárcel).",
+  "@crewUiMissionFailPenalty": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
       }
     }
   }

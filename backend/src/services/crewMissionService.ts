@@ -1425,7 +1425,14 @@ export const crewMissionService = {
     const crewXpFactor = outcome === 'success' ? 1 : outcome === 'partial' ? 0.7 : 0;
     const personalXpFactor = outcome === 'success' ? 1 : outcome === 'partial' ? 1 : 0.4;
 
-    const rewardCrewCash = Math.round(baseCash * repeatMultiplier * outcomeFactor);
+    const failPenaltyCash =
+      outcome === 'fail'
+        ? Math.round(baseCash * repeatMultiplier * toFloat(template.failPenaltyPct))
+        : 0;
+    const rewardCrewCash =
+      outcome === 'fail'
+        ? -failPenaltyCash
+        : Math.round(baseCash * repeatMultiplier * outcomeFactor);
     const rewardCrewXp = Math.round(baseCrewXp * repeatMultiplier * crewXpFactor);
     const rewardPersonalXp = Math.round(basePersonalXp * repeatMultiplier * personalXpFactor);
 
@@ -1459,6 +1466,14 @@ export const crewMissionService = {
       rewardPersonalXp,
       run.id
     );
+
+    if (failPenaltyCash > 0) {
+      await prisma.$executeRawUnsafe(
+        `UPDATE crews SET bankBalance = GREATEST(0, bankBalance - ?) WHERE id = ?`,
+        failPenaltyCash,
+        run.crewId
+      );
+    }
 
     const resolvedRun = await this.getRun(playerId, run.id);
 

@@ -463,7 +463,7 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 - **HQ & Upgrades visuals**: bijgebouw-afbeeldingen volgen altijd de level-tier van het bijgebouw zelf (niet de actuele HQ-stijl), zodat visuals en levelstatus consistent blijven.
 
 ### Crew Wars
-- Crew Wars lopen via de **War Room** in het crew-scherm. Alleen leaders kunnen een war declareren. Het leden-minimum is runtime (`CREW_WAR_MIN_MEMBERS`, code-default **1** voor de startpopulatie; later via Admin → Crew Wars op 3 of hoger). Sabotage van een vijandelijk bijgebouw mag de actie niet laten crashen. **Doden** mag niet “boerderijblok” tonen: als je dezelfde tegenstander te vaak met die actie raakt, zegt het spel in gewone taal dat je iemand anders moet kiezen of even moet wachten. Eén eerdere mug of raid blokkeert Doden niet.
+- Crew Wars lopen via de **War Room** in het crew-scherm. Alleen leaders kunnen een war declareren. Het leden-minimum is runtime (`CREW_WAR_MIN_MEMBERS`, code-default **1** voor de startpopulatie; later via Admin → Crew Wars op 3 of hoger). Sabotage van een vijandelijk bijgebouw mag de actie niet laten crashen. **Doden** mag niet “boerderijblok” tonen: als je dezelfde tegenstander te vaak met die actie raakt, zegt het spel in gewone taal dat je iemand anders moet kiezen of even moet wachten. Eén eerdere mug of raid blokkeert Doden niet. **Schild** werkt met actieve Player VIP of Crew VIP; Intel en Boost blijven Player VIP.
 - Na een afgelopen war geldt een cooldown (code-default 8 uur, `CREW_WAR_COOLDOWN_HOURS` in Admin → Crew Wars). De War Room zegt dan waarom je niet kunt declareren (geen leider, te weinig leden, al in een war, of cooldown) en grijst doelcrews die nog in cooldown zitten.
 - Fases: **preparing** (join, aanvallen starten na `CREW_WAR_PREPARATION_MINUTES`, default 15), **active** (aanvallen, default 24 uur), **lockdown** (geen nieuwe aanvallen, default 30 min). Territory-claim staat alleen bij Territory War en Total War.
 - Discord `#crew-wars` meldt verklaring, start, lockdown en einde met **crew-namen**, war-type, en bij afloop de **winnaar plus stand**. Geen ruwe IDs.
@@ -525,6 +525,7 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 - Crew Missions zijn co-op operations voor crews met role-based teamwork.
 - Er zijn 3 tiers (quick, coordinated, high-stakes) en geen harde dagcap.
 - Progression blijft non-pay-to-win: credits kunnen alleen tijd versnellen, niet power of reward multipliers toevoegen.
+- Fail zet niemand in de cel. De crew-bank betaalt de catalogus-failstraf (`failPenaltyPct`); daarna geldt de missie-cooldown. De uitslag-melding zegt dat expliciet.
 
 ### Phase 1
 - Phase 1 bevat 6 missies met exacte timers, rewards, fail-risico en cooldown skip-pricing.

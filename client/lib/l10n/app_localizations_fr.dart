@@ -5049,7 +5049,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String crewUiMissionTradeHeldNeed(String name, int held, int need) {
-    return '$name: $held/$need';
+    return '$name : $held/$need';
   }
 
   @override
@@ -5741,7 +5741,29 @@ class AppLocalizationsFr extends AppLocalizations {
   String get crewUiTr34 => 'Un joueur VIP est requis pour cette action.';
 
   @override
-  String get crewUiTr35 => 'Un équipage VIP est requis pour cette action.';
+  String get crewUiTr35 =>
+      'Shield a besoin d\'un joueur VIP ou d\'un équipage VIP.';
+
+  @override
+  String get crewUiLabelMissionOutcome => 'Résultat';
+
+  @override
+  String get crewUiMissionOutcomeSuccess => 'Succès';
+
+  @override
+  String get crewUiMissionOutcomePartial => 'Partielle';
+
+  @override
+  String get crewUiMissionOutcomeFail => 'Échoué';
+
+  @override
+  String get crewUiMissionFailNoJail =>
+      'Vous n\'êtes pas envoyé en prison. La banque d\'équipage paie la pénalité d\'échec, puis le temps de recharge de la mission commence.';
+
+  @override
+  String crewUiMissionFailPenalty(String amount) {
+    return 'Pénalité d\'échec : $amount de la banque d\'équipage (pas de prison).';
+  }
 
   @override
   String get crewUiTr36 => 'Limite d\'action atteinte pour l\'instant.';

@@ -7934,7 +7934,7 @@
   "crewUiTr32": "Cette action nécessite un joueur ciblé.",
   "crewUiTr33": "Vous avez déjà utilisé ce coup sur cet adversaire. Choisissez quelqu'un d'autre ou attendez un peu et réessayez.",
   "crewUiTr34": "Un joueur VIP est requis pour cette action.",
-  "crewUiTr35": "Un équipage VIP est requis pour cette action.",
+  "crewUiTr35": "Shield a besoin d'un joueur VIP ou d'un équipage VIP.",
   "crewUiTr36": "Limite d'action atteinte pour l'instant.",
   "crewUiTr37": "Temps de recharge actif : attendez {remaining} minutes supplémentaires.",
   "@crewUiTr37": {
@@ -10625,7 +10625,7 @@
   "crewUiHintMissionUnlockCta": "Les missions de niveau supérieur s’ouvrent quand le QG et la crew grandissent. Améliore le QG ou recrute pour le Tier 2+.",
   "crewUiActionGoToHqForMissions": "Open crew HQ",
   "crewUiActionGoToTradeMarket": "Buy trade goods",
-  "crewUiMissionTradeHeldNeed": "{name}: {held}/{need}",
+  "crewUiMissionTradeHeldNeed": "{name} : {held}/{need}",
   "@crewUiMissionTradeHeldNeed": {
     "placeholders": {
       "name": {
@@ -12943,6 +12943,19 @@
       },
       "total": {
         "type": "int"
+      }
+    }
+  },
+  "crewUiLabelMissionOutcome": "Résultat",
+  "crewUiMissionOutcomeSuccess": "Succès",
+  "crewUiMissionOutcomePartial": "Partielle",
+  "crewUiMissionOutcomeFail": "Échoué",
+  "crewUiMissionFailNoJail": "Vous n'êtes pas envoyé en prison. La banque d'équipage paie la pénalité d'échec, puis le temps de recharge de la mission commence.",
+  "crewUiMissionFailPenalty": "Pénalité d'échec : {amount} de la banque d'équipage (pas de prison).",
+  "@crewUiMissionFailPenalty": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
       }
     }
   }

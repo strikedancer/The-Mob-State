@@ -5697,7 +5697,28 @@ class AppLocalizationsPt extends AppLocalizations {
   String get crewUiTr34 => 'Um jogador VIP é necessário para esta ação.';
 
   @override
-  String get crewUiTr35 => 'Uma Crew VIP é necessária para esta ação.';
+  String get crewUiTr35 => 'Shield precisa de Player VIP ou Crew VIP.';
+
+  @override
+  String get crewUiLabelMissionOutcome => 'Resultado';
+
+  @override
+  String get crewUiMissionOutcomeSuccess => 'Sucesso';
+
+  @override
+  String get crewUiMissionOutcomePartial => 'Parcial';
+
+  @override
+  String get crewUiMissionOutcomeFail => 'Fracassada';
+
+  @override
+  String get crewUiMissionFailNoJail =>
+      'Você não foi enviado para a prisão. O banco da Crew paga a penalidade de falha e então o tempo de espera da missão começa.';
+
+  @override
+  String crewUiMissionFailPenalty(String amount) {
+    return 'Penalidade de falha: $amount do banco da Crew (sem prisão).';
+  }
 
   @override
   String get crewUiTr36 => 'Limite de ação atingido por enquanto.';

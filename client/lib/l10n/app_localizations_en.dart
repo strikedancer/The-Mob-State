@@ -5655,7 +5655,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get crewUiTr34 => 'A VIP player is required for this action.';
 
   @override
-  String get crewUiTr35 => 'A VIP crew is required for this action.';
+  String get crewUiTr35 => 'Shield needs Player VIP or Crew VIP.';
+
+  @override
+  String get crewUiLabelMissionOutcome => 'Outcome';
+
+  @override
+  String get crewUiMissionOutcomeSuccess => 'Success';
+
+  @override
+  String get crewUiMissionOutcomePartial => 'Partial';
+
+  @override
+  String get crewUiMissionOutcomeFail => 'Failed';
+
+  @override
+  String get crewUiMissionFailNoJail =>
+      'You are not sent to jail. The crew bank pays the fail penalty, then the mission cooldown starts.';
+
+  @override
+  String crewUiMissionFailPenalty(String amount) {
+    return 'Fail penalty: $amount from the crew bank (no jail).';
+  }
 
   @override
   String get crewUiTr36 => 'Action limit reached for now.';
@@ -18219,7 +18240,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicCrewTips =>
-      'New crews can deposit money and use shared storage immediately; after that, focus on upgrades for more capacity instead of a separate starter purchase.\nCheck the War Room first to see whether your crew is still on cooldown before trying to declare a new war.\nCoordinate target calls in crew chat. You cannot keep using Kill or Mug on the same opponent forever; pick someone else or wait a bit.\nCoordinate heist start times in crew chat so everyone is online and nobody is in jail.\nChoose a crew in the same timezone or activity pattern for better heist success rates.\nUse shared crew storage to separate risky goods from your personal inventory.\nOnly deposit cars, motorcycles or boats into the crew if you really want them for smuggling, missions or deals; you cannot use them yourself afterwards.\nCrew-bank buyout helps when someone\'s bail is high, but expect that you yourself can go to jail for dirty money.\nCheck how much of your weapons and ammo is locked in Territory before you plan a Crew Wars raid week.\nOnly commit what you can afford to lose on a front that might fall.';
+      'New crews can deposit money and use shared storage immediately; after that, focus on upgrades for more capacity instead of a separate starter purchase.\nCheck the War Room first to see whether your crew is still on cooldown before trying to declare a new war.\nCoordinate target calls in crew chat. You cannot keep using Kill or Mug on the same opponent forever; pick someone else or wait a bit.\nCoordinate heist start times in crew chat so everyone is online and nobody is in jail.\nChoose a crew in the same timezone or activity pattern for better heist success rates.\nUse shared crew storage to separate risky goods from your personal inventory.\nOnly deposit cars, motorcycles or boats into the crew if you really want them for smuggling, missions or deals; you cannot use them yourself afterwards.\nCrew-bank buyout helps when someone\'s bail is high, but expect that you yourself can go to jail for dirty money.\nCheck how much of your weapons and ammo is locked in Territory before you plan a Crew Wars raid week.\nOnly commit what you can afford to lose on a front that might fall.\nWar Room Shield works with your Player VIP or Crew VIP; Intel and Boost stay Player VIP.\nA failed crew mission does not send you to jail. The crew bank pays the fail penalty and then the cooldown starts; you get a notification for that.';
 
   @override
   String get helpTopicFriendsCategory => 'Social';

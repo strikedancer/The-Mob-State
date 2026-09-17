@@ -10051,8 +10051,44 @@ abstract class AppLocalizations {
   /// No description provided for @crewUiTr35.
   ///
   /// In en, this message translates to:
-  /// **'A VIP crew is required for this action.'**
+  /// **'Shield needs Player VIP or Crew VIP.'**
   String get crewUiTr35;
+
+  /// No description provided for @crewUiLabelMissionOutcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Outcome'**
+  String get crewUiLabelMissionOutcome;
+
+  /// No description provided for @crewUiMissionOutcomeSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Success'**
+  String get crewUiMissionOutcomeSuccess;
+
+  /// No description provided for @crewUiMissionOutcomePartial.
+  ///
+  /// In en, this message translates to:
+  /// **'Partial'**
+  String get crewUiMissionOutcomePartial;
+
+  /// No description provided for @crewUiMissionOutcomeFail.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get crewUiMissionOutcomeFail;
+
+  /// No description provided for @crewUiMissionFailNoJail.
+  ///
+  /// In en, this message translates to:
+  /// **'You are not sent to jail. The crew bank pays the fail penalty, then the mission cooldown starts.'**
+  String get crewUiMissionFailNoJail;
+
+  /// No description provided for @crewUiMissionFailPenalty.
+  ///
+  /// In en, this message translates to:
+  /// **'Fail penalty: {amount} from the crew bank (no jail).'**
+  String crewUiMissionFailPenalty(String amount);
 
   /// No description provided for @crewUiTr36.
   ///
@@ -31403,7 +31439,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicCrewTips.
   ///
   /// In en, this message translates to:
-  /// **'New crews can deposit money and use shared storage immediately; after that, focus on upgrades for more capacity instead of a separate starter purchase.\nCheck the War Room first to see whether your crew is still on cooldown before trying to declare a new war.\nCoordinate target calls in crew chat. You cannot keep using Kill or Mug on the same opponent forever; pick someone else or wait a bit.\nCoordinate heist start times in crew chat so everyone is online and nobody is in jail.\nChoose a crew in the same timezone or activity pattern for better heist success rates.\nUse shared crew storage to separate risky goods from your personal inventory.\nOnly deposit cars, motorcycles or boats into the crew if you really want them for smuggling, missions or deals; you cannot use them yourself afterwards.\nCrew-bank buyout helps when someone\'s bail is high, but expect that you yourself can go to jail for dirty money.\nCheck how much of your weapons and ammo is locked in Territory before you plan a Crew Wars raid week.\nOnly commit what you can afford to lose on a front that might fall.'**
+  /// **'New crews can deposit money and use shared storage immediately; after that, focus on upgrades for more capacity instead of a separate starter purchase.\nCheck the War Room first to see whether your crew is still on cooldown before trying to declare a new war.\nCoordinate target calls in crew chat. You cannot keep using Kill or Mug on the same opponent forever; pick someone else or wait a bit.\nCoordinate heist start times in crew chat so everyone is online and nobody is in jail.\nChoose a crew in the same timezone or activity pattern for better heist success rates.\nUse shared crew storage to separate risky goods from your personal inventory.\nOnly deposit cars, motorcycles or boats into the crew if you really want them for smuggling, missions or deals; you cannot use them yourself afterwards.\nCrew-bank buyout helps when someone\'s bail is high, but expect that you yourself can go to jail for dirty money.\nCheck how much of your weapons and ammo is locked in Territory before you plan a Crew Wars raid week.\nOnly commit what you can afford to lose on a front that might fall.\nWar Room Shield works with your Player VIP or Crew VIP; Intel and Boost stay Player VIP.\nA failed crew mission does not send you to jail. The crew bank pays the fail penalty and then the cooldown starts; you get a notification for that.'**
   String get helpTopicCrewTips;
 
   /// No description provided for @helpTopicFriendsCategory.

@@ -7934,7 +7934,7 @@
   "crewUiTr32": "Ta akcja wymaga gracza docelowego.",
   "crewUiTr33": "Użyłeś już tego ruchu na tym przeciwniku. Wybierz kogoś innego lub poczekaj chwilę i spróbuj ponownie.",
   "crewUiTr34": "Do tej akcji wymagany jest gracz VIP.",
-  "crewUiTr35": "Do tej akcji wymagana jest Crew VIP.",
+  "crewUiTr35": "Tarcza potrzebuje Gracza VIP lub VIP-a Załogi.",
   "crewUiTr36": "Osiągnięto limit działań.",
   "crewUiTr37": "Aktywny czas odnowienia: poczekaj jeszcze {remaining} minut.",
   "@crewUiTr37": {
@@ -12943,6 +12943,19 @@
       },
       "total": {
         "type": "int"
+      }
+    }
+  },
+  "crewUiLabelMissionOutcome": "Wynik",
+  "crewUiMissionOutcomeSuccess": "Sukces",
+  "crewUiMissionOutcomePartial": "Częściowy",
+  "crewUiMissionOutcomeFail": "Przegrany",
+  "crewUiMissionFailNoJail": "Nie jesteś wysyłany do więzienia. Bank załogi płaci karę za niepowodzenie, po czym rozpoczyna się czas odnowienia misji.",
+  "crewUiMissionFailPenalty": "Kara za niepowodzenie: {amount} z banku załogi (bez więzienia).",
+  "@crewUiMissionFailPenalty": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
       }
     }
   }

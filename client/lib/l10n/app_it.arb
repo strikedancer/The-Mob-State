@@ -7934,7 +7934,7 @@
   "crewUiTr32": "Questa azione richiede un giocatore bersaglio.",
   "crewUiTr33": "Hai già usato questa mossa su questo avversario. Scegli qualcun altro oppure aspetta un po' e riprova.",
   "crewUiTr34": "Per questa azione è richiesto un giocatore VIP.",
-  "crewUiTr35": "Per questa azione è necessaria una squadra VIP.",
+  "crewUiTr35": "Lo Scudo necessita del Giocatore VIP o del Crew VIP.",
   "crewUiTr36": "Limite di azione raggiunto per ora.",
   "crewUiTr37": "Cooldown attivo: attendi altri {remaining} minuti.",
   "@crewUiTr37": {
@@ -12943,6 +12943,19 @@
       },
       "total": {
         "type": "int"
+      }
+    }
+  },
+  "crewUiLabelMissionOutcome": "Risultato",
+  "crewUiMissionOutcomeSuccess": "Successo",
+  "crewUiMissionOutcomePartial": "Parziale",
+  "crewUiMissionOutcomeFail": "Fallito",
+  "crewUiMissionFailNoJail": "Non sei mandato in prigione. La Crew Bank paga la penalità per il fallimento, quindi inizia il cooldown della missione.",
+  "crewUiMissionFailPenalty": "Penalità per il fallimento: {amount} dalla Crew Bank (no jail).",
+  "@crewUiMissionFailPenalty": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
       }
     }
   }

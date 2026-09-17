@@ -176,6 +176,7 @@ Fail/partial outcomes:
 - Geen all-or-nothing
 - Partial extraction = partial rewards
 - Complete fail kan resources kosten, maar geen hard punitive death spiral
+- Fail haalt `failPenaltyPct` van de catalogus-cash van de **crew-bank** (niet onder 0) en zet niemand in de cel. De UI en de resultaat-melding zeggen dat.
 
 ## Cooldown and Pacing Framework
 

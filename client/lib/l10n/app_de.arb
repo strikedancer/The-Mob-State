@@ -7934,7 +7934,7 @@
   "crewUiTr32": "Für diese Aktion ist ein Zielspieler erforderlich.",
   "crewUiTr33": "Du hast diesen Zug bereits gegen diesen Gegner ausgeführt. Wählen Sie jemand anderen aus oder warten Sie ein wenig und versuchen Sie es erneut.",
   "crewUiTr34": "Für diese Aktion ist ein VIP-Spieler erforderlich.",
-  "crewUiTr35": "Für diese Aktion ist eine VIP-Crew erforderlich.",
+  "crewUiTr35": "Shield benötigt Spieler-VIP oder Crew-VIP.",
   "crewUiTr36": "Aktionslimit vorerst erreicht.",
   "crewUiTr37": "Abklingzeit aktiv: {remaining} weitere Minuten warten.",
   "@crewUiTr37": {
@@ -12943,6 +12943,19 @@
       },
       "total": {
         "type": "int"
+      }
+    }
+  },
+  "crewUiLabelMissionOutcome": "Ergebnis",
+  "crewUiMissionOutcomeSuccess": "Erfolg",
+  "crewUiMissionOutcomePartial": "Teilweise",
+  "crewUiMissionOutcomeFail": "Fehlgeschlagen",
+  "crewUiMissionFailNoJail": "Sie werden nicht ins Gefängnis geschickt. Die Crew-Bank zahlt die Fehlschlagsstrafe, dann beginnt die Abklingzeit der Mission.",
+  "crewUiMissionFailPenalty": "Strafe für Fehlschlag: {amount} von der Mannschaftsbank (kein Gefängnis).",
+  "@crewUiMissionFailPenalty": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
       }
     }
   }

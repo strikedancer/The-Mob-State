@@ -212,6 +212,7 @@ class _CrewScreenState extends State<CrewScreen>
         case 'label.missionCooldown': return l10n.crewUiLabelMissionCooldown;
         case 'label.missionTier': return l10n.crewUiLabelMissionTier;
         case 'label.missionRewards': return l10n.crewUiLabelMissionRewards;
+        case 'label.missionOutcome': return l10n.crewUiLabelMissionOutcome;
         case 'label.missionTradeCargo': return l10n.crewUiLabelMissionTradeCargo;
         case 'hint.missionTradeCargo': return l10n.crewUiHintMissionTradeCargo;
         case 'label.crewMissionProgress': return l10n.crewUiLabelCrewMissionProgress;
@@ -981,6 +982,31 @@ class _CrewScreenState extends State<CrewScreen>
       return v.toStringAsFixed(0);
     }
     return v.toStringAsFixed(2);
+  }
+
+  String _missionOutcomeLabel(AppLocalizations loc, String outcome) {
+    switch (outcome) {
+      case 'success':
+        return loc.crewUiMissionOutcomeSuccess;
+      case 'partial':
+        return loc.crewUiMissionOutcomePartial;
+      case 'fail':
+        return loc.crewUiMissionOutcomeFail;
+      default:
+        return outcome.isEmpty ? '-' : outcome;
+    }
+  }
+
+  String _missionRewardLine(
+    AppLocalizations loc,
+    int rewardCrewCash,
+    String outcome,
+  ) {
+    if (outcome == 'fail') {
+      final penalty = rewardCrewCash < 0 ? -rewardCrewCash : 0;
+      return loc.crewUiMissionFailPenalty(_money(penalty));
+    }
+    return '${_t(loc, 'label.missionRewards')}: ${_money(rewardCrewCash)}';
   }
 
   List<Map<String, dynamic>> _extractMissionTradeRequirements(
@@ -6112,6 +6138,10 @@ class _CrewScreenState extends State<CrewScreen>
     final warType = currentWar?['warType'] as String?;
     final canAct =
         currentWar != null && myParticipant != null && status == 'active';
+    final playerVipActive = hub['playerVipActive'] == true;
+    final crewVipActive = hub['crewVipActive'] == true;
+    final canUseShield = canAct && (playerVipActive || crewVipActive);
+    final canUsePlayerVipAction = canAct && playerVipActive;
     final showTerritoryAction =
         warType == 'territory_war' || warType == 'total_war';
     final declareableTargets = availableTargets
@@ -6630,8 +6660,11 @@ class _CrewScreenState extends State<CrewScreen>
                               _buildWarActionButton(
                                 l10n.crewUiWarActionIntel,
                                 Icons.search,
-                                canAct,
+                                canUsePlayerVipAction,
                                 () => handleAction('intel_scan'),
+                                blockedReason: canAct && !playerVipActive
+                                    ? l10n.crewUiTr34
+                                    : null,
                               ),
                               _buildWarActionButton(
                                 l10n.crewUiWarActionRaid,
@@ -6642,14 +6675,20 @@ class _CrewScreenState extends State<CrewScreen>
                               _buildWarActionButton(
                                 l10n.crewUiWarActionShield,
                                 Icons.shield,
-                                canAct,
+                                canUseShield,
                                 () => handleAction('crew_shield'),
+                                blockedReason: canAct && !canUseShield
+                                    ? l10n.crewUiTr35
+                                    : null,
                               ),
                               _buildWarActionButton(
                                 l10n.crewUiWarActionBoost,
                                 Icons.bolt,
-                                canAct,
+                                canUsePlayerVipAction,
                                 () => handleAction('war_boost'),
+                                blockedReason: canAct && !playerVipActive
+                                    ? l10n.crewUiTr34
+                                    : null,
                               ),
                               if (showTerritoryAction)
                                 _buildWarActionButton(
@@ -6830,12 +6869,30 @@ class _CrewScreenState extends State<CrewScreen>
     String label,
     IconData icon,
     bool enabled,
-    VoidCallback onPressed,
-  ) {
-    return ElevatedButton.icon(
-      onPressed: enabled ? onPressed : null,
-      icon: Icon(icon, size: 18),
-      label: Text(label),
+    VoidCallback onPressed, {
+    String? blockedReason,
+  }) {
+    return Tooltip(
+      message: !enabled && (blockedReason ?? '').isNotEmpty
+          ? blockedReason!
+          : '',
+      child: ElevatedButton.icon(
+        onPressed: enabled
+            ? onPressed
+            : ((blockedReason ?? '').isNotEmpty
+                  ? () {
+                      showTopRightFromSnackBar(
+                        context,
+                        SnackBar(
+                          content: Text(blockedReason!),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                  : null),
+        icon: Icon(icon, size: 18),
+        label: Text(label),
+      ),
     );
   }
 
@@ -7988,10 +8045,17 @@ class _CrewScreenState extends State<CrewScreen>
               '${_t(loc, 'label.missionDuration')}: ${endedInSeconds > 0 ? _formatRemaining(endedInSeconds, loc) : _t(loc, 'status.ready')}',
             ),
             if (status == 'completed') ...[
-              Text('Outcome: ${outcome.isEmpty ? '-' : outcome}'),
               Text(
-                '${_t(loc, 'label.missionRewards')}: ${_money(rewardCrewCash)} | Crew XP $rewardCrewXp | XP $rewardPersonalXp',
+                '${_t(loc, 'label.missionOutcome')}: ${_missionOutcomeLabel(loc, outcome)}',
               ),
+              Text(
+                '${_missionRewardLine(loc, rewardCrewCash, outcome)} | Crew XP $rewardCrewXp | XP $rewardPersonalXp',
+              ),
+              if (outcome == 'fail')
+                Text(
+                  loc.crewUiMissionFailNoJail,
+                  style: const TextStyle(color: Color(0xFFFFB347)),
+                ),
               Text('Progress: $progressPct%'),
             ],
             if (missionContributions.isNotEmpty) ...[
@@ -8111,8 +8175,8 @@ class _CrewScreenState extends State<CrewScreen>
         title: Text(title),
         subtitle: Text(
           missionContributions.isEmpty
-              ? '${_t(loc, 'label.missionRewards')}: ${_money(rewardCrewCash)} - Outcome: $outcome'
-              : '${_t(loc, 'label.missionRewards')}: ${_money(rewardCrewCash)} - Outcome: $outcome\n${_t(loc, 'label.roleContributions')}: $contributionsPreview',
+              ? '${_missionRewardLine(loc, rewardCrewCash, outcome)} - ${_missionOutcomeLabel(loc, outcome)}'
+              : '${_missionRewardLine(loc, rewardCrewCash, outcome)} - ${_missionOutcomeLabel(loc, outcome)}\n${_t(loc, 'label.roleContributions')}: $contributionsPreview',
           maxLines: 3,
           overflow: TextOverflow.ellipsis,
         ),

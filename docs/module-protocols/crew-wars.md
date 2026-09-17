@@ -100,6 +100,7 @@ Scope-afbakening:
 
 ### VIP Crews
 - VIP crew voordelen mogen team utility bieden, zoals tijdelijke shield/boost windows of snellere territory capture.
+- `crew_shield` werkt met **Player VIP of Crew VIP**. `intel_scan` en `war_boost` blijven Player VIP.
 - Parallelle wars alleen toestaan als crew-status, member count en anti-abuse regels dat toelaten.
 - VIP crew boost moet gelogd, zichtbaar en eindig zijn; nooit permanent passief actief.
 

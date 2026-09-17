@@ -938,9 +938,14 @@ export class NotificationService {
     const title = resolvedLanguage === 'nl'
       ? `Crew missie ${outcome === 'success' ? 'geslaagd' : outcome === 'partial' ? 'afgerond' : 'mislukt'}`
       : `Crew mission ${outcome === 'success' ? 'succeeded' : outcome === 'partial' ? 'completed' : 'failed'}`;
+    const failNote = outcome === 'fail'
+      ? (resolvedLanguage === 'nl'
+          ? ' Je gaat niet naar de cel; de crew-bank betaalt de fail-straf.'
+          : ' You are not sent to jail; the crew bank pays the fail penalty.')
+      : '';
     const body = resolvedLanguage === 'nl'
-      ? `"${missionTitle}" (${crewName}) - ${outcomeLabel}. Reward: €${Math.round(rewardCrewCash).toLocaleString('nl-NL')} en ${Math.round(rewardCrewXp)} crew XP.${cooldownText ? ` Cooldown tot ${cooldownText}.` : ''}`
-      : `"${missionTitle}" (${crewName}) - ${outcomeLabel}. Reward: €${Math.round(rewardCrewCash).toLocaleString('en-GB')} and ${Math.round(rewardCrewXp)} crew XP.${cooldownText ? ` Cooldown until ${cooldownText}.` : ''}`;
+      ? `"${missionTitle}" (${crewName}) - ${outcomeLabel}. Reward: €${Math.round(rewardCrewCash).toLocaleString('nl-NL')} en ${Math.round(rewardCrewXp)} crew XP.${failNote}${cooldownText ? ` Cooldown tot ${cooldownText}.` : ''}`
+      : `"${missionTitle}" (${crewName}) - ${outcomeLabel}. Reward: €${Math.round(rewardCrewCash).toLocaleString('en-GB')} and ${Math.round(rewardCrewXp)} crew XP.${failNote}${cooldownText ? ` Cooldown until ${cooldownText}.` : ''}`;
 
     await this.createInAppWorldEvent(playerId, 'crew.mission.resolved', {
       runId,

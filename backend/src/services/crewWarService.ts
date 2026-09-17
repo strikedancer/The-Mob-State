@@ -1233,6 +1233,8 @@ export async function getWarHubForPlayer(playerId: number) {
       canDeclare: false,
       declareBlockReason: null,
       minMembersRequired: warCfg.minMembers,
+      playerVipActive: false,
+      crewVipActive: false,
       currentWar: null,
       availableTargets: [],
       season,
@@ -1243,7 +1245,7 @@ export async function getWarHubForPlayer(playerId: number) {
 
   await syncCrewWarsForCrew(membership.crewId);
 
-  const [currentWarRecord, crews, recentWars, seasonStandings] = await Promise.all([
+  const [currentWarRecord, crews, recentWars, seasonStandings, playerRow, myCrewRow] = await Promise.all([
     prisma.crewWar.findFirst({
       where: {
         status: { in: ['preparing', 'active', 'lockdown'] },
@@ -1272,6 +1274,14 @@ export async function getWarHubForPlayer(playerId: number) {
           })).map((war) => war.id),
         },
       },
+    }),
+    prisma.player.findUnique({
+      where: { id: playerId },
+      select: { isVip: true, vipExpiresAt: true },
+    }),
+    prisma.crew.findUnique({
+      where: { id: membership.crewId },
+      select: { isVip: true, vipExpiresAt: true },
     }),
   ]);
 
@@ -1331,6 +1341,8 @@ export async function getWarHubForPlayer(playerId: number) {
     myCrewMemberCount,
     myCrewInCooldown,
     myCrewCooldownUntil,
+    playerVipActive: isVipActive(playerRow),
+    crewVipActive: isVipActive(myCrewRow),
     currentWar,
     availableTargets: crews
       .map((crew) => ({
@@ -1598,7 +1610,7 @@ export async function performWarAction(
   if (actionConfig.vipPlayerOnly && !isVipActive(player)) {
     throw new Error('VIP_PLAYER_REQUIRED');
   }
-  if (actionConfig.vipCrewOnly && !isVipActive(crew)) {
+  if (actionConfig.vipCrewOnly && !isVipActive(crew) && !isVipActive(player)) {
     throw new Error('VIP_CREW_REQUIRED');
   }
 
