@@ -182,6 +182,12 @@
         return new URL(path, document.baseURI).toString();
       }
 
+      function buildSignatureUrl(path) {
+        const url = new URL(path, document.baseURI);
+        url.searchParams.set('v', Date.now().toString());
+        return url.toString();
+      }
+
       function hashString(input) {
         let hash = 2166136261;
         for (let index = 0; index < input.length; index += 1) {
@@ -192,7 +198,7 @@
       }
 
       async function fetchSignature(path) {
-        const url = buildUrl(path);
+        const url = buildSignatureUrl(path);
         const requestOptions = {
           cache: 'no-store',
           credentials: 'same-origin',

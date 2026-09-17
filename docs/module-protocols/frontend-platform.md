@@ -63,7 +63,7 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 ## Must Preserve
 - Assets laden robuust op web en mobile zonder stille regressies.
 - Embedded screens blijven scrollbaar op touch en pointer devices.
-- Service worker en cache gedrag mogen releases niet verbergen.
+- Service worker en cache gedrag mogen releases niet verbergen. Build-fingerprint fetches (`version.json`, `main.dart.js`, service workers) must bypass the SW cache with a unique query (`?v=`) plus `cache: no-store`, otherwise a stale PWA keeps old copy such as hardcoded RLD `3.000.000` rooms.
 - Achtergrondafbeeldingen, card-afbeeldingen en dynamische images gebruiken consistente fallbackketens.
 - SEO/crawl basisbestanden (robots/sitemap) blijven direct bereikbaar (geen SPA fallback) en SEO landings blijven echte HTML.
 - Meertalige SEO: NL/EN landings staan op vaste paden (`/text-based-mafia-game` vs `/en/text-based-mafia-game`, idem `mafia-game`, plus `/en/`) en hebben expliciete nginx routes + hreflang; wijzig dit alleen bewust en update `sitemap.xml` mee.
