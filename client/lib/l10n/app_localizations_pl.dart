@@ -5839,6 +5839,49 @@ class AppLocalizationsPl extends AppLocalizations {
   String get crewUiTr73 => '9,99 €/mies';
 
   @override
+  String get crewUiVipDonateTitle => 'Pula VIP załogi';
+
+  @override
+  String get crewUiVipDonateHint =>
+      'Dorzucić może każdy członek załogi. Gdy pula będzie pełna, Crew dostaje 30 dni. Lub jeden członek może wykupić miesięczną subskrypcję na własnej karcie.';
+
+  @override
+  String crewUiVipFundProgress(String funded, String price) {
+    return '$funded z $price w puli';
+  }
+
+  @override
+  String crewUiVipDonateAmount(String amount) {
+    return 'Przekaż $amount';
+  }
+
+  @override
+  String crewUiVipDonateRest(String amount) {
+    return 'Reszta $amount';
+  }
+
+  @override
+  String get crewUiVipSubscribe => 'Subskrybuj — płacę miesięcznie';
+
+  @override
+  String get crewUiVipSubscribeExtra => 'Dodaj cały miesiąc';
+
+  @override
+  String get crewUiVipAutoRenewOn =>
+      'Automatyczne odnawianie jest już włączone dla tej załogi.';
+
+  @override
+  String get crewUiVipRecentDonors => 'Ostatnie darowizny';
+
+  @override
+  String get crewUiVipNotInCrew =>
+      'Dołącz do załogi, zanim będziesz mógł zapłacić za Crew VIP.';
+
+  @override
+  String get crewUiVipInvalidDonate =>
+      'Wybierz jedną z wyświetlonych kwot darowizny.';
+
+  @override
   String get crewUiTr74 => '4,99 €/mies';
 
   @override
@@ -6248,7 +6291,11 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get premiumUiCrewVipSubtitleInCrew =>
-      'Do ulepszeń załogi, budynków bocznych na poziomie 11-15 i wspólnych korzyści.';
+      'Na ulepszenia załogi, budynki boczne 11-15, wspólną pulę datków lub subskrypcję jednego członka.';
+
+  @override
+  String get premiumUiCrewVipBenefitsInCrewBody =>
+      'Crew VIP jest dla całej załogi: siedziba VIP, budynki boczne powyżej poziomu 10, +10% punktów wojennych i tarcza dla każdego członka. \nKażdy członek załogi może przekazać darowiznę na poczet miesięcznej ceny; po zapełnieniu garnka Crew dostaje 30 dni. \nJeden członek może również wykupić miesięczną subskrypcję na własnej karcie (automatyczne odnawianie). Gift Crew VIP pozostaje jednorazowym, 30-dniowym prezentem dla dowolnej załogi imiennie.';
 
   @override
   String get premiumUiBadgeCrewNeeded => 'Potrzebna Crew';
@@ -6271,10 +6318,6 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get premiumUiCrewVipBenefitsNoCrewBody =>
       'Przed zakupem Crew VIP musisz dołączyć do załogi. VIP dla załogi odblokowuje korzyści skupione na załodze i wyższy postęp ulepszeń.';
-
-  @override
-  String get premiumUiCrewVipBenefitsInCrewBody =>
-      'Crew VIP zapewnia dostęp do dodatkowych ulepszeń załogi i wspólnych korzyści premium dla przepływu załogi. Po zakupie status aktywny i data ważności są natychmiast aktualizowane.';
 
   @override
   String get premiumUiSectionBuyCreditsTitle => 'Kup kredyty';
@@ -18375,7 +18418,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicCrewTips =>
-      'Nowe załogi mogą od razu wpłacać pieniądze i korzystać ze wspólnego magazynu; następnie skup się na ulepszeniach zapewniających większą pojemność, zamiast na oddzielnym zakupie początkowym.\nNajpierw sprawdź Pokój Wojenny, aby zobaczyć, czy twoja Crew nadal znajduje się w fazie odnowienia, zanim spróbujesz wypowiedzieć nową wojnę.\nKoordynuj wezwania do celów na czacie załogi, aby nie farmić tego samego przeciwnika i nie potrącić strażnika przeciw farmie.\nKoordynuj godziny rozpoczęcia napadów na czacie załogi, aby wszyscy byli online i nikt nie był w więzieniu.\nWybierz załogę w tej samej strefie czasowej lub schemacie aktywności, aby zwiększyć skuteczność napadów.\nSkorzystaj ze wspólnego magazynu załogi, aby oddzielić ryzykowne towary od osobistego ekwipunku.\nOddawaj samochody, motocykle lub łodzie załodze tylko wtedy, gdy naprawdę potrzebujesz ich do przemytu, misji lub transakcji; nie możesz ich później używać samodzielnie.\nWykup w banku zastępczym pomaga, gdy czyjaś kaucja jest wysoka, ale spodziewaj się, że sam możesz pójść do więzienia za brudne pieniądze.\nSprawdź, ile broni i amunicji jest zablokowane w Territory, zanim zaplanujesz tydzień rajdów Crew Wars.\nWysyłaj tylko to, co możesz stracić, jeśli front padnie.';
+      'Nowe załogi mogą od razu wpłacać pieniądze i korzystać ze wspólnego magazynu; następnie skup się na ulepszeniach zapewniających większą pojemność, zamiast na oddzielnym zakupie początkowym. \nNajpierw sprawdź Pokój Wojenny, aby zobaczyć, czy twoja Crew nadal znajduje się w fazie odnowienia, zanim spróbujesz wypowiedzieć nową wojnę. \nKoordynuj połączenia docelowe na czacie załogi. Nie możesz w nieskończoność używać Zabicia lub Przebicia na tym samym przeciwniku; wybierz kogoś innego lub poczekaj chwilę. \nKoordynuj godziny rozpoczęcia napadów na czacie załogi, aby wszyscy byli online i nikt nie był w więzieniu. \nWybierz załogę w tej samej strefie czasowej lub schemacie aktywności, aby zwiększyć skuteczność napadów. \nSkorzystaj ze wspólnego magazynu załogi, aby oddzielić ryzykowne towary od osobistego ekwipunku. \nOddawaj samochody, motocykle lub łodzie załodze tylko wtedy, gdy naprawdę potrzebujesz ich do przemytu, misji lub transakcji; nie możesz ich później używać samodzielnie. \nWykup w banku zastępczym pomaga, gdy czyjaś kaucja jest wysoka, ale spodziewaj się, że sam możesz pójść do więzienia za brudne pieniądze. \nZanim zaplanujesz tydzień najazdów Crew Wars, sprawdź, ile twojej broni i amunicji jest zamknięte na terytorium. \nPowierzaj tylko tyle, ile możesz stracić na froncie, który może upaść. \nTarcza pokoju wojennego współpracuje z Twoim VIP-em gracza lub VIP-em załogi; Intel i Boost pozostają VIP-ami dla Graczy. \nNieudana misja załogi nie wysyła cię do więzienia. Bank załogi płaci karę za niepowodzenie i rozpoczyna się czas odnowienia; otrzymasz o tym powiadomienie. \nCrew VIP można opłacić ze wspólnej puli w trybie Przegląd lub Premium: każdy członek przekazuje prawdziwe pieniądze do wyczerpania miesiąca lub do momentu, gdy jeden członek wykupi subskrypcję.';
 
   @override
   String get helpTopicFriendsCategory => 'Społeczny';
@@ -19019,7 +19062,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicPremiumHow =>
-      'Otwórz oddzielną stronę „Premium i kredyty” w bocznym menu, aby wyświetlić swój status VIP, daty wygaśnięcia, saldo środków i opcje zakupu. \nGórny pasek pulpitu nawigacyjnego pokazuje również, czy Player VIP jest aktywny i jak długo jeszcze trwa; dotknij go, aby otworzyć Premium i Kredyty. Bez daty ważności pokazuje Aktywny. \nNa każdym kafelku zakupu dotknij/kliknij ikonę „i” w lewym górnym rogu, aby uzyskać szczegółowe informacje i korzyści; sam kafelek celowo pokazuje tylko krótkie podstawowe informacje i przycisk zakupu. \nGracz VIP jest osobisty. VIP dla załogi dotyczy Twojej załogi i ma wartość tylko wtedy, gdy jesteś już w załodze. \nGracz VIP zapewnia o 10% krótsze limity czasu na działanie (czas więzienia pozostaje niezmieniony), 100 tygodniowych kredytów, przycisk VIP do zakupu jednym kliknięciem brakujących materiałów w produkcji narkotyków (po potwierdzeniu kosztów) oraz łagodniejszy reset po śmierci: bank/krypto/edukacja/osiągnięcia pozostają, podczas gdy aktywa, ekwipunek i zapasy leków są usuwane. \nKasa VIP otwiera stronę płatności, a następnie powraca do sekcji „Premium i kredyty” w grze, dzięki czemu od razu widzisz, czy zakup się powiódł i jak długo ważny jest Twój VIP. \nGdy automatyczne odnawianie jest aktywne, możesz anulować odnowienie; Twój aktualny VIP pozostaje ważny do daty wygaśnięcia. \nGift VIP kupuje 30 dni Player VIP dla innego gracza według nazwy użytkownika (jednorazowo; odbiorca nie otrzymuje automatycznego odnowienia). \nGift Crew VIP kupuje 30 dni Crew VIP dla załogi według nazwy załogi (jednorazowo; bez automatycznego odnawiania). \nPrestiż VIP (brązowy/srebrny/złoty) jest wyświetlany tylko w okresie dożywotnich dni VIP i nie zapewnia żadnej mocy w rozgrywce. \nPakiety kredytów kupuje się za prawdziwe pieniądze. Kliknij paczkę, wybierz, ile chcesz kupić na raz (do 20) i zapłać całość w jednej kasie; po pomyślnej płatności wszystkie środki natychmiast pojawią się w Twoim portfelu. \nKarnet na wydarzenie (7 dni, prawdziwe pieniądze) jest wymieniony w siatce ofert jednorazowych: +10% wyniku w wydarzeniach dla graczy na żywo oraz niewielki bonus kredytowy po zakupie. Jest to poziom poboczny: nie jest to bezpośrednia walka ani wzmocnienie PvP; pomaga głównie w wynikach rankingów podczas wydarzeń biegowych. \nW przypadku pozycji kredytowych wykorzystywane są środki z portfela zamiast euro. Pomyśl o ochronie przed trafieniami, resetowaniu czasu odnowienia, wzmocnieniach wydarzeń lub pakietach pieniężnych, w zależności od tego, co administrator aktualnie włączył na żywo. \nNa obsługiwanych ekranach limitów czasu (takich jak przestępstwa, praca, kradzież pojazdu/łodzi i szkoła) dostępny jest także bezpośredni przycisk przyspieszenia dla aktywnych czasów odnowienia, dzięki czemu nie musisz najpierw wracać do konta premium i kredytów. \nNiektóre pozycje kredytowe działają bezpośrednio z tego ekranu. Zamiast tego elementy powiązane z kontekstem, takie jak określone akcje pojazdu, są używane na ekranie odpowiedniego pojazdu lub garażu (uszkodzone pojazdy mają przycisk natychmiastowej naprawy bezpośrednio na karcie). \nW przypadku przycisków kontekstowych, takich jak przyspieszenie naprawy, bieżący koszt kredytu jest wyświetlany bezpośrednio na przycisku/etykiecie narzędzia. \nCeny i dostępne produkty są zarządzane na żywo w panelu administracyjnym. Oznacza to, że ceny VIP, koszty kredytu i dostępna oferta mogą ulec zmianie bez aktualizacji aplikacji.';
+      'Otwórz oddzielną stronę „Premium i kredyty” w bocznym menu, aby wyświetlić swój status VIP, daty wygaśnięcia, saldo środków i opcje zakupu. \nGórny pasek pulpitu nawigacyjnego pokazuje również, czy Player VIP jest aktywny i jak długo jeszcze trwa; dotknij go, aby otworzyć Premium i Kredyty. Bez daty ważności pokazuje Aktywny. \nNa każdym kafelku zakupu dotknij/kliknij ikonę „i” w lewym górnym rogu, aby uzyskać szczegółowe informacje i korzyści; sam kafelek celowo pokazuje tylko krótkie podstawowe informacje i przycisk zakupu. \nGracz VIP jest osobisty. VIP dla załogi dotyczy Twojej załogi i ma wartość tylko wtedy, gdy jesteś już w załodze. Każdy członek może przekazać darowiznę do puli VIP załogi lub jeden członek może wykupić miesięczną subskrypcję. \nGracz VIP zapewnia o 10% krótsze limity czasu na działanie (czas więzienia pozostaje niezmieniony), 100 tygodniowych kredytów, przycisk VIP do zakupu jednym kliknięciem brakujących materiałów w produkcji narkotyków (po potwierdzeniu kosztów) oraz łagodniejszy reset po śmierci: bank/krypto/edukacja/osiągnięcia pozostają, podczas gdy aktywa, ekwipunek i zapasy leków są usuwane. \nKasa VIP otwiera stronę płatności, a następnie powraca do sekcji „Premium i kredyty” w grze, dzięki czemu od razu widzisz, czy zakup się powiódł i jak długo ważny jest Twój VIP. \nGdy automatyczne odnawianie jest aktywne, możesz anulować odnowienie; Twój aktualny VIP pozostaje ważny do daty wygaśnięcia. \nGift VIP kupuje 30 dni Player VIP dla innego gracza według nazwy użytkownika (jednorazowo; odbiorca nie otrzymuje automatycznego odnowienia). \nGift Crew VIP kupuje 30 dni Crew VIP dla załogi według nazwy załogi (jednorazowo; bez automatycznego odnawiania). \nPrestiż VIP (brązowy/srebrny/złoty) jest wyświetlany tylko w okresie dożywotnich dni VIP i nie zapewnia żadnej mocy w rozgrywce. \nPakiety kredytów kupuje się za prawdziwe pieniądze. Kliknij paczkę, wybierz, ile chcesz kupić na raz (do 20) i zapłać całość w jednej kasie; po pomyślnej płatności wszystkie środki natychmiast pojawią się w Twoim portfelu. \nKarnet na wydarzenie (7 dni, prawdziwe pieniądze) jest wymieniony w siatce ofert jednorazowych: +10% wyniku w wydarzeniach dla graczy na żywo oraz niewielki bonus kredytowy po zakupie. Jest to poziom poboczny: nie jest to bezpośrednia walka ani wzmocnienie PvP; pomaga głównie w wynikach rankingów podczas wydarzeń biegowych. \nW przypadku pozycji kredytowych wykorzystywane są środki z portfela zamiast euro. Pomyśl o ochronie przed trafieniami, resetowaniu czasu odnowienia, wzmocnieniach wydarzeń lub pakietach pieniężnych, w zależności od tego, co administrator aktualnie włączył na żywo. \nNa obsługiwanych ekranach limitów czasu (takich jak przestępstwa, praca, kradzież pojazdu/łodzi i szkoła) dostępny jest także bezpośredni przycisk przyspieszenia dla aktywnych czasów odnowienia, dzięki czemu nie musisz najpierw wracać do konta premium i kredytów. \nNiektóre pozycje kredytowe działają bezpośrednio z tego ekranu. Zamiast tego elementy powiązane z kontekstem, takie jak określone akcje pojazdu, są używane na ekranie odpowiedniego pojazdu lub garażu (uszkodzone pojazdy mają przycisk natychmiastowej naprawy bezpośrednio na karcie). \nW przypadku przycisków kontekstowych, takich jak przyspieszenie naprawy, bieżący koszt kredytu jest wyświetlany bezpośrednio na przycisku/etykiecie narzędzia. \nCeny i dostępne produkty są zarządzane na żywo w panelu administracyjnym. Oznacza to, że ceny VIP, koszty kredytu i dostępna oferta mogą ulec zmianie bez aktualizacji aplikacji.';
 
   @override
   String get helpTopicPremiumTips =>

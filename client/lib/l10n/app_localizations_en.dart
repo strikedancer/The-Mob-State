@@ -5795,6 +5795,48 @@ class AppLocalizationsEn extends AppLocalizations {
   String get crewUiTr73 => '€9.99/mo';
 
   @override
+  String get crewUiVipDonateTitle => 'Crew VIP pot';
+
+  @override
+  String get crewUiVipDonateHint =>
+      'Anyone in the crew can chip in. When the pot is full, the crew gets 30 days. Or one member can take the monthly subscription on their own card.';
+
+  @override
+  String crewUiVipFundProgress(String funded, String price) {
+    return '$funded of $price in the pot';
+  }
+
+  @override
+  String crewUiVipDonateAmount(String amount) {
+    return 'Donate $amount';
+  }
+
+  @override
+  String crewUiVipDonateRest(String amount) {
+    return 'Remainder $amount';
+  }
+
+  @override
+  String get crewUiVipSubscribe => 'Subscribe — I pay the month';
+
+  @override
+  String get crewUiVipSubscribeExtra => 'Add a full month';
+
+  @override
+  String get crewUiVipAutoRenewOn => 'Auto-renew is already on for this crew.';
+
+  @override
+  String get crewUiVipRecentDonors => 'Recent donations';
+
+  @override
+  String get crewUiVipNotInCrew =>
+      'Join a crew before you can pay for Crew VIP.';
+
+  @override
+  String get crewUiVipInvalidDonate =>
+      'Pick one of the donation amounts shown.';
+
+  @override
   String get crewUiTr74 => '€4.99/mo';
 
   @override
@@ -6198,7 +6240,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get premiumUiCrewVipSubtitleInCrew =>
-      'For crew upgrades, side buildings level 11-15 and shared perks.';
+      'For crew upgrades, side buildings 11-15, a shared donation pot, or one member’s subscription.';
+
+  @override
+  String get premiumUiCrewVipBenefitsInCrewBody =>
+      'Crew VIP is for the whole crew: VIP HQ, side buildings above level 10, +10% war points, and Shield for every member.\nAnyone in the crew can donate toward the monthly price; when the pot is full the crew gets 30 days.\nOne member can also take the monthly subscription on their own card (auto-renew). Gift Crew VIP remains a one-time 30-day gift to any crew by name.';
 
   @override
   String get premiumUiBadgeCrewNeeded => 'Crew needed';
@@ -6221,10 +6267,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get premiumUiCrewVipBenefitsNoCrewBody =>
       'You must join a crew before buying Crew VIP. Crew VIP unlocks crew-focused perks and higher upgrade progression.';
-
-  @override
-  String get premiumUiCrewVipBenefitsInCrewBody =>
-      'Crew VIP grants access to extra crew upgrades and shared premium perks for your crew flow. After purchase, active status and expiry are updated immediately.';
 
   @override
   String get premiumUiSectionBuyCreditsTitle => 'Buy credits';
@@ -18240,7 +18282,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicCrewTips =>
-      'New crews can deposit money and use shared storage immediately; after that, focus on upgrades for more capacity instead of a separate starter purchase.\nCheck the War Room first to see whether your crew is still on cooldown before trying to declare a new war.\nCoordinate target calls in crew chat. You cannot keep using Kill or Mug on the same opponent forever; pick someone else or wait a bit.\nCoordinate heist start times in crew chat so everyone is online and nobody is in jail.\nChoose a crew in the same timezone or activity pattern for better heist success rates.\nUse shared crew storage to separate risky goods from your personal inventory.\nOnly deposit cars, motorcycles or boats into the crew if you really want them for smuggling, missions or deals; you cannot use them yourself afterwards.\nCrew-bank buyout helps when someone\'s bail is high, but expect that you yourself can go to jail for dirty money.\nCheck how much of your weapons and ammo is locked in Territory before you plan a Crew Wars raid week.\nOnly commit what you can afford to lose on a front that might fall.\nWar Room Shield works with your Player VIP or Crew VIP; Intel and Boost stay Player VIP.\nA failed crew mission does not send you to jail. The crew bank pays the fail penalty and then the cooldown starts; you get a notification for that.';
+      'New crews can deposit money and use shared storage immediately; after that, focus on upgrades for more capacity instead of a separate starter purchase.\nCheck the War Room first to see whether your crew is still on cooldown before trying to declare a new war.\nCoordinate target calls in crew chat. You cannot keep using Kill or Mug on the same opponent forever; pick someone else or wait a bit.\nCoordinate heist start times in crew chat so everyone is online and nobody is in jail.\nChoose a crew in the same timezone or activity pattern for better heist success rates.\nUse shared crew storage to separate risky goods from your personal inventory.\nOnly deposit cars, motorcycles or boats into the crew if you really want them for smuggling, missions or deals; you cannot use them yourself afterwards.\nCrew-bank buyout helps when someone\'s bail is high, but expect that you yourself can go to jail for dirty money.\nCheck how much of your weapons and ammo is locked in Territory before you plan a Crew Wars raid week.\nOnly commit what you can afford to lose on a front that might fall.\nWar Room Shield works with your Player VIP or Crew VIP; Intel and Boost stay Player VIP.\nA failed crew mission does not send you to jail. The crew bank pays the fail penalty and then the cooldown starts; you get a notification for that.\nCrew VIP can be paid from a shared pot on Overview or Premium: every member donates real money until the month is full, or one member takes the subscription.';
 
   @override
   String get helpTopicFriendsCategory => 'Social';
@@ -18884,7 +18926,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicPremiumHow =>
-      'Open the separate `Premium & Credits` page from the side menu to view your VIP status, expiry dates, credit balance and purchase options.\nThe dashboard top bar also shows whether Player VIP is active and how long it still lasts; tap it to open Premium & Credits. With no expiry date it shows Active.\nOn each purchase tile, tap/click the `i` icon at the top-left for full details and benefits; the tile itself intentionally shows only short core info and the buy button.\nPlayer VIP is personal. Crew VIP applies to your crew and only has value when you are already in a crew.\nPlayer VIP gives 10% shorter action timeouts (jail time remains unchanged), 100 weekly credits, a VIP one-click purchase button for missing materials in Drug Production (after cost confirmation), and a softer death reset: bank/crypto/education/achievements stay, while assets, inventory and drug stock are removed.\nVIP checkout opens the payment page and then returns to the in-game `Premium & Credits` section, so you immediately see whether the purchase succeeded and how long your VIP runs.\nWhen auto-renew is active you can cancel renewal; your current VIP stays valid until the expiry date.\nGift VIP buys 30 days of Player VIP for another player by username (one-time; recipient does not get auto-renew).\nGift Crew VIP buys 30 days of Crew VIP for a crew by crew name (one-time; no auto-renew).\nVIP prestige (bronze/silver/gold) is display-only from lifetime VIP days and grants no gameplay power.\nCredit bundles are bought with real money. Tap a pack, choose how many to buy at once (up to 20) and pay the total in one checkout; after a successful payment all credits appear in your wallet right away.\nEvent Pass (7 days, real money) is listed in the one-time offer grid: +10% score on live player events, plus a small credit bonus after purchase. It is a side-grade: not a direct combat or PvP boost; it mainly helps leaderboard results during running events.\nCredit items use wallet credits instead of euros. Think of hit protection, cooldown resets, event boosts or cash bundles, depending on what admin currently has enabled live.\nOn supported timeout screens (such as crimes, jobs, vehicle/boat theft and school) you also get a direct speed-up button for active cooldowns, so you do not need to go back to Premium & Credits first.\nSome credit items work directly from this screen. Context-bound items, such as certain vehicle actions, are used from the correct vehicle or garage screen instead (damaged vehicles show an instant-repair button directly on the card).\nFor contextual buttons such as repair speed-up, the current credit cost is shown directly on the button/tooltip.\nPrices and available items are managed live in admin. That means VIP prices, credit costs and the available offer can change without an app update.';
+      'Open the separate `Premium & Credits` page from the side menu to view your VIP status, expiry dates, credit balance and purchase options.\nThe dashboard top bar also shows whether Player VIP is active and how long it still lasts; tap it to open Premium & Credits. With no expiry date it shows Active.\nOn each purchase tile, tap/click the `i` icon at the top-left for full details and benefits; the tile itself intentionally shows only short core info and the buy button.\nPlayer VIP is personal. Crew VIP applies to your crew and only has value when you are already in a crew. Every member can donate into the crew VIP pot, or one member can take the monthly subscription.\nPlayer VIP gives 10% shorter action timeouts (jail time remains unchanged), 100 weekly credits, a VIP one-click purchase button for missing materials in Drug Production (after cost confirmation), and a softer death reset: bank/crypto/education/achievements stay, while assets, inventory and drug stock are removed.\nVIP checkout opens the payment page and then returns to the in-game `Premium & Credits` section, so you immediately see whether the purchase succeeded and how long your VIP runs.\nWhen auto-renew is active you can cancel renewal; your current VIP stays valid until the expiry date.\nGift VIP buys 30 days of Player VIP for another player by username (one-time; recipient does not get auto-renew).\nGift Crew VIP buys 30 days of Crew VIP for a crew by crew name (one-time; no auto-renew).\nVIP prestige (bronze/silver/gold) is display-only from lifetime VIP days and grants no gameplay power.\nCredit bundles are bought with real money. Tap a pack, choose how many to buy at once (up to 20) and pay the total in one checkout; after a successful payment all credits appear in your wallet right away.\nEvent Pass (7 days, real money) is listed in the one-time offer grid: +10% score on live player events, plus a small credit bonus after purchase. It is a side-grade: not a direct combat or PvP boost; it mainly helps leaderboard results during running events.\nCredit items use wallet credits instead of euros. Think of hit protection, cooldown resets, event boosts or cash bundles, depending on what admin currently has enabled live.\nOn supported timeout screens (such as crimes, jobs, vehicle/boat theft and school) you also get a direct speed-up button for active cooldowns, so you do not need to go back to Premium & Credits first.\nSome credit items work directly from this screen. Context-bound items, such as certain vehicle actions, are used from the correct vehicle or garage screen instead (damaged vehicles show an instant-repair button directly on the card).\nFor contextual buttons such as repair speed-up, the current credit cost is shown directly on the button/tooltip.\nPrices and available items are managed live in admin. That means VIP prices, credit costs and the available offer can change without an app update.';
 
   @override
   String get helpTopicPremiumTips =>

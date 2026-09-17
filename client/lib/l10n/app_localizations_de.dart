@@ -5867,6 +5867,49 @@ class AppLocalizationsDe extends AppLocalizations {
   String get crewUiTr73 => '9,99 €/Monat';
 
   @override
+  String get crewUiVipDonateTitle => 'Crew-VIP-Topf';
+
+  @override
+  String get crewUiVipDonateHint =>
+      'Jeder aus der Crew kann einen Beitrag leisten. Wenn der Topf voll ist, hat die Crew 30 Tage Zeit. Oder ein Mitglied kann das Monatsabonnement auf seiner eigenen Karte abschließen.';
+
+  @override
+  String crewUiVipFundProgress(String funded, String price) {
+    return '$funded von $price im Topf';
+  }
+
+  @override
+  String crewUiVipDonateAmount(String amount) {
+    return 'Spenden $amount';
+  }
+
+  @override
+  String crewUiVipDonateRest(String amount) {
+    return 'Rest $amount';
+  }
+
+  @override
+  String get crewUiVipSubscribe => 'Abonnieren – ich zahle den Monat';
+
+  @override
+  String get crewUiVipSubscribeExtra => 'Fügen Sie einen ganzen Monat hinzu';
+
+  @override
+  String get crewUiVipAutoRenewOn =>
+      'Die automatische Verlängerung ist für diese Crew bereits aktiviert.';
+
+  @override
+  String get crewUiVipRecentDonors => 'Aktuelle Spenden';
+
+  @override
+  String get crewUiVipNotInCrew =>
+      'Treten Sie einer Crew bei, bevor Sie für Crew VIP bezahlen können.';
+
+  @override
+  String get crewUiVipInvalidDonate =>
+      'Wählen Sie einen der angezeigten Spendenbeträge.';
+
+  @override
   String get crewUiTr74 => '4,99 €/Monat';
 
   @override
@@ -6280,7 +6323,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get premiumUiCrewVipSubtitleInCrew =>
-      'Für Crew-Upgrades, Nebengebäude der Stufen 11–15 und gemeinsame Vorteile.';
+      'Für Crew-Upgrades, Nebengebäude 11–15, ein gemeinsamer Spendentopf oder das Abonnement eines Mitglieds.';
+
+  @override
+  String get premiumUiCrewVipBenefitsInCrewBody =>
+      'Crew-VIP ist für die gesamte Crew: VIP-Hauptquartier, Nebengebäude über Level 10, +10 % Kriegspunkte und Schild für jedes Mitglied. \nJedes Mitglied der Crew kann für den monatlichen Preis spenden; Wenn der Topf voll ist, hat die Crew 30 Tage Zeit. \nEin Mitglied kann das Monatsabonnement auch auf seiner eigenen Karte abschließen (automatische Verlängerung). Gift Crew VIP bleibt ein einmaliges 30-Tage-Geschenk an jede Crew mit Namen.';
 
   @override
   String get premiumUiBadgeCrewNeeded => 'Crew benötigt';
@@ -6303,10 +6350,6 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get premiumUiCrewVipBenefitsNoCrewBody =>
       'Sie müssen einer Crew beitreten, bevor Sie Crew VIP kaufen können. Crew-VIP schaltet Crew-spezifische Vorteile und einen höheren Upgrade-Fortschritt frei.';
-
-  @override
-  String get premiumUiCrewVipBenefitsInCrewBody =>
-      'Crew-VIP gewährt Zugriff auf zusätzliche Crew-Upgrades und gemeinsame Premium-Vergünstigungen für Ihren Crew-Flow. Nach dem Kauf werden Aktivstatus und Ablauf sofort aktualisiert.';
 
   @override
   String get premiumUiSectionBuyCreditsTitle => 'Credits kaufen';
@@ -18466,7 +18509,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicCrewTips =>
-      'Neue Besatzungen können sofort Geld einzahlen und den gemeinsamen Lagerraum nutzen; Konzentrieren Sie sich danach auf Upgrades für mehr Kapazität statt auf einen separaten Starterkauf.\nSchauen Sie zunächst im War Room nach, ob sich Ihre Crew noch in der Abklingzeit befindet, bevor Sie versuchen, einen neuen Krieg zu erklären.\nKoordinieren Sie Zielanrufe im Crew-Chat, damit Sie nicht ständig denselben Gegner farmen und den Anti-Farm-Wächter stolpern lassen.\nKoordinieren Sie die Startzeiten des Raubüberfalls im Crew-Chat, damit alle online sind und niemand im Gefängnis sitzt.\nWählen Sie eine Crew in derselben Zeitzone oder demselben Aktivitätsmuster, um bessere Erfolgsraten bei Raubüberfällen zu erzielen.\nNutzen Sie den gemeinsamen Lagerraum für die Crew, um riskante Güter von Ihrem persönlichen Inventar zu trennen.\nGeben Sie Autos, Motorräder oder Boote nur dann bei der Crew ab, wenn Sie sie wirklich für Schmuggel, Missionen oder Geschäfte benötigen; Sie können sie anschließend nicht selbst verwenden.\nWenn die Kaution einer Person hoch ist, hilft eine Übernahme durch die Bank, aber Sie müssen damit rechnen, dass Sie selbst für schmutziges Geld ins Gefängnis gehen müssen.\nPrüft, wie viel Waffen und Munition in Territory gebunden ist, bevor ihr eine Crew-Wars-Raidwoche plant.\nSchickt nur, was ihr verlieren könnt, wenn die Front fällt.';
+      'Neue Besatzungen können sofort Geld einzahlen und den gemeinsamen Lagerraum nutzen; Konzentrieren Sie sich danach auf Upgrades für mehr Kapazität statt auf einen separaten Starterkauf. \nSchauen Sie zunächst im War Room nach, ob sich Ihre Crew noch in der Abklingzeit befindet, bevor Sie versuchen, einen neuen Krieg zu erklären. \nKoordinieren Sie Zielanrufe im Crew-Chat. Sie können Kill oder Mug nicht für immer auf denselben Gegner anwenden; Wählen Sie jemand anderen oder warten Sie ein bisschen. \nKoordinieren Sie die Startzeiten des Raubüberfalls im Crew-Chat, damit alle online sind und niemand im Gefängnis sitzt. \nWählen Sie eine Crew in derselben Zeitzone oder demselben Aktivitätsmuster, um bessere Erfolgsraten bei Raubüberfällen zu erzielen. \nNutzen Sie den gemeinsamen Lagerraum für die Crew, um riskante Güter von Ihrem persönlichen Inventar zu trennen. \nGeben Sie Autos, Motorräder oder Boote nur dann bei der Crew ab, wenn Sie sie wirklich für Schmuggel, Missionen oder Geschäfte benötigen; Sie können sie anschließend nicht selbst verwenden. \nWenn die Kaution einer Person hoch ist, hilft eine Übernahme durch die Bank, aber Sie müssen damit rechnen, dass Sie selbst für schmutziges Geld ins Gefängnis gehen müssen. \nÜberprüfen Sie, wie viele Ihrer Waffen und Munition im Territorium gesperrt sind, bevor Sie eine Crew Wars-Raid-Woche planen. \nSetzen Sie an einer Front, die zusammenbrechen könnte, nur das ein, was Sie sich leisten können, zu verlieren. \nWar Room Shield funktioniert mit Ihrem Spieler-VIP oder Crew-VIP. Intel und Boost bleiben Spieler-VIP. \nEine gescheiterte Crew-Mission bringt Sie nicht ins Gefängnis. Die Crew-Bank zahlt die Fehlschlagsstrafe und dann beginnt die Abklingzeit; Sie erhalten dafür eine Benachrichtigung. \nCrew-VIP kann aus einem gemeinsamen Topf bei Overview oder Premium bezahlt werden: Jedes Mitglied spendet echtes Geld, bis der Monat voll ist oder ein Mitglied das Abonnement übernimmt.';
 
   @override
   String get helpTopicFriendsCategory => 'Sozial';
@@ -19110,7 +19153,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicPremiumHow =>
-      'Öffnen Sie im Seitenmenü die separate Seite „Premium & Credits“, um Ihren VIP-Status, Ablaufdaten, Guthaben und Kaufoptionen anzuzeigen. \nIn der oberen Leiste des Dashboards wird auch angezeigt, ob Player VIP aktiv ist und wie lange es noch dauert; Tippen Sie darauf, um Premium & Credits zu öffnen. Ohne Ablaufdatum wird „Aktiv“ angezeigt. \nTippen/klicken Sie auf jeder Kaufkachel oben links auf das „i“-Symbol, um alle Details und Vorteile anzuzeigen. Die Kachel selbst zeigt bewusst nur kurze Kerninformationen und den Kaufen-Button. \nSpieler-VIP ist persönlich. Crew-VIP gilt für Ihre Crew und hat nur dann einen Wert, wenn Sie bereits Mitglied einer Crew sind. \nSpieler-VIP bietet 10 % kürzere Aktions-Timeouts (die Gefängniszeit bleibt unverändert), 100 wöchentliche Credits, eine VIP-Ein-Klick-Kaufschaltfläche für fehlende Materialien in der Arzneimittelproduktion (nach Kostenbestätigung) und einen sanfteren Todes-Reset: Bank/Krypto/Bildung/Erfolge bleiben bestehen, während Vermögenswerte, Inventar und Arzneimittelvorräte entfernt werden. \nBeim VIP-Checkout wird die Zahlungsseite geöffnet und dann zum Abschnitt „Premium & Credits“ im Spiel zurückgekehrt, sodass Sie sofort sehen, ob der Kauf erfolgreich war und wie lange Ihr VIP läuft. \nWenn die automatische Verlängerung aktiv ist, können Sie die Verlängerung abbrechen. Ihr aktueller VIP bleibt bis zum Ablaufdatum gültig. \nGeschenk-VIP kauft 30 Tage Spieler-VIP für einen anderen Spieler mit Benutzernamen (einmalig; der Empfänger erhält keine automatische Verlängerung). \nGift Crew VIP kauft 30 Tage Crew VIP für eine Crew mit Crewnamen (einmalig; keine automatische Verlängerung). \nVIP-Prestige (Bronze/Silber/Gold) ist ab lebenslangen VIP-Tagen nur sichtbar und gewährt keine Spielkraft. \nCredit-Pakete werden mit echtem Geld gekauft. Tippen Sie auf eine Packung, wählen Sie aus, wie viele Sie auf einmal kaufen möchten (bis zu 20) und bezahlen Sie den Gesamtbetrag in einer einzigen Kasse; Nach erfolgreicher Zahlung erscheinen alle Guthaben sofort in Ihrem Wallet. \nDer Event-Pass (7 Tage, Echtgeld) ist in der Liste der einmaligen Angebote aufgeführt: +10 % Punktestand bei Live-Spieler-Events, plus ein kleiner Kreditbonus nach dem Kauf. Es ist eine Nebenstufe: kein direkter Kampf oder PvP-Boost; Es hilft vor allem bei den Bestenlistenergebnissen bei Laufveranstaltungen. \nFür Guthabenartikel werden Wallet-Guthaben anstelle von Euro verwendet. Denken Sie an Trefferschutz, Cooldown-Resets, Event-Boosts oder Geldpakete, je nachdem, was der Administrator derzeit live aktiviert hat. \nAuf unterstützten Timeout-Bildschirmen (z. B. Verbrechen, Jobs, Fahrzeug-/Bootsdiebstahl und Schule) erhalten Sie außerdem eine direkte Beschleunigungstaste für aktive Abklingzeiten, sodass Sie nicht zuerst zu Premium & Credits zurückkehren müssen. \nEinige Guthabenpositionen funktionieren direkt über diesen Bildschirm. Kontextgebundene Elemente, wie z. B. bestimmte Fahrzeugaktionen, werden stattdessen vom richtigen Fahrzeug- oder Garagenbildschirm aus verwendet (beschädigte Fahrzeuge zeigen direkt auf der Karte eine Schaltfläche für die sofortige Reparatur an). \nBei kontextbezogenen Schaltflächen wie Reparaturbeschleunigung werden die aktuellen Kreditkosten direkt auf der Schaltfläche/im Tooltip angezeigt. \nPreise und verfügbare Artikel werden live im Admin verwaltet. Das bedeutet, dass sich VIP-Preise, Kreditkosten und das verfügbare Angebot ohne ein App-Update ändern können.';
+      'Öffnen Sie im Seitenmenü die separate Seite „Premium & Credits“, um Ihren VIP-Status, Ablaufdaten, Guthaben und Kaufoptionen anzuzeigen. \nIn der oberen Leiste des Dashboards wird auch angezeigt, ob Player VIP aktiv ist und wie lange es noch dauert; Tippen Sie darauf, um Premium & Credits zu öffnen. Ohne Ablaufdatum wird „Aktiv“ angezeigt. \nTippen/klicken Sie auf jeder Kaufkachel oben links auf das „i“-Symbol, um alle Details und Vorteile anzuzeigen. Die Kachel selbst zeigt bewusst nur kurze Kerninformationen und den Kaufen-Button. \nSpieler-VIP ist persönlich. Crew-VIP gilt für Ihre Crew und hat nur dann einen Wert, wenn Sie bereits Mitglied einer Crew sind. Jedes Mitglied kann in den VIP-Topf der Crew spenden, oder ein Mitglied kann das monatliche Abonnement abschließen. \nSpieler-VIP bietet 10 % kürzere Aktions-Timeouts (die Gefängniszeit bleibt unverändert), 100 wöchentliche Credits, eine VIP-Ein-Klick-Kaufschaltfläche für fehlende Materialien in der Arzneimittelproduktion (nach Kostenbestätigung) und einen sanfteren Todes-Reset: Bank/Krypto/Bildung/Erfolge bleiben bestehen, während Vermögenswerte, Inventar und Arzneimittelvorräte entfernt werden. \nBeim VIP-Checkout wird die Zahlungsseite geöffnet und dann zum Abschnitt „Premium & Credits“ im Spiel zurückgekehrt, sodass Sie sofort sehen, ob der Kauf erfolgreich war und wie lange Ihr VIP läuft. \nWenn die automatische Verlängerung aktiv ist, können Sie die Verlängerung abbrechen. Ihr aktueller VIP bleibt bis zum Ablaufdatum gültig. \nGeschenk-VIP kauft 30 Tage Spieler-VIP für einen anderen Spieler mit Benutzernamen (einmalig; der Empfänger erhält keine automatische Verlängerung). \nGift Crew VIP kauft 30 Tage Crew VIP für eine Crew mit Crewnamen (einmalig; keine automatische Verlängerung). \nVIP-Prestige (Bronze/Silber/Gold) ist ab lebenslangen VIP-Tagen nur sichtbar und gewährt keine Spielkraft. \nCredit-Pakete werden mit echtem Geld gekauft. Tippen Sie auf eine Packung, wählen Sie aus, wie viele Sie auf einmal kaufen möchten (bis zu 20) und bezahlen Sie den Gesamtbetrag in einer einzigen Kasse; Nach erfolgreicher Zahlung erscheinen alle Guthaben sofort in Ihrem Wallet. \nDer Event-Pass (7 Tage, Echtgeld) ist in der Liste der einmaligen Angebote aufgeführt: +10 % Punktestand bei Live-Spieler-Events, plus ein kleiner Kreditbonus nach dem Kauf. Es ist eine Nebenstufe: kein direkter Kampf oder PvP-Boost; Es hilft vor allem bei den Bestenlistenergebnissen bei Laufveranstaltungen. \nFür Guthabenartikel werden Wallet-Guthaben anstelle von Euro verwendet. Denken Sie an Trefferschutz, Cooldown-Resets, Event-Boosts oder Geldpakete, je nachdem, was der Administrator derzeit live aktiviert hat. \nAuf unterstützten Timeout-Bildschirmen (z. B. Verbrechen, Jobs, Fahrzeug-/Bootsdiebstahl und Schule) erhalten Sie außerdem eine direkte Beschleunigungstaste für aktive Abklingzeiten, sodass Sie nicht zuerst zu Premium & Credits zurückkehren müssen. \nEinige Guthabenpositionen funktionieren direkt über diesen Bildschirm. Kontextgebundene Elemente, wie z. B. bestimmte Fahrzeugaktionen, werden stattdessen vom richtigen Fahrzeug- oder Garagenbildschirm aus verwendet (beschädigte Fahrzeuge zeigen direkt auf der Karte eine Schaltfläche für die sofortige Reparatur an). \nBei kontextbezogenen Schaltflächen wie Reparaturbeschleunigung werden die aktuellen Kreditkosten direkt auf der Schaltfläche/im Tooltip angezeigt. \nPreise und verfügbare Artikel werden live im Admin verwaltet. Das bedeutet, dass sich VIP-Preise, Kreditkosten und das verfügbare Angebot ohne ein App-Update ändern können.';
 
   @override
   String get helpTopicPremiumTips =>

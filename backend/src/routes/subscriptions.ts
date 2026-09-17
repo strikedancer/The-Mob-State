@@ -14,6 +14,13 @@ import {
   grantCrewVipDays,
   grantPlayerVipDays,
 } from '../services/vipBenefitsService';
+import {
+  applyCrewVipDonation,
+  centsToEuroValue as fundCentsToEuroValue,
+  euroValueToCents,
+  getCrewVipFundStatus,
+  isAllowedDonateAmount,
+} from '../services/crewVipFundService';
 import { seasonPassService } from '../services/seasonPassService';
 
 const { createMollieClient } = require('@mollie/api-client');
@@ -56,7 +63,7 @@ type PremiumOfferRecord = {
 };
 
 type PaymentMetadata = {
-  type: 'player_vip' | 'crew_vip' | 'one_time' | 'player_vip_gift' | 'crew_vip_gift';
+  type: 'player_vip' | 'crew_vip' | 'one_time' | 'player_vip_gift' | 'crew_vip_gift' | 'crew_vip_donate';
   playerId: string;
   crewId?: string;
   productKey?: string;
@@ -64,7 +71,12 @@ type PaymentMetadata = {
   recipientPlayerId?: string;
   recipientUsername?: string;
   recipientCrewName?: string;
+  amountCents?: string;
 };
+
+function isOneOffVipType(type: PaymentMetadataType | undefined): boolean {
+  return type === 'player_vip_gift' || type === 'crew_vip_gift' || type === 'crew_vip_donate';
+}
 
 type PaymentMetadataType = PaymentMetadata['type'];
 
@@ -463,7 +475,7 @@ function isLegacyBlockedOffer(offer: PremiumOfferRecord): boolean {
 }
 
 function checkoutTypeFromMetadata(type: PaymentMetadataType): 'PLAYER_VIP' | 'CREW_VIP' | 'ONE_TIME' {
-  if (type === 'crew_vip' || type === 'crew_vip_gift') return 'CREW_VIP';
+  if (type === 'crew_vip' || type === 'crew_vip_gift' || type === 'crew_vip_donate') return 'CREW_VIP';
   if (type === 'one_time') return 'ONE_TIME';
   return 'PLAYER_VIP';
 }
@@ -585,14 +597,31 @@ async function fulfillVipPurchaseOnce(
   paymentId: string,
   metadata: PaymentMetadata,
   subscriptionId?: string,
+  paidAmountValue?: string,
 ): Promise<boolean> {
   const playerId = Number(metadata.playerId);
   if (!Number.isFinite(playerId) || playerId <= 0) {
     return false;
   }
 
+  if (metadata.type === 'crew_vip_donate') {
+    const crewId = parseInt(metadata.crewId || '', 10);
+    if (!crewId) return false;
+    const fromPayment = euroValueToCents(paidAmountValue);
+    const fromMeta = Number.parseInt(String(metadata.amountCents || ''), 10);
+    const amountCents = fromPayment > 0
+      ? fromPayment
+      : (Number.isFinite(fromMeta) ? fromMeta : 0);
+    await applyCrewVipDonation({
+      crewId,
+      playerId,
+      amountCents,
+      molliePaymentId: paymentId,
+    });
+  }
+
   const productKey =
-    metadata.type === 'crew_vip' || metadata.type === 'crew_vip_gift'
+    metadata.type === 'crew_vip' || metadata.type === 'crew_vip_gift' || metadata.type === 'crew_vip_donate'
       ? `vip:${metadata.type}:${metadata.crewId || 'unknown'}`
       : metadata.type === 'player_vip_gift'
         ? `vip:${metadata.type}:${metadata.recipientPlayerId || 'unknown'}`
@@ -609,6 +638,10 @@ async function fulfillVipPurchaseOnce(
 
   if (Number(insertedRows) === 0) {
     return false;
+  }
+
+  if (metadata.type === 'crew_vip_donate') {
+    return true;
   }
 
   await activateVipFromMetadata(metadata, subscriptionId);
@@ -885,7 +918,10 @@ function getRequestedPurchaseTypes(req: Request): PaymentMetadataType[] | undefi
     .trim()
     .toLowerCase();
 
-  if (purchase === 'player_vip' || purchase === 'crew_vip' || purchase === 'one_time') {
+  if (purchase === 'player_vip' || purchase === 'crew_vip' || purchase === 'crew_vip_donate' || purchase === 'one_time') {
+    if (purchase === 'crew_vip' || purchase === 'crew_vip_donate') {
+      return ['crew_vip', 'crew_vip_gift', 'crew_vip_donate'];
+    }
     return [purchase as PaymentMetadataType];
   }
 
@@ -947,12 +983,11 @@ async function reconcileRecentPaidTransactions(
       if (metadata.type === 'one_time') {
         await fulfillOneTimePurchase(payment.id, metadata);
       } else {
-        const isGift =
-          metadata.type === 'player_vip_gift' || metadata.type === 'crew_vip_gift';
-        let subscriptionId = isGift ? undefined : payment.subscriptionId || undefined;
+        const skipSubscription = isOneOffVipType(metadata.type);
+        let subscriptionId = skipSubscription ? undefined : payment.subscriptionId || undefined;
         // Grant first so a newly created Mollie subscription can start at the new vipExpiresAt.
-        await fulfillVipPurchaseOnce(payment.id, metadata, subscriptionId);
-        if (!isGift && !subscriptionId && payment.customerId) {
+        await fulfillVipPurchaseOnce(payment.id, metadata, subscriptionId, payment.amount?.value);
+        if (!skipSubscription && !subscriptionId && payment.customerId) {
           try {
             subscriptionId = await ensureVipSubscription(metadata, payment.customerId);
           } catch (error) {
@@ -985,6 +1020,7 @@ async function ensureVipSubscription(metadata: PaymentMetadata, customerId: stri
   if (
     metadata.type === 'player_vip_gift' ||
     metadata.type === 'crew_vip_gift' ||
+    metadata.type === 'crew_vip_donate' ||
     metadata.type === 'one_time'
   ) {
     return undefined;
@@ -1371,12 +1407,17 @@ router.post(
       }
 
       const membership = await prisma.crewMember.findFirst({
-        where: { crewId: Number(crewId), playerId, role: 'leader' },
+        where: { crewId: Number(crewId), playerId },
       });
 
       if (!membership) {
-        return res.status(403).json({ event: 'error.not_crew_leader', params: {} });
+        return res.status(403).json({ event: 'error.not_in_crew', params: {} });
       }
+
+      const crew = await prisma.crew.findUnique({
+        where: { id: Number(crewId) },
+        select: { mollieSubscriptionId: true },
+      });
 
       const player = await prisma.player.findUnique({
         where: { id: playerId },
@@ -1385,6 +1426,7 @@ router.post(
 
       const customerId = await getOrCreateMollieCustomer(playerId, player?.email);
       const vipPriceEur = await getVipPrice('crew_vip');
+      const startSubscription = !crew?.mollieSubscriptionId;
       const payment = await createMollieCheckout({
         playerId,
         customerId,
@@ -1392,7 +1434,7 @@ router.post(
         description: getVipDescription('crew_vip', 'en'),
         checkoutType: 'CREW_VIP',
         redirectStatus: 'success',
-        sequenceType: 'first',
+        sequenceType: startSubscription ? 'first' : undefined,
         metadata: {
           type: 'crew_vip',
           playerId: String(playerId),
@@ -1408,6 +1450,81 @@ router.post(
       return res.json({ url: checkoutUrl, provider: 'mollie' });
     } catch (error: unknown) {
       console.error('[Mollie] checkout/crew-vip error:', error);
+      return next(error);
+    }
+  }
+);
+
+router.get(
+  '/crew-vip-fund',
+  authenticate,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const playerId = (req as any).player?.id as number;
+      const membership = await prisma.crewMember.findFirst({
+        where: { playerId },
+        select: { crewId: true },
+      });
+      if (!membership) {
+        return res.json({ fund: null });
+      }
+      const fund = await getCrewVipFundStatus(membership.crewId);
+      return res.json({ fund });
+    } catch (error) {
+      return next(error);
+    }
+  }
+);
+
+router.post(
+  '/checkout/crew-vip-donate',
+  authenticate,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const playerId = (req as any).player?.id as number;
+      const amountEur = String((req.body as { amountEur?: string })?.amountEur || '').trim();
+      const amountCents = euroValueToCents(amountEur);
+      const membership = await prisma.crewMember.findFirst({
+        where: { playerId },
+        select: { crewId: true },
+      });
+      if (!membership) {
+        return res.status(403).json({ event: 'error.not_in_crew', params: {} });
+      }
+
+      const fund = await getCrewVipFundStatus(membership.crewId);
+      if (!isAllowedDonateAmount(amountCents, fund.priceCents, fund.fundCents)) {
+        return res.status(400).json({ event: 'error.invalid_donate_amount', params: {} });
+      }
+
+      const player = await prisma.player.findUnique({
+        where: { id: playerId },
+        select: { email: true },
+      });
+      const customerId = await getOrCreateMollieCustomer(playerId, player?.email);
+      const payment = await createMollieCheckout({
+        playerId,
+        customerId,
+        amountValue: fundCentsToEuroValue(amountCents),
+        description: `Crew VIP donation ${fundCentsToEuroValue(amountCents)} EUR`,
+        checkoutType: 'CREW_VIP',
+        redirectStatus: 'success',
+        metadata: {
+          type: 'crew_vip_donate',
+          playerId: String(playerId),
+          crewId: String(membership.crewId),
+          amountCents: String(amountCents),
+        },
+      });
+
+      const checkoutUrl = payment.getCheckoutUrl?.() || null;
+      if (!checkoutUrl) {
+        return res.status(500).json({ event: 'error.payment_creation_failed', params: {} });
+      }
+
+      return res.json({ url: checkoutUrl, provider: 'mollie' });
+    } catch (error: unknown) {
+      console.error('[Mollie] checkout/crew-vip-donate error:', error);
       return next(error);
     }
   }
@@ -1654,6 +1771,7 @@ router.get('/status', authenticate, async (req: Request, res: Response, next: Ne
 
     const playerLifetimeDays = player?.vipLifetimeDays ?? 0;
     const crewLifetimeDays = membership?.crew.vipLifetimeDays ?? 0;
+    const crewFund = membership ? await getCrewVipFundStatus(membership.crew.id) : null;
 
     return res.json({
       paymentProvider: 'mollie',
@@ -1676,6 +1794,7 @@ router.get('/status', authenticate, async (req: Request, res: Response, next: Ne
             monthlyPriceEur: pricing.crewVipPriceEur,
             lifetimeDays: crewLifetimeDays,
             prestigeTier: getVipPrestigeTier(crewLifetimeDays),
+            fund: crewFund,
           }
         : null,
       giftPrices: {
@@ -1727,11 +1846,10 @@ router.post('/webhook', async (req: Request, res: Response) => {
       if (metadata.type === 'one_time') {
         await fulfillOneTimePurchase(payment.id, metadata);
       } else {
-        const isGift =
-          metadata.type === 'player_vip_gift' || metadata.type === 'crew_vip_gift';
-        let subscriptionId = isGift ? undefined : payment.subscriptionId || undefined;
-        await fulfillVipPurchaseOnce(payment.id, metadata, subscriptionId);
-        if (!isGift && !subscriptionId && payment.customerId) {
+        const skipSubscription = isOneOffVipType(metadata.type);
+        let subscriptionId = skipSubscription ? undefined : payment.subscriptionId || undefined;
+        await fulfillVipPurchaseOnce(payment.id, metadata, subscriptionId, payment.amount?.value);
+        if (!skipSubscription && !subscriptionId && payment.customerId) {
           try {
             subscriptionId = await ensureVipSubscription(metadata, payment.customerId);
           } catch (error) {

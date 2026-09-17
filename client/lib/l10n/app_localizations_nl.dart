@@ -5830,6 +5830,49 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crewUiTr73 => '€ 9,99/maand';
 
   @override
+  String get crewUiVipDonateTitle => 'Crew VIP-pot';
+
+  @override
+  String get crewUiVipDonateHint =>
+      'Iedereen in de crew kan meebetalen. Als de pot vol is, krijgt de crew 30 dagen. Of één lid neemt het maandabonnement op eigen naam.';
+
+  @override
+  String crewUiVipFundProgress(String funded, String price) {
+    return '$funded van $price in de pot';
+  }
+
+  @override
+  String crewUiVipDonateAmount(String amount) {
+    return 'Doneer $amount';
+  }
+
+  @override
+  String crewUiVipDonateRest(String amount) {
+    return 'Restbedrag $amount';
+  }
+
+  @override
+  String get crewUiVipSubscribe => 'Abonnement — ik betaal de maand';
+
+  @override
+  String get crewUiVipSubscribeExtra => 'Hele maand bijboeken';
+
+  @override
+  String get crewUiVipAutoRenewOn =>
+      'Auto-verlenging staat al aan voor deze crew.';
+
+  @override
+  String get crewUiVipRecentDonors => 'Recente donaties';
+
+  @override
+  String get crewUiVipNotInCrew =>
+      'Je moet in een crew zitten om Crew VIP te betalen.';
+
+  @override
+  String get crewUiVipInvalidDonate =>
+      'Kies een van de getoonde donatiebedragen.';
+
+  @override
   String get crewUiTr74 => '€ 4,99/maand';
 
   @override
@@ -6237,7 +6280,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get premiumUiCrewVipSubtitleInCrew =>
-      'Voor crew-upgrades, side buildings level 11-15 en gedeelde perks.';
+      'Voor crew-upgrades, bijgebouwen 11-15, een gedeelde donatiepot, of het abonnement van één lid.';
+
+  @override
+  String get premiumUiCrewVipBenefitsInCrewBody =>
+      'Crew VIP geldt voor de hele crew: VIP-HQ, bijgebouwen boven niveau 10, +10% oorlogspunten, en Schild voor ieder lid.\nIedereen in de crew kan doneren tot de maandprijs; als de pot vol is krijgt de crew 30 dagen.\nEén lid kan ook het maandabonnement op eigen naam nemen (auto-verlenging). Crew VIP cadeau blijft een eenmalige 30 dagen voor een crew via de naam.';
 
   @override
   String get premiumUiBadgeCrewNeeded => 'Crew nodig';
@@ -6260,10 +6307,6 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get premiumUiCrewVipBenefitsNoCrewBody =>
       'Je moet eerst lid zijn van een crew om Crew VIP te kopen. Crew VIP unlockt crew-gerichte voordelen en hogere upgrade-progressie.';
-
-  @override
-  String get premiumUiCrewVipBenefitsInCrewBody =>
-      'Crew VIP geeft toegang tot extra crew-upgrades en gedeelde premium voordelen voor je crewflow. Na aankoop wordt de actieve status en vervaldatum direct bijgewerkt.';
 
   @override
   String get premiumUiSectionBuyCreditsTitle => 'Credits kopen';
@@ -18285,7 +18328,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicCrewTips =>
-      'Nieuwe crews kunnen direct geld storten en gedeelde opslag gebruiken; focus daarna op upgrades voor extra capaciteit in plaats van op een losse startaankoop.\nGebruik de War Room eerst om te zien of je crew al in cooldown zit voordat je een nieuwe oorlog probeert te declareren.\nVerdeel target calls in de crew-chat. Dezelfde tegenstander kun je niet eindeloos met Doden of Beroven raken; kies dan iemand anders of wacht even.\nCoördineer heist-starttijden in de crew-chat zodat iedereen online is en niemand in de cel zit.\nKies een crew die in dezelfde tijdzone of activiteitspatroon zit als jij voor betere heist-success rates.\nGebruik gedeelde crew-opslag om risicovolle goederen los te koppelen van je persoonlijke inventaris.\nStort alleen auto\'s, motoren of boten in de crew als je ze echt voor smokkel, missies of deals wilt inzetten; daarna kun je ze niet meer zelf gebruiken.\nCrewbank-uitkoop is handig als iemands borg hoog is, maar reken erop dat jij zelf de cel in kunt gaan wegens zwart geld.\nKijk hoeveel wapens en kogels vastliggen in Territory voordat je een Crew Wars-raidweek plant.\nCommit alleen wat je kunt missen op een front dat kan vallen.\nSchild in de War Room werkt met jouw Player VIP of met Crew VIP; Intel en Boost blijven Player VIP.\nEen mislukte crew-missie zet je niet in de cel. De crew-bank betaalt de fail-straf en daarna geldt de cooldown; je krijgt daar een melding van.';
+      'Nieuwe crews kunnen direct geld storten en gedeelde opslag gebruiken; focus daarna op upgrades voor extra capaciteit in plaats van op een losse startaankoop.\nGebruik de War Room eerst om te zien of je crew al in cooldown zit voordat je een nieuwe oorlog probeert te declareren.\nVerdeel target calls in de crew-chat. Dezelfde tegenstander kun je niet eindeloos met Doden of Beroven raken; kies dan iemand anders of wacht even.\nCoördineer heist-starttijden in de crew-chat zodat iedereen online is en niemand in de cel zit.\nKies een crew die in dezelfde tijdzone of activiteitspatroon zit als jij voor betere heist-success rates.\nGebruik gedeelde crew-opslag om risicovolle goederen los te koppelen van je persoonlijke inventaris.\nStort alleen auto\'s, motoren of boten in de crew als je ze echt voor smokkel, missies of deals wilt inzetten; daarna kun je ze niet meer zelf gebruiken.\nCrewbank-uitkoop is handig als iemands borg hoog is, maar reken erop dat jij zelf de cel in kunt gaan wegens zwart geld.\nKijk hoeveel wapens en kogels vastliggen in Territory voordat je een Crew Wars-raidweek plant.\nCommit alleen wat je kunt missen op een front dat kan vallen.\nSchild in de War Room werkt met jouw Player VIP of met Crew VIP; Intel en Boost blijven Player VIP.\nEen mislukte crew-missie zet je niet in de cel. De crew-bank betaalt de fail-straf en daarna geldt de cooldown; je krijgt daar een melding van.\nCrew VIP kun je samen betalen via de pot op Overzicht of Premium: ieder lid doneert tot de maand vol is, of één lid neemt het abonnement.';
 
   @override
   String get helpTopicFriendsCategory => 'Sociaal';
@@ -18929,7 +18972,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicPremiumHow =>
-      'Open in het zijmenu de aparte pagina `Premium & Credits` om je VIP-status, vervaldatums, credit-saldo en koopopties te bekijken.\nIn de bovenbalk van het dashboard zie je ook of Player VIP actief is en hoe lang die nog loopt; tik daarop om Premium & Credits te openen. Zonder einddatum staat er Actief.\nOp elke aankooptegel kun je linksboven op het `i`-icoon tikken/klikken voor de volledige uitleg en voordelen; de tegel zelf toont bewust alleen korte kerninfo en de koopknop.\nPlayer VIP is persoonlijk. Crew VIP geldt voor je crew en heeft alleen waarde als je al in een crew zit.\nPlayer VIP geeft 10% kortere action timeouts (gevangenistijd blijft gelijk), wekelijkse 100 credits, een VIP 1-klik aankoopknop voor ontbrekende materialen in Drugs Productie (na kostenbevestiging) en een zachtere death-reset: je houdt bank/crypto/opleidingen/achievements, maar verliest wel assets, inventory en drugsvoorraad.\nVIP checkout opent de betaalpagina en landt daarna terug in de game op `Premium & Credits`, zodat je direct ziet of de aankoop is gelukt en tot wanneer je VIP loopt.\nAls auto-renew actief is, kun je verlenging stopzetten; je huidige VIP blijft tot de vervaldatum geldig.\nMet VIP cadeau koop je 30 dagen Player VIP voor een andere speler via gebruikersnaam (eenmalig, zonder auto-renew voor de ontvanger).\nMet Crew VIP cadeau koop je 30 dagen Crew VIP voor een crew via de crewnaam (eenmalig, zonder auto-renew).\nVIP prestige (brons/zilver/goud) is puur zichtbaar op basis van lifetime VIP-dagen en geeft geen gameplay-power.\nCreditbundels koop je met echt geld. Tik op een pakket, kies hoeveel je in één keer wilt (tot 20) en betaal het totaal in één checkout; na succesvolle betaling verschijnen alle credits meteen in je wallet.\nEvent Pass (7 dagen, echt geld) staat in hetzelfde eenmalige overzicht: +10% score op live spelerevents, plus een klein bonuscredits-pakket na betaling. Dit is side-grade: geen directe combat- of PvP-boost; het helpt vooral bij leaderboard-prestaties binnen lopende events.\nCredit-items gebruiken wallet-credits in plaats van euro\'s. Denk aan hit protection, cooldown resets, event boosts of cash bundles, afhankelijk van wat admin live actief heeft gezet.\nBij actieve cooldowns zie je op ondersteunde timeout-schermen (zoals crimes, jobs, voertuig/boot diefstal en school) ook direct een knop om met credits te versnellen; je hoeft daarvoor niet eerst terug naar Premium & Credits.\nSommige credit-items werken direct vanuit dit scherm. Context-gebonden items, zoals bepaalde voertuigacties, gebruik je pas vanuit het juiste voertuigen- of garagescherm (bij beschadigde voertuigen staat op de kaart direct een instant-repair knop).\nBij contextknoppen zoals reparatie-versnellen wordt de actuele credit-kost direct op de knop/tooltip getoond.\nPrijzen en beschikbare items worden live in admin beheerd. VIP-prijzen, credit-kosten en het aanbod kunnen dus wijzigen zonder app-update.';
+      'Open in het zijmenu de aparte pagina `Premium & Credits` om je VIP-status, vervaldatums, credit-saldo en koopopties te bekijken.\nIn de bovenbalk van het dashboard zie je ook of Player VIP actief is en hoe lang die nog loopt; tik daarop om Premium & Credits te openen. Zonder einddatum staat er Actief.\nOp elke aankooptegel kun je linksboven op het `i`-icoon tikken/klikken voor de volledige uitleg en voordelen; de tegel zelf toont bewust alleen korte kerninfo en de koopknop.\nPlayer VIP is persoonlijk. Crew VIP geldt voor je crew en heeft alleen waarde als je al in een crew zit. Ieder lid kan in de Crew VIP-pot doneren, of één lid neemt het maandabonnement.\nPlayer VIP geeft 10% kortere action timeouts (gevangenistijd blijft gelijk), wekelijkse 100 credits, een VIP 1-klik aankoopknop voor ontbrekende materialen in Drugs Productie (na kostenbevestiging) en een zachtere death-reset: je houdt bank/crypto/opleidingen/achievements, maar verliest wel assets, inventory en drugsvoorraad.\nVIP checkout opent de betaalpagina en landt daarna terug in de game op `Premium & Credits`, zodat je direct ziet of de aankoop is gelukt en tot wanneer je VIP loopt.\nAls auto-renew actief is, kun je verlenging stopzetten; je huidige VIP blijft tot de vervaldatum geldig.\nMet VIP cadeau koop je 30 dagen Player VIP voor een andere speler via gebruikersnaam (eenmalig, zonder auto-renew voor de ontvanger).\nMet Crew VIP cadeau koop je 30 dagen Crew VIP voor een crew via de crewnaam (eenmalig, zonder auto-renew).\nVIP prestige (brons/zilver/goud) is puur zichtbaar op basis van lifetime VIP-dagen en geeft geen gameplay-power.\nCreditbundels koop je met echt geld. Tik op een pakket, kies hoeveel je in één keer wilt (tot 20) en betaal het totaal in één checkout; na succesvolle betaling verschijnen alle credits meteen in je wallet.\nEvent Pass (7 dagen, echt geld) staat in hetzelfde eenmalige overzicht: +10% score op live spelerevents, plus een klein bonuscredits-pakket na betaling. Dit is side-grade: geen directe combat- of PvP-boost; het helpt vooral bij leaderboard-prestaties binnen lopende events.\nCredit-items gebruiken wallet-credits in plaats van euro\'s. Denk aan hit protection, cooldown resets, event boosts of cash bundles, afhankelijk van wat admin live actief heeft gezet.\nBij actieve cooldowns zie je op ondersteunde timeout-schermen (zoals crimes, jobs, voertuig/boot diefstal en school) ook direct een knop om met credits te versnellen; je hoeft daarvoor niet eerst terug naar Premium & Credits.\nSommige credit-items werken direct vanuit dit scherm. Context-gebonden items, zoals bepaalde voertuigacties, gebruik je pas vanuit het juiste voertuigen- of garagescherm (bij beschadigde voertuigen staat op de kaart direct een instant-repair knop).\nBij contextknoppen zoals reparatie-versnellen wordt de actuele credit-kost direct op de knop/tooltip getoond.\nPrijzen en beschikbare items worden live in admin beheerd. VIP-prijzen, credit-kosten en het aanbod kunnen dus wijzigen zonder app-update.';
 
   @override
   String get helpTopicPremiumTips =>

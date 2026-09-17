@@ -5837,6 +5837,49 @@ class AppLocalizationsPt extends AppLocalizations {
   String get crewUiTr73 => '9,99€/mês';
 
   @override
+  String get crewUiVipDonateTitle => 'Pote VIP da Crew';
+
+  @override
+  String get crewUiVipDonateHint =>
+      'Qualquer pessoa da equipe pode contribuir. Quando o pote estiver cheio, a equipe terá 30 dias. Ou um membro pode fazer a assinatura mensal em seu próprio cartão.';
+
+  @override
+  String crewUiVipFundProgress(String funded, String price) {
+    return '$funded de $price no pote';
+  }
+
+  @override
+  String crewUiVipDonateAmount(String amount) {
+    return 'Doe $amount';
+  }
+
+  @override
+  String crewUiVipDonateRest(String amount) {
+    return 'Restante $amount';
+  }
+
+  @override
+  String get crewUiVipSubscribe => 'Assine – eu pago o mês';
+
+  @override
+  String get crewUiVipSubscribeExtra => 'Adicione um mês completo';
+
+  @override
+  String get crewUiVipAutoRenewOn =>
+      'A renovação automática já está ativada para esta equipe.';
+
+  @override
+  String get crewUiVipRecentDonors => 'Doações recentes';
+
+  @override
+  String get crewUiVipNotInCrew =>
+      'Junte-se a uma Crew antes de pagar pelo Crew VIP.';
+
+  @override
+  String get crewUiVipInvalidDonate =>
+      'Escolha um dos valores de doação mostrados.';
+
+  @override
   String get crewUiTr74 => '4,99€/mês';
 
   @override
@@ -6247,7 +6290,11 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get premiumUiCrewVipSubtitleInCrew =>
-      'Para atualizações de Crew, edifícios laterais de nível 11 a 15 e vantagens compartilhadas.';
+      'Para atualizações de Crew, edifícios laterais 11-15, um fundo de doação compartilhado ou assinatura de um membro.';
+
+  @override
+  String get premiumUiCrewVipBenefitsInCrewBody =>
+      'Crew VIP é para toda a Crew: QG VIP, edifícios laterais acima do nível 10, +10% de pontos de guerra e escudo para cada membro. \nQualquer pessoa da Crew pode doar para o valor mensal; quando o pote está cheio a Crew tem 30 dias. \nUm membro também pode fazer a assinatura mensal em seu próprio cartão (renovação automática). O Gift Crew VIP continua sendo um presente único de 30 dias para qualquer Crew pelo nome.';
 
   @override
   String get premiumUiBadgeCrewNeeded => 'Crew necessária';
@@ -6270,10 +6317,6 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get premiumUiCrewVipBenefitsNoCrewBody =>
       'Você deve ingressar em uma Crew antes de comprar a Crew VIP. Crew VIP desbloqueia vantagens focadas na Crew e maior progressão de atualização.';
-
-  @override
-  String get premiumUiCrewVipBenefitsInCrewBody =>
-      'O Crew VIP concede acesso a upgrades extras de Crew e vantagens premium compartilhadas para o fluxo de sua Crew. Após a compra, o status ativo e a expiração são atualizados imediatamente.';
 
   @override
   String get premiumUiSectionBuyCreditsTitle => 'Comprar créditos';
@@ -18376,7 +18419,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicCrewTips =>
-      'Novas equipes podem depositar dinheiro e usar o armazenamento compartilhado imediatamente; depois disso, concentre-se em atualizações para obter mais capacidade, em vez de uma compra inicial separada.\nVerifique primeiro a Sala de Guerra para ver se sua Crew ainda está em espera antes de tentar declarar uma nova guerra.\nCoordene as chamadas de alvo no bate-papo da Crew para não continuar atacando o mesmo oponente e tropeçando na guarda anti-fazenda.\nCoordene os horários de início do assalto no bate-papo da equipe para que todos estejam online e ninguém esteja na prisão.\nEscolha uma equipe no mesmo fuso horário ou padrão de atividade para obter melhores taxas de sucesso de assalto.\nUse o armazenamento compartilhado da Crew para separar mercadorias de risco do seu inventário pessoal.\nSó deposite carros, motos ou barcos na Crew se realmente quiser para contrabando, missões ou negócios; você não pode usá-los sozinho depois.\nA compra do banco da Crew ajuda quando a fiança de alguém é alta, mas espere que você mesmo possa ir para a prisão por dinheiro sujo.\nVê quantas armas e munição estão presas no Territory antes de planeares uma semana de raids de Crew Wars.\nEnvia só o que podes perder se a frente cair.';
+      'Novas equipes podem depositar dinheiro e usar o armazenamento compartilhado imediatamente; depois disso, concentre-se em atualizações para obter mais capacidade, em vez de uma compra inicial separada. \nVerifique primeiro a Sala de Guerra para ver se sua Crew ainda está em espera antes de tentar declarar uma nova guerra. \nCoordene chamadas de alvo no bate-papo da equipe. Você não pode continuar usando Kill ou Mug no mesmo oponente para sempre; escolha outra pessoa ou espere um pouco. \nCoordene os horários de início do assalto no bate-papo da equipe para que todos estejam online e ninguém esteja na prisão. \nEscolha uma equipe no mesmo fuso horário ou padrão de atividade para obter melhores taxas de sucesso de assalto. \nUse o armazenamento compartilhado da Crew para separar mercadorias de risco do seu inventário pessoal. \nSó deposite carros, motos ou barcos na Crew se realmente quiser para contrabando, missões ou negócios; você não pode usá-los sozinho depois. \nA compra do banco da Crew ajuda quando a fiança de alguém é alta, mas espere que você mesmo possa ir para a prisão por dinheiro sujo. \nVerifique quantas de suas armas e munições estão bloqueadas no Território antes de planejar uma semana de ataque do Crew Wars. \nComprometa apenas o que você pode perder em uma frente que pode cair. \nWar Room Shield funciona com seu Player VIP ou Crew VIP; Intel e Boost permanecem Jogador VIP. \nUma missão de Crew fracassada não o manda para a prisão. O banco da Crew paga a penalidade de falha e então o tempo de espera começa; você recebe uma notificação para isso. \nO Crew VIP pode ser pago com um pote compartilhado no Overview ou Premium: cada membro doa dinheiro real até o mês terminar ou um membro faz a assinatura.';
 
   @override
   String get helpTopicFriendsCategory => 'Social';
@@ -19020,7 +19063,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicPremiumHow =>
-      'Abra a página separada `Prêmio e Créditos` no menu lateral para visualizar seu status VIP, datas de validade, saldo de crédito e opções de compra. \nA barra superior do painel também mostra se o Player VIP está ativo e quanto tempo ainda dura; toque nele para abrir Premium e Créditos. Sem prazo de validade mostra Ativo. \nEm cada bloco de compra, toque/clique no ícone `i` no canto superior esquerdo para obter todos os detalhes e benefícios; o bloco em si mostra intencionalmente apenas informações básicas curtas e o botão de compra. \nO VIP do jogador é pessoal. Crew VIP aplica-se à sua Crew e só tem valor quando você já faz parte de uma Crew. \nO Jogador VIP oferece tempos limite de ação 10% mais curtos (o tempo de prisão permanece inalterado), 100 créditos semanais, um botão VIP de compra com um clique para materiais perdidos na Produção de Medicamentos (após a confirmação do custo) e uma redefinição de morte mais suave: banco/cripto/educação/conquistas permanecem, enquanto ativos, inventário e estoque de drogas são removidos. \nA finalização da compra VIP abre a página de pagamento e depois retorna para a seção `Premium & Credits` do jogo, para que você veja imediatamente se a compra foi bem-sucedida e por quanto tempo seu VIP é válido. \nQuando a renovação automática estiver ativa, você poderá cancelar a renovação; seu VIP atual permanece válido até a data de vencimento. \nGift VIP compra 30 dias de Player VIP para outro jogador por nome de usuário (único; o destinatário não recebe renovação automática). \nGift Crew VIP compra 30 dias de Crew VIP para uma Crew pelo nome da Crew (uma única vez; sem renovação automática). \nO prestígio VIP (bronze/prata/ouro) é exibido apenas nos dias VIP vitalícios e não concede poder de jogo. \nOs pacotes de crédito são comprados com dinheiro real. Toque em um pacote, escolha quantos comprar de uma vez (até 20) e pague o total em uma só finalização; após um pagamento bem-sucedido, todos os créditos aparecem imediatamente na sua carteira. \nO Event Pass (7 dias, dinheiro real) está listado na grade de ofertas únicas: +10% de pontuação em eventos de jogadores ao vivo, além de um pequeno bônus de crédito após a compra. É um nível secundário: não um combate direto ou reforço de PvP; ajuda principalmente nos resultados da tabela de classificação durante eventos em execução. \nOs itens de crédito utilizam créditos de carteira em vez de euros. Pense em proteção contra golpes, redefinições de tempo de espera, aumentos de eventos ou pacotes de dinheiro, dependendo de qual administrador ativou atualmente. \nNas telas de tempo limite suportadas (como crimes, empregos, roubo de veículos/barcos e escola), você também recebe um botão de aceleração direto para recargas ativas, então você não precisa voltar primeiro para Premium e Créditos. \nAlguns itens de crédito funcionam diretamente nesta tela. Em vez disso, itens vinculados ao contexto, como certas ações do veículo, são usados ​​na tela correta do veículo ou da garagem (veículos danificados mostram um botão de reparo instantâneo diretamente no cartão). \nPara botões contextuais, como aceleração de reparo, o custo de crédito atual é mostrado diretamente no botão/dica. \nPreços e itens disponíveis são gerenciados ao vivo no administrador. Isso significa que os preços VIP, os custos de crédito e a oferta disponível podem mudar sem uma atualização do aplicativo.';
+      'Abra a página separada `Prêmio e Créditos` no menu lateral para visualizar seu status VIP, datas de validade, saldo de crédito e opções de compra. \nA barra superior do painel também mostra se o Player VIP está ativo e quanto tempo ainda dura; toque nele para abrir Premium e Créditos. Sem prazo de validade mostra Ativo. \nEm cada bloco de compra, toque/clique no ícone `i` no canto superior esquerdo para obter todos os detalhes e benefícios; o bloco em si mostra intencionalmente apenas informações básicas curtas e o botão de compra. \nO VIP do jogador é pessoal. Crew VIP aplica-se à sua Crew e só tem valor quando você já faz parte de uma Crew. Cada membro pode doar para o pote VIP da Crew ou um membro pode fazer a assinatura mensal. \nO Jogador VIP oferece tempos limite de ação 10% mais curtos (o tempo de prisão permanece inalterado), 100 créditos semanais, um botão VIP de compra com um clique para materiais perdidos na Produção de Medicamentos (após a confirmação do custo) e uma redefinição de morte mais suave: banco/cripto/educação/conquistas permanecem, enquanto ativos, inventário e estoque de drogas são removidos. \nA finalização da compra VIP abre a página de pagamento e depois retorna para a seção `Premium & Credits` do jogo, para que você veja imediatamente se a compra foi bem-sucedida e por quanto tempo seu VIP é válido. \nQuando a renovação automática estiver ativa, você poderá cancelar a renovação; seu VIP atual permanece válido até a data de vencimento. \nGift VIP compra 30 dias de Player VIP para outro jogador por nome de usuário (único; o destinatário não recebe renovação automática). \nGift Crew VIP compra 30 dias de Crew VIP para uma Crew por nome de Crew (única; sem renovação automática). \nO prestígio VIP (bronze/prata/ouro) é apenas exibido em dias VIP vitalícios e não concede poder de jogo. \nOs pacotes de crédito são comprados com dinheiro real. Toque em um pacote, escolha quantos comprar de uma vez (até 20) e pague o total em uma só finalização; após um pagamento bem-sucedido, todos os créditos aparecem imediatamente na sua carteira. \nO Event Pass (7 dias, dinheiro real) está listado na grade de ofertas únicas: +10% de pontuação em eventos de jogadores ao vivo, além de um pequeno bônus de crédito após a compra. É um nível secundário: não um combate direto ou reforço de PvP; ajuda principalmente nos resultados da tabela de classificação durante eventos em execução. \nOs itens de crédito utilizam créditos de carteira em vez de euros. Pense em proteção contra golpes, redefinições de tempo de espera, aumentos de eventos ou pacotes de dinheiro, dependendo de qual administrador ativou atualmente. \nNas telas de tempo limite suportadas (como crimes, empregos, roubo de veículos/barcos e escola), você também recebe um botão de aceleração direto para recargas ativas, então você não precisa voltar primeiro para Premium e Créditos. \nAlguns itens de crédito funcionam diretamente nesta tela. Em vez disso, itens vinculados ao contexto, como certas ações do veículo, são usados ​​na tela correta do veículo ou da garagem (veículos danificados mostram um botão de reparo instantâneo diretamente no cartão). \nPara botões contextuais, como aceleração de reparo, o custo de crédito atual é mostrado diretamente no botão/dica. \nPreços e itens disponíveis são gerenciados ao vivo no administrador. Isso significa que os preços VIP, os custos de crédito e a oferta disponível podem mudar sem uma atualização do aplicativo.';
 
   @override
   String get helpTopicPremiumTips =>

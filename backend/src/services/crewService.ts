@@ -23,6 +23,8 @@ interface CrewWithMembers {
   createdAt: Date;
   hqStyle?: string | null;
   hqLevel?: number | null;
+  isVip?: boolean;
+  vipExpiresAt?: Date | null;
   recruitingOpen?: boolean;
   autoAccept?: boolean;
   missionLevel?: number;
@@ -411,6 +413,8 @@ export async function getCrewById(crewId: number): Promise<CrewWithMembers> {
     createdAt: crew.createdAt,
     hqStyle: crew.hqBuilding?.style ?? null,
     hqLevel: crew.hqBuilding?.level ?? null,
+    isVip: Boolean(crew.isVip),
+    vipExpiresAt: crew.vipExpiresAt ?? null,
     recruitingOpen: (crew as { recruitingOpen?: boolean }).recruitingOpen !== false,
     autoAccept: Boolean((crew as { autoAccept?: boolean }).autoAccept),
     missionLevel: (crew as { missionLevel?: number }).missionLevel ?? 1,
@@ -473,6 +477,8 @@ export async function getAllCrews(): Promise<CrewWithMembers[]> {
     createdAt: crew.createdAt,
     hqStyle: crew.hqBuilding?.style ?? null,
     hqLevel: crew.hqBuilding?.level ?? null,
+    isVip: Boolean(crew.isVip),
+    vipExpiresAt: crew.vipExpiresAt ?? null,
     recruitingOpen: crew.recruitingOpen !== false,
     autoAccept: Boolean(crew.autoAccept),
     missionLevel: crew.missionLevel ?? 1,

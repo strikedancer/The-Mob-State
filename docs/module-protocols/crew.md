@@ -46,6 +46,7 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - Extra roles besides `leader` / `co_leader` / `member`: `consigliere` (Don crew overview, no bank withdraw) and `capo` with optional `capoCountry` (crew-bank tribute only in that country). Leader sets roles via `POST /crews/:id/members/:playerId/role`. See [don.md](don.md).
 - Shared crew storage is crew inventory, not a personal garage. Cars/motorcycles/boats/weapons/ammo/trade deposit into crew and are consumed by crew smuggling, missions, deals or enemy raids; they cannot be withdrawn for personal crimes. Drugs can be withdrawn or wholesaled. Weapons and ammo also feed Territory (HQ reserve plus frontline arms-cache); building level stays the cap. Crew Wars raids still steal the same HQ stacks.
 - Leader and `co_leader` can buy a jailed crewmate out from Prison using the crew bank (`POST /player/prison/buyout/:targetId` with `payFrom: crew_bank`). Personal cash buyout stays available to everyone. Crew-bank payment has a dirty-money arrest risk on the payer (target is still freed). Members, consigliere and capo cannot pay from the vault.
+- Crew VIP is real-money. Every member can donate into a shared pot (`/subscriptions/checkout/crew-vip-donate`) or one member can start the monthly subscription (`/subscriptions/checkout/crew-vip`). In-game crew-bank cash never buys Crew VIP. When the pot reaches the monthly price the crew gets 30 days. Gift Crew VIP by name stays a one-time 30-day gift.
 - Crew storage deals are officer-only escrow with another crew. Goods leave storage immediately; both crews confirm or the whole deal rolls back. Do not steal from your own crew or from personal inventories.
 
 ## i18n and Messaging
@@ -71,6 +72,7 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - Verify the Overview HQ block shows the villa/camping/etc still on a narrow phone width, with `1 lid` (not `1 leden`) for a solo crew.
 - Verify a freshly created crew immediately has HQ level 1 plus all storage buildings on level 1, including cash storage, and can deposit into the crew bank without a separate unlock step.
 - Verify Overview crew-bank buttons say **Storten** / **Opnemen** in Dutch (and equivalent bank verbs in other UI languages), not Borg or Terugtrekken.
+- Verify Crew Overview and Premium show the Crew VIP pot with donate chips for every member, and that one member can still start the monthly subscription. In-game cash must not buy Crew VIP.
 - Verify cash-storage level 1 can hold more than the level-2 upgrade price, so the crew can pay that upgrade from the crew bank.
 - Verify the Crew HQ level overview shows a continuous member-cap curve across all HQ styles and reaches 150 members at the top end instead of restarting from the base caps.
 - Verify car storage accepts both cars and motorcycles, while boat storage still only accepts boats.

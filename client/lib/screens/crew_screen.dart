@@ -91,6 +91,7 @@ class _CrewScreenState extends State<CrewScreen>
   List<dynamic> _crewBuildings = [];
   Map<String, dynamic>? _crewStorage;
   Map<String, dynamic>? _crewWarHub;
+  Map<String, dynamic>? _crewVipFund;
   List<Map<String, dynamic>> _crewDeals = [];
   bool _crewDealsCanManage = false;
   Map<String, dynamic>? _crewMissionsOverview;
@@ -1610,6 +1611,7 @@ class _CrewScreenState extends State<CrewScreen>
         futures.add(_loadCrewStorage());
         futures.add(_loadCrewDeals());
         futures.add(_loadCrewMissionsOverview(silent: true));
+        futures.add(_loadCrewVipFund());
         final authProvider = Provider.of<AuthProvider>(context, listen: false);
         final currentPlayerId = authProvider.currentPlayer?.id ?? 0;
         final myMembership = _myCrew!.members.firstWhere(
@@ -1665,11 +1667,25 @@ class _CrewScreenState extends State<CrewScreen>
           setState(() {
             _myCrew = crewData;
           });
+          await _loadCrewVipFund();
         }
       }
     } catch (e) {
       print('Error loading crew: $e');
     }
+  }
+
+  Future<void> _loadCrewVipFund() async {
+    try {
+      final response = await AuthService().apiClient.get('/subscriptions/crew-vip-fund');
+      if (response.statusCode != 200) return;
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final fund = data['fund'];
+      if (!mounted) return;
+      setState(() {
+        _crewVipFund = fund is Map ? Map<String, dynamic>.from(fund) : null;
+      });
+    } catch (_) {}
   }
 
   Future<void> _loadAllCrews() async {
@@ -2720,9 +2736,7 @@ class _CrewScreenState extends State<CrewScreen>
                             ? (isNl
                                   ? 'Actief tot: $crewExpiry'
                                   : 'Active until: $crewExpiry')
-                            : (isNl
-                                  ? 'Bijgebouwen lvl 11-15 + speler VIP inbegrepen'
-                                  : 'Side buildings lvl 11-15 + player VIP included'),
+                            : loc.crewUiVipDonateHint,
                         style: TextStyle(fontSize: 11, color: Colors.grey[600]),
                       ),
                     ],
@@ -2733,7 +2747,9 @@ class _CrewScreenState extends State<CrewScreen>
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      loc.crewUiTr73,
+                      _crewVipFund?['monthlyPriceEur'] != null
+                          ? '€${_crewVipFund!['monthlyPriceEur']}/${isNl ? 'maand' : 'mo'}'
+                          : loc.crewUiTr73,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.purple[700],
@@ -2753,16 +2769,17 @@ class _CrewScreenState extends State<CrewScreen>
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
                       child: Text(
-                        crewVip
-                            ? (isNl ? 'Verlengen' : 'Extend')
-                            : (isNl ? 'Activeren' : 'Activate'),
-                        style: const TextStyle(fontSize: 12),
+                        _crewVipFund?['autoRenewActive'] == true
+                            ? loc.crewUiVipSubscribeExtra
+                            : loc.crewUiVipSubscribe,
+                        style: const TextStyle(fontSize: 11),
                       ),
                     ),
                   ],
                 ),
               ],
             ),
+            ..._buildCrewVipFundSection(loc),
             const SizedBox(height: 12),
             // Player VIP row
             Row(
@@ -2922,6 +2939,123 @@ class _CrewScreenState extends State<CrewScreen>
     ),
   );
 
+  List<Widget> _buildCrewVipFundSection(AppLocalizations loc) {
+    final fund = _crewVipFund;
+    if (fund == null) return const [];
+    final fundedCents = (fund['fundCents'] as num?)?.toInt() ?? 0;
+    final priceCents = (fund['priceCents'] as num?)?.toInt() ?? 999;
+    final remainingCents = (fund['remainingCents'] as num?)?.toInt() ?? priceCents;
+    final progress = priceCents <= 0 ? 0.0 : (fundedCents / priceCents).clamp(0.0, 1.0);
+    final amounts = (fund['suggestedAmountsEur'] as List<dynamic>? ?? [])
+        .map((item) => item.toString())
+        .where((item) => item.isNotEmpty)
+        .toList();
+    final donations = (fund['donations'] as List<dynamic>? ?? [])
+        .whereType<Map>()
+        .map((item) => item.cast<String, dynamic>())
+        .toList();
+    final remainingEur = (remainingCents / 100).toStringAsFixed(2);
+    final fullEur = (priceCents / 100).toStringAsFixed(2);
+    final fundedLabel = loc.crewUiVipFundProgress(
+      '€${(fundedCents / 100).toStringAsFixed(2)}',
+      '€$fullEur',
+    );
+
+    return [
+      const SizedBox(height: 10),
+      Text(loc.crewUiVipDonateTitle, style: const TextStyle(fontWeight: FontWeight.w600)),
+      const SizedBox(height: 4),
+      Text(
+        loc.crewUiVipDonateHint,
+        style: TextStyle(fontSize: 11, color: Colors.grey[600]),
+      ),
+      const SizedBox(height: 6),
+      LinearProgressIndicator(
+        value: progress,
+        minHeight: 8,
+        backgroundColor: Colors.purple.withValues(alpha: 0.15),
+        color: Colors.purple,
+      ),
+      const SizedBox(height: 4),
+      Text(fundedLabel, style: TextStyle(fontSize: 11, color: Colors.grey[700])),
+      if (fund['autoRenewActive'] == true) ...[
+        const SizedBox(height: 4),
+        Text(loc.crewUiVipAutoRenewOn, style: TextStyle(fontSize: 11, color: Colors.grey[600])),
+      ],
+      const SizedBox(height: 8),
+      Wrap(
+        spacing: 6,
+        runSpacing: 6,
+        children: amounts.map((amount) {
+          final isRest = remainingCents > 0 && amount == remainingEur && amount != fullEur;
+          return OutlinedButton(
+            onPressed: () => _startCrewVipDonate(amount),
+            style: OutlinedButton.styleFrom(
+              visualDensity: VisualDensity.compact,
+              foregroundColor: Colors.purple[800],
+              side: const BorderSide(color: Colors.purple),
+            ),
+            child: Text(
+              isRest
+                  ? loc.crewUiVipDonateRest('€$amount')
+                  : loc.crewUiVipDonateAmount('€$amount'),
+              style: const TextStyle(fontSize: 11),
+            ),
+          );
+        }).toList(),
+      ),
+      if (donations.isNotEmpty) ...[
+        const SizedBox(height: 8),
+        Text(loc.crewUiVipRecentDonors, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600)),
+        ...donations.take(5).map((row) {
+          final name = (row['username'] ?? '').toString();
+          final amount = (row['amountEur'] ?? '').toString();
+          return Text(
+            '$name · €$amount',
+            style: TextStyle(fontSize: 11, color: Colors.grey[700]),
+          );
+        }),
+      ],
+    ];
+  }
+
+  Future<void> _startCrewVipDonate(String amountEur) async {
+    try {
+      final response = await AuthService().apiClient.post(
+        '/subscriptions/checkout/crew-vip-donate',
+        {'amountEur': amountEur},
+      );
+      if (!mounted) return;
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+        final checkoutUrl = data['url'] as String?;
+        if (checkoutUrl != null) {
+          await _openCheckoutUrl(checkoutUrl);
+        }
+        return;
+      }
+      final errData = response.body.isNotEmpty
+          ? jsonDecode(response.body) as Map<String, dynamic>?
+          : null;
+      final code = errData?['event'] as String? ?? 'unknown';
+      final message = code == 'error.not_in_crew'
+          ? l10n.crewUiVipNotInCrew
+          : code == 'error.invalid_donate_amount'
+              ? l10n.crewUiVipInvalidDonate
+              : l10n.crewUiTr78;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(content: Text(message), backgroundColor: Colors.red),
+      );
+    } catch (_) {
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(content: Text(l10n.crewUiTr78), backgroundColor: Colors.red),
+      );
+    }
+  }
+
   Future<void> _startCheckout(String type, {String? productKey}) async {
     try {
       final apiClient = AuthService().apiClient;
@@ -2956,6 +3090,10 @@ class _CrewScreenState extends State<CrewScreen>
         final code = errData?['event'] as String? ?? 'unknown';
         final message = code == 'error.not_crew_leader'
             ? l10n.crewUiTr76
+            : code == 'error.not_in_crew'
+            ? l10n.crewUiVipNotInCrew
+            : code == 'error.invalid_donate_amount'
+            ? l10n.crewUiVipInvalidDonate
             : code == 'error.invalid_product_key'
             ? l10n.crewUiTr77
             : l10n.crewUiTr10;

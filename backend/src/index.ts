@@ -21,6 +21,7 @@ import { ensureVaultSchema } from './startup/ensureVaultSchema';
 import { ensureDeepEconomySchema } from './startup/ensureDeepEconomySchema';
 import { ensureNightclubPlayerSupplySchema } from './startup/ensureNightclubPlayerSupplySchema';
 import { ensureVipPrestigeSchema } from './startup/ensureVipPrestigeSchema';
+import { ensureCrewVipFundSchema } from './startup/ensureCrewVipFundSchema';
 import { ensureDailyGoalsSchema } from './startup/ensureDailyGoalsSchema';
 import { ensureSiteVisitorsSchema } from './startup/ensureSiteVisitorsSchema';
 import { ensureCrewRecruitingSchema } from './startup/ensureCrewRecruitingSchema';
@@ -75,6 +76,7 @@ async function startServer() {
   await ensureDeepEconomySchema();
   await ensureNightclubPlayerSupplySchema();
   await ensureVipPrestigeSchema();
+  await ensureCrewVipFundSchema();
   await ensureDailyGoalsSchema();
   await ensureSiteVisitorsSchema();
   await ensureCrewRecruitingSchema();

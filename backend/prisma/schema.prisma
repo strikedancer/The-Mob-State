@@ -544,8 +544,11 @@ model Crew {
   vipExpiresAt          DateTime?
   /// Cumulative crew VIP days granted. Display prestige only.
   vipLifetimeDays        Int                        @default(0)
+  /// Real-money donation pot toward the next Crew VIP month (euro cents).
+  vipFundCents           Int                        @default(0)
   recruitingOpen         Boolean                    @default(true)
   autoAccept             Boolean                    @default(false)
+  vipDonations           CrewVipDonation[]
   ammoInventory         CrewAmmoInventory[]
   ammoStorageBuilding   CrewAmmoStorageBuilding?
   boatInventory         CrewBoatInventory[]
@@ -570,6 +573,21 @@ model Crew {
 
   @@index([name])
   @@map("crews")
+}
+
+model CrewVipDonation {
+  id             Int      @id @default(autoincrement())
+  crewId         Int
+  playerId       Int
+  amountCents    Int
+  monthsGranted  Int      @default(0)
+  molliePaymentId String  @unique @db.VarChar(64)
+  createdAt      DateTime @default(now())
+  crew           Crew     @relation(fields: [crewId], references: [id], onDelete: Cascade)
+
+  @@index([crewId, createdAt], map: "idx_crew_vip_donations_crew")
+  @@index([playerId], map: "idx_crew_vip_donations_player")
+  @@map("crew_vip_donations")
 }
 
 model CrewMember {

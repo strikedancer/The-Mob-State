@@ -217,6 +217,8 @@ Per VIP level avg: 1.18B (steep but achievable)
 - [x] Player/crew auto-renew visibility + cancel (`POST /subscriptions/vip/cancel`; paid-through period remains)
 - [x] Gift Player VIP by username (`POST /subscriptions/checkout/gift-player-vip`; one-time 30d, no auto-renew)
 - [x] Gift Crew VIP by crew name (`POST /subscriptions/checkout/gift-crew-vip`; one-time 30d, no auto-renew)
+- [x] Shared Crew VIP donation pot (`POST /subscriptions/checkout/crew-vip-donate`; any member; 30d when the pot reaches the monthly price)
+- [x] Any crew member can start the Crew VIP subscription (leader-only checkout removed)
 - [x] Display-only prestige from `vipLifetimeDays` (bronze 30 / silver 180 / gold 365)
 
 ## Future Enhancements
