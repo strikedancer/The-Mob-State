@@ -26,6 +26,7 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - Crew overview on mobile must show the HQ still as an image (not a squeezed ListTile of HQ label + style + level). Member counts use singular/plural (`1 lid` / `2 leden`).
 - Crew chat uses the same `MessageInput` as DMs: Enter sends, Shift+Enter is a new line. The dashboard live-event rail stays hidden on Crew so it cannot cover the send button.
 - Fresh crews must start with Crew HQ and all crew storage buildings at level 1 so bank deposits, shared storage and upgrade flows work immediately without a manual bootstrap purchase. Concurrent crew/storage GETs must upsert those starter rows (unique `crewId`) instead of racing `create`, so two members opening the same new crew do not 500.
+- Crew-bank cash buttons on Overview are bank verbs, never jail-bail or military-retreat wording. Dutch: **Storten** / **Opnemen** (`crewUiLabelDeposit` / `crewUiLabelWithdraw`). English stays Deposit / Withdraw. Dialog titles (`crewUiTr84` / `crewUiTr85`) must match that meaning.
 - Cash-storage upgrades are paid from the crew bank, which is capped by the current cash-storage capacity. The next cash-storage upgrade cost must stay below that capacity so a crew can always pay it from the vault (level 1 holds €1.000.000; the step to level 2 costs €450.000).
 - Crew HQ member-cap progression must stay continuous across all HQ styles and levels; the cap overview may not reset per style and must scale through to the intended max of 150 members.
 - Crew HQ upgrade costs must stay continuous across all HQ styles and levels; upgrade prices may not reset per style tier and must keep increasing per next global level.
@@ -69,6 +70,7 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - Verify no text overflows or clipped buttons appear.
 - Verify the Overview HQ block shows the villa/camping/etc still on a narrow phone width, with `1 lid` (not `1 leden`) for a solo crew.
 - Verify a freshly created crew immediately has HQ level 1 plus all storage buildings on level 1, including cash storage, and can deposit into the crew bank without a separate unlock step.
+- Verify Overview crew-bank buttons say **Storten** / **Opnemen** in Dutch (and equivalent bank verbs in other UI languages), not Borg or Terugtrekken.
 - Verify cash-storage level 1 can hold more than the level-2 upgrade price, so the crew can pay that upgrade from the crew bank.
 - Verify the Crew HQ level overview shows a continuous member-cap curve across all HQ styles and reaches 150 members at the top end instead of restarting from the base caps.
 - Verify car storage accepts both cars and motorcycles, while boat storage still only accepts boats.

@@ -4639,10 +4639,10 @@ class AppLocalizationsIt extends AppLocalizations {
   String get crewUiLabelCrewBank => 'Banca dell\'Crew:';
 
   @override
-  String get crewUiLabelDeposit => 'Depositare';
+  String get crewUiLabelDeposit => 'Deposita';
 
   @override
-  String get crewUiLabelWithdraw => 'Ritirare';
+  String get crewUiLabelWithdraw => 'Preleva';
 
   @override
   String get crewUiLabelMyTrustScore => 'Il mio punteggio di fiducia:';

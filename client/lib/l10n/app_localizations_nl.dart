@@ -4624,10 +4624,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crewUiLabelCrewBank => 'Bemanningsbank:';
 
   @override
-  String get crewUiLabelDeposit => 'Borg';
+  String get crewUiLabelDeposit => 'Storten';
 
   @override
-  String get crewUiLabelWithdraw => 'Terugtrekken';
+  String get crewUiLabelWithdraw => 'Opnemen';
 
   @override
   String get crewUiLabelMyTrustScore => 'Mijn vertrouwensscore:';

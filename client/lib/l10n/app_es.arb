@@ -7736,7 +7736,7 @@
   "crewUiStateNotInCrewYet": "Aún no estás en una Crew",
   "crewUiActionCreateCrew": "Crear Crew (50.000 €)",
   "crewUiLabelCrewBank": "Banco de Crew:",
-  "crewUiLabelDeposit": "Depósito",
+  "crewUiLabelDeposit": "Ingresar",
   "crewUiLabelWithdraw": "Retirar",
   "crewUiLabelMyTrustScore": "Mi puntuación de confianza:",
   "crewUiActionDeleteCrew": "Eliminar Crew",

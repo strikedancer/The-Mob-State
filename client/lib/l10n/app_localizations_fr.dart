@@ -4668,7 +4668,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get crewUiLabelCrewBank => 'Banque d\'équipage :';
 
   @override
-  String get crewUiLabelDeposit => 'Dépôt';
+  String get crewUiLabelDeposit => 'Déposer';
 
   @override
   String get crewUiLabelWithdraw => 'Retirer';
@@ -5894,7 +5894,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get crewUiTr84 => 'Dépôt à la banque de l\'équipage';
 
   @override
-  String get crewUiTr85 => 'Se retirer de la banque d\'équipage';
+  String get crewUiTr85 => 'Retirer de la banque d\'équipage';
 
   @override
   String get crewUiTr86 => 'Montante';

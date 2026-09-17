@@ -4637,10 +4637,10 @@ class AppLocalizationsPl extends AppLocalizations {
   String get crewUiLabelCrewBank => 'Bank załogi:';
 
   @override
-  String get crewUiLabelDeposit => 'Depozyt';
+  String get crewUiLabelDeposit => 'Wpłać';
 
   @override
-  String get crewUiLabelWithdraw => 'Wycofać';
+  String get crewUiLabelWithdraw => 'Wypłać';
 
   @override
   String get crewUiLabelMyTrustScore => 'Mój wynik zaufania:';
@@ -5851,7 +5851,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get crewUiTr84 => 'Wpłata do banku załogi';
 
   @override
-  String get crewUiTr85 => 'Wycofaj się z banku załogi';
+  String get crewUiTr85 => 'Wypłać z banku załogi';
 
   @override
   String get crewUiTr86 => 'Kwota';
