@@ -5682,7 +5682,8 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crewUiTr32 => 'Voor deze actie is een doelspeler vereist.';
 
   @override
-  String get crewUiTr33 => 'Anti-boerderijblok: kies een ander doelwit.';
+  String get crewUiTr33 =>
+      'Je hebt deze tegenstander al met deze actie geraakt. Kies iemand anders, of wacht even en probeer het opnieuw.';
 
   @override
   String get crewUiTr34 => 'Voor deze actie is een VIP-speler vereist.';
@@ -18263,7 +18264,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicCrewTips =>
-      'Nieuwe crews kunnen direct geld storten en gedeelde opslag gebruiken; focus daarna op upgrades voor extra capaciteit in plaats van op een losse startaankoop.\nGebruik de War Room eerst om te zien of je crew al in cooldown zit voordat je een nieuwe oorlog probeert te declareren.\nVerdeel target calls in de crew-chat zodat je niet steeds op dezelfde tegenstander focust en door de anti-farm guard wordt geblokkeerd.\nCoördineer heist-starttijden in de crew-chat zodat iedereen online is en niemand in de cel zit.\nKies een crew die in dezelfde tijdzone of activiteitspatroon zit als jij voor betere heist-success rates.\nGebruik gedeelde crew-opslag om risicovolle goederen los te koppelen van je persoonlijke inventaris.\nStort alleen auto\'s, motoren of boten in de crew als je ze echt voor smokkel, missies of deals wilt inzetten; daarna kun je ze niet meer zelf gebruiken.\nCrewbank-uitkoop is handig als iemands borg hoog is, maar reken erop dat jij zelf de cel in kunt gaan wegens zwart geld.';
+      'Nieuwe crews kunnen direct geld storten en gedeelde opslag gebruiken; focus daarna op upgrades voor extra capaciteit in plaats van op een losse startaankoop.\nGebruik de War Room eerst om te zien of je crew al in cooldown zit voordat je een nieuwe oorlog probeert te declareren.\nVerdeel target calls in de crew-chat. Dezelfde tegenstander kun je niet eindeloos met Doden of Beroven raken; kies dan iemand anders of wacht even.\nCoördineer heist-starttijden in de crew-chat zodat iedereen online is en niemand in de cel zit.\nKies een crew die in dezelfde tijdzone of activiteitspatroon zit als jij voor betere heist-success rates.\nGebruik gedeelde crew-opslag om risicovolle goederen los te koppelen van je persoonlijke inventaris.\nStort alleen auto\'s, motoren of boten in de crew als je ze echt voor smokkel, missies of deals wilt inzetten; daarna kun je ze niet meer zelf gebruiken.\nCrewbank-uitkoop is handig als iemands borg hoog is, maar reken erop dat jij zelf de cel in kunt gaan wegens zwart geld.';
 
   @override
   String get helpTopicFriendsCategory => 'Sociaal';

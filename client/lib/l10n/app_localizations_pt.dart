@@ -5690,7 +5690,8 @@ class AppLocalizationsPt extends AppLocalizations {
   String get crewUiTr32 => 'Esta ação requer um jogador alvo.';
 
   @override
-  String get crewUiTr33 => 'Bloqueio anti-fazenda: escolha outro alvo.';
+  String get crewUiTr33 =>
+      'Você já usou esse movimento neste oponente. Escolha outra pessoa ou espere um pouco e tente novamente.';
 
   @override
   String get crewUiTr34 => 'Um jogador VIP é necessário para esta ação.';

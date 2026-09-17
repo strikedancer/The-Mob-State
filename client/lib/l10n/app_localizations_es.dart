@@ -5714,7 +5714,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get crewUiTr32 => 'Esta acción requiere una jugadora objetivo.';
 
   @override
-  String get crewUiTr33 => 'Bloqueo anti-granja: elige otro objetivo.';
+  String get crewUiTr33 =>
+      'Ya usaste este movimiento con este oponente. Elija a otra persona o espere un poco y vuelva a intentarlo.';
 
   @override
   String get crewUiTr34 => 'Se requiere un jugador VIP para esta acción.';

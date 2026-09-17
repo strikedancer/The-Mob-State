@@ -5705,7 +5705,8 @@ class AppLocalizationsIt extends AppLocalizations {
   String get crewUiTr32 => 'Questa azione richiede un giocatore bersaglio.';
 
   @override
-  String get crewUiTr33 => 'Blocco anti-farm: scegli un altro bersaglio.';
+  String get crewUiTr33 =>
+      'Hai già usato questa mossa su questo avversario. Scegli qualcun altro oppure aspetta un po\' e riprova.';
 
   @override
   String get crewUiTr34 => 'Per questa azione è richiesto un giocatore VIP.';

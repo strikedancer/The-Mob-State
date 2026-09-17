@@ -5734,7 +5734,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get crewUiTr32 => 'Cette action nécessite un joueur ciblé.';
 
   @override
-  String get crewUiTr33 => 'Blocage anti-ferme : choisissez une autre cible.';
+  String get crewUiTr33 =>
+      'Vous avez déjà utilisé ce coup sur cet adversaire. Choisissez quelqu\'un d\'autre ou attendez un peu et réessayez.';
 
   @override
   String get crewUiTr34 => 'Un joueur VIP est requis pour cette action.';

@@ -5719,7 +5719,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get crewUiTr32 => 'Für diese Aktion ist ein Zielspieler erforderlich.';
 
   @override
-  String get crewUiTr33 => 'Anti-Farm-Block: Wählen Sie ein anderes Ziel.';
+  String get crewUiTr33 =>
+      'Du hast diesen Zug bereits gegen diesen Gegner ausgeführt. Wählen Sie jemand anderen aus oder warten Sie ein wenig und versuchen Sie es erneut.';
 
   @override
   String get crewUiTr34 => 'Für diese Aktion ist ein VIP-Spieler erforderlich.';

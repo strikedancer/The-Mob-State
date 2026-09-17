@@ -31,6 +31,7 @@ type CrewWarRuntimeConfig = {
 };
 
 const REPEATED_TARGET_WINDOW_MS = 30 * 60 * 1000;
+const REPEATED_TARGET_CAP = 2;
 const TERRITORY_TICK_MS = 30 * 60 * 1000;
 const DEFAULT_REWARD_POOL = 150000;
 const DEFAULT_WAR_TERRITORY_TARGET_COUNT = 3;
@@ -1623,17 +1624,19 @@ export async function performWarAction(
   }
 
   if (targetPlayerId) {
-    const repeatedAction = await prisma.crewWarAction.findFirst({
+    const repeatedHits = await prisma.crewWarAction.findMany({
       where: {
         warId,
         actorId: playerId,
         targetId: targetPlayerId,
+        actionType,
         createdAt: { gte: new Date(Date.now() - REPEATED_TARGET_WINDOW_MS) },
         result: 'success',
       },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: 'asc' },
+      select: { id: true },
     });
-    if (repeatedAction) {
+    if (repeatedHits.length >= REPEATED_TARGET_CAP) {
       await prisma.crewWarAction.create({
         data: {
           warId,
@@ -1643,7 +1646,7 @@ export async function performWarAction(
           targetCrewId: enemyCrewId,
           actionType,
           result: 'blocked_repeated_target',
-          metadataJson: stringifyJson({ repeatedActionId: repeatedAction.id }),
+          metadataJson: stringifyJson({ repeatedActionId: repeatedHits[0]?.id }),
         },
       });
       throw new Error('WAR_REPEATED_TARGET_BLOCKED');

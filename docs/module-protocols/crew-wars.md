@@ -89,7 +89,7 @@ Scope-afbakening:
 - Territory claim- en tick-punten mogen strategisch variëren per doelregio, maar de bonusberekening moet server-side deterministisch blijven en uit opgeslagen territory target metadata herleidbaar zijn.
 - Combo- en streakbonussen moeten cap-gedreven zijn en resetten bij death/timeout/farm detectie.
 - Friendly fire, self-target loops, same-IP abuse, same-device clusters en repeated target farming leveren geen punten op.
-- Herhaalde punten op hetzelfde target binnen een korte window moeten diminishing returns of volledige blokkade krijgen.
+- Herhaalde punten op hetzelfde target met dezelfde actie (zoals Doden) binnen 30 minuten: na 2 treffers volgt een blok. Een mug of raid telt niet als Doden. Spelertekst mag geen jargon als “anti-farm” of “boerderijblok” gebruiken.
 
 ## VIP Integration Guardrails
 

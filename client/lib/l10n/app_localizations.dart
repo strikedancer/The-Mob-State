@@ -10039,7 +10039,7 @@ abstract class AppLocalizations {
   /// No description provided for @crewUiTr33.
   ///
   /// In en, this message translates to:
-  /// **'Anti-farm block: pick another target.'**
+  /// **'You already used this move on this opponent. Pick someone else, or wait a bit and try again.'**
   String get crewUiTr33;
 
   /// No description provided for @crewUiTr34.
@@ -31403,7 +31403,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicCrewTips.
   ///
   /// In en, this message translates to:
-  /// **'New crews can deposit money and use shared storage immediately; after that, focus on upgrades for more capacity instead of a separate starter purchase.\nCheck the War Room first to see whether your crew is still on cooldown before trying to declare a new war.\nCoordinate target calls in crew chat so you do not keep farming the same opponent and trip the anti-farm guard.\nCoordinate heist start times in crew chat so everyone is online and nobody is in jail.\nChoose a crew in the same timezone or activity pattern for better heist success rates.\nUse shared crew storage to separate risky goods from your personal inventory.\nOnly deposit cars, motorcycles or boats into the crew if you really want them for smuggling, missions or deals; you cannot use them yourself afterwards.\nCrew-bank buyout helps when someone\'s bail is high, but expect that you yourself can go to jail for dirty money.'**
+  /// **'New crews can deposit money and use shared storage immediately; after that, focus on upgrades for more capacity instead of a separate starter purchase.\nCheck the War Room first to see whether your crew is still on cooldown before trying to declare a new war.\nCoordinate target calls in crew chat. You cannot keep using Kill or Mug on the same opponent forever; pick someone else or wait a bit.\nCoordinate heist start times in crew chat so everyone is online and nobody is in jail.\nChoose a crew in the same timezone or activity pattern for better heist success rates.\nUse shared crew storage to separate risky goods from your personal inventory.\nOnly deposit cars, motorcycles or boats into the crew if you really want them for smuggling, missions or deals; you cannot use them yourself afterwards.\nCrew-bank buyout helps when someone\'s bail is high, but expect that you yourself can go to jail for dirty money.'**
   String get helpTopicCrewTips;
 
   /// No description provided for @helpTopicFriendsCategory.

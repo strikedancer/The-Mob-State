@@ -5692,7 +5692,8 @@ class AppLocalizationsPl extends AppLocalizations {
   String get crewUiTr32 => 'Ta akcja wymaga gracza docelowego.';
 
   @override
-  String get crewUiTr33 => 'Blokada przeciw farmie: wybierz inny cel.';
+  String get crewUiTr33 =>
+      'Użyłeś już tego ruchu na tym przeciwniku. Wybierz kogoś innego lub poczekaj chwilę i spróbuj ponownie.';
 
   @override
   String get crewUiTr34 => 'Do tej akcji wymagany jest gracz VIP.';
