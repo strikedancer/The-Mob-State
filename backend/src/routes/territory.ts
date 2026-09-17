@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
 import { adminAuthMiddleware, type AdminRequest } from '../middleware/adminAuth';
 import * as territoryService from '../services/territoryService';
+import * as territoryArsenalService from '../services/territoryArsenalService';
 import * as crewService from '../services/crewService';
 
 const router = Router();
@@ -85,6 +86,15 @@ function mapTerritoryError(error: unknown, res: Response, next: NextFunction) {
     GARRISON_HQ_LEVEL_REQUIRED:     [403, 'territory.garrison_hq_level_required'],
     INSUFFICIENT_CREW_FUNDS:        [400, 'territory.garrison_insufficient_funds'],
     SEASON_NOT_FOUND:               [404, 'territory.season_not_found'],
+    ARSENAL_OFFICER_ONLY:           [403, 'territory.arsenal_officer_only'],
+    ARSENAL_CACHE_REQUIRED:         [403, 'territory.arsenal_cache_required'],
+    ARSENAL_NOT_OWNER:              [403, 'territory.arsenal_not_owner'],
+    ARSENAL_CACHE_FULL:             [409, 'territory.arsenal_cache_full'],
+    ARSENAL_INSUFFICIENT_STOCK:     [400, 'territory.arsenal_insufficient_stock'],
+    ARSENAL_RECALL_LOCKED:          [409, 'territory.arsenal_recall_locked'],
+    INVALID_QUANTITY:               [400, 'territory.arsenal_invalid_quantity'],
+    WEAPON_STORAGE_FULL:            [409, 'territory.arsenal_weapon_storage_full'],
+    AMMO_STORAGE_FULL:              [409, 'territory.arsenal_ammo_storage_full'],
   };
 
   const entry = map[error.message];
@@ -290,6 +300,65 @@ router.post('/garrison/deploy', authenticate, async (req: AuthRequest, res: Resp
       req.player?.currentCountry,
     );
     return res.json({ event: 'territory.garrison_deployed', params: { garrison } });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ event: 'error.validation', params: { issues: error.issues } });
+    }
+    return mapTerritoryError(error, res, next);
+  }
+});
+
+const arsenalMoveSchema = z.object({
+  regionKey: z.string().min(2).max(60),
+  kind: z.enum(['weapon', 'ammo']),
+  itemKey: z.string().min(1).max(80),
+  quantity: z.number().int().positive(),
+});
+
+/**
+ * POST /territory/arsenal/commit
+ * Move HQ reserve into a peacetime region arms cache (officers only).
+ */
+router.post('/arsenal/commit', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const crewId = await requireCrew(req, res);
+    if (!crewId) return;
+    const body = arsenalMoveSchema.parse(req.body);
+    const result = await territoryArsenalService.commitToCache({
+      playerId: req.player!.id,
+      crewId,
+      regionKey: body.regionKey,
+      kind: body.kind,
+      itemKey: body.itemKey,
+      quantity: body.quantity,
+    });
+    return res.json({ event: 'territory.arsenal_committed', params: result });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ event: 'error.validation', params: { issues: error.issues } });
+    }
+    return mapTerritoryError(error, res, next);
+  }
+});
+
+/**
+ * POST /territory/arsenal/recall
+ * Move cache stock back to HQ outside a live contest (officers only).
+ */
+router.post('/arsenal/recall', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const crewId = await requireCrew(req, res);
+    if (!crewId) return;
+    const body = arsenalMoveSchema.parse(req.body);
+    const result = await territoryArsenalService.recallFromCache({
+      playerId: req.player!.id,
+      crewId,
+      regionKey: body.regionKey,
+      kind: body.kind,
+      itemKey: body.itemKey,
+      quantity: body.quantity,
+    });
+    return res.json({ event: 'territory.arsenal_recalled', params: result });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return res.status(400).json({ event: 'error.validation', params: { issues: error.issues } });

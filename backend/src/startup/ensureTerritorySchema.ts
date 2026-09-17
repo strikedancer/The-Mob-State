@@ -118,6 +118,21 @@ const TERRITORY_CONFIG_DEFAULTS: Record<string, string> = {
   TERRITORY_GARRISON_CAPTURE_THRESHOLD_CAP: '85',
   TERRITORY_ENCIRCLED_UNATTACKABLE: '1',
   TERRITORY_ENCIRCLED_MIN_NEIGHBORS: '3',
+  TERRITORY_ARSENAL_HQ_BONUS_MULT: '0.5',
+  TERRITORY_ARSENAL_HQ_AMMO_TAX_MULT: '1.5',
+  TERRITORY_ARSENAL_LOOT_PERCENT: '40',
+  TERRITORY_ARSENAL_SABOTAGE_STEAL_PERCENT: '10',
+  TERRITORY_ARSENAL_SABOTAGE_BURN_PERCENT: '15',
+  TERRITORY_ARSENAL_WEAPON_WEAR: '8',
+  TERRITORY_ARSENAL_DRYFIRE_WEAR: '16',
+  TERRITORY_ARSENAL_LOW_THRESHOLD: '40',
+  TERRITORY_ARSENAL_GARRISON_LEAK_AMMO_PER_HOUR: '8',
+  TERRITORY_ARSENAL_SUPPLY_RUN_AMMO: '80',
+  TERRITORY_ARSENAL_SUPPLY_RUN_WEAPONS: '2',
+  TERRITORY_ARSENAL_AMMO_COST_RAID: '40',
+  TERRITORY_ARSENAL_AMMO_COST_DEFENSE: '30',
+  TERRITORY_ARSENAL_AMMO_COST_PATROL: '15',
+  TERRITORY_ARSENAL_AMMO_COST_SABOTAGE: '8',
 };
 
 type TerritorySeedRegion = {
@@ -444,6 +459,24 @@ export async function ensureTerritorySchema(): Promise<void> {
      SET ownedSince = COALESCE(ownedSince, lastIncomeAt, updatedAt, NOW())
      WHERE ownerCrewId IS NOT NULL AND ownedSince IS NULL`,
   );
+
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS territory_region_arsenal (
+      id INT NOT NULL AUTO_INCREMENT,
+      regionKey VARCHAR(60) NOT NULL,
+      crewId INT NOT NULL,
+      kind VARCHAR(16) NOT NULL,
+      itemKey VARCHAR(80) NOT NULL,
+      quantity INT NOT NULL DEFAULT 0,
+      averageCondition INT NOT NULL DEFAULT 100,
+      createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (id),
+      UNIQUE KEY uq_territory_region_arsenal (regionKey, crewId, kind, itemKey),
+      INDEX idx_territory_arsenal_crew (crewId),
+      INDEX idx_territory_arsenal_region (regionKey)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `);
 
   await prisma.$executeRawUnsafe(`
     CREATE TABLE IF NOT EXISTS territory_crew_stats (

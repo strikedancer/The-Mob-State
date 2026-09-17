@@ -13,6 +13,7 @@ import {
   garrisonMaxActiveForRegionCap,
 } from './territoryRegionCaps';
 import { withPrismaWriteRetry } from '../lib/prismaRetry';
+import * as territoryArsenalService from './territoryArsenalService';
 
 // ---------------------------------------------------------------------------
 // Territory Service
@@ -123,6 +124,21 @@ async function getTerritoryConfig() {
     'TERRITORY_GARRISON_CAPTURE_THRESHOLD_CAP',
     'TERRITORY_ENCIRCLED_UNATTACKABLE',
     'TERRITORY_ENCIRCLED_MIN_NEIGHBORS',
+    'TERRITORY_ARSENAL_HQ_BONUS_MULT',
+    'TERRITORY_ARSENAL_HQ_AMMO_TAX_MULT',
+    'TERRITORY_ARSENAL_LOOT_PERCENT',
+    'TERRITORY_ARSENAL_SABOTAGE_STEAL_PERCENT',
+    'TERRITORY_ARSENAL_SABOTAGE_BURN_PERCENT',
+    'TERRITORY_ARSENAL_WEAPON_WEAR',
+    'TERRITORY_ARSENAL_DRYFIRE_WEAR',
+    'TERRITORY_ARSENAL_LOW_THRESHOLD',
+    'TERRITORY_ARSENAL_GARRISON_LEAK_AMMO_PER_HOUR',
+    'TERRITORY_ARSENAL_SUPPLY_RUN_AMMO',
+    'TERRITORY_ARSENAL_SUPPLY_RUN_WEAPONS',
+    'TERRITORY_ARSENAL_AMMO_COST_RAID',
+    'TERRITORY_ARSENAL_AMMO_COST_DEFENSE',
+    'TERRITORY_ARSENAL_AMMO_COST_PATROL',
+    'TERRITORY_ARSENAL_AMMO_COST_SABOTAGE',
   ];
   const cfg = await getRuntimeConfig(keys);
   const actionUnlockHqLevels = {
@@ -222,6 +238,21 @@ async function getTerritoryConfig() {
     garrisonCaptureThresholdCap: Number(cfg['TERRITORY_GARRISON_CAPTURE_THRESHOLD_CAP'] ?? 85),
     encircledUnattackable: Number(cfg['TERRITORY_ENCIRCLED_UNATTACKABLE'] ?? 1) === 1,
     encircledMinNeighbors: Number(cfg['TERRITORY_ENCIRCLED_MIN_NEIGHBORS'] ?? 3),
+    arsenalHqBonusMult: Number(cfg['TERRITORY_ARSENAL_HQ_BONUS_MULT'] ?? 0.5),
+    arsenalHqAmmoTaxMult: Number(cfg['TERRITORY_ARSENAL_HQ_AMMO_TAX_MULT'] ?? 1.5),
+    arsenalLootPercent: Number(cfg['TERRITORY_ARSENAL_LOOT_PERCENT'] ?? 40),
+    arsenalSabotageStealPercent: Number(cfg['TERRITORY_ARSENAL_SABOTAGE_STEAL_PERCENT'] ?? 10),
+    arsenalSabotageBurnPercent: Number(cfg['TERRITORY_ARSENAL_SABOTAGE_BURN_PERCENT'] ?? 15),
+    arsenalWeaponWear: Number(cfg['TERRITORY_ARSENAL_WEAPON_WEAR'] ?? 8),
+    arsenalDryFireWear: Number(cfg['TERRITORY_ARSENAL_DRYFIRE_WEAR'] ?? 16),
+    arsenalLowThreshold: Number(cfg['TERRITORY_ARSENAL_LOW_THRESHOLD'] ?? 40),
+    arsenalGarrisonLeakAmmoPerHour: Number(cfg['TERRITORY_ARSENAL_GARRISON_LEAK_AMMO_PER_HOUR'] ?? 8),
+    arsenalSupplyRunAmmo: Number(cfg['TERRITORY_ARSENAL_SUPPLY_RUN_AMMO'] ?? 80),
+    arsenalSupplyRunWeapons: Number(cfg['TERRITORY_ARSENAL_SUPPLY_RUN_WEAPONS'] ?? 2),
+    arsenalAmmoCostRaid: Number(cfg['TERRITORY_ARSENAL_AMMO_COST_RAID'] ?? 40),
+    arsenalAmmoCostDefense: Number(cfg['TERRITORY_ARSENAL_AMMO_COST_DEFENSE'] ?? 30),
+    arsenalAmmoCostPatrol: Number(cfg['TERRITORY_ARSENAL_AMMO_COST_PATROL'] ?? 15),
+    arsenalAmmoCostSabotage: Number(cfg['TERRITORY_ARSENAL_AMMO_COST_SABOTAGE'] ?? 8),
   };
 }
 
@@ -625,7 +656,7 @@ function buildPassiveIncomeSnapshot(
 type StrategicActionBonus = {
   actionType: string;
   bonusPoints: number;
-  source: 'strategic-tag' | 'adjacency' | 'war-aftermath' | 'hq-level' | 'crew-mission-level' | 'crew-building' | 'region-event' | 'region-project' | 'garrison';
+  source: 'strategic-tag' | 'adjacency' | 'war-aftermath' | 'hq-level' | 'crew-mission-level' | 'crew-building' | 'region-event' | 'region-project' | 'garrison' | 'arsenal';
   labelNl: string;
   labelEn: string;
 };
@@ -811,6 +842,7 @@ function buildGarrisonDefenseBonuses(
   garrison: ActiveGarrisonEffect | null,
   defenderCrewId: number | null | undefined,
   actorCrewId: number,
+  fill = 1,
 ): StrategicActionBonus[] {
   if (!garrison || defenderCrewId == null || garrison.favoredCrewId !== actorCrewId) {
     return [];
@@ -818,15 +850,35 @@ function buildGarrisonDefenseBonuses(
   if (garrison.favoredCrewId !== defenderCrewId || garrison.defenseBonusPoints <= 0) {
     return [];
   }
+  const bonusPoints = territoryArsenalService.scaleGarrisonBonus(garrison.defenseBonusPoints, fill);
+  if (bonusPoints <= 0) return [];
   return [
     {
       actionType: 'defense',
-      bonusPoints: garrison.defenseBonusPoints,
+      bonusPoints,
       source: 'garrison',
       labelNl: 'Garnizoen / afweer',
       labelEn: 'Garrison / air defense',
     },
   ];
+}
+
+function withoutStocklessWeaponBuildingBonuses(bonuses: StrategicActionBonus[]): StrategicActionBonus[] {
+  return bonuses.filter((bonus) => !(bonus.source === 'crew-building' && bonus.actionType === 'defense'));
+}
+
+function toArsenalStrategicBonuses(
+  rows: Array<{ actionType: string; bonusPoints: number; source: 'arsenal'; labelNl: string; labelEn: string }>,
+): StrategicActionBonus[] {
+  return rows
+    .filter((row) => row.bonusPoints > 0)
+    .map((row) => ({
+      actionType: row.actionType,
+      bonusPoints: row.bonusPoints,
+      source: 'arsenal' as const,
+      labelNl: row.labelNl,
+      labelEn: row.labelEn,
+    }));
 }
 
 function buildWarPressureActionBonuses(effect: ActiveWarPressureEffect | null): StrategicActionBonus[] {
@@ -1412,6 +1464,7 @@ async function syncContestLifecycle(now: Date = new Date()): Promise<void> {
 
 export async function processPendingTerritoryContests(now: Date = new Date()): Promise<void> {
   await syncContestLifecycle(now);
+  await territoryArsenalService.leakGarrisonAmmo(now).catch(() => {});
 }
 
 // ── Public API ──────────────────────────────────────────────────────────────
@@ -1491,6 +1544,12 @@ export async function getMapData(
     };
     garrisonOffer: ReturnType<typeof garrisonOfferFromConfig>;
     encircled: boolean;
+    arsenal: Awaited<ReturnType<typeof territoryArsenalService.summarizeRegionArsenal>>;
+    arsenalBadge: {
+      hasCache: boolean;
+      fillLevel: 'empty' | 'half' | 'full';
+      fillPercent: number;
+    } | null;
   }>;
 }> {
   await syncContestLifecycle();
@@ -1590,6 +1649,15 @@ export async function getMapData(
     }
     return acc;
   }, {});
+  const regionKeys = regions.map((region) => region.regionKey);
+  const arsenalBadges = await territoryArsenalService.mapArsenalBadges(regionKeys);
+  const viewerArsenalByRegion = viewer?.viewerCrewId
+    ? await territoryArsenalService.summarizeViewerArsenalByRegions({
+      crewId: viewer.viewerCrewId,
+      playerId: viewer.viewerPlayerId ?? null,
+      regionKeys,
+    })
+    : {};
 
   let viewerCooldownByContestId: Record<number, { nextActionAt: Date; secondsRemaining: number }> = {};
   if (viewer?.viewerPlayerId && contests.length > 0) {
@@ -1713,7 +1781,9 @@ export async function getMapData(
           affectedCrewName: rawWarPressure.affectedCrewId == null ? null : (crewNameMap[rawWarPressure.affectedCrewId] ?? null),
         }
       : null;
-    const strategicActionBonuses = [
+    const arsenalSummary = viewerArsenalByRegion[r.regionKey] ?? null;
+    const garrisonFill = arsenalSummary ? arsenalSummary.fillPercent / 100 : 1;
+    const strategicActionBonuses = withoutStocklessWeaponBuildingBonuses([
       ...buildStrategicActionBonuses(r, {
         holderAdjacentOwned: viewerIsHolder ? holderAdjacentOwned : 0,
         invasionFromOwnedNeighbor,
@@ -1729,8 +1799,10 @@ export async function getMapData(
         activeGarrisonByRegion[r.regionKey] ?? null,
         contest?.defenderCrewId ?? ownerCrewId,
         viewer?.viewerCrewId ?? -1,
+        garrisonFill,
       ),
-    ];
+      ...toArsenalStrategicBonuses(arsenalSummary?.bonuses ?? []),
+    ]);
     const garrison = activeGarrisonByRegion[r.regionKey] ?? null;
     const effectiveStability = Math.max(0, (ctrl?.stability ?? 100) - (activeWarPressure?.stabilityPenalty ?? 0));
     return {
@@ -1781,6 +1853,14 @@ export async function getMapData(
       },
       garrisonOffer,
       encircled,
+      arsenal: arsenalSummary,
+      arsenalBadge: arsenalBadges[r.regionKey] ?? (arsenalSummary?.hasCache
+        ? {
+          hasCache: true,
+          fillLevel: arsenalSummary.fillLevel,
+          fillPercent: arsenalSummary.fillPercent,
+        }
+        : null),
     };
   });
 
@@ -2505,7 +2585,9 @@ export async function doAction(
   const warPressureBonuses = warPressureApplies ? buildWarPressureActionBonuses(activeWarPressure) : [];
   const regionEvents = await territoryMetaService.getActiveRegionEvents([contest.regionKey], new Date());
   const regionEventBonuses = buildRegionEventActionBonuses(regionEvents[0] ?? null);
-  const progressionBonuses = buildProgressionActionBonuses(crewProgression, cfg);
+  const progressionBonuses = withoutStocklessWeaponBuildingBonuses(
+    buildProgressionActionBonuses(crewProgression, cfg),
+  );
   const regionProjects = await territoryProjectService.getProjectsByRegionKeys([contest.regionKey], projectConfig);
   const projectBonuses = mapProjectBonusesToStrategic(regionProjects[contest.regionKey] ?? null, projectConfig);
   const garrisonOffer = garrisonOfferFromConfig(cfg);
@@ -2517,11 +2599,43 @@ export async function doAction(
       captureThresholdBonus: garrisonOffer.captureThresholdBonus,
     },
   );
+  const arsenalFill = await territoryArsenalService.getRegionArsenalFill(contest.regionKey, crewId);
   const garrisonBonuses = buildGarrisonDefenseBonuses(
     garrisonByRegion[contest.regionKey] ?? null,
     contest.defenderCrewId == null ? null : toNumeric(contest.defenderCrewId),
     crewId,
+    arsenalFill,
   );
+  let arsenalSpend: Awaited<ReturnType<typeof territoryArsenalService.applyCombatLogistics>> | null = null;
+  let supplyRun = { movedWeapons: 0, movedAmmo: 0, from: 'none' as 'hq' | 'adjacent' | 'none' };
+  let sabotageDump = { stolenWeapons: 0, stolenAmmo: 0, burnedWeapons: 0, burnedAmmo: 0 };
+  if (!abuseFlagged) {
+    arsenalSpend = await territoryArsenalService.applyCombatLogistics({
+      actionType,
+      regionKey: contest.regionKey,
+      crewId,
+      weaponBuildingLevel: crewProgression.buildingLevels.weaponStorage,
+      ammoBuildingLevel: crewProgression.buildingLevels.ammoStorage,
+    });
+    if (arsenalSpend.crossedLow) {
+      territoryArsenalService.notifyArsenalLow(crewId, contest.regionKey).catch(() => {});
+    }
+    if (actionType === 'supply_run') {
+      supplyRun = await territoryArsenalService.applySupplyRunResupply({
+        regionKey: contest.regionKey,
+        crewId,
+        neighbors: parseStringArray(contestRegion.neighborsJson),
+      });
+    }
+    if (actionType === 'sabotage') {
+      sabotageDump = await territoryArsenalService.dumpCacheOnSabotage({
+        regionKey: contest.regionKey,
+        defenderCrewId: contest.defenderCrewId == null ? null : toNumeric(contest.defenderCrewId),
+        attackerCrewId: crewId,
+      });
+    }
+  }
+  const arsenalBonuses = toArsenalStrategicBonuses(arsenalSpend?.bonuses ?? []);
   const allActionBonuses = [
     ...strategicActionBonuses,
     ...progressionBonuses,
@@ -2529,15 +2643,30 @@ export async function doAction(
     ...regionEventBonuses,
     ...projectBonuses,
     ...garrisonBonuses,
+    ...arsenalBonuses,
   ];
   const actionBonusPoints = getActionBonusForType(allActionBonuses, actionType);
   const pointsDelta = abuseFlagged ? 0 : ((ACTION_POINTS[actionType] ?? 4) + actionBonusPoints);
   const stabilityDelta = actionType === 'sabotage' ? -5 : (actionType === 'supply_run' ? 3 : 0);
 
+  const actionMetadata = JSON.stringify({
+    ammoSpent: arsenalSpend?.ammoSpent ?? 0,
+    ammoType: arsenalSpend?.ammoType ?? null,
+    ammoRequested: arsenalSpend?.ammoRequested ?? 0,
+    weaponWear: arsenalSpend?.weaponWear ?? 0,
+    weaponBroken: arsenalSpend?.weaponBroken ?? 0,
+    dryFire: arsenalSpend?.dryFire ?? false,
+    source: arsenalSpend?.source ?? 'none',
+    longSupply: arsenalSpend?.longSupply ?? false,
+    fillPercent: arsenalSpend?.fillPercent ?? 0,
+    supplyRun,
+    sabotageDump,
+  });
+
   await prisma.$executeRawUnsafe(
-    `INSERT INTO territory_actions (contestId, actorId, actorCrewId, regionKey, actionType, pointsDelta, stabilityDelta, abuseFlagged)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-    contestId, playerId, crewId, contest.regionKey, actionType, pointsDelta, stabilityDelta, abuseFlagged,
+    `INSERT INTO territory_actions (contestId, actorId, actorCrewId, regionKey, actionType, pointsDelta, stabilityDelta, abuseFlagged, metadataJson)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    contestId, playerId, crewId, contest.regionKey, actionType, pointsDelta, stabilityDelta, abuseFlagged, actionMetadata,
   );
 
   if (stabilityDelta !== 0) {
@@ -2924,10 +3053,19 @@ export async function resolveContest(contestId: number): Promise<{ winnerCrewId:
     garrison != null &&
     contest.defenderCrewId != null &&
     garrison.favoredCrewId === toNumeric(contest.defenderCrewId);
+  const defenderFill = contest.defenderCrewId
+    ? await territoryArsenalService.getRegionArsenalFill(
+      contest.regionKey,
+      toNumeric(contest.defenderCrewId),
+    )
+    : 0;
+  const scaledGarrisonThresholdBonus = garrisonProtectsDefender
+    ? territoryArsenalService.scaleGarrisonBonus(garrison.captureThresholdBonus, defenderFill)
+    : 0;
   let captureThreshold = garrisonProtectsDefender
     ? Math.min(
         garrisonOffer.captureThresholdCap,
-        cfg.captureThresholdPercent + garrison.captureThresholdBonus,
+        cfg.captureThresholdPercent + scaledGarrisonThresholdBonus,
       )
     : cfg.captureThresholdPercent;
 
@@ -3010,6 +3148,14 @@ export async function resolveContest(contestId: number): Promise<{ winnerCrewId:
       contest.regionKey,
     );
 
+    if (ownershipChanged) {
+      await territoryArsenalService.transferCacheOnOwnershipChange({
+        regionKey: contest.regionKey,
+        previousOwnerId,
+        winnerCrewId,
+      });
+    }
+
     _notifyCrewRegionCaptured(winnerCrewId, contest.regionKey).catch(() => {});
     if (contest.defenderCrewId && contest.defenderCrewId !== winnerCrewId) {
       _notifyCrewRegionLost(contest.defenderCrewId, contest.regionKey).catch(() => {});
@@ -3045,6 +3191,15 @@ export async function adminAssignRegion(regionKey: string, crewId: number | null
     crewId,
     regionKey,
   );
+  if (crewId == null) {
+    await territoryArsenalService.clearRegionCache(regionKey);
+  } else if (previousOwnerId != null && previousOwnerId !== crewId) {
+    await territoryArsenalService.transferCacheOnOwnershipChange({
+      regionKey,
+      previousOwnerId,
+      winnerCrewId: crewId,
+    });
+  }
 }
 
 export async function adminResetRegion(regionKey: string): Promise<void> {
@@ -3069,6 +3224,7 @@ export async function adminResetRegion(regionKey: string): Promise<void> {
     `UPDATE territory_contests SET status = 'cancelled' WHERE regionKey = ? AND status NOT IN ('resolved', 'cancelled')`,
     regionKey,
   );
+  await territoryArsenalService.clearRegionCache(regionKey);
 }
 
 export async function adminStartSeason(seasonKey: string, startsAt: Date, endsAt: Date): Promise<void> {

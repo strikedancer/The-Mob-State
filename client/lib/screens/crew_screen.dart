@@ -4977,6 +4977,18 @@ class _CrewScreenState extends State<CrewScreen>
                                 ? 'Munitie: ${_crewStorage!['totals']['ammo']} / ${_crewStorage!['capacities']['ammo']}'
                                 : 'Ammo: ${_crewStorage!['totals']['ammo']} / ${_crewStorage!['capacities']['ammo']}',
                           ),
+                          if ((_crewStorage!['committed']?['weapons'] as num? ?? 0) > 0 ||
+                              (_crewStorage!['committed']?['ammo'] as num? ?? 0) > 0)
+                            Text(
+                              l10n.territoryArsenalCommitted(
+                                (_crewStorage!['committed']?['weapons'] as num?)?.toInt() ?? 0,
+                                (_crewStorage!['committed']?['ammo'] as num?)?.toInt() ?? 0,
+                              ),
+                              style: TextStyle(
+                                color: Colors.orange[800],
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                           Text(
                             locale == 'nl'
                                 ? 'Geldopslag: ${_money(_crewStorage!['totals']['cash'])} / ${_money(cashStorageOwned ? _crewStorage!['capacities']['cash'] : cashBootstrapLimit)}'
@@ -5697,6 +5709,18 @@ class _CrewScreenState extends State<CrewScreen>
                         ? 'Munitie: ${totals?['ammo'] ?? 0} / ${capacities?['ammo'] ?? 0}'
                         : 'Ammo: ${totals?['ammo'] ?? 0} / ${capacities?['ammo'] ?? 0}',
                   ),
+                  if ((storage?['committed']?['weapons'] as num? ?? 0) > 0 ||
+                      (storage?['committed']?['ammo'] as num? ?? 0) > 0)
+                    Text(
+                      l10n.territoryArsenalCommitted(
+                        (storage?['committed']?['weapons'] as num?)?.toInt() ?? 0,
+                        (storage?['committed']?['ammo'] as num?)?.toInt() ?? 0,
+                      ),
+                      style: TextStyle(
+                        color: Colors.orange[800],
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   Text(
                     locale == 'nl'
                         ? 'Drugs: ${totals?['drugs'] ?? 0} / ${capacities?['drugs'] ?? 0}'

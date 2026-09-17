@@ -100,6 +100,43 @@ const META = {
   territoryHoldDurationMinutes: {
     placeholders: { minutes: { type: 'int' } },
   },
+  territoryArsenalFill: {
+    placeholders: { percent: { type: 'int' } },
+  },
+  territoryArsenalCache: {
+    placeholders: {
+      weapons: { type: 'int' },
+      ammo: { type: 'int' },
+    },
+  },
+  territoryArsenalHq: {
+    placeholders: {
+      weapons: { type: 'int' },
+      ammo: { type: 'int' },
+    },
+  },
+  territoryArsenalCost: {
+    placeholders: {
+      amount: { type: 'int' },
+      ammoType: { type: 'String' },
+    },
+  },
+  territoryArsenalMoved: {
+    placeholders: { count: { type: 'int' } },
+  },
+  territoryArsenalCommitted: {
+    placeholders: {
+      weapons: { type: 'int' },
+      ammo: { type: 'int' },
+    },
+  },
+  territoryArsenalFormula: {
+    placeholders: {
+      base: { type: 'int' },
+      bonus: { type: 'int' },
+      total: { type: 'int' },
+    },
+  },
 };
 
 const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));

@@ -64,6 +64,7 @@
   - Territory crew-stats: `territory_crew_stats` houdt per crew all-time én seizoen bij (gewonnen/verdedigd/verloren/contests + hold-seconden); `territory_control.ownedSince` voor huidige hold; leaderboard toont W/D/L + hold met all-time/seizoen toggle; kaarttab toont crew-statsblok
   - Territory garnizoen / luchtafweer: owned regio's kunnen een tijdelijk `garrison`-effect kopen uit de crew-bank (`POST /territory/garrison/deploy`). Het gebied blijft aanvalbaar; defense-acties krijgen extra punten en de capture-drempel stijgt tijdelijk (cap via runtime). Max. aantal actieve garnizoenen per crew, HQ-gate, geen nachtslot/timezone-lock. Kaart toont een `G`-badge zolang het effect loopt.
   - Territory omsluiting: een owned regio waarvan alle buren (min. `TERRITORY_ENCIRCLED_MIN_NEIGHBORS`, default 3) ook van dezelfde crew zijn, is niet startbaar als contest (`REGION_ENCIRCLED`). Front/kustregio's met een open buur blijven aanvalbaar. Kaart toont een `I`-badge op binnengebieden.
+  - Territory-arsenaal: `territory_region_arsenal` is de frontlijn-cache per regio/crew. Officers committen/recallen vanuit HQ (`POST /territory/arsenal/commit|recall`) alleen op een owned regio met actief `arms_cache`. `doAction` schaalt wapen/munitie-bonus op fill + type-match, verbruikt kogels en slijt wapens, met HQ-fallback (50% bonus + ammo-taks) als er geen depotstock is. Acties worden nooit geblokkeerd bij lege voorraad. Contest-verlies loot/brandt de cache; sabotage dumpt extra; garnizoen schaalt/lekt met fill. Crew Wars blijft HQ-stelling stelen. Runtime `TERRITORY_ARSENAL_*`. Persoonlijke inventaris telt niet.
 - SVG stabiele region IDs: ✅ geïmplementeerd
   - `backend/src/startup/ensureTerritorySchema.ts` — regio-seed valideert nu verplichte namen, unieke `regionKey` waarden en unieke `countryCode + svgElementId` mappings voordat de bootstrap schrijft, zodat de database-mapping rond stabiele SVG ids niet stil kan driften
 - Admin frontend territory sectie: ✅ geïmplementeerd
@@ -87,6 +88,7 @@ Scope-afbakening:
 ## Primary Backend Entry
 - backend/src/routes/territory.ts (nieuw)
 - backend/src/services/territoryService.ts (nieuw)
+- backend/src/services/territoryArsenalService.ts (frontlijn-cache, verbruik, loot/burn)
 - backend/src/startup/ensureTerritorySchema.ts (nieuw)
 - backend/src/routes/admin.ts (runtime settings + moderation)
 

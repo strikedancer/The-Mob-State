@@ -29,6 +29,7 @@ This is a catalogue and typical-relative guide, not live Black Market quotes. St
 - Almanac -> Marketing web (footer + SEO subdomain)
 - Almanac -> Help & Uitleg (CTA + published handbook pages from `app_*.arb` / `help_content.dart`)
 - Almanac -> Prostitution / Red Light Districts (`/{lang}/guide/prostitution/` and `/{lang}/guide/red-light-districts/`): room upgrades, occupancy heat, events, steal/reclaim, contest phases. Those sentences must land in `/{lang}/search.json` so header search and Ask the Almanac find them.
+- Almanac -> Territory / Crew (`/{lang}/guide/territory/` and `/{lang}/guide/crew/`): HQ reserve vs frontline arms cache, ammo spend, weapon wear, type match, long supply tax, loot/burn on region loss, personal inventory does not count. Those sentences must land in `/{lang}/search.json` so header search and Ask the Almanac find them.
 - Almanac -> Player Profile / Player Portraits (guide topic `profile`)
 - Almanac -> Balance & Economy (do not leak live economy; typical factors only)
 
@@ -45,7 +46,7 @@ This is a catalogue and typical-relative guide, not live Black Market quotes. St
 6. Help button and landing footer open the matching locale home.
 7. Changing a file under `backend/content/` on the VPS rebuilds HTML without a wiki image rebuild (container logs show `wiki: rebuilding`).
 8. `/{lang}/guide/` lists every Help topic; `/guide/don/` covers rackets, loans, officials and contracts; `/guide/profile/` covers public profile, preset avatars and selfie portraits.
-9. Header search on any page finds Don, handbook topics (including Red Light District rooms, occupancy heat, events, steal/reclaim and contest) and catalog items via `/{lang}/search.json`. After changing `wiki/src/client.js` or `theme.css`, bump `ASSET_V` in `layout.mjs` so browsers skip the 7-day static cache.
+9. Header search on any page finds Don, handbook topics (including Red Light District rooms, occupancy heat, events, steal/reclaim and contest, plus Territory arsenal / crew ammo feeding Territory) and catalog items via `/{lang}/search.json`. After changing `wiki/src/client.js` or `theme.css`, bump `ASSET_V` in `layout.mjs` so browsers skip the 7-day static cache.
 10. The Ask the Almanac button answers “how does Don work?”-style questions from `search.json` (handbook pages ranked first) and links to the matching page. It must not invent live prices or account state.
 
 ## i18n and Messaging

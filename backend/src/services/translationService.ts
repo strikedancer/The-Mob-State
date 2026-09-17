@@ -231,6 +231,16 @@ export interface Translations {
       pushBody: (regionKey: string) => string;
       inboxMessage: (regionKey: string) => string;
     };
+    territoryArsenalLow: {
+      title: string;
+      pushBody: (regionKey: string) => string;
+      inboxMessage: (regionKey: string) => string;
+    };
+    territoryArsenalCaptured: {
+      title: string;
+      pushBody: (regionKey: string) => string;
+      inboxMessage: (regionKey: string) => string;
+    };
     rldStolen: {
       title: string;
       pushBody: (thiefName: string, workerName: string) => string;
@@ -547,6 +557,28 @@ const translations: Record<'en' | 'nl', Translations> = {
             '',
             `Region: ${regionKey}`,
             'This region was taken by another crew.',
+          ].join('\n'),
+      },
+      territoryArsenalLow: {
+        title: 'Territory arsenal running low',
+        pushBody: (regionKey) => `The frontline cache in ${regionKey} is almost empty. Supply it or you fight with a long HQ line.`,
+        inboxMessage: (regionKey) =>
+          [
+            'Territory arsenal running low',
+            '',
+            `Region: ${regionKey}`,
+            'The frontline cache is almost empty. Commit weapons and ammo from crew storage, or run a supply run during the contest.',
+          ].join('\n'),
+      },
+      territoryArsenalCaptured: {
+        title: 'Frontline cache lost',
+        pushBody: (regionKey) => `${regionKey} fell with weapons and ammo still in the cache. Part was looted, the rest burned.`,
+        inboxMessage: (regionKey) =>
+          [
+            'Frontline cache lost',
+            '',
+            `Region: ${regionKey}`,
+            'The weapons and ammo committed to this region were not sent back to HQ. The winner took a share; the rest burned.',
           ].join('\n'),
       },
       rldStolen: {
@@ -895,6 +927,28 @@ const translations: Record<'en' | 'nl', Translations> = {
             '',
             `Regio: ${regionKey}`,
             'Deze regio is overgenomen door een andere crew.',
+          ].join('\n'),
+      },
+      territoryArsenalLow: {
+        title: 'Territory-arsenaal raakt leeg',
+        pushBody: (regionKey) => `Het frontlijn-depot in ${regionKey} is bijna leeg. Vul bij, of je vecht over de lange HQ-lijn.`,
+        inboxMessage: (regionKey) =>
+          [
+            'Territory-arsenaal raakt leeg',
+            '',
+            `Regio: ${regionKey}`,
+            'Het frontlijn-depot is bijna leeg. Commit wapens en kogels vanuit de crew-opslag, of doe een bevoorrading tijdens de contest.',
+          ].join('\n'),
+      },
+      territoryArsenalCaptured: {
+        title: 'Frontlijn-depot verloren',
+        pushBody: (regionKey) => `${regionKey} viel met wapens en kogels nog in het depot. Een deel is buit, de rest verbrand.`,
+        inboxMessage: (regionKey) =>
+          [
+            'Frontlijn-depot verloren',
+            '',
+            `Regio: ${regionKey}`,
+            'Wapens en kogels die hier vastlagen gingen niet terug naar HQ. De winnaar pakte een deel; de rest is verbrand.',
           ].join('\n'),
       },
       rldStolen: {

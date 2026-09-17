@@ -756,6 +756,8 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         return t.territoryBonusRegionProject;
       case 'garrison':
         return t.territoryBonusGarrison;
+      case 'arsenal':
+        return t.territoryBonusArsenal;
       case 'region-event':
         return t.territoryBonusOther;
       default:
@@ -961,6 +963,24 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         return t.territoryErrorGarrisonFunds;
       case 'territory.region_encircled':
         return t.territoryErrorRegionEncircled;
+      case 'territory.arsenal_officer_only':
+        return t.territoryErrorArsenalOfficerOnly;
+      case 'territory.arsenal_cache_required':
+        return t.territoryErrorArsenalCacheRequired;
+      case 'territory.arsenal_not_owner':
+        return t.territoryErrorArsenalNotOwner;
+      case 'territory.arsenal_cache_full':
+        return t.territoryErrorArsenalCacheFull;
+      case 'territory.arsenal_insufficient_stock':
+        return t.territoryErrorArsenalInsufficientStock;
+      case 'territory.arsenal_recall_locked':
+        return t.territoryErrorArsenalRecallLocked;
+      case 'territory.arsenal_invalid_quantity':
+        return t.territoryErrorArsenalInvalidQuantity;
+      case 'territory.arsenal_weapon_storage_full':
+        return t.territoryErrorArsenalWeaponStorageFull;
+      case 'territory.arsenal_ammo_storage_full':
+        return t.territoryErrorArsenalAmmoStorageFull;
       default:
         return event.isEmpty ? t.territoryErrorUnknown : event;
     }
@@ -1580,6 +1600,19 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         '<text x="${cx - 22}" y="${cy - 7}" text-anchor="middle" font-size="8" fill="#E2E8F0" font-family="Arial,sans-serif" font-weight="700">I</text>',
       );
     }
+    final badge = (region['arsenalBadge'] as Map?)?.cast<String, dynamic>();
+    if (badge?['hasCache'] == true) {
+      final level = (badge?['fillLevel'] as String?) ?? 'empty';
+      final color = switch (level) {
+        'full' => '#22C55E',
+        'half' => '#EAB308',
+        _ => '#64748B',
+      };
+      parts.add(
+        '<circle cx="${cx + 22}" cy="${cy + 22}" r="6" fill="$color" stroke="#111827" stroke-width="0.8"/>'
+        '<text x="${cx + 22}" y="${cy + 25}" text-anchor="middle" font-size="7" fill="#0F172A" font-family="Arial,sans-serif" font-weight="700">A</text>',
+      );
+    }
     if (parts.isEmpty) return null;
     return '<g>${parts.join()}</g>';
   }
@@ -1694,6 +1727,18 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       _TerritoryLegendEntry(
         label: _l10n.territoryLegendCluster,
         colorHex: '#374151',
+      ),
+      _TerritoryLegendEntry(
+        label: _l10n.territoryArsenalLegendEmpty,
+        colorHex: '#64748B',
+      ),
+      _TerritoryLegendEntry(
+        label: _l10n.territoryArsenalLegendHalf,
+        colorHex: '#EAB308',
+      ),
+      _TerritoryLegendEntry(
+        label: _l10n.territoryArsenalLegendFull,
+        colorHex: '#22C55E',
       ),
       ...crewEntries,
     ];
@@ -2768,6 +2813,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           t.territoryDetailAdjacentOwned,
           '$adjacentOwnedRegions',
         ),
+      ..._buildArsenalSection(region),
       if (strategicBonusesLabel.isNotEmpty)
         _detailRow(
           t.territoryDetailActionBonuses,
@@ -2953,6 +2999,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
             onTap: () => _contributeProject(region['regionKey'] as String),
           ),
         ],
+        ..._buildArsenalMoveButtons(region),
       ],
       if (isMyCrewRegion && (canDeployGarrison || garrisonHqLocked)) ...[
         const SizedBox(height: 12),
@@ -3033,6 +3080,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                 contestId,
                 requiredHqLevel: actionUnlockHqLevels['intel_scan'] ?? 0,
                 viewerHqLevel: viewerHqGlobalLevel,
+                region: region,
               ),
               _smallActionButton(
                 t.territoryActionSabotage,
@@ -3040,6 +3088,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                 contestId,
                 requiredHqLevel: actionUnlockHqLevels['sabotage'] ?? 0,
                 viewerHqLevel: viewerHqGlobalLevel,
+                region: region,
               ),
               _smallActionButton(
                 t.territoryActionRaid,
@@ -3047,6 +3096,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                 contestId,
                 requiredHqLevel: actionUnlockHqLevels['raid'] ?? 0,
                 viewerHqLevel: viewerHqGlobalLevel,
+                region: region,
               ),
             ],
             if (isDefender) ...[
@@ -3056,6 +3106,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                 contestId,
                 requiredHqLevel: actionUnlockHqLevels['patrol'] ?? 0,
                 viewerHqLevel: viewerHqGlobalLevel,
+                region: region,
               ),
               _smallActionButton(
                 t.territoryActionSupplyRun,
@@ -3063,6 +3114,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                 contestId,
                 requiredHqLevel: actionUnlockHqLevels['supply_run'] ?? 0,
                 viewerHqLevel: viewerHqGlobalLevel,
+                region: region,
               ),
               _smallActionButton(
                 t.territoryActionDefense,
@@ -3070,6 +3122,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                 contestId,
                 requiredHqLevel: actionUnlockHqLevels['defense'] ?? 0,
                 viewerHqLevel: viewerHqGlobalLevel,
+                region: region,
               ),
             ],
           ],
@@ -3278,6 +3331,263 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     );
   }
 
+  Map<String, dynamic>? _arsenalMap(Map<String, dynamic> region) {
+    final raw = region['arsenal'];
+    if (raw is Map) return raw.cast<String, dynamic>();
+    return null;
+  }
+
+  Map<String, dynamic>? _arsenalPreview(
+    Map<String, dynamic>? region,
+    String actionType,
+  ) {
+    final arsenal = region == null ? null : _arsenalMap(region);
+    final previews = arsenal?['actionPreviews'];
+    if (previews is! List) return null;
+    for (final raw in previews) {
+      if (raw is! Map) continue;
+      if ((raw['actionType'] as String?) == actionType) {
+        return raw.cast<String, dynamic>();
+      }
+    }
+    return null;
+  }
+
+  String? _arsenalCostLabel(Map<String, dynamic>? region, String actionType) {
+    final preview = _arsenalPreview(region, actionType);
+    if (preview == null) return null;
+    final amount = (preview['ammoCost'] as num?)?.toInt() ?? 0;
+    if (amount <= 0) return null;
+    final ammoType = (preview['ammoType'] as String?) ?? 'ammo';
+    return _l10n.territoryArsenalCost(amount, ammoType);
+  }
+
+  String? _arsenalFormulaLabel(Map<String, dynamic>? region, String actionType) {
+    if (region == null) return null;
+    final base = _actionBasePoints(actionType);
+    final bonuses = region['strategicActionBonuses'];
+    var bonus = 0;
+    if (bonuses is List) {
+      for (final raw in bonuses) {
+        if (raw is! Map) continue;
+        if ((raw['actionType'] as String?) != actionType) continue;
+        bonus += (raw['bonusPoints'] as num?)?.toInt() ?? 0;
+      }
+    }
+    if (bonus <= 0) return null;
+    return _l10n.territoryArsenalFormula(base, bonus, base + bonus);
+  }
+
+  List<Widget> _buildArsenalSection(Map<String, dynamic> region) {
+    final t = _l10n;
+    final arsenal = _arsenalMap(region);
+    if (arsenal == null) return const [];
+    final fill = (arsenal['fillPercent'] as num?)?.toInt() ?? 0;
+    final weapons = (arsenal['weapons'] as num?)?.toInt() ?? 0;
+    final ammo = (arsenal['ammo'] as num?)?.toInt() ?? 0;
+    final hqWeapons = (arsenal['hqWeapons'] as num?)?.toInt() ?? 0;
+    final hqAmmo = (arsenal['hqAmmo'] as num?)?.toInt() ?? 0;
+    final longSupply = arsenal['longSupply'] == true;
+    final hasCache = arsenal['hasCache'] == true;
+    return [
+      const SizedBox(height: 8),
+      Text(
+        t.territoryArsenalTitle,
+        style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
+      ),
+      const SizedBox(height: 4),
+      ClipRRect(
+        borderRadius: BorderRadius.circular(6),
+        child: LinearProgressIndicator(
+          value: (fill / 100).clamp(0, 1),
+          minHeight: 8,
+          backgroundColor: Colors.blueGrey.withValues(alpha: 0.2),
+          color: fill >= 70
+              ? Colors.green
+              : (fill <= 15 ? Colors.blueGrey : Colors.amber[700]),
+        ),
+      ),
+      const SizedBox(height: 4),
+      Text(t.territoryArsenalFill(fill), style: const TextStyle(fontSize: 12)),
+      Text(
+        t.territoryArsenalCache(weapons, ammo),
+        style: const TextStyle(fontSize: 12),
+      ),
+      Text(
+        t.territoryArsenalHq(hqWeapons, hqAmmo),
+        style: const TextStyle(fontSize: 12),
+      ),
+      if (!hasCache || longSupply)
+        Padding(
+          padding: const EdgeInsets.only(top: 4),
+          child: Text(
+            hasCache ? t.territoryArsenalLongSupply : t.territoryArsenalEmptyCache,
+            style: TextStyle(fontSize: 12, color: Colors.orange[800]),
+          ),
+        ),
+      Text(
+        t.territoryArsenalWear,
+        style: TextStyle(fontSize: 11.5, color: Colors.grey[700]),
+      ),
+    ];
+  }
+
+  List<Widget> _buildArsenalMoveButtons(Map<String, dynamic> region) {
+    final arsenal = _arsenalMap(region);
+    if (arsenal == null || arsenal['viewerIsOfficer'] != true) {
+      return const [];
+    }
+    if (arsenal['hasCache'] != true) return const [];
+    final t = _l10n;
+    final regionKey = region['regionKey'] as String? ?? '';
+    return [
+      const SizedBox(height: 8),
+      Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: [
+          OutlinedButton.icon(
+            icon: const Icon(Icons.south, size: 16),
+            label: Text(t.territoryArsenalCommit),
+            onPressed: _isActing
+                ? null
+                : () => _openArsenalMoveDialog(
+                      regionKey: regionKey,
+                      commit: true,
+                      arsenal: arsenal,
+                    ),
+          ),
+          OutlinedButton.icon(
+            icon: const Icon(Icons.north, size: 16),
+            label: Text(t.territoryArsenalRecall),
+            onPressed: _isActing
+                ? null
+                : () => _openArsenalMoveDialog(
+                      regionKey: regionKey,
+                      commit: false,
+                      arsenal: arsenal,
+                    ),
+          ),
+        ],
+      ),
+    ];
+  }
+
+  Future<void> _openArsenalMoveDialog({
+    required String regionKey,
+    required bool commit,
+    required Map<String, dynamic> arsenal,
+  }) async {
+    final t = _l10n;
+    final rawStacks = commit ? arsenal['hqStacks'] : arsenal['cacheStacks'];
+    final stacks = <Map<String, dynamic>>[];
+    if (rawStacks is List) {
+      for (final raw in rawStacks) {
+        if (raw is Map) stacks.add(raw.cast<String, dynamic>());
+      }
+    }
+    if (stacks.isEmpty) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(content: Text(t.territoryErrorArsenalInsufficientStock)),
+      );
+      return;
+    }
+    var selectedKey =
+        '${stacks.first['kind']}:${stacks.first['itemKey']}';
+    final quantityController = TextEditingController(text: '1');
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return AlertDialog(
+              title: Text(
+                commit ? t.territoryArsenalCommitTitle : t.territoryArsenalRecallTitle,
+              ),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  DropdownButtonFormField<String>(
+                    value: selectedKey,
+                    items: [
+                      for (final stack in stacks)
+                        DropdownMenuItem(
+                          value: '${stack['kind']}:${stack['itemKey']}',
+                          child: Text(
+                            '${stack['kind'] == 'weapon' ? t.territoryArsenalKindWeapon : t.territoryArsenalKindAmmo}: ${stack['name']} (${stack['quantity']})',
+                          ),
+                        ),
+                    ],
+                    onChanged: (value) {
+                      if (value == null) return;
+                      setDialogState(() => selectedKey = value);
+                    },
+                    decoration: InputDecoration(labelText: t.territoryArsenalPickItem),
+                  ),
+                  TextField(
+                    controller: quantityController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(labelText: t.territoryArsenalQuantity),
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: Text(t.cancel),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, true),
+                  child: Text(commit ? t.territoryArsenalCommit : t.territoryArsenalRecall),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+    final quantity = int.tryParse(quantityController.text.trim()) ?? 0;
+    quantityController.dispose();
+    if (confirmed != true || quantity <= 0) return;
+    final parts = selectedKey.split(':');
+    if (parts.length < 2) return;
+    final kind = parts.first;
+    final itemKey = parts.sublist(1).join(':');
+    setState(() => _isActing = true);
+    final result = commit
+        ? await _service.commitArsenal(
+            regionKey: regionKey,
+            kind: kind,
+            itemKey: itemKey,
+            quantity: quantity,
+          )
+        : await _service.recallArsenal(
+            regionKey: regionKey,
+            kind: kind,
+            itemKey: itemKey,
+            quantity: quantity,
+          );
+    if (!mounted) return;
+    setState(() => _isActing = false);
+    if (result['success'] == true) {
+      final moved = (result['moved'] as num?)?.toInt() ?? quantity;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(content: Text(t.territoryArsenalMoved(moved))),
+      );
+      await _reloadOpenRegionOrMap();
+      return;
+    }
+    showTopRightFromSnackBar(
+      context,
+      SnackBar(
+        content: Text(_territoryErrorMessage(result['event'])),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
+
   Widget _detailRow(String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2),
@@ -3320,23 +3630,32 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     int contestId, {
     required int requiredHqLevel,
     required int viewerHqLevel,
+    Map<String, dynamic>? region,
   }) {
     final t = _l10n;
     final isLocked = requiredHqLevel > viewerHqLevel;
+    final costLabel = _arsenalCostLabel(region, actionType);
+    final bonusLabel = _arsenalFormulaLabel(region, actionType);
     final buttonLabel = isLocked
         ? t.territoryHqButtonLocked(label, requiredHqLevel)
-        : label;
+        : (costLabel == null ? label : '$label · $costLabel');
     final tooltipMessage = isLocked
         ? t.territoryHqTooltipLocked(requiredHqLevel, viewerHqLevel)
-        : '';
+        : ([bonusLabel, costLabel].whereType<String>().join('\n'));
     final button = OutlinedButton(
       onPressed: _isActing || isLocked
           ? null
           : () => _doAction(contestId, actionType),
-      child: Text(buttonLabel, style: const TextStyle(fontSize: 12)),
+      child: Text(
+        buttonLabel,
+        style: const TextStyle(fontSize: 11),
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+        textAlign: TextAlign.center,
+      ),
     );
 
-    if (!isLocked) return button;
+    if (tooltipMessage.isEmpty) return button;
     return Tooltip(message: tooltipMessage, child: button);
   }
 

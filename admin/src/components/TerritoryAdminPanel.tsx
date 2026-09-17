@@ -8,6 +8,42 @@ type Props = {
   locale: AdminLanguage
 }
 
+type TerritoryArsenalTuningForm = {
+  arsenalHqBonusMult: string
+  arsenalHqAmmoTaxMult: string
+  arsenalLootPercent: string
+  arsenalSabotageStealPercent: string
+  arsenalSabotageBurnPercent: string
+  arsenalWeaponWear: string
+  arsenalDryFireWear: string
+  arsenalLowThreshold: string
+  arsenalGarrisonLeakAmmoPerHour: string
+  arsenalSupplyRunAmmo: string
+  arsenalSupplyRunWeapons: string
+  arsenalAmmoCostRaid: string
+  arsenalAmmoCostDefense: string
+  arsenalAmmoCostPatrol: string
+  arsenalAmmoCostSabotage: string
+}
+
+const defaultArsenalTuning: TerritoryArsenalTuningForm = {
+  arsenalHqBonusMult: '0.5',
+  arsenalHqAmmoTaxMult: '1.5',
+  arsenalLootPercent: '40',
+  arsenalSabotageStealPercent: '10',
+  arsenalSabotageBurnPercent: '15',
+  arsenalWeaponWear: '8',
+  arsenalDryFireWear: '16',
+  arsenalLowThreshold: '40',
+  arsenalGarrisonLeakAmmoPerHour: '8',
+  arsenalSupplyRunAmmo: '80',
+  arsenalSupplyRunWeapons: '2',
+  arsenalAmmoCostRaid: '40',
+  arsenalAmmoCostDefense: '30',
+  arsenalAmmoCostPatrol: '15',
+  arsenalAmmoCostSabotage: '8',
+}
+
 type TerritoryProgressionTuningForm = {
   hqRegionLevelsPerSlot: string
   hqRegionCapBonusCap: string
@@ -96,6 +132,7 @@ export function TerritoryAdminPanel({ locale }: Props) {
     actionUnlockHqLevelRaid: '8',
     actionUnlockHqLevelDefense: '4',
   })
+  const [arsenalTuning, setArsenalTuning] = useState<TerritoryArsenalTuningForm>(defaultArsenalTuning)
 
   const loadOverview = async () => {
     try {
@@ -129,6 +166,23 @@ export function TerritoryAdminPanel({ locale }: Props) {
         actionUnlockHqLevelSupplyRun: String(nextOverview.config.actionUnlockHqLevelSupplyRun ?? 2),
         actionUnlockHqLevelRaid: String(nextOverview.config.actionUnlockHqLevelRaid ?? 8),
         actionUnlockHqLevelDefense: String(nextOverview.config.actionUnlockHqLevelDefense ?? 4),
+      })
+      setArsenalTuning({
+        arsenalHqBonusMult: String(nextOverview.config.arsenalHqBonusMult ?? 0.5),
+        arsenalHqAmmoTaxMult: String(nextOverview.config.arsenalHqAmmoTaxMult ?? 1.5),
+        arsenalLootPercent: String(nextOverview.config.arsenalLootPercent ?? 40),
+        arsenalSabotageStealPercent: String(nextOverview.config.arsenalSabotageStealPercent ?? 10),
+        arsenalSabotageBurnPercent: String(nextOverview.config.arsenalSabotageBurnPercent ?? 15),
+        arsenalWeaponWear: String(nextOverview.config.arsenalWeaponWear ?? 8),
+        arsenalDryFireWear: String(nextOverview.config.arsenalDryFireWear ?? 16),
+        arsenalLowThreshold: String(nextOverview.config.arsenalLowThreshold ?? 40),
+        arsenalGarrisonLeakAmmoPerHour: String(nextOverview.config.arsenalGarrisonLeakAmmoPerHour ?? 8),
+        arsenalSupplyRunAmmo: String(nextOverview.config.arsenalSupplyRunAmmo ?? 80),
+        arsenalSupplyRunWeapons: String(nextOverview.config.arsenalSupplyRunWeapons ?? 2),
+        arsenalAmmoCostRaid: String(nextOverview.config.arsenalAmmoCostRaid ?? 40),
+        arsenalAmmoCostDefense: String(nextOverview.config.arsenalAmmoCostDefense ?? 30),
+        arsenalAmmoCostPatrol: String(nextOverview.config.arsenalAmmoCostPatrol ?? 15),
+        arsenalAmmoCostSabotage: String(nextOverview.config.arsenalAmmoCostSabotage ?? 8),
       })
 
       if (!selectedRegionKey && nextOverview.regions.length > 0) {
@@ -319,6 +373,44 @@ export function TerritoryAdminPanel({ locale }: Props) {
     }
   }
 
+  const handleSaveArsenalTuning = async () => {
+    const numericEntries = Object.entries(arsenalTuning).map(([key, value]) => ({
+      key,
+      value: Number.parseFloat(value),
+    }))
+    if (numericEntries.some((entry) => !Number.isFinite(entry.value) || entry.value < 0)) {
+      window.alert(tr(locale, 'Vul alleen geldige positieve getallen in.', 'Use valid non-negative numbers only.'))
+      return
+    }
+    const payload: Record<string, string> = {
+      TERRITORY_ARSENAL_HQ_BONUS_MULT: arsenalTuning.arsenalHqBonusMult,
+      TERRITORY_ARSENAL_HQ_AMMO_TAX_MULT: arsenalTuning.arsenalHqAmmoTaxMult,
+      TERRITORY_ARSENAL_LOOT_PERCENT: arsenalTuning.arsenalLootPercent,
+      TERRITORY_ARSENAL_SABOTAGE_STEAL_PERCENT: arsenalTuning.arsenalSabotageStealPercent,
+      TERRITORY_ARSENAL_SABOTAGE_BURN_PERCENT: arsenalTuning.arsenalSabotageBurnPercent,
+      TERRITORY_ARSENAL_WEAPON_WEAR: arsenalTuning.arsenalWeaponWear,
+      TERRITORY_ARSENAL_DRYFIRE_WEAR: arsenalTuning.arsenalDryFireWear,
+      TERRITORY_ARSENAL_LOW_THRESHOLD: arsenalTuning.arsenalLowThreshold,
+      TERRITORY_ARSENAL_GARRISON_LEAK_AMMO_PER_HOUR: arsenalTuning.arsenalGarrisonLeakAmmoPerHour,
+      TERRITORY_ARSENAL_SUPPLY_RUN_AMMO: arsenalTuning.arsenalSupplyRunAmmo,
+      TERRITORY_ARSENAL_SUPPLY_RUN_WEAPONS: arsenalTuning.arsenalSupplyRunWeapons,
+      TERRITORY_ARSENAL_AMMO_COST_RAID: arsenalTuning.arsenalAmmoCostRaid,
+      TERRITORY_ARSENAL_AMMO_COST_DEFENSE: arsenalTuning.arsenalAmmoCostDefense,
+      TERRITORY_ARSENAL_AMMO_COST_PATROL: arsenalTuning.arsenalAmmoCostPatrol,
+      TERRITORY_ARSENAL_AMMO_COST_SABOTAGE: arsenalTuning.arsenalAmmoCostSabotage,
+    }
+    try {
+      setSubmitting(true)
+      await adminService.updateConfig(payload)
+      await loadOverview()
+      window.alert(tr(locale, 'Territory-arsenaal tuning opgeslagen.', 'Territory arsenal tuning saved.'))
+    } catch (error) {
+      window.alert(`${tr(locale, 'Opslaan mislukt', 'Save failed')}: ${(error as Error).message}`)
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
   return (
     <div className="d-flex flex-column gap-3">
       <div className="d-flex justify-content-between align-items-start flex-wrap gap-2">
@@ -404,6 +496,62 @@ export function TerritoryAdminPanel({ locale }: Props) {
               className="btn btn-primary"
               disabled={loading || submitting}
               onClick={() => void handleSaveProgressionTuning()}
+            >
+              {tr(locale, 'Opslaan en live toepassen', 'Save and apply live')}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="card">
+        <div className="card-header"><h5 className="mb-0">{tr(locale, 'Arsenaal (wapens/kogels)', 'Arsenal (weapons/ammo)')}</h5></div>
+        <div className="card-body">
+          <p className="text-muted small mb-3">
+            {tr(
+              locale,
+              'HQ-reserve vs frontlijn-cache. Bonus blijft begrensd door gebouwniveau. Lege voorraad blokkeert acties niet.',
+              'HQ reserve vs frontline cache. Bonus stays capped by building level. Empty stock never blocks actions.',
+            )}
+          </p>
+          <div className="row g-3">
+            {(
+              [
+                ['arsenalHqBonusMult', 'HQ-bonusfactor', 'HQ bonus multiplier'],
+                ['arsenalHqAmmoTaxMult', 'HQ munitie-taks', 'HQ ammo tax'],
+                ['arsenalLootPercent', 'Buit % bij verlies', 'Loot % on loss'],
+                ['arsenalSabotageStealPercent', 'Sabotage diefstal %', 'Sabotage steal %'],
+                ['arsenalSabotageBurnPercent', 'Sabotage burn %', 'Sabotage burn %'],
+                ['arsenalWeaponWear', 'Wapenslijtage', 'Weapon wear'],
+                ['arsenalDryFireWear', 'Droogschiet-slijtage', 'Dry-fire wear'],
+                ['arsenalLowThreshold', 'Lage-voorraad drempel', 'Low-stock threshold'],
+                ['arsenalGarrisonLeakAmmoPerHour', 'Garnizoen ammo/uur', 'Garrison ammo/hour'],
+                ['arsenalSupplyRunAmmo', 'Supply-run kogels', 'Supply-run ammo'],
+                ['arsenalSupplyRunWeapons', 'Supply-run wapens', 'Supply-run weapons'],
+                ['arsenalAmmoCostRaid', 'Kogelkost raid', 'Ammo cost raid'],
+                ['arsenalAmmoCostDefense', 'Kogelkost defense', 'Ammo cost defense'],
+                ['arsenalAmmoCostPatrol', 'Kogelkost patrol', 'Ammo cost patrol'],
+                ['arsenalAmmoCostSabotage', 'Kogelkost sabotage', 'Ammo cost sabotage'],
+              ] as Array<[keyof TerritoryArsenalTuningForm, string, string]>
+            ).map(([key, nlLabel, enLabel]) => (
+              <div className="col-md-6 col-xl-3" key={key}>
+                <label className="form-label fw-semibold">{tr(locale, nlLabel, enLabel)}</label>
+                <input
+                  className="form-control"
+                  value={arsenalTuning[key]}
+                  onChange={(event) => {
+                    const value = event.target.value
+                    setArsenalTuning((current) => ({ ...current, [key]: value }))
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+          <div className="d-flex justify-content-end mt-3">
+            <button
+              type="button"
+              className="btn btn-primary"
+              disabled={loading || submitting}
+              onClick={() => void handleSaveArsenalTuning()}
             >
               {tr(locale, 'Opslaan en live toepassen', 'Save and apply live')}
             </button>

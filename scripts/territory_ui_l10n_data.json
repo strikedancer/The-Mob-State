@@ -262,7 +262,7 @@
     },
     "territoryProjectSafehouseDesc": "Passive income bonus on this region.",
     "territoryProjectSurveillanceDesc": "Extra intel_scan points and shorter intel cooldown (harbor / airhub / capital).",
-    "territoryProjectArmsCacheDesc": "Extra raid and defense points (industry / border).",
+    "territoryProjectArmsCacheDesc": "This is the frontline arsenal. Officers commit crew weapons and ammo here; contests spend rounds and wear guns.",
     "territoryProjectHint": "Choose a project type for this region. Sabotage damages it in contests; supply runs repair or advance it.",
     "territoryProjectStart": "Start region project",
     "territoryBonusRegionProject": "Region project",
@@ -328,7 +328,81 @@
       }
     },
     "territoryTagAirhub": "Air hub",
-    "territoryOverlayWar": "War aftermath"
+    "territoryOverlayWar": "War aftermath",
+    "territoryArsenalTitle": "Arsenal",
+    "territoryArsenalFill": "Fill {percent}% of building cap",
+    "territoryArsenalCache": "Cache {weapons} weapons · {ammo} ammo",
+    "territoryArsenalHq": "HQ reserve {weapons} weapons · {ammo} ammo",
+    "territoryArsenalLongSupply": "Long supply: you fight from HQ with a 50% logistics penalty and extra ammo tax.",
+    "territoryArsenalCost": "Costs {amount}× {ammoType}",
+    "territoryArsenalCostUnknown": "Costs ammo if the matching type is in cache or HQ",
+    "territoryArsenalWear": "Weapons wear each combat action; dry-firing wears them faster.",
+    "territoryArsenalCommit": "Commit from HQ",
+    "territoryArsenalRecall": "Recall to HQ",
+    "territoryArsenalCommitTitle": "Send to frontline cache",
+    "territoryArsenalRecallTitle": "Recall from frontline cache",
+    "territoryArsenalQuantity": "Quantity",
+    "territoryArsenalMoved": "Moved {count}.",
+    "territoryArsenalCommitted": "Locked in Territory: {weapons} weapons · {ammo} ammo",
+    "territoryArsenalEmptyCache": "No depot here. Actions still work, but weapon and ammo bonuses drop.",
+    "territoryArsenalLegendEmpty": "Arms cache empty",
+    "territoryArsenalLegendHalf": "Arms cache half",
+    "territoryArsenalLegendFull": "Arms cache full",
+    "territoryBonusArsenal": "Arsenal stock",
+    "territoryArsenalKindWeapon": "Weapon",
+    "territoryArsenalKindAmmo": "Ammo",
+    "territoryArsenalPickItem": "Choose stock",
+    "territoryArsenalFormula": "Base {base} + logistics {bonus} = {total}",
+    "territoryErrorArsenalOfficerOnly": "Only the leader or co-leader can move the frontline cache.",
+    "territoryErrorArsenalCacheRequired": "This region needs an active arms cache first.",
+    "territoryErrorArsenalNotOwner": "Only the crew that owns this region can move its cache.",
+    "territoryErrorArsenalCacheFull": "The frontline cache is full for this building level.",
+    "territoryErrorArsenalInsufficientStock": "Not enough of that item in HQ or in the cache.",
+    "territoryErrorArsenalRecallLocked": "You cannot recall during a live contest. Use a supply run to refill instead.",
+    "territoryErrorArsenalInvalidQuantity": "Enter a whole number above zero.",
+    "territoryErrorArsenalWeaponStorageFull": "Crew weapon storage is full.",
+    "territoryErrorArsenalAmmoStorageFull": "Crew ammo storage is full.",
+    "@territoryArsenalFill": {
+      "placeholders": {
+        "percent": { "type": "int" }
+      }
+    },
+    "@territoryArsenalCache": {
+      "placeholders": {
+        "weapons": { "type": "int" },
+        "ammo": { "type": "int" }
+      }
+    },
+    "@territoryArsenalHq": {
+      "placeholders": {
+        "weapons": { "type": "int" },
+        "ammo": { "type": "int" }
+      }
+    },
+    "@territoryArsenalCost": {
+      "placeholders": {
+        "amount": { "type": "int" },
+        "ammoType": { "type": "String" }
+      }
+    },
+    "@territoryArsenalMoved": {
+      "placeholders": {
+        "count": { "type": "int" }
+      }
+    },
+    "@territoryArsenalCommitted": {
+      "placeholders": {
+        "weapons": { "type": "int" },
+        "ammo": { "type": "int" }
+      }
+    },
+    "@territoryArsenalFormula": {
+      "placeholders": {
+        "base": { "type": "int" },
+        "bonus": { "type": "int" },
+        "total": { "type": "int" }
+      }
+    }
   },
   "nl": {
     "territoryContestStatusPreparing": "Voorbereiding",
@@ -470,7 +544,7 @@
     "territoryProjectLockedHq": "Vereist HQ {level}",
     "territoryProjectSafehouseDesc": "Passieve inkomensbonus op dit gebied.",
     "territoryProjectSurveillanceDesc": "Extra intel_scan-punten en kortere intel-cooldown (haven / luchthub / hoofdstad).",
-    "territoryProjectArmsCacheDesc": "Extra raid- en defense-punten (industrie / grens).",
+    "territoryProjectArmsCacheDesc": "Hier ligt het front-arsenaal. Officers committen crew-wapens en kogels; contests verbruiken munitie en slijten wapens.",
     "territoryProjectHint": "Kies een projecttype voor dit gebied. Sabotage beschadigt het in contests; bevoorrading herstelt of bouwt het verder.",
     "territoryProjectStart": "Start regioproject",
     "territoryBonusRegionProject": "Regioproject",
@@ -493,6 +567,39 @@
     "territoryHoldDurationHoursMinutes": "{hours}u {minutes}m",
     "territoryHoldDurationMinutes": "{minutes}m",
     "territoryTagAirhub": "Luchthavenhub",
-    "territoryOverlayWar": "Oorlogs-nasleep"
+    "territoryOverlayWar": "Oorlogs-nasleep",
+    "territoryArsenalTitle": "Arsenaal",
+    "territoryArsenalFill": "Vulling {percent}% van de gebouwcap",
+    "territoryArsenalCache": "Depot {weapons} wapens · {ammo} kogels",
+    "territoryArsenalHq": "HQ-reserve {weapons} wapens · {ammo} kogels",
+    "territoryArsenalLongSupply": "Lange aanvoer: je vecht vanuit HQ met 50% logistiek-boete en extra munitie-taks.",
+    "territoryArsenalCost": "Kost {amount}× {ammoType}",
+    "territoryArsenalCostUnknown": "Kost kogels als het juiste type in depot of HQ ligt",
+    "territoryArsenalWear": "Wapens slijten bij elke gevechtsactie; droogschieten slijt harder.",
+    "territoryArsenalCommit": "Stuur vanuit HQ",
+    "territoryArsenalRecall": "Haal terug naar HQ",
+    "territoryArsenalCommitTitle": "Naar het frontlijn-depot",
+    "territoryArsenalRecallTitle": "Terug naar HQ",
+    "territoryArsenalQuantity": "Aantal",
+    "territoryArsenalMoved": "{count} verplaatst.",
+    "territoryArsenalCommitted": "Vast in Territorium: {weapons} wapens · {ammo} kogels",
+    "territoryArsenalEmptyCache": "Geen depot hier. Acties kunnen nog, maar wapen- en munitiebonus vallen weg.",
+    "territoryArsenalLegendEmpty": "Wapendepot leeg",
+    "territoryArsenalLegendHalf": "Wapendepot half",
+    "territoryArsenalLegendFull": "Wapendepot vol",
+    "territoryBonusArsenal": "Arsenaalvoorraad",
+    "territoryArsenalKindWeapon": "Wapen",
+    "territoryArsenalKindAmmo": "Kogels",
+    "territoryArsenalPickItem": "Kies voorraad",
+    "territoryArsenalFormula": "Basis {base} + logistiek {bonus} = {total}",
+    "territoryErrorArsenalOfficerOnly": "Alleen de leader of co-leader mag het frontlijn-depot verplaatsen.",
+    "territoryErrorArsenalCacheRequired": "Dit gebied heeft eerst een actief wapendepot nodig.",
+    "territoryErrorArsenalNotOwner": "Alleen de crew die dit gebied bezit mag het depot verplaatsen.",
+    "territoryErrorArsenalCacheFull": "Het frontlijn-depot is vol voor dit gebouwniveau.",
+    "territoryErrorArsenalInsufficientStock": "Niet genoeg van dat item in HQ of in het depot.",
+    "territoryErrorArsenalRecallLocked": "Terughalen kan niet tijdens een live contest. Vul bij via bevoorrading.",
+    "territoryErrorArsenalInvalidQuantity": "Vul een heel getal groter dan nul in.",
+    "territoryErrorArsenalWeaponStorageFull": "De crew-wapenopslag is vol.",
+    "territoryErrorArsenalAmmoStorageFull": "De crew-munitieopslag is vol."
   }
 }

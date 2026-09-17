@@ -175,6 +175,60 @@ class TerritoryService {
     }
   }
 
+  Future<Map<String, dynamic>> commitArsenal({
+    required String regionKey,
+    required String kind,
+    required String itemKey,
+    required int quantity,
+  }) async {
+    try {
+      final response = await _api.post('/territory/arsenal/commit', {
+        'regionKey': regionKey,
+        'kind': kind,
+        'itemKey': itemKey,
+        'quantity': quantity,
+      });
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      if (response.statusCode == 200) {
+        return {
+          'success': true,
+          ...data['params'] as Map<String, dynamic>? ?? {},
+          'event': data['event'],
+        };
+      }
+      return {'success': false, 'event': data['event'], 'message': data['message'] ?? ''};
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> recallArsenal({
+    required String regionKey,
+    required String kind,
+    required String itemKey,
+    required int quantity,
+  }) async {
+    try {
+      final response = await _api.post('/territory/arsenal/recall', {
+        'regionKey': regionKey,
+        'kind': kind,
+        'itemKey': itemKey,
+        'quantity': quantity,
+      });
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      if (response.statusCode == 200) {
+        return {
+          'success': true,
+          ...data['params'] as Map<String, dynamic>? ?? {},
+          'event': data['event'],
+        };
+      }
+      return {'success': false, 'event': data['event'], 'message': data['message'] ?? ''};
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
   // ── Crew ───────────────────────────────────────────────────────────────────
 
   Future<Map<String, dynamic>> getCrewTerritory(int crewId) async {

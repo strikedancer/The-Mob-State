@@ -1,6 +1,7 @@
 import prisma from '../lib/prisma';
 import { getCrewStorageCapacity } from './crewBuildingService';
 import { vehicleService } from './vehicleService';
+import { getCommittedTotals } from './territoryArsenalService';
 import {
   debitBackpackTrade,
   getBackpackTradeQuantity,
@@ -617,6 +618,7 @@ export async function getCrewStorageSummary(crewId: number) {
 
   const weaponCount = weapons.reduce((sum, item) => sum + item.quantity, 0);
   const ammoCount = ammo.reduce((sum, item) => sum + item.quantity, 0);
+  const committed = await getCommittedTotals(crewId).catch(() => ({ weapons: 0, ammo: 0 }));
   const drugCount =
     drugs.reduce((sum, item) => sum + item.quantity, 0) +
     drugLots.reduce((sum, item) => sum + item.quantity, 0);
@@ -644,6 +646,10 @@ export async function getCrewStorageSummary(crewId: number) {
       drugs: drugCount,
       trade: tradeCount,
       cash: crew?.bankBalance ?? 0,
+    },
+    committed: {
+      weapons: committed.weapons,
+      ammo: committed.ammo,
     },
     inventory: {
       cars: carsWithType,

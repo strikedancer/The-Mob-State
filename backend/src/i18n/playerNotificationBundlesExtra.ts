@@ -203,6 +203,28 @@ const notificationDE: Translations['notification'] = {
         'Diese Region wurde von einer anderen Crew übernommen.',
       ].join('\n'),
   },
+  territoryArsenalLow: {
+    title: 'Territoriumsarsenal wird knapp',
+    pushBody: (regionKey) => `Das Front-Depot in ${regionKey} ist fast leer. Nachschub, sonst kämpft ihr über die lange HQ-Linie.`,
+    inboxMessage: (regionKey) =>
+      [
+        'Territoriumsarsenal wird knapp',
+        '',
+        `Region: ${regionKey}`,
+        'Das Front-Depot ist fast leer. Schickt Waffen und Munition aus dem Crew-Lager oder macht einen Nachschublauf im Contest.',
+      ].join('\n'),
+  },
+  territoryArsenalCaptured: {
+    title: 'Front-Depot verloren',
+    pushBody: (regionKey) => `${regionKey} fiel mit Waffen und Munition im Depot. Ein Teil wurde geplündert, der Rest verbrannt.`,
+    inboxMessage: (regionKey) =>
+      [
+        'Front-Depot verloren',
+        '',
+        `Region: ${regionKey}`,
+        'Waffen und Munition in diesem Gebiet kamen nicht zurück ins HQ. Der Sieger nahm einen Anteil, der Rest verbrannte.',
+      ].join('\n'),
+  },
   rldStolen: {
     title: 'Rekrut gestohlen',
     pushBody: (thiefName, workerName) => `${thiefName} hat ${workerName} aus deinem Rotlichtviertel gestohlen.`,
@@ -444,6 +466,28 @@ const notificationFR: Translations['notification'] = {
         'Cette région a été prise par une autre crew.',
       ].join('\n'),
   },
+  territoryArsenalLow: {
+    title: 'Arsenal territorial presque vide',
+    pushBody: (regionKey) => `Le dépôt de première ligne à ${regionKey} est presque vide. Réapprovisionnez, sinon vous combattez via la longue ligne HQ.`,
+    inboxMessage: (regionKey) =>
+      [
+        'Arsenal territorial presque vide',
+        '',
+        `Région : ${regionKey}`,
+        'Le dépôt de première ligne est presque vide. Envoyez armes et munitions depuis le stockage crew, ou faites un ravitaillement pendant le contest.',
+      ].join('\n'),
+  },
+  territoryArsenalCaptured: {
+    title: 'Dépôt de première ligne perdu',
+    pushBody: (regionKey) => `${regionKey} est tombé avec des armes et des munitions encore dans le dépôt. Une part a été pillée, le reste a brûlé.`,
+    inboxMessage: (regionKey) =>
+      [
+        'Dépôt de première ligne perdu',
+        '',
+        `Région : ${regionKey}`,
+        'Les armes et munitions engagées ici ne sont pas revenues au QG. Le vainqueur a pris une part ; le reste a brûlé.',
+      ].join('\n'),
+  },
   rldStolen: {
     title: 'Recrue volée',
     pushBody: (thiefName, workerName) => `${thiefName} a volé ${workerName} dans ton quartier rouge.`,
@@ -682,6 +726,28 @@ const notificationES: Translations['notification'] = {
         '',
         `Región: ${regionKey}`,
         'Esta región fue tomada por otra crew.',
+      ].join('\n'),
+  },
+  territoryArsenalLow: {
+    title: 'El arsenal territorial se agota',
+    pushBody: (regionKey) => `El depósito de primera línea en ${regionKey} está casi vacío. Reabastécelo o lucháis con la línea larga del HQ.`,
+    inboxMessage: (regionKey) =>
+      [
+        'El arsenal territorial se agota',
+        '',
+        `Región: ${regionKey}`,
+        'El depósito de primera línea está casi vacío. Envía armas y munición desde el almacén de la crew, o haz un suministro durante el contest.',
+      ].join('\n'),
+  },
+  territoryArsenalCaptured: {
+    title: 'Depósito de primera línea perdido',
+    pushBody: (regionKey) => `${regionKey} cayó con armas y munición aún en el depósito. Parte fue saqueada; el resto se quemó.`,
+    inboxMessage: (regionKey) =>
+      [
+        'Depósito de primera línea perdido',
+        '',
+        `Región: ${regionKey}`,
+        'Las armas y munición comprometidas aquí no volvieron al HQ. El ganador se llevó una parte; el resto se quemó.',
       ].join('\n'),
   },
   rldStolen: {
@@ -925,6 +991,28 @@ const notificationIT: Translations['notification'] = {
         'Questa regione è stata presa da un’altra crew.',
       ].join('\n'),
   },
+  territoryArsenalLow: {
+    title: 'Arsenale territoriale quasi vuoto',
+    pushBody: (regionKey) => `Il deposito in prima linea a ${regionKey} è quasi vuoto. Riforniscilo o combatti dalla lunga linea HQ.`,
+    inboxMessage: (regionKey) =>
+      [
+        'Arsenale territoriale quasi vuoto',
+        '',
+        `Regione: ${regionKey}`,
+        'Il deposito in prima linea è quasi vuoto. Invia armi e munizioni dallo storage crew, o fai un rifornimento durante il contest.',
+      ].join('\n'),
+  },
+  territoryArsenalCaptured: {
+    title: 'Deposito in prima linea perso',
+    pushBody: (regionKey) => `${regionKey} è caduto con armi e munizioni ancora nel deposito. Una parte è stata saccheggiata, il resto bruciato.`,
+    inboxMessage: (regionKey) =>
+      [
+        'Deposito in prima linea perso',
+        '',
+        `Regione: ${regionKey}`,
+        'Armi e munizioni impegnate qui non sono tornate all’HQ. Il vincitore ha preso una parte; il resto è bruciato.',
+      ].join('\n'),
+  },
   rldStolen: {
     title: 'Recluta rubata',
     pushBody: (thiefName, workerName) => `${thiefName} ha rubato ${workerName} dal tuo quartiere a luci rosse.`,
@@ -1159,6 +1247,28 @@ const notificationPL: Translations['notification'] = {
         '',
         `Region: ${regionKey}`,
         'Ten region został przejęty przez inną ekipę.',
+      ].join('\n'),
+  },
+  territoryArsenalLow: {
+    title: 'Arsenał terytorium się kończy',
+    pushBody: (regionKey) => `Skład na froncie w ${regionKey} jest prawie pusty. Uzupełnij go, albo walczysz długą linią z HQ.`,
+    inboxMessage: (regionKey) =>
+      [
+        'Arsenał terytorium się kończy',
+        '',
+        `Region: ${regionKey}`,
+        'Skład na froncie jest prawie pusty. Wyślij broń i amunicję z magazynu ekipy albo zrób dostawę podczas contestu.',
+      ].join('\n'),
+  },
+  territoryArsenalCaptured: {
+    title: 'Utracono skład na froncie',
+    pushBody: (regionKey) => `${regionKey} padł z bronią i amunicją w składzie. Część zrabowano, reszta spłonęła.`,
+    inboxMessage: (regionKey) =>
+      [
+        'Utracono skład na froncie',
+        '',
+        `Region: ${regionKey}`,
+        'Broń i amunicja tutaj nie wróciły do HQ. Zwycięzca wziął część; reszta spłonęła.',
       ].join('\n'),
   },
   rldStolen: {
@@ -1397,6 +1507,28 @@ const notificationPT: Translations['notification'] = {
         '',
         `Região: ${regionKey}`,
         'Esta região foi tomada por outra crew.',
+      ].join('\n'),
+  },
+  territoryArsenalLow: {
+    title: 'Arsenal territorial quase vazio',
+    pushBody: (regionKey) => `O depósito da linha da frente em ${regionKey} está quase vazio. Reabastece, ou lutas pela linha longa do HQ.`,
+    inboxMessage: (regionKey) =>
+      [
+        'Arsenal territorial quase vazio',
+        '',
+        `Região: ${regionKey}`,
+        'O depósito da linha da frente está quase vazio. Envia armas e munição do armazenamento da crew, ou faz um reabastecimento durante o contest.',
+      ].join('\n'),
+  },
+  territoryArsenalCaptured: {
+    title: 'Depósito da linha da frente perdido',
+    pushBody: (regionKey) => `${regionKey} caiu com armas e munição ainda no depósito. Parte foi saqueada, o resto queimou.`,
+    inboxMessage: (regionKey) =>
+      [
+        'Depósito da linha da frente perdido',
+        '',
+        `Região: ${regionKey}`,
+        'As armas e a munição aqui não voltaram para o HQ. O vencedor ficou com uma parte; o resto queimou.',
       ].join('\n'),
   },
   rldStolen: {

@@ -7199,13 +7199,21 @@
   "rldUpgradeRoomsSubtitle": "Buy extra rooms before you can place more recruits here.",
   "rldUpgradeRoomsButton": "Build rooms · €{cost}",
   "@rldUpgradeRoomsButton": {
-    "placeholders": { "cost": { "type": "String" } }
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
   },
   "rldUpgradeRoomsConfirm": "Add {rooms} rooms for €{cost}?",
   "@rldUpgradeRoomsConfirm": {
     "placeholders": {
-      "rooms": { "type": "String" },
-      "cost": { "type": "String" }
+      "rooms": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
     }
   },
   "rldMaxRooms": "This district is at its room cap.",
@@ -7227,8 +7235,12 @@
   "rldContestScore": "Score {attack} – {defense}",
   "@rldContestScore": {
     "placeholders": {
-      "attack": { "type": "String" },
-      "defense": { "type": "String" }
+      "attack": {
+        "type": "String"
+      },
+      "defense": {
+        "type": "String"
+      }
     }
   },
   "rldReclaim": "Take back",
@@ -11806,8 +11818,8 @@
   "helpTopicCrewCategory": "Social",
   "helpTopicCrewTitle": "Crew",
   "helpTopicCrewSummary": "Start a crew or join existing players to pull off heists together, share storage and become stronger as a unit.",
-  "helpTopicCrewHow": "Creating a crew costs €10.000. The Crew HQ determines how many members your crew can hold and scales up to 150 members. The leader can invite, kick and start heists. Territory slots: +1 region every 3 HQ levels, +1 every 5 extra members, the lowest counts, never more than 10.\nCrew benefits: access to large heists, shared storage, teamwork bonus (+10% success per extra member, max +30%) and group chat.\nNew crews now start with Crew HQ level 1 and all storage buildings at level 1, including cash storage, so the crew bank and shared storage work immediately.\nCash storage level 1 holds €1.000.000. The next cash-storage upgrade always costs less than that vault, so you can pay it from the crew bank instead of getting stuck at the cap.\nCrew car storage now also accepts motorcycles, so land vehicles can be managed together from the same shared crew storage.\nShared storage is not an extra personal garage. Cars, motorcycles, boats, weapons, ammo and trade goods you deposit belong to the crew: they are used for crew smuggling, crew missions (trade goods for Port Contraband Manifest and Warehouse Luxury Offload), deals between crews, or stolen in a raid by another crew. You cannot take them back for your own crimes or to drive or sail them yourself.\nDrugs in crew storage can go to wholesale (freight and payout through the crew bank) or back to your own inventory. Territory bonuses come from the storage building level, not from how full the shelves are.\nOnly the crew owner and co-owners can buy a crewmate out of prison with crew-bank money. Bail comes from the vault. Sometimes the police then arrest you for dirty money: the other player is free, you go to jail.\nWhen a crew member gets arrested, crew members now receive a push notification that the player is locked up and waiting for help.\nThe crew screen is now grouped into Overview, HQ & Upgrades, Storage, Members, War Room, Crew Missions, Crews and Chat so management feels calmer and more professional.\nCrew Missions shows tier templates, an active run card and recent runs. Leaders/co-leaders can start and resolve; reward claiming and cooldown speedup are handled in the same tab.\nThere are extra crew missions with bank-themed operations (night deposit, skim network, armored route, subsidiary vault, reserve vault and clearing house). There is no second casino crew mission alongside Casino Ledger Raid.\nCrew mission rewards come from the server-side mission economy; other players’ bank balances are not debited for these payouts.\nWhen starting a mission you can now assign a role per crew member (Planner, Enforcer, Logistics, Tech) for team bonuses.\nActive and recent mission cards now also show per-player role contributions with score and any payout multiplier.\nCrew members now also receive push/in-app alerts for mission start, mission result, and when a mission cooldown becomes ready again.\nWhile a mission cooldown is active you cannot start a new mission. At the top of Crew Missions a large timer counts down live until you can start again; the same remaining time also appears on Home under timeouts. You can speed the wait up with credits.\nFor cooldown speedup, you first see the exact credit cost and remaining minutes before you confirm.\nCrew Wars have their own War Room tab inside the crew screen. Only leaders can declare a war and at least 3 crew members are required to participate.\nWar types: Kill War, Economy War, Territory War and Total War. Each war moves through preparation, active phase, lockdown and resolution.\nDuring an active war, participants can perform actions like kills, mugs, sabotage, intel, raids, shields, boosts and territory claims. Targeted actions now let you pick directly from a list of opponent crew members instead of typing a player ID by hand.\nSeason points are aggregated into the Crew Wars leaderboard. The War Room also shows standings, recent actions and recent wars for your crew.\nIn Territory War and Total War you now claim real Territory regions from the territory system instead of generic placeholder targets.\nThose war regions now also show their strategic value in the War Room: claim bonus, tick points and tags such as harbor, capital or logistics. That makes it immediately clear which regions are worth more than a simple ownership swap.\nCrew Wars no longer picks Territory targets on value tier alone, but also on strategic tags and adjacent pressure from attacker or defender territory. That makes Territory War and Total War feel more like a real frontline than three random claims.\nHeists: Small Bank (2 players, 40%, €10.000-€30.000, 30 min cooldown), Jewelry Store (3 players, 35%, €20.000-€50.000, 45 min), Casino Heist (4 players, 25%, €50.000-€150.000, 2 hrs), Federal Reserve (5 players, 15%, €100.000-€500.000, 6 hrs, +20 FBI Heat).\nFor a heist all members must be online at start. If someone is absent the heist fails.\nFailed heist: jail time for everyone, Wanted Level +5, no reward.\nHeist reward is split equally among all participating members.\nCrew chat is available for fast coordination.\nCrew HQ progression: the longer and more active the crew, the more shared upgrades and buffs unlock.",
-  "helpTopicCrewTips": "New crews can deposit money and use shared storage immediately; after that, focus on upgrades for more capacity instead of a separate starter purchase.\nCheck the War Room first to see whether your crew is still on cooldown before trying to declare a new war.\nCoordinate target calls in crew chat. You cannot keep using Kill or Mug on the same opponent forever; pick someone else or wait a bit.\nCoordinate heist start times in crew chat so everyone is online and nobody is in jail.\nChoose a crew in the same timezone or activity pattern for better heist success rates.\nUse shared crew storage to separate risky goods from your personal inventory.\nOnly deposit cars, motorcycles or boats into the crew if you really want them for smuggling, missions or deals; you cannot use them yourself afterwards.\nCrew-bank buyout helps when someone's bail is high, but expect that you yourself can go to jail for dirty money.",
+  "helpTopicCrewHow": "Creating a crew costs €10.000. The Crew HQ determines how many members your crew can hold and scales up to 150 members. The leader can invite, kick and start heists. Territory slots: +1 region every 3 HQ levels, +1 every 5 extra members, the lowest counts, never more than 10.\nCrew benefits: access to large heists, shared storage, teamwork bonus (+10% success per extra member, max +30%) and group chat.\nNew crews now start with Crew HQ level 1 and all storage buildings at level 1, including cash storage, so the crew bank and shared storage work immediately.\nCash storage level 1 holds €1.000.000. The next cash-storage upgrade always costs less than that vault, so you can pay it from the crew bank instead of getting stuck at the cap.\nCrew car storage now also accepts motorcycles, so land vehicles can be managed together from the same shared crew storage.\nShared storage is not an extra personal garage. Cars, motorcycles, boats, weapons, ammo and trade goods you deposit belong to the crew: they are used for crew smuggling, crew missions (trade goods for Port Contraband Manifest and Warehouse Luxury Offload), deals between crews, or stolen in a raid by another crew. You cannot take them back for your own crimes or to drive or sail them yourself.\nDrugs in crew storage can go to wholesale (freight and payout through the crew bank) or back to your own inventory. Territory uses crew weapons and ammo as HQ reserve and frontline cache; building level stays the cap so hoarding does not add extra points.\nOnly the crew owner and co-owners can buy a crewmate out of prison with crew-bank money. Bail comes from the vault. Sometimes the police then arrest you for dirty money: the other player is free, you go to jail.\nWhen a crew member gets arrested, crew members now receive a push notification that the player is locked up and waiting for help.\nThe crew screen is now grouped into Overview, HQ & Upgrades, Storage, Members, War Room, Crew Missions, Crews and Chat so management feels calmer and more professional.\nCrew Missions shows tier templates, an active run card and recent runs. Leaders/co-leaders can start and resolve; reward claiming and cooldown speedup are handled in the same tab.\nThere are extra crew missions with bank-themed operations (night deposit, skim network, armored route, subsidiary vault, reserve vault and clearing house). There is no second casino crew mission alongside Casino Ledger Raid.\nCrew mission rewards come from the server-side mission economy; other players’ bank balances are not debited for these payouts.\nWhen starting a mission you can now assign a role per crew member (Planner, Enforcer, Logistics, Tech) for team bonuses.\nActive and recent mission cards now also show per-player role contributions with score and any payout multiplier.\nCrew members now also receive push/in-app alerts for mission start, mission result, and when a mission cooldown becomes ready again.\nWhile a mission cooldown is active you cannot start a new mission. At the top of Crew Missions a large timer counts down live until you can start again; the same remaining time also appears on Home under timeouts. You can speed the wait up with credits.\nFor cooldown speedup, you first see the exact credit cost and remaining minutes before you confirm.\nCrew Wars have their own War Room tab inside the crew screen. Only leaders can declare a war and at least 3 crew members are required to participate.\nWar types: Kill War, Economy War, Territory War and Total War. Each war moves through preparation, active phase, lockdown and resolution.\nDuring an active war, participants can perform actions like kills, mugs, sabotage, intel, raids, shields, boosts and territory claims. Targeted actions now let you pick directly from a list of opponent crew members instead of typing a player ID by hand.\nSeason points are aggregated into the Crew Wars leaderboard. The War Room also shows standings, recent actions and recent wars for your crew.\nIn Territory War and Total War you now claim real Territory regions from the territory system instead of generic placeholder targets.\nThose war regions now also show their strategic value in the War Room: claim bonus, tick points and tags such as harbor, capital or logistics. That makes it immediately clear which regions are worth more than a simple ownership swap.\nCrew Wars no longer picks Territory targets on value tier alone, but also on strategic tags and adjacent pressure from attacker or defender territory. That makes Territory War and Total War feel more like a real frontline than three random claims.\nHeists: Small Bank (2 players, 40%, €10.000-€30.000, 30 min cooldown), Jewelry Store (3 players, 35%, €20.000-€50.000, 45 min), Casino Heist (4 players, 25%, €50.000-€150.000, 2 hrs), Federal Reserve (5 players, 15%, €100.000-€500.000, 6 hrs, +20 FBI Heat).\nFor a heist all members must be online at start. If someone is absent the heist fails.\nFailed heist: jail time for everyone, Wanted Level +5, no reward.\nHeist reward is split equally among all participating members.\nCrew chat is available for fast coordination.\nCrew HQ progression: the longer and more active the crew, the more shared upgrades and buffs unlock.\nWeapons and ammo in crew storage now also feed Territory. The HQ vault is the reserve; an arms cache on a region is the front. Building level is still the cap, so hoarding past capacity does not add extra Territory points. You still cannot take those weapons or ammo back for personal crimes. Crew Wars raids steal the same HQ stacks, which then cannot resupply the front.",
+  "helpTopicCrewTips": "New crews can deposit money and use shared storage immediately; after that, focus on upgrades for more capacity instead of a separate starter purchase.\nCheck the War Room first to see whether your crew is still on cooldown before trying to declare a new war.\nCoordinate target calls in crew chat. You cannot keep using Kill or Mug on the same opponent forever; pick someone else or wait a bit.\nCoordinate heist start times in crew chat so everyone is online and nobody is in jail.\nChoose a crew in the same timezone or activity pattern for better heist success rates.\nUse shared crew storage to separate risky goods from your personal inventory.\nOnly deposit cars, motorcycles or boats into the crew if you really want them for smuggling, missions or deals; you cannot use them yourself afterwards.\nCrew-bank buyout helps when someone's bail is high, but expect that you yourself can go to jail for dirty money.\nCheck how much of your weapons and ammo is locked in Territory before you plan a Crew Wars raid week.\nOnly commit what you can afford to lose on a front that might fall.",
   "helpTopicFriendsCategory": "Social",
   "helpTopicFriendsTitle": "Friends",
   "helpTopicFriendsSummary": "Manage your friends list for faster coordination, profile browsing and social feedback.",
@@ -11956,8 +11968,8 @@
   "helpTopicTerritoryCategory": "Empire",
   "helpTopicTerritoryTitle": "Territory",
   "helpTopicTerritorySummary": "Claim and control geographical regions for passive income, crew prestige and strategic regional bonuses. Territory combines map control with contests and seasonal rewards.",
-  "helpTopicTerritoryHow": "Territory overview shows all available countries and regions by country. Click a country to see the interactive map.\nAll supported countries are now fully browseable through the same interactive map flow as the Netherlands.\nTap a region on the interactive map to open a modal with territory information and the attack button. The separate region cards below the map are no longer needed.\nViewing is allowed everywhere, but attacks, defense joins and contest actions only work in the country where your character is currently located.\nTimers in the region modal (your cooldown, when you can attack again, contest phases, and garrison) count down live. When a timer hits zero, the screen refreshes the buttons by itself; you do not need to reload the page by hand.\nOn mobile you can now pinch in and out with two fingers and drag the zoomed map directly, making smaller regions easier to tap without extra buttons on the map.\nTerritory is crew-based: you must create or join a crew before the attack button becomes available for neutral or hostile regions.\nHow many regions you may hold worldwide depends on HQ and real members: +1 slot every 3 HQ levels, +1 slot every 5 extra members, the lowest counts, never more than 10. HQ alone or members alone is not enough. At the cap you cannot start a new contest until you are under the maximum again; defense stays possible. Regions are not dropped if someone leaves the crew.\nEach region can be controlled by at most one crew at a time. Ownership grants passive income per hour, but Territory stops paying into the crew bank once the cash storage cap has been reached.\nStart a contest in an unclaimed region using the contest button. The contest automatically progresses through preparation (prep time), active (actions), and lockdown (resolution).\nWhen preparation ends, attacking and defending crew members receive a push notification and inbox message so you know you can attack or defend. That alert is sent by the minute cron even if nobody has the Territory screen open.\nDuring an active contest the region modal now also shows when actions unlock, when the contest ends, what the per-action cooldown is, and the real cash amount the region pays per payout, per hour and per day.\nRegions now also have strategic roles such as harbor, industry, capital, border region or logistics hub. That role determines which actions can earn extra points there.\nAdjacent regions already owned by your crew now provide extra support during contest actions. The region modal shows which strategic bonuses are active and how much adjacent support your crew has in that area.\nAction bonuses can now also come from crew progression: HQ level, crew mission level, and relevant side buildings (weapon/ammo/car/boat/drug storage). These bonuses only increase contest points, not passive region cash.\nSome advanced contest actions are HQ-gated: if your HQ level is too low, the action button shows `requires HQ level X` immediately.\nTerritory no longer uses a hard daily action cap by default (runtime cap 0 = disabled). Balance stays controlled through cooldowns, anti-farm and strategic action choices.\nWinning a Territory War or Total War can now leave temporary war pressure on the real Territory regions around that frontline. The region modal shows which crew holds the pressure, how much effective stability is reduced, and when the aftermath expires.\nWhen a contest has just started or an older contest was still missing timing fields, the screen now fills those timers immediately and refreshes the modal to the latest contest state without requiring you to navigate away first.\nAttackers only see attacker actions (intel, sabotage, raid) and defenders only see defender actions (patrol, supply run, defense), so the modal no longer shows confusing mixed buttons.\nA region now also shows the real Territory yield. Crew leaders also see how many regions and countries their crew controls on the dashboard, how much the crew is currently earning, and how much Territory has earned in total so far.\nContests result in ownership transfer and rewards (cash, XP, prestige). Losers also get partial xp for participation.\nLarge regions (harbors, capitals) give more passive income but also trigger more opponents and raid attempts.\nSeasonal events give bonus rewards and special challenges per region group.\nPrevent deadlocks: your crew cannot immediately attack the same opponent after a loss; wait for cooldown.\nAnti-abuse checks prevent one crew from attacking the same target repeatedly in short time windows.",
-  "helpTopicTerritoryTips": "Start in a balanced country with medium-sized regions: less competition than large countries but reasonable passive income.\nFocus on one country where your crew is strong first: better knowledge leads to better contest strategy than shallow control in many countries.\nUse seasons as strategic resets: if you lose in a dry season, a better season always follows for a comeback.",
+  "helpTopicTerritoryHow": "Territory overview shows all available countries and regions by country. Click a country to see the interactive map.\nAll supported countries are now fully browseable through the same interactive map flow as the Netherlands.\nTap a region on the interactive map to open a modal with territory information and the attack button. The separate region cards below the map are no longer needed.\nViewing is allowed everywhere, but attacks, defense joins and contest actions only work in the country where your character is currently located.\nTimers in the region modal (your cooldown, when you can attack again, contest phases, and garrison) count down live. When a timer hits zero, the screen refreshes the buttons by itself; you do not need to reload the page by hand.\nOn mobile you can now pinch in and out with two fingers and drag the zoomed map directly, making smaller regions easier to tap without extra buttons on the map.\nTerritory is crew-based: you must create or join a crew before the attack button becomes available for neutral or hostile regions.\nHow many regions you may hold worldwide depends on HQ and real members: +1 slot every 3 HQ levels, +1 slot every 5 extra members, the lowest counts, never more than 10. HQ alone or members alone is not enough. At the cap you cannot start a new contest until you are under the maximum again; defense stays possible. Regions are not dropped if someone leaves the crew.\nEach region can be controlled by at most one crew at a time. Ownership grants passive income per hour, but Territory stops paying into the crew bank once the cash storage cap has been reached.\nStart a contest in an unclaimed region using the contest button. The contest automatically progresses through preparation (prep time), active (actions), and lockdown (resolution).\nWhen preparation ends, attacking and defending crew members receive a push notification and inbox message so you know you can attack or defend. That alert is sent by the minute cron even if nobody has the Territory screen open.\nDuring an active contest the region modal now also shows when actions unlock, when the contest ends, what the per-action cooldown is, and the real cash amount the region pays per payout, per hour and per day.\nRegions now also have strategic roles such as harbor, industry, capital, border region or logistics hub. That role determines which actions can earn extra points there.\nAdjacent regions already owned by your crew now provide extra support during contest actions. The region modal shows which strategic bonuses are active and how much adjacent support your crew has in that area.\nAction bonuses can now also come from crew progression: HQ level, crew mission level, and relevant side buildings (weapon/ammo/car/boat/drug storage). These bonuses only increase contest points, not passive region cash.\nSome advanced contest actions are HQ-gated: if your HQ level is too low, the action button shows `requires HQ level X` immediately.\nTerritory no longer uses a hard daily action cap by default (runtime cap 0 = disabled). Balance stays controlled through cooldowns, anti-farm and strategic action choices.\nWinning a Territory War or Total War can now leave temporary war pressure on the real Territory regions around that frontline. The region modal shows which crew holds the pressure, how much effective stability is reduced, and when the aftermath expires.\nWhen a contest has just started or an older contest was still missing timing fields, the screen now fills those timers immediately and refreshes the modal to the latest contest state without requiring you to navigate away first.\nAttackers only see attacker actions (intel, sabotage, raid) and defenders only see defender actions (patrol, supply run, defense), so the modal no longer shows confusing mixed buttons.\nA region now also shows the real Territory yield. Crew leaders also see how many regions and countries their crew controls on the dashboard, how much the crew is currently earning, and how much Territory has earned in total so far.\nContests result in ownership transfer and rewards (cash, XP, prestige). Losers also get partial xp for participation.\nLarge regions (harbors, capitals) give more passive income but also trigger more opponents and raid attempts.\nSeasonal events give bonus rewards and special challenges per region group.\nPrevent deadlocks: your crew cannot immediately attack the same opponent after a loss; wait for cooldown.\nAnti-abuse checks prevent one crew from attacking the same target repeatedly in short time windows.\nCrew weapons and ammo in shared storage are the HQ reserve. Officers commit them in peacetime to a region with an active arms cache; that cache is the frontline arsenal. During a contest a supply run moves stock from HQ or an adjacent owned cache into the contested depot.\nEach raid, defense or patrol spends matching ammo and wears the matching weapon type. Empty stock never blocks the action, but you lose that weapon or ammo bonus. Fighting from HQ is a long supply line: half the logistics bonus and extra ammo tax. Personal inventory never counts.\nIf you lose the region the cache is not sent back: the winner loots part of it into their HQ storage and the rest burns. Sabotage dumps extra cache. A garrison on an empty depot is expensive theater and slowly leaks ammo while it runs. Crew Wars raids still steal the HQ reserve, so Territory is weaker the week after.",
+  "helpTopicTerritoryTips": "Start in a balanced country with medium-sized regions: less competition than large countries but reasonable passive income.\nFocus on one country where your crew is strong first: better knowledge leads to better contest strategy than shallow control in many countries.\nUse seasons as strategic resets: if you lose in a dry season, a better season always follows for a comeback.\nStock an arms cache before a live contest: an empty front fights from HQ with a penalty.\nDo not park a huge cache on a shaky front; if the region falls, part is looted and the rest burns.\nMatching types matter: rifles and shotguns for defense, SMGs for raids, pistols for patrol. Wrong ammo means no ammo bonus and extra weapon wear.",
   "helpTopicProstitutionCategory": "Empire",
   "helpTopicProstitutionTitle": "Prostitution",
   "helpTopicProstitutionSummary": "Recruit workers, place them on the street or in a Red Light District, run nights, and watch police heat. Other players can steal a recruit; you have 12 hours to take her back.",
@@ -12506,7 +12518,7 @@
   "territoryProjectLockedHq": "Requires HQ {level}",
   "territoryProjectSafehouseDesc": "Passive income bonus on this region.",
   "territoryProjectSurveillanceDesc": "Extra intel_scan points and shorter intel cooldown (harbor / airhub / capital).",
-  "territoryProjectArmsCacheDesc": "Extra raid and defense points (industry / border).",
+  "territoryProjectArmsCacheDesc": "This is the frontline arsenal. Officers commit crew weapons and ammo here; contests spend rounds and wear guns.",
   "territoryBonusRegionProject": "Region project",
   "territoryBonusGarrison": "Garrison / air defense",
   "territoryErrorProjectInvalidType": "Unknown project type.",
@@ -12833,5 +12845,105 @@
   "helpTopicModOpsTitle": "Mod and Ops",
   "helpTopicModOpsSummary": "Handbook for Mods and Ops: remove messages, mute players, read reports, and the same tools on Discord. Regular players long-press a message to report it.",
   "helpTopicModOpsHow": "A Super-admin sets you to Mod or Ops on Admin → Players. You keep playing on the same account. No second password.\nOpen Social → World chat. A gold Mod or Ops chip sits in the header. Other players see that badge next to your name, including on your own bubbles.\nLong-press someone else’s message. The menu has Remove for everyone, Mute 15 min, Mute 1 hour, Unmute, or Report. There is no floating staff button: it lives in that long-press menu.\nLong-pressing your own green bubbles only deletes your line (about 10 minutes). Mute and remove-for-everyone are not on your own bubble.\nThe flag in the header opens the report list. Those are messages players reported. Handle them in chat: long-press to delete or mute.\nMute 15 minutes is a warning. Mute 1 hour if it continues. Unmute lifts it. A mute hits the game and Discord if that account is linked.\nYou cannot mute another Mod or Ops. Bans, money, rank or VIP stay Super-admin.\nDiscord: link Discord in Settings. Game posts show [Ops] or [Mod] on the name. Reply with !wis to delete in-game and on Discord. !mute name 15 or 60 mutes. !unmute name lifts it. !hulp lists the commands.\nAdmin site admin.themobstate.com: sign in with your game account. Mod only sees World chat. Ops sees World chat, Tickets and Players (read). No config, no ban button, no money tools.\nRegular players: long-press someone else’s message and choose Report. That is the only way to send it to staff.",
-  "helpTopicModOpsTips": "Read reports first, then delete or mute only what does not belong in the lobby.\nType !hulp on Discord if you forget the commands. Discord must be linked in the game.\nThis is not a cop account: you still play, you only keep world chat in line."
+  "helpTopicModOpsTips": "Read reports first, then delete or mute only what does not belong in the lobby.\nType !hulp on Discord if you forget the commands. Discord must be linked in the game.\nThis is not a cop account: you still play, you only keep world chat in line.",
+  "territoryArsenalTitle": "Arsenal",
+  "territoryArsenalFill": "Fill {percent}% of building cap",
+  "territoryArsenalCache": "Cache {weapons} weapons · {ammo} ammo",
+  "territoryArsenalHq": "HQ reserve {weapons} weapons · {ammo} ammo",
+  "territoryArsenalLongSupply": "Long supply: you fight from HQ with a 50% logistics penalty and extra ammo tax.",
+  "territoryArsenalCost": "Costs {amount}× {ammoType}",
+  "territoryArsenalCostUnknown": "Costs ammo if the matching type is in cache or HQ",
+  "territoryArsenalWear": "Weapons wear each combat action; dry-firing wears them faster.",
+  "territoryArsenalCommit": "Commit from HQ",
+  "territoryArsenalRecall": "Recall to HQ",
+  "territoryArsenalCommitTitle": "Send to frontline cache",
+  "territoryArsenalRecallTitle": "Recall from frontline cache",
+  "territoryArsenalQuantity": "Quantity",
+  "territoryArsenalMoved": "Moved {count}.",
+  "territoryArsenalCommitted": "Locked in Territory: {weapons} weapons · {ammo} ammo",
+  "territoryArsenalEmptyCache": "No depot here. Actions still work, but weapon and ammo bonuses drop.",
+  "territoryArsenalLegendEmpty": "Arms cache empty",
+  "territoryArsenalLegendHalf": "Arms cache half",
+  "territoryArsenalLegendFull": "Arms cache full",
+  "territoryBonusArsenal": "Arsenal stock",
+  "territoryArsenalKindWeapon": "Weapon",
+  "territoryArsenalKindAmmo": "Ammo",
+  "territoryArsenalPickItem": "Choose stock",
+  "territoryArsenalFormula": "Base {base} + logistics {bonus} = {total}",
+  "territoryErrorArsenalOfficerOnly": "Only the leader or co-leader can move the frontline cache.",
+  "territoryErrorArsenalCacheRequired": "This region needs an active arms cache first.",
+  "territoryErrorArsenalNotOwner": "Only the crew that owns this region can move its cache.",
+  "territoryErrorArsenalCacheFull": "The frontline cache is full for this building level.",
+  "territoryErrorArsenalInsufficientStock": "Not enough of that item in HQ or in the cache.",
+  "territoryErrorArsenalRecallLocked": "You cannot recall during a live contest. Use a supply run to refill instead.",
+  "territoryErrorArsenalInvalidQuantity": "Enter a whole number above zero.",
+  "territoryErrorArsenalWeaponStorageFull": "Crew weapon storage is full.",
+  "territoryErrorArsenalAmmoStorageFull": "Crew ammo storage is full.",
+  "@territoryArsenalFill": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "@territoryArsenalCache": {
+    "placeholders": {
+      "weapons": {
+        "type": "int"
+      },
+      "ammo": {
+        "type": "int"
+      }
+    }
+  },
+  "@territoryArsenalHq": {
+    "placeholders": {
+      "weapons": {
+        "type": "int"
+      },
+      "ammo": {
+        "type": "int"
+      }
+    }
+  },
+  "@territoryArsenalCost": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      },
+      "ammoType": {
+        "type": "String"
+      }
+    }
+  },
+  "@territoryArsenalMoved": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@territoryArsenalCommitted": {
+    "placeholders": {
+      "weapons": {
+        "type": "int"
+      },
+      "ammo": {
+        "type": "int"
+      }
+    }
+  },
+  "@territoryArsenalFormula": {
+    "placeholders": {
+      "base": {
+        "type": "int"
+      },
+      "bonus": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  }
 }

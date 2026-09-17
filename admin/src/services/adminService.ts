@@ -368,6 +368,21 @@ export interface AdminTerritoryOverview {
     actionUnlockHqLevelSupplyRun?: number;
     actionUnlockHqLevelRaid?: number;
     actionUnlockHqLevelDefense?: number;
+    arsenalHqBonusMult?: number;
+    arsenalHqAmmoTaxMult?: number;
+    arsenalLootPercent?: number;
+    arsenalSabotageStealPercent?: number;
+    arsenalSabotageBurnPercent?: number;
+    arsenalWeaponWear?: number;
+    arsenalDryFireWear?: number;
+    arsenalLowThreshold?: number;
+    arsenalGarrisonLeakAmmoPerHour?: number;
+    arsenalSupplyRunAmmo?: number;
+    arsenalSupplyRunWeapons?: number;
+    arsenalAmmoCostRaid?: number;
+    arsenalAmmoCostDefense?: number;
+    arsenalAmmoCostPatrol?: number;
+    arsenalAmmoCostSabotage?: number;
   };
   activeSeason: {
     seasonKey: string;
