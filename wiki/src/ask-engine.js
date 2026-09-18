@@ -12,58 +12,70 @@
   const SHORT_KEEP = new Set(['don', 'vip', 'xp', 'fbi', 'rld', 'hp', 'hq', 'icu', 'pvp']);
 
   const SYN_GROUPS = [
-    ['prostitutie', 'prostitution', 'hoeren', 'hoer', 'hoerenhuis', 'rld', 'redlight'],
-    ['innen', 'ophalen', 'collect', 'collectable', 'inkomsten'],
-    ['territorium', 'territory', 'wapendepot', 'arsenal', 'frontlijn', 'frontline'],
+    ['prostitutie', 'prostitution', 'hoeren', 'hoer', 'hoerenhuis', 'rld', 'redlight', 'prostytucja', 'prostituierte'],
+    ['innen', 'ophalen', 'collect', 'collectable', 'inkomsten', 'einkassieren', 'encaisser', 'cobrar'],
+    ['territorium', 'territory', 'wapendepot', 'arsenal', 'frontlijn', 'frontline', 'territoire', 'territorio'],
     ['crewvip', 'donatiepot'],
-    ['schild', 'shield'],
-    ['gevangenis', 'jail', 'cel', 'prison'],
+    ['schild', 'shield', 'schutzschild', 'bouclier', 'escudo'],
+    ['gevangenis', 'jail', 'cel', 'prison', 'knast', 'carcel', 'cella', 'wiezienie', 'cadeia'],
     ['nachtclub', 'nightclub'],
     ['crewbank', 'storten', 'opnemen'],
-    ['rugzak', 'backpack', 'inventaris'],
+    ['rugzak', 'backpack', 'inventaris', 'rucksack', 'sac', 'mochila'],
     ['hitlist', 'hitlijst', 'bounty'],
     ['don', 'donship', 'gouverneur'],
-    ['handleiding', 'handbook', 'almanak', 'almanac'],
-    ['missie', 'mission', 'missies'],
-    ['auto', 'autos', 'car', 'cars', 'wagen', 'voertuig'],
-    ['boot', 'boten', 'boat', 'yacht', 'schip', 'marina'],
-    ['motor', 'motoren', 'motorcycle', 'motorfiets', 'moto'],
-    ['stelen', 'steal', 'jatten', 'diefstal', 'heist'],
+    ['handleiding', 'handbook', 'almanak', 'almanac', 'handbuch', 'manuel', 'manual', 'manuale', 'poradnik'],
+    ['missie', 'mission', 'missies', 'missione', 'misja'],
+    ['auto', 'autos', 'car', 'cars', 'wagen', 'voertuig', 'voiture', 'coche', 'samochod', 'carro', 'macchina'],
+    ['boot', 'boten', 'boat', 'yacht', 'schip', 'marina', 'bateau', 'barco', 'barca', 'lodz'],
+    ['motor', 'motoren', 'motorcycle', 'motorfiets', 'moto', 'motorrad', 'motocykl'],
+    ['stelen', 'steal', 'jatten', 'diefstal', 'heist', 'stehlen', 'voler', 'robar', 'rubare', 'ukrasc', 'roubar'],
+    ['wapen', 'weapon', 'waffe', 'arme', 'arma', 'bron'],
+    ['misdaad', 'crime', 'verbrechen', 'crimen', 'crimine', 'przestepstwo'],
+    ['reizen', 'travel', 'reisen', 'voyage', 'viaje', 'viaggio', 'podroz'],
   ];
 
   const PRICE_RE =
-    /\b(live\s*prijs|huidige\s*prijs|straatprijs|street\s*price|hoeveel\s*kost\s+nu|current\s+price|koers\s+nu|spot\s*price)\b/i;
+    /\b(live\s*prijs|huidige\s*prijs|straatprijs|street\s*price|hoeveel\s*kost\s+nu|current\s+price|koers\s+nu|spot\s*price|aktueller\s+preis|preis\s+jetzt|prix\s+actuel|prix\s+live|precio\s+actual|prezzo\s+attuale|aktualna\s+cena|preco\s+atual|quanto\s+custa\s+agora|was\s+kostet\s+jetzt)\b/i;
   const SECRET_RE =
-    /\b(wachtwoord|password|login\s*code|reset\s+password|mijn\s+wachtwoord|my\s+password)\b/i;
+    /\b(wachtwoord|password|passwort|mot\s+de\s+passe|contrasena|haslo|palavra[-\s]?passe|senha|login\s*code|reset\s+password|mijn\s+wachtwoord|my\s+password)\b/i;
   const FOLLOW_RE =
-    /^(en|ook|dat|dit|daar|die|then|and|also|what about|how about|und|et|y)\b/i;
+    /^(en|ook|dat|dit|daar|die|then|and|also|what about|how about|und|et|y|anche|tambien|tez|tambem|oraz|sowie|aussi|e poi)\b/i;
 
   const KIND_RES = [
-    { kind: 'motorcycles', re: /\b(motoren|motors?|motorfiets(?:en)?|motorcycles?|motorbikes?|moto)\b/i },
-    { kind: 'boats', re: /\b(boten|boot|boats?|yacht|jacht|schip|schepen|marina)\b/i },
-    { kind: 'cars', re: /\b(auto'?s?|cars?|wagen|wagens)\b/i },
+    { kind: 'motorcycles', re: /\b(motoren|motors?|motorfiets(?:en)?|motorcycles?|motorbikes?|motorrader|motorrad|motos?|motocykle?|motocykl)\b/i },
+    { kind: 'boats', re: /\b(boten|boot|boats?|boote?|yacht|jacht|schip|schepen|marina|bateaux?|barcos?|barche|barca|lodzie|lodz)\b/i },
+    { kind: 'cars', re: /\b(auto'?s?|autos?|cars?|wagen|wagens|voitures?|coches?|carros?|macchine|samochody|samochod)\b/i },
   ];
 
   const STEAL_RE =
-    /\b(stel(?:en)?|jatten|heist|diefstal|steal(?:ing)?|theft|voertuig\s+stel)\b/i;
-  const BEST_RE = /\b(beste|best|duurste|hoogste|top|most\s+valuable|richest)\b/i;
-  const WHERE_RE = /\b(waar|where|welk\s+land|which\s+country|in\s+welk)\b/i;
-  const MINE_RE = /\b(die\s+ik\s+kan|voor\s+mijn\s+(rank|rang|level)|op\s+mijn\s+(rank|rang)|i\s+can\s+steal|for\s+my\s+rank)\b/i;
+    /\b(stel(?:en|e)?|stehl(?:e|en|t)?|stiehl(?:st|t)?|jatten|heist|diefstal|steal(?:ing)?|theft|voler|robar|robo|rubare|furto|ukrasc|kradziez|roubar|roubo|voertuig\s+stel)\b/i;
+  const BEST_RE =
+    /\b(beste|best|duurste|hoogste|top|most\s+valuable|richest|teuerste|meilleure?|plus\s+cher|mejor|mas\s+caro|migliore|najlepsze?|najdrozsz\w*|melhor|mais\s+caro|sterkst(?:e)?|strongest|plus\s+forte|mas\s+fuerte)\b/i;
+  const WHERE_RE =
+    /\b(waar|where|wo|donde|dove|gdzie|onde|welk\s+land|which\s+country|in\s+welk|in\s+welchem)\b/i;
+  const MINE_RE =
+    /\b(die\s+ik\s+kan|voor\s+mijn\s+(rank|rang|level)|op\s+mijn\s+(rank|rang)|i\s+can\s+steal|for\s+my\s+rank|auf\s+meinem\s+rang|a\s+mon\s+rang|en\s+mi\s+rango|al\s+mio\s+grado|na\s+mojej\s+randze|na\s+minha\s+patente)\b/i;
+  const WEAPON_RE = /\b(wapens?|weapons?|waffe(?:n)?|armes?|armas?|armi|bron(?:i)?)\b/i;
+  const CRIME_RE =
+    /\b(misda(?:ad|den)|crimes?|verbrechen|crimen(?:es)?|crimini?|przestepstw\w*)\b/i;
+  const TRAVEL_RE =
+    /\b(hoe\s+kom\s+ik|how\s+(?:do\s+i\s+|to\s+)?get\s+to|wie\s+komme\s+ich|comment\s+(?:aller|venir|je\s+vais)|como\s+(?:llego|chegar|chego)|come\s+arriv[oa]|jak\s+(?:dojechac|dostac\s+sie)|reis\s+naar|travel\s+to|vliegen\s+naar|flug\s+nach|voler\s+vers|volare\s+a)\b/i;
+  const HUB_RE = /\b(reis.?hubs?|travel\s*hubs?|reise-?hubs?|hubs?\s+de\s+voyage)\b/i;
 
   const PLAYER_FIELDS = [
-    { field: 'money', re: /\b(hoeveel\s+(geld|cash)|mijn\s+(geld|cash|saldo)|how\s+much\s+(money|cash)|my\s+(money|cash|balance))\b/i },
-    { field: 'bank', re: /\b(mijn\s+bank|banksaldo|hoeveel.{0,12}bank|bank\s+balance|my\s+bank)\b/i },
-    { field: 'rank', re: /\b(welke\s+(rank|rang)|mijn\s+(rank|rang|level)|what\s+rank|which\s+rank|my\s+rank)\b/i },
+    { field: 'money', re: /\b(hoeveel\s+(geld|cash)|mijn\s+(geld|cash|saldo)|how\s+much\s+(money|cash)|my\s+(money|cash|balance)|wie\s+viel\s+geld|mein\s+geld|combien\s+d[' ]?argent|mon\s+argent|cuanto\s+dinero|mi\s+dinero|quant[io]\s+(soldi|denaro)|i\s+miei\s+soldi|ile\s+(mam\s+)?(pieniedzy|kasy)|quanto\s+dinheiro|o\s+meu\s+dinheiro)\b/i },
+    { field: 'bank', re: /\b(mijn\s+bank|banksaldo|hoeveel.{0,12}bank|bank\s+balance|my\s+bank|mein\s+bank|ma\s+banque|mi\s+banco|la\s+mia\s+banca|moj\s+bank|o\s+meu\s+banco)\b/i },
+    { field: 'rank', re: /\b(welke\s+(rank|rang)|mijn\s+(rank|rang|level)|what\s+rank|which\s+rank|my\s+rank|welchen\s+rang|welcher\s+rang|mein\s+rang|quel\s+rang|mon\s+rang|que\s+rango|mi\s+rango|che\s+grado|quale\s+grado|jaka\s+(mam\s+)?rang|que\s+patente|qual\s+patente)\b/i },
     { field: 'crewVip', re: /\b(crew\s*vip|crewvip)\b/i },
-    { field: 'vip', re: /\b((?:hoe\s*lang|remaining|left|nog).{0,24}vip|vip.{0,24}(?:over|resterend|left|nog|expire)|mijn\s+vip|heb\s+ik.{0,16}vip|ben\s+ik.{0,8}vip|am\s+i\s+vip|my\s+vip)\b/i },
-    { field: 'health', re: /\b(mijn\s+(health|gezondheid|hp|leven)|hoeveel\s+(hp|health)|my\s+(health|hp))\b/i },
-    { field: 'wanted', re: /\b(mijn\s+(wanted|gezocht)|wanted\s*level|hoeveel\s+sterren|my\s+wanted)\b/i },
-    { field: 'fbi', re: /\b(mijn\s+fbi|fbi\s*heat|how\s+much\s+fbi)\b/i },
-    { field: 'country', re: /\b(waar\s+ben\s+ik|in\s+welk\s+land\s+ben|my\s+(country|location)|huidige\s+land|current\s+country)\b/i },
-    { field: 'xp', re: /\b(hoeveel\s+xp|mijn\s+xp|my\s+xp)\b/i },
-    { field: 'credits', re: /\b(premium\s*credits?|hoeveel\s+credits|mijn\s+credits|my\s+credits)\b/i },
-    { field: 'jail', re: /\b(zit\s+ik\s+(in\s+de\s+)?(cel|gevangenis)|hoe\s+lang.{0,16}(cel|jail|gevangenis)|mijn\s+(cel|jail)|am\s+i\s+in\s+jail)\b/i },
-    { field: 'status', re: /\b(mijn\s+(status|stats|stand)|hoe\s+sta\s+ik|my\s+(status|stats|account\s+info))\b/i },
+    { field: 'vip', re: /\b((?:hoe\s*lang|remaining|left|nog|wie\s+lange|combien|cuanto|quanto|ile).{0,24}vip|vip.{0,24}(?:over|resterend|left|nog|expire|bleibt|reste|queda|resta|zostalo)|mijn\s+vip|heb\s+ik.{0,16}vip|ben\s+ik.{0,8}vip|am\s+i\s+vip|my\s+vip|mein\s+vip|mon\s+vip|mi\s+vip)\b/i },
+    { field: 'health', re: /\b(mijn\s+(health|gezondheid|hp|leven)|hoeveel\s+(hp|health)|my\s+(health|hp)|meine\s+gesundheit|ma\s+sante|mi\s+salud|la\s+mia\s+salute|moje\s+zdrowie|a\s+minha\s+saude)\b/i },
+    { field: 'wanted', re: /\b(mijn\s+(wanted|gezocht)|wanted\s*level|hoeveel\s+sterren|my\s+wanted|meine\s+fahndung|mi\s+buscado)\b/i },
+    { field: 'fbi', re: /\b(mijn\s+fbi|fbi\s*heat|how\s+much\s+fbi|mein\s+fbi)\b/i },
+    { field: 'country', re: /\b(waar\s+ben\s+ik|in\s+welk\s+land\s+ben|my\s+(country|location)|huidige\s+land|current\s+country|wo\s+bin\s+ich|ou\s+suis[-\s]je|donde\s+estoy|dove\s+sono|gdzie\s+jestem|onde\s+estou)\b/i },
+    { field: 'xp', re: /\b(hoeveel\s+xp|mijn\s+xp|my\s+xp|meine\s+xp|mon\s+xp|mi\s+xp)\b/i },
+    { field: 'credits', re: /\b(premium\s*credits?|hoeveel\s+credits|mijn\s+credits|my\s+credits|meine\s+credits|mes\s+credits|mis\s+creditos)\b/i },
+    { field: 'jail', re: /\b(zit\s+ik\s+(in\s+de\s+)?(cel|gevangenis)|hoe\s+lang.{0,16}(cel|jail|gevangenis)|mijn\s+(cel|jail)|am\s+i\s+in\s+jail|sitze\s+ich|bin\s+ich.{0,12}(knast|gefangnis)|suis[-\s]je.{0,12}prison|estoy.{0,12}carcel|sono.{0,12}(cella|prigione)|siedze|estou.{0,12}(cadeia|prisao))\b/i },
+    { field: 'status', re: /\b(mijn\s+(status|stats|stand)|hoe\s+sta\s+ik|my\s+(status|stats|account\s+info)|mein\s+status|mon\s+statut|mi\s+estado|il\s+mio\s+stato|moj\s+status|o\s+meu\s+estado)\b/i },
   ];
 
   function fold(value) {
@@ -193,8 +205,9 @@
   }
 
   function blockedIntent(question) {
-    if (PRICE_RE.test(question)) return 'price';
-    if (SECRET_RE.test(question)) return 'secret';
+    const q = fold(question);
+    if (PRICE_RE.test(q) || PRICE_RE.test(question)) return 'price';
+    if (SECRET_RE.test(q) || SECRET_RE.test(question)) return 'secret';
     return null;
   }
 
@@ -232,7 +245,7 @@
       .filter((s) => s.length > 28 && s.length < 420);
   }
 
-  function pickSentences(pages, tokens, maxSentences = 4) {
+  function pickSentences(pages, tokens, maxSentences = 5) {
     const scored = [];
     pages.forEach((page, pageIdx) => {
       for (const sentence of sentencesOf(page.entry)) {
@@ -250,8 +263,16 @@
       }
     });
     scored.sort((a, b) => b.hits - a.hits || b.weight - a.weight || a.pageIdx - b.pageIdx);
-    const used = new Set();
-    const chosen = [];
+    const firstPass = [];
+    const seenPage = new Set();
+    for (const row of scored) {
+      if (seenPage.has(row.pageIdx)) continue;
+      seenPage.add(row.pageIdx);
+      firstPass.push(row);
+      if (firstPass.length >= Math.min(3, maxSentences)) break;
+    }
+    const used = new Set(firstPass.map((row) => fold(row.sentence).slice(0, 80)));
+    const chosen = [...firstPass];
     for (const row of scored) {
       const key = fold(row.sentence).slice(0, 80);
       if (used.has(key)) continue;
@@ -259,6 +280,7 @@
       chosen.push(row);
       if (chosen.length >= maxSentences) break;
     }
+    chosen.sort((a, b) => a.pageIdx - b.pageIdx || b.hits - a.hits);
     return chosen;
   }
 
@@ -281,11 +303,12 @@
     return `€${Math.round(v).toLocaleString('nl-NL')}`;
   }
 
-  function listJoin(items) {
+  function listJoin(items, copy) {
     const list = (items || []).filter(Boolean);
+    const and = (copy && copy.listAnd) || 'en';
     if (!list.length) return '';
     if (list.length === 1) return list[0];
-    return `${list.slice(0, -1).join(', ')} en ${list[list.length - 1]}`;
+    return `${list.slice(0, -1).join(', ')} ${and} ${list[list.length - 1]}`;
   }
 
   function fill(tpl, vars) {
@@ -307,14 +330,25 @@
   }
 
   function detectKinds(question) {
-    const found = KIND_RES.filter((row) => row.re.test(question)).map((row) => row.kind);
+    const q = fold(question);
+    const found = KIND_RES.filter((row) => row.re.test(q)).map((row) => row.kind);
     return [...new Set(found)];
   }
 
   function detectPlayerIntent(question) {
+    const q = fold(question);
     const fields = [];
     for (const row of PLAYER_FIELDS) {
-      if (row.re.test(question)) fields.push(row.field);
+      if (row.re.test(q) || row.re.test(question)) fields.push(row.field);
+    }
+    if (!fields.length) return null;
+    const identity = /\b(ben ik|am i|habe ich|bin ich|suis[-\s]?je|soy|sono|mam|sou)\b/i.test(q);
+    if (
+      fields.includes('rank') &&
+      !identity &&
+      (CRIME_RE.test(q) || WEAPON_RE.test(q) || STEAL_RE.test(q) || detectKinds(q).length || MINE_RE.test(q))
+    ) {
+      fields.splice(fields.indexOf('rank'), 1);
     }
     if (!fields.length) return null;
     if (fields.includes('status')) {
@@ -331,7 +365,10 @@
 
   function findCountryId(facts, question) {
     if (!facts?.countries) return null;
-    const q = fold(question);
+    const q = fold(question)
+      .replace(/[^\p{L}\p{N}]+/gu, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
     const tokens = new Set(q.split(/\s+/).filter(Boolean));
     let best = null;
     let bestLen = 0;
@@ -356,7 +393,7 @@
     let best = null;
     let bestLen = 0;
     for (const vehicle of facts.vehicles) {
-      const names = [vehicle.name, String(vehicle.id || '').replace(/_/g, ' ')]
+      const names = [vehicle.name, String(vehicle.id || '').replace(/_/g, ' '), ...(vehicle.names || [])]
         .map(fold)
         .filter((n) => n.length >= 4);
       for (const name of names) {
@@ -370,22 +407,28 @@
   }
 
   function isStealQuestion(question) {
-    if (STEAL_RE.test(question)) return true;
-    if (WHERE_RE.test(question) && (BEST_RE.test(question) || detectKinds(question).length)) return true;
+    const q = fold(question);
+    if (WEAPON_RE.test(q) && !detectKinds(q).length) return false;
+    if (CRIME_RE.test(q) && !detectKinds(q).length) return false;
+    if (TRAVEL_RE.test(q) && !STEAL_RE.test(q) && !detectKinds(q).length) return false;
+    if (STEAL_RE.test(q)) return true;
+    if (WHERE_RE.test(q) && (BEST_RE.test(q) || detectKinds(q).length)) return true;
+    if (BEST_RE.test(q) && detectKinds(q).length) return true;
     return false;
   }
 
-  function detectStealIntent(question, facts) {
-    if (!facts?.vehicles || !isStealQuestion(question)) return null;
-    const named = findNamedVehicle(facts, question);
-    const kinds = detectKinds(question);
-    const country = findCountryId(facts, question);
-    const mine = MINE_RE.test(question);
-    if (named && !BEST_RE.test(question)) {
+  function detectStealIntent(question, facts, player) {
+    const q = fold(question);
+    if (!facts?.vehicles || !isStealQuestion(q)) return null;
+    const named = findNamedVehicle(facts, q);
+    const kinds = detectKinds(q);
+    const country = findCountryId(facts, q);
+    const mine = MINE_RE.test(q) || Boolean(player?.rank && BEST_RE.test(q));
+    if (named && !BEST_RE.test(q)) {
       return { intent: 'steal', mode: 'named', vehicle: named, country, mine };
     }
     const useKinds = kinds.length ? kinds : ['cars', 'boats', 'motorcycles'];
-    if (BEST_RE.test(question) || STEAL_RE.test(question) || named == null) {
+    if (BEST_RE.test(q) || STEAL_RE.test(q) || named == null) {
       return { intent: 'steal', mode: 'best', kinds: useKinds, country, mine };
     }
     return null;
@@ -410,7 +453,7 @@
   function formatCountryList(facts, ids, copy) {
     const unique = [...new Set(ids || [])];
     if (!unique.length) return copy.stealNamedGlobal ? '' : '';
-    return listJoin(unique.map((id) => countryLabel(facts, id)));
+    return listJoin(unique.map((id) => countryLabel(facts, id)), copy);
   }
 
   function listedCountries(vehicle, facts) {
@@ -476,7 +519,7 @@
         needAuth: false,
         body: clip(body, 1100),
         sources: stealSources(lang, facts, [vehicle], copy),
-        followups: [],
+        followups: stealFollowups(intent, facts, copy, player),
       };
     }
 
@@ -513,7 +556,7 @@
         needAuth: false,
         body: copy.stealEmpty || copy.empty,
         sources: stealSources(lang, facts, [], copy),
-        followups: [],
+        followups: stealFollowups(intent, facts, copy, player),
       };
     }
     const body = clip(`${chunks.join(' ')} ${street}`.trim(), 1200);
@@ -524,7 +567,7 @@
       needAuth: false,
       body,
       sources: stealSources(lang, facts, used, copy),
-      followups: [],
+      followups: stealFollowups(intent, facts, copy, player),
     };
   }
 
@@ -606,6 +649,214 @@
     return clip(lines.filter(Boolean).join(' '), 1100);
   }
 
+  function stealFollowups(intent, facts, copy, player) {
+    const used = new Set(intent.kinds || (intent.vehicle ? [intent.vehicle.kind] : []));
+    const out = [];
+    if (!used.has('cars') && copy.followStealCar) out.push(copy.followStealCar);
+    if (!used.has('boats') && copy.followStealBoat) out.push(copy.followStealBoat);
+    if (!used.has('motorcycles') && copy.followStealMoto) out.push(copy.followStealMoto);
+    if (!player && copy.followStealMine) out.push(copy.followStealMine);
+    if (intent.country && copy.followTravel) {
+      out.push(fill(copy.followTravel, { country: countryLabel(facts, intent.country) }));
+    }
+    if (copy.followWeapon) out.push(copy.followWeapon);
+    return [...new Set(out)].slice(0, 3);
+  }
+
+  function playerFollowups(fields, copy) {
+    const have = new Set(fields || []);
+    const out = [];
+    if (!have.has('rank') && copy.followRank) out.push(copy.followRank);
+    if (!have.has('vip') && copy.followVip) out.push(copy.followVip);
+    return out.slice(0, 3);
+  }
+
+  function whichLike(question) {
+    return /\b(welk|welke|which|welche(?:s|r)?|quelle|quel|cual|que|quale|jaka|jaki|qual)\b/i.test(fold(question));
+  }
+
+  function detectWeaponIntent(question, facts, player) {
+    const q = fold(question);
+    if (!facts?.weapons?.length || !WEAPON_RE.test(q)) return null;
+    if (detectKinds(q).length) return null;
+    if (!(BEST_RE.test(q) || MINE_RE.test(q) || whichLike(q))) return null;
+    return {
+      intent: 'weapon',
+      mine: MINE_RE.test(q) || Boolean(player?.rank && BEST_RE.test(q)),
+    };
+  }
+
+  function formatWeaponAnswer(intent, facts, copy, player) {
+    const lang = facts.lang || 'nl';
+    const maxRank = intent.mine && player?.rank ? Number(player.rank) : null;
+    let rows = (facts.weapons || [])
+      .filter((w) => maxRank == null || w.requiredRank <= maxRank)
+      .sort((a, b) => b.damage - a.damage || a.requiredRank - b.requiredRank);
+    if (!rows.length && maxRank != null) {
+      rows = [...facts.weapons].sort((a, b) => b.damage - a.damage || a.requiredRank - b.requiredRank);
+    }
+    const top = rows[0];
+    if (!top) {
+      return {
+        intent: 'weapon',
+        blocked: null,
+        empty: true,
+        needAuth: false,
+        body: copy.weaponEmpty || copy.empty,
+        sources: [{ title: copy.weapons || 'Weapons', href: `/${lang}/weapons/` }],
+        followups: [copy.followCrime, copy.followStealCar].filter(Boolean),
+      };
+    }
+    const tpl = maxRank != null && top.requiredRank <= maxRank ? copy.weaponMine : copy.weaponBest;
+    return {
+      intent: 'weapon',
+      blocked: null,
+      empty: false,
+      needAuth: false,
+      body: clip(
+        fill(tpl, {
+          name: top.name,
+          damage: top.damage,
+          rank: top.requiredRank,
+          price: moneyFmt(top.price),
+          mine: maxRank || '',
+        }),
+        900
+      ),
+      sources: [
+        { title: top.name, href: `/${lang}/weapons/${top.id}/` },
+        { title: copy.weapons || 'Weapons', href: `/${lang}/weapons/` },
+      ],
+      followups: [copy.followCrime, copy.followStealCar].filter(Boolean).slice(0, 3),
+    };
+  }
+
+  function detectCrimeIntent(question, facts, player) {
+    const q = fold(question);
+    if (!facts?.crimes?.length || !CRIME_RE.test(q)) return null;
+    if (detectKinds(q).length) return null;
+    if (!(BEST_RE.test(q) || MINE_RE.test(q) || whichLike(q))) return null;
+    return {
+      intent: 'crime',
+      mine: MINE_RE.test(q) || Boolean(player?.rank && (BEST_RE.test(q) || whichLike(q))),
+    };
+  }
+
+  function formatCrimeAnswer(intent, facts, copy, player) {
+    const lang = facts.lang || 'nl';
+    const maxRank = intent.mine && player?.rank ? Number(player.rank) : null;
+    const ranked = (facts.crimes || [])
+      .filter((c) => maxRank == null || c.minLevel <= maxRank)
+      .sort((a, b) => b.maxReward - a.maxReward || a.minLevel - b.minLevel);
+    const top = ranked[0];
+    if (!top) {
+      return {
+        intent: 'crime',
+        blocked: null,
+        empty: true,
+        needAuth: false,
+        body: copy.crimeEmpty || copy.empty,
+        sources: [{ title: copy.crimes || 'Crimes', href: `/${lang}/crimes/` }],
+        followups: [copy.followWeapon].filter(Boolean),
+      };
+    }
+    const names = listJoin(
+      ranked.slice(0, 4).map((c) => c.name),
+      copy
+    );
+    const tpl = maxRank != null ? copy.crimeMine : copy.crimeBest;
+    return {
+      intent: 'crime',
+      blocked: null,
+      empty: false,
+      needAuth: false,
+      body: clip(
+        fill(tpl, {
+          name: top.name,
+          names,
+          rank: top.minLevel,
+          reward: moneyFmt(top.maxReward),
+          xp: top.xp,
+          mine: maxRank || '',
+        }),
+        900
+      ),
+      sources: [
+        { title: top.name, href: `/${lang}/crimes/${top.id}/` },
+        { title: copy.crimes || 'Crimes', href: `/${lang}/crimes/` },
+      ],
+      followups: [copy.followWeapon, copy.followStealCar].filter(Boolean).slice(0, 3),
+    };
+  }
+
+  function detectTravelIntent(question, facts) {
+    const q = fold(question);
+    if (!facts?.travel) return null;
+    if (HUB_RE.test(q)) return { intent: 'travel', mode: 'hubs' };
+    if (!TRAVEL_RE.test(q) && !TRAVEL_RE.test(question)) return null;
+    const country = findCountryId(facts, q);
+    return { intent: 'travel', mode: country ? 'to' : 'hubs', country };
+  }
+
+  function formatTravelAnswer(intent, facts, copy) {
+    const lang = facts.lang || 'nl';
+    const hubs = (facts.travel?.hubs || []).map((id) => countryLabel(facts, id));
+    const hubText = listJoin(hubs, copy) || copy.travelNone;
+    const sources = [{ title: copy.travel || 'Travel', href: `/${lang}/travel/` }];
+    if (intent.mode !== 'to' || !intent.country) {
+      return {
+        intent: 'travel',
+        blocked: null,
+        empty: false,
+        needAuth: false,
+        body: clip(fill(copy.travelHubs, { hubs: hubText }), 900),
+        sources,
+        followups: [copy.followStealCar].filter(Boolean),
+      };
+    }
+    const canon = facts.countries?.[intent.country]?.canon || intent.country;
+    const inbound = facts.travel?.inbound?.[canon] || facts.travel?.inbound?.[intent.country] || [];
+    const outbound = facts.travel?.routes?.[canon] || facts.travel?.routes?.[intent.country] || [];
+    const from = inbound.length
+      ? listJoin(
+          inbound.map((id) => countryLabel(facts, id)),
+          copy
+        )
+      : copy.travelNone;
+    const tos = outbound.length
+      ? listJoin(
+          outbound.map((id) => countryLabel(facts, id)),
+          copy
+        )
+      : copy.travelNone;
+    const href = countryHref(lang, facts, intent.country);
+    if (href) sources.push({ title: countryLabel(facts, intent.country), href });
+    return {
+      intent: 'travel',
+      blocked: null,
+      empty: false,
+      needAuth: false,
+      body: clip(
+        fill(copy.travelTo, {
+          country: countryLabel(facts, intent.country),
+          from,
+          hubs: hubText,
+          tos,
+        }),
+        1000
+      ),
+      sources,
+      followups: [copy.followStealCar, copy.followWeapon].filter(Boolean).slice(0, 3),
+    };
+  }
+
+  function remember(session, result, question) {
+    if (!session || !result) return;
+    session.lastTitle = result.sources?.[0]?.title || session.lastTitle;
+    session.lastHref = result.sources?.[0]?.href || session.lastHref;
+    session.lastQuery = question;
+  }
+
   function mergeCopy(copy, facts) {
     return { ...(facts?.copy || {}), ...(copy || {}) };
   }
@@ -636,7 +887,7 @@
           fields: playerIntent.fields,
           body: copy.loginNeed || copy.blockedAccount,
           sources: [],
-          followups: [],
+          followups: playerFollowups(playerIntent.fields, merged),
         };
       }
       const body = formatPlayerAnswer(player, playerIntent.fields, facts, merged);
@@ -652,40 +903,59 @@
         fields: playerIntent.fields,
         body,
         sources: [],
-        followups: [],
+        followups: playerFollowups(playerIntent.fields, merged),
       };
     }
 
-    const stealIntent = detectStealIntent(resolved, facts);
+    const stealIntent = detectStealIntent(resolved, facts, player);
     if (stealIntent) {
       const result = formatStealAnswer(stealIntent, facts, merged, player);
-      if (session && result.sources[0]) {
-        session.lastTitle = result.sources[0].title;
-        session.lastHref = result.sources[0].href;
-        session.lastQuery = question;
-      }
+      remember(session, result, question);
       return result;
     }
 
-    const ranked = rankPages(stats, resolved, 6);
+    const weaponIntent = detectWeaponIntent(resolved, facts, player);
+    if (weaponIntent) {
+      const result = formatWeaponAnswer(weaponIntent, facts, merged, player);
+      remember(session, result, question);
+      return result;
+    }
+
+    const crimeIntent = detectCrimeIntent(resolved, facts, player);
+    if (crimeIntent) {
+      const result = formatCrimeAnswer(crimeIntent, facts, merged, player);
+      remember(session, result, question);
+      return result;
+    }
+
+    const travelIntent = detectTravelIntent(resolved, facts);
+    if (travelIntent) {
+      const result = formatTravelAnswer(travelIntent, facts, merged);
+      remember(session, result, question);
+      return result;
+    }
+
+    const ranked = rankPages(stats, resolved, 8);
     if (!ranked.length || ranked[0].score < 0.8) {
       return { blocked: null, empty: true, body: copy.empty, sources: [], followups: [] };
     }
 
     const top = ranked[0];
     const tokens = expandTokens(tokensOf(resolved));
-    const picked = pickSentences([top], tokens, 4);
+    const picked = pickSentences(ranked.slice(0, 3), tokens, 5);
     const body = clip(
       picked.map((row) => row.sentence).join(' ') || top.entry.snippet || top.entry.answer || top.entry.title,
-      900
+      1100
     );
     const sourceMap = new Map();
     sourceMap.set(top.entry.href, { title: top.entry.title, href: top.entry.href });
-    if (ranked[1] && ranked[1].score > top.score * 0.82) {
-      sourceMap.set(ranked[1].entry.href, {
-        title: ranked[1].entry.title,
-        href: ranked[1].entry.href,
-      });
+    for (const row of picked) {
+      if (row.href) sourceMap.set(row.href, { title: row.title, href: row.href });
+    }
+    for (const row of ranked.slice(1, 3)) {
+      if (row.score > top.score * 0.72) {
+        sourceMap.set(row.entry.href, { title: row.entry.title, href: row.entry.href });
+      }
     }
     if (session) {
       session.lastTitle = top.entry.title;
@@ -696,8 +966,8 @@
       blocked: null,
       empty: false,
       body,
-      sources: [...sourceMap.values()],
-      followups: followupsFor(ranked, copy),
+      sources: [...sourceMap.values()].slice(0, 4),
+      followups: followupsFor(ranked, merged),
       top,
     };
   }
@@ -711,8 +981,12 @@
     resolveFollowup,
     detectPlayerIntent,
     detectStealIntent,
+    detectWeaponIntent,
+    detectCrimeIntent,
+    detectTravelIntent,
     formatStealAnswer,
     formatPlayerAnswer,
+    findCountryId,
     answerQuestion,
   };
 })(typeof window !== 'undefined' ? window : globalThis);

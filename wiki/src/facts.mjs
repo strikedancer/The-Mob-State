@@ -52,9 +52,43 @@ const RANK_BANDS = [
   [120, 150, 'rankLegend'],
 ];
 
+function uniqueNames(values) {
+  const seen = new Set();
+  const out = [];
+  for (const raw of values) {
+    const n = String(raw || '').trim();
+    if (!n) continue;
+    const key = n
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/\p{M}/gu, '');
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(n);
+  }
+  return out;
+}
+
 function nameOf(item, lang) {
   if (lang === 'nl') return item.displayName || item.name || item.id;
   return item.name_en || item.nameEn || item.displayName || item.name || item.id;
+}
+
+function allItemNames(item) {
+  return uniqueNames([
+    item.displayName,
+    item.name,
+    item.name_en,
+    item.nameEn,
+    String(item.id || '').replace(/_/g, ' '),
+  ]);
+}
+
+function aliasesFor(id) {
+  const row = COUNTRY[id] || {};
+  return uniqueNames([...(EXTRA_ALIASES[id] || []), ...Object.values(row)]).filter(
+    (n) => n.replace(/[\s-]/g, '').length >= 4
+  );
 }
 
 function tagVehicles(data, lang) {
@@ -65,6 +99,7 @@ function tagVehicles(data, lang) {
         id: v.id,
         kind,
         name: nameOf(v, lang),
+        names: allItemNames(v),
         requiredRank: Number(v.requiredRank) || 1,
         value: Number(v.baseValue) || 0,
         rarity: String(v.rarity || 'common'),
@@ -78,6 +113,45 @@ function tagVehicles(data, lang) {
     ...tag(data.vehicles.boats, 'boats'),
     ...tag(data.vehicles.motorcycles, 'motorcycles'),
   ];
+}
+
+function tagWeapons(data, lang) {
+  return (data.weapons || []).map((w) => ({
+    id: w.id,
+    name: nameOf(w, lang),
+    names: allItemNames(w),
+    damage: Number(w.damage) || 0,
+    price: Number(w.price) || 0,
+    requiredRank: Number(w.requiredRank) || 1,
+    type: String(w.type || ''),
+  }));
+}
+
+function tagCrimes(data, lang) {
+  return (data.crimes || []).map((c) => ({
+    id: c.id,
+    name: nameOf(c, lang),
+    names: allItemNames(c),
+    minLevel: Number(c.minLevel) || 1,
+    maxReward: Number(c.maxReward) || 0,
+    xp: Number(c.xpReward) || 0,
+  }));
+}
+
+function tagTravel(data) {
+  const hubs = (data.travel?.hubs || []).map((id) => String(id).toLowerCase());
+  const inbound = {};
+  const routes = {};
+  for (const [from, tos] of Object.entries(data.travel?.directRoutes || {})) {
+    const fromId = String(from).toLowerCase();
+    const list = (tos || []).map((id) => String(id).toLowerCase());
+    routes[fromId] = list;
+    for (const to of list) {
+      if (!inbound[to]) inbound[to] = [];
+      inbound[to].push(fromId);
+    }
+  }
+  return { hubs, routes, inbound };
 }
 
 export function topVehicles(vehicles, kind, limit = 5) {
@@ -102,13 +176,16 @@ export function buildFacts(data, lang) {
     countries[id] = {
       name: countryName(lang, id) !== id ? countryName(lang, id) : countryName(lang, canon),
       canon: playable.has(canon) ? canon : playable.has(id) ? id : null,
-      aliases: EXTRA_ALIASES[id] || [],
+      aliases: aliasesFor(id),
     };
   }
 
   return {
     lang,
     vehicles: tagVehicles(data, lang),
+    weapons: tagWeapons(data, lang),
+    crimes: tagCrimes(data, lang),
+    travel: tagTravel(data),
     countries,
     rankTitles: RANK_BANDS.map(([min, max, key]) => ({
       min,
@@ -116,6 +193,7 @@ export function buildFacts(data, lang) {
       title: ui(lang, key),
     })),
     copy: {
+      listAnd: ui(lang, 'listAnd'),
       kindCars: ui(lang, 'cars'),
       kindBoats: ui(lang, 'boats'),
       kindMotorcycles: ui(lang, 'motorcycles'),
@@ -129,6 +207,15 @@ export function buildFacts(data, lang) {
       stealEvent: ui(lang, 'askStealEvent'),
       stealEmpty: ui(lang, 'askStealEmpty'),
       stealRankGate: ui(lang, 'askStealRankGate'),
+      followStealCar: ui(lang, 'askFollowStealCar'),
+      followStealBoat: ui(lang, 'askFollowStealBoat'),
+      followStealMoto: ui(lang, 'askFollowStealMoto'),
+      followStealMine: ui(lang, 'askFollowStealMine'),
+      followWeapon: ui(lang, 'askFollowWeapon'),
+      followCrime: ui(lang, 'askFollowCrime'),
+      followTravel: ui(lang, 'askFollowTravel'),
+      followRank: ui(lang, 'askFollowRank'),
+      followVip: ui(lang, 'askFollowVip'),
       playerMoney: ui(lang, 'askPlayerMoney'),
       playerBank: ui(lang, 'askPlayerBank'),
       playerRank: ui(lang, 'askPlayerRank'),
@@ -149,6 +236,19 @@ export function buildFacts(data, lang) {
       remainHours: ui(lang, 'askRemainHours'),
       remainMinutes: ui(lang, 'askRemainMinutes'),
       remainNone: ui(lang, 'askRemainNone'),
+      weaponBest: ui(lang, 'askWeaponBest'),
+      weaponMine: ui(lang, 'askWeaponMine'),
+      weaponEmpty: ui(lang, 'askWeaponEmpty'),
+      crimeBest: ui(lang, 'askCrimeBest'),
+      crimeMine: ui(lang, 'askCrimeMine'),
+      crimeEmpty: ui(lang, 'askCrimeEmpty'),
+      travel: ui(lang, 'travel'),
+      weapons: ui(lang, 'weapons'),
+      crimes: ui(lang, 'crimes'),
+      travelTo: ui(lang, 'askTravelTo'),
+      travelHubs: ui(lang, 'askTravelHubs'),
+      travelEmpty: ui(lang, 'askTravelEmpty'),
+      travelNone: ui(lang, 'askTravelNone'),
     },
   };
 }

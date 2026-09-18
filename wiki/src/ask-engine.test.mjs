@@ -105,7 +105,7 @@ const facts = {
     },
   ],
   countries: {
-    italy: { name: 'Italië', canon: 'italy', aliases: ['italie'] },
+    italy: { name: 'Italië', canon: 'italy', aliases: ['italie', 'italien', 'italia', 'wlochy'] },
     france: { name: 'Frankrijk', canon: 'france', aliases: [] },
     netherlands: { name: 'Nederland', canon: 'netherlands', aliases: ['holland'] },
     spain: { name: 'Spanje', canon: 'spain', aliases: [] },
@@ -147,6 +147,39 @@ const facts = {
     remainHours: '{hours} uur en {minutes} minuten',
     remainMinutes: '{minutes} minuten',
     remainNone: 'geen tijd meer',
+    listAnd: 'en',
+    weaponBest: 'Topwapen {name} schade {damage} rang {rank} {price}.',
+    weaponMine: 'Op rang {mine} is {name} het sterkste wapen (schade {damage}).',
+    weaponEmpty: 'geen wapen',
+    crimeBest: 'Topmisdaad {name} rang {rank} tot {reward}.',
+    crimeMine: 'Op rang {mine} kun je {names}. Top is {name} tot {reward}.',
+    crimeEmpty: 'geen misdaad',
+    travelTo: 'Naar {country} vanuit {from}. Hubs {hubs}. Direct {tos}.',
+    travelHubs: 'Hubs: {hubs}.',
+    travelEmpty: 'geen reis',
+    travelNone: 'nergens',
+    followStealCar: 'Waar steel ik de beste auto?',
+    followStealBoat: 'Waar steel ik de beste boot?',
+    followStealMoto: 'Waar steel ik de beste motor?',
+    followStealMine: 'Wat kan ik stelen op mijn rank?',
+    followWeapon: 'Wat is het sterkste wapen?',
+    followCrime: 'Welke misdaad kan ik?',
+    followTravel: 'Hoe kom ik in {country}?',
+    followRank: 'Welke rank ben ik?',
+    followVip: 'Hoe lang heb ik nog VIP?',
+  },
+  weapons: [
+    { id: 'knife', name: 'Mes', damage: 15, price: 50, requiredRank: 1, type: 'melee' },
+    { id: 'rifle', name: 'Geweer', damage: 80, price: 9000, requiredRank: 20, type: 'rifle' },
+  ],
+  crimes: [
+    { id: 'pickpocket', name: 'Zakkenrollen', minLevel: 1, maxReward: 200, xp: 25 },
+    { id: 'bank', name: 'Bankroof', minLevel: 40, maxReward: 80000, xp: 400 },
+  ],
+  travel: {
+    hubs: ['germany', 'usa'],
+    routes: { italy: ['france', 'germany'], france: ['italy', 'germany'] },
+    inbound: { italy: ['france', 'germany'], france: ['italy'] },
   },
 };
 
@@ -243,5 +276,72 @@ const first = AlmanacAsk.answerQuestion({
 assert(/Don/i.test(first.sources[0]?.title || '') || /racket/i.test(first.body), `don answer missing: ${JSON.stringify(first)}`);
 const follow = AlmanacAsk.resolveFollowup('en VIP?', session);
 assert(/Don/i.test(follow), `follow-up should keep Don, got ${follow}`);
+
+const deSteal = AlmanacAsk.answerQuestion({
+  stats,
+  facts,
+  question: 'Wo stehle ich das beste Auto?',
+  copy: { ...stealCopy, listAnd: 'und' },
+});
+assert(deSteal.intent === 'steal' && /Ferrari/i.test(deSteal.body), `DE steal: ${deSteal.body}`);
+
+const frSteal = AlmanacAsk.answerQuestion({
+  stats,
+  facts,
+  question: 'Où voler la meilleure voiture ?',
+  copy: stealCopy,
+});
+assert(frSteal.intent === 'steal' && /Ferrari/i.test(frSteal.body), `FR steal: ${frSteal.body}`);
+
+const esMoney = AlmanacAsk.detectPlayerIntent('¿Cuánto dinero tengo?');
+assert(esMoney?.fields.includes('money'), `ES money: ${JSON.stringify(esMoney)}`);
+assert(AlmanacAsk.detectPlayerIntent('Welchen Rang habe ich?')?.fields.includes('rank'), 'DE rank');
+assert(AlmanacAsk.detectPlayerIntent('Che grado sono?')?.fields.includes('rank'), 'IT rank');
+assert(AlmanacAsk.detectPlayerIntent('Ile mam pieniędzy?')?.fields.includes('money'), 'PL money');
+assert(AlmanacAsk.detectPlayerIntent('Quanto dinheiro tenho?')?.fields.includes('money'), 'PT money');
+assert(AlmanacAsk.blockedIntent('aktueller Preis Kokain') === 'price', 'DE price guard');
+assert(AlmanacAsk.blockedIntent('mot de passe') === 'secret', 'FR secret guard');
+
+const weaponQ = AlmanacAsk.answerQuestion({
+  stats,
+  facts,
+  question: 'Wat is het sterkste wapen?',
+  copy: stealCopy,
+});
+assert(weaponQ.intent === 'weapon' && /Geweer/i.test(weaponQ.body), `weapon: ${weaponQ.body}`);
+
+const crimeMine = AlmanacAsk.answerQuestion({
+  stats,
+  facts,
+  question: 'Welke misdaad kan ik op mijn rank?',
+  copy: stealCopy,
+  player: { rank: 1 },
+});
+assert(crimeMine.intent === 'crime' && /Zakkenrollen/i.test(crimeMine.body), `crime: ${crimeMine.body}`);
+assert(!/Bankroof/i.test(crimeMine.body), `rank-1 crime should not pick bank: ${crimeMine.body}`);
+
+const travelQ = AlmanacAsk.answerQuestion({
+  stats,
+  facts,
+  question: 'Wie komme ich nach Italien?',
+  copy: stealCopy,
+});
+assert(travelQ.intent === 'travel' && /Ital/i.test(travelQ.body), `travel: ${travelQ.body}`);
+
+const autoMine = AlmanacAsk.answerQuestion({
+  stats,
+  facts,
+  question: 'beste auto',
+  copy: stealCopy,
+  player: { rank: 1 },
+});
+assert(/Golf/i.test(autoMine.body), `logged-in best steal should rank-filter: ${autoMine.body}`);
+
+const mixed = AlmanacAsk.answerQuestion({
+  stats,
+  question: 'prostitutie territorium wapendepot',
+  copy: { empty: 'empty', blockedPrice: 'price', blockedAccount: 'account', followTpl: 'Meer over {title}?' },
+});
+assert(mixed.sources.length >= 2, `handbook should cite multiple pages, got ${JSON.stringify(mixed.sources)}`);
 
 console.log('ask-engine tests ok');
