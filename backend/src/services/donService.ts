@@ -11,6 +11,7 @@ import * as policeService from './policeService';
 import { educationService } from './educationService';
 import { getCrewStorageCapacity } from './crewBuildingService';
 import { donBusinessLabel, donOfficeLabel, formatDonCash, notifyDon } from './donNotify';
+import { notifyCollectReadyBatches } from './donCollectReadyNotify';
 
 type DonBusinessDef = { key: string; baseTribute: number; minIntimidation: number };
 type DonOfficeDef = { key: string; baseCost: number };
@@ -568,14 +569,6 @@ export const donService = {
       'don.racket_collected',
       { racketId, amount, paidTo: paid.paidTo, businessKey: racket.businessKey },
       playerId
-    );
-    void notifyDon(
-      playerId,
-      {
-        nl: `Tribute ${formatDonCash(amount, true)} geïnd van je ${donBusinessLabel(racket.businessKey, true)} (${paid.paidTo === 'crew' ? 'crew-bank' : 'cash'}).`,
-        en: `Collected ${formatDonCash(amount, false)} tribute from your ${donBusinessLabel(racket.businessKey, false)} (${paid.paidTo === 'crew' ? 'crew bank' : 'cash'}).`,
-      },
-      { push: false }
     );
     return { amount, paidTo: paid.paidTo, newMoney: paid.newMoney };
   },
@@ -1216,38 +1209,7 @@ export const donService = {
       contracts += 1;
     }
 
-    const readyFrom = new Date(now.getTime() - (cfg.collectCooldownSeconds + 12 * 60) * 1000);
-    const readyUntil = new Date(now.getTime() - cfg.collectCooldownSeconds * 1000);
-    const readyRackets = await prisma.donRacket.findMany({
-      where: {
-        ownerPlayerId: { not: null },
-        lastCollectAt: { gte: readyFrom, lte: readyUntil },
-      },
-      select: { id: true, ownerPlayerId: true, businessKey: true, lastCollectAt: true },
-    });
-    for (const racket of readyRackets) {
-      if (!racket.ownerPlayerId || !racket.lastCollectAt) continue;
-      const already = await prisma.worldEvent.findFirst({
-        where: {
-          playerId: racket.ownerPlayerId,
-          eventKey: 'don.collect_ready',
-          createdAt: { gte: racket.lastCollectAt },
-        },
-        select: { id: true },
-      });
-      if (already) continue;
-      void notifyDon(
-        racket.ownerPlayerId,
-        {
-          nl: `Je ${donBusinessLabel(racket.businessKey, true)} is klaar om te innen.`,
-          en: `Your ${donBusinessLabel(racket.businessKey, false)} is ready to collect.`,
-        },
-        {
-          eventKey: 'don.collect_ready',
-          params: { racketId: racket.id, businessKey: racket.businessKey },
-        }
-      );
-    }
+    await notifyCollectReadyBatches(now, cfg.collectCooldownSeconds);
 
     for (const countryCode of COUNTRY_IDS.slice(0, 8)) {
       await ensureCountryContracts(countryCode);

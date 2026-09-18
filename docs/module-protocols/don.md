@@ -23,7 +23,7 @@ Out of scope for this module: blotter newspaper, weapons P2P, Facebook Login, ho
 - `POST /don/officials/:office/bribe` (`judge` | `commissioner` | `alderman`)
 - `POST /don/contracts/:id/bid` `{ fromCrew, greedy }`
 - `POST /crews/:id/members/:playerId/role` `{ role, capoCountry? }`
-- Services: `donService.ts`, `donRuntimeConfig.ts`, tick in `tickQueue.ts`
+- Services: `donService.ts`, `donCollectReadyNotify.ts`, `donRuntimeConfig.ts`, tick in `tickQueue.ts`
 
 ## Catalogs
 - `backend/content/donBusinesses.json`
@@ -42,7 +42,7 @@ Tune in Admin; do not flip Clearing House defaults from this module.
 - Official hours (24), judge appeal bonus (max +8%), commissioner wanted mult (80%), alderman payout bonus, off-books %
 
 ## Player loops
-- **Rackets:** claim in current country with a weapon that meets intimidation. Manual collect + cooldown. Unused shops abandon after ~72h. Squeeze: higher tribute, extra wanted, chance the shop flees. Rival contest: short window; owner can hold.
+- **Rackets:** claim in current country with a weapon that meets intimidation. Manual collect + cooldown. Ready-to-collect inbox+push is batched per owner (wait up to 10 minutes). Collecting tribute is toast-only. Unused shops abandon after ~72h. Squeeze: higher tribute, extra wanted, chance the shop flees. Rival contest: short window; owner can hold.
 - **Loans:** player is the shark. NPC lend (multi-day term; most NPCs auto-repay) + P2P escrow offer. Collect is only after NPC **default** (share of due + wanted), not right after lending. No full wipe.
 - **Officials:** one judge / commissioner / alderman per country. Cash overbid, expires, rival can replace. Judge stacks with law-school **only up to the +8% Don cap**, then appeal still clamps 10–85%. Commissioner lowers crime-fail wanted. Alderman unlocks/boosts large contracts. Per-case court bribe in `court.md` stays. The same three offices also raise the Court **expunge-petition** chance (judge +8, commissioner +6, alderman +5, stacking) in the current country.
 - **Contracts:** open jobs per country; bid costs 20% of catalog payout (cash or crew-bank). Greedy: +payout +heat. Off-books bonus if you own rackets in that country. Large jobs need alderman and/or engineering school.
@@ -69,7 +69,7 @@ Tribute and contract payouts stay **under** jobs/drugs/nightclub unless telemetr
 - Commissioner is a light wanted multiplier, not arrest immunity.
 - Crew-bank tribute requires role + (for capo) matching country; overflow falls back to cash.
 - Clear success/failure feedback and refresh after every Don action.
-- Away-from-hub Don results (contest, seize, abandon, loan offer/default/repay, official overbid, contract payout, collect-ready) send an inbox row plus push. Self-actions still show a specific toast; they may also write inbox without push.
+- Away-from-hub Don results (contest, seize, abandon, loan offer/default/repay, official overbid, contract payout, collect-ready) send an inbox row plus push. Collect-ready waits up to **10 minutes** so shops that become ready close together share **one** inbox row and **one** push. Collecting tribute on the hub is toast-only (no inbox). Other self-actions still show a specific toast; they may also write inbox without push.
 
 ## QA Checklist
 1. Empire → Don: claim, collect, squeeze, rival contest + hold, tribute toggle cash vs crew-bank.
@@ -81,4 +81,4 @@ Tribute and contract payouts stay **under** jobs/drugs/nightclub unless telemetr
 7. Help topic `don` NL/EN; Don hub does not own war-theater / races / police / Clearing House.
 8. Empire → Don looks noir/gold: hero photo, racket/NPC/official/contract photo cards in a 3–4 column grid on desktop (2 on tablet, 1 on narrow), gold CTAs; images load on web (`/images/don/*`) with icon fallback. Scroll tab content: the hero leaves the viewport; the tab strip stays.
 9. Owned rackets show a live collect countdown; Collect is disabled until ready. NPC loan Collect stays hidden until default. Contest, squeeze, office, loan and contract remaining time also tick on the card.
-10. Claim/collect/squeeze/contest/hold/loan/bribe/bid each show a specific toast, not a generic “Don” or squeeze line. A contested owner gets inbox + push.
+10. Claim/collect/squeeze/contest/hold/loan/bribe/bid each show a specific toast, not a generic “Don” or squeeze line. Collecting tribute does not write inbox. A contested owner gets inbox + push. Two owned shops that become ready within 10 minutes share one collect-ready inbox + push.

@@ -57,7 +57,7 @@ export async function notifyDon(
       senderName: nl ? 'Don Bureau' : 'Don Desk',
     });
     if (options?.eventKey) {
-      void worldEventService.createEvent(options.eventKey, options.params ?? {}, playerId);
+      await worldEventService.createEvent(options.eventKey, options.params ?? {}, playerId);
     }
   } catch (error) {
     console.error('[Don] Failed to notify player', playerId, error);

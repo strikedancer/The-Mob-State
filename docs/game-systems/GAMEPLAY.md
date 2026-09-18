@@ -397,7 +397,7 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 - Per land drie NPC-ambten (rechter, commissaris, wethouder): cash-overbieding, tijdelijk, verloopt. Rechter geeft een begrensde hoger-beroepbonus (stapel niet onbeperkt met law-school). Commissaris verlaagt wanted bij mislukte crimes licht. Wethouder ontgrendelt/versterkt grote contracten. Per-zaak court-omkoping blijft los.
 - Stadscontracten: bod (cash of crew-bank), looptijd, legale payout. Off-books bonus alleen met rackets in dat land; greedy = extra heat. Grotere klussen kunnen engineering-school + wethouder vereisen.
 - Crew-rollen `consigliere` (overzicht, geen bank-opname) en `capo` (tribute naar crew-bank in één land). Tribute blijft onder jobs/drugs/nightclub.
-- Elke Don-actie toont een duidelijke melding rechtsboven. Contest, overname, vervallen zaak, lening, overbieding, contractpayout en “klaar om te innen” komen ook in je inbox, met push als je niet op het scherm zit.
+- Elke Don-actie toont een duidelijke melding rechtsboven. Contest, overname, vervallen zaak, lening, overbieding, contractpayout en “klaar om te innen” komen ook in je inbox, met push als je niet op het scherm zit. Als meerdere zaken binnen tien minuten klaar zijn om te innen, wacht het systeem tot die tijd en stuurt daarna **één** inboxregel plus **één** push met alle klaarstaande zaken. Innen zelf geeft alleen de melding op de Don-hub, geen extra inboxbericht.
 
 ---
 
