@@ -86,7 +86,7 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - Verify leaders can close recruiting and that closed crews disappear from the recruiting list.
 - Verify the weekly crew goal is visible on the crew overview and dashboard, and that an unclaimed goal is gone after the UTC week rolls.
 - Verify Storage shows crew deals, officers can lock an offer, and cancel returns the goods.
-- Verify each storage bay lists the parked/stored items (name, quantity, condition/fuel/durability) with the same small catalog thumbnails as inventory, and that tapping an HQ storage building opens the same list.
+- Verify each storage bay lists the parked/stored items (name, quantity, condition/fuel/durability) with the same small catalog thumbnails as inventory. Vehicle thumbs must use the condition art (new/dirty/damaged), not the shared placeholder `image` file. Tapping an HQ storage building opens the same list.
 - Verify a war raid asks which storage type to hit and refuses when attacker storage is full. Tool storage can be raided the same way as other instance stacks.
 - Verify Help / the gold `i` on Crew explains that stored cars, boats, weapons, tools and trade goods are crew cargo (not a personal garage) and that only leader/co-leader can buy a crewmate out with the crew bank.
 - Verify a failed heist still jails the whole crew and applies XP loss without a 500, including crews larger than a handful of members.

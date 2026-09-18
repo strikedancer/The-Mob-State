@@ -22,6 +22,27 @@ function resolveCrewLandVehicleType(vehicleId: string): 'car' | 'motorcycle' {
     : 'car';
 }
 
+function crewVehicleCatalogArt(vehicleId: string, condition: number) {
+  const def = vehicleService.getVehicleById(vehicleId);
+  if (!def) {
+    return { name: vehicleId, image: '', imageNew: '', imageDirty: '', imageDamaged: '' };
+  }
+  let image = '';
+  if (condition >= 100 && def.imageNew) image = def.imageNew;
+  else if (condition >= 70 && def.imageDirty) image = def.imageDirty;
+  else if (condition < 70 && def.imageDamaged) image = def.imageDamaged;
+  if (!image) {
+    image = def.imageNew || def.imageDirty || def.imageDamaged || def.image || '';
+  }
+  return {
+    name: def.name ?? vehicleId,
+    image,
+    imageNew: def.imageNew ?? '',
+    imageDirty: def.imageDirty ?? '',
+    imageDamaged: def.imageDamaged ?? '',
+  };
+}
+
 export async function depositCrewCar(
   crewId: number,
   playerId: number,
@@ -685,20 +706,18 @@ export async function getCrewStorageSummary(crewId: number) {
     drugLots.reduce((sum, item) => sum + item.quantity, 0);
   const tradeCount = tradeGoods.reduce((sum, item) => sum + item.quantity, 0);
   const carsWithType = cars.map((vehicle) => {
-    const def = vehicleService.getVehicleById(vehicle.vehicleId);
+    const art = crewVehicleCatalogArt(vehicle.vehicleId, vehicle.condition);
     return {
       ...vehicle,
       vehicleType: resolveCrewLandVehicleType(vehicle.vehicleId),
-      name: def?.name ?? vehicle.vehicleId,
-      image: def?.image ?? '',
+      ...art,
     };
   });
   const boatsWithName = boats.map((vehicle) => {
-    const def = vehicleService.getVehicleById(vehicle.vehicleId);
+    const art = crewVehicleCatalogArt(vehicle.vehicleId, vehicle.condition);
     return {
       ...vehicle,
-      name: def?.name ?? vehicle.vehicleId,
-      image: def?.image ?? '',
+      ...art,
     };
   });
 

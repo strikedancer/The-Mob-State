@@ -6089,19 +6089,30 @@ class _CrewScreenState extends State<CrewScreen>
   }
 
   String? _crewVehicleAssetPath(Map<String, dynamic> row) {
-    final image = (row['image'] ?? '').toString().trim();
-    if (image.isNotEmpty) {
-      if (image.startsWith('http://') ||
-          image.startsWith('https://') ||
-          image.startsWith('assets/') ||
-          image.startsWith('images/')) {
-        return image;
-      }
-      return 'assets/images/vehicles/$image';
+    final condition = (row['condition'] as num?)?.toInt() ?? 100;
+    String fileOf(String key) => (row[key] ?? '').toString().trim();
+    var file = '';
+    if (condition >= 100) file = fileOf('imageNew');
+    if (file.isEmpty && condition >= 70) file = fileOf('imageDirty');
+    if (file.isEmpty && condition < 70) file = fileOf('imageDamaged');
+    if (file.isEmpty) {
+      file = fileOf('imageNew');
+      if (file.isEmpty) file = fileOf('imageDirty');
+      if (file.isEmpty) file = fileOf('imageDamaged');
+      if (file.isEmpty) file = fileOf('image');
     }
-    final vehicleId = (row['vehicleId'] ?? '').toString().trim();
-    if (vehicleId.isEmpty) return null;
-    return 'assets/images/vehicles/$vehicleId.png';
+    if (file.isEmpty) {
+      final vehicleId = (row['vehicleId'] ?? '').toString().trim();
+      if (vehicleId.isEmpty) return null;
+      file = '$vehicleId.png';
+    }
+    if (file.startsWith('http://') ||
+        file.startsWith('https://') ||
+        file.startsWith('assets/') ||
+        file.startsWith('images/')) {
+      return file;
+    }
+    return 'assets/images/vehicles/$file';
   }
 
   String _crewAmmoAssetPath(String ammoType) {
@@ -6125,6 +6136,7 @@ class _CrewScreenState extends State<CrewScreen>
             ? Center(child: fallbackIcon())
             : WebAssetHelper.image(
                 path,
+                key: ValueKey(path),
                 width: size,
                 height: size,
                 fit: BoxFit.contain,
