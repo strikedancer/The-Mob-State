@@ -16,7 +16,7 @@ Vehicle parts economy, tuning upgrades (speed/stealth/armor), upgrade costs, val
   - car parts
   - motorcycle parts
   - boat parts
-- Parts are pooled per category and can be spent on any owned vehicle in that same category.
+- Parts are pooled per category and can be spent on any owned vehicle in that same category, and on parked crew vehicles of that category from Crew → Storage.
 - Tuning upgrades consume parts + money.
 - Higher tuning levels cost progressively more parts and money.
 - Tuning money costs are category-based (car/motorcycle/boat), not tied directly to the individual vehicle base value.
@@ -24,7 +24,7 @@ Vehicle parts economy, tuning upgrades (speed/stealth/armor), upgrade costs, val
   - car: 180s
   - motorcycle: 120s
   - boat: 240s
-- Concurrent tuning slots are VIP-gated: non-VIP max 1 active tuning cooldown across vehicles, VIP max 5.
+- Concurrent tuning slots are VIP-gated for personal garage vehicles: non-VIP max 1 active tuning cooldown across vehicles, VIP max 5. Crew-storage tuning uses only the per-vehicle cooldown on that crew row.
 - Tuning upgrades increase effective vehicle performance and resale/salvage value multipliers. Resale uses the same quoted sell price as Garage/Marina (country market × condition × tune).
 - Tuning must be blocked while a vehicle is in transport or repair.
 - Tuning levels are per vehicle inventory item, not global per model.
@@ -35,7 +35,7 @@ Vehicle parts economy, tuning upgrades (speed/stealth/armor), upgrade costs, val
 
 ## Data/Backend Rules
 - Keep player parts in a dedicated player-level storage table.
-- Keep tuning levels in a dedicated per-inventory tuning table.
+- Keep personal tuning levels in a dedicated per-inventory tuning table. Crew-storage vehicles store speed/stealth/armor on the crew inventory row; deposit copies personal tuning then deletes that personal record.
 - Avoid destructive schema assumptions; use safe create-if-not-exists guards in service layer if needed.
 - Selling or scrapping a tuned vehicle must remove its tuning record.
 
@@ -51,7 +51,7 @@ Vehicle parts economy, tuning upgrades (speed/stealth/armor), upgrade costs, val
 
 ## QA Checklist
 - Scrapping vehicles increments correct parts bucket by category.
-- Verify category pooling works: scrap one vehicle, spend those parts on a different vehicle in the same category.
+- Verify category pooling works: scrap one vehicle, spend those parts on a different vehicle in the same category, including a parked crew vehicle of that category.
 - Upgrading speed/stealth/armor decreases money + parts correctly.
 - Upgrade cost scales upward each level.
 - Max level is enforced.

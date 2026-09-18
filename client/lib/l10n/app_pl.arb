@@ -13293,5 +13293,40 @@
   "gameSupportDonateCheckoutFailed": "The payment page could not be opened. Try again.",
   "gameSupportDonateRedirectPaid": "Thank you. Your gift helps keep The Mob State online.",
   "gameSupportDonateRedirectCancelled": "Donation cancelled. You were not charged.",
-  "gameSupportDonateRedirectFailed": "Donation failed or expired. You were not charged."
+  "gameSupportDonateRedirectFailed": "Donation failed or expired. You were not charged.",
+  "crewUiVehicleManageTitle": "Manage crew vehicle",
+  "crewUiVehiclePayFromPocket": "Repair, refuel and tune are paid from your own cash and parts. The vehicle stays in crew storage.",
+  "crewUiVehicleSellToBank": "Only the leader and co-leader can sell. The money goes to the crew bank.",
+  "crewUiVehicleSellConfirm": "Sell this vehicle for {amount}? The money goes to the crew bank, not to you.",
+  "@crewUiVehicleSellConfirm": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiVehicleSellOfficerOnly": "Only the leader or co-leader can sell a crew vehicle.",
+  "crewUiVehicleRefuelDone": "The tank is full.",
+  "crewUiVehicleRepairStarted": "Repair started. The vehicle stays in crew storage until it finishes.",
+  "crewUiVehicleSoldToBank": "Sold. {amount} is now in the crew bank.",
+  "@crewUiVehicleSoldToBank": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiVehicleTuneDone": "Tuning upgrade applied. The vehicle still belongs to the crew.",
+  "crewUiVehicleRepairing": "In repair · {duration} left",
+  "@crewUiVehicleRepairing": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "crewUiVehicleFuelFull": "The tank is already full.",
+  "crewUiVehicleNotBroken": "This vehicle does not need repair.",
+  "crewUiVehicleNotOfficer": "Only the leader or co-leader can sell a crew vehicle.",
+  "crewUiVehicleActionFailed": "That vehicle action failed."
 }

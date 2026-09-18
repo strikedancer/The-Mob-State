@@ -918,30 +918,42 @@ model CrewCashStorageBuilding {
 }
 
 model CrewCarInventory {
-  id              Int      @id @default(autoincrement())
-  crewId          Int
-  vehicleId       String   @db.VarChar(100)
-  condition       Int      @default(100)
-  fuelLevel       Int      @default(100)
-  stolenInCountry String?  @db.VarChar(50)
-  addedByPlayerId Int
-  addedAt         DateTime @default(now())
-  crew            Crew     @relation(fields: [crewId], references: [id], onDelete: Cascade)
+  id                 Int       @id @default(autoincrement())
+  crewId             Int
+  vehicleId          String    @db.VarChar(100)
+  condition          Int       @default(100)
+  fuelLevel          Int       @default(100)
+  stolenInCountry    String?   @db.VarChar(50)
+  addedByPlayerId    Int
+  addedAt            DateTime  @default(now())
+  speedLevel         Int       @default(0) @map("speed_level")
+  stealthLevel       Int       @default(0) @map("stealth_level")
+  armorLevel         Int       @default(0) @map("armor_level")
+  tuneCooldownUntil  DateTime? @map("tune_cooldown_until")
+  repairCompletesAt  DateTime? @map("repair_completes_at")
+  repairCost         Int?      @map("repair_cost")
+  crew               Crew      @relation(fields: [crewId], references: [id], onDelete: Cascade)
 
   @@index([crewId])
   @@map("crew_car_inventory")
 }
 
 model CrewBoatInventory {
-  id              Int      @id @default(autoincrement())
-  crewId          Int
-  vehicleId       String   @db.VarChar(100)
-  condition       Int      @default(100)
-  fuelLevel       Int      @default(100)
-  stolenInCountry String?  @db.VarChar(50)
-  addedByPlayerId Int
-  addedAt         DateTime @default(now())
-  crew            Crew     @relation(fields: [crewId], references: [id], onDelete: Cascade)
+  id                 Int       @id @default(autoincrement())
+  crewId             Int
+  vehicleId          String    @db.VarChar(100)
+  condition          Int       @default(100)
+  fuelLevel          Int       @default(100)
+  stolenInCountry    String?   @db.VarChar(50)
+  addedByPlayerId    Int
+  addedAt            DateTime  @default(now())
+  speedLevel         Int       @default(0) @map("speed_level")
+  stealthLevel       Int       @default(0) @map("stealth_level")
+  armorLevel         Int       @default(0) @map("armor_level")
+  tuneCooldownUntil  DateTime? @map("tune_cooldown_until")
+  repairCompletesAt  DateTime? @map("repair_completes_at")
+  repairCost         Int?      @map("repair_cost")
+  crew               Crew      @relation(fields: [crewId], references: [id], onDelete: Cascade)
 
   @@index([crewId])
   @@map("crew_boat_inventory")

@@ -4824,6 +4824,60 @@ class AppLocalizationsDe extends AppLocalizations {
   String get crewUiStorageViewContents => 'Inhalte ansehen';
 
   @override
+  String get crewUiVehicleManageTitle => 'Manage crew vehicle';
+
+  @override
+  String get crewUiVehiclePayFromPocket =>
+      'Repair, refuel and tune are paid from your own cash and parts. The vehicle stays in crew storage.';
+
+  @override
+  String get crewUiVehicleSellToBank =>
+      'Only the leader and co-leader can sell. The money goes to the crew bank.';
+
+  @override
+  String crewUiVehicleSellConfirm(String amount) {
+    return 'Sell this vehicle for $amount? The money goes to the crew bank, not to you.';
+  }
+
+  @override
+  String get crewUiVehicleSellOfficerOnly =>
+      'Only the leader or co-leader can sell a crew vehicle.';
+
+  @override
+  String get crewUiVehicleRefuelDone => 'The tank is full.';
+
+  @override
+  String get crewUiVehicleRepairStarted =>
+      'Repair started. The vehicle stays in crew storage until it finishes.';
+
+  @override
+  String crewUiVehicleSoldToBank(String amount) {
+    return 'Sold. $amount is now in the crew bank.';
+  }
+
+  @override
+  String get crewUiVehicleTuneDone =>
+      'Tuning upgrade applied. The vehicle still belongs to the crew.';
+
+  @override
+  String crewUiVehicleRepairing(String duration) {
+    return 'In repair · $duration left';
+  }
+
+  @override
+  String get crewUiVehicleFuelFull => 'The tank is already full.';
+
+  @override
+  String get crewUiVehicleNotBroken => 'This vehicle does not need repair.';
+
+  @override
+  String get crewUiVehicleNotOfficer =>
+      'Only the leader or co-leader can sell a crew vehicle.';
+
+  @override
+  String get crewUiVehicleActionFailed => 'That vehicle action failed.';
+
+  @override
   String get crewUiHintUpgradeHub =>
       'Verwalten Sie hier das Hauptquartier und alle Crew-Upgrades von einem Ort aus.';
 

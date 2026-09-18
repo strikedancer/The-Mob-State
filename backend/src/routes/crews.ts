@@ -2,6 +2,7 @@ import { Router, Response, NextFunction } from 'express';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
 import * as crewService from '../services/crewService';
 import * as crewStorageService from '../services/crewStorageService';
+import * as crewVehicleOpsService from '../services/crewVehicleOpsService';
 import { crewWeeklyGoalService } from '../services/crewWeeklyGoalService';
 import { onboardingService } from '../services/onboardingService';
 import {
@@ -1382,7 +1383,14 @@ router.get(
         });
       }
 
-      const storage = await crewStorageService.getCrewStorageSummary(crewId);
+      const viewer = await prisma.player.findUnique({
+        where: { id: currentPlayerId },
+        select: { currentCountry: true },
+      });
+      const storage = await crewStorageService.getCrewStorageSummary(
+        crewId,
+        viewer?.currentCountry?.trim() || 'netherlands'
+      );
 
       return res.json({
         event: 'crew.storage',
@@ -1534,6 +1542,190 @@ router.post(
         }
       }
       return next(error);
+    }
+  }
+);
+
+function mapCrewVehicleOpsError(error: unknown, res: Response, next: NextFunction) {
+  if (!(error instanceof Error)) return next(error);
+  const message = error.message;
+  if (message === 'NOT_IN_CREW') {
+    return res.status(403).json({ event: 'error.not_in_crew', params: {} });
+  }
+  if (message === 'NOT_CREW_OFFICER') {
+    return res.status(403).json({ event: 'error.not_crew_officer', params: {} });
+  }
+  if (message === 'VEHICLE_NOT_FOUND') {
+    return res.status(404).json({ event: 'error.vehicle_not_found', params: {} });
+  }
+  if (message.startsWith('TUNE_COOLDOWN_ACTIVE')) {
+    const remainingSeconds = Number(message.split(':')[1] ?? 0);
+    return res.status(400).json({
+      event: 'crew.vehicle_error',
+      params: {
+        reason: 'TUNE_COOLDOWN_ACTIVE',
+        remainingSeconds: Number.isFinite(remainingSeconds) ? Math.max(0, remainingSeconds) : 0,
+      },
+    });
+  }
+  const reasons = new Set([
+    'VEHICLE_REPAIR_IN_PROGRESS',
+    'FUEL_TANK_FULL',
+    'VEHICLE_NOT_BROKEN',
+    'INSUFFICIENT_FUNDS',
+    'INSUFFICIENT_PARTS',
+    'TUNE_STAT_MAXED',
+    'CASH_STORAGE_FULL',
+    'PLAYER_NOT_FOUND',
+    'CREW_NOT_FOUND',
+    'INVALID_TUNE_STAT',
+  ]);
+  if (reasons.has(message)) {
+    return res.status(400).json({
+      event: 'crew.vehicle_error',
+      params: { reason: message },
+    });
+  }
+  return next(error);
+}
+
+function crewVehicleKindFromPath(kind: string): crewVehicleOpsService.CrewVehicleKind | null {
+  if (kind === 'cars' || kind === 'car') return 'car';
+  if (kind === 'boats' || kind === 'boat') return 'boat';
+  return null;
+}
+
+/**
+ * POST /crews/:id/storage/:kind/:itemId/refuel
+ * Fill a parked crew vehicle from the acting member's cash.
+ */
+router.post(
+  '/:id/storage/:kind/:itemId/refuel',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const crewId = parseInt(req.params.id as string);
+      const itemId = parseInt(req.params.itemId as string);
+      const kind = crewVehicleKindFromPath(String(req.params.kind ?? ''));
+      if (isNaN(crewId) || isNaN(itemId) || !kind) {
+        return res.status(400).json({ event: 'error.invalid_input', params: {} });
+      }
+      const result = await crewVehicleOpsService.refuelCrewVehicle(
+        crewId,
+        req.player!.id,
+        kind,
+        itemId
+      );
+      return res.json({
+        event: 'crew.vehicle_refueled',
+        params: result,
+        player: { money: result.newMoney },
+      });
+    } catch (error: unknown) {
+      return mapCrewVehicleOpsError(error, res, next);
+    }
+  }
+);
+
+/**
+ * POST /crews/:id/storage/:kind/:itemId/repair
+ * Start a timed repair on a parked crew vehicle. Paid by the acting member.
+ */
+router.post(
+  '/:id/storage/:kind/:itemId/repair',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const crewId = parseInt(req.params.id as string);
+      const itemId = parseInt(req.params.itemId as string);
+      const kind = crewVehicleKindFromPath(String(req.params.kind ?? ''));
+      if (isNaN(crewId) || isNaN(itemId) || !kind) {
+        return res.status(400).json({ event: 'error.invalid_input', params: {} });
+      }
+      const result = await crewVehicleOpsService.repairCrewVehicle(
+        crewId,
+        req.player!.id,
+        kind,
+        itemId
+      );
+      return res.json({
+        event: 'crew.vehicle_repair_started',
+        params: result,
+        player: { money: result.newMoney },
+      });
+    } catch (error: unknown) {
+      return mapCrewVehicleOpsError(error, res, next);
+    }
+  }
+);
+
+/**
+ * POST /crews/:id/storage/:kind/:itemId/sell
+ * Officer-only sale of a parked crew vehicle. Cash goes to the crew bank.
+ */
+router.post(
+  '/:id/storage/:kind/:itemId/sell',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const crewId = parseInt(req.params.id as string);
+      const itemId = parseInt(req.params.itemId as string);
+      const kind = crewVehicleKindFromPath(String(req.params.kind ?? ''));
+      if (isNaN(crewId) || isNaN(itemId) || !kind) {
+        return res.status(400).json({ event: 'error.invalid_input', params: {} });
+      }
+      const result = await crewVehicleOpsService.sellCrewVehicle(
+        crewId,
+        req.player!.id,
+        kind,
+        itemId
+      );
+      return res.json({
+        event: 'crew.vehicle_sold',
+        params: result,
+      });
+    } catch (error: unknown) {
+      return mapCrewVehicleOpsError(error, res, next);
+    }
+  }
+);
+
+/**
+ * POST /crews/:id/storage/:kind/:itemId/tuning
+ * Upgrade speed/stealth/armor on a parked crew vehicle with player cash + parts.
+ */
+router.post(
+  '/:id/storage/:kind/:itemId/tuning',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const crewId = parseInt(req.params.id as string);
+      const itemId = parseInt(req.params.itemId as string);
+      const kind = crewVehicleKindFromPath(String(req.params.kind ?? ''));
+      const stat = String((req.body as { stat?: string })?.stat ?? '');
+      if (isNaN(crewId) || isNaN(itemId) || !kind) {
+        return res.status(400).json({ event: 'error.invalid_input', params: {} });
+      }
+      if (stat !== 'speed' && stat !== 'stealth' && stat !== 'armor') {
+        return res.status(400).json({
+          event: 'crew.vehicle_error',
+          params: { reason: 'INVALID_TUNE_STAT' },
+        });
+      }
+      const result = await crewVehicleOpsService.upgradeCrewVehicleTuning(
+        crewId,
+        req.player!.id,
+        kind,
+        itemId,
+        stat
+      );
+      return res.json({
+        event: 'crew.vehicle_tuned',
+        params: result,
+        player: { money: result.newMoney },
+      });
+    } catch (error: unknown) {
+      return mapCrewVehicleOpsError(error, res, next);
     }
   }
 );

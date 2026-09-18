@@ -3,6 +3,12 @@ import { getCrewStorageCapacity } from './crewBuildingService';
 import { vehicleService } from './vehicleService';
 import { getCommittedTotals } from './territoryArsenalService';
 import {
+  completeDueCrewVehicleRepairs,
+  copyPersonalTuningToCrewVehicle,
+  decorateCrewVehicle,
+  ensureCrewVehicleOpsSchema,
+} from './crewVehicleOpsService';
+import {
   debitBackpackTrade,
   getBackpackTradeQuantity,
   refreshInventorySlotUsage,
@@ -83,8 +89,9 @@ export async function depositCrewCar(
     throw new Error('VEHICLE_IN_SHOWROOM');
   }
 
-  await prisma.$transaction(async (tx) => {
-    await tx.crewCarInventory.create({
+  await ensureCrewVehicleOpsSchema();
+  const created = await prisma.$transaction(async (tx) => {
+    const row = await tx.crewCarInventory.create({
       data: {
         crewId,
         vehicleId: vehicle.vehicleId,
@@ -98,7 +105,9 @@ export async function depositCrewCar(
     await tx.vehicleInventory.delete({
       where: { id: vehicleInventoryId },
     });
+    return row;
   });
+  await copyPersonalTuningToCrewVehicle(playerId, vehicleInventoryId, 'car', created.id);
 }
 
 export async function depositCrewBoat(
@@ -138,8 +147,9 @@ export async function depositCrewBoat(
     throw new Error('VEHICLE_IN_SHOWROOM');
   }
 
-  await prisma.$transaction(async (tx) => {
-    await tx.crewBoatInventory.create({
+  await ensureCrewVehicleOpsSchema();
+  const created = await prisma.$transaction(async (tx) => {
+    const row = await tx.crewBoatInventory.create({
       data: {
         crewId,
         vehicleId: vehicle.vehicleId,
@@ -153,7 +163,9 @@ export async function depositCrewBoat(
     await tx.vehicleInventory.delete({
       where: { id: vehicleInventoryId },
     });
+    return row;
   });
+  await copyPersonalTuningToCrewVehicle(playerId, vehicleInventoryId, 'boat', created.id);
 }
 
 export async function depositCrewWeapon(
@@ -655,7 +667,8 @@ export async function consumeCrewTradeGoods(
   });
 }
 
-export async function getCrewStorageSummary(crewId: number) {
+export async function getCrewStorageSummary(crewId: number, viewerCountry = 'netherlands') {
+  await completeDueCrewVehicleRepairs(crewId);
   const [
     carCapacity,
     boatCapacity,
@@ -687,8 +700,54 @@ export async function getCrewStorageSummary(crewId: number) {
     tradeGoods,
     crew,
   ] = await Promise.all([
-    prisma.crewCarInventory.findMany({ where: { crewId } }),
-    prisma.crewBoatInventory.findMany({ where: { crewId } }),
+    prisma.$queryRaw<
+      Array<{
+        id: number;
+        crewId: number;
+        vehicleId: string;
+        condition: number;
+        fuelLevel: number;
+        stolenInCountry: string | null;
+        addedByPlayerId: number;
+        addedAt: Date;
+        speed_level: number;
+        stealth_level: number;
+        armor_level: number;
+        tune_cooldown_until: Date | null;
+        repair_completes_at: Date | null;
+        repair_cost: number | null;
+      }>
+    >`
+      SELECT id, crewId, vehicleId, \`condition\`, fuelLevel, stolenInCountry,
+             addedByPlayerId, addedAt, speed_level, stealth_level, armor_level,
+             tune_cooldown_until, repair_completes_at, repair_cost
+      FROM crew_car_inventory
+      WHERE crewId = ${crewId}
+    `,
+    prisma.$queryRaw<
+      Array<{
+        id: number;
+        crewId: number;
+        vehicleId: string;
+        condition: number;
+        fuelLevel: number;
+        stolenInCountry: string | null;
+        addedByPlayerId: number;
+        addedAt: Date;
+        speed_level: number;
+        stealth_level: number;
+        armor_level: number;
+        tune_cooldown_until: Date | null;
+        repair_completes_at: Date | null;
+        repair_cost: number | null;
+      }>
+    >`
+      SELECT id, crewId, vehicleId, \`condition\`, fuelLevel, stolenInCountry,
+             addedByPlayerId, addedAt, speed_level, stealth_level, armor_level,
+             tune_cooldown_until, repair_completes_at, repair_cost
+      FROM crew_boat_inventory
+      WHERE crewId = ${crewId}
+    `,
     prisma.crewWeaponInventory.findMany({ where: { crewId } }),
     prisma.crewToolInventory.findMany({ where: { crewId } }),
     prisma.crewAmmoInventory.findMany({ where: { crewId } }),
@@ -706,18 +765,38 @@ export async function getCrewStorageSummary(crewId: number) {
     drugLots.reduce((sum, item) => sum + item.quantity, 0);
   const tradeCount = tradeGoods.reduce((sum, item) => sum + item.quantity, 0);
   const carsWithType = cars.map((vehicle) => {
-    const art = crewVehicleCatalogArt(vehicle.vehicleId, vehicle.condition);
-    return {
+    const normalized = {
       ...vehicle,
-      vehicleType: resolveCrewLandVehicleType(vehicle.vehicleId),
+      condition: Number(vehicle.condition ?? 0),
+      fuelLevel: Number(vehicle.fuelLevel ?? 0),
+      speed_level: Number(vehicle.speed_level ?? 0),
+      stealth_level: Number(vehicle.stealth_level ?? 0),
+      armor_level: Number(vehicle.armor_level ?? 0),
+      repair_cost: vehicle.repair_cost == null ? null : Number(vehicle.repair_cost),
+    };
+    const art = crewVehicleCatalogArt(normalized.vehicleId, normalized.condition);
+    return {
+      ...normalized,
+      vehicleType: resolveCrewLandVehicleType(normalized.vehicleId),
       ...art,
+      ...decorateCrewVehicle(normalized, 'car', viewerCountry),
     };
   });
   const boatsWithName = boats.map((vehicle) => {
-    const art = crewVehicleCatalogArt(vehicle.vehicleId, vehicle.condition);
-    return {
+    const normalized = {
       ...vehicle,
+      condition: Number(vehicle.condition ?? 0),
+      fuelLevel: Number(vehicle.fuelLevel ?? 0),
+      speed_level: Number(vehicle.speed_level ?? 0),
+      stealth_level: Number(vehicle.stealth_level ?? 0),
+      armor_level: Number(vehicle.armor_level ?? 0),
+      repair_cost: vehicle.repair_cost == null ? null : Number(vehicle.repair_cost),
+    };
+    const art = crewVehicleCatalogArt(normalized.vehicleId, normalized.condition);
+    return {
+      ...normalized,
       ...art,
+      ...decorateCrewVehicle(normalized, 'boat', viewerCountry),
     };
   });
 

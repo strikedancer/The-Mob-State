@@ -5451,4 +5451,76 @@ export const vehicleService = {
       },
     };
   },
+
+  quoteSellPrice(
+    vehicleId: string,
+    country: string,
+    condition: number,
+    vehicleType: 'car' | 'boat' | 'motorcycle',
+    tuningLevels?: { speed: number; stealth: number; armor: number }
+  ): number {
+    return calculateSellPrice(
+      this.getVehicleById(vehicleId),
+      country,
+      condition,
+      vehicleType,
+      tuningLevels
+    );
+  },
+
+  quoteTuneUpgrade(
+    vehicleType: 'car' | 'boat' | 'motorcycle',
+    stat: 'speed' | 'stealth' | 'armor',
+    currentLevel: number
+  ): { nextLevel: number; partsCost: number; moneyCost: number; maxed: boolean } {
+    if (currentLevel >= TUNE_MAX_LEVEL) {
+      return { nextLevel: TUNE_MAX_LEVEL, partsCost: 0, moneyCost: 0, maxed: true };
+    }
+    const def = { baseValue: 0 } as Vehicle;
+    return { ...getTuneUpgradeCost(def, vehicleType, stat, currentLevel), maxed: false };
+  },
+
+  quoteRepair(vehicleId: string, condition: number): {
+    repairCost: number;
+    repairDurationSeconds: number;
+  } {
+    const def = this.getVehicleById(vehicleId);
+    const damagePercent = Math.max(0, 100 - Math.max(0, Math.min(100, condition)));
+    const repairCost = Math.ceil(((def?.baseValue ?? 30000) * damagePercent) / 100);
+    const repairDurationSeconds = def
+      ? Math.max(5 * 60, repairDurationSecondsForVehicle(def, condition))
+      : 15 * 60;
+    return { repairCost, repairDurationSeconds };
+  },
+
+  quoteRefuelFill(vehicleId: string, currentFuelPercent: number): {
+    liters: number;
+    totalCost: number;
+    fuelCapacity: number;
+  } {
+    const def = this.getVehicleById(vehicleId);
+    const capacity = Math.max(1, def?.fuelCapacity ?? 50);
+    const currentLiters = (Math.max(0, Math.min(100, currentFuelPercent)) / 100) * capacity;
+    const liters = Math.max(0, capacity - currentLiters);
+    return {
+      liters,
+      totalCost: Math.ceil(liters * 2),
+      fuelCapacity: capacity,
+    };
+  },
+
+  async readPersonalTuning(
+    playerId: number,
+    inventoryId: number
+  ): Promise<{ speed: number; stealth: number; armor: number }> {
+    return getVehicleTuningLevels(playerId, inventoryId);
+  },
+
+  tuneCooldownSeconds(vehicleType: 'car' | 'boat' | 'motorcycle'): number {
+    return TUNE_UPGRADE_COOLDOWN_SECONDS_BY_TYPE[vehicleType];
+  },
+
+  get tuneMaxLevel(): number {
+    return TUNE_MAX_LEVEL;
+  },
 };

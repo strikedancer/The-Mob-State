@@ -97,6 +97,7 @@ class _CrewScreenState extends State<CrewScreen>
   Map<String, int>? _crewStats;
   List<dynamic> _crewBuildings = [];
   Map<String, dynamic>? _crewStorage;
+  VoidCallback? _crewStorageDialogRefresh;
   Map<String, dynamic>? _crewWarHub;
   Map<String, dynamic>? _crewVipFund;
   List<Map<String, dynamic>> _crewDeals = [];
@@ -6054,6 +6055,372 @@ class _CrewScreenState extends State<CrewScreen>
         .toList();
   }
 
+  bool get _isCrewOfficer {
+    if (_myCrew == null) return false;
+    final currentPlayerId =
+        Provider.of<AuthProvider>(context, listen: false).currentPlayer?.id ?? 0;
+    return _myCrew!.members.any(
+      (member) => member.playerId == currentPlayerId && member.isOfficer,
+    );
+  }
+
+  Map<String, dynamic> _crewTuneQuote(
+    Map<String, dynamic> row,
+    String stat,
+  ) {
+    final quotes = (row['tuneQuotes'] as Map?)?.cast<String, dynamic>() ?? {};
+    return (quotes[stat] as Map?)?.cast<String, dynamic>() ?? {};
+  }
+
+  int _crewTuneLevel(Map<String, dynamic> row, String stat) {
+    final levels =
+        (row['tuningLevels'] as Map?)?.cast<String, dynamic>() ?? {};
+    return (levels[stat] as num?)?.toInt() ?? 0;
+  }
+
+  String _crewVehicleOpsErrorMessage(
+    AppLocalizations loc,
+    Map<String, dynamic> data,
+  ) {
+    final event = data['event']?.toString();
+    if (event == 'error.not_crew_officer') {
+      return loc.crewUiVehicleNotOfficer;
+    }
+    if (event == 'error.not_in_crew') {
+      return loc.crewUiTr10;
+    }
+    if (event == 'error.vehicle_not_found') {
+      return loc.tuneShopErrorVehicleNotFound;
+    }
+    final params = (data['params'] as Map?)?.cast<String, dynamic>() ?? {};
+    switch (params['reason']?.toString()) {
+      case 'INSUFFICIENT_FUNDS':
+        return loc.notEnoughMoney;
+      case 'INSUFFICIENT_PARTS':
+        return loc.tuneShopErrorInsufficientParts;
+      case 'TUNE_STAT_MAXED':
+        return loc.tuneShopErrorStatMaxed;
+      case 'TUNE_COOLDOWN_ACTIVE':
+        final seconds = (params['remainingSeconds'] as num?)?.toInt() ?? 0;
+        return loc.tuneShopErrorCooldownActive(
+          formatDuration(Duration(seconds: seconds)),
+        );
+      case 'VEHICLE_REPAIR_IN_PROGRESS':
+        return loc.tuneShopErrorVehicleInRepair;
+      case 'FUEL_TANK_FULL':
+        return loc.crewUiVehicleFuelFull;
+      case 'VEHICLE_NOT_BROKEN':
+        return loc.crewUiVehicleNotBroken;
+      case 'CASH_STORAGE_FULL':
+        return loc.crewUiTr90;
+      case 'INVALID_TUNE_STAT':
+        return loc.tuneShopErrorInvalidStat;
+      default:
+        return loc.crewUiVehicleActionFailed;
+    }
+  }
+
+  Widget _crewStorageVehicleTile({
+    required Map<String, dynamic> row,
+    required AppLocalizations loc,
+    required String kind,
+    required IconData fallback,
+  }) {
+    final condition = (row['condition'] as num?)?.toInt() ?? 0;
+    final fuel = (row['fuelLevel'] as num?)?.toInt() ?? 0;
+    final repairing = row['repairInProgress'] == true;
+    final repairSeconds = (row['repairRemainingSeconds'] as num?)?.toInt() ?? 0;
+    final subtitle = repairing && repairSeconds > 0
+        ? loc.crewUiVehicleRepairing(
+            formatDuration(Duration(seconds: repairSeconds)),
+          )
+        : '${loc.condition} $condition% · ${loc.vehicleFuel} $fuel%';
+    return ListTile(
+      dense: true,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+      leading: _crewStorageItemThumb(
+        assetPath: _crewVehicleAssetPath(row),
+        fallback: fallback,
+      ),
+      title: Text(_crewVehicleLabel(row, loc)),
+      subtitle: Text(subtitle),
+      trailing: const Icon(Icons.chevron_right),
+      onTap: () => _showCrewVehicleManageSheet(kind: kind, row: row),
+    );
+  }
+
+  Future<void> _showCrewVehicleManageSheet({
+    required String kind,
+    required Map<String, dynamic> row,
+  }) async {
+    if (_myCrew == null) return;
+    final loc = l10n;
+    final canSell = _isCrewOfficer;
+    var busy = false;
+
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (sheetContext) {
+        return StatefulBuilder(
+          builder: (sheetContext, setSheetState) {
+            final condition = (row['condition'] as num?)?.toInt() ?? 0;
+            final fuel = (row['fuelLevel'] as num?)?.toInt() ?? 0;
+            final repairing = row['repairInProgress'] == true;
+            final repairSeconds =
+                (row['repairRemainingSeconds'] as num?)?.toInt() ?? 0;
+            final repairCost = (row['repairCost'] as num?)?.toInt() ?? 0;
+            final refuelCost = (row['refuelCost'] as num?)?.toInt() ?? 0;
+            final refuelLiters = (row['refuelLiters'] as num?)?.toDouble() ?? 0;
+            final sellPrice = (row['sellPrice'] as num?)?.toInt() ?? 0;
+            final tuneCooldown =
+                (row['tuneCooldownRemainingSeconds'] as num?)?.toInt() ?? 0;
+            final speedQuote = _crewTuneQuote(row, 'speed');
+            final stealthQuote = _crewTuneQuote(row, 'stealth');
+            final armorQuote = _crewTuneQuote(row, 'armor');
+
+            Future<void> runAction({
+              required String action,
+              String? stat,
+              required String successMessage,
+              bool confirmSell = false,
+            }) async {
+              if (busy || _myCrew == null) return;
+              if (confirmSell) {
+                final ok = await showDialog<bool>(
+                  context: sheetContext,
+                  builder: (context) => AlertDialog(
+                    title: Text(loc.sellVehicle),
+                    content: Text(
+                      loc.crewUiVehicleSellConfirm(_money(sellPrice)),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, false),
+                        child: Text(loc.crewUiTr43),
+                      ),
+                      ElevatedButton(
+                        onPressed: () => Navigator.pop(context, true),
+                        child: Text(loc.sellVehicle),
+                      ),
+                    ],
+                  ),
+                );
+                if (ok != true) return;
+              }
+
+              setSheetState(() => busy = true);
+              try {
+                final itemId = (row['id'] as num?)?.toInt();
+                if (itemId == null) return;
+                final path = action == 'tuning'
+                    ? '/crews/${_myCrew!.id}/storage/$kind/$itemId/tuning'
+                    : '/crews/${_myCrew!.id}/storage/$kind/$itemId/$action';
+                final response = await AuthService().apiClient.post(
+                  path,
+                  stat == null ? <String, dynamic>{} : {'stat': stat},
+                );
+                if (!mounted) return;
+                if (response.statusCode == 200) {
+                  if (sheetContext.mounted) {
+                    Navigator.pop(sheetContext);
+                  }
+                  showTopRightFromSnackBar(
+                    context,
+                    SnackBar(
+                      content: Text(successMessage),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                  await _loadCrewStorage();
+                  _crewStorageDialogRefresh?.call();
+                  try {
+                    await Provider.of<AuthProvider>(
+                      context,
+                      listen: false,
+                    ).refreshPlayer();
+                  } catch (_) {}
+                } else {
+                  final data = response.body.isNotEmpty
+                      ? _decodeJsonBody(response.body)
+                      : <String, dynamic>{};
+                  showTopRightFromSnackBar(
+                    context,
+                    SnackBar(
+                      content: Text(_crewVehicleOpsErrorMessage(loc, data)),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              } catch (_) {
+                if (mounted) {
+                  showTopRightFromSnackBar(
+                    context,
+                    SnackBar(
+                      content: Text(loc.crewUiVehicleActionFailed),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              } finally {
+                if (sheetContext.mounted) {
+                  setSheetState(() => busy = false);
+                }
+              }
+            }
+
+            Widget tuneRow(String stat, String label, Map<String, dynamic> quote) {
+              final maxed = quote['maxed'] == true;
+              final moneyCost = (quote['moneyCost'] as num?)?.toInt() ?? 0;
+              final partsCost = (quote['partsCost'] as num?)?.toInt() ?? 0;
+              final level = _crewTuneLevel(row, stat);
+              final locked = repairing || tuneCooldown > 0 || maxed;
+              return ListTile(
+                dense: true,
+                title: Text('$label · $level'),
+                subtitle: Text(
+                  maxed
+                      ? loc.tuneShopMaxLabel
+                      : tuneCooldown > 0
+                          ? loc.tuneShopLockedCooldownActive(
+                              formatDuration(Duration(seconds: tuneCooldown)),
+                            )
+                          : repairing
+                              ? loc.tuneShopLockedVehicleInRepair
+                              : '${_money(moneyCost)} · $partsCost ${loc.tuneShopPartsAbbrev}',
+                ),
+                trailing: TextButton(
+                  onPressed: locked || busy
+                      ? null
+                      : () => runAction(
+                            action: 'tuning',
+                            stat: stat,
+                            successMessage: loc.crewUiVehicleTuneDone,
+                          ),
+                  child: Text(loc.tuneShopUpgradeButton),
+                ),
+              );
+            }
+
+            return SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        loc.crewUiVehicleManageTitle,
+                        style: Theme.of(sheetContext).textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(_crewVehicleLabel(row, loc)),
+                      Text(
+                        '${loc.condition} $condition% · ${loc.vehicleFuel} $fuel%',
+                      ),
+                      if (repairing && repairSeconds > 0)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: Text(
+                            loc.crewUiVehicleRepairing(
+                              formatDuration(Duration(seconds: repairSeconds)),
+                            ),
+                          ),
+                        ),
+                      const SizedBox(height: 8),
+                      Text(
+                        loc.crewUiVehiclePayFromPocket,
+                        style: Theme.of(sheetContext).textTheme.bodySmall,
+                      ),
+                      const Divider(),
+                      ListTile(
+                        dense: true,
+                        title: Text(loc.vehicleRefuel),
+                        subtitle: Text(
+                          refuelLiters <= 0
+                              ? loc.crewUiVehicleFuelFull
+                              : '${_money(refuelCost)} · ${refuelLiters.toStringAsFixed(0)} L',
+                        ),
+                        trailing: TextButton(
+                          onPressed: busy || repairing || refuelLiters <= 0
+                              ? null
+                              : () => runAction(
+                                    action: 'refuel',
+                                    successMessage: loc.crewUiVehicleRefuelDone,
+                                  ),
+                          child: Text(loc.vehicleRefuel),
+                        ),
+                      ),
+                      ListTile(
+                        dense: true,
+                        title: Text(loc.vehicleRepair),
+                        subtitle: Text(
+                          condition >= 100
+                              ? loc.crewUiVehicleNotBroken
+                              : repairing
+                                  ? loc.crewUiVehicleRepairing(
+                                      formatDuration(
+                                        Duration(seconds: repairSeconds),
+                                      ),
+                                    )
+                                  : _money(repairCost),
+                        ),
+                        trailing: TextButton(
+                          onPressed: busy || repairing || condition >= 100
+                              ? null
+                              : () => runAction(
+                                    action: 'repair',
+                                    successMessage: loc.crewUiVehicleRepairStarted,
+                                  ),
+                          child: Text(loc.vehicleRepair),
+                        ),
+                      ),
+                      tuneRow('speed', loc.tuneShopStatSpeed, speedQuote),
+                      tuneRow('stealth', loc.tuneShopStatStealth, stealthQuote),
+                      tuneRow('armor', loc.tuneShopStatArmor, armorQuote),
+                      const Divider(),
+                      Text(
+                        loc.crewUiVehicleSellToBank,
+                        style: Theme.of(sheetContext).textTheme.bodySmall,
+                      ),
+                      ListTile(
+                        dense: true,
+                        title: Text(loc.sellVehicle),
+                        subtitle: Text(
+                          canSell
+                              ? _money(sellPrice)
+                              : loc.crewUiVehicleSellOfficerOnly,
+                        ),
+                        trailing: TextButton(
+                          onPressed: busy || repairing || !canSell
+                              ? null
+                              : () => runAction(
+                                    action: 'sell',
+                                    confirmSell: true,
+                                    successMessage: loc.crewUiVehicleSoldToBank(
+                                      _money(sellPrice),
+                                    ),
+                                  ),
+                          child: Text(loc.sellVehicle),
+                        ),
+                      ),
+                      if (busy)
+                        const Padding(
+                          padding: EdgeInsets.only(top: 12),
+                          child: Center(child: CircularProgressIndicator()),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
   String _crewVehicleLabel(Map<String, dynamic> row, AppLocalizations loc) {
     final vehicleId = (row['vehicleId'] ?? '').toString();
     final rawName = (row['name'] ?? '').toString().trim();
@@ -6177,36 +6544,20 @@ class _CrewScreenState extends State<CrewScreen>
     switch (buildingType) {
       case 'car_storage':
         return tilesFrom(_crewInventoryRows('cars'), (row) {
-          final condition = (row['condition'] as num?)?.toInt() ?? 0;
-          final fuel = (row['fuelLevel'] as num?)?.toInt() ?? 0;
-          return ListTile(
-            dense: true,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-            leading: _crewStorageItemThumb(
-              assetPath: _crewVehicleAssetPath(row),
-              fallback: Icons.directions_car,
-            ),
-            title: Text(_crewVehicleLabel(row, loc)),
-            subtitle: Text(
-              '${loc.condition} $condition% · ${loc.vehicleFuel} $fuel%',
-            ),
+          return _crewStorageVehicleTile(
+            row: row,
+            loc: loc,
+            kind: 'cars',
+            fallback: Icons.directions_car,
           );
         });
       case 'boat_storage':
         return tilesFrom(_crewInventoryRows('boats'), (row) {
-          final condition = (row['condition'] as num?)?.toInt() ?? 0;
-          final fuel = (row['fuelLevel'] as num?)?.toInt() ?? 0;
-          return ListTile(
-            dense: true,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-            leading: _crewStorageItemThumb(
-              assetPath: _crewVehicleAssetPath(row),
-              fallback: Icons.directions_boat,
-            ),
-            title: Text(_crewVehicleLabel({...row, 'vehicleType': 'boat'}, loc)),
-            subtitle: Text(
-              '${loc.condition} $condition% · ${loc.vehicleFuel} $fuel%',
-            ),
+          return _crewStorageVehicleTile(
+            row: {...row, 'vehicleType': 'boat'},
+            loc: loc,
+            kind: 'boats',
+            fallback: Icons.directions_boat,
           );
         });
       case 'weapon_storage':
@@ -6338,30 +6689,36 @@ class _CrewScreenState extends State<CrewScreen>
     final loc = l10n;
     await showDialog<void>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(title),
-        content: SizedBox(
-          width: 420,
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxHeight: 420),
-            child: ListView(
-              shrinkWrap: true,
-              children: _crewStorageItemTiles(
-                buildingType: buildingType,
-                loc: loc,
-                allowDrugExport: buildingType == 'drug_storage',
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (dialogContext, setDialogState) {
+          _crewStorageDialogRefresh = () => setDialogState(() {});
+          return AlertDialog(
+            title: Text(title),
+            content: SizedBox(
+              width: 420,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxHeight: 420),
+                child: ListView(
+                  shrinkWrap: true,
+                  children: _crewStorageItemTiles(
+                    buildingType: buildingType,
+                    loc: loc,
+                    allowDrugExport: buildingType == 'drug_storage',
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(loc.crewUiTr43),
-          ),
-        ],
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(dialogContext),
+                child: Text(loc.crewUiTr43),
+              ),
+            ],
+          );
+        },
       ),
     );
+    _crewStorageDialogRefresh = null;
   }
 
   Widget _buildCrewStorageBayCard({
