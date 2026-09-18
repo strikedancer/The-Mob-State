@@ -690,6 +690,7 @@ export async function getCrewStorageSummary(crewId: number) {
       ...vehicle,
       vehicleType: resolveCrewLandVehicleType(vehicle.vehicleId),
       name: def?.name ?? vehicle.vehicleId,
+      image: def?.image ?? '',
     };
   });
   const boatsWithName = boats.map((vehicle) => {
@@ -697,6 +698,7 @@ export async function getCrewStorageSummary(crewId: number) {
     return {
       ...vehicle,
       name: def?.name ?? vehicle.vehicleId,
+      image: def?.image ?? '',
     };
   });
 

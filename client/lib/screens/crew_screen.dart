@@ -6078,6 +6078,62 @@ class _CrewScreenState extends State<CrewScreen>
     return '$name ($quality)';
   }
 
+  String _crewToolAssetPath(String toolId) {
+    if (toolId == 'thermal_drill') {
+      return 'assets/images/tools/thermal_drill_tool.png.png';
+    }
+    if (toolId.endsWith('_tool')) {
+      return 'assets/images/tools/$toolId.png';
+    }
+    return 'assets/images/tools/${toolId}_tool.png';
+  }
+
+  String? _crewVehicleAssetPath(Map<String, dynamic> row) {
+    final image = (row['image'] ?? '').toString().trim();
+    if (image.isNotEmpty) {
+      if (image.startsWith('http://') ||
+          image.startsWith('https://') ||
+          image.startsWith('assets/') ||
+          image.startsWith('images/')) {
+        return image;
+      }
+      return 'assets/images/vehicles/$image';
+    }
+    final vehicleId = (row['vehicleId'] ?? '').toString().trim();
+    if (vehicleId.isEmpty) return null;
+    return 'assets/images/vehicles/$vehicleId.png';
+  }
+
+  String _crewAmmoAssetPath(String ammoType) {
+    final fileName = ammoType.toLowerCase().replaceAll(RegExp(r'[^a-z0-9]'), '');
+    return 'assets/images/ammo/$fileName.png';
+  }
+
+  Widget _crewStorageItemThumb({
+    required String? assetPath,
+    required IconData fallback,
+  }) {
+    const size = 40.0;
+    Widget fallbackIcon() => Icon(fallback, size: 22, color: Colors.white70);
+    final path = (assetPath ?? '').trim();
+    return SizedBox(
+      width: size,
+      height: size,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(6),
+        child: path.isEmpty
+            ? Center(child: fallbackIcon())
+            : WebAssetHelper.image(
+                path,
+                width: size,
+                height: size,
+                fit: BoxFit.contain,
+                errorBuilder: (_, _, _) => Center(child: fallbackIcon()),
+              ),
+      ),
+    );
+  }
+
   List<Widget> _crewStorageItemTiles({
     required String buildingType,
     required AppLocalizations loc,
@@ -6109,7 +6165,10 @@ class _CrewScreenState extends State<CrewScreen>
           return ListTile(
             dense: true,
             contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-            leading: const Icon(Icons.directions_car, size: 20),
+            leading: _crewStorageItemThumb(
+              assetPath: _crewVehicleAssetPath(row),
+              fallback: Icons.directions_car,
+            ),
             title: Text(_crewVehicleLabel(row, loc)),
             subtitle: Text(
               '${loc.condition} $condition% · ${loc.vehicleFuel} $fuel%',
@@ -6123,7 +6182,10 @@ class _CrewScreenState extends State<CrewScreen>
           return ListTile(
             dense: true,
             contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-            leading: const Icon(Icons.directions_boat, size: 20),
+            leading: _crewStorageItemThumb(
+              assetPath: _crewVehicleAssetPath(row),
+              fallback: Icons.directions_boat,
+            ),
             title: Text(_crewVehicleLabel({...row, 'vehicleType': 'boat'}, loc)),
             subtitle: Text(
               '${loc.condition} $condition% · ${loc.vehicleFuel} $fuel%',
@@ -6138,7 +6200,10 @@ class _CrewScreenState extends State<CrewScreen>
           return ListTile(
             dense: true,
             contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-            leading: const Icon(Icons.gavel, size: 20),
+            leading: _crewStorageItemThumb(
+              assetPath: id.isEmpty ? null : 'assets/images/weapons/$id.png',
+              fallback: Icons.gavel,
+            ),
             title: Text(localizedWeaponDisplayName(loc, id, id)),
             subtitle: Text('$qty× · ${loc.condition} $condition%'),
           );
@@ -6150,7 +6215,10 @@ class _CrewScreenState extends State<CrewScreen>
           return ListTile(
             dense: true,
             contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-            leading: const Icon(Icons.handyman, size: 20),
+            leading: _crewStorageItemThumb(
+              assetPath: id.isEmpty ? null : _crewToolAssetPath(id),
+              fallback: Icons.handyman,
+            ),
             title: Text(localizedToolName(loc, id, id)),
             subtitle: Text('${loc.durability} $durability%'),
           );
@@ -6162,7 +6230,10 @@ class _CrewScreenState extends State<CrewScreen>
           return ListTile(
             dense: true,
             contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-            leading: const Icon(Icons.inventory_2, size: 20),
+            leading: _crewStorageItemThumb(
+              assetPath: ammoType.isEmpty ? null : _crewAmmoAssetPath(ammoType),
+              fallback: Icons.inventory_2,
+            ),
             title: Text(localizedAmmoCaliber(ammoType)),
             subtitle: Text('$qty×'),
           );
@@ -6182,7 +6253,12 @@ class _CrewScreenState extends State<CrewScreen>
           return ListTile(
             dense: true,
             contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-            leading: const Icon(Icons.medication, size: 20),
+            leading: _crewStorageItemThumb(
+              assetPath: drugType.isEmpty
+                  ? null
+                  : 'assets/images/drugs/$drugType.png',
+              fallback: Icons.medication,
+            ),
             title: Text(_crewDrugLabel(row)),
             subtitle: Text('${qty}g'),
             trailing: allowDrugExport && drugType.isNotEmpty
@@ -6208,7 +6284,12 @@ class _CrewScreenState extends State<CrewScreen>
             return ListTile(
               dense: true,
               contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-              leading: const Icon(Icons.inventory, size: 20),
+              leading: _crewStorageItemThumb(
+                assetPath: goodType.isEmpty
+                    ? null
+                    : 'assets/images/trade_goods/cards/$goodType.png',
+                fallback: Icons.inventory,
+              ),
               title: Text(TradeGoodL10n.name(loc, goodType)),
               subtitle: Text('$qty×'),
             );
@@ -6221,7 +6302,10 @@ class _CrewScreenState extends State<CrewScreen>
           ListTile(
             dense: true,
             contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-            leading: const Icon(Icons.account_balance_wallet, size: 20),
+            leading: _crewStorageItemThumb(
+              assetPath: 'assets/images/premium_tiles/shop_cash_bundle.png',
+              fallback: Icons.account_balance_wallet,
+            ),
             title: Text(_money(cash)),
           ),
         ];
