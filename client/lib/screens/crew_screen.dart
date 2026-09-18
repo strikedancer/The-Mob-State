@@ -14,6 +14,9 @@ import '../utils/top_right_notification.dart';
 import '../utils/formatters.dart';
 import '../utils/web_asset_helper.dart';
 import '../utils/trade_good_l10n.dart';
+import '../utils/weapon_display_name.dart';
+import '../utils/tool_display_name.dart';
+import '../utils/game_event_rewards.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/country_helper.dart';
 import '../widgets/crew_heists_panel.dart';
@@ -4560,49 +4563,6 @@ class _CrewScreenState extends State<CrewScreen>
     await _depositDrugs(trade: true);
   }
 
-  List<Widget> _buildCrewDrugLotExportTiles() {
-    final inventory = _crewStorage?['inventory'];
-    if (inventory is! Map) return const [];
-    final rawLots = inventory['drugLots'];
-    if (rawLots is! List) return const [];
-    final lots = rawLots.whereType<Map>().map((row) => row.cast<String, dynamic>()).where((row) {
-      final qty = (row['quantity'] as num?)?.toInt() ?? 0;
-      final type = (row['drugType'] ?? '').toString();
-      return type.isNotEmpty && qty > 0;
-    }).toList();
-    if (lots.isEmpty) return const [];
-
-    return [
-      Padding(
-        padding: const EdgeInsets.fromLTRB(4, 12, 4, 6),
-        child: Text(
-          l10n.drugsCrewLotsTitle,
-          style: const TextStyle(fontWeight: FontWeight.w700),
-        ),
-      ),
-      ...lots.map((lot) {
-        final drugType = (lot['drugType'] ?? '').toString();
-        final quality = (lot['quality'] ?? 'C').toString();
-        final quantity = (lot['quantity'] as num?)?.toInt() ?? 0;
-        return Card(
-          child: ListTile(
-            leading: const Icon(Icons.local_shipping),
-            title: Text('$drugType ($quality)'),
-            subtitle: Text('${quantity}g'),
-            trailing: TextButton(
-              onPressed: () => _exportCrewDrugLot(
-                drugType: drugType,
-                quality: quality,
-                quantity: quantity,
-              ),
-              child: Text(l10n.drugsExportAction),
-            ),
-          ),
-        );
-      }),
-    ];
-  }
-
   Future<void> _exportCrewDrugLot({
     required String drugType,
     required String quality,
@@ -6085,6 +6045,265 @@ class _CrewScreenState extends State<CrewScreen>
     );
   }
 
+  List<Map<String, dynamic>> _crewInventoryRows(String key) {
+    final inventory =
+        (_crewStorage?['inventory'] as Map?)?.cast<String, dynamic>() ?? {};
+    return (inventory[key] as List<dynamic>? ?? [])
+        .whereType<Map>()
+        .map((row) => row.cast<String, dynamic>())
+        .toList();
+  }
+
+  String _crewVehicleLabel(Map<String, dynamic> row, AppLocalizations loc) {
+    final vehicleId = (row['vehicleId'] ?? '').toString();
+    final rawName = (row['name'] ?? '').toString().trim();
+    final pretty = rawName.isNotEmpty && rawName != vehicleId
+        ? rawName
+        : catalogIdFallbackLabel(vehicleId.isNotEmpty ? vehicleId : rawName);
+    final type = (row['vehicleType'] ?? '').toString();
+    if (type == 'motorcycle') {
+      return '$pretty · ${loc.crewUiTr100}';
+    }
+    if (type == 'boat') {
+      return '$pretty · ${loc.crewUiTr101}';
+    }
+    return pretty;
+  }
+
+  String _crewDrugLabel(Map<String, dynamic> row) {
+    final type = (row['drugType'] ?? row['goodType'] ?? '').toString();
+    final quality = (row['quality'] ?? '').toString();
+    final name = catalogIdFallbackLabel(type);
+    if (quality.isEmpty) return name;
+    return '$name ($quality)';
+  }
+
+  List<Widget> _crewStorageItemTiles({
+    required String buildingType,
+    required AppLocalizations loc,
+    bool allowDrugExport = false,
+  }) {
+    Widget empty() {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+        child: Text(
+          loc.crewUiStorageEmpty,
+          style: const TextStyle(color: Colors.grey),
+        ),
+      );
+    }
+
+    List<Widget> tilesFrom(
+      List<Map<String, dynamic>> rows,
+      Widget Function(Map<String, dynamic> row) builder,
+    ) {
+      if (rows.isEmpty) return [empty()];
+      return rows.map(builder).toList();
+    }
+
+    switch (buildingType) {
+      case 'car_storage':
+        return tilesFrom(_crewInventoryRows('cars'), (row) {
+          final condition = (row['condition'] as num?)?.toInt() ?? 0;
+          final fuel = (row['fuelLevel'] as num?)?.toInt() ?? 0;
+          return ListTile(
+            dense: true,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+            leading: const Icon(Icons.directions_car, size: 20),
+            title: Text(_crewVehicleLabel(row, loc)),
+            subtitle: Text(
+              '${loc.condition} $condition% · ${loc.vehicleFuel} $fuel%',
+            ),
+          );
+        });
+      case 'boat_storage':
+        return tilesFrom(_crewInventoryRows('boats'), (row) {
+          final condition = (row['condition'] as num?)?.toInt() ?? 0;
+          final fuel = (row['fuelLevel'] as num?)?.toInt() ?? 0;
+          return ListTile(
+            dense: true,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+            leading: const Icon(Icons.directions_boat, size: 20),
+            title: Text(_crewVehicleLabel({...row, 'vehicleType': 'boat'}, loc)),
+            subtitle: Text(
+              '${loc.condition} $condition% · ${loc.vehicleFuel} $fuel%',
+            ),
+          );
+        });
+      case 'weapon_storage':
+        return tilesFrom(_crewInventoryRows('weapons'), (row) {
+          final id = (row['weaponId'] ?? '').toString();
+          final qty = (row['quantity'] as num?)?.toInt() ?? 0;
+          final condition = (row['averageCondition'] as num?)?.toInt() ?? 0;
+          return ListTile(
+            dense: true,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+            leading: const Icon(Icons.gavel, size: 20),
+            title: Text(localizedWeaponDisplayName(loc, id, id)),
+            subtitle: Text('$qty× · ${loc.condition} $condition%'),
+          );
+        });
+      case 'tool_storage':
+        return tilesFrom(_crewInventoryRows('tools'), (row) {
+          final id = (row['toolId'] ?? '').toString();
+          final durability = (row['durability'] as num?)?.toInt() ?? 0;
+          return ListTile(
+            dense: true,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+            leading: const Icon(Icons.handyman, size: 20),
+            title: Text(localizedToolName(loc, id, id)),
+            subtitle: Text('${loc.durability} $durability%'),
+          );
+        });
+      case 'ammo_storage':
+        return tilesFrom(_crewInventoryRows('ammo'), (row) {
+          final ammoType = (row['ammoType'] ?? '').toString();
+          final qty = (row['quantity'] as num?)?.toInt() ?? 0;
+          return ListTile(
+            dense: true,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+            leading: const Icon(Icons.inventory_2, size: 20),
+            title: Text(localizedAmmoCaliber(ammoType)),
+            subtitle: Text('$qty×'),
+          );
+        });
+      case 'drug_storage':
+        final lots = _crewInventoryRows('drugLots')
+            .where((row) => ((row['quantity'] as num?)?.toInt() ?? 0) > 0)
+            .toList();
+        final stacks = _crewInventoryRows('drugs')
+            .where((row) => ((row['quantity'] as num?)?.toInt() ?? 0) > 0)
+            .toList();
+        final rows = lots.isNotEmpty ? lots : stacks;
+        return tilesFrom(rows, (row) {
+          final qty = (row['quantity'] as num?)?.toInt() ?? 0;
+          final drugType = (row['drugType'] ?? row['goodType'] ?? '').toString();
+          final quality = (row['quality'] ?? '').toString();
+          return ListTile(
+            dense: true,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+            leading: const Icon(Icons.medication, size: 20),
+            title: Text(_crewDrugLabel(row)),
+            subtitle: Text('${qty}g'),
+            trailing: allowDrugExport && drugType.isNotEmpty
+                ? TextButton(
+                    onPressed: () => _exportCrewDrugLot(
+                      drugType: drugType,
+                      quality: quality.isEmpty ? 'C' : quality,
+                      quantity: qty,
+                    ),
+                    child: Text(l10n.drugsExportAction),
+                  )
+                : null,
+          );
+        });
+      case 'trade_storage':
+        return tilesFrom(
+          _crewInventoryRows('trade')
+              .where((row) => ((row['quantity'] as num?)?.toInt() ?? 0) > 0)
+              .toList(),
+          (row) {
+            final goodType = (row['goodType'] ?? '').toString();
+            final qty = (row['quantity'] as num?)?.toInt() ?? 0;
+            return ListTile(
+              dense: true,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+              leading: const Icon(Icons.inventory, size: 20),
+              title: Text(TradeGoodL10n.name(loc, goodType)),
+              subtitle: Text('$qty×'),
+            );
+          },
+        );
+      case 'cash_storage':
+        final cash = (_crewStorage?['totals']?['cash'] as num?)?.toInt() ?? 0;
+        if (cash <= 0) return [empty()];
+        return [
+          ListTile(
+            dense: true,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+            leading: const Icon(Icons.account_balance_wallet, size: 20),
+            title: Text(_money(cash)),
+          ),
+        ];
+      default:
+        return [empty()];
+    }
+  }
+
+  Future<void> _showCrewStorageContentsDialog({
+    required String buildingType,
+    required String title,
+  }) async {
+    final loc = l10n;
+    await showDialog<void>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: SizedBox(
+          width: 420,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxHeight: 420),
+            child: ListView(
+              shrinkWrap: true,
+              children: _crewStorageItemTiles(
+                buildingType: buildingType,
+                loc: loc,
+                allowDrugExport: buildingType == 'drug_storage',
+              ),
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(loc.crewUiTr43),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCrewStorageBayCard({
+    required IconData icon,
+    required String title,
+    required String value,
+    required String buildingType,
+    VoidCallback? onAdd,
+    required String addLabel,
+    bool allowDrugExport = false,
+  }) {
+    final items = _crewStorageItemTiles(
+      buildingType: buildingType,
+      loc: l10n,
+      allowDrugExport: allowDrugExport,
+    );
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          ListTile(
+            leading: Icon(icon),
+            title: Text(title),
+            subtitle: Text(value),
+            trailing: onAdd != null
+                ? OutlinedButton(onPressed: onAdd, child: Text(addLabel))
+                : null,
+          ),
+          const Divider(height: 1),
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxHeight: 240),
+            child: ListView(
+              shrinkWrap: true,
+              physics: const ClampingScrollPhysics(),
+              children: items,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildStorageManagementTab() {
     final locale = Localizations.localeOf(context).languageCode;
     if (_myCrew == null) {
@@ -6115,22 +6334,20 @@ class _CrewScreenState extends State<CrewScreen>
       required String titleNl,
       required String titleEn,
       required String value,
+      required String buildingType,
       VoidCallback? onPressed,
       String? actionNl,
       String? actionEn,
+      bool allowDrugExport = false,
     }) {
-      return Card(
-        child: ListTile(
-          leading: Icon(icon),
-          title: Text(locale == 'nl' ? titleNl : titleEn),
-          subtitle: Text(value),
-          trailing: onPressed != null
-              ? OutlinedButton(
-                  onPressed: onPressed,
-                  child: Text(locale == 'nl' ? actionNl! : actionEn!),
-                )
-              : null,
-        ),
+      return _buildCrewStorageBayCard(
+        icon: icon,
+        title: locale == 'nl' ? titleNl : titleEn,
+        value: value,
+        buildingType: buildingType,
+        onAdd: onPressed,
+        addLabel: locale == 'nl' ? (actionNl ?? '') : (actionEn ?? ''),
+        allowDrugExport: allowDrugExport,
       );
     }
 
@@ -6219,6 +6436,7 @@ class _CrewScreenState extends State<CrewScreen>
             titleNl: 'Auto/motor opslag',
             titleEn: 'Car/Motorcycle Storage',
             value: '${totals?['cars'] ?? 0} / ${capacities?['cars'] ?? 0}',
+            buildingType: 'car_storage',
             onPressed: (capacities?['cars'] as int? ?? 0) > 0
                 ? () => _depositVehicle(vehicleType: 'car')
                 : null,
@@ -6230,6 +6448,7 @@ class _CrewScreenState extends State<CrewScreen>
             titleNl: 'Haven',
             titleEn: 'Boat Storage',
             value: '${totals?['boats'] ?? 0} / ${capacities?['boats'] ?? 0}',
+            buildingType: 'boat_storage',
             onPressed: (capacities?['boats'] as int? ?? 0) > 0
                 ? () => _depositVehicle(vehicleType: 'boat')
                 : null,
@@ -6242,6 +6461,7 @@ class _CrewScreenState extends State<CrewScreen>
             titleEn: 'Weapon Storage',
             value:
                 '${totals?['weapons'] ?? 0} / ${capacities?['weapons'] ?? 0}',
+            buildingType: 'weapon_storage',
             onPressed: (capacities?['weapons'] as int? ?? 0) > 0
                 ? _depositWeapon
                 : null,
@@ -6253,6 +6473,7 @@ class _CrewScreenState extends State<CrewScreen>
             titleNl: 'Gereedschapopslag',
             titleEn: 'Tool Storage',
             value: '${totals?['tools'] ?? 0} / ${capacities?['tools'] ?? 0}',
+            buildingType: 'tool_storage',
             onPressed: (capacities?['tools'] as int? ?? 0) > 0
                 ? _depositTool
                 : null,
@@ -6264,6 +6485,7 @@ class _CrewScreenState extends State<CrewScreen>
             titleNl: 'Munitie opslag',
             titleEn: 'Ammo Storage',
             value: '${totals?['ammo'] ?? 0} / ${capacities?['ammo'] ?? 0}',
+            buildingType: 'ammo_storage',
             onPressed: (capacities?['ammo'] as int? ?? 0) > 0
                 ? _depositAmmo
                 : null,
@@ -6275,18 +6497,20 @@ class _CrewScreenState extends State<CrewScreen>
             titleNl: 'Drugsopslag',
             titleEn: 'Drug Storage',
             value: '${totals?['drugs'] ?? 0} / ${capacities?['drugs'] ?? 0}',
+            buildingType: 'drug_storage',
             onPressed: (capacities?['drugs'] as int? ?? 0) > 0
                 ? _depositDrugs
                 : null,
             actionNl: 'Toevoegen',
             actionEn: 'Add',
+            allowDrugExport: true,
           ),
-          ..._buildCrewDrugLotExportTiles(),
           buildStorageTile(
             icon: Icons.inventory,
             titleNl: 'Handelswarenopslag',
             titleEn: 'Trade Storage',
             value: '${totals?['trade'] ?? 0} / ${capacities?['trade'] ?? 0}',
+            buildingType: 'trade_storage',
             onPressed: (capacities?['trade'] as int? ?? 0) > 0
                 ? _depositTradeGoods
                 : null,
@@ -6298,6 +6522,7 @@ class _CrewScreenState extends State<CrewScreen>
             titleNl: 'Cash opslag',
             titleEn: 'Cash Storage',
             value: '${_money(totals?['cash'] ?? 0)} / ${_money(cashLimit)}',
+            buildingType: 'cash_storage',
             onPressed: () => _handleBankAction(deposit: true),
             actionNl: 'Storten',
             actionEn: 'Deposit',
@@ -7708,7 +7933,14 @@ class _CrewScreenState extends State<CrewScreen>
                 width: imageWidth,
                 child: AspectRatio(
                   aspectRatio: 2 / 3,
-                  child: ClipRRect(
+                  child: GestureDetector(
+                    onTap: (type ?? '').endsWith('_storage')
+                        ? () => _showCrewStorageContentsDialog(
+                            buildingType: type ?? buildingType,
+                            title: localizedLabel,
+                          )
+                        : null,
+                    child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: Stack(
                       children: [
@@ -7808,6 +8040,7 @@ class _CrewScreenState extends State<CrewScreen>
                       ],
                     ),
                   ),
+                  ),
                 ),
               ),
             ),
@@ -7833,6 +8066,15 @@ class _CrewScreenState extends State<CrewScreen>
                   ),
                 ),
                 const SizedBox(width: 8),
+                if ((type ?? '').endsWith('_storage'))
+                  IconButton(
+                    tooltip: l10n.crewUiStorageViewContents,
+                    onPressed: () => _showCrewStorageContentsDialog(
+                      buildingType: type ?? buildingType,
+                      title: localizedLabel,
+                    ),
+                    icon: const Icon(Icons.list_alt),
+                  ),
                 IconButton(
                   tooltip: _t(l10n, 'help.showCaps'),
                   onPressed: () =>

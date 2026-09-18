@@ -45,6 +45,7 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - Each ISO week has one missable crew weekly goal (`crew_week_mission_1`, fallback `crew_week_crimes_15`). Unclaimed rewards expire at the end of the UTC week. No invite API in this flow.
 - Extra roles besides `leader` / `co_leader` / `member`: `consigliere` (Don crew overview, no bank withdraw) and `capo` with optional `capoCountry` (crew-bank tribute only in that country). Leader sets roles via `POST /crews/:id/members/:playerId/role`. See [don.md](don.md).
 - Shared crew storage is crew inventory, not a personal garage. Cars/motorcycles/boats/weapons/ammo/trade deposit into crew and are consumed by crew smuggling, missions, deals or enemy raids; they cannot be withdrawn for personal crimes. Drugs can be withdrawn or wholesaled. Weapons and ammo also feed Territory (HQ reserve plus frontline arms-cache); building level stays the cap. Crew Wars raids still steal the same HQ stacks.
+- The Storage tab must list the actual items in each bay (not only 5/20 totals). HQ storage-building cards open the same contents list.
 - Leader and `co_leader` can buy a jailed crewmate out from Prison using the crew bank (`POST /player/prison/buyout/:targetId` with `payFrom: crew_bank`). Personal cash buyout stays available to everyone. Crew-bank payment has a dirty-money arrest risk on the payer (target is still freed). Members, consigliere and capo cannot pay from the vault.
 - Crew VIP is real-money. Every member can donate into a shared pot (`/subscriptions/checkout/crew-vip-donate`) or one member can start the monthly subscription (`/subscriptions/checkout/crew-vip`). In-game crew-bank cash never buys Crew VIP. When the pot reaches the monthly price the crew gets 30 days. Gift Crew VIP by name stays a one-time 30-day gift.
 - Crew storage deals are officer-only escrow with another crew. Goods leave storage immediately; both crews confirm or the whole deal rolls back. Do not steal from your own crew or from personal inventories.
@@ -85,6 +86,7 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - Verify leaders can close recruiting and that closed crews disappear from the recruiting list.
 - Verify the weekly crew goal is visible on the crew overview and dashboard, and that an unclaimed goal is gone after the UTC week rolls.
 - Verify Storage shows crew deals, officers can lock an offer, and cancel returns the goods.
+- Verify each storage bay lists the parked/stored items (name, quantity, condition/fuel/durability) and that tapping an HQ storage building opens the same list.
 - Verify a war raid asks which storage type to hit and refuses when attacker storage is full. Tool storage can be raided the same way as other instance stacks.
 - Verify Help / the gold `i` on Crew explains that stored cars, boats, weapons, tools and trade goods are crew cargo (not a personal garage) and that only leader/co-leader can buy a crewmate out with the crew bank.
 - Verify a failed heist still jails the whole crew and applies XP loss without a 500, including crews larger than a handful of members.

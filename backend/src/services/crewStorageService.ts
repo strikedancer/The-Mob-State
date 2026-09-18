@@ -684,10 +684,21 @@ export async function getCrewStorageSummary(crewId: number) {
     drugs.reduce((sum, item) => sum + item.quantity, 0) +
     drugLots.reduce((sum, item) => sum + item.quantity, 0);
   const tradeCount = tradeGoods.reduce((sum, item) => sum + item.quantity, 0);
-  const carsWithType = cars.map((vehicle) => ({
-    ...vehicle,
-    vehicleType: resolveCrewLandVehicleType(vehicle.vehicleId),
-  }));
+  const carsWithType = cars.map((vehicle) => {
+    const def = vehicleService.getVehicleById(vehicle.vehicleId);
+    return {
+      ...vehicle,
+      vehicleType: resolveCrewLandVehicleType(vehicle.vehicleId),
+      name: def?.name ?? vehicle.vehicleId,
+    };
+  });
+  const boatsWithName = boats.map((vehicle) => {
+    const def = vehicleService.getVehicleById(vehicle.vehicleId);
+    return {
+      ...vehicle,
+      name: def?.name ?? vehicle.vehicleId,
+    };
+  });
 
   return {
     capacities: {
@@ -716,7 +727,7 @@ export async function getCrewStorageSummary(crewId: number) {
     },
     inventory: {
       cars: carsWithType,
-      boats,
+      boats: boatsWithName,
       weapons,
       tools,
       ammo,
