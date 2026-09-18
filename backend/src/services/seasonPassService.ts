@@ -42,15 +42,23 @@ export function seasonWindow(seasonKey: string): { startsAt: Date; endsAt: Date 
   return { startsAt, endsAt };
 }
 
+async function seasonPassColumnExists(columnName: string): Promise<boolean> {
+  const rows = await prisma.$queryRaw<Array<{ count: number | bigint }>>`
+    SELECT COUNT(*) AS count
+    FROM information_schema.COLUMNS
+    WHERE TABLE_SCHEMA = DATABASE()
+      AND TABLE_NAME = 'player_season_pass'
+      AND COLUMN_NAME = ${columnName}
+  `;
+  return Number(rows?.[0]?.count ?? 0) > 0;
+}
+
 async function ensureStatColumns(): Promise<void> {
   for (const col of Object.values(STAT_COLUMNS)) {
-    try {
-      await prisma.$executeRawUnsafe(
-        `ALTER TABLE player_season_pass ADD COLUMN ${col} INT NOT NULL DEFAULT 0`,
-      );
-    } catch {
-      /* column exists */
-    }
+    if (await seasonPassColumnExists(col)) continue;
+    await prisma.$executeRawUnsafe(
+      `ALTER TABLE player_season_pass ADD COLUMN ${col} INT NOT NULL DEFAULT 0`,
+    );
   }
 }
 
