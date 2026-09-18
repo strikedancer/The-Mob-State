@@ -116,16 +116,16 @@ export const UI = {
   empty: pack('Niets gevonden.', 'Nothing found.', 'Nichts gefunden.', 'Rien trouvé.', 'Nada encontrado.', 'Nessun risultato.', 'Nic nie znaleziono.', 'Nada encontrado.'),
   askOpen: pack('Vraag de Almanak', 'Ask the Almanac', 'Almanach fragen', 'Demander à l’almanach', 'Preguntar al almanaque', 'Chiedi all’almanacco', 'Zapytaj almanach', 'Perguntar ao almanaque'),
   askTitle: pack('Almanak-hulp', 'Almanac help', 'Almanach-Hilfe', 'Aide de l’almanach', 'Ayuda del almanaque', 'Aiuto almanacco', 'Pomoc almanachu', 'Ajuda do almanaque'),
-  askKicker: pack('Automatische antwoorden', 'Automatic answers', 'Automatische Antworten', 'Réponses automatiques', 'Respuestas automáticas', 'Risposte automatiche', 'Automatyczne odpowiedzi', 'Respostas automáticas'),
+  askKicker: pack('Handleiding · bronnen', 'Handbook · sources', 'Handbuch · Quellen', 'Manuel · sources', 'Manual · fuentes', 'Manuale · fonti', 'Poradnik · źródła', 'Manual · fontes'),
   askWelcome: pack(
-    'Stel een vraag over het spel. Ik zoek het antwoord in de handleiding en catalogus. Geen live prijzen en geen accountgegevens.',
-    'Ask a question about the game. I look up the answer in the handbook and catalogue. No live prices and no account data.',
-    'Stell eine Frage zum Spiel. Ich suche die Antwort in Handbuch und Katalog. Keine Live-Preise und keine Kontodaten.',
-    'Posez une question sur le jeu. Je cherche la réponse dans le manuel et le catalogue. Pas de prix live ni de données de compte.',
-    'Haz una pregunta sobre el juego. Busco la respuesta en el manual y el catálogo. Sin precios en vivo ni datos de cuenta.',
-    'Fai una domanda sul gioco. Cerco la risposta nel manuale e nel catalogo. Niente prezzi live né dati account.',
-    'Zadaj pytanie o grę. Szukam odpowiedzi w poradniku i katalogu. Bez żywych cen i danych konta.',
-    'Faça uma pergunta sobre o jogo. Procuro a resposta no manual e no catálogo. Sem preços ao vivo nem dados de conta.'
+    'Stel een vraag over het spel. Ik zoek in de hele handleiding en catalogus, combineer de beste passages en noem de bron. Geen live prijzen en geen accountgegevens.',
+    'Ask a question about the game. I search the full handbook and catalogue, combine the best passages and cite the source. No live prices and no account data.',
+    'Stell eine Frage zum Spiel. Ich durchsuche das ganze Handbuch und den Katalog, kombiniere die besten Absätze und nenne die Quelle. Keine Live-Preise und keine Kontodaten.',
+    'Posez une question sur le jeu. Je cherche dans tout le manuel et le catalogue, combine les meilleurs passages et cite la source. Pas de prix live ni de données de compte.',
+    'Haz una pregunta sobre el juego. Busco en todo el manual y el catálogo, combino los mejores pasajes y cito la fuente. Sin precios en vivo ni datos de cuenta.',
+    'Fai una domanda sul gioco. Cerco in tutto il manuale e il catalogo, unisco i passaggi migliori e cito la fonte. Niente prezzi live né dati account.',
+    'Zadaj pytanie o grę. Przeszukuję cały poradnik i katalog, łączę najlepsze fragmenty i podaję źródło. Bez żywych cen i danych konta.',
+    'Faça uma pergunta sobre o jogo. Procuro em todo o manual e catálogo, combino as melhores passagens e cito a fonte. Sem preços ao vivo nem dados de conta.'
   ),
   askPlaceholder: pack('Bijvoorbeeld: hoe werkt Don?', 'For example: how does Don work?', 'Zum Beispiel: wie funktioniert Don?', 'Par exemple : comment marche Don ?', 'Por ejemplo: ¿cómo funciona Don?', 'Ad esempio: come funziona Don?', 'Na przykład: jak działa Don?', 'Por exemplo: como funciona o Don?'),
   askSend: pack('Vraag', 'Ask', 'Fragen', 'Demander', 'Preguntar', 'Chiedi', 'Pytaj', 'Perguntar'),
@@ -142,15 +142,39 @@ export const UI = {
     'Almanach nie ma jeszcze nic na ten temat. Spróbuj innych słów albo otwórz poradnik.',
     'O almanaque ainda não tem nada sobre isso. Tente outras palavras, ou abra o manual.'
   ),
+  askSources: pack('Bronnen', 'Sources', 'Quellen', 'Sources', 'Fuentes', 'Fonti', 'Źródła', 'Fontes'),
+  askFollow: pack('Verder vragen', 'Ask next', 'Weiterfragen', 'Questions suivantes', 'Seguir preguntando', 'Altre domande', 'Kolejne pytania', 'Perguntar a seguir'),
+  askFollowTpl: pack('Meer over {title}?', 'More about {title}?', 'Mehr über {title}?', 'Plus sur {title} ?', 'Más sobre {title}?', 'Altro su {title}?', 'Więcej o {title}?', 'Mais sobre {title}?'),
+  askThinking: pack('Zoeken in de handleiding…', 'Searching the handbook…', 'Suche im Handbuch…', 'Recherche dans le manuel…', 'Buscando en el manual…', 'Cerco nel manuale…', 'Szukam w poradniku…', 'A procurar no manual…'),
+  askBlockedPrice: pack(
+    'Live straatprijzen staan niet in de Almanak. Die zie je in het spel op de Zwarte Markt. Hier staan alleen vaste landfactoren en catalogusprijzen.',
+    'Live street prices are not in the Almanac. You see those in-game on the Black Market. Here you only get fixed country factors and catalogue prices.',
+    'Live-Straßenpreise stehen nicht im Almanach. Die siehst du im Spiel auf dem Schwarzmarkt. Hier gibt es nur feste Landesfaktoren und Katalogpreise.',
+    'Les prix live ne sont pas dans l’almanach. Vous les voyez en jeu sur le marché noir. Ici : facteurs pays fixes et prix catalogue.',
+    'Los precios en vivo no están en el almanaque. Los ves en el juego en el mercado negro. Aquí solo factores de país fijos y precios de catálogo.',
+    'I prezzi live non sono nell’almanacco. Li vedi in gioco sul mercato nero. Qui solo fattori paese fissi e prezzi di catalogo.',
+    'Żywych cen ulicznych nie ma w almanachu. Zobaczysz je w grze na czarnym rynku. Tutaj tylko stałe mnożniki kraju i ceny katalogowe.',
+    'Preços ao vivo não estão no almanaque. Vês isso no jogo no mercado negro. Aqui só fatores de país fixos e preços de catálogo.'
+  ),
+  askBlockedAccount: pack(
+    'Ik ken geen accounts of saldi. Log in op het spel voor jouw geld, of stel een vraag over hoe een scherm werkt.',
+    'I do not know accounts or balances. Log into the game for your money, or ask how a screen works.',
+    'Ich kenne keine Konten oder Salden. Melde dich im Spiel an für dein Geld, oder frage, wie ein Bildschirm funktioniert.',
+    'Je ne connais ni comptes ni soldes. Connectez-vous au jeu pour votre argent, ou demandez comment un écran fonctionne.',
+    'No conozco cuentas ni saldos. Entra al juego para tu dinero, o pregunta cómo funciona una pantalla.',
+    'Non conosco account o saldi. Accedi al gioco per i tuoi soldi, o chiedi come funziona una schermata.',
+    'Nie znam kont ani sald. Zaloguj się do gry po swoje pieniądze albo zapytaj, jak działa ekran.',
+    'Não conheço contas nem saldos. Entra no jogo para o teu dinheiro, ou pergunta como funciona um ecrã.'
+  ),
   askSuggest: pack(
-    'Hoe werkt Don?|Wat is de crew-bank?|Hoe werkt de rugzak?|Hoe kom ik uit de gevangenis?',
-    'How does Don work?|What is the crew bank?|How does the backpack work?|How do I get out of prison?',
-    'Wie funktioniert Don?|Was ist die Crew-Bank?|Wie funktioniert der Rucksack?|Wie komme ich aus dem Gefängnis?',
-    'Comment marche Don ?|Qu’est-ce que la banque d’équipage ?|Comment marche le sac ?|Comment sortir de prison ?',
-    '¿Cómo funciona Don?|¿Qué es el banco de crew?|¿Cómo funciona la mochila?|¿Cómo salgo de la cárcel?',
-    'Come funziona Don?|Cos’è la banca della crew?|Come funziona lo zaino?|Come esco di prigione?',
-    'Jak działa Don?|Czym jest bank załogi?|Jak działa plecak?|Jak wyjść z więzienia?',
-    'Como funciona o Don?|O que é o banco da crew?|Como funciona a mochila?|Como saio da prisão?'
+    'Hoe werkt Don?|Hoe innen bij prostitutie?|Wat is een wapendepot?|Hoe werkt Crew VIP?',
+    'How does Don work?|How do I collect prostitution earnings?|What is an arms cache?|How does Crew VIP work?',
+    'Wie funktioniert Don?|Wie kassiere ich Prostitutions-Einnahmen?|Was ist ein Waffendepot?|Wie funktioniert Crew-VIP?',
+    'Comment marche Don ?|Comment encaisser la prostitution ?|Qu’est-ce qu’un dépôt d’armes ?|Comment marche le Crew VIP ?',
+    '¿Cómo funciona Don?|¿Cómo cobro ingresos de prostitución?|¿Qué es un depósito de armas?|¿Cómo funciona Crew VIP?',
+    'Come funziona Don?|Come riscuoto i guadagni della prostituzione?|Cos’è un deposito armi?|Come funziona il Crew VIP?',
+    'Jak działa Don?|Jak zebrać zarobki z prostytucji?|Czym jest skład broni?|Jak działa Crew VIP?',
+    'Como funciona o Don?|Como cobro ganhos de prostituição?|O que é um depósito de armas?|Como funciona o Crew VIP?'
   ),
   footer: pack(
     'Gegenereerd uit de game-catalogus. © The Mob State',

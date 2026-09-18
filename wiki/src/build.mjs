@@ -931,11 +931,13 @@ function writeSearchIndexes() {
         const rel = path.relative(langDir, full).replace(/\\/g, '/').replace(/index\.html$/, '');
         const href = `/${lang}/${rel}`.replace(/\/+$/, '/') || `/${lang}/`;
         const kind = href.includes('/guide/') ? 'guide' : rel === '' ? 'home' : 'catalog';
+        const aliases = rel.replace(/[/_-]+/g, ' ').trim();
         entries.push({
           href,
           title: pageTitle || unesc((html.match(/<title>([^<]+)/)?.[1] || '').split(' · ')[0]),
           snippet: snippet.slice(0, 180),
           answer: answer.slice(0, 8000),
+          aliases,
           kind,
           text: text.slice(0, 24000),
         });
@@ -952,6 +954,7 @@ fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
 copyAsset('theme.css');
 copyAsset('client.js');
+copyAsset('ask-engine.js');
 rootIndex();
 robotsAndSitemap();
 

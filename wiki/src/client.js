@@ -27,6 +27,7 @@ function applyCardFilter(q) {
 
 let searchIndex = null;
 let searchIndexPromise = null;
+let askStats = null;
 let activeIndex = -1;
 
 function loadSearchIndex() {
@@ -39,71 +40,31 @@ function loadSearchIndex() {
     })
     .then((data) => {
       searchIndex = Array.isArray(data) ? data : [];
+      askStats = window.AlmanacAsk ? window.AlmanacAsk.buildIndex(searchIndex) : null;
       return searchIndex;
     })
     .catch(() => {
       searchIndexPromise = null;
       searchIndex = [];
+      askStats = null;
       return searchIndex;
     });
   return searchIndexPromise;
 }
 
-const STOP = new Set(
-  'hoe wat waar wanneer waarom welke wie is zijn de het een van voor met naar op in uit bij om tot dat die dit als kan kun moet mag wel niet ik je we ze en of maar ook nog al mijn jouw onze even iets help uitleg vertel leg werkt werk doe doet over how what where when why which who are the a an of for with to from at do does can you we my me tell explain about work works working please wie was der das und oder funktioniert comment quoi quel quelle est les des une pour avec dans como que cual donde para con una los las come cosa quale dove perche nel jak co gdzie dlaczego czy dla jest o onde uma os as'.split(
-    /\s+/
-  )
-);
-
-function tokensOf(raw) {
-  const words = String(raw || '')
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/\p{M}/gu, '')
-    .replace(/[^\p{L}\p{N}]+/gu, ' ')
-    .split(/\s+/)
-    .filter(Boolean);
-  const kept = words.filter(
-    (t) => (t.length >= 3 || ['don', 'vip', 'xp', 'fbi', 'rld', 'hp'].includes(t)) && !STOP.has(t)
-  );
-  return kept.length ? kept : words.filter((t) => t.length >= 2);
-}
-
-function hay(value) {
-  return String(value || '')
-    .toLowerCase()
-    .replace(/-/g, ' ');
-}
-
-function scoreEntry(entry, query) {
-  if (!query) return 0;
-  const needle = hay(query);
-  const title = hay(entry.title);
-  const snippet = hay(entry.snippet);
-  const answer = hay(entry.answer);
-  const text = hay(entry.text);
-  if (title === needle) return 100;
-  if (title.startsWith(needle)) return 90;
-  if (title.includes(needle)) return 80;
-  if (snippet.includes(needle)) return 50;
-  if (answer.includes(needle)) return 36;
-  if (text.includes(needle)) return 20;
-  return 0;
-}
-
 function rankEntries(index, raw, limit = 12) {
+  if (window.AlmanacAsk) {
+    const stats = askStats && askStats.pages === index ? askStats : window.AlmanacAsk.buildIndex(index);
+    if (askStats !== stats) askStats = stats;
+    return window.AlmanacAsk.rankPages(stats, raw, limit);
+  }
   const query = (raw || '').trim().toLowerCase();
-  const tokens = tokensOf(query);
   return index
     .map((entry) => {
-      let score = scoreEntry(entry, query);
-      for (const token of tokens) score += scoreEntry(entry, token);
-      if (tokens.length > 1) score += scoreEntry(entry, tokens.join(' '));
-      if (score > 0 && (entry.kind === 'guide' || (entry.href || '').includes('/guide/'))) score += 14;
-      return { entry, score };
+      const hay = `${entry.title || ''} ${entry.snippet || ''} ${entry.answer || ''}`.toLowerCase();
+      return { entry, score: hay.includes(query) ? 1 : 0 };
     })
     .filter((row) => row.score > 0)
-    .sort((a, b) => b.score - a.score || a.entry.title.localeCompare(b.entry.title))
     .slice(0, limit);
 }
 
@@ -226,40 +187,6 @@ if (select) {
   });
 }
 
-function clip(value, max) {
-  const text = String(value || '').replace(/\s+/g, ' ').trim();
-  if (text.length <= max) return text;
-  const cut = text.slice(0, max);
-  const at = Math.max(cut.lastIndexOf('. '), cut.lastIndexOf(' '));
-  return `${cut.slice(0, at > 40 ? at + 1 : max).trim()}…`;
-}
-
-function pickAnswer(entry, tokens) {
-  const blob = `${entry.snippet || ''} ${entry.answer || ''} ${entry.text || ''}`.replace(/\s+/g, ' ').trim();
-  if (!blob) return entry.title || '';
-  const sentences = blob
-    .split(/(?<=[.!?])\s+/)
-    .map((s) => s.trim())
-    .filter((s) => s.length > 24);
-  const scored = sentences
-    .map((sentence) => {
-      const lower = sentence.toLowerCase();
-      const matched = tokens.filter((t) => lower.includes(t));
-      return {
-        sentence,
-        hits: matched.length,
-        weight: matched.reduce((sum, token) => sum + token.length, 0),
-      };
-    })
-    .sort((a, b) => b.hits - a.hits || b.weight - a.weight || b.sentence.length - a.sentence.length);
-  const chosen = scored
-    .filter((row) => row.hits > 0)
-    .slice(0, 2)
-    .map((row) => row.sentence)
-    .join(' ');
-  return clip(chosen || blob, 420);
-}
-
 function initAsk() {
   const toggle = document.getElementById('almanac-ask');
   const panel = document.getElementById('almanac-chat');
@@ -274,14 +201,22 @@ function initAsk() {
     empty: panel.dataset.empty || '',
     read: panel.dataset.read || '→',
     more: panel.dataset.more || '',
+    sources: panel.dataset.sources || '',
+    follow: panel.dataset.follow || '',
+    followTpl: panel.dataset.followTpl || '{title}',
+    thinking: panel.dataset.thinking || '…',
+    blockedPrice: panel.dataset.blockedPrice || '',
+    blockedAccount: panel.dataset.blockedAccount || '',
   };
+  const session = { lastTitle: '', lastHref: '', lastQuery: '' };
 
-  function addMsg(kind, html) {
+  function addMsg(kind, html, extraClass) {
     const row = document.createElement('div');
-    row.className = `ask-msg ${kind}`;
+    row.className = `ask-msg ${kind}${extraClass ? ` ${extraClass}` : ''}`;
     row.innerHTML = html;
     log.appendChild(row);
     log.scrollTop = log.scrollHeight;
+    return row;
   }
 
   function openPanel() {
@@ -298,28 +233,51 @@ function initAsk() {
     toggle.focus();
   }
 
+  function renderAnswer(result) {
+    if (result.empty || result.blocked) {
+      addMsg('bot', `<p>${escHtml(result.body)}</p>`);
+      return;
+    }
+    const sources = result.sources.length
+      ? `<p class="ask-related">${escHtml(copy.sources)}</p><ul class="ask-sources">${result.sources
+          .map(
+            (item) =>
+              `<li><a href="${escHtml(item.href)}">${escHtml(copy.read)}: ${escHtml(item.title)}</a></li>`
+          )
+          .join('')}</ul>`
+      : '';
+    const follow = result.followups.length
+      ? `<p class="ask-related">${escHtml(copy.follow)}</p><div class="ask-follow">${result.followups
+          .map((q) => `<button type="button" data-ask="${escHtml(q)}">${escHtml(q)}</button>`)
+          .join('')}</div>`
+      : '';
+    addMsg('bot', `<p>${escHtml(result.body)}</p>${sources}${follow}`);
+  }
+
   async function answerQuestion(raw) {
     const question = (raw || '').trim();
     if (!question) return;
     addMsg('user', `<p>${escHtml(question)}</p>`);
+    const thinking = addMsg('bot', `<p>${escHtml(copy.thinking)}</p>`, 'thinking');
     const index = await loadSearchIndex();
-    const ranked = rankEntries(index, question, 4);
-    if (!ranked.length) {
-      addMsg('bot', `<p>${escHtml(copy.empty)}</p>`);
-      return;
+    const engine = window.AlmanacAsk;
+    let result;
+    if (engine && askStats) {
+      result = engine.answerQuestion({ stats: askStats, question, session, copy });
+    } else {
+      const ranked = rankEntries(index, question, 4);
+      result = ranked.length
+        ? {
+            blocked: null,
+            empty: false,
+            body: ranked[0].entry.snippet || ranked[0].entry.title,
+            sources: [{ title: ranked[0].entry.title, href: ranked[0].entry.href }],
+            followups: [],
+          }
+        : { blocked: null, empty: true, body: copy.empty, sources: [], followups: [] };
     }
-    const top = ranked[0].entry;
-    const related = ranked.slice(1, 3).map((row) => row.entry);
-    const body = pickAnswer(top, tokensOf(question));
-    const more = related.length
-      ? `<p class="ask-related">${escHtml(copy.more)}</p><ul>${related
-          .map((item) => `<li><a href="${escHtml(item.href)}">${escHtml(item.title)}</a></li>`)
-          .join('')}</ul>`
-      : '';
-    addMsg(
-      'bot',
-      `<p>${escHtml(body)}</p><p><a href="${escHtml(top.href)}">${escHtml(copy.read)}: ${escHtml(top.title)}</a></p>${more}`
-    );
+    thinking.remove();
+    renderAnswer(result);
   }
 
   toggle.addEventListener('click', () => {
@@ -330,11 +288,11 @@ function initAsk() {
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && !panel.hidden) closePanel();
   });
-  panel.querySelectorAll('[data-ask]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      input.value = btn.dataset.ask || btn.textContent || '';
-      form.requestSubmit();
-    });
+  panel.addEventListener('click', (event) => {
+    const btn = event.target.closest('[data-ask]');
+    if (!btn || !panel.contains(btn)) return;
+    input.value = btn.dataset.ask || btn.textContent || '';
+    form.requestSubmit();
   });
   form.addEventListener('submit', (event) => {
     event.preventDefault();

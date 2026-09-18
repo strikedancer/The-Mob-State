@@ -1,7 +1,7 @@
 import { LANGS, LANG_LABEL, ui } from './i18n.mjs';
 
 /** Query-bust CSS/JS; nginx caches those files for 7 days. */
-const ASSET_V = '20260917b';
+const ASSET_V = '20260918a';
 
 export function esc(value) {
   return String(value ?? '')
@@ -104,7 +104,7 @@ export function page({ lang, title, path, hero, crumbs, body, description }) {
   </main>
   <footer class="footer">${esc(ui(lang, 'footer'))}</footer>
   <button type="button" class="ask-toggle" id="almanac-ask" aria-expanded="false" aria-controls="almanac-chat">${esc(ui(lang, 'askOpen'))}</button>
-  <aside id="almanac-chat" class="ask-panel" hidden role="dialog" aria-labelledby="almanac-ask-title" data-welcome="${esc(ui(lang, 'askWelcome'))}" data-empty="${esc(ui(lang, 'askEmpty'))}" data-read="${esc(ui(lang, 'askRead'))}" data-more="${esc(ui(lang, 'askMore'))}">
+  <aside id="almanac-chat" class="ask-panel" hidden role="dialog" aria-labelledby="almanac-ask-title" data-welcome="${esc(ui(lang, 'askWelcome'))}" data-empty="${esc(ui(lang, 'askEmpty'))}" data-read="${esc(ui(lang, 'askRead'))}" data-more="${esc(ui(lang, 'askMore'))}" data-sources="${esc(ui(lang, 'askSources'))}" data-follow="${esc(ui(lang, 'askFollow'))}" data-follow-tpl="${esc(ui(lang, 'askFollowTpl'))}" data-thinking="${esc(ui(lang, 'askThinking'))}" data-blocked-price="${esc(ui(lang, 'askBlockedPrice'))}" data-blocked-account="${esc(ui(lang, 'askBlockedAccount'))}">
     <header class="ask-head">
       <div>
         <p class="ask-kicker">${esc(ui(lang, 'askKicker'))}</p>
@@ -119,10 +119,11 @@ export function page({ lang, title, path, hero, crumbs, body, description }) {
       .join('')}</div>
     <form class="ask-form" id="almanac-ask-form">
       <label class="skip" for="almanac-ask-input">${esc(ui(lang, 'askPlaceholder'))}</label>
-      <input id="almanac-ask-input" type="text" autocomplete="off" maxlength="200" placeholder="${esc(ui(lang, 'askPlaceholder'))}">
+      <input id="almanac-ask-input" type="text" autocomplete="off" maxlength="400" placeholder="${esc(ui(lang, 'askPlaceholder'))}">
       <button type="submit">${esc(ui(lang, 'askSend'))}</button>
     </form>
   </aside>
+  <script src="/ask-engine.js?v=${ASSET_V}"></script>
   <script src="/client.js?v=${ASSET_V}"></script>
 </body>
 </html>`;

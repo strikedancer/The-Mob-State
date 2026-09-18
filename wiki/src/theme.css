@@ -218,8 +218,8 @@ tr:hover td { background: rgba(212, 175, 55, 0.05); }
 .ask-toggle:hover { background: #e3c35a; }
 .ask-panel {
   position: fixed; right: 18px; bottom: 72px; z-index: 50;
-  width: min(400px, calc(100vw - 24px));
-  height: min(560px, calc(100vh - 110px));
+  width: min(440px, calc(100vw - 24px));
+  height: min(620px, calc(100vh - 110px));
   display: flex; flex-direction: column;
   background: var(--bg-2); border: 1px solid var(--line);
   border-radius: var(--radius); box-shadow: var(--shadow);
@@ -253,6 +253,19 @@ tr:hover td { background: rgba(212, 175, 55, 0.05); }
   border: 1px solid var(--line); border-radius: 14px 14px 4px 14px; padding: 10px 12px;
 }
 .ask-related { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+.ask-sources { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.ask-sources a {
+  display: inline-block; color: var(--gold-2); border: 1px solid var(--line);
+  border-radius: 999px; padding: 4px 10px; font-size: 12px; text-decoration: none;
+}
+.ask-sources a:hover { border-color: var(--gold); color: var(--ink); }
+.ask-follow { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.ask-follow button {
+  background: transparent; color: var(--gold-2); border: 1px solid var(--line);
+  border-radius: 999px; padding: 5px 10px; font: inherit; font-size: 12px; cursor: pointer;
+}
+.ask-follow button:hover { color: var(--ink); border-color: var(--gold); }
+.ask-msg.thinking { color: var(--muted); font-style: italic; }
 .ask-suggest {
   display: flex; flex-wrap: wrap; gap: 6px;
   padding: 0 12px 10px;
