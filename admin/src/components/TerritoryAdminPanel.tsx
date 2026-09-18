@@ -559,8 +559,6 @@ export function TerritoryAdminPanel({ locale }: Props) {
         </div>
       </div>
 
-      </div>
-
       <div className="card">
         <div className="card-header"><h5 className="mb-0">{tr(locale, 'Aanwezigheidsplicht (één gebied tegelijk)', 'Hold duty (one region at a time)')}</h5></div>
         <div className="card-body">
