@@ -63,6 +63,7 @@ UX/i18n baseline:
 - permissiehint voor non-leader/co-leader zichtbaar in UI
 - `Help & Uitleg` crew-topic bijgewerkt zodat de nieuwe Crew Missions-tab en flow ook in NL/EN documentatie staat.
 - missions met **trade cargo**: `requirementsJson` op template; `tradeRequirements[]` in overview; consumptie uit **crew trade storage** bij `POST /crew-missions/start` (`consumeCrewTradeGoods`); fout `error.mission_trade_requirements_not_met` als voorraad ontbreekt.
+- missions met **crew-opslag eisen** (wapens, munitie, drugs, gereedschap, voertuigen): typed `requirementsJson`; overview `requirementQuote` (have/need + gear-kans); start consume/wear via `consumeAndWearMissionStorage` (alleen crew-opslag, nooit privé). Fout `error.mission_storage_requirements_not_met` + `missing[]`. Bestaande 17 missies blijven zonder extra gate. Clearing House-runtime blijft `3`.
 
 ## Notification Status (Phase 4 Basis)
 

@@ -31,6 +31,7 @@ import { globalChatDiscordBridge } from './services/globalChatDiscordBridge';
 import { playerStartService } from './services/playerStartService';
 import { ensureVenueNpcOccupancy } from './services/venueNpcOccupancyService';
 import { ensureCrewTradeStorageSchema } from './startup/ensureCrewTradeStorageSchema';
+import { ensureCrewToolStorageSchema } from './startup/ensureCrewToolStorageSchema';
 import { ensureCrewDealSchema } from './startup/ensureCrewDealSchema';
 import { ensureCasinoBlackjackSchema } from './startup/ensureCasinoBlackjackSchema';
 import { ensureStaffRoleSchema } from './startup/ensureStaffRoleSchema';
@@ -83,6 +84,7 @@ async function startServer() {
   await ensureDiscordSchema();
   await ensureGlobalChatSchema();
   await ensureCrewTradeStorageSchema();
+  await ensureCrewToolStorageSchema();
   await ensureCrewDealSchema();
   await ensureCasinoBlackjackSchema();
   await ensureStaffRoleSchema();

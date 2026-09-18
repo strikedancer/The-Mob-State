@@ -219,6 +219,63 @@ export async function depositCrewWeapon(
   });
 }
 
+export async function depositCrewTool(
+  crewId: number,
+  playerId: number,
+  playerToolId: number
+) {
+  const capacity = await getCrewStorageCapacity(crewId, 'tool_storage');
+  if (capacity <= 0) {
+    throw new Error('TOOL_STORAGE_NOT_OWNED');
+  }
+
+  const currentCount = await prisma.crewToolInventory.count({
+    where: { crewId },
+  });
+  if (currentCount >= capacity) {
+    throw new Error('TOOL_STORAGE_FULL');
+  }
+
+  const playerTool = await prisma.playerTools.findUnique({
+    where: { id: playerToolId },
+  });
+
+  if (!playerTool) {
+    throw new Error('TOOL_NOT_FOUND');
+  }
+  if (playerTool.playerId !== playerId) {
+    throw new Error('NOT_OWNER');
+  }
+  if (playerTool.location !== 'carried') {
+    throw new Error('TOOL_NOT_CARRIED');
+  }
+  if (playerTool.durability <= 0) {
+    throw new Error('TOOL_BROKEN');
+  }
+
+  await prisma.$transaction(async (tx) => {
+    await tx.crewToolInventory.create({
+      data: {
+        crewId,
+        toolId: playerTool.toolId,
+        durability: playerTool.durability,
+        addedByPlayerId: playerId,
+      },
+    });
+
+    if (playerTool.quantity > 1) {
+      await tx.playerTools.update({
+        where: { id: playerToolId },
+        data: { quantity: playerTool.quantity - 1 },
+      });
+    } else {
+      await tx.playerTools.delete({
+        where: { id: playerToolId },
+      });
+    }
+  });
+}
+
 export async function depositCrewAmmo(
   crewId: number,
   playerId: number,
@@ -582,6 +639,7 @@ export async function getCrewStorageSummary(crewId: number) {
     carCapacity,
     boatCapacity,
     weaponCapacity,
+    toolCapacity,
     ammoCapacity,
     drugCapacity,
     tradeCapacity,
@@ -590,6 +648,7 @@ export async function getCrewStorageSummary(crewId: number) {
     getCrewStorageCapacity(crewId, 'car_storage'),
     getCrewStorageCapacity(crewId, 'boat_storage'),
     getCrewStorageCapacity(crewId, 'weapon_storage'),
+    getCrewStorageCapacity(crewId, 'tool_storage'),
     getCrewStorageCapacity(crewId, 'ammo_storage'),
     getCrewStorageCapacity(crewId, 'drug_storage'),
     getCrewStorageCapacity(crewId, 'trade_storage'),
@@ -600,6 +659,7 @@ export async function getCrewStorageSummary(crewId: number) {
     cars,
     boats,
     weapons,
+    tools,
     ammo,
     drugs,
     drugLots,
@@ -609,6 +669,7 @@ export async function getCrewStorageSummary(crewId: number) {
     prisma.crewCarInventory.findMany({ where: { crewId } }),
     prisma.crewBoatInventory.findMany({ where: { crewId } }),
     prisma.crewWeaponInventory.findMany({ where: { crewId } }),
+    prisma.crewToolInventory.findMany({ where: { crewId } }),
     prisma.crewAmmoInventory.findMany({ where: { crewId } }),
     prisma.crewDrugInventory.findMany({ where: { crewId } }),
     prisma.crewDrugLot.findMany({ where: { crewId } }),
@@ -633,6 +694,7 @@ export async function getCrewStorageSummary(crewId: number) {
       cars: carCapacity,
       boats: boatCapacity,
       weapons: weaponCapacity,
+      tools: toolCapacity,
       ammo: ammoCapacity,
       drugs: drugCapacity,
       trade: tradeCapacity,
@@ -642,6 +704,7 @@ export async function getCrewStorageSummary(crewId: number) {
       cars: cars.length,
       boats: boats.length,
       weapons: weaponCount,
+      tools: tools.length,
       ammo: ammoCount,
       drugs: drugCount,
       trade: tradeCount,
@@ -655,6 +718,7 @@ export async function getCrewStorageSummary(crewId: number) {
       cars: carsWithType,
       boats,
       weapons,
+      tools,
       ammo,
       drugs,
       drugLots,

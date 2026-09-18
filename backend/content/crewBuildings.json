@@ -70,6 +70,26 @@
         { "level": 14, "upgradeCost": 2100000000, "capacity": 4500, "requiresVip": true }
       ]
     },
+    "tool_storage": {
+      "label": "Tool Storage",
+      "levels": [
+        { "level": 0, "upgradeCost": 42000, "capacity": 8 },
+        { "level": 1, "upgradeCost": 125000, "capacity": 20 },
+        { "level": 2, "upgradeCost": 340000, "capacity": 48 },
+        { "level": 3, "upgradeCost": 920000, "capacity": 95 },
+        { "level": 4, "upgradeCost": 2400000, "capacity": 160 },
+        { "level": 5, "upgradeCost": 6000000, "capacity": 250 },
+        { "level": 6, "upgradeCost": 13200000, "capacity": 370 },
+        { "level": 7, "upgradeCost": 28500000, "capacity": 530 },
+        { "level": 8, "upgradeCost": 57000000, "capacity": 760 },
+        { "level": 9, "upgradeCost": 110000000, "capacity": 1080 },
+        { "level": 10, "upgradeCost": 190000000, "capacity": 1480, "requiresVip": true },
+        { "level": 11, "upgradeCost": 345000000, "capacity": 1980, "requiresVip": true },
+        { "level": 12, "upgradeCost": 620000000, "capacity": 2580, "requiresVip": true },
+        { "level": 13, "upgradeCost": 1150000000, "capacity": 3280, "requiresVip": true },
+        { "level": 14, "upgradeCost": 2000000000, "capacity": 4100, "requiresVip": true }
+      ]
+    },
     "ammo_storage": {
       "label": "Ammo Storage",
       "levels": [

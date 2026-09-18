@@ -14,7 +14,7 @@ const actionSchema = z.object({
   actionType: z.enum(['attack_kill', 'attack_mug', 'attack_sabotage', 'defense_success', 'intel_scan', 'raid', 'crew_shield', 'war_boost', 'territory_claim']),
   targetPlayerId: z.number().int().positive().optional(),
   territoryKey: z.string().min(2).max(50).optional(),
-  lootTarget: z.enum(['cash', 'car', 'boat', 'weapon', 'ammo', 'drug', 'trade']).optional(),
+  lootTarget: z.enum(['cash', 'car', 'boat', 'weapon', 'tool', 'ammo', 'drug', 'trade']).optional(),
   sabotageBuilding: z.enum(['car_storage', 'boat_storage', 'weapon_storage', 'ammo_storage', 'drug_storage', 'trade_storage', 'cash_storage']).optional(),
 });
 

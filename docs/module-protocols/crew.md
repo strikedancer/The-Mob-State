@@ -25,7 +25,7 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - Responsive usability without pushing critical actions off-screen.
 - Crew overview on mobile must show the HQ still as an image (not a squeezed ListTile of HQ label + style + level). Member counts use singular/plural (`1 lid` / `2 leden`).
 - Crew chat uses the same `MessageInput` as DMs: Enter sends, Shift+Enter is a new line. The dashboard live-event rail stays hidden on Crew so it cannot cover the send button.
-- Fresh crews must start with Crew HQ and all crew storage buildings at level 1 so bank deposits, shared storage and upgrade flows work immediately without a manual bootstrap purchase. Concurrent crew/storage GETs must upsert those starter rows (unique `crewId`) instead of racing `create`, so two members opening the same new crew do not 500.
+- Fresh crews must start with Crew HQ and all crew storage buildings at level 1 so bank deposits, shared storage and upgrade flows work immediately without a manual bootstrap purchase. Concurrent crew/storage GETs must upsert those starter rows (unique `crewId`) instead of racing `create`, so two members opening the same new crew do not 500. Starter set includes **Tool Storage** (`tool_storage` / Gereedschapopslag): deposit carried tools only; no personal withdraw.
 - Crew-bank cash buttons on Overview are bank verbs, never jail-bail or military-retreat wording. Dutch: **Storten** / **Opnemen** (`crewUiLabelDeposit` / `crewUiLabelWithdraw`). English stays Deposit / Withdraw. Dialog titles (`crewUiTr84` / `crewUiTr85`) must match that meaning.
 - Cash-storage upgrades are paid from the crew bank, which is capped by the current cash-storage capacity. The next cash-storage upgrade cost must stay below that capacity so a crew can always pay it from the vault (level 1 holds €1.000.000; the step to level 2 costs €450.000).
 - Crew HQ member-cap progression must stay continuous across all HQ styles and levels; the cap overview may not reset per style and must scale through to the intended max of 150 members.
@@ -85,8 +85,8 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - Verify leaders can close recruiting and that closed crews disappear from the recruiting list.
 - Verify the weekly crew goal is visible on the crew overview and dashboard, and that an unclaimed goal is gone after the UTC week rolls.
 - Verify Storage shows crew deals, officers can lock an offer, and cancel returns the goods.
-- Verify a war raid asks which storage type to hit and refuses when attacker storage is full.
-- Verify Help / the gold `i` on Crew explains that stored cars, boats, weapons and trade goods are crew cargo (not a personal garage) and that only leader/co-leader can buy a crewmate out with the crew bank.
+- Verify a war raid asks which storage type to hit and refuses when attacker storage is full. Tool storage can be raided the same way as other instance stacks.
+- Verify Help / the gold `i` on Crew explains that stored cars, boats, weapons, tools and trade goods are crew cargo (not a personal garage) and that only leader/co-leader can buy a crewmate out with the crew bank.
 - Verify a failed heist still jails the whole crew and applies XP loss without a 500, including crews larger than a handful of members.
 - Verify a failed heist on Crew shows the result popup (jail time + XP loss) and then the jail overlay, not only a toast.
 

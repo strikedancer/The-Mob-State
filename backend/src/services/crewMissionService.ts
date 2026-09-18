@@ -1,6 +1,15 @@
 import prisma from '../lib/prisma';
 import { notificationService } from './notificationService';
-import { consumeCrewTradeGoods } from './crewStorageService';
+import {
+  consumeAndWearMissionStorage,
+  loadCrewMissionStorageSnapshot,
+  parseMissionRequirements,
+  quoteMissionRequirements,
+  serializeMissionRequirements,
+  tradeRequirementsFromParsed,
+  clampMissionSuccessChance,
+  type MissionRequirement,
+} from './crewMissionRequirements';
 import * as casinoOwnershipService from './casinoOwnershipService';
 
 type CrewMissionTier = 1 | 2 | 3;
@@ -33,6 +42,7 @@ type CrewMissionTemplate = {
   imageCardPath: string | null;
   imageScenePath: string | null;
   tradeRequirements: TradeRequirement[];
+  storageRequirements: MissionRequirement[];
 };
 
 type CrewMissionTemplateRow = CrewMissionTemplate & {
@@ -120,6 +130,7 @@ type MissionSeed = {
   imageCardPath: string;
   imageScenePath: string;
   tradeRequirements?: TradeRequirement[];
+  storageRequirements?: MissionRequirement[];
 };
 
 const CREW_MISSION_RUNTIME_SETTING_DEFAULTS = {
@@ -484,6 +495,489 @@ const MISSION_SEEDS: MissionSeed[] = [
     imageCardPath: 'images/crew_missions/cards/territory_blackout_push.png',
     imageScenePath: 'images/crew_missions/scenes/territory_blackout_push.png',
   },
+  {
+    missionKey: 'chop_shop_handoff',
+    tier: 1,
+    titleNl: 'Chop Shop Overdracht',
+    titleEn: 'Chop Shop Handoff',
+    descriptionNl: 'Lever een crew-auto af bij de chop shop. Conditie en brandstof uit de gedeelde stalling tellen mee.',
+    descriptionEn: 'Drop a crew car at the chop shop. Shared-storage condition and fuel affect the odds.',
+    durationSeconds: 8 * 60,
+    cooldownSeconds: 10 * 60,
+    successChance: 0.72,
+    rewardCashMin: 48000,
+    rewardCashMax: 75000,
+    rewardCrewXp: 56,
+    rewardPersonalXp: 28,
+    failPenaltyPct: 0.08,
+    sortOrder: 80,
+    imageCardPath: 'images/crew_missions/cards/chop_shop_handoff.png',
+    imageScenePath: 'images/crew_missions/scenes/chop_shop_handoff.png',
+    storageRequirements: [
+      { kind: 'vehicle', quantity: 1, vehicleCategory: 'car', minCondition: 40, minFuel: 30 },
+    ],
+  },
+  {
+    missionKey: 'lockbox_crowbar_shift',
+    tier: 1,
+    titleNl: 'Kluis Koevoetshift',
+    titleEn: 'Lockbox Crowbar Shift',
+    descriptionNl: 'Wrik een straatkluis open met een koevoet uit de gereedschapopslag.',
+    descriptionEn: 'Crack a street lockbox with a crowbar from crew tool storage.',
+    durationSeconds: 8 * 60,
+    cooldownSeconds: 10 * 60,
+    successChance: 0.74,
+    rewardCashMin: 45000,
+    rewardCashMax: 70000,
+    rewardCrewXp: 54,
+    rewardPersonalXp: 27,
+    failPenaltyPct: 0.08,
+    sortOrder: 81,
+    imageCardPath: 'images/crew_missions/cards/lockbox_crowbar_shift.png',
+    imageScenePath: 'images/crew_missions/scenes/lockbox_crowbar_shift.png',
+    storageRequirements: [{ kind: 'tool', quantity: 1, toolId: 'crowbar', minDurability: 25 }],
+  },
+  {
+    missionKey: 'alley_tag_run',
+    tier: 1,
+    titleNl: 'Steeg Tag Run',
+    titleEn: 'Alley Tag Run',
+    descriptionNl: 'Zet crew-tags in drie stegen. Eén spuitbus uit de gereedschapopslag gaat op.',
+    descriptionEn: 'Tag three alleys for the crew. One spray can from tool storage is spent.',
+    durationSeconds: 8 * 60,
+    cooldownSeconds: 10 * 60,
+    successChance: 0.76,
+    rewardCashMin: 42000,
+    rewardCashMax: 65000,
+    rewardCrewXp: 50,
+    rewardPersonalXp: 24,
+    failPenaltyPct: 0.07,
+    sortOrder: 82,
+    imageCardPath: 'images/crew_missions/cards/alley_tag_run.png',
+    imageScenePath: 'images/crew_missions/scenes/alley_tag_run.png',
+    storageRequirements: [{ kind: 'tool', quantity: 1, toolId: 'spray_paint', minDurability: 1 }],
+  },
+  {
+    missionKey: 'bike_drop_off',
+    tier: 1,
+    titleNl: 'Motor Drop-off',
+    titleEn: 'Bike Drop-Off',
+    descriptionNl: 'Zet een crew-motor neer voor een stille wissel. Gedeelde stalling, geen privé-garage.',
+    descriptionEn: 'Park a crew motorcycle for a quiet swap. Shared storage only, not your private garage.',
+    durationSeconds: 9 * 60,
+    cooldownSeconds: 11 * 60,
+    successChance: 0.71,
+    rewardCashMin: 50000,
+    rewardCashMax: 78000,
+    rewardCrewXp: 58,
+    rewardPersonalXp: 29,
+    failPenaltyPct: 0.09,
+    sortOrder: 83,
+    imageCardPath: 'images/crew_missions/cards/bike_drop_off.png',
+    imageScenePath: 'images/crew_missions/scenes/bike_drop_off.png',
+    storageRequirements: [
+      { kind: 'vehicle', quantity: 1, vehicleCategory: 'motorcycle', minCondition: 30, minFuel: 20 },
+    ],
+  },
+  {
+    missionKey: 'dock_rowboat_nudge',
+    tier: 1,
+    titleNl: 'Haven Roeibootduw',
+    titleEn: 'Dock Rowboat Nudge',
+    descriptionNl: 'Schuif een crew-boot langs de kade voor een nachtelijke overdracht.',
+    descriptionEn: 'Nudge a crew boat along the dock for a night handoff.',
+    durationSeconds: 9 * 60,
+    cooldownSeconds: 11 * 60,
+    successChance: 0.7,
+    rewardCashMin: 52000,
+    rewardCashMax: 80000,
+    rewardCrewXp: 60,
+    rewardPersonalXp: 30,
+    failPenaltyPct: 0.09,
+    sortOrder: 84,
+    imageCardPath: 'images/crew_missions/cards/dock_rowboat_nudge.png',
+    imageScenePath: 'images/crew_missions/scenes/dock_rowboat_nudge.png',
+    storageRequirements: [
+      { kind: 'vehicle', quantity: 1, vehicleCategory: 'boat', minCondition: 30, minFuel: 20 },
+    ],
+  },
+  {
+    missionKey: 'street_stash_move',
+    tier: 1,
+    titleNl: 'Straatstash Verplaatsen',
+    titleEn: 'Street Stash Move',
+    descriptionNl: 'Verplaats 80 gram drugs uit de crew-opslag. Kwaliteit stuurt de slagingskans.',
+    descriptionEn: 'Move 80g of drugs from crew storage. Quality changes the success chance.',
+    durationSeconds: 10 * 60,
+    cooldownSeconds: 12 * 60,
+    successChance: 0.69,
+    rewardCashMin: 55000,
+    rewardCashMax: 82000,
+    rewardCrewXp: 64,
+    rewardPersonalXp: 32,
+    failPenaltyPct: 0.1,
+    sortOrder: 85,
+    imageCardPath: 'images/crew_missions/cards/street_stash_move.png',
+    imageScenePath: 'images/crew_missions/scenes/street_stash_move.png',
+    storageRequirements: [{ kind: 'drug', quantity: 80 }],
+  },
+  {
+    missionKey: 'pistol_night_run',
+    tier: 2,
+    titleNl: 'Pistool Nachtrit',
+    titleEn: 'Pistol Night Run',
+    descriptionNl: 'Nachtelijke escort met een pistool uit de wapenopslag plus bijpassende munitie.',
+    descriptionEn: 'Night escort with a crew handgun plus matching ammo from storage.',
+    durationSeconds: 16 * 60,
+    cooldownSeconds: 18 * 60,
+    successChance: 0.62,
+    rewardCashMin: 100000,
+    rewardCashMax: 150000,
+    rewardCrewXp: 105,
+    rewardPersonalXp: 52,
+    failPenaltyPct: 0.14,
+    sortOrder: 90,
+    imageCardPath: 'images/crew_missions/cards/pistol_night_run.png',
+    imageScenePath: 'images/crew_missions/scenes/pistol_night_run.png',
+    storageRequirements: [
+      { kind: 'weapon', quantity: 1, weaponType: 'handgun', minCondition: 40 },
+      { kind: 'ammo', quantity: 24, matchWeapon: true },
+    ],
+  },
+  {
+    missionKey: 'shotgun_door_kick',
+    tier: 2,
+    titleNl: 'Shotgun Deurtrap',
+    titleEn: 'Shotgun Door Kick',
+    descriptionNl: 'Breek een magazijndeur met een shotgun en 12-gauge uit crew-opslag.',
+    descriptionEn: 'Kick a warehouse door with a crew shotgun and 12-gauge ammo.',
+    durationSeconds: 17 * 60,
+    cooldownSeconds: 19 * 60,
+    successChance: 0.6,
+    rewardCashMin: 108000,
+    rewardCashMax: 158000,
+    rewardCrewXp: 112,
+    rewardPersonalXp: 56,
+    failPenaltyPct: 0.15,
+    sortOrder: 91,
+    imageCardPath: 'images/crew_missions/cards/shotgun_door_kick.png',
+    imageScenePath: 'images/crew_missions/scenes/shotgun_door_kick.png',
+    storageRequirements: [
+      { kind: 'weapon', quantity: 1, weaponType: 'shotgun', minCondition: 45 },
+      { kind: 'ammo', quantity: 12, ammoType: '12gauge' },
+    ],
+  },
+  {
+    missionKey: 'harbor_skiff_lift',
+    tier: 2,
+    titleNl: 'Haven Skiff Lift',
+    titleEn: 'Harbor Skiff Lift',
+    descriptionNl: 'Til lading met een stille crew-boot. Stealth en cargo van de catalogus tellen mee.',
+    descriptionEn: 'Lift cargo with a quiet crew boat. Catalog stealth and cargo change the odds.',
+    durationSeconds: 18 * 60,
+    cooldownSeconds: 20 * 60,
+    successChance: 0.58,
+    rewardCashMin: 115000,
+    rewardCashMax: 168000,
+    rewardCrewXp: 118,
+    rewardPersonalXp: 58,
+    failPenaltyPct: 0.16,
+    sortOrder: 92,
+    imageCardPath: 'images/crew_missions/cards/harbor_skiff_lift.png',
+    imageScenePath: 'images/crew_missions/scenes/harbor_skiff_lift.png',
+    storageRequirements: [
+      {
+        kind: 'vehicle',
+        quantity: 1,
+        vehicleCategory: 'boat',
+        minCondition: 45,
+        minFuel: 45,
+        minStealth: 30,
+        minCargo: 30,
+      },
+    ],
+  },
+  {
+    missionKey: 'courier_bike_cut',
+    tier: 2,
+    titleNl: 'Koerier Motor Cut',
+    titleEn: 'Courier Bike Cut',
+    descriptionNl: 'Snijd een koerier af met een snelle, stille crew-motor.',
+    descriptionEn: 'Cut off a courier with a fast, quiet crew motorcycle.',
+    durationSeconds: 16 * 60,
+    cooldownSeconds: 18 * 60,
+    successChance: 0.61,
+    rewardCashMin: 102000,
+    rewardCashMax: 152000,
+    rewardCrewXp: 108,
+    rewardPersonalXp: 54,
+    failPenaltyPct: 0.14,
+    sortOrder: 93,
+    imageCardPath: 'images/crew_missions/cards/courier_bike_cut.png',
+    imageScenePath: 'images/crew_missions/scenes/courier_bike_cut.png',
+    storageRequirements: [
+      {
+        kind: 'vehicle',
+        quantity: 1,
+        vehicleCategory: 'motorcycle',
+        minCondition: 40,
+        minFuel: 30,
+        minSpeed: 40,
+        minStealth: 30,
+      },
+    ],
+  },
+  {
+    missionKey: 'burglary_kit_window',
+    tier: 2,
+    titleNl: 'Inbraakset Raam',
+    titleEn: 'Burglary Kit Window',
+    descriptionNl: 'Open een kantoorraam met de inbrekersset uit de gereedschapopslag.',
+    descriptionEn: 'Open an office window with a burglary kit from crew tool storage.',
+    durationSeconds: 16 * 60,
+    cooldownSeconds: 18 * 60,
+    successChance: 0.63,
+    rewardCashMin: 98000,
+    rewardCashMax: 148000,
+    rewardCrewXp: 104,
+    rewardPersonalXp: 52,
+    failPenaltyPct: 0.14,
+    sortOrder: 94,
+    imageCardPath: 'images/crew_missions/cards/burglary_kit_window.png',
+    imageScenePath: 'images/crew_missions/scenes/burglary_kit_window.png',
+    storageRequirements: [{ kind: 'tool', quantity: 1, toolId: 'burglary_kit', minDurability: 35 }],
+  },
+  {
+    missionKey: 'bolt_cutter_fence',
+    tier: 2,
+    titleNl: 'Betonschaar Hek',
+    titleEn: 'Bolt Cutter Fence',
+    descriptionNl: 'Knip het haventerrein open met een betonschaar uit de crew-opslag.',
+    descriptionEn: 'Cut the harbor fence with bolt cutters from crew storage.',
+    durationSeconds: 16 * 60,
+    cooldownSeconds: 18 * 60,
+    successChance: 0.64,
+    rewardCashMin: 95000,
+    rewardCashMax: 145000,
+    rewardCrewXp: 102,
+    rewardPersonalXp: 50,
+    failPenaltyPct: 0.13,
+    sortOrder: 95,
+    imageCardPath: 'images/crew_missions/cards/bolt_cutter_fence.png',
+    imageScenePath: 'images/crew_missions/scenes/bolt_cutter_fence.png',
+    storageRequirements: [{ kind: 'tool', quantity: 1, toolId: 'bolt_cutter', minDurability: 30 }],
+  },
+  {
+    missionKey: 'weed_van_run',
+    tier: 2,
+    titleNl: 'Wietbus Rit',
+    titleEn: 'Weed Van Run',
+    descriptionNl: 'Rij 200 gram wiet weg in een crew-auto. Cargo van de auto telt mee.',
+    descriptionEn: 'Move 200g of weed in a crew car. The car catalog cargo rating matters.',
+    durationSeconds: 18 * 60,
+    cooldownSeconds: 20 * 60,
+    successChance: 0.57,
+    rewardCashMin: 118000,
+    rewardCashMax: 172000,
+    rewardCrewXp: 120,
+    rewardPersonalXp: 60,
+    failPenaltyPct: 0.16,
+    sortOrder: 96,
+    imageCardPath: 'images/crew_missions/cards/weed_van_run.png',
+    imageScenePath: 'images/crew_missions/scenes/weed_van_run.png',
+    storageRequirements: [
+      { kind: 'drug', quantity: 200, drugType: 'weed' },
+      { kind: 'vehicle', quantity: 1, vehicleCategory: 'car', minCondition: 35, minFuel: 25, minCargo: 35 },
+    ],
+  },
+  {
+    missionKey: 'ammo_cache_shuffle',
+    tier: 2,
+    titleNl: 'Munitiecache Shuffle',
+    titleEn: 'Ammo Cache Shuffle',
+    descriptionNl: 'Verplaats 80 stuks 9mm uit de crew-munitieopslag. Die munitie gaat op.',
+    descriptionEn: 'Shuffle 80 rounds of 9mm from crew ammo storage. The ammo is spent.',
+    durationSeconds: 16 * 60,
+    cooldownSeconds: 18 * 60,
+    successChance: 0.62,
+    rewardCashMin: 100000,
+    rewardCashMax: 148000,
+    rewardCrewXp: 106,
+    rewardPersonalXp: 53,
+    failPenaltyPct: 0.14,
+    sortOrder: 97,
+    imageCardPath: 'images/crew_missions/cards/ammo_cache_shuffle.png',
+    imageScenePath: 'images/crew_missions/scenes/ammo_cache_shuffle.png',
+    storageRequirements: [{ kind: 'ammo', quantity: 80, ammoType: '9mm' }],
+  },
+  {
+    missionKey: 'armored_payroll_escort',
+    tier: 3,
+    titleNl: 'Pantser Payroll Escort',
+    titleEn: 'Armored Payroll Escort',
+    descriptionNl: 'Escort een payroll met een gepantserde crew-auto, een geweer en bijpassende munitie.',
+    descriptionEn: 'Escort a payroll with an armored crew car, a rifle, and matching ammo.',
+    durationSeconds: 32 * 60,
+    cooldownSeconds: 34 * 60,
+    successChance: 0.5,
+    rewardCashMin: 280000,
+    rewardCashMax: 410000,
+    rewardCrewXp: 250,
+    rewardPersonalXp: 125,
+    failPenaltyPct: 0.22,
+    sortOrder: 110,
+    imageCardPath: 'images/crew_missions/cards/armored_payroll_escort.png',
+    imageScenePath: 'images/crew_missions/scenes/armored_payroll_escort.png',
+    storageRequirements: [
+      {
+        kind: 'vehicle',
+        quantity: 1,
+        vehicleCategory: 'car',
+        minCondition: 55,
+        minFuel: 50,
+        minArmor: 45,
+      },
+      { kind: 'weapon', quantity: 1, weaponType: 'rifle', minCondition: 50 },
+      { kind: 'ammo', quantity: 40, matchWeapon: true },
+    ],
+  },
+  {
+    missionKey: 'lab_grade_swap',
+    tier: 3,
+    titleNl: 'Lab Grade Swap',
+    titleEn: 'Lab-Grade Swap',
+    descriptionNl: 'Wissel 150 gram cocaïne van minstens kwaliteit B met een laptop of glassnijder uit de opslag.',
+    descriptionEn: 'Swap 150g of cocaine at quality B or better with a laptop or glass cutter from storage.',
+    durationSeconds: 30 * 60,
+    cooldownSeconds: 32 * 60,
+    successChance: 0.52,
+    rewardCashMin: 260000,
+    rewardCashMax: 390000,
+    rewardCrewXp: 235,
+    rewardPersonalXp: 118,
+    failPenaltyPct: 0.2,
+    sortOrder: 111,
+    imageCardPath: 'images/crew_missions/cards/lab_grade_swap.png',
+    imageScenePath: 'images/crew_missions/scenes/lab_grade_swap.png',
+    storageRequirements: [
+      { kind: 'drug', quantity: 150, drugType: 'cocaine', minQuality: 'B' },
+      { kind: 'tool', quantity: 1, toolIds: ['hacking_laptop', 'glass_cutter'], minDurability: 25 },
+    ],
+  },
+  {
+    missionKey: 'yacht_glass_cut',
+    tier: 3,
+    titleNl: 'Jacht Glassnede',
+    titleEn: 'Yacht Glass Cut',
+    descriptionNl: 'Snijd een jachtvitrine open vanaf een stille, ruime crew-boot.',
+    descriptionEn: 'Cut a yacht display case from a quiet, high-cargo crew boat.',
+    durationSeconds: 34 * 60,
+    cooldownSeconds: 36 * 60,
+    successChance: 0.48,
+    rewardCashMin: 300000,
+    rewardCashMax: 420000,
+    rewardCrewXp: 260,
+    rewardPersonalXp: 130,
+    failPenaltyPct: 0.22,
+    sortOrder: 112,
+    imageCardPath: 'images/crew_missions/cards/yacht_glass_cut.png',
+    imageScenePath: 'images/crew_missions/scenes/yacht_glass_cut.png',
+    storageRequirements: [
+      {
+        kind: 'vehicle',
+        quantity: 1,
+        vehicleCategory: 'boat',
+        minCondition: 50,
+        minFuel: 45,
+        minCargo: 50,
+        minStealth: 45,
+      },
+      { kind: 'tool', quantity: 1, toolId: 'glass_cutter', minDurability: 30 },
+    ],
+  },
+  {
+    missionKey: 'hotwire_convoy_cut',
+    tier: 3,
+    titleNl: 'Hotwire Convoy Cut',
+    titleEn: 'Hotwire Convoy Cut',
+    descriptionNl: 'Snijd een convoy af met een snelle crew-auto en autodiefstal-gereedschap.',
+    descriptionEn: 'Cut a convoy with a high-speed crew car and car-theft tools.',
+    durationSeconds: 30 * 60,
+    cooldownSeconds: 32 * 60,
+    successChance: 0.51,
+    rewardCashMin: 255000,
+    rewardCashMax: 380000,
+    rewardCrewXp: 230,
+    rewardPersonalXp: 115,
+    failPenaltyPct: 0.2,
+    sortOrder: 113,
+    imageCardPath: 'images/crew_missions/cards/hotwire_convoy_cut.png',
+    imageScenePath: 'images/crew_missions/scenes/hotwire_convoy_cut.png',
+    storageRequirements: [
+      {
+        kind: 'vehicle',
+        quantity: 1,
+        vehicleCategory: 'car',
+        minCondition: 50,
+        minFuel: 45,
+        minSpeed: 55,
+      },
+      { kind: 'tool', quantity: 1, toolId: 'car_theft_tools', minDurability: 30 },
+    ],
+  },
+  {
+    missionKey: 'smg_warehouse_push',
+    tier: 3,
+    titleNl: 'SMG Magazijn Push',
+    titleEn: 'SMG Warehouse Push',
+    descriptionNl: 'Duw een magazijn leeg met een automatisch wapen en 60 bijpassende patronen.',
+    descriptionEn: 'Push a warehouse with an automatic weapon and 60 matching rounds.',
+    durationSeconds: 32 * 60,
+    cooldownSeconds: 34 * 60,
+    successChance: 0.49,
+    rewardCashMin: 270000,
+    rewardCashMax: 400000,
+    rewardCrewXp: 245,
+    rewardPersonalXp: 122,
+    failPenaltyPct: 0.21,
+    sortOrder: 114,
+    imageCardPath: 'images/crew_missions/cards/smg_warehouse_push.png',
+    imageScenePath: 'images/crew_missions/scenes/smg_warehouse_push.png',
+    storageRequirements: [
+      { kind: 'weapon', quantity: 1, weaponType: 'automatic', minCondition: 50 },
+      { kind: 'ammo', quantity: 60, matchWeapon: true },
+    ],
+  },
+  {
+    missionKey: 'precursor_boat_run',
+    tier: 3,
+    titleNl: 'Precursor Boot Run',
+    titleEn: 'Precursor Boat Run',
+    descriptionNl: 'Vaar 250 gram drugs van minstens kwaliteit A weg op een ruime crew-boot.',
+    descriptionEn: 'Ship 250g of drugs at quality A or better on a high-cargo crew boat.',
+    durationSeconds: 36 * 60,
+    cooldownSeconds: 38 * 60,
+    successChance: 0.46,
+    rewardCashMin: 310000,
+    rewardCashMax: 420000,
+    rewardCrewXp: 270,
+    rewardPersonalXp: 135,
+    failPenaltyPct: 0.24,
+    sortOrder: 115,
+    imageCardPath: 'images/crew_missions/cards/precursor_boat_run.png',
+    imageScenePath: 'images/crew_missions/scenes/precursor_boat_run.png',
+    storageRequirements: [
+      { kind: 'drug', quantity: 250, minQuality: 'A' },
+      {
+        kind: 'vehicle',
+        quantity: 1,
+        vehicleCategory: 'boat',
+        minCondition: 50,
+        minFuel: 45,
+        minCargo: 55,
+      },
+    ],
+  },
 ];
 
 const ROLE_KEYS = ['planner', 'enforcer', 'logistics', 'tech'] as const;
@@ -509,28 +1003,17 @@ function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
 }
 
-function parseTradeRequirements(raw: string | null | undefined): TradeRequirement[] {
-  if (!raw) {
-    return [];
+function serializeSeedRequirements(seed: MissionSeed): string {
+  if (seed.storageRequirements?.length) {
+    return serializeMissionRequirements(seed.storageRequirements);
   }
-  try {
-    const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed)) {
-      return [];
-    }
-    return parsed
-      .map((entry) => ({
-        goodType: String(entry?.goodType ?? '').trim(),
-        quantity: toInt(entry?.quantity, 0),
-      }))
-      .filter((entry) => entry.goodType.length > 0 && entry.quantity > 0);
-  } catch {
-    return [];
-  }
-}
-
-function serializeTradeRequirements(requirements?: TradeRequirement[]): string {
-  return JSON.stringify(requirements?.length ? requirements : []);
+  return serializeMissionRequirements(
+    (seed.tradeRequirements ?? []).map((item) => ({
+      kind: 'trade' as const,
+      goodType: item.goodType,
+      quantity: item.quantity,
+    }))
+  );
 }
 
 function computeHqGlobalLevel(
@@ -1051,7 +1534,8 @@ async function getMissionTemplates(): Promise<CrewMissionTemplate[]> {
   );
 
   return rows.map((row) => {
-    const tradeRequirements = parseTradeRequirements(row.requirementsJson);
+    const storageRequirements = parseMissionRequirements(row.requirementsJson);
+    const tradeRequirements = tradeRequirementsFromParsed(storageRequirements);
     return {
       id: toInt(row.id),
       missionKey: row.missionKey,
@@ -1073,6 +1557,7 @@ async function getMissionTemplates(): Promise<CrewMissionTemplate[]> {
       imageCardPath: row.imageCardPath,
       imageScenePath: row.imageScenePath,
       tradeRequirements,
+      storageRequirements,
     };
   });
 }
@@ -1143,7 +1628,7 @@ async function ensureSeededTemplates(): Promise<void> {
       seed.sortOrder,
       seed.imageCardPath,
       seed.imageScenePath,
-      serializeTradeRequirements(seed.tradeRequirements)
+      serializeSeedRequirements(seed)
     );
   }
 }
@@ -1166,10 +1651,11 @@ export const crewMissionService = {
     await ensureSeededTemplates();
     const membership = await getCrewMembership(playerId);
     const runtimeConfig = await getRuntimeConfig();
-    const [templates, activeRun, crewContext] = await Promise.all([
+    const [templates, activeRun, crewContext, storageSnapshot] = await Promise.all([
       getMissionTemplates(),
       getActiveRunForCrew(membership.crewId),
       getCrewContext(membership.crewId, runtimeConfig),
+      loadCrewMissionStorageSnapshot(membership.crewId),
     ]);
 
     const now = new Date();
@@ -1204,10 +1690,18 @@ export const crewMissionService = {
       crewProgress: crewContext.crewProgress,
       templates: templates.map((template) => {
         const unlock = getMissionUnlockState(template, crewContext, runtimeConfig);
+        const requirementQuote = quoteMissionRequirements(
+          template.storageRequirements,
+          storageSnapshot,
+          template.successChance
+        );
         return {
           ...template,
           unlocked: unlock.unlocked,
           lockedReason: unlock.lockedReason,
+          requirementQuote,
+          quotedSuccessChance: requirementQuote.quotedSuccessChance,
+          storageReady: requirementQuote.canStart,
         };
       }),
       activeRun: activeRun
@@ -1264,9 +1758,11 @@ export const crewMissionService = {
       throw new Error('MISSION_TIER_LOCKED');
     }
 
-    const tradeRequirements = template.tradeRequirements ?? [];
-    if (tradeRequirements.length > 0) {
-      await consumeCrewTradeGoods(membership.crewId, tradeRequirements);
+    const storageRequirements = template.storageRequirements ?? [];
+    let gearBonus = 0;
+    if (storageRequirements.length > 0) {
+      const quote = await consumeAndWearMissionStorage(membership.crewId, storageRequirements);
+      gearBonus = quote.gearBonus;
     }
 
     const cleanAssignments = assignments
@@ -1293,7 +1789,9 @@ export const crewMissionService = {
       60,
       Math.round(template.durationSeconds * (1 - roleBonuses.durationReduction))
     );
-    const successChance = clamp(template.successChance + roleBonuses.successBonus, 0.2, 0.95);
+    const successChance = clampMissionSuccessChance(
+      template.successChance + roleBonuses.successBonus + gearBonus
+    );
     const endsAt = new Date(now.getTime() + computedDurationSeconds * 1000);
     const starter = await prisma.player.findUnique({
       where: { id: playerId },
@@ -1316,6 +1814,7 @@ export const crewMissionService = {
       JSON.stringify({
         roles: validAssignments,
         roleBonus: roleBonuses,
+        gearBonus,
         startCountry,
       })
     );

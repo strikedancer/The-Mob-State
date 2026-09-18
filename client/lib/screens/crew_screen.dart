@@ -327,6 +327,24 @@ class _CrewScreenState extends State<CrewScreen>
       4500,
       7200,
     ],
+    'tool_storage': [
+      8,
+      20,
+      48,
+      95,
+      160,
+      250,
+      370,
+      530,
+      760,
+      1080,
+      1480,
+      1980,
+      2580,
+      3280,
+      4100,
+      6560,
+    ],
     'ammo_storage': [
       500,
       1500,
@@ -456,6 +474,24 @@ class _CrewScreenState extends State<CrewScreen>
       1200000000,
       2100000000,
       3255000000,
+    ],
+    'tool_storage': [
+      42000,
+      125000,
+      340000,
+      920000,
+      2400000,
+      6000000,
+      13200000,
+      28500000,
+      57000000,
+      110000000,
+      190000000,
+      345000000,
+      620000000,
+      1150000000,
+      2000000000,
+      3100000000,
     ],
     'ammo_storage': [
       40000,
@@ -608,8 +644,10 @@ class _CrewScreenState extends State<CrewScreen>
       'car_storage',
       'boat_storage',
       'weapon_storage',
+      'tool_storage',
       'ammo_storage',
       'drug_storage',
+      'trade_storage',
       'cash_storage',
     ];
 
@@ -834,6 +872,8 @@ class _CrewScreenState extends State<CrewScreen>
         return l10n.crewUiTr19;
       case 'error.mission_trade_requirements_not_met':
         return l10n.crewUiErrorMissionTradeRequirementsNotMet;
+      case 'error.mission_storage_requirements_not_met':
+        return l10n.crewUiErrorMissionStorageRequirementsNotMet;
       default:
         return l10n.crewUiTr10;
     }
@@ -1040,6 +1080,60 @@ class _CrewScreenState extends State<CrewScreen>
     return 0;
   }
 
+  Map<String, dynamic>? _missionRequirementQuote(Map<String, dynamic> template) {
+    final raw = template['requirementQuote'];
+    if (raw is Map<String, dynamic>) return raw;
+    if (raw is Map) return raw.cast<String, dynamic>();
+    return null;
+  }
+
+  List<Map<String, dynamic>> _missionRequirementLines(Map<String, dynamic> template) {
+    final quote = _missionRequirementQuote(template);
+    final raw = quote?['lines'];
+    if (raw is! List) return const [];
+    return raw
+        .whereType<Map>()
+        .map((item) => item.cast<String, dynamic>())
+        .toList();
+  }
+
+  String _missionRequirementLabel(
+    AppLocalizations loc,
+    String kind,
+    String key,
+  ) {
+    switch (kind) {
+      case 'trade':
+        return TradeGoodL10n.name(loc, key);
+      case 'ammo':
+        return key == 'matching'
+            ? (loc.localeName.startsWith('nl') ? 'Bijpassende munitie' : 'Matching ammo')
+            : key;
+      case 'drug':
+        if (key == 'any') {
+          return loc.localeName.startsWith('nl') ? 'Drugs' : 'Drugs';
+        }
+        if (key == 'weed') {
+          return loc.localeName.startsWith('nl') ? 'Wiet' : 'Weed';
+        }
+        return key;
+      case 'weapon':
+        return loc.localeName.startsWith('nl') ? 'Wapen ($key)' : 'Weapon ($key)';
+      case 'tool':
+        return loc.localeName.startsWith('nl') ? 'Gereedschap ($key)' : 'Tool ($key)';
+      case 'vehicle':
+        if (key == 'motorcycle') {
+          return loc.localeName.startsWith('nl') ? 'Motor' : 'Motorcycle';
+        }
+        if (key == 'boat') {
+          return loc.localeName.startsWith('nl') ? 'Boot' : 'Boat';
+        }
+        return loc.localeName.startsWith('nl') ? 'Auto' : 'Car';
+      default:
+        return key;
+    }
+  }
+
   void _openCrewStorageTab() {
     _tabController.animateTo(2);
   }
@@ -1086,6 +1180,46 @@ class _CrewScreenState extends State<CrewScreen>
         return 'images/crimes/smuggling_crime.png';
       case 'warehouse_luxury_offload':
         return 'images/crimes/counterfeit_money_crime.png';
+      case 'chop_shop_handoff':
+        return 'images/crimes/car_theft_crime.png';
+      case 'lockbox_crowbar_shift':
+        return 'images/crimes/atm_theft_crime.png';
+      case 'alley_tag_run':
+        return 'images/crimes/graffiti_crime.png';
+      case 'bike_drop_off':
+        return 'images/crimes/steal_bike_crime.png';
+      case 'dock_rowboat_nudge':
+        return 'images/crimes/steal_yacht_crime.png';
+      case 'street_stash_move':
+        return 'images/crimes/drug_deal_small_crime.png';
+      case 'pistol_night_run':
+        return 'images/crimes/assassination_crime.png';
+      case 'shotgun_door_kick':
+        return 'images/crimes/rob_store_crime.png';
+      case 'harbor_skiff_lift':
+        return 'images/crimes/smuggling_crime.png';
+      case 'courier_bike_cut':
+        return 'images/crimes/hijack_truck_crime.png';
+      case 'burglary_kit_window':
+        return 'images/crimes/burglary_crime.png';
+      case 'bolt_cutter_fence':
+        return 'images/crimes/vandalism_crime.png';
+      case 'weed_van_run':
+        return 'images/crimes/drug_deal_large_crime.png';
+      case 'ammo_cache_shuffle':
+        return 'images/crimes/evidence_room_heist_crime.png';
+      case 'armored_payroll_escort':
+        return 'images/crimes/rob_armored_truck_crime.png';
+      case 'lab_grade_swap':
+        return 'images/crimes/hack_account_crime.png';
+      case 'yacht_glass_cut':
+        return 'images/crimes/jewelry_heist_crime.png';
+      case 'hotwire_convoy_cut':
+        return 'images/crimes/car_theft_crime.png';
+      case 'smg_warehouse_push':
+        return 'images/crimes/bank_robbery_crime.png';
+      case 'precursor_boat_run':
+        return 'images/crimes/smuggling_crime.png';
       default:
         return 'images/casino/casino_background_landscape.png';
     }
@@ -1147,6 +1281,53 @@ class _CrewScreenState extends State<CrewScreen>
                           color: Colors.orange,
                         ),
                       ),
+                      if (_crewMissionsOverview != null) ...[
+                        Builder(
+                          builder: (context) {
+                            final templates = _crewMissionsOverview!['templates'];
+                            if (templates is! List) return const SizedBox.shrink();
+                            final match = templates
+                                .whereType<Map>()
+                                .map((row) => Map<String, dynamic>.from(row))
+                                .where((row) => row['missionKey']?.toString() == missionKey);
+                            if (match.isEmpty) return const SizedBox.shrink();
+                            final quote = _missionRequirementQuote(match.first);
+                            final consume = ((quote?['consumePreview'] as List?) ?? [])
+                                .whereType<Map>()
+                                .map((row) => _missionRequirementLabel(
+                                      l10n,
+                                      (row['kind'] ?? '').toString(),
+                                      (row['key'] ?? '').toString(),
+                                    ))
+                                .join(', ');
+                            final wear = ((quote?['wearPreview'] as List?) ?? [])
+                                .whereType<Map>()
+                                .map((row) => _missionRequirementLabel(
+                                      l10n,
+                                      (row['kind'] ?? '').toString(),
+                                      (row['key'] ?? '').toString(),
+                                    ))
+                                .join(', ');
+                            if (consume.isEmpty && wear.isEmpty) {
+                              return const SizedBox.shrink();
+                            }
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: Text(
+                                l10n.crewUiMissionConsumeWearHint(
+                                  consume.isEmpty
+                                      ? (l10n.localeName.startsWith('nl') ? 'niets' : 'nothing')
+                                      : consume,
+                                  wear.isEmpty
+                                      ? (l10n.localeName.startsWith('nl') ? 'niets' : 'nothing')
+                                      : wear,
+                                ),
+                                style: const TextStyle(fontSize: 12),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                       const SizedBox(height: 14),
                       ...members.map((member) {
                         final username =
@@ -4147,6 +4328,112 @@ class _CrewScreenState extends State<CrewScreen>
     }
   }
 
+  Future<void> _depositTool() async {
+    if (_myCrew == null) return;
+    final locale = Localizations.localeOf(context).languageCode;
+    try {
+      final apiClient = AuthService().apiClient;
+      final response = await apiClient.get('/tools/inventory');
+      if (response.statusCode != 200) return;
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final tools = (data['tools'] as List).cast<Map<String, dynamic>>();
+      final carried = tools
+          .where((tool) =>
+              (tool['location'] ?? 'carried').toString() == 'carried' &&
+              ((tool['durability'] as num?)?.toInt() ?? 0) > 0)
+          .toList();
+
+      if (carried.isEmpty) {
+        if (mounted) {
+          showTopRightFromSnackBar(
+            context,
+            SnackBar(
+              content: Text(
+                locale == 'nl'
+                    ? 'Geen meegenomen gereedschap beschikbaar'
+                    : 'No carried tools available',
+              ),
+            ),
+          );
+        }
+        return;
+      }
+
+      int? selectedToolId = (carried.first['id'] as num?)?.toInt();
+
+      final confirmed = await showDialog<bool>(
+        context: context,
+        builder: (context) => StatefulBuilder(
+          builder: (context, setStateDialog) => AlertDialog(
+            title: Text(l10n.crewUiActionAddTool),
+            content: DropdownButtonFormField<int>(
+              initialValue: selectedToolId,
+              items: carried
+                  .map(
+                    (tool) => DropdownMenuItem<int>(
+                      value: (tool['id'] as num).toInt(),
+                      child: Text(
+                        '${tool['name'] ?? tool['toolId']} (${tool['durability']})',
+                      ),
+                    ),
+                  )
+                  .toList(),
+              onChanged: (value) {
+                setStateDialog(() {
+                  selectedToolId = value;
+                });
+              },
+              decoration: InputDecoration(
+                labelText: locale == 'nl' ? 'Gereedschap' : 'Tool',
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: Text(l10n.crewUiTr43),
+              ),
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context, true),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                child: Text(l10n.crewUiTr104),
+              ),
+            ],
+          ),
+        ),
+      );
+
+      if (confirmed != true || selectedToolId == null) return;
+
+      final depositResponse = await apiClient.post(
+        '/crews/${_myCrew!.id}/storage/tools/deposit',
+        {'playerToolId': selectedToolId},
+      );
+
+      if (depositResponse.statusCode == 200 && mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              locale == 'nl' ? 'Toegevoegd aan crew' : 'Added to crew',
+            ),
+            backgroundColor: Colors.green,
+          ),
+        );
+        _loadData();
+      }
+    } catch (e) {
+      if (mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text('Er is een fout opgetreden'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
   Future<void> _depositAmmo() async {
     if (_myCrew == null) return;
     final locale = Localizations.localeOf(context).languageCode;
@@ -4498,11 +4785,17 @@ class _CrewScreenState extends State<CrewScreen>
     return 'assets/images/crew_buildings/$normalizedType/$buildingStyle/lvl_$level.png';
   }
 
-  /// Fallback when [trade] tier art is missing on the image mount.
+  /// Fallback when [trade] or [tool] tier art is missing on the image mount.
   String? _getCrewBuildingImageFallbackPath(String? type, int? level) {
-    if (type != 'trade_storage' || level == null) return null;
+    if (level == null) return null;
     final buildingStyle = _getCrewBuildingStyleForLevel(level);
-    return 'assets/images/crew_buildings/drug/$buildingStyle/lvl_$level.png';
+    if (type == 'trade_storage') {
+      return 'assets/images/crew_buildings/drug/$buildingStyle/lvl_$level.png';
+    }
+    if (type == 'tool_storage') {
+      return 'assets/images/crew_buildings/weapon/$buildingStyle/lvl_$level.png';
+    }
+    return null;
   }
 
   Widget _buildCrewBuildingCardImage({
@@ -4564,6 +4857,8 @@ class _CrewScreenState extends State<CrewScreen>
         return Icons.directions_boat;
       case 'weapon_storage':
         return Icons.gavel;
+      case 'tool_storage':
+        return Icons.handyman;
       case 'ammo_storage':
         return Icons.inventory_2;
       case 'drug_storage':
@@ -4828,6 +5123,7 @@ class _CrewScreenState extends State<CrewScreen>
     final carStorageOwned = (storageCapacities?['cars'] as int? ?? 0) > 0;
     final boatStorageOwned = (storageCapacities?['boats'] as int? ?? 0) > 0;
     final weaponStorageOwned = (storageCapacities?['weapons'] as int? ?? 0) > 0;
+    final toolStorageOwned = (storageCapacities?['tools'] as int? ?? 0) > 0;
     final ammoStorageOwned = (storageCapacities?['ammo'] as int? ?? 0) > 0;
     final drugStorageOwned = (storageCapacities?['drugs'] as int? ?? 0) > 0;
     final tradeStorageOwned = (storageCapacities?['trade'] as int? ?? 0) > 0;
@@ -5138,6 +5434,11 @@ class _CrewScreenState extends State<CrewScreen>
                           ),
                           Text(
                             locale == 'nl'
+                                ? 'Gereedschap: ${_crewStorage!['totals']['tools'] ?? 0} / ${_crewStorage!['capacities']['tools'] ?? 0}'
+                                : 'Tools: ${_crewStorage!['totals']['tools'] ?? 0} / ${_crewStorage!['capacities']['tools'] ?? 0}',
+                          ),
+                          Text(
+                            locale == 'nl'
                                 ? 'Munitie: ${_crewStorage!['totals']['ammo']} / ${_crewStorage!['capacities']['ammo']}'
                                 : 'Ammo: ${_crewStorage!['totals']['ammo']} / ${_crewStorage!['capacities']['ammo']}',
                           ),
@@ -5187,6 +5488,12 @@ class _CrewScreenState extends State<CrewScreen>
                                     ? _depositWeapon
                                     : null,
                                 child: Text(_t(l10n, 'action.addWeapon')),
+                              ),
+                              OutlinedButton(
+                                onPressed: toolStorageOwned
+                                    ? _depositTool
+                                    : null,
+                                child: Text(l10n.crewUiActionAddTool),
                               ),
                               OutlinedButton(
                                 onPressed: ammoStorageOwned
@@ -5265,6 +5572,7 @@ class _CrewScreenState extends State<CrewScreen>
       'car_storage',
       'boat_storage',
       'weapon_storage',
+      'tool_storage',
       'ammo_storage',
       'drug_storage',
       'trade_storage',
@@ -5935,6 +6243,17 @@ class _CrewScreenState extends State<CrewScreen>
             actionEn: 'Add',
           ),
           buildStorageTile(
+            icon: Icons.handyman,
+            titleNl: 'Gereedschapopslag',
+            titleEn: 'Tool Storage',
+            value: '${totals?['tools'] ?? 0} / ${capacities?['tools'] ?? 0}',
+            onPressed: (capacities?['tools'] as int? ?? 0) > 0
+                ? _depositTool
+                : null,
+            actionNl: 'Toevoegen',
+            actionEn: 'Add',
+          ),
+          buildStorageTile(
             icon: Icons.inventory_2,
             titleNl: 'Munitie opslag',
             titleEn: 'Ammo Storage',
@@ -6359,6 +6678,7 @@ class _CrewScreenState extends State<CrewScreen>
           MapEntry('car', l10n.crewUiWarLootCar),
           MapEntry('boat', l10n.crewUiWarLootBoat),
           MapEntry('weapon', l10n.crewUiWarLootWeapon),
+          MapEntry('tool', l10n.crewUiWarLootTool),
           MapEntry('ammo', l10n.crewUiWarLootAmmo),
           MapEntry('drug', l10n.crewUiWarLootDrug),
           MapEntry('trade', l10n.crewUiWarLootTrade),
@@ -6374,6 +6694,7 @@ class _CrewScreenState extends State<CrewScreen>
             MapEntry('car_storage', l10n.crewUiBuildingCarStorage),
             MapEntry('boat_storage', l10n.crewUiBuildingBoatStorage),
             MapEntry('weapon_storage', l10n.crewUiBuildingWeaponStorage),
+            MapEntry('tool_storage', l10n.crewUiBuildingToolStorage),
             MapEntry('ammo_storage', l10n.crewUiBuildingAmmoStorage),
             MapEntry('drug_storage', l10n.crewUiBuildingDrugStorage),
             MapEntry('trade_storage', l10n.crewUiBuildingTradeStorage),
@@ -7560,6 +7881,8 @@ class _CrewScreenState extends State<CrewScreen>
         return loc.crewUiBuildingBoatStorage;
       case 'weapon_storage':
         return loc.crewUiBuildingWeaponStorage;
+      case 'tool_storage':
+        return loc.crewUiBuildingToolStorage;
       case 'ammo_storage':
         return loc.crewUiBuildingAmmoStorage;
       case 'drug_storage':
@@ -7920,6 +8243,11 @@ class _CrewScreenState extends State<CrewScreen>
     final imagePath = (template['imageCardPath'] ?? '').toString();
     final fallbackPath = _crewMissionFallbackImagePath(missionKey);
     final tradeRequirements = _extractMissionTradeRequirements(template);
+    final requirementLines = _missionRequirementLines(template);
+    final requirementQuote = _missionRequirementQuote(template);
+    final storageReady = template['storageReady'] != false;
+    final quotedChance = (template['quotedSuccessChance'] as num?)?.toDouble();
+    final gearBonusPp = (requirementQuote?['gearBonusPp'] as num?)?.toDouble() ?? 0;
 
     return Card(
       clipBehavior: Clip.antiAlias,
@@ -8003,7 +8331,79 @@ class _CrewScreenState extends State<CrewScreen>
                 Text(
                   '${_t(loc, 'label.missionRewards')}: ${_money(rewardCashMin)} - ${_money(rewardCashMax)} + $rewardCrewXp XP',
                 ),
-                if (tradeRequirements.isNotEmpty) ...[
+                if (quotedChance != null) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    '${loc.crewUiLabelMissionSuccessChance}: ${(quotedChance * 100).round()}%${gearBonusPp.abs() >= 0.5 ? ' (${loc.crewUiMissionGearBonus('${gearBonusPp >= 0 ? '+' : ''}${gearBonusPp.round()} pp')})' : ''}',
+                  ),
+                ],
+                if (requirementLines.isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    loc.crewUiLabelMissionStorageGear,
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    loc.crewUiHintMissionStorageGear,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      fontSize: 12,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Wrap(
+                    spacing: 6,
+                    runSpacing: 4,
+                    children: requirementLines.map((row) {
+                      final kind = (row['kind'] ?? '').toString();
+                      final key = (row['key'] ?? '').toString();
+                      final need = (row['need'] as num?)?.toInt() ?? 0;
+                      final have = (row['have'] as num?)?.toInt() ?? 0;
+                      final ready = row['met'] == true;
+                      return Chip(
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        visualDensity: VisualDensity.compact,
+                        backgroundColor: ready
+                            ? Colors.green.withValues(alpha: 0.16)
+                            : Colors.orange.withValues(alpha: 0.16),
+                        label: Text(
+                          loc.crewUiMissionReqHeldNeed(
+                            _missionRequirementLabel(loc, kind, key),
+                            have,
+                            need,
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    storageReady
+                        ? loc.crewUiHintMissionStorageReady
+                        : loc.crewUiHintMissionStorageShort,
+                    style: TextStyle(
+                      color: storageReady
+                          ? Colors.green.shade300
+                          : Colors.orange.shade300,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  if (!storageReady) ...[
+                    const SizedBox(height: 8),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        OutlinedButton(
+                          onPressed: _openCrewStorageTab,
+                          child: Text(_t(loc, 'action.goToStorage')),
+                        ),
+                      ],
+                    ),
+                  ],
+                ] else if (tradeRequirements.isNotEmpty) ...[
                   const SizedBox(height: 8),
                   Text(
                     _t(loc, 'label.missionTradeCargo'),
@@ -8104,6 +8504,7 @@ class _CrewScreenState extends State<CrewScreen>
                     onPressed:
                         (!canManage ||
                             !unlocked ||
+                            !storageReady ||
                             hasActiveRun ||
                             missionKey.isEmpty ||
                             _crewMissionActionLoading)

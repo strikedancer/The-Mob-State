@@ -7,6 +7,7 @@ export type CrewBuildingType =
   | 'car_storage'
   | 'boat_storage'
   | 'weapon_storage'
+  | 'tool_storage'
   | 'ammo_storage'
   | 'drug_storage'
   | 'trade_storage'
@@ -52,6 +53,7 @@ const starterStorageTypes: CrewBuildingType[] = [
   'car_storage',
   'boat_storage',
   'weapon_storage',
+  'tool_storage',
   'ammo_storage',
   'drug_storage',
   'trade_storage',
@@ -345,16 +347,18 @@ function getRequiredSideBuildingLevelForCurrentHqLevel(style: CrewBuildingStyle,
 }
 
 async function areAllSideBuildingsAtLeastLevel(crewId: number, requiredLevel: number): Promise<boolean> {
-  const [car, boat, weapon, ammo, drug, cash] = await Promise.all([
+  const [car, boat, weapon, tool, ammo, drug, trade, cash] = await Promise.all([
     prisma.crewCarStorageBuilding.findUnique({ where: { crewId }, select: { level: true } }),
     prisma.crewBoatStorageBuilding.findUnique({ where: { crewId }, select: { level: true } }),
     prisma.crewWeaponStorageBuilding.findUnique({ where: { crewId }, select: { level: true } }),
+    prisma.crewToolStorageBuilding.findUnique({ where: { crewId }, select: { level: true } }),
     prisma.crewAmmoStorageBuilding.findUnique({ where: { crewId }, select: { level: true } }),
     prisma.crewDrugStorageBuilding.findUnique({ where: { crewId }, select: { level: true } }),
+    prisma.crewTradeStorageBuilding.findUnique({ where: { crewId }, select: { level: true } }),
     prisma.crewCashStorageBuilding.findUnique({ where: { crewId }, select: { level: true } }),
   ]);
 
-  const all = [car, boat, weapon, ammo, drug, cash];
+  const all = [car, boat, weapon, tool, ammo, drug, trade, cash];
   return all.every((building) => (building?.level ?? -1) >= requiredLevel);
 }
 
@@ -389,6 +393,8 @@ function getBuildingModel(type: CrewBuildingType) {
       return prisma.crewBoatStorageBuilding;
     case 'weapon_storage':
       return prisma.crewWeaponStorageBuilding;
+    case 'tool_storage':
+      return prisma.crewToolStorageBuilding;
     case 'ammo_storage':
       return prisma.crewAmmoStorageBuilding;
     case 'drug_storage':
@@ -408,12 +414,13 @@ export async function getCrewBuildingRecord(crewId: number, type: CrewBuildingTy
 }
 
 export async function ensureCrewStarterBuildings(crewId: number): Promise<void> {
-  const [hq, carStorage, boatStorage, weaponStorage, ammoStorage, drugStorage, tradeStorage, cashStorage] =
+  const [hq, carStorage, boatStorage, weaponStorage, toolStorage, ammoStorage, drugStorage, tradeStorage, cashStorage] =
     await Promise.all([
       prisma.crewHqBuilding.findUnique({ where: { crewId } }),
       prisma.crewCarStorageBuilding.findUnique({ where: { crewId } }),
       prisma.crewBoatStorageBuilding.findUnique({ where: { crewId } }),
       prisma.crewWeaponStorageBuilding.findUnique({ where: { crewId } }),
+      prisma.crewToolStorageBuilding.findUnique({ where: { crewId } }),
       prisma.crewAmmoStorageBuilding.findUnique({ where: { crewId } }),
       prisma.crewDrugStorageBuilding.findUnique({ where: { crewId } }),
       prisma.crewTradeStorageBuilding.findUnique({ where: { crewId } }),
@@ -424,6 +431,7 @@ export async function ensureCrewStarterBuildings(crewId: number): Promise<void> 
     carStorage,
     boatStorage,
     weaponStorage,
+    toolStorage,
     ammoStorage,
     drugStorage,
     tradeStorage,
@@ -437,6 +445,8 @@ export async function ensureCrewStarterBuildings(crewId: number): Promise<void> 
         return !boatStorage;
       case 'weapon_storage':
         return !weaponStorage;
+      case 'tool_storage':
+        return !toolStorage;
       case 'ammo_storage':
         return !ammoStorage;
       case 'drug_storage':
@@ -483,6 +493,11 @@ export async function ensureCrewStarterBuildings(crewId: number): Promise<void> 
         update: {},
       }),
       tx.crewWeaponStorageBuilding.upsert({
+        where: { crewId },
+        create: starterBuildingData,
+        update: {},
+      }),
+      tx.crewToolStorageBuilding.upsert({
         where: { crewId },
         create: starterBuildingData,
         update: {},

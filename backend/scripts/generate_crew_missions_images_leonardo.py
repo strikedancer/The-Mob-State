@@ -1,14 +1,9 @@
 #!/usr/bin/env python3
-"""Generate Crew Mission card + scene images (12 PNGs) via Leonardo API.
+"""Generate Crew Mission card + scene images via Leonardo API.
 
 Outputs to:
   runtime/client-images/crew_missions/cards/<mission_key>.png
   runtime/client-images/crew_missions/scenes/<mission_key>.png
-
-Optional mirror:
-  client/assets/images/crew_missions/cards/ and .../scenes/
-
-Requires LEONARDO_API_KEY (env or .env files per project convention).
 """
 
 from __future__ import annotations
@@ -379,6 +374,206 @@ def _mission_prompts() -> List[dict]:
             "scene": (
                 "Server cathedral interior, tape robots, glass secure core, red alarm wash, "
                 "institutional settlement heist vibe, no real-world logos, no text"
+            ),
+        },
+        {
+            "key": "chop_shop_handoff",
+            "card": (
+                "Cinematic dark-mafia game card art, night chop shop garage, sedan on a lift, "
+                "sparks and oil drums, compact composition, no text"
+            ),
+            "scene": (
+                "Wide chop shop alley, crew handing over a dark sedan, chain hoist, amber worklamps, no text"
+            ),
+        },
+        {
+            "key": "lockbox_crowbar_shift",
+            "card": (
+                "Cinematic dark-mafia game card art, steel street lockbox pried with a crowbar, "
+                "wet cobbles, compact composition, no text"
+            ),
+            "scene": (
+                "Wide night sidewalk, crew levering a bolted lockbox, distant tram lights, noir, no text"
+            ),
+        },
+        {
+            "key": "alley_tag_run",
+            "card": (
+                "Cinematic dark-mafia game card art, spray can mist on a brick alley wall, "
+                "gold crew mark silhouette, compact composition, no text"
+            ),
+            "scene": (
+                "Wide tagged alley, running silhouette, wet brick, sodium vapor glow, no readable letters, no text"
+            ),
+        },
+        {
+            "key": "bike_drop_off",
+            "card": (
+                "Cinematic dark-mafia game card art, black motorcycle under a tarp in a side street, "
+                "headlight slash, compact composition, no text"
+            ),
+            "scene": (
+                "Wide canal-side drop, motorcycle parked for pickup, fog, cool teal lights, no text"
+            ),
+        },
+        {
+            "key": "dock_rowboat_nudge",
+            "card": (
+                "Cinematic dark-mafia game card art, small boat bumping a wooden dock at night, "
+                "rope and crates, compact composition, no text"
+            ),
+            "scene": (
+                "Wide harbor slip, crew nudging a skiff, cranes in fog, gold reflections, no text"
+            ),
+        },
+        {
+            "key": "street_stash_move",
+            "card": (
+                "Cinematic dark-mafia game card art, wrapped drug packages in a duffel in a stairwell, "
+                "bare bulb, compact composition, no logos, no text"
+            ),
+            "scene": (
+                "Wide tenement corridor stash move, two silhouettes, peeling paint, tense, no text"
+            ),
+        },
+        {
+            "key": "pistol_night_run",
+            "card": (
+                "Cinematic dark-mafia game card art, compact pistol and spare mag on a rooftop ledge, "
+                "city night, compact composition, no text"
+            ),
+            "scene": (
+                "Wide rooftop escort run, handgun silhouette, rain, distant sirens glow, no text"
+            ),
+        },
+        {
+            "key": "shotgun_door_kick",
+            "card": (
+                "Cinematic dark-mafia game card art, pump shotgun aimed at a warehouse door, "
+                "splinters, compact composition, no text"
+            ),
+            "scene": (
+                "Wide warehouse breach, kicked door, shotgun crew, dust in worklight, no text"
+            ),
+        },
+        {
+            "key": "harbor_skiff_lift",
+            "card": (
+                "Cinematic dark-mafia game card art, quiet skiff lifting a crate from black water, "
+                "fog, compact composition, no text"
+            ),
+            "scene": (
+                "Wide misty harbor lift, cargo net, stealth boat, gold dock lamps, no text"
+            ),
+        },
+        {
+            "key": "courier_bike_cut",
+            "card": (
+                "Cinematic dark-mafia game card art, motorcycle cutting off a courier in a tunnel, "
+                "headlight streaks, compact composition, no text"
+            ),
+            "scene": (
+                "Wide tunnel intercept, two bikes, satchel in air, sodium lights, no text"
+            ),
+        },
+        {
+            "key": "burglary_kit_window",
+            "card": (
+                "Cinematic dark-mafia game card art, burglary kit tools on a window ledge, "
+                "office glass at night, compact composition, no text"
+            ),
+            "scene": (
+                "Wide office facade, opened window, gloved crew, city reflections, no text"
+            ),
+        },
+        {
+            "key": "bolt_cutter_fence",
+            "card": (
+                "Cinematic dark-mafia game card art, bolt cutters snapping harbor fence chain, "
+                "sparks, compact composition, no text"
+            ),
+            "scene": (
+                "Wide fenced dockyard, cut gap, crew slipping through, floodlights, no text"
+            ),
+        },
+        {
+            "key": "weed_van_run",
+            "card": (
+                "Cinematic dark-mafia game card art, unmarked van with wrapped cannabis bricks in the cargo bay, "
+                "night industrial park, compact composition, no logos, no text"
+            ),
+            "scene": (
+                "Wide van rolling out a loading bay, green-tinted packages, wet asphalt, no text"
+            ),
+        },
+        {
+            "key": "ammo_cache_shuffle",
+            "card": (
+                "Cinematic dark-mafia game card art, open ammo crate of 9mm in a basement cache, "
+                "warm lamp, compact composition, no text"
+            ),
+            "scene": (
+                "Wide ammo shuffle, crates passed hand to hand, concrete bunker, no text"
+            ),
+        },
+        {
+            "key": "armored_payroll_escort",
+            "card": (
+                "Cinematic dark-mafia game card art, armored sedan and rifle case for a payroll run, "
+                "rainy overpass, compact composition, no text"
+            ),
+            "scene": (
+                "Wide payroll escort, armored car on wet highway, rifle silhouette, dusk, no text"
+            ),
+        },
+        {
+            "key": "lab_grade_swap",
+            "card": (
+                "Cinematic dark-mafia game card art, cocaine bricks quality tagged beside a laptop and glass cutter, "
+                "lab neon, compact composition, no logos, no text"
+            ),
+            "scene": (
+                "Wide lab-grade swap table, white powder bags, tools, cold light, no text"
+            ),
+        },
+        {
+            "key": "yacht_glass_cut",
+            "card": (
+                "Cinematic dark-mafia game card art, glass cutter on a yacht display case, marina night, "
+                "compact composition, no text"
+            ),
+            "scene": (
+                "Wide luxury yacht deck, glass cut circle, quiet boat alongside, gold cabin light, no text"
+            ),
+        },
+        {
+            "key": "hotwire_convoy_cut",
+            "card": (
+                "Cinematic dark-mafia game card art, fast sedan and car-theft tools at a convoy overpass, "
+                "compact composition, no text"
+            ),
+            "scene": (
+                "Wide convoy cut, speeding car, wires and tools, highway night, no text"
+            ),
+        },
+        {
+            "key": "smg_warehouse_push",
+            "card": (
+                "Cinematic dark-mafia game card art, compact SMG and spent casings in a warehouse aisle, "
+                "compact composition, no text"
+            ),
+            "scene": (
+                "Wide warehouse push, automatic weapon crew, crates, hanging lamps, no text"
+            ),
+        },
+        {
+            "key": "precursor_boat_run",
+            "card": (
+                "Cinematic dark-mafia game card art, cargo boat with sealed high-grade drug drums, "
+                "night river, compact composition, no logos, no text"
+            ),
+            "scene": (
+                "Wide precursor boat on black water, heavy cargo, fog horn mood, no text"
             ),
         },
     ]

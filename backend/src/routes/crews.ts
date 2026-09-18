@@ -1605,6 +1605,78 @@ router.post(
 );
 
 /**
+ * POST /crews/:id/storage/tools/deposit
+ * Deposit a carried tool into crew tool storage. No personal withdraw.
+ */
+router.post(
+  '/:id/storage/tools/deposit',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const crewId = parseInt(req.params.id as string);
+      const currentPlayerId = req.player!.id;
+      const { playerToolId } = req.body as { playerToolId?: number };
+
+      if (isNaN(crewId) || !playerToolId) {
+        return res.status(400).json({
+          event: 'error.invalid_input',
+          params: {},
+        });
+      }
+
+      const isMember = await crewService.isCrewMember(currentPlayerId, crewId);
+      if (!isMember) {
+        return res.status(403).json({
+          event: 'error.not_in_crew',
+          params: {},
+        });
+      }
+
+      await crewStorageService.depositCrewTool(crewId, currentPlayerId, Number(playerToolId));
+
+      return res.json({
+        event: 'crew.storage_tool_deposit',
+        params: {},
+      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        if (error.message === 'TOOL_STORAGE_NOT_OWNED') {
+          return res.status(400).json({
+            event: 'error.tool_storage_not_owned',
+            params: {},
+          });
+        }
+        if (error.message === 'TOOL_STORAGE_FULL') {
+          return res.status(400).json({
+            event: 'error.tool_storage_full',
+            params: {},
+          });
+        }
+        if (error.message === 'TOOL_NOT_FOUND' || error.message === 'NOT_OWNER') {
+          return res.status(400).json({
+            event: 'error.tool_not_found',
+            params: {},
+          });
+        }
+        if (error.message === 'TOOL_NOT_CARRIED') {
+          return res.status(400).json({
+            event: 'error.tool_not_carried',
+            params: {},
+          });
+        }
+        if (error.message === 'TOOL_BROKEN') {
+          return res.status(400).json({
+            event: 'error.tool_broken',
+            params: {},
+          });
+        }
+      }
+      return next(error);
+    }
+  }
+);
+
+/**
  * POST /crews/:id/storage/ammo/deposit
  * Deposit ammo to crew storage
  */

@@ -568,6 +568,8 @@ model Crew {
   messages              CrewMessage[]
   weaponInventory       CrewWeaponInventory[]
   weaponStorageBuilding CrewWeaponStorageBuilding?
+  toolInventory         CrewToolInventory[]
+  toolStorageBuilding   CrewToolStorageBuilding?
   dealsInitiated        CrewStorageDeal[]          @relation("CrewDealInitiator")
   dealsReceived         CrewStorageDeal[]          @relation("CrewDealCounterparty")
 
@@ -957,6 +959,32 @@ model CrewWeaponInventory {
   @@unique([crewId, weaponId])
   @@index([crewId])
   @@map("crew_weapon_inventory")
+}
+
+model CrewToolStorageBuilding {
+  id        Int               @id @default(autoincrement())
+  crewId    Int               @unique
+  style     CrewBuildingStyle @default(camping)
+  level     Int               @default(0)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  crew      Crew              @relation(fields: [crewId], references: [id], onDelete: Cascade)
+
+  @@map("crew_tool_storage_buildings")
+}
+
+model CrewToolInventory {
+  id              Int      @id @default(autoincrement())
+  crewId          Int
+  toolId          String   @db.VarChar(50)
+  durability      Int      @default(100)
+  addedByPlayerId Int
+  addedAt         DateTime @default(now())
+  crew            Crew     @relation(fields: [crewId], references: [id], onDelete: Cascade)
+
+  @@index([crewId])
+  @@index([crewId, toolId])
+  @@map("crew_tool_inventory")
 }
 
 model CrewAmmoInventory {

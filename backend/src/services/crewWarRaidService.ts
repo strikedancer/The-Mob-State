@@ -11,6 +11,7 @@ export const RAID_LOOT_TARGETS = [
   'car',
   'boat',
   'weapon',
+  'tool',
   'ammo',
   'drug',
   'trade',
@@ -22,6 +23,7 @@ export const SABOTAGE_BUILDING_TYPES: Exclude<CrewBuildingType, 'hq'>[] = [
   'car_storage',
   'boat_storage',
   'weapon_storage',
+  'tool_storage',
   'ammo_storage',
   'drug_storage',
   'trade_storage',
@@ -220,6 +222,42 @@ export async function applyWarRaidLoot(
         lootTarget: 'weapon',
         weaponId: stack.weaponId,
         quantity: take,
+        shielded,
+        taken: true,
+      },
+    };
+  }
+
+  if (input.lootTarget === 'tool') {
+    const cap = await getCrewStorageCapacity(input.attackerCrewId, 'tool_storage');
+    const owned = await tx.crewToolInventory.count({ where: { crewId: input.attackerCrewId } });
+    if (cap <= 0 || owned >= cap) {
+      throw new Error('RAID_NO_CAPACITY');
+    }
+    if (shielded) {
+      return {
+        moneyDelta: 0,
+        metadata: { lootTarget: 'tool', shielded: true, taken: false },
+      };
+    }
+    const tool = await tx.crewToolInventory.findFirst({
+      where: { crewId: input.defenderCrewId },
+      orderBy: { durability: 'desc' },
+    });
+    if (!tool) {
+      throw new Error('RAID_NOTHING_TO_STEAL');
+    }
+    await tx.crewToolInventory.update({
+      where: { id: tool.id },
+      data: { crewId: input.attackerCrewId, addedByPlayerId: input.actorPlayerId },
+    });
+    return {
+      moneyDelta: 0,
+      metadata: {
+        lootTarget: 'tool',
+        toolId: tool.toolId,
+        inventoryId: tool.id,
+        durability: tool.durability,
         shielded,
         taken: true,
       },

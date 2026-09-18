@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { z } from 'zod';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
 import { crewMissionService } from '../services/crewMissionService';
+import { MissionStorageNotMetError } from '../services/crewMissionRequirements';
 
 const router = Router();
 
@@ -59,6 +60,15 @@ function mapMissionErrorToResponse(error: unknown, res: any): boolean {
   }
   if (message === 'MISSION_TRADE_REQUIREMENTS_NOT_MET') {
     res.status(400).json({ event: 'error.mission_trade_requirements_not_met', params: {} });
+    return true;
+  }
+  if (message === 'MISSION_STORAGE_REQUIREMENTS_NOT_MET') {
+    const missing =
+      error instanceof MissionStorageNotMetError ? error.missing : [];
+    res.status(400).json({
+      event: 'error.mission_storage_requirements_not_met',
+      params: { missing },
+    });
     return true;
   }
   if (message === 'MISSION_START_FAILED') {
