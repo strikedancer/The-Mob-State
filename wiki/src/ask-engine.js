@@ -58,7 +58,7 @@
     /\b(waar|where|wo|donde|dove|gdzie|onde|welk\s+land|which\s+country|in\s+welk|in\s+welchem)\b/i;
   const MINE_RE =
     /\b(die\s+ik\s+kan|voor\s+mijn\s+(rank|rang|level)|op\s+mijn\s+(rank|rang)|i\s+can\s+steal|for\s+my\s+rank|auf\s+meinem\s+rang|a\s+mon\s+rang|en\s+mi\s+rango|al\s+mio\s+grado|na\s+mojej\s+randze|na\s+minha\s+patente)\b/i;
-  const WEAPON_RE = /\b(wapens?|weapons?|waffe(?:n)?|armes?|armas?|armi|bron(?:i)?)\b/i;
+  const WEAPON_RE = /\b(wapens?|weapons?|waffe(?:n)?|armes?|armas?|armi|bron(?:i)?|geweer(?:s)?|rifles?|pistolen?|pistols?|snipers?|shotguns?)\b/i;
   const CRIME_RE =
     /\b(misda(?:ad|den)|crimes?|verbrechen|crimen(?:es)?|crimini?|przestepstw\w*)\b/i;
   const JOB_RE =
@@ -438,7 +438,29 @@
   }
 
   function findNamedWeapon(facts, question) {
-    return findNamedIn(facts?.weapons, question, 3);
+    const exact = findNamedIn(facts?.weapons, question, 3);
+    if (exact) return exact;
+    const q = fold(question);
+    const tokens = q
+      .replace(/[^\p{L}\p{N}]+/gu, ' ')
+      .split(/\s+/)
+      .filter((t) => t.length >= 5);
+    let best = null;
+    let bestToken = 0;
+    let bestDamage = -1;
+    for (const token of tokens) {
+      for (const weapon of facts?.weapons || []) {
+        const names = [weapon.name, String(weapon.id || '').replace(/_/g, ' '), ...(weapon.names || [])].map(fold);
+        if (!names.some((n) => n.includes(token))) continue;
+        const damage = Number(weapon.damage) || 0;
+        if (token.length > bestToken || (token.length === bestToken && damage > bestDamage)) {
+          best = weapon;
+          bestToken = token.length;
+          bestDamage = damage;
+        }
+      }
+    }
+    return best;
   }
 
   function findNamedDrug(facts, question) {

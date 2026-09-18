@@ -429,6 +429,20 @@ const namedWeapon = AlmanacAsk.answerQuestion({
 });
 assert(namedWeapon.intent === 'weapon' && /Geweer/i.test(namedWeapon.body) && /80/.test(namedWeapon.body), `named weapon: ${namedWeapon.body}`);
 
+const rifleType = AlmanacAsk.answerQuestion({
+  stats,
+  facts: {
+    ...facts,
+    weapons: [
+      { id: 'ak', name: 'Aanvalsgeweer (AK-47)', names: ['Aanvalsgeweer (AK-47)'], damage: 90, price: 9000, requiredRank: 14, type: 'rifle' },
+      { id: 'ak_vip', name: 'Aanvalsgeweer Elite', names: ['Aanvalsgeweer Elite'], damage: 120, price: 20000, requiredRank: 30, type: 'rifle' },
+    ],
+  },
+  question: 'Hoeveel schade heeft een geweer?',
+  copy: stealCopy,
+});
+assert(rifleType.intent === 'weapon' && /Elite/i.test(rifleType.body), `partial geweer should pick elite: ${rifleType.body}`);
+
 const frMyWeapons = AlmanacAsk.answerQuestion({
   stats,
   facts,
