@@ -29,7 +29,7 @@
 ## Premium & Credits
 
 - VIP en Credits staan onder Dashboard in het zijmenu, niet onder Economie. Compacte kooprijen (geen grote fototegels). Wachttijden verkorten blijft op het actiescherm.
-- Je kunt in-game cash kopen met euro's (cashpakketten). Credits blijven een aparte winkel.
+- Je kunt in-game cash kopen met euro's (cashpakketten). Credits omwisselen naar cash kan ook, maar levert minder geld per euro op (25 credits = €2.000). Credits blijven vooral voor skips en bescherming.
 - Bij een creditbundel kies je na aanklikken hoeveel pakketten je in één betaling wilt (1–20). Prijs en credits schalen mee. Event Pass blijft één aankoop.
 - Legacy aanbiedingen met oude prijsstelling (zoals 1000 credits voor EUR 1.99) horen niet meer zichtbaar of afrekenbaar te zijn.
 
@@ -1070,7 +1070,7 @@ Bob: â‚¬300K counter-hit
 - VIP- en credit-checkouts openen de betaalpagina en keren daarna terug naar `Premium & Credits` in de game-shell, zodat de speler direct de uitkomst, vernieuwde VIP-status en bijgewerkte credits ziet.
 - Creditbundels openen eerst een aantalkeuze (1–20 pakketten). Je betaalt het totaal in één checkout; Event Pass en VIP blijven één stuk.
 - Credit-items gebruiken wallet-credits in plaats van euro's. Admin beheert live welke items actief zijn, wat ze kosten en welk effecttype ze gebruiken.
-- Mogelijke credit-effecten zijn onder meer cash bundles, hit protection, cooldown resets, event boosts en context-gebonden voertuigacties.
+- Mogelijke credit-effecten zijn onder meer cash wissel (25 credits → €2.000), hit protection, cooldown resets, event boosts en context-gebonden voertuigacties. Euro-cashpakketten blijven de betere cash-per-euro.
 - VIP-prijzen en credit-kosten zijn runtime-config/admin-gestuurd en dus niet langer vaste clientwaarden.
 - Cooldown reset-items gebruiken een dynamische prijs (`effectiveCreditCost`): hoe waardevoller de actie en hoe meer resterende cooldown, hoe hoger de credit-kost.
 - Die dynamische prijs moet wel in balans blijven: korte cooldowns krijgen een lagere, niet-straffende credit-kost en langere/high-value acties schalen geleidelijk op.

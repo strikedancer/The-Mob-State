@@ -112,14 +112,19 @@ const VIP_WEEKLY_STIPEND_REASON_KEY = 'vip_weekly_stipend';
 
 const DEFAULT_CREDIT_ITEMS: CreditCatalogItem[] = [
   {
+    // Keep key stable so the live row updates in place. Rate must stay below euro cash packs:
+    // cheapest credits pack is 250 / €2.49 ≈ 100 credits per euro; small cash pack is
+    // €50,000 / €4.99 ≈ €10,020 in-game per euro. €80 per credit (25 → €2,000) stays ~20% worse.
     key: 'cash_bundle_250k',
-    titleNl: 'Cash boost €250.000',
-    titleEn: 'Cash boost €250,000',
-    descriptionNl: 'Zet credits direct om in contant geld voor snelle progressie.',
-    descriptionEn: 'Convert credits into instant cash for faster progression.',
+    titleNl: 'Cash wissel €2.000',
+    titleEn: 'Cash swap €2,000',
+    descriptionNl:
+      'Wissel 25 credits om naar €2.000 op je hand. Wil je veel cash, koop dan een cashpakket met euro\'s: dat levert meer geld per euro op.',
+    descriptionEn:
+      'Swap 25 credits for €2,000 cash. For a large wallet top-up, buy a cash pack with euros: that pays more cash per euro.',
     creditCost: 25,
     effectType: 'CASH_BUNDLE',
-    moneyAmount: 250000,
+    moneyAmount: 2000,
     sortOrder: 10,
   },
   {

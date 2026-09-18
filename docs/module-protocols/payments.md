@@ -58,6 +58,7 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 - Player premium toegang hoort via **VIP** en **Credits** onder Dashboard beschikbaar te zijn, niet alleen via verborgen crew-subflows. Cooldown/time-skip credit-sinks horen op het actiescherm, niet op deze aankooppagina.
 - Externe betaalredirects moeten na checkout terug landen in de ingesloten game-shell op VIP of Credits; een losse fullpage premium-route is geen voorkeursflow voor web/PWA.
 - In-game cash one-time offers (`rewardType: money`) horen in de Credits-tab zichtbaar te zijn. `ensureDefaultMoneyBundleOffers` seedt `money_small` / `money_large` / `money_stack` / `money_chest` idempotent.
+- Credit→cash (`CASH_BUNDLE`, 25 credits → €2.000) mag nooit meer in-game cash per euro opleveren dan de euro-cashpacks. Credits zijn utility; cashpacks zijn de cash-winkel.
 - Player VIP en Crew VIP prijzen moeten runtime-config-gestuurd blijven zodat admin ze live kan aanpassen zonder backend deploy.
 - Player VIP voordelen met economy-impact (zoals cooldown-reductie of periodieke credit grants) moeten via backendregels afdwingbaar blijven en in de player copy expliciet vermeld worden.
 - Als Player VIP nieuwe module-specifieke QoL-perks krijgt (zoals VIP one-click ontbrekende materials kopen in Drugs Productie), moet die benefit expliciet in de VIP aankoop- en info-copy staan (NL+EN).

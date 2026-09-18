@@ -89,6 +89,7 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 - Player VIP timeout-voordelen moeten side-grade blijven: vaste reductie op actie-timeouts (geen jail-time reductie) en geen bypass van risk loops.
 - Periodieke VIP-credit grants (bijv. wekelijks) moeten beperkt, voorspelbaar en ledger-traceerbaar blijven zodat monetization geen pay-to-win escalatie veroorzaakt.
 - Creditbundel multi-buy (quantity 1–20) schaalt prijs en credits **lineair** (`unit × quantity`). Geen staffelkorting, geen extra bonuscredits. Event Pass en overige one-time producten blijven quantity 1. Cap 20 beperkt één checkout tot een redelijk Mollie-bedrag.
+- **Credit→cash mag euro-cashpacks nooit verslaan.** `CASH_BUNDLE` (`cash_bundle_250k`) is 25 credits → **€2.000** (~€80 per credit). Goedkoopste creditbundel is 250 credits / €2,49; kleinste cashpack is €50.000 / €4,99. Wisselen blijft ~20% slechter cash-per-euro dan direct cash kopen. Credits zijn voor skips/bescherming, niet om de cashwinkel te arbitreren.
 - Crew VIP-donaties zijn echte euro’s in een per-crew pot, geen in-game cash of credits. De pot koopt alleen de bestaande Crew VIP-maand; geen extra combat-power boven de bestaande VIP-perks.
 - Alle economy-aanpassingen moeten traceerbaar zijn via telemetry en runtime settings.
 - Voor Territory geldt: gebruik `TERRITORY_ACTION_DAILY_CAP=0` als default om de cap uit te zetten; begrenzing loopt daar via cooldown + anti-farm.
@@ -106,6 +107,10 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 - **Drug production speedup:** premium credits kunnen een lopende batch vroegtijdig klaarzetten (`finishesAt = now`). Prijs = `ceil(remainingMinutes * 2)`, clamp **8–150** credits. Geen bypass van materialen/slots/heat/collect. Ledger `reasonKey=drug_production_speedup`. Zie [drugs.md](drugs.md).
 - Garage **auto**- en **motor**-opslag: aparte upgrade-progressie per speler per land (eigen levels, eigen euro-kostencurve voor auto-track; motor-track gebruikt dezelfde prijsstappen als auto met +3 slots per motor-level t.o.v. basis motorplaatsen). Wijzigingen hieraan zijn economy-impact: check telemetry op storage-full en steal-fail door capaciteit.
 - Voertuigverkoop (auto/motor/boot) is **deterministisch**: land-`marketValue` (anders catalogus-`baseValue`) × conditie × tuningsmultiplier. Geen random ±10% bij checkout. Getoond bedrag = uitbetaald bedrag.
+
+## Documented static modifiers (premium cash FX)
+- **Euro cash packs** (`money_small` €50k/€4.99, `money_large` €120k/€9.99, `money_stack` €400k/€19.99, `money_chest` €1m/€39.99): about €10k–€25k in-game per real euro, with bulk discount.
+- **Credit→cash** (`cash_bundle_250k`): 25 credits → €2,000. Cheap credit pack converted all-in is still below the small cash pack per euro. Do not raise `moneyAmount` without recomputing both ladders.
 
 ## Runtime Keys (Leidend)
 

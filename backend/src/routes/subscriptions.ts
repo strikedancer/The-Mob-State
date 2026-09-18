@@ -136,6 +136,8 @@ const DEFAULT_CREDIT_BUNDLE_OFFERS = [
   },
 ];
 
+// Euro cash packs must beat credit→cash. Floor is ~€10,000 in-game per euro (small pack);
+// bulk packs may rise toward ~€25,000 per euro. Do not raise CASH_BUNDLE without re-checking this.
 const DEFAULT_MONEY_BUNDLE_OFFERS = [
   {
     key: 'money_small',
