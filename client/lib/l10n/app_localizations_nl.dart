@@ -1450,6 +1450,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get premiumAndCredits => 'Premium & credits';
 
   @override
+  String get premiumShopMenuLabel => 'Winkel';
+
+  @override
   String get bank => 'Bank';
 
   @override
@@ -19187,15 +19190,15 @@ class AppLocalizationsNl extends AppLocalizations {
   String get helpTopicPremiumCategory => 'Basis';
 
   @override
-  String get helpTopicPremiumTitle => 'Premium & Credits';
+  String get helpTopicPremiumTitle => 'Winkel';
 
   @override
   String get helpTopicPremiumSummary =>
-      'Koop Player VIP, Crew VIP, creditbundels en in-game geld via VIP en Credits onder Dashboard. Wachttijden verkorten doe je op het scherm waar je wacht, niet hier.';
+      'Koop Player VIP, Crew VIP, creditbundels en in-game geld in Winkel, onder Dashboard. Wachttijden verkorten doe je op het scherm waar je wacht, niet hier.';
 
   @override
   String get helpTopicPremiumHow =>
-      'Open VIP of Credits direct onder Dashboard in het zijmenu. VIP toont abonnementen; Credits toont creditbundels en in-game cash. Wachttijden verkorten doe je met de bliksemknop op het scherm waar je wacht, niet hier.\nIn de bovenbalk van het dashboard zie je ook of Player VIP actief is en hoe lang die nog loopt; tik daarop om VIP te openen. Zonder einddatum staat er Actief.\nOp elke aankooprij kun je op het i-icoon tikken voor de volledige uitleg en voordelen.\nPlayer VIP is persoonlijk. Crew VIP geldt voor je crew en heeft alleen waarde als je al in een crew zit. Ieder lid kan in de Crew VIP-pot doneren, of één lid neemt het maandabonnement.\nPlayer VIP geeft 10 procent kortere action timeouts (gevangenistijd blijft gelijk), wekelijkse 100 credits, een VIP 1-klik aankoopknop voor ontbrekende materialen in Drugs Productie (na kostenbevestiging) en een zachtere death-reset: je houdt bank/crypto/opleidingen/achievements, maar verliest wel assets, inventory en drugsvoorraad.\nCrew VIP ontgrendelt VIP-HQ, gebouwen boven 10, +10 procent oorlogspunten en Schild voor de hele crew.\nNa checkout keer je terug naar deze pagina, zodat je VIP-status en je nieuwe credit- of cashsaldo meteen ziet.\nCreditbundels laten je 1-20 pakketten in één betaling kiezen. Event Pass en VIP blijven één aankoop.\nIn-game cashpakketten betaal je in euro\'s en komen op je hand. Je kunt credits ook omwisselen naar cash als dat pakket in de lijst staat.\nStop auto-renew wanneer je wilt; je betaalde periode blijft actief. Geef VIP cadeau via speler- of crewnaam. Prestige-tiers zijn alleen display.\nPrijzen en beschikbare items worden live in admin beheerd.';
+      'Open Winkel direct onder Dashboard in het zijmenu. De tab VIP toont abonnementen; de tab Credits toont creditbundels en in-game cash. Wachttijden verkorten doe je met de bliksemknop op het scherm waar je wacht, niet hier.\nIn de bovenbalk van het dashboard zie je ook of Player VIP actief is en hoe lang die nog loopt; tik daarop om VIP te openen. Zonder einddatum staat er Actief.\nOp elke aankooprij kun je op het i-icoon tikken voor de volledige uitleg en voordelen.\nPlayer VIP is persoonlijk. Crew VIP geldt voor je crew en heeft alleen waarde als je al in een crew zit. Ieder lid kan in de Crew VIP-pot doneren, of één lid neemt het maandabonnement.\nPlayer VIP geeft 10 procent kortere action timeouts (gevangenistijd blijft gelijk), wekelijkse 100 credits, een VIP 1-klik aankoopknop voor ontbrekende materialen in Drugs Productie (na kostenbevestiging) en een zachtere death-reset: je houdt bank/crypto/opleidingen/achievements, maar verliest wel assets, inventory en drugsvoorraad.\nCrew VIP ontgrendelt VIP-HQ, gebouwen boven 10, +10 procent oorlogspunten en Schild voor de hele crew.\nNa checkout keer je terug naar deze pagina, zodat je VIP-status en je nieuwe credit- of cashsaldo meteen ziet.\nCreditbundels laten je 1-20 pakketten in één betaling kiezen. Event Pass en VIP blijven één aankoop.\nIn-game cashpakketten betaal je in euro\'s en komen op je hand. Je kunt credits ook omwisselen naar cash als dat pakket in de lijst staat.\nStop auto-renew wanneer je wilt; je betaalde periode blijft actief. Geef VIP cadeau via speler- of crewnaam. Prestige-tiers zijn alleen display.\nPrijzen en beschikbare items worden live in admin beheerd.';
 
   @override
   String get helpTopicPremiumTips =>

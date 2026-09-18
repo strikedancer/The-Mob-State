@@ -1666,17 +1666,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ],
     };
 
-    final vip = navItem(
-      icon: Icons.workspace_premium,
-      label: l10n.hudVip,
+    final shop = navItem(
+      icon: Icons.shopping_bag,
+      label: l10n.premiumShopMenuLabel,
       section: _WebSection.premium,
-      storeTab: PremiumStoreTab.vip,
-    );
-    final credits = navItem(
-      icon: Icons.token,
-      label: l10n.hudCredits,
-      section: _WebSection.premium,
-      storeTab: PremiumStoreTab.credits,
     );
 
     bool matches(String label) =>
@@ -1685,7 +1678,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ({IconData icon, String label, _WebSection section, int badge, PremiumStoreTab? storeTab}) row,
     ) {
       if (matches(row.label)) return true;
-      if (row.section == _WebSection.premium && matches(l10n.premiumAndCredits)) {
+      if (row.section == _WebSection.premium &&
+          (matches(l10n.premiumAndCredits) ||
+              matches(l10n.hudVip) ||
+              matches(l10n.hudCredits))) {
         return true;
       }
       return false;
@@ -1695,14 +1691,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (matches(dashboard.label)) {
       widgets.add(_buildNavTile(dashboard, onBeforeNavigate));
     }
-    if (matchesRow(vip)) {
-      widgets.add(_buildNavTile(vip, onBeforeNavigate, indent: 12));
-    }
-    if (matchesRow(credits)) {
-      widgets.add(_buildNavTile(credits, onBeforeNavigate, indent: 12));
+    if (matchesRow(shop)) {
+      widgets.add(_buildNavTile(shop, onBeforeNavigate));
     }
 
-    var anyMatch = matches(dashboard.label) || matchesRow(vip) || matchesRow(credits);
+    var anyMatch = matches(dashboard.label) || matchesRow(shop);
     for (final group in _NavGroup.values) {
       final groupItems = (groups[group] ?? []).where((row) => matchesRow(row)).toList();
       if (groupItems.isEmpty) continue;
@@ -1766,13 +1759,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Widget _buildNavTile(
     ({IconData icon, String label, _WebSection section, int badge, PremiumStoreTab? storeTab}) item,
-    VoidCallback? onBeforeNavigate, {
-    double indent = 0,
-  }) {
-    final selected = item.section == _WebSection.premium
-        ? (_selectedWebSection == _WebSection.premium &&
-            _premiumTab == (item.storeTab ?? PremiumStoreTab.vip))
-        : _selectedWebSection == item.section;
+    VoidCallback? onBeforeNavigate,
+  ) {
+    final selected = _selectedWebSection == item.section;
     final locked = _isLateMenuLocked(item.section);
     final iconColor = locked
         ? Colors.white38
@@ -1781,7 +1770,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ? Colors.white38
         : (selected ? Colors.white : const Color(0xCCFFFFFF));
     return Padding(
-      padding: EdgeInsets.only(bottom: 2, left: indent),
+      padding: const EdgeInsets.only(bottom: 2),
       child: Material(
         color: Colors.transparent,
         child: InkWell(

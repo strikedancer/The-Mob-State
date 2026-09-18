@@ -55,7 +55,7 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 - Admin moet premium credits veilig handmatig kunnen toekennen voor support/correcties, met role-checks, limieten en audit trail.
 - Checkout failure of webhook-delay mag geen halve grants of negatieve saldo's veroorzaken.
 - Bestaande gameplay-perks mogen niet gratis bereikbaar worden door premium regressies.
-- Player premium toegang hoort via **VIP** en **Credits** onder Dashboard beschikbaar te zijn, niet alleen via verborgen crew-subflows. Cooldown/time-skip credit-sinks horen op het actiescherm, niet op deze aankooppagina.
+- Player premium toegang hoort via **Winkel** onder Dashboard beschikbaar te zijn, niet alleen via verborgen crew-subflows. VIP en Credits zijn tabs op die ene pagina. Cooldown/time-skip credit-sinks horen op het actiescherm, niet op deze aankooppagina.
 - Externe betaalredirects moeten na checkout terug landen in de ingesloten game-shell op VIP of Credits; een losse fullpage premium-route is geen voorkeursflow voor web/PWA.
 - In-game cash one-time offers (`rewardType: money`) horen in de Credits-tab zichtbaar te zijn. `ensureDefaultMoneyBundleOffers` seedt `money_small` / `money_large` / `money_stack` / `money_chest` idempotent.
 - Credit→cash (`CASH_BUNDLE`, 25 credits → €2.000) mag nooit meer in-game cash per euro opleveren dan de euro-cashpacks. Credits zijn utility; cashpacks zijn de cash-winkel.

@@ -1461,6 +1461,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get premiumAndCredits => 'Prämie und Credits';
 
   @override
+  String get premiumShopMenuLabel => 'Shop';
+
+  @override
   String get bank => 'Bank';
 
   @override
@@ -19371,11 +19374,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get helpTopicPremiumCategory => 'Kern';
 
   @override
-  String get helpTopicPremiumTitle => 'Prämie und Credits';
+  String get helpTopicPremiumTitle => 'Shop';
 
   @override
   String get helpTopicPremiumSummary =>
-      'Kaufe Spieler-VIP, Crew-VIP, Credit-Pakete und In-Game-Geld über VIP und Credits direkt unter Dashboard. Wartezeiten verkürzt du auf dem Bildschirm, auf dem du wartest, nicht hier.';
+      'Kaufe Spieler-VIP, Crew-VIP, Credit-Pakete und In-Game-Geld im Shop direkt unter Dashboard. Wartezeiten verkürzt du auf dem Bildschirm, auf dem du wartest, nicht hier.';
 
   @override
   String get helpTopicPremiumHow =>

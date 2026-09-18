@@ -1886,9 +1886,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
       initialIndex: _initialTabIndex,
       child: EmpireHubScaffold(
         embedded: widget.embedded,
-        title: widget.initialTab == PremiumStoreTab.credits
-            ? l10n.hudCredits
-            : l10n.hudVip,
+        title: l10n.premiumShopMenuLabel,
         subtitle: l10n.premiumUiIntroSubtitle,
         imageAsset: 'assets/images/premium_tiles/credits_medium.png',
         cacheBust: _premiumTilesCacheVersion,
