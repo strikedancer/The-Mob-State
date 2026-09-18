@@ -8220,7 +8220,7 @@
   "helpTopicDashboardTips": "Öffnen Sie nach jedem Login zunächst das Dashboard, um zu sehen, was sich während Ihrer Abwesenheit geändert hat. \nHalten Sie den Fahndungslevel unter 10, damit der automatische Verfall funktioniert und die Wahrscheinlichkeit einer Verhaftung gering bleibt. \nÜberprüfen Sie ungelesene Nachrichten, bevor Sie riskante Aktionen starten: Belohnungen, Auftragserfüllungen und Systemereignisse werden alle in Ihrem Posteingang angezeigt.",
   "helpTopicCrimesCategory": "Aktionen",
   "helpTopicCrimesTitle": "Verbrechen",
-  "helpTopicCrimesSummary": "Begehen Sie illegale Handlungen für Geld und XP, aber jeder Versuch riskiert Schaden, Verhaftung oder ein zusätzliches Fahndungslevel. Die Wipe Criminal Record-Kriminalität im späten Spielverlauf löscht bei Erfolg Ihr gesamtes Strafregister, erfordert jedoch umfangreiche Werkzeuge und birgt ein hohes Bundesrisiko.",
+  "helpTopicCrimesSummary": "Begehen Sie illegale Handlungen für Geld und XP, aber jeder Versuch riskiert Schaden, Verhaftung oder ein zusätzliches Fahndungslevel. Die Wipe Criminal Record-Kriminalität im späten Spielverlauf löscht bei Erfolg Ihr gesamtes Strafregister, erfordert jedoch umfangreiche Werkzeuge und birgt ein hohes Bundesrisiko. Das Gericht hat auch einen kostspieligen Rechtsantrag, mit dem dieselben Aufzeichnungen gelöscht werden können, ohne dass das Risiko einer Straftat besteht.",
   "helpTopicCrimesHow": "Auf den Rängen 1–5 zeigen Straßenkriminalität (mindestens Rang 1) die tatsächlichen Erfolgschancen im Katalog – Taschendiebstahl und Ladendiebstahl beginnen bei etwa 65–70 %. Vandalismus und Graffiti brauchen keine Sprühfarbe. \nWenn diese frühen Straßenverbrechen scheitern, kommt man meist leer aus, anstatt ins Gefängnis zu gehen. Eine Gefängnisstrafe ist immer noch möglich, aber nicht mehr die Standardeinstellung. \nJobs bleiben ab Rang 1 verfügbar, solange Sie nicht im Gefängnis sind – nutzen Sie sie, wenn Sie Bargeld ohne Kriminalitätsrisiko wollen. \nDie Abklingzeiten von Verbrechen skalieren jetzt mit der potenziellen Auszahlung: Verbrechen mit geringer Ausbeute bleiben schnell, während Verbrechen mit hoher Ausbeute deutlich längere Abklingzeiten haben. \nRichtwert je Prämienstufe: bis 500 € ≈ 1,5 Min., bis 2.000 € ≈ 5 Min., bis 10.000 € ≈ 15 Min., bis 30.000 € ≈ 30 Min., darüber ≈ 60 Min. \nEs gibt keine feste tägliche Obergrenze für Verbrechen; Aktive Spieler können weiterspielen, solange sie Abklingzeiten, Risiken und Ressourcen verwalten. \nBewaffnete Verbrechen zeigen auf jeder Karte, welchen Waffentyp Sie benötigen (Pistole, Schrotflinte, Gewehr, Maschinenpistole, Scharfschütze). Tragen Sie eine passende Waffe auf Platz 1 oder 2 im Inventar – eine Waffe nur in Ihrem Rucksack zählt nicht. \nDie Verbrechen-Seite startet auf Auf deinem Rang. Oben stehen Taten, die du jetzt ausführen kannst; darunter Taten desselben Rangs, für die noch Waffe, Drogen, Werkzeug oder Auto fehlen. Alle Verbrechen zeigt auch Taten mit höherem Rang.\nIhre aktiven Fitness- und Schießstandsboni (jeweils bis zu +8 %) werden auf dem Bildschirm „Verbrechen“ angezeigt. Sie erhöhen die Erfolgschancen, wie der Server berechnet (trainieren Sie mehr über den Trainings-Hub / Fitnessstudio + Reichweite). \nWenn Sie am selben UTC-Kalendertag mindestens eine Trainingseinheit im Fitnessstudio und eine Schießstandseinheit absolvieren, fügt der Server eine kleine zusätzliche Erfolgschance bei einem Verbrechen hinzu (+0,5 %). Der Bildschirm „Verbrechen“ zeigt an, wann diese Kombination aktiv ist. \nFür Verbrechen mit Fahrzeugpflicht nutzen Sie Ihr ausgewähltes Verbrechensfahrzeug aus Garage oder Marina. Es zählt nur ein Fahrzeug, das sich tatsächlich in Ihrem aktuellen Land befindet und nicht im Transit ist oder zum Verkauf angeboten wird. \nDer Arzneimittelbedarf bei Straftaten wird in Gramm angegeben und folgt den gleichen Mengen wie Ihr Arzneimittelbestand und Ihre Arzneimittellagerung. \nWenn eine Straftat aufgrund eines fehlenden Fahrzeugs, der falschen Waffe oder fehlender Munition nicht gestartet werden kann, sollte die Fehlermeldung jetzt die wahre Ursache anstelle eines allgemeinen Wiederholungsversuchs anzeigen. \nBei jedem Verbrechensversuch erleiden Sie 5–15 HP-Schaden und das Wanted-Level steigt je nach Erfolg oder Misserfolg um 1–4 Punkte. \nDie Verhaftungswahrscheinlichkeit skaliert schnell mit der Fahndungsstufe: Gesucht 5 = 25 %, Gesucht 10 = 50 %, Gesucht 18+ = maximal 90 %. \nBei einer Verhaftung kommt man ins Gefängnis. Satz = max(gewünschtes Level × 10, 5) Minuten. Kaution = Fahndungsniveau × 1.000 €. Auch wenn eine Straftat zunächst erfolgreich erscheint, man aber gleich danach erwischt wird, zählt das Endergebnis dennoch als Festnahme: Benötigtes Werkzeug wird beschlagnahmt, die gebrauchte Tatwaffe geht verloren und auch Fahrzeuge können beschlagnahmt werden. \nFür einige Straftaten sind ein Fahrzeug, ein Werkzeug oder ein Mindestdienstgrad erforderlich. Wenn diese fehlen, wird verhindert, dass die Straftat beginnt. \nVerdiente XP erhöhen Ihren Rang und schalten bessere Verbrechen und höhere Belohnungen frei. \nDer FBI-Hit steigt mit schwereren Verbrechen. Oberhalb von Hitze 50 wird das FBI aktiv und die Wahrscheinlichkeit einer Festnahme ist noch höher.",
   "helpTopicCrimesTips": "Beginnen Sie mit Taschendiebstahl, Ladendiebstahl, Vandalismus oder Graffiti. Ein Fehlschlag bedeutet normalerweise keine Beute, keine Gefängnisstrafe – dann führen Sie einen Job aus, um sicheres Geld zu erhalten. \nNutzen Sie schnelle Anfängerkriminalität, um EP zu sammeln, während Sie auf große Abklingzeiten warten. \nSteigen Sie immer aus, wenn Ihr Wanted-Level hoch ist – im Gefängnis zu sitzen blockiert alle Ihre Schleifen. \nHalten Sie die HP über 30, bevor Sie einen Verbrechenslauf starten: Jeder Versuch kostet HP und bei 0 HP verbringen Sie 3 Stunden auf der Intensivstation.",
   "helpTopicJobsCategory": "Aktionen",
@@ -8300,9 +8300,9 @@
   "helpTopicToolsTips": "Kaufen Sie Werkzeuge in großen Mengen, wenn sie auf dem Schwarzmarkt günstig sind: Sie sparen im Vergleich zum Laden. \nLegen Sie einen persönlichen Schwellenwert fest: Ersetzen Sie Werkzeuge immer, wenn der Zustand unter 25 % fällt, um die Erfolgsaussichten stabil zu halten.",
   "helpTopicCourtCategory": "Risiko",
   "helpTopicCourtTitle": "Gericht",
-  "helpTopicCourtSummary": "Während Ihrer Haftstrafe können Sie Berufung einlegen oder versuchen, den Richter zu bestechen, um schneller freigelassen zu werden.",
-  "helpTopicCourtHow": "Wenn Sie inhaftiert sind, zeigt der Gerichtsbildschirm Ihre aktive Verurteilung mit der verbleibenden Zeit, der Straftat und dem Richterprofil an. \nEine Berufung kostet Geld, basierend auf Ihrer aktuellen Straflänge. Im Falle einer Bewilligung wird Ihre Strafe in der Regel um etwa 20–40 % gekürzt. \nSie können pro Verurteilung nur einmal Berufung einlegen und bei schnellen Wiederholungsversuchen gilt eine Abklingzeit. \nFür Bestechung wird ein vom Spieler ausgewählter Betrag verwendet. Dieser Betrag wird immer abgezogen, auch wenn der Versuch fehlschlägt. \nEine höhere Bestechungssumme erhöht die Erfolgsaussichten. Bei Erfolg werden Sie sofort entlassen. \nIn Ihrem Strafregister werden frühere Verurteilungen mit Datum und Einzelheiten zur Gerichtsgeschichte gespeichert, auch wenn Sie nicht mehr inhaftiert sind. \nBei einer erfolgreichen Richterbestechung wird nur die aktuelle Verurteilung aus Ihrem Strafregister entfernt. \nWenn Sie Ihr gesamtes Vorstrafenregister löschen möchten, müssen Sie dies außerhalb des Gerichts über die Late-Game-Straftat „Wipe Criminal Record“ tun.",
-  "helpTopicCourtTips": "Setzen Sie Einsprüche zunächst bei langen Sätzen ein: Dort ist die erwartete Zeitersparnis am höchsten. \nSetzen Sie Bestechung nur bei ausreichendem Bargeldpolster ein, da die Zahlung immer abgezogen wird.",
+  "helpTopicCourtSummary": "Während Ihrer Haftstrafe können Sie Berufung einlegen oder versuchen, den Richter zu bestechen, um schneller freigelassen zu werden. Sie können auch einen kostspieligen Antrag auf Löschung Ihres gesamten Strafregisters stellen, selbst wenn Sie frei sind.",
+  "helpTopicCourtHow": "Wenn Sie inhaftiert sind, zeigt der Gerichtsbildschirm Ihre aktive Verurteilung mit der verbleibenden Zeit, der Straftat und dem Richterprofil an. \nEine Berufung kostet Geld, basierend auf Ihrer aktuellen Straflänge. Im Falle einer Bewilligung wird Ihre Strafe in der Regel um etwa 20–40 % gekürzt. \nSie können pro Verurteilung nur einmal Berufung einlegen und bei schnellen Wiederholungsversuchen gilt eine Abklingzeit. \nFür Bestechung wird ein vom Spieler ausgewählter Betrag verwendet. Dieser Betrag wird immer abgezogen, auch wenn der Versuch fehlschlägt. \nEine höhere Bestechungssumme erhöht die Erfolgsaussichten. Bei Erfolg werden Sie sofort entlassen. \nIn Ihrem Strafregister werden frühere Verurteilungen mit Datum und Einzelheiten zur Gerichtsgeschichte gespeichert, auch wenn Sie nicht mehr inhaftiert sind. \nBei einer erfolgreichen Richterbestechung wird nur die aktuelle Verurteilung aus Ihrem Strafregister entfernt. \nSie können auch während Ihrer Freiheit oder im Gefängnis einen Antrag auf Löschung Ihrer Akten bei Gericht stellen, sofern Sie noch vorbestraft sind. \nDieser Antrag kostet mindestens 100.000 €, zuzüglich 1.000 € für jede weitere Verurteilung nach der ersten. \nDie angezeigten Erfolgsaussichten hängen davon ab, wie lange die Akte zurückliegt, wie lange Ihre letzte Verhaftung zurückliegt, von Ihrem Ruf und davon, ob Sie derzeit in diesem Land einen Stadtrat, Kommissar und/oder Richter in Don gekauft haben. \nSchlägt dies fehl, verlieren Sie nur die Gebühr. Bei Erfolg ist der Datensatz leer; Du wirst nicht aus dem Gefängnis entlassen. \nNach jedem Versuch warten Sie 12 Stunden. Das riskante Verbrechen „Wipe Criminal Record“ bleibt ein separater, gefährlicher Weg.",
+  "helpTopicCourtTips": "Setzen Sie Einsprüche zunächst bei langen Sätzen ein: Dort ist die erwartete Zeitersparnis am höchsten. \nSetzen Sie Bestechung nur bei ausreichendem Bargeldpolster ein, da die Zahlung immer abgezogen wird. \nHalten Sie einen Bargeldpuffer für eine Anfrage zur Datenlöschung bereit: Ein Scheitern kostet nur Geld, ohne zusätzliche Gefängnis- oder Fahndungsstrafen. \nDer Kauf des Don-Richters, Kommissars und Stadtrats in Ihrem aktuellen Land erhöht die Chance auf eine Anfrage.",
   "helpTopicHitlistCategory": "Risiko",
   "helpTopicHitlistTitle": "Hitliste",
   "helpTopicHitlistSummary": "Setze ein Kopfgeld auf einen Feind aus oder akzeptiere einen Trefferauftrag. Eliminieren Sie Ihr Ziel im selben Land, um die volle Auszahlung zu erhalten.",
@@ -11068,7 +11068,7 @@
   },
   "hitlistEmptyBody": "Derzeit gibt es keine öffentlichen Aufträge. Setzen Sie ein Kopfgeld von mindestens 50.000 € aus, um eine Jagd zu starten.",
   "courtHeroTitle": "Die Verhandlung",
-  "courtHeroSubtitle": "Legen Sie Berufung ein oder bestechen Sie den Richter, während Sie Ihre Strafe absitzen. Ihr Strafregister bleibt bestehen, nachdem Sie freigelassen wurden.",
+  "courtHeroSubtitle": "Legen Sie Berufung ein oder bestechen Sie den Richter, während Sie Ihre Strafe absitzen. Sie können auch einen kostspieligen Antrag auf Löschung Ihres gesamten Strafregisters stellen.",
   "courtConvictionsChip": "{count} Verurteilungen",
   "@courtConvictionsChip": {
     "placeholders": {
@@ -13059,5 +13059,159 @@
       }
     }
   },
-  "drugsHeatLowProfileHint": "Keine neuen Chargen, bis der Timer abgelaufen ist. Die zusätzliche Hitze wird halbiert. Bereits kochende Chargen laufen weiter. Sie können dies nicht stornieren."
+  "drugsHeatLowProfileHint": "Keine neuen Chargen, bis der Timer abgelaufen ist. Die zusätzliche Hitze wird halbiert. Bereits kochende Chargen laufen weiter. Sie können dies nicht stornieren.",
+  "courtExpungeTitle": "Vorstrafenregister löschen",
+  "courtExpungeIntro": "Reichen Sie einen kostspieligen Gerichtsantrag ein, um Ihr gesamtes Strafregister zu löschen. Ein Scheitern kostet nur die Gebühr. Ein Erfolg löscht den Rekord, entlässt Sie jedoch nicht aus dem Gefängnis.",
+  "courtExpungeCost": "Kosten: {amount}",
+  "@courtExpungeCost": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeChance": "Erfolgschance: {percent} %",
+  "@courtExpungeChance": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeOddsTitle": "Was ändert diese Chance?",
+  "courtExpungeRecordPenalty": "{count} Verurteilungen: {percent} %",
+  "@courtExpungeRecordPenalty": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecordOk": "{count} Verurteilung: keine zusätzliche Strafe",
+  "@courtExpungeRecordOk": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecencyRecent": "Letzte Festnahme vor weniger als 24 Stunden: {percent} %",
+  "@courtExpungeRecencyRecent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecencyWarm": "Letzte Festnahme vor 1–3 Tagen: {percent} %",
+  "@courtExpungeRecencyWarm": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecencyNeutral": "Letzte Festnahme vor 3–7 Tagen: kein zusätzlicher Modifikator",
+  "courtExpungeRecencyCool": "Letzte Festnahme vor 7–14 Tagen: {percent} %",
+  "@courtExpungeRecencyCool": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecencyOld": "Letzte Festnahme vor über 14 Tagen: {percent} %",
+  "@courtExpungeRecencyOld": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeReputation": "Ruf {points}: {percent} %",
+  "@courtExpungeReputation": {
+    "placeholders": {
+      "points": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeReputationNone": "Ruf: Noch kein Extra-Bonus",
+  "courtExpungeDonJudge": "Don-Richter in diesem Land: +{percent}%",
+  "@courtExpungeDonJudge": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeDonCommissioner": "Don-Kommissar in diesem Land: +{percent}%",
+  "@courtExpungeDonCommissioner": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeDonAlderman": "Don-Beigeordneter in diesem Land: +{percent}%",
+  "@courtExpungeDonAlderman": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeDonNone": "In diesem Land wurden keine Don-Beamten gekauft",
+  "courtExpungeSubmit": "Antrag stellen",
+  "courtExpungeConfirmTitle": "Das Strafregister löschen?",
+  "courtExpungeConfirmBody": "Das kostet {amount}. Die angezeigte Erfolgschance beträgt {percent} %. Bei einem Scheitern verlieren Sie nur das Geld. Bei Erfolg wird der Datensatz gelöscht; Sie bleiben im Gefängnis, wenn Sie eine Strafe absitzen.",
+  "@courtExpungeConfirmBody": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeSuccess": "Das Gericht hat {count} Verurteilungen aus Ihrer Akte gelöscht. Sie wurden nicht freigelassen.",
+  "@courtExpungeSuccess": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeFailed": "Die Anfrage ist fehlgeschlagen. {amount} ist weg. Sonst hat sich nichts geändert.",
+  "@courtExpungeFailed": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeCooldown": "Warten Sie {duration}, bevor Sie eine weitere Anfrage stellen.",
+  "@courtExpungeCooldown": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeNoRecord": "Sie haben keine Vorstrafen, die Sie löschen könnten.",
+  "courtExpungeNeedMoney": "Sie benötigen {amount} in bar.",
+  "@courtExpungeNeedMoney": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -8282,7 +8282,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get courtHeroSubtitle =>
-      'Appeal or bribe the judge while you serve time. Your criminal record stays after you walk free.';
+      'Appeal or bribe the judge while you serve time. You can also file a costly request to wipe your full criminal record.';
 
   @override
   String courtConvictionsChip(String count) {
@@ -8364,6 +8364,120 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get courtBribeHeatNote =>
       'Wanted and FBI heat change appeal odds, not this bribe.';
+
+  @override
+  String get courtExpungeTitle => 'Wipe criminal record';
+
+  @override
+  String get courtExpungeIntro =>
+      'File a costly court request to wipe your full criminal record. Failure only costs the fee. Success clears the record but does not release you from jail.';
+
+  @override
+  String courtExpungeCost(String amount) {
+    return 'Cost: $amount';
+  }
+
+  @override
+  String courtExpungeChance(String percent) {
+    return 'Success chance: $percent%';
+  }
+
+  @override
+  String get courtExpungeOddsTitle => 'What changes this chance';
+
+  @override
+  String courtExpungeRecordPenalty(String count, String percent) {
+    return '$count convictions: $percent%';
+  }
+
+  @override
+  String courtExpungeRecordOk(String count) {
+    return '$count conviction: no extra penalty';
+  }
+
+  @override
+  String courtExpungeRecencyRecent(String percent) {
+    return 'Last arrest under 24 hours: $percent%';
+  }
+
+  @override
+  String courtExpungeRecencyWarm(String percent) {
+    return 'Last arrest 1–3 days ago: $percent%';
+  }
+
+  @override
+  String get courtExpungeRecencyNeutral =>
+      'Last arrest 3–7 days ago: no extra modifier';
+
+  @override
+  String courtExpungeRecencyCool(String percent) {
+    return 'Last arrest 7–14 days ago: $percent%';
+  }
+
+  @override
+  String courtExpungeRecencyOld(String percent) {
+    return 'Last arrest over 14 days ago: $percent%';
+  }
+
+  @override
+  String courtExpungeReputation(String points, String percent) {
+    return 'Reputation $points: $percent%';
+  }
+
+  @override
+  String get courtExpungeReputationNone => 'Reputation: no extra bonus yet';
+
+  @override
+  String courtExpungeDonJudge(String percent) {
+    return 'Don judge in this country: +$percent%';
+  }
+
+  @override
+  String courtExpungeDonCommissioner(String percent) {
+    return 'Don commissioner in this country: +$percent%';
+  }
+
+  @override
+  String courtExpungeDonAlderman(String percent) {
+    return 'Don alderman in this country: +$percent%';
+  }
+
+  @override
+  String get courtExpungeDonNone => 'No Don officials bought in this country';
+
+  @override
+  String get courtExpungeSubmit => 'File request';
+
+  @override
+  String get courtExpungeConfirmTitle => 'Wipe the criminal record?';
+
+  @override
+  String courtExpungeConfirmBody(String amount, String percent) {
+    return 'This costs $amount. Shown success chance is $percent%. On failure you only lose the money. On success the record is cleared; you stay in jail if you are serving time.';
+  }
+
+  @override
+  String courtExpungeSuccess(String count) {
+    return 'The court wiped $count convictions from your record. You were not released.';
+  }
+
+  @override
+  String courtExpungeFailed(String amount) {
+    return 'The request failed. $amount is gone. Nothing else changed.';
+  }
+
+  @override
+  String courtExpungeCooldown(String duration) {
+    return 'Wait $duration before another request.';
+  }
+
+  @override
+  String get courtExpungeNoRecord => 'You have no criminal record to wipe.';
+
+  @override
+  String courtExpungeNeedMoney(String amount) {
+    return 'You need $amount in cash.';
+  }
 
   @override
   String get treated => 'Treated!';
@@ -18207,11 +18321,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicCrimesSummary =>
-      'Commit illegal actions for cash and XP, but every attempt risks damage, arrest or extra Wanted Level. The late-game Wipe Criminal Record crime removes your full criminal record on success, but it needs heavy tools and carries high federal risk.';
+      'Commit illegal actions for cash and XP, but every attempt risks damage, arrest or extra Wanted Level. The late-game Wipe Criminal Record crime removes your full criminal record on success, but it needs heavy tools and carries high federal risk. Court also has a costly legal request that can wipe the same record without that crime risk.';
 
   @override
   String get helpTopicCrimesHow =>
-      'At ranks 1–5, street crimes (min rank 1) show the real catalog success chance — pickpocket and shoplift start around 65–70%. Vandalism and graffiti do not need spray paint.\nIf those early street crimes fail, you usually get away empty-handed instead of going to jail. Jail is still possible, just no longer the default.\nJobs stay available from rank 1 while you are not in jail — use them when you want cash without crime risk.\nCrime cooldowns now scale with potential payout: low-yield crimes stay fast, while high-yield crimes get clearly longer cooldowns.\nGuideline by reward tier: up to €500 ≈ 1.5 min, up to €2,000 ≈ 5 min, up to €10,000 ≈ 15 min, up to €30,000 ≈ 30 min, above that ≈ 60 min.\nThere is no hard daily cap on crimes; active players can keep playing as long as they manage cooldowns, risk and resources.\nArmed crimes show on each card which weapon type you need (pistol, shotgun, rifle, SMG, sniper). Wear a matching weapon on slot 1 or 2 in Inventory — a gun only in your backpack does not count.\nThe Crimes screen defaults to On your rank. Ready-to-commit crimes are listed first; below that are same-rank crimes that still need a weapon, drugs, tools or a car. All crimes also shows crimes that need a higher rank.\nYour active gym and shooting-range bonuses (up to +8% each) are shown on the Crimes screen; they raise success chance as the server calculates (train more via the Training hub / gym + range).\nIf you complete at least one gym session and one shooting-range session on the same UTC calendar day, the server adds a small extra crime success chance (+0.5%). The Crimes screen shows when this combo is active.\nCrimes with a vehicle requirement use your selected crime vehicle from Garage or Marina. Only a vehicle that is actually in your current country and not in transit or listed for sale counts.\nDrug requirements in crimes are shown in grams and follow the same quantities as your drug inventory and storage.\nIf a crime cannot start because of a missing vehicle, the wrong weapon, or missing ammo, the error message should now show the real cause instead of a generic retry.\nEvery crime attempt: you take 5-15 HP damage and Wanted Level rises by 1-4 points depending on success or failure.\nArrest chance scales fast with Wanted Level: Wanted 5 = 25%, Wanted 10 = 50%, Wanted 18+ = maximum 90%.\nOn arrest you go to prison. Sentence = max(wanted level × 10, 5) minutes. Bail = wanted level × €1.000. Even if a crime seems successful at first but you get caught right after, the final outcome still counts as an arrest: required tools are confiscated, the used crime weapon is lost, and vehicles can also be seized.\nSome crimes require a vehicle, tool or minimum rank. Missing these will prevent the crime from starting.\nXP earned raises your rank, unlocking better crimes and higher rewards.\nFBI Heat rises with heavier crimes. Above heat 50 the FBI becomes active with even higher arrest chances.';
+      'At ranks 1–5, street crimes (min rank 1) show the real catalog success chance — pickpocket and shoplift start around 65–70%. Vandalism and graffiti do not need spray paint.\nIf those early street crimes fail, you usually get away empty-handed instead of going to jail. Jail is still possible, just no longer the default.\nJobs stay available from rank 1 while you are not in jail — use them when you want cash without crime risk.\nCrime cooldowns now scale with potential payout: low-yield crimes stay fast, while high-yield crimes get clearly longer cooldowns.\nGuideline by reward tier: up to €500 ≈ 1.5 min, up to €2,000 ≈ 5 min, up to €10,000 ≈ 15 min, up to €30,000 ≈ 30 min, above that ≈ 60 min.\nThere is no hard daily cap on crimes; active players can keep playing as long as they manage cooldowns, risk and resources.\nArmed crimes show on each card which weapon type you need (pistol, shotgun, rifle, SMG, sniper). Wear a matching weapon on slot 1 or 2 in Inventory — a gun only in your backpack does not count.\nThe Crimes screen defaults to On your rank. Ready-to-commit crimes are listed first; below that are same-rank crimes that still need a weapon, drugs, tools or a car. All crimes also shows crimes that need a higher rank.\nYour active gym and shooting-range bonuses (up to +8% each) are shown on the Crimes screen; they raise success chance as the server calculates (train more via the Training hub / gym + range).\nIf you complete at least one gym session and one shooting-range session on the same UTC calendar day, the server adds a small extra crime success chance (+0.5%). The Crimes screen shows when this combo is active.\nCrimes with a vehicle requirement use your selected crime vehicle from Garage or Marina. Only a vehicle that is actually in your current country and not in transit or listed for sale counts.\nDrug requirements in crimes are shown in grams and follow the same quantities as your drug inventory and storage.\nIf a crime cannot start because of a missing vehicle, the wrong weapon, or missing ammo, the error message should now show the real cause instead of a generic retry.\nEvery crime attempt: you take 5-15 HP damage and Wanted Level rises by 1-4 points depending on success or failure.\nArrest chance scales fast with Wanted Level: Wanted 5 = 25%, Wanted 10 = 50%, Wanted 18+ = maximum 90%.\nOn arrest you go to prison. Sentence = max(wanted level × 10, 5) minutes. Bail = wanted level × €1.000. Even if a crime seems successful at first but you get caught right after, the final outcome still counts as an arrest: required tools are confiscated, the used crime weapon is lost, and vehicles can also be seized.\nSome crimes require a vehicle, tool or minimum rank. Missing these will prevent the crime from starting.\nXP earned raises your rank, unlocking better crimes and higher rewards.\nFBI Heat rises with heavier crimes. Above heat 50 the FBI becomes active with even higher arrest chances.\nYou can also wipe your full record at Court with a paid request. That legal route stays slower and expensive, but it does not replace this risky crime.';
 
   @override
   String get helpTopicCrimesTips =>
@@ -18567,15 +18681,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicCourtSummary =>
-      'During your sentence you can file an appeal or try to bribe the judge to get released sooner.';
+      'During your sentence you can file an appeal or try to bribe the judge to get released sooner. You can also file a costly request to wipe your full criminal record, even when you are free.';
 
   @override
   String get helpTopicCourtHow =>
-      'When jailed, the court screen shows your active conviction with remaining time, crime and judge profile.\nAn appeal costs money based on your current sentence length. If granted, your sentence is usually reduced by about 20-40%.\nYou can appeal only once per conviction and a cooldown applies to rapid retries.\nBribery uses a player-selected amount. That amount is always deducted, even when the attempt fails.\nA higher bribe amount increases success chance. On success, you are released immediately.\nYour criminal record keeps earlier convictions with dates and court-history details even when you are no longer jailed.\nA successful judge bribe removes only that current conviction from your criminal record.\nIf you want to wipe your full criminal record, you must do it outside court through the late-game Wipe Criminal Record crime.';
+      'When jailed, the court screen shows your active conviction with remaining time, crime and judge profile.\nAn appeal costs money based on your current sentence length. If granted, your sentence is usually reduced by about 20-40%.\nYou can appeal only once per conviction and a cooldown applies to rapid retries.\nBribery uses a player-selected amount. That amount is always deducted, even when the attempt fails.\nA higher bribe amount increases success chance. On success, you are released immediately.\nYour criminal record keeps earlier convictions with dates and court-history details even when you are no longer jailed.\nA successful judge bribe removes only that current conviction from your criminal record.\nYou can also file a wipe-record request at court while free or jailed, as long as you still have a criminal record.\nThat request costs at least €100,000, plus €1,000 for each extra conviction after the first.\nThe shown success chance depends on how long the record is, how long ago your last arrest was, your reputation, and whether you currently bought a Don alderman, commissioner and/or judge in this country.\nIf it fails, you only lose the fee. If it succeeds, the record is empty; you are not released from jail.\nAfter each attempt you wait 12 hours. The risky Wipe Criminal Record crime stays a separate, dangerous route.';
 
   @override
   String get helpTopicCourtTips =>
-      'Use appeals on long sentences first: expected time saved is highest there.\nUse bribery only with enough cash buffer, because payment is always deducted.';
+      'Use appeals on long sentences first: expected time saved is highest there.\nUse bribery only with enough cash buffer, because payment is always deducted.\nKeep a cash buffer for a record-wipe request: failure only costs money, with no extra jail or wanted.\nBuying the Don judge, commissioner and alderman in your current country raises that request chance.';
 
   @override
   String get helpTopicHitlistCategory => 'Risk';

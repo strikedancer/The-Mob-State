@@ -15,6 +15,7 @@ interface CooldownConfig {
   travel: number;
   heist: number;
   appeal: number;
+  expunge_petition: number;
   vehicle_theft: number;
   motorcycle_theft: number;
   boat_theft: number;
@@ -56,6 +57,7 @@ const COOLDOWN_PERIODS: CooldownConfig = {
   travel: 3600, // 1 hour per travel leg
   heist: 21600, // 6 hours between heists
   appeal: 14400, // 4 hours between appeals
+  expunge_petition: 43200, // 12 hours between criminal-record petitions
   vehicle_theft: 300, // 5 minutes between auto thefts
   motorcycle_theft: 240, // 4 minutes between motorcycle thefts
   boat_theft: 600, // 10 minutes between boat thefts

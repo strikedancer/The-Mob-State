@@ -8325,7 +8325,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get courtHeroSubtitle =>
-      'Dien hoger beroep in of omkoop de rechter tijdens je straf. Je strafblad blijft na vrijlating.';
+      'Dien hoger beroep in of omkoop de rechter tijdens je straf. Je kunt ook een dure aanvraag doen om je hele strafblad te wissen.';
 
   @override
   String courtConvictionsChip(String count) {
@@ -8407,6 +8407,120 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get courtBribeHeatNote =>
       'Wanted en FBI-heat veranderen de beroepskans, niet deze omkoping.';
+
+  @override
+  String get courtExpungeTitle => 'Strafblad wissen';
+
+  @override
+  String get courtExpungeIntro =>
+      'Dien een dure aanvraag in om je hele strafblad te wissen. Mislukt het, dan ben je alleen het bedrag kwijt. Lukt het, dan is het blad leeg; je komt niet vrij uit de cel.';
+
+  @override
+  String courtExpungeCost(String amount) {
+    return 'Kosten: $amount';
+  }
+
+  @override
+  String courtExpungeChance(String percent) {
+    return 'Slagingskans: $percent%';
+  }
+
+  @override
+  String get courtExpungeOddsTitle => 'Wat deze kans bepaalt';
+
+  @override
+  String courtExpungeRecordPenalty(String count, String percent) {
+    return '$count veroordelingen: $percent%';
+  }
+
+  @override
+  String courtExpungeRecordOk(String count) {
+    return '$count veroordeling: geen extra min';
+  }
+
+  @override
+  String courtExpungeRecencyRecent(String percent) {
+    return 'Laatste arrestatie korter dan 24 uur: $percent%';
+  }
+
+  @override
+  String courtExpungeRecencyWarm(String percent) {
+    return 'Laatste arrestatie 1–3 dagen geleden: $percent%';
+  }
+
+  @override
+  String get courtExpungeRecencyNeutral =>
+      'Laatste arrestatie 3–7 dagen geleden: geen extra modifier';
+
+  @override
+  String courtExpungeRecencyCool(String percent) {
+    return 'Laatste arrestatie 7–14 dagen geleden: $percent%';
+  }
+
+  @override
+  String courtExpungeRecencyOld(String percent) {
+    return 'Laatste arrestatie langer dan 14 dagen geleden: $percent%';
+  }
+
+  @override
+  String courtExpungeReputation(String points, String percent) {
+    return 'Reputatie $points: $percent%';
+  }
+
+  @override
+  String get courtExpungeReputationNone => 'Reputatie: nog geen extra bonus';
+
+  @override
+  String courtExpungeDonJudge(String percent) {
+    return 'Don-rechter in dit land: +$percent%';
+  }
+
+  @override
+  String courtExpungeDonCommissioner(String percent) {
+    return 'Don-commissaris in dit land: +$percent%';
+  }
+
+  @override
+  String courtExpungeDonAlderman(String percent) {
+    return 'Don-wethouder in dit land: +$percent%';
+  }
+
+  @override
+  String get courtExpungeDonNone => 'Geen Don-ambtenaren omgekocht in dit land';
+
+  @override
+  String get courtExpungeSubmit => 'Aanvraag indienen';
+
+  @override
+  String get courtExpungeConfirmTitle => 'Strafblad wissen?';
+
+  @override
+  String courtExpungeConfirmBody(String amount, String percent) {
+    return 'Dit kost $amount. De getoonde slagingskans is $percent%. Bij mislukking ben je alleen het geld kwijt. Bij succes is het blad leeg; je blijft vastzitten als je een straf uitzit.';
+  }
+
+  @override
+  String courtExpungeSuccess(String count) {
+    return 'De rechtbank heeft $count veroordelingen van je strafblad gehaald. Je bent niet vrijgelaten.';
+  }
+
+  @override
+  String courtExpungeFailed(String amount) {
+    return 'De aanvraag is afgewezen. $amount is weg. Verder is er niets veranderd.';
+  }
+
+  @override
+  String courtExpungeCooldown(String duration) {
+    return 'Wacht $duration tot een nieuwe aanvraag.';
+  }
+
+  @override
+  String get courtExpungeNoRecord => 'Je hebt geen strafblad om te wissen.';
+
+  @override
+  String courtExpungeNeedMoney(String amount) {
+    return 'Je hebt $amount contant nodig.';
+  }
 
   @override
   String get treated => 'Behandeld!';
@@ -18253,11 +18367,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicCrimesSummary =>
-      'Pleeg illegale acties voor cash en XP, maar elke poging brengt kans op schade, arrestatie of extra Wanted Level mee. De late-game crime Strafblad Wissen wist bij succes je volledige strafblad, maar vereist zware tools en heeft hoge federale risico\'s.';
+      'Pleeg illegale acties voor cash en XP, maar elke poging brengt kans op schade, arrestatie of extra Wanted Level mee. De late-game crime Strafblad Wissen wist bij succes je volledige strafblad, maar vereist zware tools en heeft hoge federale risico\'s. Op de rechtbank kun je hetzelfde blad ook via een dure legale aanvraag wissen, zonder dat crimerisico.';
 
   @override
   String get helpTopicCrimesHow =>
-      'Op rang 1–5 tonen straatcrimes (minimale rang 1) de echte cataloguskans: zakkenrollen en winkeldiefstal starten rond 65–70%. Vandalisme en graffiti kun je meteen doen, zonder spuitbus.\nMislukt zo\'n vroege straatcrime, dan vlucht je meestal zonder buit in plaats van naar de cel. Cel blijft mogelijk, maar is niet meer de standaarduitkomst.\nBanen blijven vanaf rang 1 beschikbaar zolang je niet vastzit — gebruik die loop als je cash wilt zonder misdaadrisico.\nCrime-cooldowns schalen mee met de potentiële opbrengst: lage payout crimes blijven snel, hogere payout crimes krijgen duidelijk langere cooldowns.\nRichtlijn per reward-tier: tot €500 ≈ 1,5 min, tot €2.000 ≈ 5 min, tot €10.000 ≈ 15 min, tot €30.000 ≈ 30 min, daarboven ≈ 60 min.\nEr is geen harde dagcap op crimes; actieve spelers kunnen blijven doorspelen zolang ze cooldowns, risico en resources managen.\nOp elke gewapende misdaadkaart staat welk wapentype je nodig hebt (pistool, jachtgeweer, geweer, SMG, sluipschutter). Zet een passend wapen op slot 1 of 2 in Inventaris — een wapen alleen in de rugzak telt niet.\nOp Misdaden staat de filter Op jouw rang standaard aan. Bovenin staan misdaden die je nu kunt plegen; daaronder dezelfde rang waarvoor je nog een wapen, drugs, gereedschap of auto mist. Alle misdaden toont ook misdaden die een hogere rang vragen.\nJe actieve sportschool- en schietbaanbonussen (tot maximaal +8% elk) staan op het Misdaden-scherm; ze verhogen je slagingskans zoals de server dat berekent (train verder via het Trainingscircuit / sportschool + schietschool).\nHeb je binnen dezelfde UTC-dag in sportschool én schietbaan getraind, dan geeft de server een kleine extra slagingskans op crimes (+0,5%). Die combo staat op het Misdaden-scherm wanneer hij actief is.\nCrimes met voertuig-eis gebruiken je geselecteerde crime-voertuig uit Garage of Marina. Alleen een voertuig dat echt in je huidige land staat en niet onderweg of te koop is, telt mee.\nDrugs-eisen bij crimes worden weergegeven in gram en volgen dezelfde hoeveelheid als je drugsinventaris en opslag.\nAls een crime niet kan starten door ontbrekend voertuig, verkeerd wapen of missende ammo, hoort de foutmelding nu de echte oorzaak te tonen in plaats van een generieke retry.\nBij elke crime poging: je neemt 5-15 HP schade en je Wanted Level stijgt 1-4 punten afhankelijk van succes of falen.\nArrestatiekans stijgt snel met Wanted Level: bij Wanted 5 is het 25%, bij Wanted 10 al 50%, bij Wanted 18+ maximaal 90%.\nBij arrestatie beland je in de gevangenis. Gevangenisstraf duurt maximaal(wanted level × 10) minuten, minimaal 5 minuten. Borg kost wanted level × €1.000. Ook als een crime eerst lijkt te slagen maar je daarna alsnog wordt gepakt, telt de uitkomst als arrestatie: gebruikte tools worden geconfisqueerd, gebruikte crime-wapens raak je kwijt en voertuigen kunnen ook in beslag worden genomen.\nSommige crimes vereisen een voertuig, tool of minimale rang. Mis je dit dan start de crime niet.\nXP die je verdient gebruik je om rang te stijgen, waardoor betere crimes en hogere beloningen vrijkomen.\nFBI Heat stijgt bij zwaardere crimes. Als heat boven 50 komt wordt de FBI actief met nog hogere arrestatiekansen.';
+      'Op rang 1–5 tonen straatcrimes (minimale rang 1) de echte cataloguskans: zakkenrollen en winkeldiefstal starten rond 65–70%. Vandalisme en graffiti kun je meteen doen, zonder spuitbus.\nMislukt zo\'n vroege straatcrime, dan vlucht je meestal zonder buit in plaats van naar de cel. Cel blijft mogelijk, maar is niet meer de standaarduitkomst.\nBanen blijven vanaf rang 1 beschikbaar zolang je niet vastzit — gebruik die loop als je cash wilt zonder misdaadrisico.\nCrime-cooldowns schalen mee met de potentiële opbrengst: lage payout crimes blijven snel, hogere payout crimes krijgen duidelijk langere cooldowns.\nRichtlijn per reward-tier: tot €500 ≈ 1,5 min, tot €2.000 ≈ 5 min, tot €10.000 ≈ 15 min, tot €30.000 ≈ 30 min, daarboven ≈ 60 min.\nEr is geen harde dagcap op crimes; actieve spelers kunnen blijven doorspelen zolang ze cooldowns, risico en resources managen.\nOp elke gewapende misdaadkaart staat welk wapentype je nodig hebt (pistool, jachtgeweer, geweer, SMG, sluipschutter). Zet een passend wapen op slot 1 of 2 in Inventaris — een wapen alleen in de rugzak telt niet.\nOp Misdaden staat de filter Op jouw rang standaard aan. Bovenin staan misdaden die je nu kunt plegen; daaronder dezelfde rang waarvoor je nog een wapen, drugs, gereedschap of auto mist. Alle misdaden toont ook misdaden die een hogere rang vragen.\nJe actieve sportschool- en schietbaanbonussen (tot maximaal +8% elk) staan op het Misdaden-scherm; ze verhogen je slagingskans zoals de server dat berekent (train verder via het Trainingscircuit / sportschool + schietschool).\nHeb je binnen dezelfde UTC-dag in sportschool én schietbaan getraind, dan geeft de server een kleine extra slagingskans op crimes (+0,5%). Die combo staat op het Misdaden-scherm wanneer hij actief is.\nCrimes met voertuig-eis gebruiken je geselecteerde crime-voertuig uit Garage of Marina. Alleen een voertuig dat echt in je huidige land staat en niet onderweg of te koop is, telt mee.\nDrugs-eisen bij crimes worden weergegeven in gram en volgen dezelfde hoeveelheid als je drugsinventaris en opslag.\nAls een crime niet kan starten door ontbrekend voertuig, verkeerd wapen of missende ammo, hoort de foutmelding nu de echte oorzaak te tonen in plaats van een generieke retry.\nBij elke crime poging: je neemt 5-15 HP schade en je Wanted Level stijgt 1-4 punten afhankelijk van succes of falen.\nArrestatiekans stijgt snel met Wanted Level: bij Wanted 5 is het 25%, bij Wanted 10 al 50%, bij Wanted 18+ maximaal 90%.\nBij arrestatie beland je in de gevangenis. Gevangenisstraf duurt maximaal(wanted level × 10) minuten, minimaal 5 minuten. Borg kost wanted level × €1.000. Ook als een crime eerst lijkt te slagen maar je daarna alsnog wordt gepakt, telt de uitkomst als arrestatie: gebruikte tools worden geconfisqueerd, gebruikte crime-wapens raak je kwijt en voertuigen kunnen ook in beslag worden genomen.\nSommige crimes vereisen een voertuig, tool of minimale rang. Mis je dit dan start de crime niet.\nXP die je verdient gebruik je om rang te stijgen, waardoor betere crimes en hogere beloningen vrijkomen.\nFBI Heat stijgt bij zwaardere crimes. Als heat boven 50 komt wordt de FBI actief met nog hogere arrestatiekansen.\nJe kunt je volledige strafblad ook op de rechtbank wissen via een betaalde aanvraag. Die legale route is trager en duur, maar vervangt deze riskante crime niet.';
 
   @override
   String get helpTopicCrimesTips =>
@@ -18613,15 +18727,15 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicCourtSummary =>
-      'Tijdens je straf kun je hoger beroep indienen of de rechter proberen om te kopen om sneller vrij te komen.';
+      'Tijdens je straf kun je hoger beroep indienen of de rechter proberen om te kopen om sneller vrij te komen. Je kunt ook een dure aanvraag doen om je hele strafblad te wissen, ook als je vrij bent.';
 
   @override
   String get helpTopicCourtHow =>
-      'Als je vastzit zie je in de rechtbank je actieve veroordeling met resterende tijd, delict en rechterprofiel.\nHoger beroep kost geld op basis van je huidige strafduur. Bij toekenning wordt je straf meestal met ongeveer 20-40% verlaagd.\nHoger beroep kun je maar een keer per veroordeling doen en er zit een cooldown op herhaald indienen.\nOmkoping werkt met een zelfgekozen bedrag. Dat bedrag wordt altijd afgeschreven, ook wanneer de poging mislukt.\nEen hogere omkoopsom geeft een betere slagingskans. Bij succes word je direct vrijgelaten.\nJe strafblad bewaart eerdere veroordelingen met datum en rechtbankhistorie, ook als je niet meer vastzit.\nEen geslaagde rechteromkoping verwijdert alleen die actuele veroordeling van je strafblad.\nWil je je volledige strafblad wissen, dan moet je dat buiten de rechtbank via de late-game crime Strafblad Wissen doen.';
+      'Als je vastzit zie je in de rechtbank je actieve veroordeling met resterende tijd, delict en rechterprofiel.\nHoger beroep kost geld op basis van je huidige strafduur. Bij toekenning wordt je straf meestal met ongeveer 20-40% verlaagd.\nHoger beroep kun je maar een keer per veroordeling doen en er zit een cooldown op herhaald indienen.\nOmkoping werkt met een zelfgekozen bedrag. Dat bedrag wordt altijd afgeschreven, ook wanneer de poging mislukt.\nEen hogere omkoopsom geeft een betere slagingskans. Bij succes word je direct vrijgelaten.\nJe strafblad bewaart eerdere veroordelingen met datum en rechtbankhistorie, ook als je niet meer vastzit.\nEen geslaagde rechteromkoping verwijdert alleen die actuele veroordeling van je strafblad.\nOp de rechtbank kun je een aanvraag strafblad wissen indienen, ook als je vrij bent, zolang er een strafblad is.\nDie aanvraag kost minstens €100.000, plus €1.000 per extra veroordeling na de eerste.\nDe getoonde slagingskans hangt af van de lengte van het blad, hoe lang geleden je laatste arrestatie was, je reputatie, en of je in dit land via Don een wethouder, commissaris en/of rechter hebt omgekocht.\nMislukt het, dan ben je alleen het bedrag kwijt. Lukt het, dan is het blad leeg; je komt niet vrij uit de cel.\nDaarna wacht je 12 uur. De riskante crime Strafblad wissen blijft een aparte, gevaarlijke route.';
 
   @override
   String get helpTopicCourtTips =>
-      'Gebruik hoger beroep bij lange straffen: de verwachte tijdswinst is dan het grootst.\nGebruik omkoping alleen met voldoende buffer, omdat je in alle gevallen betaalt.';
+      'Gebruik hoger beroep bij lange straffen: de verwachte tijdswinst is dan het grootst.\nGebruik omkoping alleen met voldoende buffer, omdat je in alle gevallen betaalt.\nHoud cash achter de hand voor een aanvraag strafblad wissen: bij mislukking ben je alleen het geld kwijt, zonder extra cel of wanted.\nKoop in je huidige land via Don de rechter, commissaris en wethouder om die kans te verhogen.';
 
   @override
   String get helpTopicHitlistCategory => 'Risico';

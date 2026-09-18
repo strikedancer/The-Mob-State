@@ -8220,7 +8220,7 @@
   "helpTopicDashboardTips": "Apri prima la dashboard dopo ogni accesso per vedere cosa è cambiato mentre eri assente. \nMantieni il livello di ricercato al di sotto di 10 in modo che il decadimento automatico funzioni e le possibilità di arresto rimangano basse. \nControlla i messaggi non letti prima di intraprendere azioni rischiose: premi, evasioni degli ordini ed eventi di sistema appaiono tutti nella tua casella di posta.",
   "helpTopicCrimesCategory": "Azioni",
   "helpTopicCrimesTitle": "Crimini",
-  "helpTopicCrimesSummary": "Commetti azioni illegali in cambio di denaro e XP, ma ogni tentativo rischia di danneggiare, arrestare o aumentare il livello di ricercato. Il crimine Wipe Criminal Record a fine partita rimuove l'intera fedina penale in caso di successo, ma richiede strumenti pesanti e comporta un elevato rischio federale.",
+  "helpTopicCrimesSummary": "Commetti azioni illegali in cambio di denaro e XP, ma ogni tentativo rischia di danneggiare, arrestare o aumentare il livello di ricercato. Il crimine Wipe Criminal Record a fine partita rimuove l'intera fedina penale in caso di successo, ma richiede strumenti pesanti e comporta un elevato rischio federale. La Corte ha anche una richiesta legale costosa che può cancellare lo stesso record senza quel rischio di crimine.",
   "helpTopicCrimesHow": "Ai livelli 1-5, i crimini di strada (livello minimo 1) mostrano le reali possibilità di successo del catalogo: borseggiatori e taccheggi iniziano intorno al 65-70%. Vandalismo e graffiti non hanno bisogno di vernice spray. \nSe i primi crimini di strada falliscono, di solito te ne vai a mani vuote invece di andare in prigione. Il carcere è ancora possibile, ma non è più la norma. \nI lavori rimangono disponibili dal livello 1 mentre non sei in prigione: usali quando vuoi contanti senza rischio di criminalità. \nI tempi di recupero dei crimini ora aumentano con il potenziale guadagno: i crimini a basso rendimento rimangono veloci, mentre i crimini ad alto rendimento ottengono tempi di recupero chiaramente più lunghi. \nLinee guida per livello di premio: fino a 500 € ≈ 1,5 min, fino a 2.000 € ≈ 5 min, fino a 10.000 € ≈ 15 min, fino a 30.000 € ≈ 30 min, oltre ≈ 60 min. \nNon esiste un limite giornaliero rigido ai crimini; i giocatori attivi possono continuare a giocare purché gestiscano tempi di recupero, rischi e risorse. \nCrimini armati mostrano su ogni carta il tipo di arma di cui hai bisogno (pistola, fucile, fucile, mitragliatore, cecchino). Indossa un'arma corrispondente nello slot 1 o 2 nell'inventario: una pistola solo nel tuo zaino non conta. \nLa schermata Crimini parte da Al tuo rango. In alto i crimini che puoi commettere ora; sotto quelli dello stesso rango a cui manca ancora un'arma, droga, attrezzo o auto. Tutti i crimini mostra anche quelli che richiedono un rango più alto.\nI bonus attivi della palestra e del poligono di tiro (fino a +8% ciascuno) vengono mostrati nella schermata Crimini; aumentano le possibilità di successo man mano che il server calcola (allenarsi di più tramite l'hub di allenamento/palestra + gamma). \nSe completi almeno una sessione in palestra e una sessione al poligono di tiro nello stesso giorno di calendario UTC, il server aggiunge una piccola probabilità extra di successo nel crimine (+0,5%). La schermata Crimini mostra quando questa combinazione è attiva. \nI crimini che richiedono un veicolo utilizzano il veicolo criminale selezionato da Garage o Marina. Conta solo un veicolo che si trova effettivamente nel tuo Paese attuale e non in transito o in vendita. \nIl fabbisogno di farmaci nei reati è indicato in grammi e segue le stesse quantità dell'inventario e dello stoccaggio dei farmaci. \nSe un crimine non può iniziare a causa di un veicolo scomparso, di un'arma sbagliata o di munizioni mancanti, il messaggio di errore ora dovrebbe mostrare la vera causa invece di un generico tentativo. \nAd ogni tentativo di crimine: subisci 5-15 danni HP e il livello di ricercato aumenta di 1-4 punti a seconda del successo o del fallimento. \nLa probabilità di arresto aumenta rapidamente con il livello di ricercato: ricercato 5 = 25%, ricercato 10 = 50%, ricercato 18+ = massimo 90%. \nAll'arresto vai in prigione. Frase = max(livello desiderato × 10, 5) minuti. Cauzione = livello di ricercato × € 1.000. Anche se all’inizio un crimine sembra riuscito, ma poi si viene scoperti, il risultato finale conta comunque come un arresto: gli strumenti necessari vengono confiscati, l’arma usata del crimine viene persa e anche i veicoli possono essere sequestrati. \nAlcuni crimini richiedono un veicolo, uno strumento o un grado minimo. Mancare questi impedirà l'inizio del crimine. \nGli XP guadagnati aumentano il tuo grado, sbloccando crimini migliori e ricompense più elevate. \nFBI La tensione aumenta con crimini più pesanti. Al di sopra dei 50 gradi l'FBI diventa attivo con possibilità di arresto ancora più elevate.",
   "helpTopicCrimesTips": "Inizia con borseggi, taccheggi, atti vandalici o graffiti. Un fallimento di solito significa niente bottino, niente prigione, quindi esegui un lavoro per denaro sicuro. \nUsa i crimini veloci per principianti per accumulare XP mentre aspetti grandi tempi di recupero. \nSalvati sempre se il tuo livello di ricercato è alto: stare in prigione blocca tutti i tuoi loop. \nMantieni gli HP sopra i 30 prima di iniziare una corsa al crimine: ogni tentativo costa HP e con 0 HP trascorri 3 ore in terapia intensiva.",
   "helpTopicJobsCategory": "Azioni",
@@ -8300,9 +8300,9 @@
   "helpTopicToolsTips": "Acquista utensili in grandi quantità quando costano poco al mercato nero: risparmi rispetto al negozio. \nImposta una soglia personale: sostituisci sempre gli strumenti quando le condizioni scendono al di sotto del 25% per mantenere stabili le possibilità di successo.",
   "helpTopicCourtCategory": "Rischio",
   "helpTopicCourtTitle": "Tribunale",
-  "helpTopicCourtSummary": "Durante la sentenza puoi presentare ricorso o provare a corrompere il giudice per essere rilasciato prima.",
-  "helpTopicCourtHow": "Una volta incarcerato, lo schermo del tribunale mostra la tua condanna attiva con il tempo rimanente, il crimine e il profilo del giudice. \nUn appello costa denaro in base alla durata della pena attuale. Se concessa, la pena viene solitamente ridotta di circa il 20-40%. \nPuoi fare appello solo una volta per condanna e ai tentativi rapidi si applica un tempo di recupero. \nLa corruzione utilizza un importo selezionato dal giocatore. Tale importo viene sempre detratto, anche quando il tentativo fallisce. \nUn importo di tangente più elevato aumenta le possibilità di successo. In caso di successo, verrai rilasciato immediatamente. \nLa tua fedina penale conserva le condanne precedenti con date e dettagli della storia del tribunale anche quando non sei più in prigione. \nUna tangente di un giudice riuscita rimuove solo quella condanna attuale dalla tua fedina penale. \nSe vuoi cancellare tutta la tua fedina penale, devi farlo fuori dal tribunale attraverso il crimine Wipe Criminal Record a fine partita.",
-  "helpTopicCourtTips": "Utilizzate prima i ricorsi sulle frasi lunghe: lì il tempo previsto risparmiato è più alto. \nUtilizzare la corruzione solo con sufficiente riserva di liquidità, poiché il pagamento viene sempre detratto.",
+  "helpTopicCourtSummary": "Durante la sentenza puoi presentare ricorso o provare a corrompere il giudice per essere rilasciato prima. Puoi anche presentare una richiesta costosa per cancellare l'intera fedina penale, anche quando sei libero.",
+  "helpTopicCourtHow": "Una volta incarcerato, lo schermo del tribunale mostra la tua condanna attiva con il tempo rimanente, il crimine e il profilo del giudice. \nUn appello costa denaro in base alla durata della pena attuale. Se concessa, la pena viene solitamente ridotta di circa il 20-40%. \nPuoi fare appello solo una volta per condanna e ai tentativi rapidi si applica un tempo di recupero. \nLa corruzione utilizza un importo selezionato dal giocatore. Tale importo viene sempre detratto, anche quando il tentativo fallisce. \nUn importo di tangente più elevato aumenta le possibilità di successo. In caso di successo, verrai rilasciato immediatamente. \nLa tua fedina penale conserva le condanne precedenti con date e dettagli della storia del tribunale anche quando non sei più in prigione. \nUna tangente di un giudice riuscita rimuove solo quella condanna attuale dalla tua fedina penale. \nPuoi anche presentare una richiesta di cancellazione della fedina penale in tribunale mentre sei libero o in prigione, purché tu abbia ancora precedenti penali. \nQuella richiesta costa almeno 100.000 euro, più 1.000 euro per ogni condanna in più dopo la prima. \nLa probabilità di successo mostrata dipende da quanto è lungo il record, da quanto tempo fa è avvenuto il tuo ultimo arresto, dalla tua reputazione e se attualmente hai acquistato un Don Alderman, commissario e/o giudice in questo paese. \nSe fallisce, perdi solo la quota. Se riesce, il record è vuoto; non sarai rilasciato dalla prigione. \nDopo ogni tentativo attendi 12 ore. Il rischioso crimine Wipe Criminal Record rimane un percorso separato e pericoloso.",
+  "helpTopicCourtTips": "Utilizzate prima i ricorsi sulle frasi lunghe: lì il tempo previsto risparmiato è più alto. \nUtilizzare la corruzione solo con sufficiente riserva di liquidità, poiché il pagamento viene sempre detratto. \nMantieni una riserva di liquidità per una richiesta di cancellazione dei record: il fallimento costa solo denaro, senza prigione o ricercati aggiuntivi. \nL'acquisto del giudice, commissario e assessore del Don nel tuo paese attuale aumenta tale possibilità di richiesta.",
   "helpTopicHitlistCategory": "Rischio",
   "helpTopicHitlistTitle": "Hitlist",
   "helpTopicHitlistSummary": "Metti una taglia su un nemico o accetta un contratto di successo. Elimina il tuo target nello stesso paese per il pagamento completo.",
@@ -11068,7 +11068,7 @@
   },
   "hitlistEmptyBody": "Niente appalti pubblici per ora. Piazza una taglia di almeno 50.000€ per iniziare una caccia.",
   "courtHeroTitle": "L'udienza",
-  "courtHeroSubtitle": "Fai appello o corrompi il giudice mentre sei in pena. La tua fedina penale resta anche dopo che sarai libero.",
+  "courtHeroSubtitle": "Fai appello o corrompi il giudice mentre sei in pena. Puoi anche presentare una richiesta costosa per cancellare l'intera fedina penale.",
   "courtConvictionsChip": "{count} condanne",
   "@courtConvictionsChip": {
     "placeholders": {
@@ -13059,5 +13059,159 @@
       }
     }
   },
-  "drugsHeatLowProfileHint": "Nessun nuovo lotto fino allo scadere del timer. Il calore extra viene dimezzato. I lotti già in cottura continuano a funzionare. Non puoi annullarlo."
+  "drugsHeatLowProfileHint": "Nessun nuovo lotto fino allo scadere del timer. Il calore extra viene dimezzato. I lotti già in cottura continuano a funzionare. Non puoi annullarlo.",
+  "courtExpungeTitle": "Cancellare la fedina penale",
+  "courtExpungeIntro": "Presenta una costosa richiesta al tribunale per cancellare l'intera fedina penale. Il fallimento costa solo la tassa. Il successo cancella il record ma non ti libera dalla prigione.",
+  "courtExpungeCost": "Costo: {amount}",
+  "@courtExpungeCost": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeChance": "Probabilità di successo: {percent}%",
+  "@courtExpungeChance": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeOddsTitle": "Cosa cambia questa possibilità",
+  "courtExpungeRecordPenalty": "{count} condanne: {percent}%",
+  "@courtExpungeRecordPenalty": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecordOk": "{count} condanna: nessuna penalità aggiuntiva",
+  "@courtExpungeRecordOk": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecencyRecent": "Ultimo arresto in 24 ore: {percent}%",
+  "@courtExpungeRecencyRecent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecencyWarm": "Ultimo arresto 1-3 giorni fa: {percent}%",
+  "@courtExpungeRecencyWarm": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecencyNeutral": "Ultimo arresto 3-7 giorni fa: nessun modificatore aggiuntivo",
+  "courtExpungeRecencyCool": "Ultimo arresto 7-14 giorni fa: {percent}%",
+  "@courtExpungeRecencyCool": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecencyOld": "Ultimo arresto più di 14 giorni fa: {percent}%",
+  "@courtExpungeRecencyOld": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeReputation": "Reputazione {points}: {percent}%",
+  "@courtExpungeReputation": {
+    "placeholders": {
+      "points": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeReputationNone": "Reputazione: ancora nessun bonus extra",
+  "courtExpungeDonJudge": "Giudice del Don in questo paese: +{percent}%",
+  "@courtExpungeDonJudge": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeDonCommissioner": "Commissario del Don in questo paese: +{percent}%",
+  "@courtExpungeDonCommissioner": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeDonAlderman": "Assessore del Don in questo paese: +{percent}%",
+  "@courtExpungeDonAlderman": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeDonNone": "Nessun funzionario del Don ha comprato in questo paese",
+  "courtExpungeSubmit": "Invia richiesta",
+  "courtExpungeConfirmTitle": "Cancellare la fedina penale?",
+  "courtExpungeConfirmBody": "Questo costa {amount}. La probabilità di successo mostrata è {percent}%. In caso di fallimento perdi solo i soldi. In caso di successo il record viene cancellato; rimani in prigione se stai scontando una pena.",
+  "@courtExpungeConfirmBody": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeSuccess": "Il tribunale ha cancellato {count} condanne dalla tua fedina penale. Non sei stato rilasciato.",
+  "@courtExpungeSuccess": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeFailed": "La richiesta non è riuscita. {amount} è sparito. Nient'altro è cambiato.",
+  "@courtExpungeFailed": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeCooldown": "Attendi {duration} prima di un'altra richiesta.",
+  "@courtExpungeCooldown": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeNoRecord": "Non hai precedenti penali da cancellare.",
+  "courtExpungeNeedMoney": "Hai bisogno di {amount} in contanti.",
+  "@courtExpungeNeedMoney": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  }
 }

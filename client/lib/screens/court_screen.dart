@@ -39,6 +39,8 @@ class _CourtScreenState extends State<CourtScreen> {
   DateTime? _sentenceSyncedAt;
   int _totalConvictions = 0;
   List<Map<String, dynamic>> _recentCrimes = [];
+  ExpungePetitionQuote? _expungeQuote;
+  DateTime? _expungeCooldownUntil;
   String? _error;
   bool _isProcessing = false;
   Timer? _tickTimer;
@@ -47,13 +49,19 @@ class _CourtScreenState extends State<CourtScreen> {
   void initState() {
     super.initState();
     _loadCourtData();
-    _tickTimer = Timer.periodic(const Duration(seconds: 30), (_) {
-      if (!mounted || _currentSentence == null) return;
-      if (_remainingMinutesNow <= 0) {
+    _tickTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (!mounted) return;
+      if (_currentSentence != null && _remainingMinutesNow <= 0) {
         _loadCourtData();
         return;
       }
-      setState(() {});
+      if (_expungeCooldownUntil != null && _expungeCooldownSecondsNow <= 0) {
+        _loadCourtData();
+        return;
+      }
+      if (_currentSentence != null || _expungeCooldownUntil != null) {
+        setState(() {});
+      }
     });
   }
 
@@ -71,6 +79,12 @@ class _CourtScreenState extends State<CourtScreen> {
     return (sentence.remainingMinutes - elapsed).clamp(0, sentence.remainingMinutes);
   }
 
+  int get _expungeCooldownSecondsNow {
+    final until = _expungeCooldownUntil;
+    if (until == null) return 0;
+    return until.difference(DateTime.now()).inSeconds.clamp(0, 1 << 30);
+  }
+
   Future<void> _loadCourtData() async {
     setState(() {
       _isLoading = true;
@@ -82,6 +96,7 @@ class _CourtScreenState extends State<CourtScreen> {
     JailSentence? sentence;
     int totalConvictions = 0;
     List<Map<String, dynamic>> recentCrimes = [];
+    ExpungePetitionQuote? expungeQuote;
 
     try {
       final response = await _apiClient.get('/trial/current-sentence');
@@ -111,6 +126,15 @@ class _CourtScreenState extends State<CourtScreen> {
       debugPrint('[CourtScreen] Failed loading /trial/record: $e');
     }
 
+    try {
+      final response = await _apiClient.get('/trial/expunge-quote');
+      final quoteData = jsonDecode(response.body) as Map<String, dynamic>;
+      final quoteParams = (quoteData['params'] as Map<String, dynamic>?) ?? {};
+      expungeQuote = ExpungePetitionQuote.fromJson(quoteParams);
+    } catch (e) {
+      debugPrint('[CourtScreen] Failed loading /trial/expunge-quote: $e');
+    }
+
     if (!mounted) return;
     final l10n = AppLocalizations.of(context)!;
 
@@ -119,6 +143,11 @@ class _CourtScreenState extends State<CourtScreen> {
       _sentenceSyncedAt = sentence == null ? null : DateTime.now();
       _totalConvictions = totalConvictions;
       _recentCrimes = recentCrimes;
+      _expungeQuote = expungeQuote;
+      final cooldownSeconds = expungeQuote?.cooldownRemainingSeconds ?? 0;
+      _expungeCooldownUntil = cooldownSeconds > 0
+          ? DateTime.now().add(Duration(seconds: cooldownSeconds))
+          : null;
       _isLoading = false;
 
       if (_sentenceFailed && _recordFailed) {
@@ -132,6 +161,148 @@ class _CourtScreenState extends State<CourtScreen> {
     if (rawCost < 2000) return 2000;
     if (rawCost > 50000) return 50000;
     return rawCost;
+  }
+
+  String _signedPercent(int value) {
+    if (value > 0) return '+$value';
+    return '$value';
+  }
+
+  String _expungeRecencyLine(AppLocalizations l10n, ExpungePetitionOdds odds) {
+    final hours = odds.hoursSinceLastArrest;
+    final percent = _signedPercent(odds.recencyModifierPercent);
+    if (hours == null) return l10n.courtExpungeRecencyNeutral;
+    if (hours < 24) return l10n.courtExpungeRecencyRecent(percent);
+    if (hours < 72) return l10n.courtExpungeRecencyWarm(percent);
+    if (hours < 168) return l10n.courtExpungeRecencyNeutral;
+    if (hours < 336) return l10n.courtExpungeRecencyCool(percent);
+    return l10n.courtExpungeRecencyOld(percent);
+  }
+
+  Future<void> _submitExpungePetition() async {
+    final quote = _expungeQuote;
+    if (quote == null || _isProcessing) return;
+
+    final l10nRoot = AppLocalizations.of(context)!;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        final l10n = AppLocalizations.of(context)!;
+        return AlertDialog(
+          backgroundColor: _panelBg,
+          title: Text(
+            l10n.courtExpungeConfirmTitle,
+            style: const TextStyle(color: _gold, fontWeight: FontWeight.w800),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l10n.courtExpungeConfirmBody(
+                  formatCurrency(quote.cost),
+                  quote.odds.successPercent.toString(),
+                ),
+                style: const TextStyle(fontSize: 15, color: Colors.white70),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              style: TextButton.styleFrom(foregroundColor: Colors.white70),
+              child: Text(l10n.cancel),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context, true),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF2A4E7F),
+                foregroundColor: Colors.white,
+              ),
+              child: Text(l10n.courtExpungeSubmit),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmed != true) return;
+    setState(() => _isProcessing = true);
+
+    try {
+      final response = await _apiClient.post('/trial/expunge-petition', {});
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      if (response.statusCode != 200) {
+        final event = data['event'] as String? ?? 'error.internal';
+        if (!mounted) return;
+        final params = data['params'] is Map<String, dynamic>
+            ? data['params'] as Map<String, dynamic>
+            : const <String, dynamic>{};
+        final message = event == 'error.insufficient_money'
+            ? l10nRoot.courtExpungeNeedMoney(formatCurrency(quote.cost))
+            : event == 'error.no_criminal_record'
+                ? l10nRoot.courtExpungeNoRecord
+                : event == 'error.cooldown'
+                    ? l10nRoot.courtExpungeCooldown(
+                        formatAdaptiveDuration(
+                          Duration(
+                            seconds:
+                                (params['remainingSeconds'] as num?)?.toInt() ??
+                                    _expungeCooldownSecondsNow,
+                          ),
+                          localeName: l10nRoot.localeName,
+                        ),
+                      )
+                    : l10nRoot.hitError(event);
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(content: Text(message), backgroundColor: Colors.red),
+        );
+        await _loadCourtData();
+        return;
+      }
+
+      final params = data['params'] as Map<String, dynamic>? ?? data;
+      final success = params['success'] as bool? ?? false;
+      final newBalance = params['newBalance'] as int?;
+      final cost = (params['cost'] as num?)?.toInt() ?? quote.cost;
+      final clearedCount =
+          (params['clearedCount'] as num?)?.toInt() ?? quote.convictionCount;
+
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            success
+                ? l10nRoot.courtExpungeSuccess(clearedCount.toString())
+                : l10nRoot.courtExpungeFailed(formatCurrency(cost)),
+          ),
+          backgroundColor: success ? Colors.green : Colors.red,
+          duration: const Duration(seconds: 4),
+        ),
+      );
+
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      if (newBalance != null) {
+        authProvider.updatePlayerStats(money: newBalance);
+      }
+      await _loadCourtData();
+    } catch (e) {
+      if (mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(l10nRoot.hitError(e.toString())),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isProcessing = false);
+      }
+    }
   }
 
   Future<void> _appealSentence() async {
@@ -531,11 +702,6 @@ class _CourtScreenState extends State<CourtScreen> {
       l10n,
       fallback: fallback,
     );
-  }
-
-  String _signedPercent(int value) {
-    if (value > 0) return '+$value';
-    return '$value';
   }
 
   Widget _oddsLine(String text, Color color) {
@@ -1008,6 +1174,170 @@ class _CourtScreenState extends State<CourtScreen> {
     );
   }
 
+  Widget _buildExpungePetitionCard(AppLocalizations l10n) {
+    final quote = _expungeQuote;
+    final cash = context.watch<AuthProvider>().currentPlayer?.money ?? 0;
+    final cooldownSeconds = _expungeCooldownSecondsNow;
+    final canAfford = quote != null && cash >= quote.cost;
+    final canSubmit =
+        quote != null &&
+        quote.canSubmit &&
+        quote.convictionCount > 0 &&
+        cooldownSeconds <= 0 &&
+        canAfford &&
+        !_isProcessing;
+
+    return _buildPanel(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l10n.courtExpungeTitle,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            l10n.courtExpungeIntro,
+            style: TextStyle(fontSize: 13, color: Colors.grey[300], height: 1.35),
+          ),
+          if (quote == null) ...[
+            const SizedBox(height: 12),
+            Text(
+              l10n.courtLoadFailed,
+              style: TextStyle(color: Colors.grey[400]),
+            ),
+          ] else ...[
+            const SizedBox(height: 12),
+            Text(
+              l10n.courtExpungeCost(formatCurrency(quote.cost)),
+              style: const TextStyle(
+                fontSize: 14,
+                color: _gold,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              l10n.courtExpungeOddsTitle,
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+              ),
+            ),
+            _oddsLine(
+              quote.odds.recordModifierPercent < 0
+                  ? l10n.courtExpungeRecordPenalty(
+                      quote.odds.convictionCount.toString(),
+                      _signedPercent(quote.odds.recordModifierPercent),
+                    )
+                  : l10n.courtExpungeRecordOk(
+                      quote.odds.convictionCount.toString(),
+                    ),
+              quote.odds.recordModifierPercent < 0
+                  ? const Color(0xFFE5967A)
+                  : Colors.white70,
+            ),
+            _oddsLine(
+              _expungeRecencyLine(l10n, quote.odds),
+              quote.odds.recencyModifierPercent < 0
+                  ? const Color(0xFFE5967A)
+                  : quote.odds.recencyModifierPercent > 0
+                  ? const Color(0xFF72C48F)
+                  : Colors.white70,
+            ),
+            _oddsLine(
+              quote.odds.reputationModifierPercent > 0
+                  ? l10n.courtExpungeReputation(
+                      quote.odds.reputation.toString(),
+                      _signedPercent(quote.odds.reputationModifierPercent),
+                    )
+                  : l10n.courtExpungeReputationNone,
+              quote.odds.reputationModifierPercent > 0
+                  ? const Color(0xFF72C48F)
+                  : Colors.white70,
+            ),
+            if (quote.odds.hasJudge)
+              _oddsLine(
+                l10n.courtExpungeDonJudge(quote.odds.donJudgePercent.toString()),
+                const Color(0xFF8AB4F8),
+              ),
+            if (quote.odds.hasCommissioner)
+              _oddsLine(
+                l10n.courtExpungeDonCommissioner(
+                  quote.odds.donCommissionerPercent.toString(),
+                ),
+                const Color(0xFF8AB4F8),
+              ),
+            if (quote.odds.hasAlderman)
+              _oddsLine(
+                l10n.courtExpungeDonAlderman(
+                  quote.odds.donAldermanPercent.toString(),
+                ),
+                const Color(0xFF8AB4F8),
+              ),
+            if (!quote.odds.hasJudge &&
+                !quote.odds.hasCommissioner &&
+                !quote.odds.hasAlderman)
+              _oddsLine(l10n.courtExpungeDonNone, Colors.white70),
+            const SizedBox(height: 8),
+            Text(
+              l10n.courtExpungeChance(quote.odds.successPercent.toString()),
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+                color: _gold,
+              ),
+            ),
+            if (quote.convictionCount <= 0) ...[
+              const SizedBox(height: 8),
+              Text(
+                l10n.courtExpungeNoRecord,
+                style: TextStyle(fontSize: 13, color: Colors.grey[400]),
+              ),
+            ] else if (cooldownSeconds > 0) ...[
+              const SizedBox(height: 8),
+              Text(
+                l10n.courtExpungeCooldown(
+                  formatAdaptiveDuration(
+                    Duration(seconds: cooldownSeconds),
+                    localeName: l10n.localeName,
+                  ),
+                ),
+                style: const TextStyle(fontSize: 13, color: Color(0xFFE5967A)),
+              ),
+            ] else if (!canAfford) ...[
+              const SizedBox(height: 8),
+              Text(
+                l10n.courtExpungeNeedMoney(formatCurrency(quote.cost)),
+                style: const TextStyle(fontSize: 13, color: Color(0xFFE5967A)),
+              ),
+            ],
+            const SizedBox(height: 12),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: canSubmit ? _submitExpungePetition : null,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF2A4E7F),
+                  foregroundColor: Colors.white,
+                  disabledBackgroundColor: const Color(0xFF2A3344),
+                  disabledForegroundColor: Colors.white38,
+                ),
+                icon: const Icon(Icons.folder_off),
+                label: Text(l10n.courtExpungeSubmit),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
   Widget _buildRecordCard(AppLocalizations l10n) {
     return _buildPanel(
       child: Column(
@@ -1112,6 +1442,7 @@ class _CourtScreenState extends State<CourtScreen> {
               _buildLoadWarning(l10n),
               _buildCurrentSentenceCard(l10n),
               _buildRecordCard(l10n),
+              _buildExpungePetitionCard(l10n),
             ],
           ],
         ),

@@ -47,9 +47,12 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 - **Tribute band:** catalog `baseTribute` is hundreds per collect (café ~€450, port office ~€1,100), cooldown 4h. Stays below jobs/drugs/nightclub unless telemetry says otherwise.
 - **Squeeze:** tribute × `DON_SQUEEZE_TRIBUTE_PERCENT` (150), +`DON_SQUEEZE_WANTED` (4), flee `DON_SQUEEZE_FLEE_PERCENT` (18). Unused rackets abandon after `DON_ABANDON_SECONDS` (72h).
 - **Loans:** 3 active, principal €2,000–€50,000, 3-day term. Default collect `DON_LOAN_COLLECT_PERCENT` (70) of due; NPC default chance 15%. No full wipe.
-- **Officials:** 24h patronage. Judge appeal bonus capped at `DON_JUDGE_APPEAL_BONUS_PERCENT` (8) on top of law-school, then 10–85% clamp. Commissioner multiplies crime-fail wanted by `DON_COMMISSIONER_WANTED_MULT` (80%). Alderman +15% contract payout.
+- **Officials:** 24h patronage. Judge appeal bonus capped at `DON_JUDGE_APPEAL_BONUS_PERCENT` (8) on top of law-school, then 10–85% clamp. The same three offices also raise Court expunge-petition chance (judge +8, commissioner +6, alderman +5, stacking, then 8–70% clamp). Commissioner multiplies crime-fail wanted by `DON_COMMISSIONER_WANTED_MULT` (80%). Alderman +15% contract payout.
 - **Contracts:** bid = 20% of catalog payout. Off-books +`DON_CONTRACT_OFFBOOKS_PERCENT` (12) per owned racket in that country (cap 3). Greedy +25% payout and extra wanted.
 - See [don.md](don.md).
+
+## Documented static modifiers (court)
+- **Expunge petition:** cash cost `100_000 + max(0, convictions-1)*1_000`, 12h `expunge_petition` cooldown, success clamped 8–70%. Fail is cash-only (no jail/wanted/FBI). Success does not release from jail. VIP shortens the cooldown like other action timeouts. See [court.md](court.md).
 
 ## Documented static modifiers (red light districts)
 - **Start rooms:** 4 on a new buy. Expansion 0–8 adds 2 rooms per step (€40k → €500k). Existing rooms are grandfathered.

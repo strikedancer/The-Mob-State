@@ -130,3 +130,100 @@ class JailSentence {
     );
   }
 }
+
+class ExpungePetitionOdds {
+  final int convictionCount;
+  final int basePercent;
+  final int recordModifierPercent;
+  final int recencyModifierPercent;
+  final int reputationModifierPercent;
+  final int reputation;
+  final int donJudgePercent;
+  final int donCommissionerPercent;
+  final int donAldermanPercent;
+  final bool hasJudge;
+  final bool hasCommissioner;
+  final bool hasAlderman;
+  final double? hoursSinceLastArrest;
+  final int successPercent;
+
+  ExpungePetitionOdds({
+    required this.convictionCount,
+    required this.basePercent,
+    required this.recordModifierPercent,
+    required this.recencyModifierPercent,
+    required this.reputationModifierPercent,
+    required this.reputation,
+    required this.donJudgePercent,
+    required this.donCommissionerPercent,
+    required this.donAldermanPercent,
+    required this.hasJudge,
+    required this.hasCommissioner,
+    required this.hasAlderman,
+    required this.hoursSinceLastArrest,
+    required this.successPercent,
+  });
+
+  factory ExpungePetitionOdds.fromJson(Map<String, dynamic>? json) {
+    final data = json ?? const {};
+    return ExpungePetitionOdds(
+      convictionCount: (data['convictionCount'] as num?)?.toInt() ?? 0,
+      basePercent: (data['basePercent'] as num?)?.toInt() ?? 38,
+      recordModifierPercent:
+          (data['recordModifierPercent'] as num?)?.toInt() ?? 0,
+      recencyModifierPercent:
+          (data['recencyModifierPercent'] as num?)?.toInt() ?? 0,
+      reputationModifierPercent:
+          (data['reputationModifierPercent'] as num?)?.toInt() ?? 0,
+      reputation: (data['reputation'] as num?)?.toInt() ?? 0,
+      donJudgePercent: (data['donJudgePercent'] as num?)?.toInt() ?? 0,
+      donCommissionerPercent:
+          (data['donCommissionerPercent'] as num?)?.toInt() ?? 0,
+      donAldermanPercent: (data['donAldermanPercent'] as num?)?.toInt() ?? 0,
+      hasJudge: data['hasJudge'] as bool? ?? false,
+      hasCommissioner: data['hasCommissioner'] as bool? ?? false,
+      hasAlderman: data['hasAlderman'] as bool? ?? false,
+      hoursSinceLastArrest: (data['hoursSinceLastArrest'] as num?)?.toDouble(),
+      successPercent: (data['successPercent'] as num?)?.toInt() ?? 0,
+    );
+  }
+}
+
+class ExpungePetitionQuote {
+  final int convictionCount;
+  final int cost;
+  final DateTime? lastArrestAt;
+  final int cooldownRemainingSeconds;
+  final bool canSubmit;
+  final String? blockReason;
+  final ExpungePetitionOdds odds;
+
+  ExpungePetitionQuote({
+    required this.convictionCount,
+    required this.cost,
+    required this.lastArrestAt,
+    required this.cooldownRemainingSeconds,
+    required this.canSubmit,
+    required this.blockReason,
+    required this.odds,
+  });
+
+  factory ExpungePetitionQuote.fromJson(Map<String, dynamic>? json) {
+    final data = json ?? const {};
+    final lastArrestRaw = data['lastArrestAt'] as String?;
+    return ExpungePetitionQuote(
+      convictionCount: (data['convictionCount'] as num?)?.toInt() ?? 0,
+      cost: (data['cost'] as num?)?.toInt() ?? 0,
+      lastArrestAt: lastArrestRaw == null
+          ? null
+          : DateTime.tryParse(lastArrestRaw),
+      cooldownRemainingSeconds:
+          (data['cooldownRemainingSeconds'] as num?)?.toInt() ?? 0,
+      canSubmit: data['canSubmit'] as bool? ?? false,
+      blockReason: data['blockReason'] as String?,
+      odds: ExpungePetitionOdds.fromJson(
+        data['odds'] as Map<String, dynamic>?,
+      ),
+    );
+  }
+}

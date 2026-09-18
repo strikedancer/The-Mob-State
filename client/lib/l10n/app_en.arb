@@ -5079,7 +5079,7 @@
   "courtRecordBribeNote": "Past convictions stay visible. A successful judge bribe clears only that one active case.",
   "courtNoConvictionsYet": "No convictions recorded yet.",
   "courtHeroTitle": "The courtroom",
-  "courtHeroSubtitle": "Appeal or bribe the judge while you serve time. Your criminal record stays after you walk free.",
+  "courtHeroSubtitle": "Appeal or bribe the judge while you serve time. You can also file a costly request to wipe your full criminal record.",
   "courtConvictionsChip": "{count} convictions",
   "@courtConvictionsChip": {
     "placeholders": {
@@ -5182,6 +5182,160 @@
   },
   "courtAppealUsed": "You already appealed this conviction.",
   "courtBribeHeatNote": "Wanted and FBI heat change appeal odds, not this bribe.",
+  "courtExpungeTitle": "Wipe criminal record",
+  "courtExpungeIntro": "File a costly court request to wipe your full criminal record. Failure only costs the fee. Success clears the record but does not release you from jail.",
+  "courtExpungeCost": "Cost: {amount}",
+  "@courtExpungeCost": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeChance": "Success chance: {percent}%",
+  "@courtExpungeChance": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeOddsTitle": "What changes this chance",
+  "courtExpungeRecordPenalty": "{count} convictions: {percent}%",
+  "@courtExpungeRecordPenalty": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecordOk": "{count} conviction: no extra penalty",
+  "@courtExpungeRecordOk": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecencyRecent": "Last arrest under 24 hours: {percent}%",
+  "@courtExpungeRecencyRecent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecencyWarm": "Last arrest 1–3 days ago: {percent}%",
+  "@courtExpungeRecencyWarm": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecencyNeutral": "Last arrest 3–7 days ago: no extra modifier",
+  "courtExpungeRecencyCool": "Last arrest 7–14 days ago: {percent}%",
+  "@courtExpungeRecencyCool": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecencyOld": "Last arrest over 14 days ago: {percent}%",
+  "@courtExpungeRecencyOld": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeReputation": "Reputation {points}: {percent}%",
+  "@courtExpungeReputation": {
+    "placeholders": {
+      "points": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeReputationNone": "Reputation: no extra bonus yet",
+  "courtExpungeDonJudge": "Don judge in this country: +{percent}%",
+  "@courtExpungeDonJudge": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeDonCommissioner": "Don commissioner in this country: +{percent}%",
+  "@courtExpungeDonCommissioner": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeDonAlderman": "Don alderman in this country: +{percent}%",
+  "@courtExpungeDonAlderman": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeDonNone": "No Don officials bought in this country",
+  "courtExpungeSubmit": "File request",
+  "courtExpungeConfirmTitle": "Wipe the criminal record?",
+  "courtExpungeConfirmBody": "This costs {amount}. Shown success chance is {percent}%. On failure you only lose the money. On success the record is cleared; you stay in jail if you are serving time.",
+  "@courtExpungeConfirmBody": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeSuccess": "The court wiped {count} convictions from your record. You were not released.",
+  "@courtExpungeSuccess": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeFailed": "The request failed. {amount} is gone. Nothing else changed.",
+  "@courtExpungeFailed": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeCooldown": "Wait {duration} before another request.",
+  "@courtExpungeCooldown": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeNoRecord": "You have no criminal record to wipe.",
+  "courtExpungeNeedMoney": "You need {amount} in cash.",
+  "@courtExpungeNeedMoney": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "treated": "Treated!",
   "healthRestored": "+{hp} HP for €{cost}",
   "@healthRestored": {
@@ -11853,8 +12007,8 @@
   "helpTopicDashboardTips": "Open the dashboard first after every login to see what changed while you were away.\nKeep wanted level below 10 so automatic decay works and arrest chances stay low.\nCheck unread messages before starting risky actions: rewards, order fills and system events all appear in your inbox.",
   "helpTopicCrimesCategory": "Actions",
   "helpTopicCrimesTitle": "Crimes",
-  "helpTopicCrimesSummary": "Commit illegal actions for cash and XP, but every attempt risks damage, arrest or extra Wanted Level. The late-game Wipe Criminal Record crime removes your full criminal record on success, but it needs heavy tools and carries high federal risk.",
-  "helpTopicCrimesHow": "At ranks 1–5, street crimes (min rank 1) show the real catalog success chance — pickpocket and shoplift start around 65–70%. Vandalism and graffiti do not need spray paint.\nIf those early street crimes fail, you usually get away empty-handed instead of going to jail. Jail is still possible, just no longer the default.\nJobs stay available from rank 1 while you are not in jail — use them when you want cash without crime risk.\nCrime cooldowns now scale with potential payout: low-yield crimes stay fast, while high-yield crimes get clearly longer cooldowns.\nGuideline by reward tier: up to €500 ≈ 1.5 min, up to €2,000 ≈ 5 min, up to €10,000 ≈ 15 min, up to €30,000 ≈ 30 min, above that ≈ 60 min.\nThere is no hard daily cap on crimes; active players can keep playing as long as they manage cooldowns, risk and resources.\nArmed crimes show on each card which weapon type you need (pistol, shotgun, rifle, SMG, sniper). Wear a matching weapon on slot 1 or 2 in Inventory — a gun only in your backpack does not count.\nThe Crimes screen defaults to On your rank. Ready-to-commit crimes are listed first; below that are same-rank crimes that still need a weapon, drugs, tools or a car. All crimes also shows crimes that need a higher rank.\nYour active gym and shooting-range bonuses (up to +8% each) are shown on the Crimes screen; they raise success chance as the server calculates (train more via the Training hub / gym + range).\nIf you complete at least one gym session and one shooting-range session on the same UTC calendar day, the server adds a small extra crime success chance (+0.5%). The Crimes screen shows when this combo is active.\nCrimes with a vehicle requirement use your selected crime vehicle from Garage or Marina. Only a vehicle that is actually in your current country and not in transit or listed for sale counts.\nDrug requirements in crimes are shown in grams and follow the same quantities as your drug inventory and storage.\nIf a crime cannot start because of a missing vehicle, the wrong weapon, or missing ammo, the error message should now show the real cause instead of a generic retry.\nEvery crime attempt: you take 5-15 HP damage and Wanted Level rises by 1-4 points depending on success or failure.\nArrest chance scales fast with Wanted Level: Wanted 5 = 25%, Wanted 10 = 50%, Wanted 18+ = maximum 90%.\nOn arrest you go to prison. Sentence = max(wanted level × 10, 5) minutes. Bail = wanted level × €1.000. Even if a crime seems successful at first but you get caught right after, the final outcome still counts as an arrest: required tools are confiscated, the used crime weapon is lost, and vehicles can also be seized.\nSome crimes require a vehicle, tool or minimum rank. Missing these will prevent the crime from starting.\nXP earned raises your rank, unlocking better crimes and higher rewards.\nFBI Heat rises with heavier crimes. Above heat 50 the FBI becomes active with even higher arrest chances.",
+  "helpTopicCrimesSummary": "Commit illegal actions for cash and XP, but every attempt risks damage, arrest or extra Wanted Level. The late-game Wipe Criminal Record crime removes your full criminal record on success, but it needs heavy tools and carries high federal risk. Court also has a costly legal request that can wipe the same record without that crime risk.",
+  "helpTopicCrimesHow": "At ranks 1–5, street crimes (min rank 1) show the real catalog success chance — pickpocket and shoplift start around 65–70%. Vandalism and graffiti do not need spray paint.\nIf those early street crimes fail, you usually get away empty-handed instead of going to jail. Jail is still possible, just no longer the default.\nJobs stay available from rank 1 while you are not in jail — use them when you want cash without crime risk.\nCrime cooldowns now scale with potential payout: low-yield crimes stay fast, while high-yield crimes get clearly longer cooldowns.\nGuideline by reward tier: up to €500 ≈ 1.5 min, up to €2,000 ≈ 5 min, up to €10,000 ≈ 15 min, up to €30,000 ≈ 30 min, above that ≈ 60 min.\nThere is no hard daily cap on crimes; active players can keep playing as long as they manage cooldowns, risk and resources.\nArmed crimes show on each card which weapon type you need (pistol, shotgun, rifle, SMG, sniper). Wear a matching weapon on slot 1 or 2 in Inventory — a gun only in your backpack does not count.\nThe Crimes screen defaults to On your rank. Ready-to-commit crimes are listed first; below that are same-rank crimes that still need a weapon, drugs, tools or a car. All crimes also shows crimes that need a higher rank.\nYour active gym and shooting-range bonuses (up to +8% each) are shown on the Crimes screen; they raise success chance as the server calculates (train more via the Training hub / gym + range).\nIf you complete at least one gym session and one shooting-range session on the same UTC calendar day, the server adds a small extra crime success chance (+0.5%). The Crimes screen shows when this combo is active.\nCrimes with a vehicle requirement use your selected crime vehicle from Garage or Marina. Only a vehicle that is actually in your current country and not in transit or listed for sale counts.\nDrug requirements in crimes are shown in grams and follow the same quantities as your drug inventory and storage.\nIf a crime cannot start because of a missing vehicle, the wrong weapon, or missing ammo, the error message should now show the real cause instead of a generic retry.\nEvery crime attempt: you take 5-15 HP damage and Wanted Level rises by 1-4 points depending on success or failure.\nArrest chance scales fast with Wanted Level: Wanted 5 = 25%, Wanted 10 = 50%, Wanted 18+ = maximum 90%.\nOn arrest you go to prison. Sentence = max(wanted level × 10, 5) minutes. Bail = wanted level × €1.000. Even if a crime seems successful at first but you get caught right after, the final outcome still counts as an arrest: required tools are confiscated, the used crime weapon is lost, and vehicles can also be seized.\nSome crimes require a vehicle, tool or minimum rank. Missing these will prevent the crime from starting.\nXP earned raises your rank, unlocking better crimes and higher rewards.\nFBI Heat rises with heavier crimes. Above heat 50 the FBI becomes active with even higher arrest chances.\nYou can also wipe your full record at Court with a paid request. That legal route stays slower and expensive, but it does not replace this risky crime.",
   "helpTopicCrimesTips": "Start with pickpocket, shoplift, vandalism or graffiti. A fail usually means no loot, not jail — then run a job for safe cash.\nUse fast beginner crimes to build XP while waiting for big cooldowns.\nAlways bail out if your Wanted Level is high — sitting in jail blocks all your loops.\nKeep HP above 30 before starting a crime run: every attempt costs HP and at 0 HP you spend 3 hours in ICU.",
   "helpTopicJobsCategory": "Actions",
   "helpTopicJobsTitle": "Jobs",
@@ -11953,9 +12107,9 @@
   "helpTopicToolsTips": "Buy tools in bulk when they are cheap on the black market: you save compared to the shop.\nSet a personal threshold: always replace tools when condition drops below 25% to keep success chances stable.",
   "helpTopicCourtCategory": "Risk",
   "helpTopicCourtTitle": "Court",
-  "helpTopicCourtSummary": "During your sentence you can file an appeal or try to bribe the judge to get released sooner.",
-  "helpTopicCourtHow": "When jailed, the court screen shows your active conviction with remaining time, crime and judge profile.\nAn appeal costs money based on your current sentence length. If granted, your sentence is usually reduced by about 20-40%.\nYou can appeal only once per conviction and a cooldown applies to rapid retries.\nBribery uses a player-selected amount. That amount is always deducted, even when the attempt fails.\nA higher bribe amount increases success chance. On success, you are released immediately.\nYour criminal record keeps earlier convictions with dates and court-history details even when you are no longer jailed.\nA successful judge bribe removes only that current conviction from your criminal record.\nIf you want to wipe your full criminal record, you must do it outside court through the late-game Wipe Criminal Record crime.",
-  "helpTopicCourtTips": "Use appeals on long sentences first: expected time saved is highest there.\nUse bribery only with enough cash buffer, because payment is always deducted.",
+  "helpTopicCourtSummary": "During your sentence you can file an appeal or try to bribe the judge to get released sooner. You can also file a costly request to wipe your full criminal record, even when you are free.",
+  "helpTopicCourtHow": "When jailed, the court screen shows your active conviction with remaining time, crime and judge profile.\nAn appeal costs money based on your current sentence length. If granted, your sentence is usually reduced by about 20-40%.\nYou can appeal only once per conviction and a cooldown applies to rapid retries.\nBribery uses a player-selected amount. That amount is always deducted, even when the attempt fails.\nA higher bribe amount increases success chance. On success, you are released immediately.\nYour criminal record keeps earlier convictions with dates and court-history details even when you are no longer jailed.\nA successful judge bribe removes only that current conviction from your criminal record.\nYou can also file a wipe-record request at court while free or jailed, as long as you still have a criminal record.\nThat request costs at least €100,000, plus €1,000 for each extra conviction after the first.\nThe shown success chance depends on how long the record is, how long ago your last arrest was, your reputation, and whether you currently bought a Don alderman, commissioner and/or judge in this country.\nIf it fails, you only lose the fee. If it succeeds, the record is empty; you are not released from jail.\nAfter each attempt you wait 12 hours. The risky Wipe Criminal Record crime stays a separate, dangerous route.",
+  "helpTopicCourtTips": "Use appeals on long sentences first: expected time saved is highest there.\nUse bribery only with enough cash buffer, because payment is always deducted.\nKeep a cash buffer for a record-wipe request: failure only costs money, with no extra jail or wanted.\nBuying the Don judge, commissioner and alderman in your current country raises that request chance.",
   "helpTopicHitlistCategory": "Risk",
   "helpTopicHitlistTitle": "Hitlist",
   "helpTopicHitlistSummary": "Place a bounty on an enemy or accept a hit contract. Eliminate your target in the same country for the full payout.",

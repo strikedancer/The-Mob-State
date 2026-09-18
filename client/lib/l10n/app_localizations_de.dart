@@ -8383,7 +8383,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get courtHeroSubtitle =>
-      'Legen Sie Berufung ein oder bestechen Sie den Richter, während Sie Ihre Strafe absitzen. Ihr Strafregister bleibt bestehen, nachdem Sie freigelassen wurden.';
+      'Legen Sie Berufung ein oder bestechen Sie den Richter, während Sie Ihre Strafe absitzen. Sie können auch einen kostspieligen Antrag auf Löschung Ihres gesamten Strafregisters stellen.';
 
   @override
   String courtConvictionsChip(String count) {
@@ -8466,6 +8466,122 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get courtBribeHeatNote =>
       'Wanted und FBI-Hitze ändern die Berufungschance, nicht diese Bestechung.';
+
+  @override
+  String get courtExpungeTitle => 'Vorstrafenregister löschen';
+
+  @override
+  String get courtExpungeIntro =>
+      'Reichen Sie einen kostspieligen Gerichtsantrag ein, um Ihr gesamtes Strafregister zu löschen. Ein Scheitern kostet nur die Gebühr. Ein Erfolg löscht den Rekord, entlässt Sie jedoch nicht aus dem Gefängnis.';
+
+  @override
+  String courtExpungeCost(String amount) {
+    return 'Kosten: $amount';
+  }
+
+  @override
+  String courtExpungeChance(String percent) {
+    return 'Erfolgschance: $percent %';
+  }
+
+  @override
+  String get courtExpungeOddsTitle => 'Was ändert diese Chance?';
+
+  @override
+  String courtExpungeRecordPenalty(String count, String percent) {
+    return '$count Verurteilungen: $percent %';
+  }
+
+  @override
+  String courtExpungeRecordOk(String count) {
+    return '$count Verurteilung: keine zusätzliche Strafe';
+  }
+
+  @override
+  String courtExpungeRecencyRecent(String percent) {
+    return 'Letzte Festnahme vor weniger als 24 Stunden: $percent %';
+  }
+
+  @override
+  String courtExpungeRecencyWarm(String percent) {
+    return 'Letzte Festnahme vor 1–3 Tagen: $percent %';
+  }
+
+  @override
+  String get courtExpungeRecencyNeutral =>
+      'Letzte Festnahme vor 3–7 Tagen: kein zusätzlicher Modifikator';
+
+  @override
+  String courtExpungeRecencyCool(String percent) {
+    return 'Letzte Festnahme vor 7–14 Tagen: $percent %';
+  }
+
+  @override
+  String courtExpungeRecencyOld(String percent) {
+    return 'Letzte Festnahme vor über 14 Tagen: $percent %';
+  }
+
+  @override
+  String courtExpungeReputation(String points, String percent) {
+    return 'Ruf $points: $percent %';
+  }
+
+  @override
+  String get courtExpungeReputationNone => 'Ruf: Noch kein Extra-Bonus';
+
+  @override
+  String courtExpungeDonJudge(String percent) {
+    return 'Don-Richter in diesem Land: +$percent%';
+  }
+
+  @override
+  String courtExpungeDonCommissioner(String percent) {
+    return 'Don-Kommissar in diesem Land: +$percent%';
+  }
+
+  @override
+  String courtExpungeDonAlderman(String percent) {
+    return 'Don-Beigeordneter in diesem Land: +$percent%';
+  }
+
+  @override
+  String get courtExpungeDonNone =>
+      'In diesem Land wurden keine Don-Beamten gekauft';
+
+  @override
+  String get courtExpungeSubmit => 'Antrag stellen';
+
+  @override
+  String get courtExpungeConfirmTitle => 'Das Strafregister löschen?';
+
+  @override
+  String courtExpungeConfirmBody(String amount, String percent) {
+    return 'Das kostet $amount. Die angezeigte Erfolgschance beträgt $percent %. Bei einem Scheitern verlieren Sie nur das Geld. Bei Erfolg wird der Datensatz gelöscht; Sie bleiben im Gefängnis, wenn Sie eine Strafe absitzen.';
+  }
+
+  @override
+  String courtExpungeSuccess(String count) {
+    return 'Das Gericht hat $count Verurteilungen aus Ihrer Akte gelöscht. Sie wurden nicht freigelassen.';
+  }
+
+  @override
+  String courtExpungeFailed(String amount) {
+    return 'Die Anfrage ist fehlgeschlagen. $amount ist weg. Sonst hat sich nichts geändert.';
+  }
+
+  @override
+  String courtExpungeCooldown(String duration) {
+    return 'Warten Sie $duration, bevor Sie eine weitere Anfrage stellen.';
+  }
+
+  @override
+  String get courtExpungeNoRecord =>
+      'Sie haben keine Vorstrafen, die Sie löschen könnten.';
+
+  @override
+  String courtExpungeNeedMoney(String amount) {
+    return 'Sie benötigen $amount in bar.';
+  }
 
   @override
   String get treated => 'Behandelt!';
@@ -18434,7 +18550,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicCrimesSummary =>
-      'Begehen Sie illegale Handlungen für Geld und XP, aber jeder Versuch riskiert Schaden, Verhaftung oder ein zusätzliches Fahndungslevel. Die Wipe Criminal Record-Kriminalität im späten Spielverlauf löscht bei Erfolg Ihr gesamtes Strafregister, erfordert jedoch umfangreiche Werkzeuge und birgt ein hohes Bundesrisiko.';
+      'Begehen Sie illegale Handlungen für Geld und XP, aber jeder Versuch riskiert Schaden, Verhaftung oder ein zusätzliches Fahndungslevel. Die Wipe Criminal Record-Kriminalität im späten Spielverlauf löscht bei Erfolg Ihr gesamtes Strafregister, erfordert jedoch umfangreiche Werkzeuge und birgt ein hohes Bundesrisiko. Das Gericht hat auch einen kostspieligen Rechtsantrag, mit dem dieselben Aufzeichnungen gelöscht werden können, ohne dass das Risiko einer Straftat besteht.';
 
   @override
   String get helpTopicCrimesHow =>
@@ -18794,15 +18910,15 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicCourtSummary =>
-      'Während Ihrer Haftstrafe können Sie Berufung einlegen oder versuchen, den Richter zu bestechen, um schneller freigelassen zu werden.';
+      'Während Ihrer Haftstrafe können Sie Berufung einlegen oder versuchen, den Richter zu bestechen, um schneller freigelassen zu werden. Sie können auch einen kostspieligen Antrag auf Löschung Ihres gesamten Strafregisters stellen, selbst wenn Sie frei sind.';
 
   @override
   String get helpTopicCourtHow =>
-      'Wenn Sie inhaftiert sind, zeigt der Gerichtsbildschirm Ihre aktive Verurteilung mit der verbleibenden Zeit, der Straftat und dem Richterprofil an. \nEine Berufung kostet Geld, basierend auf Ihrer aktuellen Straflänge. Im Falle einer Bewilligung wird Ihre Strafe in der Regel um etwa 20–40 % gekürzt. \nSie können pro Verurteilung nur einmal Berufung einlegen und bei schnellen Wiederholungsversuchen gilt eine Abklingzeit. \nFür Bestechung wird ein vom Spieler ausgewählter Betrag verwendet. Dieser Betrag wird immer abgezogen, auch wenn der Versuch fehlschlägt. \nEine höhere Bestechungssumme erhöht die Erfolgsaussichten. Bei Erfolg werden Sie sofort entlassen. \nIn Ihrem Strafregister werden frühere Verurteilungen mit Datum und Einzelheiten zur Gerichtsgeschichte gespeichert, auch wenn Sie nicht mehr inhaftiert sind. \nBei einer erfolgreichen Richterbestechung wird nur die aktuelle Verurteilung aus Ihrem Strafregister entfernt. \nWenn Sie Ihr gesamtes Vorstrafenregister löschen möchten, müssen Sie dies außerhalb des Gerichts über die Late-Game-Straftat „Wipe Criminal Record“ tun.';
+      'Wenn Sie inhaftiert sind, zeigt der Gerichtsbildschirm Ihre aktive Verurteilung mit der verbleibenden Zeit, der Straftat und dem Richterprofil an. \nEine Berufung kostet Geld, basierend auf Ihrer aktuellen Straflänge. Im Falle einer Bewilligung wird Ihre Strafe in der Regel um etwa 20–40 % gekürzt. \nSie können pro Verurteilung nur einmal Berufung einlegen und bei schnellen Wiederholungsversuchen gilt eine Abklingzeit. \nFür Bestechung wird ein vom Spieler ausgewählter Betrag verwendet. Dieser Betrag wird immer abgezogen, auch wenn der Versuch fehlschlägt. \nEine höhere Bestechungssumme erhöht die Erfolgsaussichten. Bei Erfolg werden Sie sofort entlassen. \nIn Ihrem Strafregister werden frühere Verurteilungen mit Datum und Einzelheiten zur Gerichtsgeschichte gespeichert, auch wenn Sie nicht mehr inhaftiert sind. \nBei einer erfolgreichen Richterbestechung wird nur die aktuelle Verurteilung aus Ihrem Strafregister entfernt. \nSie können auch während Ihrer Freiheit oder im Gefängnis einen Antrag auf Löschung Ihrer Akten bei Gericht stellen, sofern Sie noch vorbestraft sind. \nDieser Antrag kostet mindestens 100.000 €, zuzüglich 1.000 € für jede weitere Verurteilung nach der ersten. \nDie angezeigten Erfolgsaussichten hängen davon ab, wie lange die Akte zurückliegt, wie lange Ihre letzte Verhaftung zurückliegt, von Ihrem Ruf und davon, ob Sie derzeit in diesem Land einen Stadtrat, Kommissar und/oder Richter in Don gekauft haben. \nSchlägt dies fehl, verlieren Sie nur die Gebühr. Bei Erfolg ist der Datensatz leer; Du wirst nicht aus dem Gefängnis entlassen. \nNach jedem Versuch warten Sie 12 Stunden. Das riskante Verbrechen „Wipe Criminal Record“ bleibt ein separater, gefährlicher Weg.';
 
   @override
   String get helpTopicCourtTips =>
-      'Setzen Sie Einsprüche zunächst bei langen Sätzen ein: Dort ist die erwartete Zeitersparnis am höchsten. \nSetzen Sie Bestechung nur bei ausreichendem Bargeldpolster ein, da die Zahlung immer abgezogen wird.';
+      'Setzen Sie Einsprüche zunächst bei langen Sätzen ein: Dort ist die erwartete Zeitersparnis am höchsten. \nSetzen Sie Bestechung nur bei ausreichendem Bargeldpolster ein, da die Zahlung immer abgezogen wird. \nHalten Sie einen Bargeldpuffer für eine Anfrage zur Datenlöschung bereit: Ein Scheitern kostet nur Geld, ohne zusätzliche Gefängnis- oder Fahndungsstrafen. \nDer Kauf des Don-Richters, Kommissars und Stadtrats in Ihrem aktuellen Land erhöht die Chance auf eine Anfrage.';
 
   @override
   String get helpTopicHitlistCategory => 'Risiko';

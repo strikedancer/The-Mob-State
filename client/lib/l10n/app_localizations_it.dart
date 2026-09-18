@@ -8360,7 +8360,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get courtHeroSubtitle =>
-      'Fai appello o corrompi il giudice mentre sei in pena. La tua fedina penale resta anche dopo che sarai libero.';
+      'Fai appello o corrompi il giudice mentre sei in pena. Puoi anche presentare una richiesta costosa per cancellare l\'intera fedina penale.';
 
   @override
   String courtConvictionsChip(String count) {
@@ -8444,6 +8444,122 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get courtBribeHeatNote =>
       'Wanted e FBI heat cambiano le probabilità di ricorso, non questa tangente.';
+
+  @override
+  String get courtExpungeTitle => 'Cancellare la fedina penale';
+
+  @override
+  String get courtExpungeIntro =>
+      'Presenta una costosa richiesta al tribunale per cancellare l\'intera fedina penale. Il fallimento costa solo la tassa. Il successo cancella il record ma non ti libera dalla prigione.';
+
+  @override
+  String courtExpungeCost(String amount) {
+    return 'Costo: $amount';
+  }
+
+  @override
+  String courtExpungeChance(String percent) {
+    return 'Probabilità di successo: $percent%';
+  }
+
+  @override
+  String get courtExpungeOddsTitle => 'Cosa cambia questa possibilità';
+
+  @override
+  String courtExpungeRecordPenalty(String count, String percent) {
+    return '$count condanne: $percent%';
+  }
+
+  @override
+  String courtExpungeRecordOk(String count) {
+    return '$count condanna: nessuna penalità aggiuntiva';
+  }
+
+  @override
+  String courtExpungeRecencyRecent(String percent) {
+    return 'Ultimo arresto in 24 ore: $percent%';
+  }
+
+  @override
+  String courtExpungeRecencyWarm(String percent) {
+    return 'Ultimo arresto 1-3 giorni fa: $percent%';
+  }
+
+  @override
+  String get courtExpungeRecencyNeutral =>
+      'Ultimo arresto 3-7 giorni fa: nessun modificatore aggiuntivo';
+
+  @override
+  String courtExpungeRecencyCool(String percent) {
+    return 'Ultimo arresto 7-14 giorni fa: $percent%';
+  }
+
+  @override
+  String courtExpungeRecencyOld(String percent) {
+    return 'Ultimo arresto più di 14 giorni fa: $percent%';
+  }
+
+  @override
+  String courtExpungeReputation(String points, String percent) {
+    return 'Reputazione $points: $percent%';
+  }
+
+  @override
+  String get courtExpungeReputationNone =>
+      'Reputazione: ancora nessun bonus extra';
+
+  @override
+  String courtExpungeDonJudge(String percent) {
+    return 'Giudice del Don in questo paese: +$percent%';
+  }
+
+  @override
+  String courtExpungeDonCommissioner(String percent) {
+    return 'Commissario del Don in questo paese: +$percent%';
+  }
+
+  @override
+  String courtExpungeDonAlderman(String percent) {
+    return 'Assessore del Don in questo paese: +$percent%';
+  }
+
+  @override
+  String get courtExpungeDonNone =>
+      'Nessun funzionario del Don ha comprato in questo paese';
+
+  @override
+  String get courtExpungeSubmit => 'Invia richiesta';
+
+  @override
+  String get courtExpungeConfirmTitle => 'Cancellare la fedina penale?';
+
+  @override
+  String courtExpungeConfirmBody(String amount, String percent) {
+    return 'Questo costa $amount. La probabilità di successo mostrata è $percent%. In caso di fallimento perdi solo i soldi. In caso di successo il record viene cancellato; rimani in prigione se stai scontando una pena.';
+  }
+
+  @override
+  String courtExpungeSuccess(String count) {
+    return 'Il tribunale ha cancellato $count condanne dalla tua fedina penale. Non sei stato rilasciato.';
+  }
+
+  @override
+  String courtExpungeFailed(String amount) {
+    return 'La richiesta non è riuscita. $amount è sparito. Nient\'altro è cambiato.';
+  }
+
+  @override
+  String courtExpungeCooldown(String duration) {
+    return 'Attendi $duration prima di un\'altra richiesta.';
+  }
+
+  @override
+  String get courtExpungeNoRecord => 'Non hai precedenti penali da cancellare.';
+
+  @override
+  String courtExpungeNeedMoney(String amount) {
+    return 'Hai bisogno di $amount in contanti.';
+  }
 
   @override
   String get treated => 'Trattato!';
@@ -18404,7 +18520,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicCrimesSummary =>
-      'Commetti azioni illegali in cambio di denaro e XP, ma ogni tentativo rischia di danneggiare, arrestare o aumentare il livello di ricercato. Il crimine Wipe Criminal Record a fine partita rimuove l\'intera fedina penale in caso di successo, ma richiede strumenti pesanti e comporta un elevato rischio federale.';
+      'Commetti azioni illegali in cambio di denaro e XP, ma ogni tentativo rischia di danneggiare, arrestare o aumentare il livello di ricercato. Il crimine Wipe Criminal Record a fine partita rimuove l\'intera fedina penale in caso di successo, ma richiede strumenti pesanti e comporta un elevato rischio federale. La Corte ha anche una richiesta legale costosa che può cancellare lo stesso record senza quel rischio di crimine.';
 
   @override
   String get helpTopicCrimesHow =>
@@ -18764,15 +18880,15 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicCourtSummary =>
-      'Durante la sentenza puoi presentare ricorso o provare a corrompere il giudice per essere rilasciato prima.';
+      'Durante la sentenza puoi presentare ricorso o provare a corrompere il giudice per essere rilasciato prima. Puoi anche presentare una richiesta costosa per cancellare l\'intera fedina penale, anche quando sei libero.';
 
   @override
   String get helpTopicCourtHow =>
-      'Una volta incarcerato, lo schermo del tribunale mostra la tua condanna attiva con il tempo rimanente, il crimine e il profilo del giudice. \nUn appello costa denaro in base alla durata della pena attuale. Se concessa, la pena viene solitamente ridotta di circa il 20-40%. \nPuoi fare appello solo una volta per condanna e ai tentativi rapidi si applica un tempo di recupero. \nLa corruzione utilizza un importo selezionato dal giocatore. Tale importo viene sempre detratto, anche quando il tentativo fallisce. \nUn importo di tangente più elevato aumenta le possibilità di successo. In caso di successo, verrai rilasciato immediatamente. \nLa tua fedina penale conserva le condanne precedenti con date e dettagli della storia del tribunale anche quando non sei più in prigione. \nUna tangente di un giudice riuscita rimuove solo quella condanna attuale dalla tua fedina penale. \nSe vuoi cancellare tutta la tua fedina penale, devi farlo fuori dal tribunale attraverso il crimine Wipe Criminal Record a fine partita.';
+      'Una volta incarcerato, lo schermo del tribunale mostra la tua condanna attiva con il tempo rimanente, il crimine e il profilo del giudice. \nUn appello costa denaro in base alla durata della pena attuale. Se concessa, la pena viene solitamente ridotta di circa il 20-40%. \nPuoi fare appello solo una volta per condanna e ai tentativi rapidi si applica un tempo di recupero. \nLa corruzione utilizza un importo selezionato dal giocatore. Tale importo viene sempre detratto, anche quando il tentativo fallisce. \nUn importo di tangente più elevato aumenta le possibilità di successo. In caso di successo, verrai rilasciato immediatamente. \nLa tua fedina penale conserva le condanne precedenti con date e dettagli della storia del tribunale anche quando non sei più in prigione. \nUna tangente di un giudice riuscita rimuove solo quella condanna attuale dalla tua fedina penale. \nPuoi anche presentare una richiesta di cancellazione della fedina penale in tribunale mentre sei libero o in prigione, purché tu abbia ancora precedenti penali. \nQuella richiesta costa almeno 100.000 euro, più 1.000 euro per ogni condanna in più dopo la prima. \nLa probabilità di successo mostrata dipende da quanto è lungo il record, da quanto tempo fa è avvenuto il tuo ultimo arresto, dalla tua reputazione e se attualmente hai acquistato un Don Alderman, commissario e/o giudice in questo paese. \nSe fallisce, perdi solo la quota. Se riesce, il record è vuoto; non sarai rilasciato dalla prigione. \nDopo ogni tentativo attendi 12 ore. Il rischioso crimine Wipe Criminal Record rimane un percorso separato e pericoloso.';
 
   @override
   String get helpTopicCourtTips =>
-      'Utilizzate prima i ricorsi sulle frasi lunghe: lì il tempo previsto risparmiato è più alto. \nUtilizzare la corruzione solo con sufficiente riserva di liquidità, poiché il pagamento viene sempre detratto.';
+      'Utilizzate prima i ricorsi sulle frasi lunghe: lì il tempo previsto risparmiato è più alto. \nUtilizzare la corruzione solo con sufficiente riserva di liquidità, poiché il pagamento viene sempre detratto. \nMantieni una riserva di liquidità per una richiesta di cancellazione dei record: il fallimento costa solo denaro, senza prigione o ricercati aggiuntivi. \nL\'acquisto del giudice, commissario e assessore del Don nel tuo paese attuale aumenta tale possibilità di richiesta.';
 
   @override
   String get helpTopicHitlistCategory => 'Rischio';

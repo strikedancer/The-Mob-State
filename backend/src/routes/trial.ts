@@ -246,4 +246,76 @@ router.post('/bribe', authenticate, async (req: AuthRequest, res: Response) => {
   }
 });
 
+router.get('/expunge-quote', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const playerId = req.player?.id;
+    if (!playerId) {
+      return res.status(401).json({
+        event: 'error.unauthorized',
+        params: {},
+      });
+    }
+
+    const quote = await judgeService.getExpungePetitionQuote(playerId);
+    return res.status(200).json({
+      event: 'trial.expunge_quote',
+      params: quote,
+    });
+  } catch (error) {
+    if (error instanceof Error && error.message === 'PLAYER_NOT_FOUND') {
+      return res.status(404).json({ event: 'error.player_not_found', params: {} });
+    }
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
+
+router.post('/expunge-petition', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const playerId = req.player?.id;
+    if (!playerId) {
+      return res.status(401).json({
+        event: 'error.unauthorized',
+        params: {},
+      });
+    }
+
+    const result = await judgeService.submitExpungePetition(playerId);
+    return res.status(200).json({
+      event: result.success ? 'trial.expunge_petition_success' : 'trial.expunge_petition_failed',
+      params: result,
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      if (error.message === 'NO_CRIMINAL_RECORD') {
+        return res.status(400).json({ event: 'error.no_criminal_record', params: {} });
+      }
+      if (error.message === 'COOLDOWN') {
+        const remainingSeconds =
+          (error as Error & { remainingSeconds?: number }).remainingSeconds ?? 0;
+        return res.status(429).json({
+          event: 'error.cooldown',
+          params: {
+            actionType: 'expunge_petition',
+            remainingSeconds,
+          },
+        });
+      }
+      if (error.message === 'INSUFFICIENT_MONEY') {
+        return res.status(400).json({ event: 'error.insufficient_money', params: {} });
+      }
+      if (error.message === 'PLAYER_NOT_FOUND') {
+        return res.status(404).json({ event: 'error.player_not_found', params: {} });
+      }
+    }
+
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
+
 export default router;

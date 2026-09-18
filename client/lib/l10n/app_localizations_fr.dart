@@ -8392,7 +8392,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get courtHeroSubtitle =>
-      'Faites appel ou soudoyez le juge pendant que vous purgez votre peine. Votre casier judiciaire reste après votre libération.';
+      'Faites appel ou soudoyez le juge pendant que vous purgez votre peine. Vous pouvez également déposer une demande coûteuse pour effacer l’intégralité de votre casier judiciaire.';
 
   @override
   String courtConvictionsChip(String count) {
@@ -8475,6 +8475,123 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get courtBribeHeatNote =>
       'Wanted et FBI heat changent les chances d\'appel, pas ce pot-de-vin.';
+
+  @override
+  String get courtExpungeTitle => 'Effacer le casier judiciaire';
+
+  @override
+  String get courtExpungeIntro =>
+      'Déposez une demande judiciaire coûteuse pour effacer l’intégralité de votre casier judiciaire. L’échec ne coûte que des frais. Le succès efface le dossier mais ne vous libère pas de prison.';
+
+  @override
+  String courtExpungeCost(String amount) {
+    return 'Coût : $amount';
+  }
+
+  @override
+  String courtExpungeChance(String percent) {
+    return 'Chances de réussite : $percent%';
+  }
+
+  @override
+  String get courtExpungeOddsTitle => 'Qu\'est-ce qui change cette chance';
+
+  @override
+  String courtExpungeRecordPenalty(String count, String percent) {
+    return '$count condamnations : $percent%';
+  }
+
+  @override
+  String courtExpungeRecordOk(String count) {
+    return '$count condamnation : pas de pénalité supplémentaire';
+  }
+
+  @override
+  String courtExpungeRecencyRecent(String percent) {
+    return 'Dernière arrestation sous 24 heures : $percent%';
+  }
+
+  @override
+  String courtExpungeRecencyWarm(String percent) {
+    return 'Dernière arrestation il y a 1 à 3 jours : $percent %';
+  }
+
+  @override
+  String get courtExpungeRecencyNeutral =>
+      'Dernière arrestation il y a 3 à 7 jours : aucun modificateur supplémentaire';
+
+  @override
+  String courtExpungeRecencyCool(String percent) {
+    return 'Dernière arrestation il y a 7 à 14 jours : $percent %';
+  }
+
+  @override
+  String courtExpungeRecencyOld(String percent) {
+    return 'Dernière arrestation il y a plus de 14 jours : $percent%';
+  }
+
+  @override
+  String courtExpungeReputation(String points, String percent) {
+    return 'Réputation $points : $percent %';
+  }
+
+  @override
+  String get courtExpungeReputationNone =>
+      'Réputation : pas encore de bonus supplémentaire';
+
+  @override
+  String courtExpungeDonJudge(String percent) {
+    return 'Juge du Don dans ce pays : +$percent%';
+  }
+
+  @override
+  String courtExpungeDonCommissioner(String percent) {
+    return 'Commissaire du Don dans ce pays : +$percent%';
+  }
+
+  @override
+  String courtExpungeDonAlderman(String percent) {
+    return 'Échevin du Don dans ce pays : +$percent%';
+  }
+
+  @override
+  String get courtExpungeDonNone =>
+      'Aucun fonctionnaire du Don n\'a acheté dans ce pays';
+
+  @override
+  String get courtExpungeSubmit => 'Déposer la demande';
+
+  @override
+  String get courtExpungeConfirmTitle => 'Effacer le casier judiciaire ?';
+
+  @override
+  String courtExpungeConfirmBody(String amount, String percent) {
+    return 'Cela coûte $amount. Les chances de réussite affichées sont de $percent%. En cas d\'échec, vous ne perdez que de l\'argent. En cas de succès, le dossier est effacé ; vous restez en prison si vous purgez une peine.';
+  }
+
+  @override
+  String courtExpungeSuccess(String count) {
+    return 'Le tribunal a effacé $count condamnations de votre dossier. Vous n\'avez pas été libéré.';
+  }
+
+  @override
+  String courtExpungeFailed(String amount) {
+    return 'La demande a échoué. $amount est parti. Rien d\'autre n\'a changé.';
+  }
+
+  @override
+  String courtExpungeCooldown(String duration) {
+    return 'Attendez $duration avant une autre demande.';
+  }
+
+  @override
+  String get courtExpungeNoRecord =>
+      'Vous n\'avez pas de casier judiciaire à effacer.';
+
+  @override
+  String courtExpungeNeedMoney(String amount) {
+    return 'Vous avez besoin de $amount en espèces.';
+  }
 
   @override
   String get treated => 'Traité !';
@@ -18430,7 +18547,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicCrimesSummary =>
-      'Commettez des actions illégales pour de l\'argent et de l\'XP, mais chaque tentative risque d\'être endommagée, arrêtée ou d\'augmenter le niveau de recherche. Le crime d\'effacement du casier judiciaire en fin de partie supprime l\'intégralité de votre casier judiciaire en cas de succès, mais il nécessite des outils lourds et comporte un risque fédéral élevé.';
+      'Commettez des actions illégales pour de l\'argent et de l\'XP, mais chaque tentative risque d\'être endommagée, arrêtée ou d\'augmenter le niveau de recherche. Le crime d\'effacement du casier judiciaire en fin de partie supprime l\'intégralité de votre casier judiciaire en cas de succès, mais il nécessite des outils lourds et comporte un risque fédéral élevé. Le tribunal dispose également d\'une demande juridique coûteuse qui peut effacer le même dossier sans risque de crime.';
 
   @override
   String get helpTopicCrimesHow =>
@@ -18790,15 +18907,15 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicCourtSummary =>
-      'Pendant votre peine, vous pouvez faire appel ou tenter de soudoyer le juge pour qu\'il soit libéré plus tôt.';
+      'Pendant votre peine, vous pouvez faire appel ou tenter de soudoyer le juge pour qu\'il soit libéré plus tôt. Vous pouvez également déposer une demande coûteuse pour effacer l’intégralité de votre casier judiciaire, même lorsque vous êtes libre.';
 
   @override
   String get helpTopicCourtHow =>
-      'Une fois emprisonné, l\'écran du tribunal affiche votre condamnation active avec le temps restant, le crime et le profil du juge. \nUn appel coûte de l’argent en fonction de la durée actuelle de votre peine. Si elle est accordée, votre peine est généralement réduite d\'environ 20 à 40 %. \nVous ne pouvez faire appel qu\'une seule fois par condamnation et un temps de recharge s\'applique aux tentatives rapides. \nLa corruption utilise un montant sélectionné par le joueur. Ce montant est toujours déduit, même en cas d\'échec de la tentative. \nUn montant de pot-de-vin plus élevé augmente les chances de réussite. En cas de succès, vous êtes immédiatement libéré. \nVotre casier judiciaire conserve les condamnations antérieures avec les dates et les détails de votre historique judiciaire, même lorsque vous n\'êtes plus emprisonné. \nUn pot-de-vin réussi par un juge supprime uniquement la condamnation actuelle de votre casier judiciaire. \nSi vous souhaitez effacer l\'intégralité de votre casier judiciaire, vous devez le faire en dehors du tribunal via le crime Wipe Criminal Record en fin de partie.';
+      'Une fois emprisonné, l\'écran du tribunal affiche votre condamnation active avec le temps restant, le crime et le profil du juge. \nUn appel coûte de l’argent en fonction de la durée actuelle de votre peine. Si elle est accordée, votre peine est généralement réduite d\'environ 20 à 40 %. \nVous ne pouvez faire appel qu\'une seule fois par condamnation et un temps de recharge s\'applique aux tentatives rapides. \nLa corruption utilise un montant sélectionné par le joueur. Ce montant est toujours déduit, même en cas d\'échec de la tentative. \nUn montant de pot-de-vin plus élevé augmente les chances de réussite. En cas de succès, vous êtes immédiatement libéré. \nVotre casier judiciaire conserve les condamnations antérieures avec les dates et les détails de votre historique judiciaire, même lorsque vous n\'êtes plus emprisonné. \nUn pot-de-vin réussi par un juge supprime uniquement la condamnation actuelle de votre casier judiciaire. \nVous pouvez également déposer une demande d’effacement de casier judiciaire au tribunal lorsque vous êtes libre ou emprisonné, à condition que vous ayez toujours un casier judiciaire. \nCette demande coûte au moins 100 000 €, plus 1 000 € pour chaque condamnation supplémentaire après la première. \nLes chances de succès affichées dépendent de la durée du dossier, de la date de votre dernière arrestation, de votre réputation et du fait que vous ayez actuellement acheté un échevin, un commissaire et/ou un juge de Don dans ce pays. \nEn cas d\'échec, vous perdez uniquement les frais. S\'il réussit, l\'enregistrement est vide ; vous n\'êtes pas libéré de prison. \nAprès chaque tentative, vous attendez 12 heures. Le crime risqué d’effacement du casier judiciaire reste une voie distincte et dangereuse.';
 
   @override
   String get helpTopicCourtTips =>
-      'Utilisez d\'abord les recours contre les peines longues : le gain de temps attendu y est le plus élevé. \nN’utilisez la corruption qu’avec suffisamment de liquidités, car le paiement est toujours déduit.';
+      'Utilisez d\'abord les recours contre les peines longues : le gain de temps attendu y est le plus élevé. \nN’utilisez la corruption qu’avec suffisamment de liquidités, car le paiement est toujours déduit. \nConservez une réserve de trésorerie pour une demande d\'effacement de dossier : un échec ne coûte que de l\'argent, sans prison ni recherche supplémentaire. \nL\'achat du juge, du commissaire et de l\'échevin du Don dans votre pays actuel augmente cette chance de demande.';
 
   @override
   String get helpTopicHitlistCategory => 'Risque';

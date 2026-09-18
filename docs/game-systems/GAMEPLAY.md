@@ -241,6 +241,7 @@ Voorbeelden:
 - Bij succes: directe vrijlating (`jailRelease` leeg + alle actieve `jailed`-rijen uit), hetzelfde als borg/ontsnapping.
 - Alleen de omgekochte veroordeling verdwijnt van het strafblad; oudere veroordelingen blijven staan.
 - Een mislukte omkoping kost het geboden bedrag en laat de straf doorlopen.
+- **Aanvraag strafblad wissen:** op de rechtbank, vrij of in de cel, zolang er een strafblad is. Kosten starten op €100.000 en stijgen met €1.000 per extra veroordeling. Slagingskans hangt af van de lengte van het blad, hoe lang geleden de laatste arrestatie was, reputatie, en Don-omkoping van wethouder/commissaris/rechter in het huidige land (8–70%). Mislukt: alleen het geld kwijt. Gelukt: blad leeg, je komt niet vrij. Daarna 12 uur wachten. De riskante crime Strafblad wissen blijft bestaan.
 
 ### Jail Escape
 - **Zelf uitbreken**: max **2 pogingen per straf**, **15 minuten** ertussen. Mislukken = +15 minuten. Daarna borg, crew/vrienden of uitzitten.

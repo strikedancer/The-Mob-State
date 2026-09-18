@@ -8333,7 +8333,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get courtHeroSubtitle =>
-      'Apelar ou subornar o juiz enquanto você cumpre pena. Seu registro criminal permanece depois que você sai em liberdade.';
+      'Apelar ou subornar o juiz enquanto você cumpre pena. Você também pode registrar uma solicitação cara para limpar todo o seu registro criminal.';
 
   @override
   String courtConvictionsChip(String count) {
@@ -8415,6 +8415,123 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get courtBribeHeatNote =>
       'Wanted e FBI heat mudam as hipóteses de recurso, não este suborno.';
+
+  @override
+  String get courtExpungeTitle => 'Limpar antecedentes criminais';
+
+  @override
+  String get courtExpungeIntro =>
+      'Apresente um pedido judicial caro para limpar todo o seu registo criminal. O fracasso custa apenas a taxa. O sucesso limpa os registros, mas não o liberta da prisão.';
+
+  @override
+  String courtExpungeCost(String amount) {
+    return 'Custo: $amount';
+  }
+
+  @override
+  String courtExpungeChance(String percent) {
+    return 'Chance de sucesso: $percent%';
+  }
+
+  @override
+  String get courtExpungeOddsTitle => 'O que muda essa chance';
+
+  @override
+  String courtExpungeRecordPenalty(String count, String percent) {
+    return '$count condenações: $percent%';
+  }
+
+  @override
+  String courtExpungeRecordOk(String count) {
+    return '$count condenação: sem penalidade extra';
+  }
+
+  @override
+  String courtExpungeRecencyRecent(String percent) {
+    return 'Última prisão em menos de 24 horas: $percent%';
+  }
+
+  @override
+  String courtExpungeRecencyWarm(String percent) {
+    return 'Última prisão há 1–3 dias: $percent%';
+  }
+
+  @override
+  String get courtExpungeRecencyNeutral =>
+      'Última prisão há 3 a 7 dias: nenhum modificador extra';
+
+  @override
+  String courtExpungeRecencyCool(String percent) {
+    return 'Última prisão há 7–14 dias: $percent%';
+  }
+
+  @override
+  String courtExpungeRecencyOld(String percent) {
+    return 'Última prisão há mais de 14 dias: $percent%';
+  }
+
+  @override
+  String courtExpungeReputation(String points, String percent) {
+    return 'Reputação $points: $percent%';
+  }
+
+  @override
+  String get courtExpungeReputationNone =>
+      'Reputação: nenhum bônus extra ainda';
+
+  @override
+  String courtExpungeDonJudge(String percent) {
+    return 'Juiz do Don neste país: +$percent%';
+  }
+
+  @override
+  String courtExpungeDonCommissioner(String percent) {
+    return 'Comissário do Don neste país: +$percent%';
+  }
+
+  @override
+  String courtExpungeDonAlderman(String percent) {
+    return 'Vereador do Don neste país: +$percent%';
+  }
+
+  @override
+  String get courtExpungeDonNone =>
+      'Nenhum funcionário do Don comprou neste país';
+
+  @override
+  String get courtExpungeSubmit => 'Submeter pedido';
+
+  @override
+  String get courtExpungeConfirmTitle => 'Limpar a ficha criminal?';
+
+  @override
+  String courtExpungeConfirmBody(String amount, String percent) {
+    return 'Isso custa $amount. A chance de sucesso mostrada é de $percent%. Em caso de falha, você só perde o dinheiro. Em caso de sucesso, o registro é apagado; você permanece na prisão se estiver cumprindo pena.';
+  }
+
+  @override
+  String courtExpungeSuccess(String count) {
+    return 'O tribunal apagou $count condenações do seu registo. Você não foi liberado.';
+  }
+
+  @override
+  String courtExpungeFailed(String amount) {
+    return 'A solicitação falhou. $amount se foi. Nada mais mudou.';
+  }
+
+  @override
+  String courtExpungeCooldown(String duration) {
+    return 'Aguarde $duration antes de outra solicitação.';
+  }
+
+  @override
+  String get courtExpungeNoRecord =>
+      'Você não tem antecedentes criminais para apagar.';
+
+  @override
+  String courtExpungeNeedMoney(String amount) {
+    return 'Você precisa de $amount em dinheiro.';
+  }
 
   @override
   String get treated => 'Tratada!';
@@ -18344,7 +18461,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicCrimesSummary =>
-      'Cometa ações ilegais por dinheiro e XP, mas cada tentativa corre o risco de danos, prisão ou Nível de Procurado extra. O crime de limpeza de registro criminal no final do jogo remove todo o seu registro criminal em caso de sucesso, mas precisa de ferramentas pesadas e acarreta alto risco federal.';
+      'Cometa ações ilegais por dinheiro e XP, mas cada tentativa corre o risco de danos, prisão ou Nível de Procurado extra. O crime de limpeza de registro criminal no final do jogo remove todo o seu registro criminal em caso de sucesso, mas precisa de ferramentas pesadas e acarreta alto risco federal. O tribunal também tem um pedido legal caro que pode apagar o mesmo registro sem o risco de crime.';
 
   @override
   String get helpTopicCrimesHow =>
@@ -18704,15 +18821,15 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicCourtSummary =>
-      'Durante a sentença, você pode entrar com recurso ou tentar subornar o juiz para ser libertado mais cedo.';
+      'Durante a sentença, você pode entrar com recurso ou tentar subornar o juiz para ser libertado mais cedo. Você também pode registrar uma solicitação cara para apagar todo o seu registro criminal, mesmo quando estiver livre.';
 
   @override
   String get helpTopicCourtHow =>
-      'Quando preso, a tela do tribunal mostra sua condenação ativa com tempo restante, crime e perfil do juiz. \nUm recurso custa dinheiro com base na duração atual da sentença. Se concedida, sua sentença geralmente é reduzida em cerca de 20-40%. \nVocê pode recorrer apenas uma vez por condenação e um período de espera se aplica a novas tentativas rápidas. \nO suborno usa uma quantia selecionada pelo jogador. Esse valor é sempre descontado, mesmo quando a tentativa falha. \nUm valor de suborno maior aumenta as chances de sucesso. Em caso de sucesso, você é liberado imediatamente. \nSeu registro criminal mantém condenações anteriores com datas e detalhes do histórico judicial, mesmo quando você não está mais preso. \nO suborno de um juiz bem-sucedido remove apenas a condenação atual do seu registo criminal. \nSe quiser limpar todo o seu registro criminal, você deve fazê-lo fora do tribunal, por meio do crime Wipe Criminal Record, no final do jogo.';
+      'Quando preso, a tela do tribunal mostra sua condenação ativa com tempo restante, crime e perfil do juiz. \nUm recurso custa dinheiro com base na duração atual da sentença. Se concedida, sua sentença geralmente é reduzida em cerca de 20-40%. \nVocê pode recorrer apenas uma vez por condenação e um período de espera se aplica a novas tentativas rápidas. \nO suborno usa uma quantia selecionada pelo jogador. Esse valor é sempre descontado, mesmo quando a tentativa falha. \nUm valor de suborno maior aumenta as chances de sucesso. Em caso de sucesso, você é liberado imediatamente. \nSeu registro criminal mantém condenações anteriores com datas e detalhes do histórico judicial, mesmo quando você não está mais preso. \nO suborno de um juiz bem-sucedido remove apenas a condenação atual do seu registo criminal. \nVocê também pode registrar um pedido de limpeza de registros no tribunal enquanto estiver livre ou preso, desde que ainda tenha antecedentes criminais. \nEsse pedido custa pelo menos 100.000 euros, mais 1.000 euros por cada condenação extra após a primeira. \nA chance de sucesso mostrada depende de quanto tempo o registro é, há quanto tempo foi sua última prisão, sua reputação e se você comprou atualmente um vereador, comissário e/ou juiz de Don neste país. \nSe falhar, você só perde a taxa. Se for bem-sucedido, o registro estará vazio; você não está libertado da prisão. \nApós cada tentativa você espera 12 horas. O arriscado crime de Wipe Criminal Record permanece em uma rota separada e perigosa.';
 
   @override
   String get helpTopicCourtTips =>
-      'Use apelos em sentenças longas primeiro: o tempo esperado economizado é maior nessas situações. \nUse suborno apenas com reserva de dinheiro suficiente, porque o pagamento é sempre deduzido.';
+      'Use apelos em sentenças longas primeiro: o tempo esperado economizado é maior nessas situações. \nUse suborno apenas com reserva de dinheiro suficiente, porque o pagamento é sempre deduzido. \nMantenha uma reserva de dinheiro para uma solicitação de limpeza de registros: a falha custa apenas dinheiro, sem prisão extra ou procuração. \nComprar o juiz, comissário e vereador Don em seu país atual aumenta essa chance de solicitação.';
 
   @override
   String get helpTopicHitlistCategory => 'Risco';

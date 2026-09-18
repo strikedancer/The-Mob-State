@@ -14549,7 +14549,7 @@ abstract class AppLocalizations {
   /// No description provided for @courtHeroSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Appeal or bribe the judge while you serve time. Your criminal record stays after you walk free.'**
+  /// **'Appeal or bribe the judge while you serve time. You can also file a costly request to wipe your full criminal record.'**
   String get courtHeroSubtitle;
 
   /// No description provided for @courtConvictionsChip.
@@ -14671,6 +14671,162 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Wanted and FBI heat change appeal odds, not this bribe.'**
   String get courtBribeHeatNote;
+
+  /// No description provided for @courtExpungeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Wipe criminal record'**
+  String get courtExpungeTitle;
+
+  /// No description provided for @courtExpungeIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'File a costly court request to wipe your full criminal record. Failure only costs the fee. Success clears the record but does not release you from jail.'**
+  String get courtExpungeIntro;
+
+  /// No description provided for @courtExpungeCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost: {amount}'**
+  String courtExpungeCost(String amount);
+
+  /// No description provided for @courtExpungeChance.
+  ///
+  /// In en, this message translates to:
+  /// **'Success chance: {percent}%'**
+  String courtExpungeChance(String percent);
+
+  /// No description provided for @courtExpungeOddsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What changes this chance'**
+  String get courtExpungeOddsTitle;
+
+  /// No description provided for @courtExpungeRecordPenalty.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} convictions: {percent}%'**
+  String courtExpungeRecordPenalty(String count, String percent);
+
+  /// No description provided for @courtExpungeRecordOk.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} conviction: no extra penalty'**
+  String courtExpungeRecordOk(String count);
+
+  /// No description provided for @courtExpungeRecencyRecent.
+  ///
+  /// In en, this message translates to:
+  /// **'Last arrest under 24 hours: {percent}%'**
+  String courtExpungeRecencyRecent(String percent);
+
+  /// No description provided for @courtExpungeRecencyWarm.
+  ///
+  /// In en, this message translates to:
+  /// **'Last arrest 1–3 days ago: {percent}%'**
+  String courtExpungeRecencyWarm(String percent);
+
+  /// No description provided for @courtExpungeRecencyNeutral.
+  ///
+  /// In en, this message translates to:
+  /// **'Last arrest 3–7 days ago: no extra modifier'**
+  String get courtExpungeRecencyNeutral;
+
+  /// No description provided for @courtExpungeRecencyCool.
+  ///
+  /// In en, this message translates to:
+  /// **'Last arrest 7–14 days ago: {percent}%'**
+  String courtExpungeRecencyCool(String percent);
+
+  /// No description provided for @courtExpungeRecencyOld.
+  ///
+  /// In en, this message translates to:
+  /// **'Last arrest over 14 days ago: {percent}%'**
+  String courtExpungeRecencyOld(String percent);
+
+  /// No description provided for @courtExpungeReputation.
+  ///
+  /// In en, this message translates to:
+  /// **'Reputation {points}: {percent}%'**
+  String courtExpungeReputation(String points, String percent);
+
+  /// No description provided for @courtExpungeReputationNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Reputation: no extra bonus yet'**
+  String get courtExpungeReputationNone;
+
+  /// No description provided for @courtExpungeDonJudge.
+  ///
+  /// In en, this message translates to:
+  /// **'Don judge in this country: +{percent}%'**
+  String courtExpungeDonJudge(String percent);
+
+  /// No description provided for @courtExpungeDonCommissioner.
+  ///
+  /// In en, this message translates to:
+  /// **'Don commissioner in this country: +{percent}%'**
+  String courtExpungeDonCommissioner(String percent);
+
+  /// No description provided for @courtExpungeDonAlderman.
+  ///
+  /// In en, this message translates to:
+  /// **'Don alderman in this country: +{percent}%'**
+  String courtExpungeDonAlderman(String percent);
+
+  /// No description provided for @courtExpungeDonNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No Don officials bought in this country'**
+  String get courtExpungeDonNone;
+
+  /// No description provided for @courtExpungeSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'File request'**
+  String get courtExpungeSubmit;
+
+  /// No description provided for @courtExpungeConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Wipe the criminal record?'**
+  String get courtExpungeConfirmTitle;
+
+  /// No description provided for @courtExpungeConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This costs {amount}. Shown success chance is {percent}%. On failure you only lose the money. On success the record is cleared; you stay in jail if you are serving time.'**
+  String courtExpungeConfirmBody(String amount, String percent);
+
+  /// No description provided for @courtExpungeSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'The court wiped {count} convictions from your record. You were not released.'**
+  String courtExpungeSuccess(String count);
+
+  /// No description provided for @courtExpungeFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The request failed. {amount} is gone. Nothing else changed.'**
+  String courtExpungeFailed(String amount);
+
+  /// No description provided for @courtExpungeCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'Wait {duration} before another request.'**
+  String courtExpungeCooldown(String duration);
+
+  /// No description provided for @courtExpungeNoRecord.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no criminal record to wipe.'**
+  String get courtExpungeNoRecord;
+
+  /// No description provided for @courtExpungeNeedMoney.
+  ///
+  /// In en, this message translates to:
+  /// **'You need {amount} in cash.'**
+  String courtExpungeNeedMoney(String amount);
 
   /// No description provided for @treated.
   ///
@@ -31379,13 +31535,13 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicCrimesSummary.
   ///
   /// In en, this message translates to:
-  /// **'Commit illegal actions for cash and XP, but every attempt risks damage, arrest or extra Wanted Level. The late-game Wipe Criminal Record crime removes your full criminal record on success, but it needs heavy tools and carries high federal risk.'**
+  /// **'Commit illegal actions for cash and XP, but every attempt risks damage, arrest or extra Wanted Level. The late-game Wipe Criminal Record crime removes your full criminal record on success, but it needs heavy tools and carries high federal risk. Court also has a costly legal request that can wipe the same record without that crime risk.'**
   String get helpTopicCrimesSummary;
 
   /// No description provided for @helpTopicCrimesHow.
   ///
   /// In en, this message translates to:
-  /// **'At ranks 1–5, street crimes (min rank 1) show the real catalog success chance — pickpocket and shoplift start around 65–70%. Vandalism and graffiti do not need spray paint.\nIf those early street crimes fail, you usually get away empty-handed instead of going to jail. Jail is still possible, just no longer the default.\nJobs stay available from rank 1 while you are not in jail — use them when you want cash without crime risk.\nCrime cooldowns now scale with potential payout: low-yield crimes stay fast, while high-yield crimes get clearly longer cooldowns.\nGuideline by reward tier: up to €500 ≈ 1.5 min, up to €2,000 ≈ 5 min, up to €10,000 ≈ 15 min, up to €30,000 ≈ 30 min, above that ≈ 60 min.\nThere is no hard daily cap on crimes; active players can keep playing as long as they manage cooldowns, risk and resources.\nArmed crimes show on each card which weapon type you need (pistol, shotgun, rifle, SMG, sniper). Wear a matching weapon on slot 1 or 2 in Inventory — a gun only in your backpack does not count.\nThe Crimes screen defaults to On your rank. Ready-to-commit crimes are listed first; below that are same-rank crimes that still need a weapon, drugs, tools or a car. All crimes also shows crimes that need a higher rank.\nYour active gym and shooting-range bonuses (up to +8% each) are shown on the Crimes screen; they raise success chance as the server calculates (train more via the Training hub / gym + range).\nIf you complete at least one gym session and one shooting-range session on the same UTC calendar day, the server adds a small extra crime success chance (+0.5%). The Crimes screen shows when this combo is active.\nCrimes with a vehicle requirement use your selected crime vehicle from Garage or Marina. Only a vehicle that is actually in your current country and not in transit or listed for sale counts.\nDrug requirements in crimes are shown in grams and follow the same quantities as your drug inventory and storage.\nIf a crime cannot start because of a missing vehicle, the wrong weapon, or missing ammo, the error message should now show the real cause instead of a generic retry.\nEvery crime attempt: you take 5-15 HP damage and Wanted Level rises by 1-4 points depending on success or failure.\nArrest chance scales fast with Wanted Level: Wanted 5 = 25%, Wanted 10 = 50%, Wanted 18+ = maximum 90%.\nOn arrest you go to prison. Sentence = max(wanted level × 10, 5) minutes. Bail = wanted level × €1.000. Even if a crime seems successful at first but you get caught right after, the final outcome still counts as an arrest: required tools are confiscated, the used crime weapon is lost, and vehicles can also be seized.\nSome crimes require a vehicle, tool or minimum rank. Missing these will prevent the crime from starting.\nXP earned raises your rank, unlocking better crimes and higher rewards.\nFBI Heat rises with heavier crimes. Above heat 50 the FBI becomes active with even higher arrest chances.'**
+  /// **'At ranks 1–5, street crimes (min rank 1) show the real catalog success chance — pickpocket and shoplift start around 65–70%. Vandalism and graffiti do not need spray paint.\nIf those early street crimes fail, you usually get away empty-handed instead of going to jail. Jail is still possible, just no longer the default.\nJobs stay available from rank 1 while you are not in jail — use them when you want cash without crime risk.\nCrime cooldowns now scale with potential payout: low-yield crimes stay fast, while high-yield crimes get clearly longer cooldowns.\nGuideline by reward tier: up to €500 ≈ 1.5 min, up to €2,000 ≈ 5 min, up to €10,000 ≈ 15 min, up to €30,000 ≈ 30 min, above that ≈ 60 min.\nThere is no hard daily cap on crimes; active players can keep playing as long as they manage cooldowns, risk and resources.\nArmed crimes show on each card which weapon type you need (pistol, shotgun, rifle, SMG, sniper). Wear a matching weapon on slot 1 or 2 in Inventory — a gun only in your backpack does not count.\nThe Crimes screen defaults to On your rank. Ready-to-commit crimes are listed first; below that are same-rank crimes that still need a weapon, drugs, tools or a car. All crimes also shows crimes that need a higher rank.\nYour active gym and shooting-range bonuses (up to +8% each) are shown on the Crimes screen; they raise success chance as the server calculates (train more via the Training hub / gym + range).\nIf you complete at least one gym session and one shooting-range session on the same UTC calendar day, the server adds a small extra crime success chance (+0.5%). The Crimes screen shows when this combo is active.\nCrimes with a vehicle requirement use your selected crime vehicle from Garage or Marina. Only a vehicle that is actually in your current country and not in transit or listed for sale counts.\nDrug requirements in crimes are shown in grams and follow the same quantities as your drug inventory and storage.\nIf a crime cannot start because of a missing vehicle, the wrong weapon, or missing ammo, the error message should now show the real cause instead of a generic retry.\nEvery crime attempt: you take 5-15 HP damage and Wanted Level rises by 1-4 points depending on success or failure.\nArrest chance scales fast with Wanted Level: Wanted 5 = 25%, Wanted 10 = 50%, Wanted 18+ = maximum 90%.\nOn arrest you go to prison. Sentence = max(wanted level × 10, 5) minutes. Bail = wanted level × €1.000. Even if a crime seems successful at first but you get caught right after, the final outcome still counts as an arrest: required tools are confiscated, the used crime weapon is lost, and vehicles can also be seized.\nSome crimes require a vehicle, tool or minimum rank. Missing these will prevent the crime from starting.\nXP earned raises your rank, unlocking better crimes and higher rewards.\nFBI Heat rises with heavier crimes. Above heat 50 the FBI becomes active with even higher arrest chances.\nYou can also wipe your full record at Court with a paid request. That legal route stays slower and expensive, but it does not replace this risky crime.'**
   String get helpTopicCrimesHow;
 
   /// No description provided for @helpTopicCrimesTips.
@@ -31979,19 +32135,19 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicCourtSummary.
   ///
   /// In en, this message translates to:
-  /// **'During your sentence you can file an appeal or try to bribe the judge to get released sooner.'**
+  /// **'During your sentence you can file an appeal or try to bribe the judge to get released sooner. You can also file a costly request to wipe your full criminal record, even when you are free.'**
   String get helpTopicCourtSummary;
 
   /// No description provided for @helpTopicCourtHow.
   ///
   /// In en, this message translates to:
-  /// **'When jailed, the court screen shows your active conviction with remaining time, crime and judge profile.\nAn appeal costs money based on your current sentence length. If granted, your sentence is usually reduced by about 20-40%.\nYou can appeal only once per conviction and a cooldown applies to rapid retries.\nBribery uses a player-selected amount. That amount is always deducted, even when the attempt fails.\nA higher bribe amount increases success chance. On success, you are released immediately.\nYour criminal record keeps earlier convictions with dates and court-history details even when you are no longer jailed.\nA successful judge bribe removes only that current conviction from your criminal record.\nIf you want to wipe your full criminal record, you must do it outside court through the late-game Wipe Criminal Record crime.'**
+  /// **'When jailed, the court screen shows your active conviction with remaining time, crime and judge profile.\nAn appeal costs money based on your current sentence length. If granted, your sentence is usually reduced by about 20-40%.\nYou can appeal only once per conviction and a cooldown applies to rapid retries.\nBribery uses a player-selected amount. That amount is always deducted, even when the attempt fails.\nA higher bribe amount increases success chance. On success, you are released immediately.\nYour criminal record keeps earlier convictions with dates and court-history details even when you are no longer jailed.\nA successful judge bribe removes only that current conviction from your criminal record.\nYou can also file a wipe-record request at court while free or jailed, as long as you still have a criminal record.\nThat request costs at least €100,000, plus €1,000 for each extra conviction after the first.\nThe shown success chance depends on how long the record is, how long ago your last arrest was, your reputation, and whether you currently bought a Don alderman, commissioner and/or judge in this country.\nIf it fails, you only lose the fee. If it succeeds, the record is empty; you are not released from jail.\nAfter each attempt you wait 12 hours. The risky Wipe Criminal Record crime stays a separate, dangerous route.'**
   String get helpTopicCourtHow;
 
   /// No description provided for @helpTopicCourtTips.
   ///
   /// In en, this message translates to:
-  /// **'Use appeals on long sentences first: expected time saved is highest there.\nUse bribery only with enough cash buffer, because payment is always deducted.'**
+  /// **'Use appeals on long sentences first: expected time saved is highest there.\nUse bribery only with enough cash buffer, because payment is always deducted.\nKeep a cash buffer for a record-wipe request: failure only costs money, with no extra jail or wanted.\nBuying the Don judge, commissioner and alderman in your current country raises that request chance.'**
   String get helpTopicCourtTips;
 
   /// No description provided for @helpTopicHitlistCategory.

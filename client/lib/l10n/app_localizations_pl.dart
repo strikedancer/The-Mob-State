@@ -8337,7 +8337,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get courtHeroSubtitle =>
-      'Odwołaj się lub przekup sędziego podczas odbywania kary. Twoja przeszłość kryminalna pozostanie, kiedy wyjdziesz na wolność.';
+      'Odwołaj się lub przekup sędziego podczas odbywania kary. Możesz także złożyć kosztowny wniosek o wymazanie całego rejestru karnego.';
 
   @override
   String courtConvictionsChip(String count) {
@@ -8420,6 +8420,123 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get courtBribeHeatNote =>
       'Wanted i FBI heat zmieniają szansę apelacji, nie tę łapówkę.';
+
+  @override
+  String get courtExpungeTitle => 'Wyczyść rejestr karny';
+
+  @override
+  String get courtExpungeIntro =>
+      'Złóż kosztowny wniosek do sądu o wymazanie całego rejestru karnego. Niepowodzenie kosztuje tylko opłatę. Sukces oczyszcza historię, ale nie zwalnia z więzienia.';
+
+  @override
+  String courtExpungeCost(String amount) {
+    return 'Koszt: $amount';
+  }
+
+  @override
+  String courtExpungeChance(String percent) {
+    return 'Szansa na sukces: $percent%';
+  }
+
+  @override
+  String get courtExpungeOddsTitle => 'Co zmienia tę szansę';
+
+  @override
+  String courtExpungeRecordPenalty(String count, String percent) {
+    return '$count przekonania: $percent%';
+  }
+
+  @override
+  String courtExpungeRecordOk(String count) {
+    return '$count wyrok skazujący: bez dodatkowej kary';
+  }
+
+  @override
+  String courtExpungeRecencyRecent(String percent) {
+    return 'Ostatnie aresztowanie w ciągu 24 godzin: $percent%';
+  }
+
+  @override
+  String courtExpungeRecencyWarm(String percent) {
+    return 'Ostatnie aresztowanie 1–3 dni temu: $percent%';
+  }
+
+  @override
+  String get courtExpungeRecencyNeutral =>
+      'Ostatnie aresztowanie 3–7 dni temu: bez dodatkowego modyfikatora';
+
+  @override
+  String courtExpungeRecencyCool(String percent) {
+    return 'Ostatnie aresztowanie 7–14 dni temu: $percent%';
+  }
+
+  @override
+  String courtExpungeRecencyOld(String percent) {
+    return 'Ostatnie aresztowanie ponad 14 dni temu: $percent%';
+  }
+
+  @override
+  String courtExpungeReputation(String points, String percent) {
+    return 'Reputacja $points: $percent%';
+  }
+
+  @override
+  String get courtExpungeReputationNone =>
+      'Reputacja: nie ma jeszcze dodatkowego bonusu';
+
+  @override
+  String courtExpungeDonJudge(String percent) {
+    return 'Sędzia Dona w tym kraju: +$percent%';
+  }
+
+  @override
+  String courtExpungeDonCommissioner(String percent) {
+    return 'Komisarz Dona w tym kraju: +$percent%';
+  }
+
+  @override
+  String courtExpungeDonAlderman(String percent) {
+    return 'Radny Dona w tym kraju: +$percent%';
+  }
+
+  @override
+  String get courtExpungeDonNone =>
+      'Żaden urzędnik Donu nie kupował w tym kraju';
+
+  @override
+  String get courtExpungeSubmit => 'Złóż wniosek';
+
+  @override
+  String get courtExpungeConfirmTitle => 'Wymazać rejestr karny?';
+
+  @override
+  String courtExpungeConfirmBody(String amount, String percent) {
+    return 'To kosztuje $amount. Pokazane prawdopodobieństwo sukcesu wynosi $percent%. W przypadku niepowodzenia tracisz tylko pieniądze. W przypadku powodzenia rekord zostaje wyczyszczony; przebywasz w więzieniu, jeśli odsiadujesz karę.';
+  }
+
+  @override
+  String courtExpungeSuccess(String count) {
+    return 'Sąd wymazał z Twojej kartoteki $count wyroków skazujących. Nie zostałeś zwolniony.';
+  }
+
+  @override
+  String courtExpungeFailed(String amount) {
+    return 'Żądanie nie powiodło się. $amount zniknęło. Nic więcej się nie zmieniło.';
+  }
+
+  @override
+  String courtExpungeCooldown(String duration) {
+    return 'Poczekaj $duration przed kolejnym żądaniem.';
+  }
+
+  @override
+  String get courtExpungeNoRecord =>
+      'Nie masz żadnej kartoteki kryminalnej, którą mógłbyś wymazać.';
+
+  @override
+  String courtExpungeNeedMoney(String amount) {
+    return 'Potrzebujesz $amount w gotówce.';
+  }
 
   @override
   String get treated => 'Leczony!';
@@ -18343,7 +18460,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicCrimesSummary =>
-      'Podejmuj nielegalne działania, aby zdobyć gotówkę i PD, ale każda próba wiąże się z ryzykiem obrażeń, aresztowania lub dodatkowego poziomu poszukiwanego. Przestępstwo Wipe Criminal Record w późnej fazie gry powoduje, że po sukcesie usuwasz całą przeszłość kryminalną, ale wymaga ciężkich narzędzi i wiąże się z wysokim ryzykiem federalnym.';
+      'Podejmuj nielegalne działania, aby zdobyć gotówkę i PD, ale każda próba wiąże się z ryzykiem obrażeń, aresztowania lub dodatkowego poziomu poszukiwanego. Przestępstwo Wipe Criminal Record w późnej fazie gry powoduje, że po sukcesie usuwasz całą przeszłość kryminalną, ale wymaga ciężkich narzędzi i wiąże się z wysokim ryzykiem federalnym. Sąd ma również kosztowny wniosek prawny, który może wymazać ten sam zapis bez ryzyka przestępstwa.';
 
   @override
   String get helpTopicCrimesHow =>
@@ -18703,15 +18820,15 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicCourtSummary =>
-      'W trakcie odbywania kary możesz złożyć apelację lub spróbować przekupić sędziego, aby mógł szybciej wyjść na wolność.';
+      'W trakcie odbywania kary możesz złożyć apelację lub spróbować przekupić sędziego, aby mógł szybciej wyjść na wolność. Możesz także złożyć kosztowny wniosek o wymazanie całego rejestru karnego, nawet gdy jesteś na wolności.';
 
   @override
   String get helpTopicCourtHow =>
-      'Kiedy przebywasz w więzieniu, ekran sądu pokazuje Twój aktywny wyrok skazujący wraz z pozostałym czasem, przestępstwem i profilem sędziego. \nApelacja kosztuje, biorąc pod uwagę aktualną długość wyroku. Jeśli zostanie przyznany, Twoja kara jest zwykle zmniejszana o około 20-40%. \nMożesz odwołać się tylko raz na dany wyrok, a w przypadku szybkich ponownych prób obowiązuje okres odnowienia. \nPrzekupstwo wykorzystuje kwotę wybraną przez gracza. Kwota ta jest zawsze odejmowana, nawet jeśli próba się nie powiedzie. \nWyższa kwota łapówki zwiększa szansę na sukces. W przypadku powodzenia zostajesz natychmiast zwolniony. \nW Twojej kartotece karnej znajdują się wcześniejsze wyroki skazujące wraz z datami i szczegółami historii sądowej, nawet jeśli nie przebywasz już w więzieniu. \nSkuteczna łapówka dla sędziego powoduje usunięcie z rejestru karnego tylko aktualnego wyroku skazującego. \nJeśli chcesz wymazać swój pełny rejestr karny, musisz to zrobić poza sądem, korzystając z przestępstwa Wyczyść rejestr karny w późnej fazie gry.';
+      'Kiedy przebywasz w więzieniu, ekran sądu pokazuje Twój aktywny wyrok skazujący wraz z pozostałym czasem, przestępstwem i profilem sędziego. \nApelacja kosztuje, biorąc pod uwagę aktualną długość wyroku. Jeśli zostanie przyznany, Twoja kara jest zwykle zmniejszana o około 20-40%. \nMożesz odwołać się tylko raz na dany wyrok, a w przypadku szybkich ponownych prób obowiązuje okres odnowienia. \nPrzekupstwo wykorzystuje kwotę wybraną przez gracza. Kwota ta jest zawsze odejmowana, nawet jeśli próba się nie powiedzie. \nWyższa kwota łapówki zwiększa szansę na sukces. W przypadku powodzenia zostajesz natychmiast zwolniony. \nW Twojej kartotece karnej znajdują się wcześniejsze wyroki skazujące wraz z datami i szczegółami historii sądowej, nawet jeśli nie przebywasz już w więzieniu. \nSkuteczna łapówka dla sędziego powoduje usunięcie z rejestru karnego tylko aktualnego wyroku skazującego. \nMożesz także złożyć wniosek o wyczyszczenie akt w sądzie, będąc na wolności lub w więzieniu, o ile nadal jesteś karany. \nKoszt takiego wniosku wynosi co najmniej 100 000 euro plus 1000 euro za każdy dodatkowy wyrok skazujący po pierwszym. \nPokazana szansa powodzenia zależy od długości historii, czasu od ostatniego aresztowania, Twojej reputacji oraz tego, czy obecnie kupiłeś radnego, komisarza i/lub sędziego Dona w tym kraju. \nJeśli się nie powiedzie, tracisz tylko opłatę. Jeśli się powiedzie, rekord jest pusty; nie zostaniesz zwolniony z więzienia. \nPo każdej próbie odczekaj 12 godzin. Ryzykowne przestępstwo polegające na wyczyszczeniu rejestru karnego pozostaje odrębną, niebezpieczną ścieżką.';
 
   @override
   String get helpTopicCourtTips =>
-      'Odwołaj się najpierw w przypadku długich wyroków: tam oczekiwana oszczędność czasu jest najwyższa. \nUżywaj przekupstwa tylko przy wystarczającym buforze gotówkowym, ponieważ płatność jest zawsze potrącana.';
+      'Odwołaj się najpierw w przypadku długich wyroków: tam oczekiwana oszczędność czasu jest najwyższa. \nUżywaj przekupstwa tylko przy wystarczającym buforze gotówkowym, ponieważ płatność jest zawsze potrącana. \nZachowaj bufor gotówkowy na żądanie wymazania rekordów: niepowodzenie kosztuje tylko pieniądze, bez dodatkowego więzienia lub osoby poszukiwanej. \nZakup sędziego, komisarza i radnego dona w twoim obecnym kraju zwiększa szansę na tę prośbę.';
 
   @override
   String get helpTopicHitlistCategory => 'Ryzyko';

@@ -8357,7 +8357,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get courtHeroSubtitle =>
-      'Apelar o sobornar al juez mientras cumple condena. Tus antecedentes penales permanecen después de que salgas libre.';
+      'Apelar o sobornar al juez mientras cumple condena. También puede presentar una solicitud costosa para borrar todos sus antecedentes penales.';
 
   @override
   String courtConvictionsChip(String count) {
@@ -8439,6 +8439,123 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get courtBribeHeatNote =>
       'Wanted y FBI heat cambian las probabilidades de apelación, no este soborno.';
+
+  @override
+  String get courtExpungeTitle => 'Limpiar antecedentes penales';
+
+  @override
+  String get courtExpungeIntro =>
+      'Presente una costosa solicitud judicial para borrar todos sus antecedentes penales. El fracaso sólo cuesta la tarifa. El éxito borra el historial pero no te libera de la cárcel.';
+
+  @override
+  String courtExpungeCost(String amount) {
+    return 'Costo: $amount';
+  }
+
+  @override
+  String courtExpungeChance(String percent) {
+    return 'Probabilidad de éxito: $percent%';
+  }
+
+  @override
+  String get courtExpungeOddsTitle => '¿Qué cambia esta oportunidad?';
+
+  @override
+  String courtExpungeRecordPenalty(String count, String percent) {
+    return '$count condenas: $percent%';
+  }
+
+  @override
+  String courtExpungeRecordOk(String count) {
+    return '$count condena: sin pena adicional';
+  }
+
+  @override
+  String courtExpungeRecencyRecent(String percent) {
+    return 'Última detención en menos de 24 horas: $percent%';
+  }
+
+  @override
+  String courtExpungeRecencyWarm(String percent) {
+    return 'Último arresto hace 1 a 3 días: $percent%';
+  }
+
+  @override
+  String get courtExpungeRecencyNeutral =>
+      'Último arresto hace entre 3 y 7 días: sin modificador adicional';
+
+  @override
+  String courtExpungeRecencyCool(String percent) {
+    return 'Último arresto hace entre 7 y 14 días: $percent%';
+  }
+
+  @override
+  String courtExpungeRecencyOld(String percent) {
+    return 'Último arresto hace más de 14 días: $percent%';
+  }
+
+  @override
+  String courtExpungeReputation(String points, String percent) {
+    return 'Reputación $points: $percent%';
+  }
+
+  @override
+  String get courtExpungeReputationNone =>
+      'Reputación: aún no hay bonificación adicional';
+
+  @override
+  String courtExpungeDonJudge(String percent) {
+    return 'Juez del Don en este país: +$percent%';
+  }
+
+  @override
+  String courtExpungeDonCommissioner(String percent) {
+    return 'Comisario del Don en este país: +$percent%';
+  }
+
+  @override
+  String courtExpungeDonAlderman(String percent) {
+    return 'Concejal del Don en este país: +$percent%';
+  }
+
+  @override
+  String get courtExpungeDonNone =>
+      'No se compran funcionarios del Don en este país.';
+
+  @override
+  String get courtExpungeSubmit => 'Presentar solicitud';
+
+  @override
+  String get courtExpungeConfirmTitle => '¿Limpiar los antecedentes penales?';
+
+  @override
+  String courtExpungeConfirmBody(String amount, String percent) {
+    return 'Esto cuesta $amount. La probabilidad de éxito mostrada es $percent%. En caso de fracaso sólo se pierde el dinero. Si tiene éxito, el registro se borra; usted permanece en la cárcel si está cumpliendo condena.';
+  }
+
+  @override
+  String courtExpungeSuccess(String count) {
+    return 'El tribunal borró $count condenas de su expediente. No fuiste liberado.';
+  }
+
+  @override
+  String courtExpungeFailed(String amount) {
+    return 'La solicitud falló. $amount se ha ido. Nada más cambió.';
+  }
+
+  @override
+  String courtExpungeCooldown(String duration) {
+    return 'Espere $duration antes de otra solicitud.';
+  }
+
+  @override
+  String get courtExpungeNoRecord =>
+      'No tienes antecedentes penales que borrar.';
+
+  @override
+  String courtExpungeNeedMoney(String amount) {
+    return 'Necesitas $amount en efectivo.';
+  }
 
   @override
   String get treated => '¡Tratado!';
@@ -18373,7 +18490,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicCrimesSummary =>
-      'Comete acciones ilegales por dinero en efectivo y XP, pero cada intento corre el riesgo de sufrir daños, arresto o nivel de búsqueda adicional. El delito de eliminación de antecedentes penales del último juego elimina todos sus antecedentes penales si tiene éxito, pero necesita herramientas pesadas y conlleva un alto riesgo federal.';
+      'Comete acciones ilegales por dinero en efectivo y XP, pero cada intento corre el riesgo de sufrir daños, arresto o nivel de búsqueda adicional. El delito de eliminación de antecedentes penales del último juego elimina todos sus antecedentes penales si tiene éxito, pero necesita herramientas pesadas y conlleva un alto riesgo federal. El tribunal también tiene una solicitud legal costosa que puede borrar el mismo registro sin ese riesgo de delito.';
 
   @override
   String get helpTopicCrimesHow =>
@@ -18733,15 +18850,15 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicCourtSummary =>
-      'Durante tu sentencia puedes presentar una apelación o intentar sobornar al juez para que te liberen antes.';
+      'Durante tu sentencia puedes presentar una apelación o intentar sobornar al juez para salir antes. También puedes presentar una solicitud cara para borrar todos tus antecedentes, incluso si estás libre.';
 
   @override
   String get helpTopicCourtHow =>
-      'Cuando está encarcelado, la pantalla del tribunal muestra su condena activa con el tiempo restante, el delito y el perfil del juez. \nUna apelación cuesta dinero según la duración actual de su sentencia. Si se concede, su sentencia generalmente se reduce entre un 20% y un 40%. \nPuede apelar solo una vez por condena y se aplica un tiempo de reutilización a los reintentos rápidos. \nEl soborno utiliza una cantidad seleccionada por el jugador. Esa cantidad siempre se descuenta, incluso cuando el intento fracasa. \nUna cantidad mayor de soborno aumenta las posibilidades de éxito. Si tiene éxito, será liberado inmediatamente. \nSus antecedentes penales mantienen condenas anteriores con fechas y detalles del historial judicial incluso cuando ya no esté encarcelado. \nUn soborno a un juez exitoso elimina sólo esa condena actual de sus antecedentes penales. \nSi desea borrar todos sus antecedentes penales, debe hacerlo fuera del tribunal mediante el delito de eliminación de antecedentes penales del último juego.';
+      'Cuando está encarcelado, la pantalla del tribunal muestra su condena activa con el tiempo restante, el delito y el perfil del juez. \nUna apelación cuesta dinero según la duración actual de su sentencia. Si se concede, su sentencia generalmente se reduce entre un 20% y un 40%. \nPuede apelar solo una vez por condena y se aplica un tiempo de reutilización a los reintentos rápidos. \nEl soborno utiliza una cantidad seleccionada por el jugador. Esa cantidad siempre se descuenta, incluso cuando el intento fracasa. \nUna cantidad mayor de soborno aumenta las posibilidades de éxito. Si tiene éxito, será liberado inmediatamente. \nSus antecedentes penales mantienen condenas anteriores con fechas y detalles del historial judicial incluso cuando ya no esté encarcelado. \nUn soborno a un juez exitoso elimina sólo esa condena actual de sus antecedentes penales. \nTambién puede presentar una solicitud de eliminación de antecedentes penales en el tribunal mientras esté libre o encarcelado, siempre que todavía tenga antecedentes penales. \nEsa solicitud cuesta al menos 100.000 euros, más 1.000 euros por cada condena adicional después de la primera. \nLas posibilidades de éxito mostradas dependen de la duración del expediente, de cuánto tiempo hace que fue su último arresto, de su reputación y de si actualmente compró un concejal, comisionado y/o juez de Don en este país. \nSi falla, solo perderás la tarifa. Si tiene éxito, el registro está vacío; no eres liberado de la cárcel. \nDespués de cada intento esperas 12 horas. El arriesgado delito de eliminación de antecedentes penales sigue siendo una ruta separada y peligrosa.';
 
   @override
   String get helpTopicCourtTips =>
-      'Utilice primero las apelaciones para sentencias largas: el tiempo esperado ahorrado es mayor allí. \nUtilice el soborno sólo con suficiente reserva de efectivo, porque el pago siempre se deduce.';
+      'Utilice primero las apelaciones para sentencias largas: el tiempo esperado ahorrado es mayor allí. \nUtilice el soborno sólo con suficiente reserva de efectivo, porque el pago siempre se deduce. \nMantenga una reserva de efectivo para una solicitud de borrado de antecedentes: el fracaso solo cuesta dinero, sin cárcel ni búsqueda adicionales. \nComprar al juez, comisionado y concejal del Don en su país actual aumenta esa posibilidad de solicitud.';
 
   @override
   String get helpTopicHitlistCategory => 'Riesgo';

@@ -4,6 +4,21 @@ import * as policeService from './policeService';
 import { educationService } from './educationService';
 import { worldEventService } from './worldEventService';
 import { donService } from './donService';
+import { getDonRuntimeConfig } from './donRuntimeConfig';
+import * as cooldownService from './cooldownService';
+import { timeProvider } from '../utils/timeProvider';
+import {
+  computeExpungePetitionCost,
+  computeExpungePetitionOdds,
+  EXPUNGE_PETITION_COOLDOWN_SECONDS,
+  type ExpungePetitionOddsBreakdown,
+} from './expungePetitionMath';
+
+export {
+  computeExpungePetitionCost,
+  computeExpungePetitionOdds,
+  EXPUNGE_PETITION_COOLDOWN_SECONDS,
+} from './expungePetitionMath';
 
 type JudgeSpecialtyKey = 'violence' | 'financial' | 'drugs' | 'white_collar' | 'organized';
 
@@ -75,6 +90,26 @@ export interface AppealResult {
   newBalance: number;
   cost: number;
   reason: string;
+}
+
+export interface ExpungePetitionQuote {
+  convictionCount: number;
+  cost: number;
+  lastArrestAt: string | null;
+  cooldownRemainingSeconds: number;
+  canSubmit: boolean;
+  blockReason: 'NO_CRIMINAL_RECORD' | 'COOLDOWN' | 'INSUFFICIENT_MONEY' | null;
+  odds: ExpungePetitionOddsBreakdown;
+}
+
+export interface ExpungePetitionResult {
+  success: boolean;
+  cost: number;
+  convictionCount: number;
+  clearedCount: number;
+  newBalance: number;
+  successPercent: number;
+  cooldownSeconds: number;
 }
 
 const JUDGES: JudgeProfile[] = [
@@ -773,7 +808,151 @@ export async function getVisibleCriminalRecordCount(playerId: number): Promise<n
   return visibleAttempts.length;
 }
 
-export async function expungeCriminalRecord(playerId: number): Promise<number> {
+async function getExpungePetitionDonFlags(playerId: number, currentCountry: string | null) {
+  const empty = { hasJudge: false, hasCommissioner: false, hasAlderman: false };
+  if (!currentCountry) return empty;
+  const cfg = await getDonRuntimeConfig();
+  if (!cfg.enabled) return empty;
+  const [judge, commissioner, alderman] = await Promise.all([
+    donService.getActiveOfficial(playerId, currentCountry, 'judge'),
+    donService.getActiveOfficial(playerId, currentCountry, 'commissioner'),
+    donService.getActiveOfficial(playerId, currentCountry, 'alderman'),
+  ]);
+  return {
+    hasJudge: !!judge,
+    hasCommissioner: !!commissioner,
+    hasAlderman: !!alderman,
+  };
+}
+
+function hoursSince(date: Date | null, now: Date): number | null {
+  if (!date) return null;
+  return Math.max(0, (now.getTime() - date.getTime()) / (1000 * 60 * 60));
+}
+
+export async function getExpungePetitionQuote(playerId: number): Promise<ExpungePetitionQuote> {
+  const now = timeProvider.now();
+  const [{ visibleAttempts }, player, cooldownRemainingSeconds] = await Promise.all([
+    getVisibleConvictionAttempts(playerId),
+    prisma.player.findUnique({
+      where: { id: playerId },
+      select: {
+        money: true,
+        reputation: true,
+        currentCountry: true,
+      },
+    }),
+    cooldownService.checkCooldown(playerId, 'expunge_petition'),
+  ]);
+
+  if (!player) {
+    throw new Error('PLAYER_NOT_FOUND');
+  }
+
+  const convictionCount = visibleAttempts.length;
+  const lastArrestAt = visibleAttempts[0]?.createdAt ?? null;
+  const donFlags = await getExpungePetitionDonFlags(playerId, player.currentCountry);
+  const odds = computeExpungePetitionOdds({
+    convictionCount,
+    hoursSinceLastArrest: hoursSince(lastArrestAt, now),
+    reputation: Number(player.reputation ?? 0),
+    ...donFlags,
+  });
+  const cost = computeExpungePetitionCost(convictionCount);
+  let blockReason: ExpungePetitionQuote['blockReason'] = null;
+  if (convictionCount <= 0) {
+    blockReason = 'NO_CRIMINAL_RECORD';
+  } else if (cooldownRemainingSeconds > 0) {
+    blockReason = 'COOLDOWN';
+  } else if (player.money < cost) {
+    blockReason = 'INSUFFICIENT_MONEY';
+  }
+
+  return {
+    convictionCount,
+    cost,
+    lastArrestAt: lastArrestAt ? lastArrestAt.toISOString() : null,
+    cooldownRemainingSeconds,
+    canSubmit: blockReason == null,
+    blockReason,
+    odds,
+  };
+}
+
+export async function submitExpungePetition(playerId: number): Promise<ExpungePetitionResult> {
+  const quote = await getExpungePetitionQuote(playerId);
+  if (quote.blockReason === 'NO_CRIMINAL_RECORD') {
+    throw new Error('NO_CRIMINAL_RECORD');
+  }
+  if (quote.blockReason === 'COOLDOWN') {
+    const error = new Error('COOLDOWN');
+    (error as Error & { remainingSeconds?: number }).remainingSeconds = quote.cooldownRemainingSeconds;
+    throw error;
+  }
+  if (quote.blockReason === 'INSUFFICIENT_MONEY') {
+    throw new Error('INSUFFICIENT_MONEY');
+  }
+
+  let updatedPlayer: { money: number };
+  try {
+    updatedPlayer = await prisma.player.update({
+      where: {
+        id: playerId,
+        money: {
+          gte: quote.cost,
+        },
+      },
+      data: {
+        money: {
+          decrement: quote.cost,
+        },
+      },
+      select: {
+        money: true,
+      },
+    });
+  } catch {
+    throw new Error('INSUFFICIENT_MONEY');
+  }
+
+  const cooldown = await cooldownService.setCooldown(
+    playerId,
+    'expunge_petition',
+    EXPUNGE_PETITION_COOLDOWN_SECONDS
+  );
+  const success = Math.random() < quote.odds.successChance;
+  let clearedCount = 0;
+
+  if (success) {
+    clearedCount = await expungeCriminalRecord(playerId, 'petition');
+  } else {
+    await worldEventService.createEvent(
+      'trial.expunge_petition_failed',
+      {
+        playerId,
+        cost: quote.cost,
+        convictionCount: quote.convictionCount,
+        successPercent: quote.odds.successPercent,
+      },
+      playerId
+    );
+  }
+
+  return {
+    success,
+    cost: quote.cost,
+    convictionCount: quote.convictionCount,
+    clearedCount,
+    newBalance: updatedPlayer.money,
+    successPercent: quote.odds.successPercent,
+    cooldownSeconds: cooldown.remainingSeconds,
+  };
+}
+
+export async function expungeCriminalRecord(
+  playerId: number,
+  source: 'crime' | 'petition' = 'crime'
+): Promise<number> {
   const { visibleAttempts } = await getVisibleConvictionAttempts(playerId);
   const clearedCount = visibleAttempts.length;
 
@@ -781,10 +960,15 @@ export async function expungeCriminalRecord(playerId: number): Promise<number> {
     return 0;
   }
 
-  await worldEventService.createEvent('trial.record_expunged', {
-    playerId,
-    clearedCount,
-  }, playerId);
+  await worldEventService.createEvent(
+    'trial.record_expunged',
+    {
+      playerId,
+      clearedCount,
+      source,
+    },
+    playerId
+  );
 
   return clearedCount;
 }

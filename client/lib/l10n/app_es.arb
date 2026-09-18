@@ -8220,7 +8220,7 @@
   "helpTopicDashboardTips": "Abra el panel primero después de cada inicio de sesión para ver qué cambió mientras estuvo ausente. \nMantenga el nivel de búsqueda por debajo de 10 para que la decadencia automática funcione y las posibilidades de arresto se mantengan bajas. \nVerifique los mensajes no leídos antes de iniciar acciones riesgosas: las recompensas, los pedidos completados y los eventos del sistema aparecen en su bandeja de entrada.",
   "helpTopicCrimesCategory": "Comportamiento",
   "helpTopicCrimesTitle": "Crímenes",
-  "helpTopicCrimesSummary": "Comete acciones ilegales por dinero en efectivo y XP, pero cada intento corre el riesgo de sufrir daños, arresto o nivel de búsqueda adicional. El delito de eliminación de antecedentes penales del último juego elimina todos sus antecedentes penales si tiene éxito, pero necesita herramientas pesadas y conlleva un alto riesgo federal.",
+  "helpTopicCrimesSummary": "Comete acciones ilegales por dinero en efectivo y XP, pero cada intento corre el riesgo de sufrir daños, arresto o nivel de búsqueda adicional. El delito de eliminación de antecedentes penales del último juego elimina todos sus antecedentes penales si tiene éxito, pero necesita herramientas pesadas y conlleva un alto riesgo federal. El tribunal también tiene una solicitud legal costosa que puede borrar el mismo registro sin ese riesgo de delito.",
   "helpTopicCrimesHow": "En los rangos 1 a 5, los delitos callejeros (rango mínimo 1) muestran la probabilidad real de éxito en el catálogo: los carteristas y hurtos en tiendas comienzan alrededor del 65-70%. El vandalismo y los graffitis no necesitan pintura en aerosol. \nSi esos primeros crímenes callejeros fracasan, normalmente te irás con las manos vacías en lugar de ir a la cárcel. La cárcel todavía es posible, pero ya no es la opción predeterminada. \nLos trabajos permanecen disponibles desde el rango 1 mientras no estés en la cárcel; úsalos cuando quieras dinero en efectivo sin riesgo de cometer delitos. \nLos tiempos de reutilización de los delitos ahora aumentan con los posibles beneficios: los delitos de bajo rendimiento se mantienen rápidos, mientras que los delitos de alto rendimiento tienen tiempos de reutilización claramente más prolongados. \nPauta por nivel de recompensa: hasta 500 € ≈ 1,5 min, hasta 2000 € ≈ 5 min, hasta 10 000 € ≈ 15 min, hasta 30 000 € ≈ 30 min, por encima de eso ≈ 60 min. \nNo existe un límite diario estricto para los delitos; Los jugadores activos pueden seguir jugando siempre que administren los tiempos de reutilización, el riesgo y los recursos. \nLos crímenes armados muestran en cada tarjeta qué tipo de arma necesitas (pistola, escopeta, rifle, subfusil, francotirador). Use un arma que coincida en la ranura 1 o 2 del Inventario; un arma solo en su mochila no cuenta. \nLa pantalla de Crímenes usa En tu rango por defecto. Primero ves los que puedes cometer ahora; debajo, los de tu rango que aún necesitan arma, drogas, herramientas o un coche. Todos los crímenes también muestra los que piden un rango más alto.\nTus bonificaciones activas de gimnasio y campo de tiro (hasta +8 % cada una) se muestran en la pantalla de Crímenes; aumentan las posibilidades de éxito a medida que el servidor calcula (entrene más a través del centro de entrenamiento/gimnasio + gama). \nSi completa al menos una sesión de gimnasio y una sesión de campo de tiro en el mismo día calendario UTC, el servidor agrega una pequeña probabilidad adicional de éxito en el crimen (+0,5%). La pantalla de Delitos muestra cuando este combo está activo. \nLos delitos que requieren un vehículo utilizan el vehículo criminal seleccionado en Garage o Marina. Solo cuenta un vehículo que se encuentra realmente en su país actual y que no está en tránsito ni listado para la venta. \nLos requisitos de drogas en delitos se muestran en gramos y siguen las mismas cantidades que su inventario y almacenamiento de drogas. \nSi un delito no puede comenzar debido a la falta de un vehículo, el arma equivocada o la falta de munición, el mensaje de error ahora debería mostrar la causa real en lugar de un reintento genérico. \nCada intento de crimen: recibes entre 5 y 15 HP de daño y el nivel de búsqueda aumenta entre 1 y 4 puntos dependiendo del éxito o el fracaso. \nLa probabilidad de arresto aumenta rápidamente con el nivel de búsqueda: se busca 5 = 25 %, se busca 10 = 50 %, se busca 18+ = máximo 90 %. \nAl ser arrestado vas a prisión. Oración = máximo (nivel buscado × 10, 5) minutos. Fianza = nivel de búsqueda × 1.000 €. Incluso si el delito parece exitoso al principio pero te atrapan inmediatamente después, el resultado final cuenta como un arresto: se confiscan las herramientas necesarias, se pierde el arma utilizada en el crimen y también se pueden confiscar los vehículos. \nAlgunos delitos requieren un vehículo, herramienta o rango mínimo. Omitirlos evitará que comience el delito. \nLa XP obtenida aumenta tu rango, desbloqueando mejores crímenes y mayores recompensas. \nEl calor del FBI aumenta con crímenes más graves. Por encima de 50, el FBI se activa con posibilidades de arresto aún mayores.",
   "helpTopicCrimesTips": "Comience con carteristas, robos en tiendas, vandalismo o graffiti. Un fracaso generalmente significa que no habrá botín, ni cárcel; luego, realice un trabajo para obtener dinero seguro. \nUtilice crímenes rápidos para principiantes para generar XP mientras espera grandes tiempos de reutilización. \nSiempre sal de apuros si tu nivel de búsqueda es alto: estar en la cárcel bloquea todos tus bucles. \nMantenga HP por encima de 30 antes de iniciar un crimen: cada intento cuesta HP y con 0 HP pasa 3 horas en la UCI.",
   "helpTopicJobsCategory": "Comportamiento",
@@ -8300,9 +8300,9 @@
   "helpTopicToolsTips": "Compra herramientas al por mayor cuando son baratas en el mercado negro: ahorras en comparación con la tienda. \nEstablezca un umbral personal: reemplace siempre las herramientas cuando el estado caiga por debajo del 25% para mantener estables las posibilidades de éxito.",
   "helpTopicCourtCategory": "Riesgo",
   "helpTopicCourtTitle": "Corte",
-  "helpTopicCourtSummary": "Durante tu sentencia puedes presentar una apelación o intentar sobornar al juez para que te liberen antes.",
-  "helpTopicCourtHow": "Cuando está encarcelado, la pantalla del tribunal muestra su condena activa con el tiempo restante, el delito y el perfil del juez. \nUna apelación cuesta dinero según la duración actual de su sentencia. Si se concede, su sentencia generalmente se reduce entre un 20% y un 40%. \nPuede apelar solo una vez por condena y se aplica un tiempo de reutilización a los reintentos rápidos. \nEl soborno utiliza una cantidad seleccionada por el jugador. Esa cantidad siempre se descuenta, incluso cuando el intento fracasa. \nUna cantidad mayor de soborno aumenta las posibilidades de éxito. Si tiene éxito, será liberado inmediatamente. \nSus antecedentes penales mantienen condenas anteriores con fechas y detalles del historial judicial incluso cuando ya no esté encarcelado. \nUn soborno a un juez exitoso elimina sólo esa condena actual de sus antecedentes penales. \nSi desea borrar todos sus antecedentes penales, debe hacerlo fuera del tribunal mediante el delito de eliminación de antecedentes penales del último juego.",
-  "helpTopicCourtTips": "Utilice primero las apelaciones para sentencias largas: el tiempo esperado ahorrado es mayor allí. \nUtilice el soborno sólo con suficiente reserva de efectivo, porque el pago siempre se deduce.",
+  "helpTopicCourtSummary": "Durante tu sentencia puedes presentar una apelación o intentar sobornar al juez para salir antes. También puedes presentar una solicitud cara para borrar todos tus antecedentes, incluso si estás libre.",
+  "helpTopicCourtHow": "Cuando está encarcelado, la pantalla del tribunal muestra su condena activa con el tiempo restante, el delito y el perfil del juez. \nUna apelación cuesta dinero según la duración actual de su sentencia. Si se concede, su sentencia generalmente se reduce entre un 20% y un 40%. \nPuede apelar solo una vez por condena y se aplica un tiempo de reutilización a los reintentos rápidos. \nEl soborno utiliza una cantidad seleccionada por el jugador. Esa cantidad siempre se descuenta, incluso cuando el intento fracasa. \nUna cantidad mayor de soborno aumenta las posibilidades de éxito. Si tiene éxito, será liberado inmediatamente. \nSus antecedentes penales mantienen condenas anteriores con fechas y detalles del historial judicial incluso cuando ya no esté encarcelado. \nUn soborno a un juez exitoso elimina sólo esa condena actual de sus antecedentes penales. \nTambién puede presentar una solicitud de eliminación de antecedentes penales en el tribunal mientras esté libre o encarcelado, siempre que todavía tenga antecedentes penales. \nEsa solicitud cuesta al menos 100.000 euros, más 1.000 euros por cada condena adicional después de la primera. \nLas posibilidades de éxito mostradas dependen de la duración del expediente, de cuánto tiempo hace que fue su último arresto, de su reputación y de si actualmente compró un concejal, comisionado y/o juez de Don en este país. \nSi falla, solo perderás la tarifa. Si tiene éxito, el registro está vacío; no eres liberado de la cárcel. \nDespués de cada intento esperas 12 horas. El arriesgado delito de eliminación de antecedentes penales sigue siendo una ruta separada y peligrosa.",
+  "helpTopicCourtTips": "Utilice primero las apelaciones para sentencias largas: el tiempo esperado ahorrado es mayor allí. \nUtilice el soborno sólo con suficiente reserva de efectivo, porque el pago siempre se deduce. \nMantenga una reserva de efectivo para una solicitud de borrado de antecedentes: el fracaso solo cuesta dinero, sin cárcel ni búsqueda adicionales. \nComprar al juez, comisionado y concejal del Don en su país actual aumenta esa posibilidad de solicitud.",
   "helpTopicHitlistCategory": "Riesgo",
   "helpTopicHitlistTitle": "Lista de resultados",
   "helpTopicHitlistSummary": "Ofrece una recompensa por un enemigo o acepta un contrato de ataque. Elimina tu objetivo en el mismo país para obtener el pago completo.",
@@ -11068,7 +11068,7 @@
   },
   "hitlistEmptyBody": "No hay contratos públicos en este momento. Ofrezca una recompensa de al menos 50.000 € para iniciar una cacería.",
   "courtHeroTitle": "La audiencia",
-  "courtHeroSubtitle": "Apelar o sobornar al juez mientras cumple condena. Tus antecedentes penales permanecen después de que salgas libre.",
+  "courtHeroSubtitle": "Apela o soborna al juez mientras cumples condena. También puedes presentar una solicitud cara para borrar todos tus antecedentes.",
   "courtConvictionsChip": "{count} condenas",
   "@courtConvictionsChip": {
     "placeholders": {
@@ -13059,5 +13059,159 @@
       }
     }
   },
-  "drugsHeatLowProfileHint": "No hay lotes nuevos hasta que finalice el cronómetro. El calor extra se reduce a la mitad. Los lotes que ya se están cocinando continúan ejecutándose. No puedes cancelar esto."
+  "drugsHeatLowProfileHint": "No hay lotes nuevos hasta que finalice el cronómetro. El calor extra se reduce a la mitad. Los lotes que ya se están cocinando continúan ejecutándose. No puedes cancelar esto.",
+  "courtExpungeTitle": "Borrar antecedentes",
+  "courtExpungeIntro": "Presente una costosa solicitud judicial para borrar todos sus antecedentes penales. El fracaso sólo cuesta la tarifa. El éxito borra el historial pero no te libera de la cárcel.",
+  "courtExpungeCost": "Costo: {amount}",
+  "@courtExpungeCost": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeChance": "Probabilidad de éxito: {percent}%",
+  "@courtExpungeChance": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeOddsTitle": "¿Qué cambia esta oportunidad?",
+  "courtExpungeRecordPenalty": "{count} condenas: {percent}%",
+  "@courtExpungeRecordPenalty": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecordOk": "{count} condena: sin pena adicional",
+  "@courtExpungeRecordOk": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecencyRecent": "Última detención en menos de 24 horas: {percent}%",
+  "@courtExpungeRecencyRecent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecencyWarm": "Último arresto hace 1 a 3 días: {percent}%",
+  "@courtExpungeRecencyWarm": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecencyNeutral": "Último arresto hace entre 3 y 7 días: sin modificador adicional",
+  "courtExpungeRecencyCool": "Último arresto hace entre 7 y 14 días: {percent}%",
+  "@courtExpungeRecencyCool": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecencyOld": "Último arresto hace más de 14 días: {percent}%",
+  "@courtExpungeRecencyOld": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeReputation": "Reputación {points}: {percent}%",
+  "@courtExpungeReputation": {
+    "placeholders": {
+      "points": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeReputationNone": "Reputación: aún no hay bonificación adicional",
+  "courtExpungeDonJudge": "Juez del Don en este país: +{percent}%",
+  "@courtExpungeDonJudge": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeDonCommissioner": "Comisario del Don en este país: +{percent}%",
+  "@courtExpungeDonCommissioner": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeDonAlderman": "Concejal del Don en este país: +{percent}%",
+  "@courtExpungeDonAlderman": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeDonNone": "No se compran funcionarios del Don en este país.",
+  "courtExpungeSubmit": "Presentar solicitud",
+  "courtExpungeConfirmTitle": "¿Borrar los antecedentes?",
+  "courtExpungeConfirmBody": "Esto cuesta {amount}. La probabilidad de éxito mostrada es {percent}%. En caso de fracaso sólo se pierde el dinero. Si tiene éxito, el registro se borra; usted permanece en la cárcel si está cumpliendo condena.",
+  "@courtExpungeConfirmBody": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeSuccess": "El tribunal borró {count} condenas de su expediente. No fuiste liberado.",
+  "@courtExpungeSuccess": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeFailed": "La solicitud falló. {amount} se ha ido. Nada más cambió.",
+  "@courtExpungeFailed": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeCooldown": "Espere {duration} antes de otra solicitud.",
+  "@courtExpungeCooldown": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeNoRecord": "No tienes antecedentes penales que borrar.",
+  "courtExpungeNeedMoney": "Necesitas {amount} en efectivo.",
+  "@courtExpungeNeedMoney": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  }
 }

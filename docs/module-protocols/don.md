@@ -44,7 +44,7 @@ Tune in Admin; do not flip Clearing House defaults from this module.
 ## Player loops
 - **Rackets:** claim in current country with a weapon that meets intimidation. Manual collect + cooldown. Unused shops abandon after ~72h. Squeeze: higher tribute, extra wanted, chance the shop flees. Rival contest: short window; owner can hold.
 - **Loans:** player is the shark. NPC lend (multi-day term; most NPCs auto-repay) + P2P escrow offer. Collect is only after NPC **default** (share of due + wanted), not right after lending. No full wipe.
-- **Officials:** one judge / commissioner / alderman per country. Cash overbid, expires, rival can replace. Judge stacks with law-school **only up to the +8% Don cap**, then appeal still clamps 10–85%. Commissioner lowers crime-fail wanted. Alderman unlocks/boosts large contracts. Per-case court bribe in `court.md` stays.
+- **Officials:** one judge / commissioner / alderman per country. Cash overbid, expires, rival can replace. Judge stacks with law-school **only up to the +8% Don cap**, then appeal still clamps 10–85%. Commissioner lowers crime-fail wanted. Alderman unlocks/boosts large contracts. Per-case court bribe in `court.md` stays. The same three offices also raise the Court **expunge-petition** chance (judge +8, commissioner +6, alderman +5, stacking) in the current country.
 - **Contracts:** open jobs per country; bid costs 20% of catalog payout (cash or crew-bank). Greedy: +payout +heat. Off-books bonus if you own rackets in that country. Large jobs need alderman and/or engineering school.
 
 ## Crew roles
@@ -57,7 +57,7 @@ Tribute and contract payouts stay **under** jobs/drugs/nightclub unless telemetr
 ## Cross-Module Dependencies
 - Don -> Travel (current country)
 - Don -> Crew / crew-bank (hybrid tribute, capo/consigliere)
-- Don -> Court (capped judge appeal bonus; per-case bribe unchanged)
+- Don -> Court (capped judge appeal bonus; per-case bribe unchanged; expunge-petition bonuses for judge/commissioner/alderman)
 - Don -> Crimes (weapon intimidation gate; commissioner wanted mult on fail bump)
 - Don -> School (engineering gate on large contracts)
 - Don -> Territory (`regionKey` optional; **no** contest-reuse)

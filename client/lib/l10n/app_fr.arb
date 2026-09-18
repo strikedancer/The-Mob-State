@@ -8220,7 +8220,7 @@
   "helpTopicDashboardTips": "Ouvrez d'abord le tableau de bord après chaque connexion pour voir ce qui a changé pendant votre absence. \nMaintenez le niveau de recherche en dessous de 10 pour que la désintégration automatique fonctionne et que les chances d'arrestation restent faibles. \nVérifiez les messages non lus avant de lancer des actions risquées : les récompenses, les exécutions de commandes et les événements système apparaissent tous dans votre boîte de réception.",
   "helpTopicCrimesCategory": "Actes",
   "helpTopicCrimesTitle": "Crimes",
-  "helpTopicCrimesSummary": "Commettez des actions illégales pour de l'argent et de l'XP, mais chaque tentative risque d'être endommagée, arrêtée ou d'augmenter le niveau de recherche. Le crime d'effacement du casier judiciaire en fin de partie supprime l'intégralité de votre casier judiciaire en cas de succès, mais il nécessite des outils lourds et comporte un risque fédéral élevé.",
+  "helpTopicCrimesSummary": "Commettez des actions illégales pour de l'argent et de l'XP, mais chaque tentative risque d'être endommagée, arrêtée ou d'augmenter le niveau de recherche. Le crime d'effacement du casier judiciaire en fin de partie supprime l'intégralité de votre casier judiciaire en cas de succès, mais il nécessite des outils lourds et comporte un risque fédéral élevé. Le tribunal dispose également d'une demande juridique coûteuse qui peut effacer le même dossier sans risque de crime.",
   "helpTopicCrimesHow": "Aux rangs 1 à 5, les crimes de rue (rang minimum 1) montrent les véritables chances de succès du catalogue : les vols à la tire et à l'étalage commencent autour de 65 à 70 %. Le vandalisme et les graffitis n’ont pas besoin de peinture en aérosol. \nSi ces premiers crimes de rue échouent, vous vous en sortez généralement les mains vides au lieu d'aller en prison. La prison est toujours possible, mais ce n'est plus la valeur par défaut. \nLes emplois restent disponibles à partir du rang 1 pendant que vous n'êtes pas en prison : utilisez-les lorsque vous voulez de l'argent sans risque de criminalité. \nLes temps de recharge des crimes s'adaptent désormais aux gains potentiels : les crimes à faible rendement restent rapides, tandis que les crimes à haut rendement ont des temps de recharge nettement plus longs. \nLigne directrice par niveau de récompense : jusqu'à 500 € ≈ 1,5 min, jusqu'à 2 000 € ≈ 5 min, jusqu'à 10 000 € ≈ 15 min, jusqu'à 30 000 € ≈ 30 min, au-delà ≈ 60 min. \nIl n’y a pas de plafond quotidien strict pour les crimes ; les joueurs actifs peuvent continuer à jouer tant qu’ils gèrent les temps de recharge, les risques et les ressources. \nLes crimes armés indiquent sur chaque carte le type d'arme dont vous avez besoin (pistolet, fusil de chasse, fusil, SMG, tireur d'élite). Portez une arme correspondante sur l'emplacement 1 ou 2 de l'inventaire – une arme uniquement dans votre sac à dos ne compte pas. \nL'écran Crimes ouvre sur À ton rang. En haut, les crimes que tu peux commettre maintenant ; en dessous, ceux de ton rang auxquels il manque encore une arme, de la drogue, un outil ou une voiture. Tous les crimes montre aussi ceux qui demandent un rang plus élevé.\nVos bonus actifs de salle de sport et de stand de tir (jusqu'à +8 % chacun) sont affichés sur l'écran Crimes ; ils augmentent les chances de réussite au fur et à mesure que le serveur calcule (entrainez-vous davantage via le Training hub / gym + range). \nSi vous terminez au moins une séance de gym et une séance de tir au cours du même jour calendaire UTC, le serveur ajoute une petite chance supplémentaire de réussite du crime (+0,5 %). L'écran Crimes indique quand ce combo est actif. \nLes crimes nécessitant un véhicule utilisent le véhicule criminel que vous avez sélectionné dans Garage ou Marina. Seul un véhicule qui se trouve réellement dans votre pays actuel et qui n'est pas en transit ou mis en vente compte. \nLes besoins en drogues dans les crimes sont indiqués en grammes et suivent les mêmes quantités que votre stock et votre stockage de drogues. \nSi un crime ne peut pas commencer en raison d'un véhicule manquant, d'une mauvaise arme ou de munitions manquantes, le message d'erreur devrait désormais indiquer la cause réelle au lieu d'une nouvelle tentative générique. \nÀ chaque tentative de crime : vous subissez 5 à 15 points de dégâts et le niveau de recherche augmente de 1 à 4 points en fonction du succès ou de l'échec. \nLes chances d'arrestation augmentent rapidement avec le niveau de recherche : Recherché 5 = 25 %, Recherché 10 = 50 %, Recherché 18+ = maximum 90 %. \nUne fois arrêté, vous allez en prison. Phrase = max (niveau recherché × 10, 5) minutes. Caution = niveau de recherche × 1 000 €. Même si un crime semble réussi au début mais que vous êtes arrêté juste après, le résultat final compte toujours comme une arrestation : les outils nécessaires sont confisqués, l'arme du crime utilisée est perdue et les véhicules peuvent également être saisis. \nCertains crimes nécessitent un véhicule, un outil ou un grade minimum. Manquer ces éléments empêchera le crime de commencer. \nL'XP gagné augmente votre rang, débloquant de meilleurs crimes et des récompenses plus élevées. \nFBI La chaleur augmente avec les crimes plus graves. Au-dessus de la température 50, le FBI devient actif avec des chances d'arrestation encore plus élevées.",
   "helpTopicCrimesTips": "Commencez par le vol à la tire, le vol à l’étalage, le vandalisme ou les graffitis. Un échec signifie généralement pas de butin, pas de prison – alors exécutez un travail pour de l'argent en toute sécurité. \nUtilisez des crimes rapides pour débutants pour créer de l'XP en attendant de gros temps de recharge. \nSautez toujours si votre niveau de recherche est élevé – rester en prison bloque toutes vos boucles. \nGardez HP au-dessus de 30 avant de commencer une course criminelle : chaque tentative coûte des HP et à 0 HP, vous passez 3 heures en soins intensifs.",
   "helpTopicJobsCategory": "Actes",
@@ -8300,9 +8300,9 @@
   "helpTopicToolsTips": "Achetez des outils en gros alors qu'ils sont bon marché sur le marché noir : vous économisez par rapport au magasin. \nFixez un seuil personnel : remplacez toujours les outils lorsque l'état descend en dessous de 25 % pour maintenir les chances de réussite stables.",
   "helpTopicCourtCategory": "Risque",
   "helpTopicCourtTitle": "Tribunal",
-  "helpTopicCourtSummary": "Pendant votre peine, vous pouvez faire appel ou tenter de soudoyer le juge pour qu'il soit libéré plus tôt.",
-  "helpTopicCourtHow": "Une fois emprisonné, l'écran du tribunal affiche votre condamnation active avec le temps restant, le crime et le profil du juge. \nUn appel coûte de l’argent en fonction de la durée actuelle de votre peine. Si elle est accordée, votre peine est généralement réduite d'environ 20 à 40 %. \nVous ne pouvez faire appel qu'une seule fois par condamnation et un temps de recharge s'applique aux tentatives rapides. \nLa corruption utilise un montant sélectionné par le joueur. Ce montant est toujours déduit, même en cas d'échec de la tentative. \nUn montant de pot-de-vin plus élevé augmente les chances de réussite. En cas de succès, vous êtes immédiatement libéré. \nVotre casier judiciaire conserve les condamnations antérieures avec les dates et les détails de votre historique judiciaire, même lorsque vous n'êtes plus emprisonné. \nUn pot-de-vin réussi par un juge supprime uniquement la condamnation actuelle de votre casier judiciaire. \nSi vous souhaitez effacer l'intégralité de votre casier judiciaire, vous devez le faire en dehors du tribunal via le crime Wipe Criminal Record en fin de partie.",
-  "helpTopicCourtTips": "Utilisez d'abord les recours contre les peines longues : le gain de temps attendu y est le plus élevé. \nN’utilisez la corruption qu’avec suffisamment de liquidités, car le paiement est toujours déduit.",
+  "helpTopicCourtSummary": "Pendant votre peine, vous pouvez faire appel ou tenter de soudoyer le juge pour qu'il soit libéré plus tôt. Vous pouvez également déposer une demande coûteuse pour effacer l’intégralité de votre casier judiciaire, même lorsque vous êtes libre.",
+  "helpTopicCourtHow": "Une fois emprisonné, l'écran du tribunal affiche votre condamnation active avec le temps restant, le crime et le profil du juge. \nUn appel coûte de l’argent en fonction de la durée actuelle de votre peine. Si elle est accordée, votre peine est généralement réduite d'environ 20 à 40 %. \nVous ne pouvez faire appel qu'une seule fois par condamnation et un temps de recharge s'applique aux tentatives rapides. \nLa corruption utilise un montant sélectionné par le joueur. Ce montant est toujours déduit, même en cas d'échec de la tentative. \nUn montant de pot-de-vin plus élevé augmente les chances de réussite. En cas de succès, vous êtes immédiatement libéré. \nVotre casier judiciaire conserve les condamnations antérieures avec les dates et les détails de votre historique judiciaire, même lorsque vous n'êtes plus emprisonné. \nUn pot-de-vin réussi par un juge supprime uniquement la condamnation actuelle de votre casier judiciaire. \nVous pouvez également déposer une demande d’effacement de casier judiciaire au tribunal lorsque vous êtes libre ou emprisonné, à condition que vous ayez toujours un casier judiciaire. \nCette demande coûte au moins 100 000 €, plus 1 000 € pour chaque condamnation supplémentaire après la première. \nLes chances de succès affichées dépendent de la durée du dossier, de la date de votre dernière arrestation, de votre réputation et du fait que vous ayez actuellement acheté un échevin, un commissaire et/ou un juge de Don dans ce pays. \nEn cas d'échec, vous perdez uniquement les frais. S'il réussit, l'enregistrement est vide ; vous n'êtes pas libéré de prison. \nAprès chaque tentative, vous attendez 12 heures. Le crime risqué d’effacement du casier judiciaire reste une voie distincte et dangereuse.",
+  "helpTopicCourtTips": "Utilisez d'abord les recours contre les peines longues : le gain de temps attendu y est le plus élevé. \nN’utilisez la corruption qu’avec suffisamment de liquidités, car le paiement est toujours déduit. \nConservez une réserve de trésorerie pour une demande d'effacement de dossier : un échec ne coûte que de l'argent, sans prison ni recherche supplémentaire. \nL'achat du juge, du commissaire et de l'échevin du Don dans votre pays actuel augmente cette chance de demande.",
   "helpTopicHitlistCategory": "Risque",
   "helpTopicHitlistTitle": "Liste de résultats",
   "helpTopicHitlistSummary": "Placez une prime sur un ennemi ou acceptez un contrat de frappe. Éliminez votre cible dans le même pays pour obtenir le paiement intégral.",
@@ -11068,7 +11068,7 @@
   },
   "hitlistEmptyBody": "Pas de marchés publics pour le moment. Placez une prime d'au moins 50 000 € pour lancer une chasse.",
   "courtHeroTitle": "L'audience",
-  "courtHeroSubtitle": "Faites appel ou soudoyez le juge pendant que vous purgez votre peine. Votre casier judiciaire reste après votre libération.",
+  "courtHeroSubtitle": "Faites appel ou soudoyez le juge pendant que vous purgez votre peine. Vous pouvez également déposer une demande coûteuse pour effacer l’intégralité de votre casier judiciaire.",
   "courtConvictionsChip": "{count} condamnations",
   "@courtConvictionsChip": {
     "placeholders": {
@@ -13059,5 +13059,159 @@
       }
     }
   },
-  "drugsHeatLowProfileHint": "Aucun nouveau lot jusqu'à la fin du minuteur. La chaleur supplémentaire est réduite de moitié. Les lots déjà en cuisson continuent de fonctionner. Vous ne pouvez pas annuler cela."
+  "drugsHeatLowProfileHint": "Aucun nouveau lot jusqu'à la fin du minuteur. La chaleur supplémentaire est réduite de moitié. Les lots déjà en cuisson continuent de fonctionner. Vous ne pouvez pas annuler cela.",
+  "courtExpungeTitle": "Effacer le casier judiciaire",
+  "courtExpungeIntro": "Déposez une demande judiciaire coûteuse pour effacer l’intégralité de votre casier judiciaire. L’échec ne coûte que des frais. Le succès efface le dossier mais ne vous libère pas de prison.",
+  "courtExpungeCost": "Coût : {amount}",
+  "@courtExpungeCost": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeChance": "Chances de réussite : {percent}%",
+  "@courtExpungeChance": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeOddsTitle": "Qu'est-ce qui change cette chance",
+  "courtExpungeRecordPenalty": "{count} condamnations : {percent}%",
+  "@courtExpungeRecordPenalty": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecordOk": "{count} condamnation : pas de pénalité supplémentaire",
+  "@courtExpungeRecordOk": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecencyRecent": "Dernière arrestation sous 24 heures : {percent}%",
+  "@courtExpungeRecencyRecent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecencyWarm": "Dernière arrestation il y a 1 à 3 jours : {percent} %",
+  "@courtExpungeRecencyWarm": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecencyNeutral": "Dernière arrestation il y a 3 à 7 jours : aucun modificateur supplémentaire",
+  "courtExpungeRecencyCool": "Dernière arrestation il y a 7 à 14 jours : {percent} %",
+  "@courtExpungeRecencyCool": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecencyOld": "Dernière arrestation il y a plus de 14 jours : {percent}%",
+  "@courtExpungeRecencyOld": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeReputation": "Réputation {points} : {percent} %",
+  "@courtExpungeReputation": {
+    "placeholders": {
+      "points": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeReputationNone": "Réputation : pas encore de bonus supplémentaire",
+  "courtExpungeDonJudge": "Juge du Don dans ce pays : +{percent}%",
+  "@courtExpungeDonJudge": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeDonCommissioner": "Commissaire du Don dans ce pays : +{percent}%",
+  "@courtExpungeDonCommissioner": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeDonAlderman": "Échevin du Don dans ce pays : +{percent}%",
+  "@courtExpungeDonAlderman": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeDonNone": "Aucun fonctionnaire du Don n'a acheté dans ce pays",
+  "courtExpungeSubmit": "Déposer la demande",
+  "courtExpungeConfirmTitle": "Effacer le casier judiciaire ?",
+  "courtExpungeConfirmBody": "Cela coûte {amount}. Les chances de réussite affichées sont de {percent}%. En cas d'échec, vous ne perdez que de l'argent. En cas de succès, le dossier est effacé ; vous restez en prison si vous purgez une peine.",
+  "@courtExpungeConfirmBody": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeSuccess": "Le tribunal a effacé {count} condamnations de votre dossier. Vous n'avez pas été libéré.",
+  "@courtExpungeSuccess": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeFailed": "La demande a échoué. {amount} est parti. Rien d'autre n'a changé.",
+  "@courtExpungeFailed": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeCooldown": "Attendez {duration} avant une autre demande.",
+  "@courtExpungeCooldown": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeNoRecord": "Vous n'avez pas de casier judiciaire à effacer.",
+  "courtExpungeNeedMoney": "Vous avez besoin de {amount} en espèces.",
+  "@courtExpungeNeedMoney": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  }
 }

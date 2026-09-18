@@ -8220,7 +8220,7 @@
   "helpTopicDashboardTips": "Otwórz pulpit nawigacyjny po każdym logowaniu, aby zobaczyć, co zmieniło się podczas Twojej nieobecności. \nUtrzymuj poziom poszukiwanego poniżej 10, aby automatyczny zanik działał, a ryzyko aresztowania pozostało niskie. \nZanim podejmiesz ryzykowne działania, sprawdź nieprzeczytane wiadomości: nagrody, zrealizowane zamówienia i zdarzenia systemowe pojawią się w Twojej skrzynce odbiorczej.",
   "helpTopicCrimesCategory": "Działania",
   "helpTopicCrimesTitle": "Zbrodnie",
-  "helpTopicCrimesSummary": "Podejmuj nielegalne działania, aby zdobyć gotówkę i PD, ale każda próba wiąże się z ryzykiem obrażeń, aresztowania lub dodatkowego poziomu poszukiwanego. Przestępstwo Wipe Criminal Record w późnej fazie gry powoduje, że po sukcesie usuwasz całą przeszłość kryminalną, ale wymaga ciężkich narzędzi i wiąże się z wysokim ryzykiem federalnym.",
+  "helpTopicCrimesSummary": "Podejmuj nielegalne działania, aby zdobyć gotówkę i PD, ale każda próba wiąże się z ryzykiem obrażeń, aresztowania lub dodatkowego poziomu poszukiwanego. Przestępstwo Wipe Criminal Record w późnej fazie gry powoduje, że po sukcesie usuwasz całą przeszłość kryminalną, ale wymaga ciężkich narzędzi i wiąże się z wysokim ryzykiem federalnym. Sąd ma również kosztowny wniosek prawny, który może wymazać ten sam zapis bez ryzyka przestępstwa.",
   "helpTopicCrimesHow": "Na pozycjach 1–5 przestępstwa uliczne (min. pozycja 1) wykazują realną szansę na sukces w katalogu — kradzieże kieszonkowe i sklepowe zaczynają się na poziomie 65–70%. Wandalizm i graffiti nie wymagają farby w sprayu. \nJeśli te wczesne przestępstwa uliczne zawiodą, zwykle uciekasz z pustymi rękami, zamiast iść do więzienia. Więzienie jest nadal możliwe, ale nie jest już rozwiązaniem domyślnym. \nPraca pozostaje dostępna od rangi 1, gdy nie przebywasz w więzieniu — korzystaj z niej, gdy potrzebujesz gotówki bez ryzyka przestępstwa. \nCzasy odnowienia przestępstw skalują się teraz wraz z potencjalną wypłatą: przestępstwa o niskim zysku pozostają szybkie, podczas gdy przestępstwa o wysokim zysku mają wyraźnie dłuższy czas odnowienia. \nWytyczne według poziomu nagrody: do 500 € ≈ 1,5 min, do 2000 € ≈ 5 min, do 10 000 € ≈ 15 min, do 30 000 € ≈ 30 min, powyżej tego ≈ 60 min. \nNie ma sztywnego dziennego limitu przestępstw; aktywni gracze mogą grać dalej, o ile zarządzają czasami odnowienia, ryzykiem i zasobami. \nPrzestępstwa z bronią w ręku pokazują na każdej karcie, jakiego rodzaju broni potrzebujesz (pistolet, strzelba, karabin, pistolet maszynowy, snajper). Noś pasującą broń w slocie 1 lub 2 w ekwipunku – broń znajdująca się tylko w twoim plecaku nie liczy się. \nEkran Zbrodnie domyślnie pokazuje Na twojej randze. Najpierw czyny, które możesz wykonać teraz; niżej czyny tej samej rangi, do których brakuje broni, narkotyków, narzędzi lub auta. Wszystkie zbrodnie pokazuje też czyny wymagające wyższej rangi.\nTwoje aktywne bonusy z siłowni i strzelnicy (do +8% każdy) są pokazane na ekranie Zbrodni; zwiększają szansę na sukces zgodnie z obliczeniami serwera (trenuj więcej za pośrednictwem centrum treningowego / siłowni + strzelnicy). \nJeśli ukończysz co najmniej jedną sesję na siłowni i jedną sesję na strzelnicy w tym samym dniu kalendarzowym UTC, serwer dodaje niewielką dodatkową szansę na powodzenie przestępstwa (+0,5%). Ekran Przestępstw pokazuje, kiedy ta kombinacja jest aktywna. \nW przypadku przestępstw wymagających pojazdu użyj wybranego pojazdu przestępczego z garażu lub przystani. Liczy się tylko pojazd, który faktycznie znajduje się w Twoim obecnym kraju i nie jest w transporcie ani nie jest wystawiony na sprzedaż. \nZapotrzebowanie na narkotyki w przestępstwach jest podawane w gramach i odpowiada takim samym ilościom, jak stan zapasów i przechowywania narkotyków. \nJeśli przestępstwo nie może się rozpocząć z powodu braku pojazdu, niewłaściwej broni lub braku amunicji, komunikat o błędzie powinien teraz pokazywać prawdziwą przyczynę, a nie zwykłą ponowną próbę. \nKażda próba przestępstwa: otrzymujesz 5-15 HP obrażeń, a Poziom Pościgu wzrasta o 1-4 punkty w zależności od sukcesu lub porażki. \nSzansa na aresztowanie szybko rośnie wraz z poziomem poszukiwanego: Poszukiwany 5 = 25%, Poszukiwany 10 = 50%, Poszukiwany 18+ = maksymalnie 90%. \nPo aresztowaniu idziesz do więzienia. Zdanie = max (pożądany poziom × 10, 5) minut. Kaucja = wysokość poszukiwanego × 1000 EUR. Nawet jeśli na początku przestępstwo wydaje się zakończone sukcesem, ale zaraz potem zostaniesz złapany, ostateczny wynik nadal liczy się jako aresztowanie: wymagane narzędzia zostaną skonfiskowane, użyte narzędzie zbrodni zaginie, a pojazdy będą mogły zostać skonfiskowane. \nNiektóre przestępstwa wymagają pojazdu, narzędzia lub minimalnej rangi. Ich brak zapobiegnie rozpoczęciu przestępstwa. \nZdobyte XP podnosi twoją rangę, odblokowując lepsze przestępstwa i wyższe nagrody. \nFBI Heat rośnie wraz z cięższymi przestępstwami. Powyżej 50 stopni FBI staje się aktywne i stwarza jeszcze większe szanse na aresztowanie.",
   "helpTopicCrimesTips": "Zacznij od kieszonkowców, kradzieży w sklepach, wandalizmu lub graffiti. Porażka zwykle oznacza brak łupów, a nie więzienie – wtedy podejmuj pracę za bezpieczną gotówkę. \nUżywaj szybkich przestępstw dla początkujących, aby zdobywać XP, czekając na duże czasy odnowienia. \nZawsze uciekaj, jeśli Twój poziom poszukiwanego jest wysoki – siedzenie w więzieniu blokuje wszystkie Twoje pętle. \nUtrzymuj HP powyżej 30 przed rozpoczęciem przestępstwa: każda próba kosztuje HP, a przy 0 HP spędzasz 3 godziny na oddziale intensywnej terapii.",
   "helpTopicJobsCategory": "Działania",
@@ -8300,9 +8300,9 @@
   "helpTopicToolsTips": "Kupuj narzędzia hurtowo, gdy są tanie na czarnym rynku: oszczędzasz w porównaniu do sklepu. \nUstaw osobisty próg: zawsze wymieniaj narzędzia, gdy stan spadnie poniżej 25%, aby utrzymać stabilne szanse na sukces.",
   "helpTopicCourtCategory": "Ryzyko",
   "helpTopicCourtTitle": "Sąd",
-  "helpTopicCourtSummary": "W trakcie odbywania kary możesz złożyć apelację lub spróbować przekupić sędziego, aby mógł szybciej wyjść na wolność.",
-  "helpTopicCourtHow": "Kiedy przebywasz w więzieniu, ekran sądu pokazuje Twój aktywny wyrok skazujący wraz z pozostałym czasem, przestępstwem i profilem sędziego. \nApelacja kosztuje, biorąc pod uwagę aktualną długość wyroku. Jeśli zostanie przyznany, Twoja kara jest zwykle zmniejszana o około 20-40%. \nMożesz odwołać się tylko raz na dany wyrok, a w przypadku szybkich ponownych prób obowiązuje okres odnowienia. \nPrzekupstwo wykorzystuje kwotę wybraną przez gracza. Kwota ta jest zawsze odejmowana, nawet jeśli próba się nie powiedzie. \nWyższa kwota łapówki zwiększa szansę na sukces. W przypadku powodzenia zostajesz natychmiast zwolniony. \nW Twojej kartotece karnej znajdują się wcześniejsze wyroki skazujące wraz z datami i szczegółami historii sądowej, nawet jeśli nie przebywasz już w więzieniu. \nSkuteczna łapówka dla sędziego powoduje usunięcie z rejestru karnego tylko aktualnego wyroku skazującego. \nJeśli chcesz wymazać swój pełny rejestr karny, musisz to zrobić poza sądem, korzystając z przestępstwa Wyczyść rejestr karny w późnej fazie gry.",
-  "helpTopicCourtTips": "Odwołaj się najpierw w przypadku długich wyroków: tam oczekiwana oszczędność czasu jest najwyższa. \nUżywaj przekupstwa tylko przy wystarczającym buforze gotówkowym, ponieważ płatność jest zawsze potrącana.",
+  "helpTopicCourtSummary": "W trakcie odbywania kary możesz złożyć apelację lub spróbować przekupić sędziego, aby mógł szybciej wyjść na wolność. Możesz także złożyć kosztowny wniosek o wymazanie całego rejestru karnego, nawet gdy jesteś na wolności.",
+  "helpTopicCourtHow": "Kiedy przebywasz w więzieniu, ekran sądu pokazuje Twój aktywny wyrok skazujący wraz z pozostałym czasem, przestępstwem i profilem sędziego. \nApelacja kosztuje, biorąc pod uwagę aktualną długość wyroku. Jeśli zostanie przyznany, Twoja kara jest zwykle zmniejszana o około 20-40%. \nMożesz odwołać się tylko raz na dany wyrok, a w przypadku szybkich ponownych prób obowiązuje okres odnowienia. \nPrzekupstwo wykorzystuje kwotę wybraną przez gracza. Kwota ta jest zawsze odejmowana, nawet jeśli próba się nie powiedzie. \nWyższa kwota łapówki zwiększa szansę na sukces. W przypadku powodzenia zostajesz natychmiast zwolniony. \nW Twojej kartotece karnej znajdują się wcześniejsze wyroki skazujące wraz z datami i szczegółami historii sądowej, nawet jeśli nie przebywasz już w więzieniu. \nSkuteczna łapówka dla sędziego powoduje usunięcie z rejestru karnego tylko aktualnego wyroku skazującego. \nMożesz także złożyć wniosek o wyczyszczenie akt w sądzie, będąc na wolności lub w więzieniu, o ile nadal jesteś karany. \nKoszt takiego wniosku wynosi co najmniej 100 000 euro plus 1000 euro za każdy dodatkowy wyrok skazujący po pierwszym. \nPokazana szansa powodzenia zależy od długości historii, czasu od ostatniego aresztowania, Twojej reputacji oraz tego, czy obecnie kupiłeś radnego, komisarza i/lub sędziego Dona w tym kraju. \nJeśli się nie powiedzie, tracisz tylko opłatę. Jeśli się powiedzie, rekord jest pusty; nie zostaniesz zwolniony z więzienia. \nPo każdej próbie odczekaj 12 godzin. Ryzykowne przestępstwo polegające na wyczyszczeniu rejestru karnego pozostaje odrębną, niebezpieczną ścieżką.",
+  "helpTopicCourtTips": "Odwołaj się najpierw w przypadku długich wyroków: tam oczekiwana oszczędność czasu jest najwyższa. \nUżywaj przekupstwa tylko przy wystarczającym buforze gotówkowym, ponieważ płatność jest zawsze potrącana. \nZachowaj bufor gotówkowy na żądanie wymazania rekordów: niepowodzenie kosztuje tylko pieniądze, bez dodatkowego więzienia lub osoby poszukiwanej. \nZakup sędziego, komisarza i radnego dona w twoim obecnym kraju zwiększa szansę na tę prośbę.",
   "helpTopicHitlistCategory": "Ryzyko",
   "helpTopicHitlistTitle": "Lista hitów",
   "helpTopicHitlistSummary": "Wyznacz nagrodę za wroga lub zaakceptuj kontrakt na trafienie. Wyeliminuj swój cel w tym samym kraju, aby uzyskać pełną wypłatę.",
@@ -11068,7 +11068,7 @@
   },
   "hitlistEmptyBody": "Nie ma obecnie zamówień publicznych. Aby rozpocząć polowanie, wyznacz nagrodę o wartości co najmniej 50 000 EUR.",
   "courtHeroTitle": "Rozprawa",
-  "courtHeroSubtitle": "Odwołaj się lub przekup sędziego podczas odbywania kary. Twoja przeszłość kryminalna pozostanie, kiedy wyjdziesz na wolność.",
+  "courtHeroSubtitle": "Odwołaj się lub przekup sędziego podczas odbywania kary. Możesz także złożyć kosztowny wniosek o wymazanie całego rejestru karnego.",
   "courtConvictionsChip": "{count} wyroków skazujących",
   "@courtConvictionsChip": {
     "placeholders": {
@@ -13059,5 +13059,159 @@
       }
     }
   },
-  "drugsHeatLowProfileHint": "No new batches until the timer ends. Dodatkowe ciepło jest zmniejszone o połowę. Batches already cooking keep running. Nie możesz tego anulować."
+  "drugsHeatLowProfileHint": "No new batches until the timer ends. Dodatkowe ciepło jest zmniejszone o połowę. Batches already cooking keep running. Nie możesz tego anulować.",
+  "courtExpungeTitle": "Wyczyść rejestr karny",
+  "courtExpungeIntro": "Złóż kosztowny wniosek do sądu o wymazanie całego rejestru karnego. Niepowodzenie kosztuje tylko opłatę. Sukces oczyszcza historię, ale nie zwalnia z więzienia.",
+  "courtExpungeCost": "Koszt: {amount}",
+  "@courtExpungeCost": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeChance": "Szansa na sukces: {percent}%",
+  "@courtExpungeChance": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeOddsTitle": "Co zmienia tę szansę",
+  "courtExpungeRecordPenalty": "{count} przekonania: {percent}%",
+  "@courtExpungeRecordPenalty": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecordOk": "{count} wyrok skazujący: bez dodatkowej kary",
+  "@courtExpungeRecordOk": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecencyRecent": "Ostatnie aresztowanie w ciągu 24 godzin: {percent}%",
+  "@courtExpungeRecencyRecent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecencyWarm": "Ostatnie aresztowanie 1–3 dni temu: {percent}%",
+  "@courtExpungeRecencyWarm": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecencyNeutral": "Ostatnie aresztowanie 3–7 dni temu: bez dodatkowego modyfikatora",
+  "courtExpungeRecencyCool": "Ostatnie aresztowanie 7–14 dni temu: {percent}%",
+  "@courtExpungeRecencyCool": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecencyOld": "Ostatnie aresztowanie ponad 14 dni temu: {percent}%",
+  "@courtExpungeRecencyOld": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeReputation": "Reputacja {points}: {percent}%",
+  "@courtExpungeReputation": {
+    "placeholders": {
+      "points": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeReputationNone": "Reputacja: nie ma jeszcze dodatkowego bonusu",
+  "courtExpungeDonJudge": "Sędzia Dona w tym kraju: +{percent}%",
+  "@courtExpungeDonJudge": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeDonCommissioner": "Komisarz Dona w tym kraju: +{percent}%",
+  "@courtExpungeDonCommissioner": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeDonAlderman": "Radny Dona w tym kraju: +{percent}%",
+  "@courtExpungeDonAlderman": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeDonNone": "Żaden urzędnik Donu nie kupował w tym kraju",
+  "courtExpungeSubmit": "Złóż wniosek",
+  "courtExpungeConfirmTitle": "Wymazać rejestr karny?",
+  "courtExpungeConfirmBody": "To kosztuje {amount}. Pokazane prawdopodobieństwo sukcesu wynosi {percent}%. W przypadku niepowodzenia tracisz tylko pieniądze. W przypadku powodzenia rekord zostaje wyczyszczony; przebywasz w więzieniu, jeśli odsiadujesz karę.",
+  "@courtExpungeConfirmBody": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeSuccess": "Sąd wymazał z Twojej kartoteki {count} wyroków skazujących. Nie zostałeś zwolniony.",
+  "@courtExpungeSuccess": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeFailed": "Żądanie nie powiodło się. {amount} zniknęło. Nic więcej się nie zmieniło.",
+  "@courtExpungeFailed": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeCooldown": "Poczekaj {duration} przed kolejnym żądaniem.",
+  "@courtExpungeCooldown": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeNoRecord": "Nie masz żadnej kartoteki kryminalnej, którą mógłbyś wymazać.",
+  "courtExpungeNeedMoney": "Potrzebujesz {amount} w gotówce.",
+  "@courtExpungeNeedMoney": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -8220,7 +8220,7 @@
   "helpTopicDashboardTips": "Abra o painel primeiro após cada login para ver o que mudou enquanto você estava ausente. \nMantenha o nível de procurado abaixo de 10 para que a decadência automática funcione e as chances de prisão permaneçam baixas. \nVerifique as mensagens não lidas antes de iniciar ações arriscadas: recompensas, atendimentos de pedidos e eventos do sistema aparecem na sua caixa de entrada.",
   "helpTopicCrimesCategory": "Ações",
   "helpTopicCrimesTitle": "Crimes",
-  "helpTopicCrimesSummary": "Cometa ações ilegais por dinheiro e XP, mas cada tentativa corre o risco de danos, prisão ou Nível de Procurado extra. O crime de limpeza de registro criminal no final do jogo remove todo o seu registro criminal em caso de sucesso, mas precisa de ferramentas pesadas e acarreta alto risco federal.",
+  "helpTopicCrimesSummary": "Cometa ações ilegais por dinheiro e XP, mas cada tentativa corre o risco de danos, prisão ou Nível de Procurado extra. O crime de limpeza de registro criminal no final do jogo remove todo o seu registro criminal em caso de sucesso, mas precisa de ferramentas pesadas e acarreta alto risco federal. O tribunal também tem um pedido legal caro que pode apagar o mesmo registro sem o risco de crime.",
   "helpTopicCrimesHow": "Nas classificações 1 a 5, os crimes de rua (classificação mínima 1) mostram a chance real de sucesso do catálogo – furtos e furtos em lojas começam em torno de 65 a 70%. Vandalismo e graffiti não precisam de tinta spray. \nSe esses primeiros crimes de rua falharem, você geralmente sai de mãos vazias em vez de ir para a cadeia. A prisão ainda é possível, mas não é mais o padrão. \nOs empregos permanecem disponíveis a partir do nível 1 enquanto você não estiver na prisão – use-os quando quiser dinheiro sem risco de crime. \nOs tempos de espera para crimes agora aumentam com o pagamento potencial: crimes de baixo rendimento permanecem rápidos, enquanto crimes de alto rendimento têm tempos de espera claramente mais longos. \nDiretriz por nível de recompensa: até € 500 ≈ 1,5 min, até € 2.000 ≈ 5 min, até € 10.000 ≈ 15 min, até € 30.000 ≈ 30 min, acima disso ≈ 60 min. \nNão existe um limite diário rígido para os crimes; jogadores ativos podem continuar jogando desde que gerenciem tempos de espera, riscos e recursos. \nOs crimes armados mostram em cada carta o tipo de arma que você precisa (pistola, espingarda, rifle, SMG, atirador). Use uma arma correspondente no slot 1 ou 2 do Inventário – uma arma apenas na sua mochila não conta. \nO ecrã Crimes abre em No teu nível. Em cima os crimes que podes cometer agora; abaixo os do mesmo nível a que ainda faltam arma, droga, ferramenta ou carro. Todos os crimes também mostra os que pedem um nível mais alto.\nSeus bônus ativos de academia e campo de tiro (até +8% cada) são mostrados na tela Crimes; eles aumentam a chance de sucesso conforme o servidor calcula (treine mais através do centro de treinamento/ginásio + faixa). \nSe você completar pelo menos uma sessão de ginástica e uma sessão de tiro no mesmo dia UTC, o servidor adiciona uma pequena chance extra de sucesso no crime (+0,5%). A tela Crimes mostra quando este combo está ativo. \nCrimes com exigência de veículo usam o veículo do crime selecionado na Garagem ou Marina. Somente conta um veículo que esteja realmente em seu país atual e não em trânsito ou listado para venda. \nAs necessidades de drogas em crimes são mostradas em gramas e seguem as mesmas quantidades do seu estoque e armazenamento de drogas. \nSe um crime não puder ser iniciado devido ao desaparecimento de um veículo, da arma errada ou da falta de munição, a mensagem de erro deverá agora mostrar a causa real em vez de uma nova tentativa genérica. \nCada tentativa de crime: você sofre de 5 a 15 pontos de dano de HP e o Nível de Procurado aumenta de 1 a 4 pontos, dependendo do sucesso ou do fracasso. \nA chance de prisão aumenta rapidamente com o Nível de Procurado: Procurado 5 = 25%, Procurado 10 = 50%, Procurado 18+ = máximo 90%. \nAo ser preso você vai para a prisão. Frase = máximo (nível de procurado × 10, 5) minutos. Fiança = nível de procurado × € 1.000. Mesmo que um crime pareça bem-sucedido no início, mas você seja pego logo depois, o resultado final ainda conta como uma prisão: as ferramentas necessárias são confiscadas, a arma do crime usada é perdida e os veículos também podem ser apreendidos. \nAlguns crimes exigem veículo, ferramenta ou classificação mínima. Perdê-los impedirá o início do crime. \nA XP ganha aumenta sua classificação, desbloqueando crimes melhores e recompensas maiores. \nFBI Heat aumenta com crimes mais pesados. Acima da bateria 50, o FBI torna-se ativo com chances de prisão ainda maiores.",
   "helpTopicCrimesTips": "Comece com batedor de carteira, furto em lojas, vandalismo ou grafite. Uma falha geralmente significa não haver saque, nem prisão – então, executar um trabalho para obter dinheiro seguro. \nUse crimes rápidos para iniciantes para construir XP enquanto espera por grandes tempos de espera. \nSempre resgate se o seu nível de procurado for alto – ficar na prisão bloqueia todos os seus loops. \nMantenha HP acima de 30 antes de iniciar uma operação criminosa: cada tentativa custa HP e com 0 HP você passa 3 horas na UTI.",
   "helpTopicJobsCategory": "Ações",
@@ -8300,9 +8300,9 @@
   "helpTopicToolsTips": "Compre ferramentas a granel quando elas são baratas no mercado negro: você economiza em comparação com a loja. \nDefina um limite pessoal: sempre substitua as ferramentas quando a condição cair abaixo de 25% para manter estáveis ​​as chances de sucesso.",
   "helpTopicCourtCategory": "Risco",
   "helpTopicCourtTitle": "Tribunal",
-  "helpTopicCourtSummary": "Durante a sentença, você pode entrar com recurso ou tentar subornar o juiz para ser libertado mais cedo.",
-  "helpTopicCourtHow": "Quando preso, a tela do tribunal mostra sua condenação ativa com tempo restante, crime e perfil do juiz. \nUm recurso custa dinheiro com base na duração atual da sentença. Se concedida, sua sentença geralmente é reduzida em cerca de 20-40%. \nVocê pode recorrer apenas uma vez por condenação e um período de espera se aplica a novas tentativas rápidas. \nO suborno usa uma quantia selecionada pelo jogador. Esse valor é sempre descontado, mesmo quando a tentativa falha. \nUm valor de suborno maior aumenta as chances de sucesso. Em caso de sucesso, você é liberado imediatamente. \nSeu registro criminal mantém condenações anteriores com datas e detalhes do histórico judicial, mesmo quando você não está mais preso. \nO suborno de um juiz bem-sucedido remove apenas a condenação atual do seu registo criminal. \nSe quiser limpar todo o seu registro criminal, você deve fazê-lo fora do tribunal, por meio do crime Wipe Criminal Record, no final do jogo.",
-  "helpTopicCourtTips": "Use apelos em sentenças longas primeiro: o tempo esperado economizado é maior nessas situações. \nUse suborno apenas com reserva de dinheiro suficiente, porque o pagamento é sempre deduzido.",
+  "helpTopicCourtSummary": "Durante a sentença, você pode entrar com recurso ou tentar subornar o juiz para ser libertado mais cedo. Você também pode registrar uma solicitação cara para apagar todo o seu registro criminal, mesmo quando estiver livre.",
+  "helpTopicCourtHow": "Quando preso, a tela do tribunal mostra sua condenação ativa com tempo restante, crime e perfil do juiz. \nUm recurso custa dinheiro com base na duração atual da sentença. Se concedida, sua sentença geralmente é reduzida em cerca de 20-40%. \nVocê pode recorrer apenas uma vez por condenação e um período de espera se aplica a novas tentativas rápidas. \nO suborno usa uma quantia selecionada pelo jogador. Esse valor é sempre descontado, mesmo quando a tentativa falha. \nUm valor de suborno maior aumenta as chances de sucesso. Em caso de sucesso, você é liberado imediatamente. \nSeu registro criminal mantém condenações anteriores com datas e detalhes do histórico judicial, mesmo quando você não está mais preso. \nO suborno de um juiz bem-sucedido remove apenas a condenação atual do seu registo criminal. \nVocê também pode registrar um pedido de limpeza de registros no tribunal enquanto estiver livre ou preso, desde que ainda tenha antecedentes criminais. \nEsse pedido custa pelo menos 100.000 euros, mais 1.000 euros por cada condenação extra após a primeira. \nA chance de sucesso mostrada depende de quanto tempo o registro é, há quanto tempo foi sua última prisão, sua reputação e se você comprou atualmente um vereador, comissário e/ou juiz de Don neste país. \nSe falhar, você só perde a taxa. Se for bem-sucedido, o registro estará vazio; você não está libertado da prisão. \nApós cada tentativa você espera 12 horas. O arriscado crime de Wipe Criminal Record permanece em uma rota separada e perigosa.",
+  "helpTopicCourtTips": "Use apelos em sentenças longas primeiro: o tempo esperado economizado é maior nessas situações. \nUse suborno apenas com reserva de dinheiro suficiente, porque o pagamento é sempre deduzido. \nMantenha uma reserva de dinheiro para uma solicitação de limpeza de registros: a falha custa apenas dinheiro, sem prisão extra ou procuração. \nComprar o juiz, comissário e vereador Don em seu país atual aumenta essa chance de solicitação.",
   "helpTopicHitlistCategory": "Risco",
   "helpTopicHitlistTitle": "Lista de sucessos",
   "helpTopicHitlistSummary": "Coloque uma recompensa por um inimigo ou aceite um contrato de ataque. Elimine seu alvo no mesmo país para receber o pagamento integral.",
@@ -11068,7 +11068,7 @@
   },
   "hitlistEmptyBody": "Não há contratos públicos no momento. Coloque uma recompensa de pelo menos 50.000€ para iniciar uma caçada.",
   "courtHeroTitle": "A audiência",
-  "courtHeroSubtitle": "Apelar ou subornar o juiz enquanto você cumpre pena. Seu registro criminal permanece depois que você sai em liberdade.",
+  "courtHeroSubtitle": "Apelar ou subornar o juiz enquanto você cumpre pena. Você também pode registrar uma solicitação cara para limpar todo o seu registro criminal.",
   "courtConvictionsChip": "{count} condenações",
   "@courtConvictionsChip": {
     "placeholders": {
@@ -13059,5 +13059,159 @@
       }
     }
   },
-  "drugsHeatLowProfileHint": "Nenhum novo lote até que o cronômetro termine. O calor extra é reduzido pela metade. Os lotes que já estão cozinhando continuam funcionando. Você não pode cancelar isso."
+  "drugsHeatLowProfileHint": "Nenhum novo lote até que o cronômetro termine. O calor extra é reduzido pela metade. Os lotes que já estão cozinhando continuam funcionando. Você não pode cancelar isso.",
+  "courtExpungeTitle": "Limpar antecedentes criminais",
+  "courtExpungeIntro": "Apresente um pedido judicial caro para limpar todo o seu registo criminal. O fracasso custa apenas a taxa. O sucesso limpa os registros, mas não o liberta da prisão.",
+  "courtExpungeCost": "Custo: {amount}",
+  "@courtExpungeCost": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeChance": "Chance de sucesso: {percent}%",
+  "@courtExpungeChance": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeOddsTitle": "O que muda essa chance",
+  "courtExpungeRecordPenalty": "{count} condenações: {percent}%",
+  "@courtExpungeRecordPenalty": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecordOk": "{count} condenação: sem penalidade extra",
+  "@courtExpungeRecordOk": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecencyRecent": "Última prisão em menos de 24 horas: {percent}%",
+  "@courtExpungeRecencyRecent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecencyWarm": "Última prisão há 1–3 dias: {percent}%",
+  "@courtExpungeRecencyWarm": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecencyNeutral": "Última prisão há 3 a 7 dias: nenhum modificador extra",
+  "courtExpungeRecencyCool": "Última prisão há 7–14 dias: {percent}%",
+  "@courtExpungeRecencyCool": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeRecencyOld": "Última prisão há mais de 14 dias: {percent}%",
+  "@courtExpungeRecencyOld": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeReputation": "Reputação {points}: {percent}%",
+  "@courtExpungeReputation": {
+    "placeholders": {
+      "points": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeReputationNone": "Reputação: nenhum bônus extra ainda",
+  "courtExpungeDonJudge": "Juiz do Don neste país: +{percent}%",
+  "@courtExpungeDonJudge": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeDonCommissioner": "Comissário do Don neste país: +{percent}%",
+  "@courtExpungeDonCommissioner": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeDonAlderman": "Vereador do Don neste país: +{percent}%",
+  "@courtExpungeDonAlderman": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeDonNone": "Nenhum funcionário do Don comprou neste país",
+  "courtExpungeSubmit": "Submeter pedido",
+  "courtExpungeConfirmTitle": "Limpar a ficha criminal?",
+  "courtExpungeConfirmBody": "Isso custa {amount}. A chance de sucesso mostrada é de {percent}%. Em caso de falha, você só perde o dinheiro. Em caso de sucesso, o registro é apagado; você permanece na prisão se estiver cumprindo pena.",
+  "@courtExpungeConfirmBody": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeSuccess": "O tribunal apagou {count} condenações do seu registo. Você não foi liberado.",
+  "@courtExpungeSuccess": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeFailed": "A solicitação falhou. {amount} se foi. Nada mais mudou.",
+  "@courtExpungeFailed": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeCooldown": "Aguarde {duration} antes de outra solicitação.",
+  "@courtExpungeCooldown": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeNoRecord": "Você não tem antecedentes criminais para apagar.",
+  "courtExpungeNeedMoney": "Você precisa de {amount} em dinheiro.",
+  "@courtExpungeNeedMoney": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  }
 }
