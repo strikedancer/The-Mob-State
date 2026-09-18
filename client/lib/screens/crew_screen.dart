@@ -6099,12 +6099,17 @@ class _CrewScreenState extends State<CrewScreen>
       file = fileOf('imageNew');
       if (file.isEmpty) file = fileOf('imageDirty');
       if (file.isEmpty) file = fileOf('imageDamaged');
-      if (file.isEmpty) file = fileOf('image');
     }
     if (file.isEmpty) {
       final vehicleId = (row['vehicleId'] ?? '').toString().trim();
       if (vehicleId.isEmpty) return null;
-      file = '$vehicleId.png';
+      if (condition >= 100) {
+        file = '${vehicleId}_new.png';
+      } else if (condition >= 70) {
+        file = '${vehicleId}_dirty.png';
+      } else {
+        file = '${vehicleId}_damaged.png';
+      }
     }
     if (file.startsWith('http://') ||
         file.startsWith('https://') ||

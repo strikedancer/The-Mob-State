@@ -64,6 +64,7 @@ class VehicleDefinition {
       _$VehicleDefinitionFromJson(json);
   Map<String, dynamic> toJson() => _$VehicleDefinitionToJson(this);
 
+  /// 100% = new, 70–99 = dirty, below 70 = damaged. Never the shared `image` placeholder.
   String? imageForCondition(int condition) {
     if (condition >= 100 && imageNew != null && imageNew!.isNotEmpty) {
       return imageNew;
@@ -77,7 +78,7 @@ class VehicleDefinition {
       return imageDamaged;
     }
 
-    return imageNew ?? imageDirty ?? imageDamaged ?? image;
+    return imageNew ?? imageDirty ?? imageDamaged;
   }
 }
 

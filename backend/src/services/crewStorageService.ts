@@ -32,7 +32,7 @@ function crewVehicleCatalogArt(vehicleId: string, condition: number) {
   else if (condition >= 70 && def.imageDirty) image = def.imageDirty;
   else if (condition < 70 && def.imageDamaged) image = def.imageDamaged;
   if (!image) {
-    image = def.imageNew || def.imageDirty || def.imageDamaged || def.image || '';
+    image = def.imageNew || def.imageDirty || def.imageDamaged || '';
   }
   return {
     name: def.name ?? vehicleId,
