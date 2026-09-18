@@ -176,8 +176,11 @@ class DrugService {
       materialSlotsForQuantity(carried?.quantity ?? 0);
     try {
       await assertBackpackFits(playerId, extra);
-    } catch {
-      return { success: false, message: 'Rugzak vol / Backpack full' };
+    } catch (error) {
+      if (error instanceof Error && error.message === 'INVENTORY_FULL') {
+        return { success: false, message: 'Rugzak vol / Backpack full' };
+      }
+      throw error;
     }
 
     await prisma.$transaction(async (tx) => {
@@ -187,7 +190,11 @@ class DrugService {
       });
       await addMaterialStock(tx, playerId, CARRIED_MATERIAL_LOCATION, materialId, quantity);
     });
-    await refreshInventorySlotUsage(playerId);
+    try {
+      await refreshInventorySlotUsage(playerId);
+    } catch (error) {
+      console.error('[drugs] refreshInventorySlotUsage after buyMaterial failed:', error);
+    }
 
     return {
       success: true,

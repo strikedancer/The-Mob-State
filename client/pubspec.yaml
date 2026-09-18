@@ -165,6 +165,11 @@ flutter:
     - assets/images/crew_buildings/tool/city/
     - assets/images/crew_buildings/tool/villa/
     - assets/images/crew_buildings/tool/vip/
+    - assets/images/crew_buildings/parts/camping/
+    - assets/images/crew_buildings/parts/rural/
+    - assets/images/crew_buildings/parts/city/
+    - assets/images/crew_buildings/parts/villa/
+    - assets/images/crew_buildings/parts/vip/
     - assets/images/school/
     - assets/images/security/
     - assets/images/tools/

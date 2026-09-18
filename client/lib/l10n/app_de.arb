@@ -13224,6 +13224,14 @@
   "crewUiMissionGearBonus": "Ausrüstungsbonus {percent}",
   "crewUiMissionConsumeWearHint": "Am Anfang ausgegeben: {consume}. Beim Start getragen: {wear}.",
   "crewUiActionAddTool": "Werkzeug hinzufügen",
+  "crewUiActionAddParts": "Teile einlagern",
+  "crewUiPartsCar": "Autoteile",
+  "crewUiPartsMotorcycle": "Motorradteile",
+  "crewUiPartsBoat": "Bootsteile",
+  "crewUiPartsNoneToDeposit": "Keine Fahrzeugteile zum Einlagern",
+  "crewUiVehicleNeedCrewParts": "Nicht genug Teile im Crewlager. Lege zuerst Teile ein.",
+  "crewUiPartsStorageFull": "Das Teilelager ist voll",
+  "crewUiPartsStorageMissing": "Eure Crew braucht zuerst ein Teilelager",
   "crewUiMissionReqHeldNeed": "{label}: {held}/{need}",
   "@crewUiMissionGearBonus": {
     "placeholders": {
@@ -13256,6 +13264,7 @@
     }
   },
   "crewUiBuildingToolStorage": "Werkzeugaufbewahrung",
+  "crewUiBuildingPartsStorage": "Teilelager",
   "crewUiWarLootTool": "Werkzeuge",
   "crewUiMissionFilterAll": "Alle Missionen",
   "crewUiMissionFilterAvailable": "Für Ihre Crew freigeschaltet",
@@ -13295,7 +13304,7 @@
   "gameSupportDonateRedirectCancelled": "Donation cancelled. You were not charged.",
   "gameSupportDonateRedirectFailed": "Donation failed or expired. You were not charged.",
   "crewUiVehicleManageTitle": "Manage crew vehicle",
-  "crewUiVehiclePayFromPocket": "Repair, refuel and tune are paid from the crew bank. Tuning still uses your own parts.",
+  "crewUiVehiclePayFromPocket": "Repair, refuel and tune are paid from the crew bank. Tuning uses parts from crew parts storage.",
   "crewUiVehicleSellToBank": "Only the leader and co-leader can sell. The money goes to the crew bank.",
   "crewUiVehicleSellConfirm": "Sell this vehicle for {amount}? The money goes to the crew bank, not to you.",
   "@crewUiVehicleSellConfirm": {

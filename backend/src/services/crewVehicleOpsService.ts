@@ -1,5 +1,6 @@
 import prisma from '../lib/prisma';
 import { getCrewStorageCapacity } from './crewBuildingService';
+import { ensureCrewPartsStorageSchema } from '../startup/ensureCrewPartsStorageSchema';
 import { vehicleService } from './vehicleService';
 
 export type CrewVehicleKind = 'car' | 'boat';
@@ -400,34 +401,37 @@ export async function upgradeCrewVehicleTuning(
 
   await requireCrewBankFunds(crewId, quote.moneyCost);
 
-  await prisma.$executeRaw`
-    INSERT INTO player_vehicle_parts (player_id, car_parts, motorcycle_parts, boat_parts)
-    VALUES (${playerId}, 0, 0, 0)
-    ON DUPLICATE KEY UPDATE player_id = player_id
-  `;
+  const partsCapacity = await getCrewStorageCapacity(crewId, 'parts_storage');
+  if (partsCapacity <= 0) throw new Error('PARTS_STORAGE_NOT_OWNED');
 
+  await ensureCrewPartsStorageSchema();
+  await prisma.$executeRaw`
+    INSERT INTO crew_vehicle_parts_inventory (crewId, carParts, motorcycleParts, boatParts)
+    VALUES (${crewId}, 0, 0, 0)
+    ON DUPLICATE KEY UPDATE crewId = crewId
+  `;
   const partsRows = await prisma.$queryRaw<
-    Array<{ car_parts: number; motorcycle_parts: number; boat_parts: number }>
+    Array<{ carParts: number; motorcycleParts: number; boatParts: number }>
   >`
-    SELECT car_parts, motorcycle_parts, boat_parts
-    FROM player_vehicle_parts
-    WHERE player_id = ${playerId}
+    SELECT carParts, motorcycleParts, boatParts
+    FROM crew_vehicle_parts_inventory
+    WHERE crewId = ${crewId}
     LIMIT 1
   `;
   const available =
     vehicleType === 'boat'
-      ? Number(partsRows[0]?.boat_parts ?? 0)
+      ? Number(partsRows[0]?.boatParts ?? 0)
       : vehicleType === 'motorcycle'
-        ? Number(partsRows[0]?.motorcycle_parts ?? 0)
-        : Number(partsRows[0]?.car_parts ?? 0);
-  if (available < quote.partsCost) throw new Error('INSUFFICIENT_PARTS');
+        ? Number(partsRows[0]?.motorcycleParts ?? 0)
+        : Number(partsRows[0]?.carParts ?? 0);
+  if (available < quote.partsCost) throw new Error('INSUFFICIENT_CREW_PARTS');
 
   const partsColumn =
     vehicleType === 'boat'
-      ? 'boat_parts'
+      ? 'boatParts'
       : vehicleType === 'motorcycle'
-        ? 'motorcycle_parts'
-        : 'car_parts';
+        ? 'motorcycleParts'
+        : 'carParts';
   const levelColumn =
     stat === 'speed' ? 'speed_level' : stat === 'stealth' ? 'stealth_level' : 'armor_level';
   const table = tableName(kind);
@@ -440,9 +444,12 @@ export async function upgradeCrewVehicleTuning(
       select: { bankBalance: true },
     }),
     prisma.$executeRawUnsafe(
-      `UPDATE player_vehicle_parts SET ${partsColumn} = ${partsColumn} - ? WHERE player_id = ?`,
+      `UPDATE crew_vehicle_parts_inventory
+       SET ${partsColumn} = ${partsColumn} - ?
+       WHERE crewId = ? AND ${partsColumn} >= ?`,
       quote.partsCost,
-      playerId
+      crewId,
+      quote.partsCost
     ),
     prisma.$executeRawUnsafe(
       `UPDATE ${table}

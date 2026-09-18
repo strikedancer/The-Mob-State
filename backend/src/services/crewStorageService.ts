@@ -13,6 +13,56 @@ import {
   getBackpackTradeQuantity,
   refreshInventorySlotUsage,
 } from './carriedInventory';
+import { ensureCrewPartsStorageSchema } from '../startup/ensureCrewPartsStorageSchema';
+
+export type CrewPartType = 'car' | 'motorcycle' | 'boat';
+
+function normalizeCrewPartType(value: string): CrewPartType | null {
+  if (value === 'car' || value === 'motorcycle' || value === 'boat') return value;
+  return null;
+}
+
+function crewPartsColumn(type: CrewPartType): 'carParts' | 'motorcycleParts' | 'boatParts' {
+  if (type === 'boat') return 'boatParts';
+  if (type === 'motorcycle') return 'motorcycleParts';
+  return 'carParts';
+}
+
+function playerPartsColumn(type: CrewPartType): 'car_parts' | 'motorcycle_parts' | 'boat_parts' {
+  if (type === 'boat') return 'boat_parts';
+  if (type === 'motorcycle') return 'motorcycle_parts';
+  return 'car_parts';
+}
+
+async function ensureCrewPartsInventoryRow(crewId: number) {
+  await ensureCrewPartsStorageSchema();
+  await prisma.$executeRaw`
+    INSERT INTO crew_vehicle_parts_inventory (crewId, carParts, motorcycleParts, boatParts)
+    VALUES (${crewId}, 0, 0, 0)
+    ON DUPLICATE KEY UPDATE crewId = crewId
+  `;
+}
+
+async function getCrewPartsTotals(crewId: number): Promise<{
+  car: number;
+  motorcycle: number;
+  boat: number;
+  total: number;
+}> {
+  await ensureCrewPartsInventoryRow(crewId);
+  const rows = await prisma.$queryRaw<
+    Array<{ carParts: number; motorcycleParts: number; boatParts: number }>
+  >`
+    SELECT carParts, motorcycleParts, boatParts
+    FROM crew_vehicle_parts_inventory
+    WHERE crewId = ${crewId}
+    LIMIT 1
+  `;
+  const car = Number(rows[0]?.carParts ?? 0);
+  const motorcycle = Number(rows[0]?.motorcycleParts ?? 0);
+  const boat = Number(rows[0]?.boatParts ?? 0);
+  return { car, motorcycle, boat, total: car + motorcycle + boat };
+}
 
 async function playerCountry(playerId: number): Promise<string> {
   const player = await prisma.player.findUnique({
@@ -308,6 +358,77 @@ export async function depositCrewTool(
     }
   });
 }
+
+export async function depositCrewParts(
+  crewId: number,
+  playerId: number,
+  partsTypeInput: string,
+  quantity: number
+) {
+  const partsType = normalizeCrewPartType(partsTypeInput);
+  if (!partsType) {
+    throw new Error('INVALID_PARTS_TYPE');
+  }
+  if (!Number.isInteger(quantity) || quantity <= 0) {
+    throw new Error('INVALID_QUANTITY');
+  }
+
+  const capacity = await getCrewStorageCapacity(crewId, 'parts_storage');
+  if (capacity <= 0) {
+    throw new Error('PARTS_STORAGE_NOT_OWNED');
+  }
+
+  const current = await getCrewPartsTotals(crewId);
+  if (current.total + quantity > capacity) {
+    throw new Error('PARTS_STORAGE_FULL');
+  }
+
+  await prisma.$executeRaw`
+    INSERT INTO player_vehicle_parts (player_id, car_parts, motorcycle_parts, boat_parts)
+    VALUES (${playerId}, 0, 0, 0)
+    ON DUPLICATE KEY UPDATE player_id = player_id
+  `;
+  const playerRows = await prisma.$queryRaw<
+    Array<{ car_parts: number; motorcycle_parts: number; boat_parts: number }>
+  >`
+    SELECT car_parts, motorcycle_parts, boat_parts
+    FROM player_vehicle_parts
+    WHERE player_id = ${playerId}
+    LIMIT 1
+  `;
+  const available =
+    partsType === 'boat'
+      ? Number(playerRows[0]?.boat_parts ?? 0)
+      : partsType === 'motorcycle'
+        ? Number(playerRows[0]?.motorcycle_parts ?? 0)
+        : Number(playerRows[0]?.car_parts ?? 0);
+  if (available < quantity) {
+    throw new Error('INSUFFICIENT_PARTS');
+  }
+
+  const crewColumn = crewPartsColumn(partsType);
+  const playerColumn = playerPartsColumn(partsType);
+  await prisma.$transaction([
+    prisma.$executeRawUnsafe(
+      `UPDATE player_vehicle_parts SET ${playerColumn} = ${playerColumn} - ? WHERE player_id = ? AND ${playerColumn} >= ?`,
+      quantity,
+      playerId,
+      quantity
+    ),
+    prisma.$executeRawUnsafe(
+      `UPDATE crew_vehicle_parts_inventory SET ${crewColumn} = ${crewColumn} + ? WHERE crewId = ?`,
+      quantity,
+      crewId
+    ),
+  ]);
+}
+
+export async function getCrewPartsStock(crewId: number, partsType: CrewPartType): Promise<number> {
+  const totals = await getCrewPartsTotals(crewId);
+  return totals[partsType];
+}
+
+export { getCrewPartsTotals };
 
 export async function depositCrewAmmo(
   crewId: number,
@@ -674,6 +795,7 @@ export async function getCrewStorageSummary(crewId: number, viewerCountry = 'net
     boatCapacity,
     weaponCapacity,
     toolCapacity,
+    partsCapacity,
     ammoCapacity,
     drugCapacity,
     tradeCapacity,
@@ -683,11 +805,13 @@ export async function getCrewStorageSummary(crewId: number, viewerCountry = 'net
     getCrewStorageCapacity(crewId, 'boat_storage'),
     getCrewStorageCapacity(crewId, 'weapon_storage'),
     getCrewStorageCapacity(crewId, 'tool_storage'),
+    getCrewStorageCapacity(crewId, 'parts_storage'),
     getCrewStorageCapacity(crewId, 'ammo_storage'),
     getCrewStorageCapacity(crewId, 'drug_storage'),
     getCrewStorageCapacity(crewId, 'trade_storage'),
     getCrewStorageCapacity(crewId, 'cash_storage'),
   ]);
+  const parts = await getCrewPartsTotals(crewId);
 
   const [
     cars,
@@ -806,6 +930,7 @@ export async function getCrewStorageSummary(crewId: number, viewerCountry = 'net
       boats: boatCapacity,
       weapons: weaponCapacity,
       tools: toolCapacity,
+      parts: partsCapacity,
       ammo: ammoCapacity,
       drugs: drugCapacity,
       trade: tradeCapacity,
@@ -816,6 +941,7 @@ export async function getCrewStorageSummary(crewId: number, viewerCountry = 'net
       boats: boats.length,
       weapons: weaponCount,
       tools: tools.length,
+      parts: parts.total,
       ammo: ammoCount,
       drugs: drugCount,
       trade: tradeCount,
@@ -830,6 +956,11 @@ export async function getCrewStorageSummary(crewId: number, viewerCountry = 'net
       boats: boatsWithName,
       weapons,
       tools,
+      parts: [
+        { partsType: 'car', quantity: parts.car },
+        { partsType: 'motorcycle', quantity: parts.motorcycle },
+        { partsType: 'boat', quantity: parts.boat },
+      ].filter((row) => row.quantity > 0),
       ammo,
       drugs,
       drugLots,

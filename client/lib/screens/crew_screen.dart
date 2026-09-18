@@ -355,6 +355,24 @@ class _CrewScreenState extends State<CrewScreen>
       4100,
       6560,
     ],
+    'parts_storage': [
+      40,
+      100,
+      240,
+      475,
+      800,
+      1250,
+      1850,
+      2650,
+      3800,
+      5400,
+      7400,
+      9900,
+      12900,
+      16400,
+      20500,
+      32800,
+    ],
     'ammo_storage': [
       500,
       1500,
@@ -502,6 +520,24 @@ class _CrewScreenState extends State<CrewScreen>
       1150000000,
       2000000000,
       3100000000,
+    ],
+    'parts_storage': [
+      48000,
+      140000,
+      380000,
+      980000,
+      2600000,
+      6400000,
+      14200000,
+      30500000,
+      61000000,
+      118000000,
+      205000000,
+      370000000,
+      665000000,
+      1220000000,
+      2140000000,
+      3317000000,
     ],
     'ammo_storage': [
       40000,
@@ -655,6 +691,7 @@ class _CrewScreenState extends State<CrewScreen>
       'boat_storage',
       'weapon_storage',
       'tool_storage',
+      'parts_storage',
       'ammo_storage',
       'drug_storage',
       'trade_storage',
@@ -4444,6 +4481,145 @@ class _CrewScreenState extends State<CrewScreen>
     }
   }
 
+  Future<void> _depositParts() async {
+    if (_myCrew == null) return;
+    final locale = Localizations.localeOf(context).languageCode;
+    try {
+      final apiClient = AuthService().apiClient;
+      final response = await apiClient.get('/vehicles/tuning/overview');
+      if (response.statusCode != 200) return;
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final parts = (data['parts'] as Map?)?.cast<String, dynamic>() ?? {};
+      final options = <MapEntry<String, int>>[
+        MapEntry('car', (parts['car'] as num?)?.toInt() ?? 0),
+        MapEntry('motorcycle', (parts['motorcycle'] as num?)?.toInt() ?? 0),
+        MapEntry('boat', (parts['boat'] as num?)?.toInt() ?? 0),
+      ].where((entry) => entry.value > 0).toList();
+
+      if (options.isEmpty) {
+        if (mounted) {
+          showTopRightFromSnackBar(
+            context,
+            SnackBar(content: Text(l10n.crewUiPartsNoneToDeposit)),
+          );
+        }
+        return;
+      }
+
+      String selectedType = options.first.key;
+      final qtyController = TextEditingController(text: '1');
+
+      String labelFor(String type) {
+        switch (type) {
+          case 'motorcycle':
+            return l10n.crewUiPartsMotorcycle;
+          case 'boat':
+            return l10n.crewUiPartsBoat;
+          default:
+            return l10n.crewUiPartsCar;
+        }
+      }
+
+      final confirmed = await showDialog<bool>(
+        context: context,
+        builder: (context) => StatefulBuilder(
+          builder: (context, setStateDialog) => AlertDialog(
+            title: Text(l10n.crewUiActionAddParts),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                DropdownButtonFormField<String>(
+                  initialValue: selectedType,
+                  items: options
+                      .map(
+                        (entry) => DropdownMenuItem<String>(
+                          value: entry.key,
+                          child: Text('${labelFor(entry.key)} (${entry.value})'),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    if (value == null) return;
+                    setStateDialog(() {
+                      selectedType = value;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    labelText: locale == 'nl' ? 'Onderdeel' : 'Part type',
+                  ),
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: qtyController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: l10n.crewUiTr107,
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: Text(l10n.crewUiTr43),
+              ),
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context, true),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                child: Text(l10n.crewUiTr104),
+              ),
+            ],
+          ),
+        ),
+      );
+
+      if (confirmed != true) return;
+
+      final quantity = int.tryParse(qtyController.text) ?? 0;
+      final depositResponse = await apiClient.post(
+        '/crews/${_myCrew!.id}/storage/parts/deposit',
+        {'partsType': selectedType, 'quantity': quantity},
+      );
+
+      if (depositResponse.statusCode == 200 && mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              locale == 'nl' ? 'Toegevoegd aan crew' : 'Added to crew',
+            ),
+            backgroundColor: Colors.green,
+          ),
+        );
+        _loadData();
+        return;
+      }
+
+      if (mounted) {
+        final body = depositResponse.body.isEmpty
+            ? <String, dynamic>{}
+            : jsonDecode(depositResponse.body) as Map<String, dynamic>;
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(_crewVehicleOpsErrorMessage(l10n, body)),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text('Er is een fout opgetreden'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
   Future<void> _depositAmmo() async {
     if (_myCrew == null) return;
     final locale = Localizations.localeOf(context).languageCode;
@@ -4762,6 +4938,9 @@ class _CrewScreenState extends State<CrewScreen>
     if (type == 'tool_storage') {
       return 'assets/images/crew_buildings/weapon/$buildingStyle/lvl_$level.png';
     }
+    if (type == 'parts_storage') {
+      return 'assets/images/crew_buildings/tool/$buildingStyle/lvl_$level.png';
+    }
     return null;
   }
 
@@ -4826,6 +5005,8 @@ class _CrewScreenState extends State<CrewScreen>
         return Icons.gavel;
       case 'tool_storage':
         return Icons.handyman;
+      case 'parts_storage':
+        return Icons.settings;
       case 'ammo_storage':
         return Icons.inventory_2;
       case 'drug_storage':
@@ -5091,6 +5272,7 @@ class _CrewScreenState extends State<CrewScreen>
     final boatStorageOwned = (storageCapacities?['boats'] as int? ?? 0) > 0;
     final weaponStorageOwned = (storageCapacities?['weapons'] as int? ?? 0) > 0;
     final toolStorageOwned = (storageCapacities?['tools'] as int? ?? 0) > 0;
+    final partsStorageOwned = (storageCapacities?['parts'] as int? ?? 0) > 0;
     final ammoStorageOwned = (storageCapacities?['ammo'] as int? ?? 0) > 0;
     final drugStorageOwned = (storageCapacities?['drugs'] as int? ?? 0) > 0;
     final tradeStorageOwned = (storageCapacities?['trade'] as int? ?? 0) > 0;
@@ -5463,6 +5645,12 @@ class _CrewScreenState extends State<CrewScreen>
                                 child: Text(l10n.crewUiActionAddTool),
                               ),
                               OutlinedButton(
+                                onPressed: partsStorageOwned
+                                    ? _depositParts
+                                    : null,
+                                child: Text(l10n.crewUiActionAddParts),
+                              ),
+                              OutlinedButton(
                                 onPressed: ammoStorageOwned
                                     ? _depositAmmo
                                     : null,
@@ -5540,6 +5728,7 @@ class _CrewScreenState extends State<CrewScreen>
       'boat_storage',
       'weapon_storage',
       'tool_storage',
+      'parts_storage',
       'ammo_storage',
       'drug_storage',
       'trade_storage',
@@ -6095,12 +6284,19 @@ class _CrewScreenState extends State<CrewScreen>
     if (event == 'error.insufficient_crew_funds') {
       return loc.crewUiTr6;
     }
+    if (event == 'error.parts_storage_not_owned') {
+      return loc.crewUiPartsStorageMissing;
+    }
+    if (event == 'error.parts_storage_full') {
+      return loc.crewUiPartsStorageFull;
+    }
     final params = (data['params'] as Map?)?.cast<String, dynamic>() ?? {};
     switch (params['reason']?.toString()) {
       case 'INSUFFICIENT_CREW_FUNDS':
         return loc.crewUiTr6;
       case 'INSUFFICIENT_PARTS':
-        return loc.tuneShopErrorInsufficientParts;
+      case 'INSUFFICIENT_CREW_PARTS':
+        return loc.crewUiVehicleNeedCrewParts;
       case 'TUNE_STAT_MAXED':
         return loc.tuneShopErrorStatMaxed;
       case 'TUNE_COOLDOWN_ACTIVE':
@@ -6116,6 +6312,10 @@ class _CrewScreenState extends State<CrewScreen>
         return loc.crewUiVehicleNotBroken;
       case 'CASH_STORAGE_FULL':
         return loc.crewUiTr90;
+      case 'PARTS_STORAGE_NOT_OWNED':
+        return loc.crewUiPartsStorageMissing;
+      case 'PARTS_STORAGE_FULL':
+        return loc.crewUiPartsStorageFull;
       case 'INVALID_TUNE_STAT':
         return loc.tuneShopErrorInvalidStat;
       default:
@@ -6574,6 +6774,31 @@ class _CrewScreenState extends State<CrewScreen>
             subtitle: Text('$qty× · ${loc.condition} $condition%'),
           );
         });
+      case 'parts_storage':
+        return tilesFrom(
+          _crewInventoryRows('parts')
+              .where((row) => ((row['quantity'] as num?)?.toInt() ?? 0) > 0)
+              .toList(),
+          (row) {
+            final partsType = (row['partsType'] ?? '').toString();
+            final qty = (row['quantity'] as num?)?.toInt() ?? 0;
+            final label = partsType == 'motorcycle'
+                ? loc.crewUiPartsMotorcycle
+                : partsType == 'boat'
+                    ? loc.crewUiPartsBoat
+                    : loc.crewUiPartsCar;
+            return ListTile(
+              dense: true,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+              leading: _crewStorageItemThumb(
+                assetPath: 'assets/images/tuneshop/parts_$partsType.png',
+                fallback: Icons.settings,
+              ),
+              title: Text(label),
+              subtitle: Text('$qty×'),
+            );
+          },
+        );
       case 'tool_storage':
         return tilesFrom(_crewInventoryRows('tools'), (row) {
           final id = (row['toolId'] ?? '').toString();
@@ -6932,6 +7157,18 @@ class _CrewScreenState extends State<CrewScreen>
             buildingType: 'tool_storage',
             onPressed: (capacities?['tools'] as int? ?? 0) > 0
                 ? _depositTool
+                : null,
+            actionNl: 'Toevoegen',
+            actionEn: 'Add',
+          ),
+          buildStorageTile(
+            icon: Icons.settings,
+            titleNl: 'Onderdelenopslag',
+            titleEn: 'Parts Storage',
+            value: '${totals?['parts'] ?? 0} / ${capacities?['parts'] ?? 0}',
+            buildingType: 'parts_storage',
+            onPressed: (capacities?['parts'] as int? ?? 0) > 0
+                ? _depositParts
                 : null,
             actionNl: 'Toevoegen',
             actionEn: 'Add',
@@ -8587,6 +8824,8 @@ class _CrewScreenState extends State<CrewScreen>
         return loc.crewUiBuildingWeaponStorage;
       case 'tool_storage':
         return loc.crewUiBuildingToolStorage;
+      case 'parts_storage':
+        return loc.crewUiBuildingPartsStorage;
       case 'ammo_storage':
         return loc.crewUiBuildingAmmoStorage;
       case 'drug_storage':

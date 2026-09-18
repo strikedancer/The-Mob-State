@@ -570,6 +570,8 @@ model Crew {
   weaponStorageBuilding CrewWeaponStorageBuilding?
   toolInventory         CrewToolInventory[]
   toolStorageBuilding   CrewToolStorageBuilding?
+  partsInventory        CrewVehiclePartsInventory?
+  partsStorageBuilding  CrewPartsStorageBuilding?
   dealsInitiated        CrewStorageDeal[]          @relation("CrewDealInitiator")
   dealsReceived         CrewStorageDeal[]          @relation("CrewDealCounterparty")
 
@@ -997,6 +999,30 @@ model CrewToolInventory {
   @@index([crewId])
   @@index([crewId, toolId])
   @@map("crew_tool_inventory")
+}
+
+model CrewPartsStorageBuilding {
+  id        Int               @id @default(autoincrement())
+  crewId    Int               @unique
+  style     CrewBuildingStyle @default(camping)
+  level     Int               @default(0)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  crew      Crew              @relation(fields: [crewId], references: [id], onDelete: Cascade)
+
+  @@map("crew_parts_storage_buildings")
+}
+
+model CrewVehiclePartsInventory {
+  id               Int      @id @default(autoincrement())
+  crewId           Int      @unique
+  carParts         Int      @default(0)
+  motorcycleParts  Int      @default(0)
+  boatParts        Int      @default(0)
+  updatedAt        DateTime @updatedAt
+  crew             Crew     @relation(fields: [crewId], references: [id], onDelete: Cascade)
+
+  @@map("crew_vehicle_parts_inventory")
 }
 
 model CrewAmmoInventory {

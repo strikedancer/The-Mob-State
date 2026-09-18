@@ -1576,6 +1576,8 @@ function mapCrewVehicleOpsError(error: unknown, res: Response, next: NextFunctio
     'FUEL_TANK_FULL',
     'VEHICLE_NOT_BROKEN',
     'INSUFFICIENT_PARTS',
+    'INSUFFICIENT_CREW_PARTS',
+    'PARTS_STORAGE_NOT_OWNED',
     'TUNE_STAT_MAXED',
     'CASH_STORAGE_FULL',
     'PLAYER_NOT_FOUND',
@@ -1692,7 +1694,7 @@ router.post(
 
 /**
  * POST /crews/:id/storage/:kind/:itemId/tuning
- * Upgrade speed/stealth/armor on a parked crew vehicle. Money from the crew bank; parts from the actor.
+ * Upgrade speed/stealth/armor on a parked crew vehicle. Money from the crew bank; parts from crew parts storage.
  */
 router.post(
   '/:id/storage/:kind/:itemId/tuning',
@@ -1858,6 +1860,77 @@ router.post(
         if (error.message === 'TOOL_BROKEN') {
           return res.status(400).json({
             event: 'error.tool_broken',
+            params: {},
+          });
+        }
+      }
+      return next(error);
+    }
+  }
+);
+
+/**
+ * POST /crews/:id/storage/parts/deposit
+ * Deposit personal vehicle parts into crew parts storage. No personal withdraw.
+ */
+router.post(
+  '/:id/storage/parts/deposit',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const crewId = parseInt(req.params.id as string);
+      const currentPlayerId = req.player!.id;
+      const { partsType, quantity } = req.body as { partsType?: string; quantity?: number };
+
+      if (isNaN(crewId) || !partsType || !quantity) {
+        return res.status(400).json({
+          event: 'error.invalid_input',
+          params: {},
+        });
+      }
+
+      const isMember = await crewService.isCrewMember(currentPlayerId, crewId);
+      if (!isMember) {
+        return res.status(403).json({
+          event: 'error.not_in_crew',
+          params: {},
+        });
+      }
+
+      await crewStorageService.depositCrewParts(
+        crewId,
+        currentPlayerId,
+        partsType,
+        Number(quantity)
+      );
+
+      return res.json({
+        event: 'crew.storage_parts_deposit',
+        params: {},
+      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        if (error.message === 'PARTS_STORAGE_NOT_OWNED') {
+          return res.status(400).json({
+            event: 'error.parts_storage_not_owned',
+            params: {},
+          });
+        }
+        if (error.message === 'PARTS_STORAGE_FULL') {
+          return res.status(400).json({
+            event: 'error.parts_storage_full',
+            params: {},
+          });
+        }
+        if (error.message === 'INSUFFICIENT_PARTS') {
+          return res.status(400).json({
+            event: 'error.insufficient_parts',
+            params: {},
+          });
+        }
+        if (error.message === 'INVALID_PARTS_TYPE' || error.message === 'INVALID_QUANTITY') {
+          return res.status(400).json({
+            event: 'error.invalid_input',
             params: {},
           });
         }

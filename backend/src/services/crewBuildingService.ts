@@ -8,6 +8,7 @@ export type CrewBuildingType =
   | 'boat_storage'
   | 'weapon_storage'
   | 'tool_storage'
+  | 'parts_storage'
   | 'ammo_storage'
   | 'drug_storage'
   | 'trade_storage'
@@ -54,6 +55,7 @@ const starterStorageTypes: CrewBuildingType[] = [
   'boat_storage',
   'weapon_storage',
   'tool_storage',
+  'parts_storage',
   'ammo_storage',
   'drug_storage',
   'trade_storage',
@@ -347,18 +349,19 @@ function getRequiredSideBuildingLevelForCurrentHqLevel(style: CrewBuildingStyle,
 }
 
 async function areAllSideBuildingsAtLeastLevel(crewId: number, requiredLevel: number): Promise<boolean> {
-  const [car, boat, weapon, tool, ammo, drug, trade, cash] = await Promise.all([
+  const [car, boat, weapon, tool, parts, ammo, drug, trade, cash] = await Promise.all([
     prisma.crewCarStorageBuilding.findUnique({ where: { crewId }, select: { level: true } }),
     prisma.crewBoatStorageBuilding.findUnique({ where: { crewId }, select: { level: true } }),
     prisma.crewWeaponStorageBuilding.findUnique({ where: { crewId }, select: { level: true } }),
     prisma.crewToolStorageBuilding.findUnique({ where: { crewId }, select: { level: true } }),
+    prisma.crewPartsStorageBuilding.findUnique({ where: { crewId }, select: { level: true } }),
     prisma.crewAmmoStorageBuilding.findUnique({ where: { crewId }, select: { level: true } }),
     prisma.crewDrugStorageBuilding.findUnique({ where: { crewId }, select: { level: true } }),
     prisma.crewTradeStorageBuilding.findUnique({ where: { crewId }, select: { level: true } }),
     prisma.crewCashStorageBuilding.findUnique({ where: { crewId }, select: { level: true } }),
   ]);
 
-  const all = [car, boat, weapon, tool, ammo, drug, trade, cash];
+  const all = [car, boat, weapon, tool, parts, ammo, drug, trade, cash];
   return all.every((building) => (building?.level ?? -1) >= requiredLevel);
 }
 
@@ -395,6 +398,8 @@ function getBuildingModel(type: CrewBuildingType) {
       return prisma.crewWeaponStorageBuilding;
     case 'tool_storage':
       return prisma.crewToolStorageBuilding;
+    case 'parts_storage':
+      return prisma.crewPartsStorageBuilding;
     case 'ammo_storage':
       return prisma.crewAmmoStorageBuilding;
     case 'drug_storage':
@@ -414,13 +419,14 @@ export async function getCrewBuildingRecord(crewId: number, type: CrewBuildingTy
 }
 
 export async function ensureCrewStarterBuildings(crewId: number): Promise<void> {
-  const [hq, carStorage, boatStorage, weaponStorage, toolStorage, ammoStorage, drugStorage, tradeStorage, cashStorage] =
+  const [hq, carStorage, boatStorage, weaponStorage, toolStorage, partsStorage, ammoStorage, drugStorage, tradeStorage, cashStorage] =
     await Promise.all([
       prisma.crewHqBuilding.findUnique({ where: { crewId } }),
       prisma.crewCarStorageBuilding.findUnique({ where: { crewId } }),
       prisma.crewBoatStorageBuilding.findUnique({ where: { crewId } }),
       prisma.crewWeaponStorageBuilding.findUnique({ where: { crewId } }),
       prisma.crewToolStorageBuilding.findUnique({ where: { crewId } }),
+      prisma.crewPartsStorageBuilding.findUnique({ where: { crewId } }),
       prisma.crewAmmoStorageBuilding.findUnique({ where: { crewId } }),
       prisma.crewDrugStorageBuilding.findUnique({ where: { crewId } }),
       prisma.crewTradeStorageBuilding.findUnique({ where: { crewId } }),
@@ -432,6 +438,7 @@ export async function ensureCrewStarterBuildings(crewId: number): Promise<void> 
     boatStorage,
     weaponStorage,
     toolStorage,
+    partsStorage,
     ammoStorage,
     drugStorage,
     tradeStorage,
@@ -447,6 +454,8 @@ export async function ensureCrewStarterBuildings(crewId: number): Promise<void> 
         return !weaponStorage;
       case 'tool_storage':
         return !toolStorage;
+      case 'parts_storage':
+        return !partsStorage;
       case 'ammo_storage':
         return !ammoStorage;
       case 'drug_storage':
@@ -500,6 +509,15 @@ export async function ensureCrewStarterBuildings(crewId: number): Promise<void> 
       tx.crewToolStorageBuilding.upsert({
         where: { crewId },
         create: starterBuildingData,
+        update: {},
+      }),
+      tx.crewPartsStorageBuilding.upsert({
+        where: { crewId },
+        create: {
+          crewId,
+          style: (toolStorage?.style as CrewBuildingStyle) ?? 'camping',
+          level: toolStorage?.level && toolStorage.level > 0 ? toolStorage.level : 1,
+        },
         update: {},
       }),
       tx.crewAmmoStorageBuilding.upsert({

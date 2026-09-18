@@ -124,11 +124,25 @@ class DrugService {
   ) async {
     try {
       final response = await _apiClient.post(
-        '/drugs/materials/buy/$materialId',
+        '/drugs/materials/buy/${Uri.encodeComponent(materialId)}',
         {'quantity': quantity},
       );
+      final decoded = _decodeDrugResponse(
+        response.body,
+        fallbackMessage: 'Failed to buy material',
+      );
       if (response.statusCode == 200 || response.statusCode == 201) {
-        return json.decode(response.body);
+        return decoded;
+      }
+      if (decoded['event'] == 'error.jailed') {
+        return {
+          'success': false,
+          'message': 'Je zit in de gevangenis / You are in jail',
+        };
+      }
+      final message = decoded['message']?.toString().trim();
+      if (message != null && message.isNotEmpty) {
+        return {'success': false, 'message': message};
       }
       return {'success': false, 'message': 'Failed to buy material'};
     } catch (e) {

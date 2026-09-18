@@ -4809,7 +4809,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get crewUiVehiclePayFromPocket =>
-      'Repair, refuel and tune are paid from the crew bank. Tuning still uses your own parts.';
+      'Repair, refuel and tune are paid from the crew bank. Tuning uses parts from crew parts storage.';
 
   @override
   String get crewUiVehicleSellToBank =>
@@ -4955,6 +4955,32 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get crewUiActionAddTool => 'Aggiungi strumento';
+
+  @override
+  String get crewUiActionAddParts => 'Deposita ricambi';
+
+  @override
+  String get crewUiPartsCar => 'Ricambi auto';
+
+  @override
+  String get crewUiPartsMotorcycle => 'Ricambi moto';
+
+  @override
+  String get crewUiPartsBoat => 'Ricambi barca';
+
+  @override
+  String get crewUiPartsNoneToDeposit => 'Nessun ricambio da depositare';
+
+  @override
+  String get crewUiVehicleNeedCrewParts =>
+      'Non ci sono abbastanza ricambi nel deposito crew. Deposita prima i ricambi.';
+
+  @override
+  String get crewUiPartsStorageFull => 'Il deposito ricambi è pieno';
+
+  @override
+  String get crewUiPartsStorageMissing =>
+      'La crew deve prima avere un deposito ricambi';
 
   @override
   String crewUiMissionReqHeldNeed(String label, int held, int need) {
@@ -5198,6 +5224,9 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get crewUiBuildingToolStorage => 'Deposito attrezzi';
+
+  @override
+  String get crewUiBuildingPartsStorage => 'Deposito ricambi';
 
   @override
   String get crewUiBuildingAmmoStorage => 'Deposito di munizioni';

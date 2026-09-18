@@ -463,6 +463,10 @@ class _NightclubScreenState extends State<NightclubScreen> {
     if (_hospitalityPrefsLoaded) return;
     final prefs = await SharedPreferences.getInstance();
     for (final key in prefs.getKeys()) {
+      if (!key.startsWith(_hospitalityPackPrefPrefix) &&
+          !key.startsWith(_hospitalityPricingPrefPrefix)) {
+        continue;
+      }
       final value = prefs.getString(key);
       if (value == null || value.isEmpty) continue;
       if (key.startsWith(_hospitalityPackPrefPrefix)) {
