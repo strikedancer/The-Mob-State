@@ -31262,6 +31262,12 @@ abstract class AppLocalizations {
   /// **'Low-profile: new production is temporarily blocked.'**
   String get drugsProdLowProfileBlock;
 
+  /// No description provided for @drugsProdLowProfileBlockRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Low-profile: new production is blocked for {remaining}.'**
+  String drugsProdLowProfileBlockRemaining(String remaining);
+
   /// No description provided for @drugsProdFacilityDowntime.
   ///
   /// In en, this message translates to:
@@ -31829,13 +31835,13 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicDrugsHow.
   ///
   /// In en, this message translates to:
-  /// **'The drug system uses a photo header plus three tabs: Facilities (upgrade production capacity), Production (active production lines with timer) and Inventory (finished products).\nBuy raw materials via the black market or trade. Combine them in a facility to produce drugs.\nProduction timers run while you are offline. No active clicking needed: check back when the timer finishes.\nFinished output stays visible in Production and keeps that facility slot occupied until you collect it; VIP auto-collect processes ready output automatically in the background.\nCollect puts the product in your backpack, not automatically in the nightclub. If the bag is full, store the drugs in the club (MAX or Store all from backpack) or in a house, then collect again.\nStorage capacity is limited per facility. When storage is full production stops automatically.\nA darkweb storefront or other facility does not auto-sell finished output: selling still happens manually through the intended sale flow.\nSell drugs via the black market, Colombia or other special sales locations for the highest margin.\nFBI Heat rises every production cycle and extra on large sales. High heat leads to raid events that can shut down your operation.\nFacility upgrades reduce production time, increase output and expand storage capacity.\nVIP players get a lightning button on production cards: after a confirmation modal, you can buy all missing batch materials in one click.\nAdvanced slot and equipment upgrades are tied to the new Narcotics education track (Hydroponics Specialist, Process Electrics Specialist, Clandestine Chemist). Without the required level/certification you cannot progress to the next upgrade tier.\nDrugs in inventory increase confiscation risk during travel and police checks.'**
+  /// **'The drug system uses a photo header plus three tabs: Facilities (upgrade production capacity), Production (active production lines with timer) and Inventory (finished products).\nBuy raw materials via the black market or trade. Combine them in a facility to produce drugs.\nProduction timers run while you are offline. No active clicking needed: check back when the timer finishes.\nFinished output stays visible in Production and keeps that facility slot occupied until you collect it; VIP auto-collect processes ready output automatically in the background.\nCollect puts the product in your backpack, not automatically in the nightclub. If the bag is full, store the drugs in the club (MAX or Store all from backpack) or in a house, then collect again.\nStorage capacity is limited per facility. When storage is full production stops automatically.\nA darkweb storefront or other facility does not auto-sell finished output: selling still happens manually through the intended sale flow.\nSell drugs via the black market, Colombia or other special sales locations for the highest margin.\nFBI Heat rises every production cycle and extra on large sales. High heat leads to raid events that can shut down your operation.\nFacility upgrades reduce production time, increase output and expand storage capacity.\nVIP players get a lightning button on production cards: after a confirmation modal, you can buy all missing batch materials in one click.\nAdvanced slot and equipment upgrades are tied to the new Narcotics education track (Hydroponics Specialist, Process Electrics Specialist, Clandestine Chemist). Without the required level/certification you cannot progress to the next upgrade tier.\nDrugs in inventory increase confiscation risk during travel and police checks.\nLow profile lasts 4 hours by default: you cannot start new production, extra heat is halved, and batches already cooking keep running. You cannot cancel it. After it ends you wait 8 hours from the moment you started before you can go low-profile again. Remaining time is shown on the Drugs hub and on production cards.'**
   String get helpTopicDrugsHow;
 
   /// No description provided for @helpTopicDrugsTips.
   ///
   /// In en, this message translates to:
-  /// **'Upgrade storage before production: full storage stops production and you lose that production time.\nKeep FBI Heat below 50: above that threshold you are actively hunted with heavy raid chances that shut everything down.\nCombine drug sales with smuggling for higher margins and distributed risk.'**
+  /// **'Upgrade storage before production: full storage stops production and you lose that production time.\nKeep FBI Heat below 50: above that threshold you are actively hunted with heavy raid chances that shut everything down.\nCombine drug sales with smuggling for higher margins and distributed risk.\nUse Low profile when heat is climbing and you can pause new batches. Cash cool drops heat immediately without blocking production.'**
   String get helpTopicDrugsTips;
 
   /// No description provided for @helpTopicNightclubCategory.
@@ -34433,6 +34439,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Low profile'**
   String get drugsHeatLowProfile;
+
+  /// No description provided for @drugsHeatLowProfileActiveRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Low profile active · {remaining}'**
+  String drugsHeatLowProfileActiveRemaining(String remaining);
+
+  /// No description provided for @drugsHeatLowProfileCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'Low profile · {remaining}'**
+  String drugsHeatLowProfileCooldown(String remaining);
+
+  /// No description provided for @drugsHeatLowProfileHint.
+  ///
+  /// In en, this message translates to:
+  /// **'No new batches until the timer ends. Extra heat is halved. Batches already cooking keep running. You cannot cancel this.'**
+  String get drugsHeatLowProfileHint;
 
   /// No description provided for @drugsHeatCashCool.
   ///

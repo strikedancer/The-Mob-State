@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -53,6 +55,8 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen>
   List<DrugInventory> _inventory = const [];
   DrugHeatInfo? _heatInfo;
   List<DrugWholesaleShipment> _wholesaleShipments = const [];
+  Timer? _clock;
+  DateTime _now = DateTime.now();
 
   @override
   void initState() {
@@ -64,6 +68,7 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen>
 
   @override
   void dispose() {
+    _clock?.cancel();
     _tabs.removeListener(_onTabSettled);
     _tabs.dispose();
     super.dispose();
@@ -105,7 +110,9 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen>
         _heatInfo = heatInfo;
         _wholesaleShipments = wholesale;
         _isLoadingStats = false;
+        _now = DateTime.now();
       });
+      _syncClock();
     } catch (_) {
       if (!mounted) return;
       setState(() => _isLoadingStats = false);
@@ -155,6 +162,41 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen>
       MaterialPageRoute(
         builder: (_) => const BlackMarketScreen(initialTabIndex: 4),
       ),
+    );
+  }
+
+  bool _heatNeedsClock(DrugHeatInfo? heat) {
+    if (heat == null) return false;
+    final until = heat.lowProfileUntil;
+    final readyAt = heat.lowProfileReadyAt;
+    return (until != null && until.isAfter(_now)) ||
+        (readyAt != null && readyAt.isAfter(_now));
+  }
+
+  void _syncClock() {
+    if (_heatNeedsClock(_heatInfo)) {
+      _clock ??= Timer.periodic(const Duration(seconds: 1), (_) {
+        if (!mounted) return;
+        final next = DateTime.now();
+        final until = _heatInfo?.lowProfileUntil;
+        setState(() => _now = next);
+        if (until != null && !until.isAfter(next)) {
+          _loadDashboardStats(quiet: true);
+        }
+      });
+    } else {
+      _clock?.cancel();
+      _clock = null;
+    }
+  }
+
+  String _remainingLabel(DateTime? until) {
+    if (until == null) return '';
+    final remaining = until.difference(_now);
+    if (remaining.isNegative || remaining.inSeconds <= 0) return '';
+    return formatAdaptiveDuration(
+      remaining,
+      localeName: Localizations.localeOf(context).languageCode,
     );
   }
 
@@ -342,6 +384,20 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen>
     final heat = _heatInfo;
     final raidPct = heat == null ? 0 : (heat.raidChance * 100).round();
     final rows = _wholesaleShipments.take(3).toList();
+    final activeRemaining =
+        heat == null ? '' : _remainingLabel(heat.lowProfileUntil);
+    final cooldownRemaining =
+        heat == null ? '' : _remainingLabel(heat.lowProfileReadyAt);
+    final lowProfileActive = heat != null &&
+        heat.lowProfileActive &&
+        (heat.lowProfileUntil == null || activeRemaining.isNotEmpty);
+    final lowProfileLocked =
+        lowProfileActive || cooldownRemaining.isNotEmpty;
+    final lowProfileButtonLabel = lowProfileActive
+        ? t.drugsHeatLowProfile
+        : cooldownRemaining.isNotEmpty
+            ? t.drugsHeatLowProfileCooldown(cooldownRemaining)
+            : t.drugsHeatLowProfile;
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
       child: Column(
@@ -364,13 +420,15 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen>
               ),
               if (heat != null) ...[
                 OutlinedButton(
-                  onPressed: () => _coolHeat('low_profile'),
+                  onPressed: lowProfileLocked
+                      ? null
+                      : () => _coolHeat('low_profile'),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: Colors.white70,
                     side: BorderSide(color: _drugGold.withValues(alpha: 0.4)),
                     visualDensity: VisualDensity.compact,
                   ),
-                  child: Text(t.drugsHeatLowProfile),
+                  child: Text(lowProfileButtonLabel),
                 ),
                 OutlinedButton(
                   onPressed: heat.cashCoolCost > 0
@@ -390,10 +448,12 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen>
                     icon: Icons.shield,
                     label: t.drugsHeatShieldActive,
                   ),
-                if (heat.lowProfileActive)
+                if (lowProfileActive)
                   _statChip(
                     icon: Icons.visibility_off,
-                    label: t.drugsHeatLowProfileActive,
+                    label: activeRemaining.isEmpty
+                        ? t.drugsHeatLowProfileActive
+                        : t.drugsHeatLowProfileActiveRemaining(activeRemaining),
                   ),
               ],
             ],
@@ -407,6 +467,16 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen>
                 fontSize: 12,
               ),
             ),
+            if (lowProfileActive) ...[
+              const SizedBox(height: 4),
+              Text(
+                t.drugsHeatLowProfileHint,
+                style: TextStyle(
+                  color: Colors.white.withValues(alpha: 0.72),
+                  fontSize: 12,
+                ),
+              ),
+            ],
           ],
           if (rows.isNotEmpty) ...[
             const SizedBox(height: 8),

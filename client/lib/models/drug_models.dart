@@ -624,6 +624,8 @@ class DrugHeatInfo {
   final int cashCoolCost;
   final int cashCoolPoints;
   final int lowProfileHours;
+  final int lowProfileCooldownHours;
+  final DateTime? lowProfileUntil;
   final DateTime? lowProfileReadyAt;
 
   DrugHeatInfo({
@@ -635,6 +637,8 @@ class DrugHeatInfo {
     this.cashCoolCost = 0,
     this.cashCoolPoints = 25,
     this.lowProfileHours = 4,
+    this.lowProfileCooldownHours = 8,
+    this.lowProfileUntil,
     this.lowProfileReadyAt,
   });
 
@@ -648,6 +652,10 @@ class DrugHeatInfo {
       cashCoolCost: json['cashCoolCost'] ?? 0,
       cashCoolPoints: json['cashCoolPoints'] ?? 25,
       lowProfileHours: json['lowProfileHours'] ?? 4,
+      lowProfileCooldownHours: json['lowProfileCooldownHours'] ?? 8,
+      lowProfileUntil: json['lowProfileUntil'] != null
+          ? DateTime.tryParse(json['lowProfileUntil'].toString())
+          : null,
       lowProfileReadyAt: json['lowProfileReadyAt'] != null
           ? DateTime.tryParse(json['lowProfileReadyAt'].toString())
           : null,
@@ -680,6 +688,7 @@ class DrugStats {
   final bool isVip;
   final bool autoCollectEnabled;
   final bool lowProfileActive;
+  final DateTime? lowProfileUntil;
   final String currentCountry;
 
   DrugStats({
@@ -697,6 +706,7 @@ class DrugStats {
     required this.isVip,
     required this.autoCollectEnabled,
     this.lowProfileActive = false,
+    this.lowProfileUntil,
     this.currentCountry = '',
   });
 
@@ -716,6 +726,9 @@ class DrugStats {
       isVip: json['isVip'] ?? false,
       autoCollectEnabled: json['autoCollectEnabled'] ?? false,
       lowProfileActive: json['lowProfileActive'] == true,
+      lowProfileUntil: json['lowProfileUntil'] != null
+          ? DateTime.tryParse(json['lowProfileUntil'].toString())
+          : null,
       currentCountry: (json['currentCountry'] ?? '').toString(),
     );
   }

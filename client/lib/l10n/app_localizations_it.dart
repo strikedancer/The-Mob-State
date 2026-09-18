@@ -18338,6 +18338,11 @@ class AppLocalizationsIt extends AppLocalizations {
       'Basso profilo: la nuova produzione è temporaneamente bloccata.';
 
   @override
+  String drugsProdLowProfileBlockRemaining(String remaining) {
+    return 'Basso profilo: la nuova produzione è bloccata per $remaining.';
+  }
+
+  @override
   String get drugsProdFacilityDowntime =>
       'Questo impianto è fermo dopo un raid.';
 
@@ -18673,11 +18678,11 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicDrugsHow =>
-      'Il sistema dei farmaci utilizza un\'intestazione fotografica più tre schede: Strutture (potenziamento della capacità produttiva), Produzione (linee di produzione attive con timer) e Inventario (prodotti finiti).\nAcquista materie prime tramite il mercato nero (scheda Materiali, collegata anche dall\'intestazione Farmaci e Produzione) o commercia. Combinali in una struttura per produrre farmaci.\nI timer di produzione vengono eseguiti mentre sei offline. Ricevi una notifica quando un lotto è pronto per il ritiro.\nPuoi spendere crediti premium per finire un lotto in anticipo, acquistare uno slot extra temporaneo o attivare uno scudo termico 24 ore su 24 (nessun rendimento extra).\nL\'output finito rimane visibile in Produzione e mantiene occupato lo slot della struttura finché non lo raccogli; La raccolta automatica VIP elabora l\'output pronto, ma salta un raid in sospeso finché non lo scegli.\nAl momento della raccolta, il calore può innescare un raid: scegli la perdita di scorte, i tempi di inattività della struttura o una multa in contanti prima di ricevere il bottino.\nPuoi raffreddare il calore con contanti o andare a basso profilo (temporaneamente nessuna nuova produzione).\nUna vetrina del darkweb non vende mai in silenzio: la vendita automatica è attivabile, con una commissione e calore extra.\nI farmaci di propria produzione ricevono un piccolo bonus sul margine del nightclub. I lotti di qualità possono essere depositati nel deposito dei farmaci dell\'Crew.\nLe carte struttura mostrano i requisiti di prezzo, grado e istruzione prima dell\'acquisto o dell\'aggiornamento.\nDa Inventario puoi esportare un carico all\'ingrosso in un altro paese: rimani lì, paghi il trasporto e ricevi contanti B2B destinati all\'arrivo del container. Il sequestro non paga nulla. Le vendite ambulanti, i nightclub, il darkweb e il Marketplace restano al dettaglio.';
+      'Il sistema dei farmaci utilizza un\'intestazione fotografica più tre schede: Strutture (potenziamento della capacità produttiva), Produzione (linee di produzione attive con timer) e Inventario (prodotti finiti).\nAcquista materie prime tramite il mercato nero (scheda Materiali, collegata anche dall\'intestazione Farmaci e Produzione) o commercia. Combinali in una struttura per produrre farmaci.\nI timer di produzione vengono eseguiti mentre sei offline. Ricevi una notifica quando un lotto è pronto per il ritiro.\nPuoi spendere crediti premium per finire un lotto in anticipo, acquistare uno slot extra temporaneo o attivare uno scudo termico 24 ore su 24 (nessun rendimento extra).\nL\'output finito rimane visibile in Produzione e mantiene occupato lo slot della struttura finché non lo raccogli; La raccolta automatica VIP elabora l\'output pronto, ma salta un raid in sospeso finché non lo scegli.\nAl momento della raccolta, il calore può innescare un raid: scegli la perdita di scorte, i tempi di inattività della struttura o una multa in contanti prima di ricevere il bottino.\nPuoi raffreddare il calore con contanti o andare a basso profilo (temporaneamente nessuna nuova produzione).\nUna vetrina del darkweb non vende mai in silenzio: la vendita automatica è attivabile, con una commissione e calore extra.\nI farmaci di propria produzione ricevono un piccolo bonus sul margine del nightclub. I lotti di qualità possono essere depositati nel deposito dei farmaci dell\'Crew.\nLe carte struttura mostrano i requisiti di prezzo, grado e istruzione prima dell\'acquisto o dell\'aggiornamento.\nDa Inventario puoi esportare un carico all\'ingrosso in un altro paese: rimani lì, paghi il trasporto e ricevi contanti B2B destinati all\'arrivo del container. Il sequestro non paga nulla. Le vendite ambulanti, i nightclub, il darkweb e il Marketplace restano al dettaglio.\nLow profile lasts 4 hours by default: you cannot start new production, extra heat is halved, and batches already cooking keep running. You cannot cancel it. After it ends you wait 8 hours from the moment you started before you can go low-profile again. Remaining time is shown on the Drugs hub and on production cards.';
 
   @override
   String get helpTopicDrugsTips =>
-      'Acquista materiali dalla scheda Materiali prima di iniziare i lotti. \nMantieni basso il calore della droga con un basso profilo o denaro freddo quando raccogli molto. \nDurante un\'incursione: scegli i tempi di inattività se vuoi conservare il lotto o i contanti se la struttura deve continuare a funzionare. \nAbilita la vendita automatica darkweb solo se accetti la tariffa e il riscaldamento. \nLa produzione propria immagazzinata nella discoteca guadagna un piccolo margine extra. \nVendi a un club con Aan club / Vendi a un club quando un proprietario locale apre la fornitura di giocatori; l’esportazione all’ingrosso rimane l’opzione a lunga distanza. \nEsporta solo se accetti il ​​rischio di trasporto e sequestro; il viaggio più la vendita ambulante pagano ancora di più al grammo.';
+      'Acquista materiali dalla scheda Materiali prima di iniziare i lotti. \nMantieni basso il calore della droga con un basso profilo o denaro freddo quando raccogli molto. \nDurante un\'incursione: scegli i tempi di inattività se vuoi conservare il lotto o i contanti se la struttura deve continuare a funzionare. \nAbilita la vendita automatica darkweb solo se accetti la tariffa e il riscaldamento. \nLa produzione propria immagazzinata nella discoteca guadagna un piccolo margine extra. \nVendi a un club con Aan club / Vendi a un club quando un proprietario locale apre la fornitura di giocatori; l’esportazione all’ingrosso rimane l’opzione a lunga distanza. \nEsporta solo se accetti il ​​rischio di trasporto e sequestro; il viaggio più la vendita ambulante pagano ancora di più al grammo.\nUse Low profile when heat is climbing and you can pause new batches. Cash cool drops heat immediately without blocking production.';
 
   @override
   String get helpTopicNightclubCategory => 'Impero';
@@ -20233,6 +20238,20 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get drugsHeatLowProfile => 'Low profile';
+
+  @override
+  String drugsHeatLowProfileActiveRemaining(String remaining) {
+    return 'Basso profilo attivo · $remaining';
+  }
+
+  @override
+  String drugsHeatLowProfileCooldown(String remaining) {
+    return 'Basso profilo · $remaining';
+  }
+
+  @override
+  String get drugsHeatLowProfileHint =>
+      'Nessun nuovo lotto fino allo scadere del timer. Il calore extra viene dimezzato. I lotti già in cottura continuano a funzionare. Non puoi annullarlo.';
 
   @override
   String drugsHeatCashCool(String cost) {

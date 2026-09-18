@@ -10,6 +10,7 @@ import 'black_market_screen.dart';
 import 'drug_facility_screen.dart';
 import '../utils/country_helper.dart';
 import '../utils/drug_localizations.dart';
+import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 import '../widgets/game_page_info.dart';
@@ -208,11 +209,33 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
   }
 
   void _startProductionTimer() {
+    _productionTimer?.cancel();
     _productionTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (!mounted) return;
       if (_activeProductions.isNotEmpty) {
         _loadActiveProductions();
+        return;
+      }
+      final until = _stats?.lowProfileUntil;
+      if (_stats?.lowProfileActive == true) {
+        if (until != null && !until.isAfter(DateTime.now())) {
+          _loadData();
+        } else {
+          setState(() {});
+        }
       }
     });
+  }
+
+  String _lowProfileRemainingLabel() {
+    final until = _stats?.lowProfileUntil;
+    if (until == null) return '';
+    final remaining = until.difference(DateTime.now());
+    if (remaining.isNegative || remaining.inSeconds <= 0) return '';
+    return formatAdaptiveDuration(
+      remaining,
+      localeName: Localizations.localeOf(context).languageCode,
+    );
   }
 
   Future<void> _loadData() async {
@@ -1570,6 +1593,10 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                             facility?.isInDowntime == true;
                                         final lowProfileBlocked =
                                             _stats?.lowProfileActive == true;
+                                        final lowProfileRemaining =
+                                            lowProfileBlocked
+                                                ? _lowProfileRemainingLabel()
+                                                : '';
                                         final canProduce =
                                             hasRank &&
                                             hasMaterials &&
@@ -1797,7 +1824,11 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                                     ),
                                                   if (lowProfileBlocked)
                                                     Text(
-                                                      t.drugsProdLowProfileBlock,
+                                                      lowProfileRemaining.isEmpty
+                                                          ? t.drugsProdLowProfileBlock
+                                                          : t.drugsProdLowProfileBlockRemaining(
+                                                              lowProfileRemaining,
+                                                            ),
                                                       style: const TextStyle(
                                                         color:
                                                             Colors.orangeAccent,

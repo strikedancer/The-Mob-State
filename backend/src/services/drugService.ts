@@ -2165,6 +2165,7 @@ class DrugService {
       isVip: isVipStatusActive(player),
       autoCollectEnabled: player?.autoCollectDrugs ?? false,
       lowProfileActive: Boolean(player?.drugLowProfileUntil && player.drugLowProfileUntil > new Date()),
+      lowProfileUntil: player?.drugLowProfileUntil?.toISOString() ?? null,
       currentCountry: player?.currentCountry || 'netherlands',
     };
   }

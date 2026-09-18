@@ -18278,6 +18278,11 @@ class AppLocalizationsPl extends AppLocalizations {
       'Low-profile: nowa produkcja jest tymczasowo zablokowana.';
 
   @override
+  String drugsProdLowProfileBlockRemaining(String remaining) {
+    return 'Niski profil: nowa produkcja jest zablokowana na $remaining.';
+  }
+
+  @override
   String get drugsProdFacilityDowntime => 'Ten obiekt stoi po nalocie.';
 
   @override
@@ -18612,11 +18617,11 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicDrugsHow =>
-      'System leków wykorzystuje nagłówek zdjęcia oraz trzy zakładki: Obiekty (modernizacja mocy produkcyjnych), Produkcja (aktywne linie produkcyjne z timerem) i Zapasy (produkty gotowe).\nKupuj surowce na czarnym rynku (zakładka Materiały, do której link znajduje się także w nagłówku Narkotyki i Produkcja) lub handluj. Połącz je w zakładzie produkującym leki.\nLiczniki produkcji działają, gdy jesteś offline. Otrzymasz powiadomienie, gdy partia będzie gotowa do odbioru.\nMożesz wydać kredyty premium, aby wcześniej zakończyć partię, kupić tymczasowe dodatkowe miejsce lub aktywować 24-godzinną osłonę termiczną (bez dodatkowego zysku).\nUkończony produkt pozostaje widoczny w Produkcji i zajmuje miejsce w placówce, dopóki go nie odbierzesz; Automatyczne zbieranie VIP przetwarza gotowe dane wyjściowe, ale pomija oczekujący nalot, dopóki nie wybierzesz.\nPodczas odbioru ciepło może wywołać nalot: przed otrzymaniem łupu wybierasz utratę zapasów, przestój w obiekcie lub karę pieniężną.\nMożesz schłodzić ciepło gotówką lub przejść na niski profil (chwilowo brak nowej produkcji).\nSklep w ciemnej sieci nigdy nie sprzedaje po cichu: automatyczna sprzedaż jest dobrowolna i wiąże się z opłatą oraz dodatkowym ogrzewaniem.\nNarkotyki własnej produkcji otrzymują niewielką premię za marżę klubu nocnego. Partie wysokiej jakości można zdeponować w magazynie leków dla załogi.\nKarty obiektów pokazują cenę, rangę i wymagania dotyczące wykształcenia przed zakupem lub ulepszeniem.\nZ poziomu magazynu możesz wyeksportować ładunek hurtowy do innego kraju: pozostajesz na miejscu, płacisz za fracht i otrzymujesz gotówkę B2B po przybyciu kontenera. Zajęcie nic nie płaci. Sprzedaż uliczna, Nightclub, darkweb i Marketplace pozostają detaliczne.';
+      'System leków wykorzystuje nagłówek zdjęcia oraz trzy zakładki: Obiekty (modernizacja mocy produkcyjnych), Produkcja (aktywne linie produkcyjne z timerem) i Zapasy (produkty gotowe).\nKupuj surowce na czarnym rynku (zakładka Materiały, do której link znajduje się także w nagłówku Narkotyki i Produkcja) lub handluj. Połącz je w zakładzie produkującym leki.\nLiczniki produkcji działają, gdy jesteś offline. Otrzymasz powiadomienie, gdy partia będzie gotowa do odbioru.\nMożesz wydać kredyty premium, aby wcześniej zakończyć partię, kupić tymczasowe dodatkowe miejsce lub aktywować 24-godzinną osłonę termiczną (bez dodatkowego zysku).\nUkończony produkt pozostaje widoczny w Produkcji i zajmuje miejsce w placówce, dopóki go nie odbierzesz; Automatyczne zbieranie VIP przetwarza gotowe dane wyjściowe, ale pomija oczekujący nalot, dopóki nie wybierzesz.\nPodczas odbioru ciepło może wywołać nalot: przed otrzymaniem łupu wybierasz utratę zapasów, przestój w obiekcie lub karę pieniężną.\nMożesz schłodzić ciepło gotówką lub przejść na niski profil (chwilowo brak nowej produkcji).\nSklep w ciemnej sieci nigdy nie sprzedaje po cichu: automatyczna sprzedaż jest dobrowolna i wiąże się z opłatą oraz dodatkowym ogrzewaniem.\nNarkotyki własnej produkcji otrzymują niewielką premię za marżę klubu nocnego. Partie wysokiej jakości można zdeponować w magazynie leków dla załogi.\nKarty obiektów pokazują cenę, rangę i wymagania dotyczące wykształcenia przed zakupem lub ulepszeniem.\nZ poziomu magazynu możesz wyeksportować ładunek hurtowy do innego kraju: pozostajesz na miejscu, płacisz za fracht i otrzymujesz gotówkę B2B po przybyciu kontenera. Zajęcie nic nie płaci. Sprzedaż uliczna, Nightclub, darkweb i Marketplace pozostają detaliczne.\nLow profile lasts 4 hours by default: you cannot start new production, extra heat is halved, and batches already cooking keep running. You cannot cancel it. After it ends you wait 8 hours from the moment you started before you can go low-profile again. Remaining time is shown on the Drugs hub and on production cards.';
 
   @override
   String get helpTopicDrugsTips =>
-      'Kup materiały w zakładce Materiały przed rozpoczęciem partii. \nUtrzymuj niską temperaturę narkotyków dzięki dyskretnemu lub chłodnemu wpływowi, gdy zbierzesz dużo. \nPodczas nalotu: wybierz przestój, jeśli chcesz zachować partię, lub gotówkę, jeśli obiekt musi nadal działać. \nWłącz automatyczną sprzedaż w Darkweb tylko wtedy, gdy zaakceptujesz opłatę i ciepło. \nWłasna produkcja przechowywana w nocnym klubie zapewnia niewielką dodatkową marżę. \nSprzedaj klubowi z klubem Aan / Sprzedaj klubowi, gdy lokalny właściciel otworzył zapasy zawodników; eksport hurtowy pozostaje opcją na duże odległości. \nEksportuj tylko wtedy, gdy akceptujesz ryzyko frachtu i zajęcia; podróże i sprzedaż uliczna nadal płacą więcej za gram.';
+      'Kup materiały w zakładce Materiały przed rozpoczęciem partii. \nUtrzymuj niską temperaturę narkotyków dzięki dyskretnemu lub chłodnemu wpływowi, gdy zbierzesz dużo. \nPodczas nalotu: wybierz przestój, jeśli chcesz zachować partię, lub gotówkę, jeśli obiekt musi nadal działać. \nWłącz automatyczną sprzedaż w Darkweb tylko wtedy, gdy zaakceptujesz opłatę i ciepło. \nWłasna produkcja przechowywana w nocnym klubie zapewnia niewielką dodatkową marżę. \nSprzedaj klubowi z klubem Aan / Sprzedaj klubowi, gdy lokalny właściciel otworzył zapasy zawodników; eksport hurtowy pozostaje opcją na duże odległości. \nEksportuj tylko wtedy, gdy akceptujesz ryzyko frachtu i zajęcia; podróże i sprzedaż uliczna nadal płacą więcej za gram.\nUse Low profile when heat is climbing and you can pause new batches. Cash cool drops heat immediately without blocking production.';
 
   @override
   String get helpTopicNightclubCategory => 'Imperium';
@@ -20168,6 +20173,20 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get drugsHeatLowProfile => 'Low profile';
+
+  @override
+  String drugsHeatLowProfileActiveRemaining(String remaining) {
+    return 'Aktywny niski profil · $remaining';
+  }
+
+  @override
+  String drugsHeatLowProfileCooldown(String remaining) {
+    return 'Niski profil · $remaining';
+  }
+
+  @override
+  String get drugsHeatLowProfileHint =>
+      'No new batches until the timer ends. Dodatkowe ciepło jest zmniejszone o połowę. Batches already cooking keep running. Nie możesz tego anulować.';
 
   @override
   String drugsHeatCashCool(String cost) {

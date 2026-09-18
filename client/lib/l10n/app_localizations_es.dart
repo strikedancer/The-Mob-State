@@ -18307,6 +18307,11 @@ class AppLocalizationsEs extends AppLocalizations {
       'Perfil bajo: la producción nueva está bloqueada temporalmente.';
 
   @override
+  String drugsProdLowProfileBlockRemaining(String remaining) {
+    return 'Perfil bajo: la nueva producción está bloqueada para $remaining.';
+  }
+
+  @override
   String get drugsProdFacilityDowntime =>
       'Esta instalación está parada tras una redada.';
 
@@ -18642,11 +18647,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicDrugsHow =>
-      'El sistema de medicamentos utiliza un encabezado de fotografía más tres pestañas: Instalaciones (mejora la capacidad de producción), Producción (líneas de producción activas con temporizador) e Inventario (productos terminados).\nCompre materias primas a través del mercado negro (pestaña Materiales, también vinculada desde el encabezado Drogas y Producción) o intercambie. Combínalos en una instalación para producir drogas.\nLos temporizadores de producción se ejecutan mientras estás desconectado. Recibirá una notificación cuando un lote esté listo para ser recolectado.\nPuede gastar créditos premium para terminar un lote antes, comprar una ranura adicional temporal o activar un escudo térmico de 24 horas (sin rendimiento adicional).\nEl resultado terminado permanece visible en Producción y mantiene ese espacio de instalación ocupado hasta que lo recojas; La recolección automática VIP procesa la salida lista, pero omite una incursión pendiente hasta que usted elija.\nAl recolectar, el calor puede desencadenar una redada: eliges pérdida de existencias, tiempo de inactividad de las instalaciones o una multa en efectivo antes de recibir el botín.\nPuede enfriar el calor con efectivo o pasar a un perfil bajo (temporalmente no hay nueva producción).\nUn escaparate de la web oscura nunca vende silenciosamente: la venta automática es voluntaria, con una tarifa y calor adicional.\nLos medicamentos de producción propia obtienen una pequeña bonificación de margen en los clubes nocturnos. Los lotes de calidad se pueden depositar en el almacén de medicamentos de la Crew.\nLas tarjetas de instalación muestran el precio, el rango y los requisitos educativos antes de comprar o actualizar.\nDesde el Inventario puedes exportar una carga mayorista a otro país: te quedas ahí, pagas el flete y recibes el efectivo de destino B2B cuando llega el contenedor. La incautación no paga nada. La venta callejera, los clubes nocturnos, la darkweb y Marketplace siguen siendo minoristas.';
+      'El sistema de medicamentos utiliza un encabezado de fotografía más tres pestañas: Instalaciones (mejora la capacidad de producción), Producción (líneas de producción activas con temporizador) e Inventario (productos terminados).\nCompre materias primas a través del mercado negro (pestaña Materiales, también vinculada desde el encabezado Drogas y Producción) o intercambie. Combínalos en una instalación para producir drogas.\nLos temporizadores de producción se ejecutan mientras estás desconectado. Recibirá una notificación cuando un lote esté listo para ser recolectado.\nPuede gastar créditos premium para terminar un lote antes, comprar una ranura adicional temporal o activar un escudo térmico de 24 horas (sin rendimiento adicional).\nEl resultado terminado permanece visible en Producción y mantiene ese espacio de instalación ocupado hasta que lo recojas; La recolección automática VIP procesa la salida lista, pero omite una incursión pendiente hasta que usted elija.\nAl recolectar, el calor puede desencadenar una redada: eliges pérdida de existencias, tiempo de inactividad de las instalaciones o una multa en efectivo antes de recibir el botín.\nPuede enfriar el calor con efectivo o pasar a un perfil bajo (temporalmente no hay nueva producción).\nUn escaparate de la web oscura nunca vende silenciosamente: la venta automática es voluntaria, con una tarifa y calor adicional.\nLos medicamentos de producción propia obtienen una pequeña bonificación de margen en los clubes nocturnos. Los lotes de calidad se pueden depositar en el almacén de medicamentos de la Crew.\nLas tarjetas de instalación muestran el precio, el rango y los requisitos educativos antes de comprar o actualizar.\nDesde el Inventario puedes exportar una carga mayorista a otro país: te quedas ahí, pagas el flete y recibes el efectivo de destino B2B cuando llega el contenedor. La incautación no paga nada. La venta callejera, los clubes nocturnos, la darkweb y Marketplace siguen siendo minoristas.\nLow profile lasts 4 hours by default: you cannot start new production, extra heat is halved, and batches already cooking keep running. You cannot cancel it. After it ends you wait 8 hours from the moment you started before you can go low-profile again. Remaining time is shown on the Drugs hub and on production cards.';
 
   @override
   String get helpTopicDrugsTips =>
-      'Compre materiales en la pestaña Materiales antes de comenzar los lotes. \nMantenga el calor de las drogas bajo con perfil bajo o efectivo cuando recolecte mucho. \nEn una redada: elija tiempo de inactividad si desea conservar el lote o dinero en efectivo si las instalaciones deben seguir funcionando. \nHabilite la venta automática en darkweb solo si acepta la tarifa y la calefacción. \nLa producción propia almacenada en la discoteca obtiene un pequeño margen adicional. \nVender a un club con Aan club / Vender a un club cuando un propietario local abrió la oferta de jugadores; la exportación al por mayor sigue siendo la opción a larga distancia. \nExporte sólo si acepta el riesgo de flete e incautación; Los viajes y la venta callejera siguen pagando más por gramo.';
+      'Compre materiales en la pestaña Materiales antes de comenzar los lotes. \nMantenga el calor de las drogas bajo con perfil bajo o efectivo cuando recolecte mucho. \nEn una redada: elija tiempo de inactividad si desea conservar el lote o dinero en efectivo si las instalaciones deben seguir funcionando. \nHabilite la venta automática en darkweb solo si acepta la tarifa y la calefacción. \nLa producción propia almacenada en la discoteca obtiene un pequeño margen adicional. \nVender a un club con Aan club / Vender a un club cuando un propietario local abrió la oferta de jugadores; la exportación al por mayor sigue siendo la opción a larga distancia. \nExporte sólo si acepta el riesgo de flete e incautación; Los viajes y la venta callejera siguen pagando más por gramo.\nUse Low profile when heat is climbing and you can pause new batches. Cash cool drops heat immediately without blocking production.';
 
   @override
   String get helpTopicNightclubCategory => 'Imperio';
@@ -20212,6 +20217,20 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get drugsHeatLowProfile => 'Low profile';
+
+  @override
+  String drugsHeatLowProfileActiveRemaining(String remaining) {
+    return 'Perfil bajo activo · $remaining';
+  }
+
+  @override
+  String drugsHeatLowProfileCooldown(String remaining) {
+    return 'Perfil bajo · $remaining';
+  }
+
+  @override
+  String get drugsHeatLowProfileHint =>
+      'No hay lotes nuevos hasta que finalice el cronómetro. El calor extra se reduce a la mitad. Los lotes que ya se están cocinando continúan ejecutándose. No puedes cancelar esto.';
 
   @override
   String drugsHeatCashCool(String cost) {

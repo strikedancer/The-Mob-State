@@ -37,7 +37,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - `POST /drugs/productions/:productionId/speedup` → spend premium credits; sets `finishesAt = now` (player still collects normally)
 - `GET /drug-facilities` → `{ currentCountry, facilities, catalog }` — `facilities` lists **all countries** (each row has `country`); `catalog.owned` is **current country only**. Client overviews (hub chips, Facilities tab, Production cards) must filter owned/slots by `player.currentCountry`. Unique: `(playerId, country, facilityType)`.
 - `GET /drugs/productions` includes `facilityCountry` so batches started abroad stay labeled.
-- `POST /drugs/heat/cool` `{ action: cash | low_profile }`
+- `POST /drugs/heat/cool` `{ action: cash | low_profile }` — low profile lasts `DRUG_HEAT_LOW_PROFILE_HOURS` (default 4): blocks new production, halves heat-gain, existing batches keep running. After it ends, `DRUG_HEAT_LOW_PROFILE_COOLDOWN_HOURS` (default 8 from start) before you can use it again. Hub chip and production cards show remaining time.
 - `POST /drugs/raids/:id/resolve` `{ choice: lose | downtime | cash }`
 - `POST /drug-facilities/:id/auto-sale` `{ enabled }` (darkweb storefront only, default off)
 - `POST /drugs/crew-storage/deposit` / `withdraw` — quality `DrugInventory` lots to crew `drug_storage`

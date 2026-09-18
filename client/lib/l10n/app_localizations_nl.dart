@@ -18189,6 +18189,11 @@ class AppLocalizationsNl extends AppLocalizations {
       'Low-profile: nieuwe productie is tijdelijk geblokkeerd.';
 
   @override
+  String drugsProdLowProfileBlockRemaining(String remaining) {
+    return 'Low-profile: nieuwe productie is nog $remaining geblokkeerd.';
+  }
+
+  @override
   String get drugsProdFacilityDowntime =>
       'Deze faciliteit ligt stil na een inval.';
 
@@ -18522,11 +18527,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicDrugsHow =>
-      'Het drugsysteem heeft een foto-header en drie tabs: Faciliteiten (upgrade productiecapaciteit), Productie (actieve productielijnen met timer) en Voorraad (eindproduct).\nGrondstoffen koop je via de zwarte markt of handel. Combineer ze in een faciliteit om drugs te produceren.\nProductietimers lopen door terwijl je offline bent. Je hoeft niet actief te klikken: check terug als de timer klaar is.\nKlaar product blijft zichtbaar in Productie en bezet die faciliteitsslot totdat je het ophaalt; VIP auto-ophalen verwerkt gereed product automatisch op de achtergrond.\nOogsten zet het product in je rugzak, niet automatisch in de nachtclub. Is de tas vol, zet de drugs in de club (MAX of Alles uit rugzak) of in huis en haal daarna opnieuw op.\nOpslagcapaciteit is beperkt per faciliteit. Als je opslag vol is stopt de productie automatisch.\nEen darkweb storefront of andere faciliteit verkoopt klaar product niet automatisch: verkopen doe je nog steeds handmatig via de juiste verkoopflow.\nDrugs verkopen kan via de zwarte markt, via Colombia of andere speciale verkooplocaties voor de hoogste marge.\nFBI Heat stijgt bij elke productieronde en extra bij grote verkopen. Hoge heat leidt tot raid-events die je operatie kunnen stilleggen.\nFaciliteit-upgrades verlagen productietime, verhogen output en vergroten opslagcapaciteit.\nVIP-spelers krijgen op productiekaarten een bliksemknop: na een bevestigingsmodal koop je in één klik alle ontbrekende materialen voor die batch.\nGeavanceerde slot- en apparatuur-upgrades zijn gekoppeld aan de nieuwe Narcotica-opleiding (Hydroponics Specialist, Process Electrics Specialist, Clandestien Chemicus). Zonder voldoende opleidingsniveau/certificaat kun je niet door naar de volgende upgrade-tier.\nDrugs in je inventaris verhogen het risico op confiscatie bij reizen en politiecontroles.';
+      'Het drugsysteem heeft een foto-header en drie tabs: Faciliteiten (upgrade productiecapaciteit), Productie (actieve productielijnen met timer) en Voorraad (eindproduct).\nGrondstoffen koop je via de zwarte markt of handel. Combineer ze in een faciliteit om drugs te produceren.\nProductietimers lopen door terwijl je offline bent. Je hoeft niet actief te klikken: check terug als de timer klaar is.\nKlaar product blijft zichtbaar in Productie en bezet die faciliteitsslot totdat je het ophaalt; VIP auto-ophalen verwerkt gereed product automatisch op de achtergrond.\nOogsten zet het product in je rugzak, niet automatisch in de nachtclub. Is de tas vol, zet de drugs in de club (MAX of Alles uit rugzak) of in huis en haal daarna opnieuw op.\nOpslagcapaciteit is beperkt per faciliteit. Als je opslag vol is stopt de productie automatisch.\nEen darkweb storefront of andere faciliteit verkoopt klaar product niet automatisch: verkopen doe je nog steeds handmatig via de juiste verkoopflow.\nDrugs verkopen kan via de zwarte markt, via Colombia of andere speciale verkooplocaties voor de hoogste marge.\nFBI Heat stijgt bij elke productieronde en extra bij grote verkopen. Hoge heat leidt tot raid-events die je operatie kunnen stilleggen.\nFaciliteit-upgrades verlagen productietime, verhogen output en vergroten opslagcapaciteit.\nVIP-spelers krijgen op productiekaarten een bliksemknop: na een bevestigingsmodal koop je in één klik alle ontbrekende materialen voor die batch.\nGeavanceerde slot- en apparatuur-upgrades zijn gekoppeld aan de nieuwe Narcotica-opleiding (Hydroponics Specialist, Process Electrics Specialist, Clandestien Chemicus). Zonder voldoende opleidingsniveau/certificaat kun je niet door naar de volgende upgrade-tier.\nDrugs in je inventaris verhogen het risico op confiscatie bij reizen en politiecontroles.\nLow-profile duurt standaard 4 uur: je kunt geen nieuwe productie starten, extra heat is gehalveerd, en batches die al lopen gaan door. Je kunt het niet stopzetten. Daarna wacht je 8 uur vanaf het moment dat je het aanzette voordat je opnieuw low-profile kunt. De resterende tijd staat op de Drugs-hub en op de productiekaarten.';
 
   @override
   String get helpTopicDrugsTips =>
-      'Upgrade opslag voor productie: volle opslag stopt je productie en je verliest die productietime.\nHoud FBI Heat onder 50: boven dat niveau word je actief gestalkt met zware raid-kansen die alles stilleggen.\nCombineer drugsverkoop met smokkelen voor hogere marges en verspreide risico\'s.';
+      'Upgrade opslag voor productie: volle opslag stopt je productie en je verliest die productietime.\nHoud FBI Heat onder 50: boven dat niveau word je actief gestalkt met zware raid-kansen die alles stilleggen.\nCombineer drugsverkoop met smokkelen voor hogere marges en verspreide risico\'s.\nGebruik Low-profile als je heat oploopt en je even geen nieuwe batches nodig hebt. Koelen met cash laat heat meteen zakken zonder productie te blokkeren.';
 
   @override
   String get helpTopicNightclubCategory => 'Empire';
@@ -20075,6 +20080,20 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get drugsHeatLowProfile => 'Low-profile';
+
+  @override
+  String drugsHeatLowProfileActiveRemaining(String remaining) {
+    return 'Low-profile actief · $remaining';
+  }
+
+  @override
+  String drugsHeatLowProfileCooldown(String remaining) {
+    return 'Low-profile · $remaining';
+  }
+
+  @override
+  String get drugsHeatLowProfileHint =>
+      'Geen nieuwe batches tot de timer afloopt. Extra heat is gehalveerd. Batches die al lopen, gaan gewoon door. Dit kun je niet stopzetten.';
 
   @override
   String drugsHeatCashCool(String cost) {

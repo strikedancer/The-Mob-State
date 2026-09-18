@@ -18280,6 +18280,11 @@ class AppLocalizationsPt extends AppLocalizations {
       'Perfil baixo: nova produção está temporariamente bloqueada.';
 
   @override
+  String drugsProdLowProfileBlockRemaining(String remaining) {
+    return 'Discreto: nova produção está bloqueada por $remaining.';
+  }
+
+  @override
   String get drugsProdFacilityDowntime =>
       'Esta instalação está parada após uma rusga.';
 
@@ -18613,11 +18618,11 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicDrugsHow =>
-      'O sistema de medicamentos utiliza um cabeçalho de foto mais três abas: Instalações (atualização da capacidade de produção), Produção (linhas de produção ativas com temporizador) e Estoque (produtos acabados).\nCompre matérias-primas através do mercado negro (guia Materiais, também vinculada ao cabeçalho Drogas e Produção) ou troque. Combine-os em uma instalação para produzir drogas.\nOs cronômetros de produção são executados enquanto você está offline. Você recebe uma notificação quando um lote está pronto para ser coletado.\nVocê pode gastar créditos premium para terminar um lote mais cedo, comprar um slot extra temporário ou ativar um escudo térmico de 24 horas (sem rendimento extra).\nA produção finalizada permanece visível na Produção e mantém o espaço da instalação ocupado até você coletá-la; A coleta automática VIP processa a saída pronta, mas ignora uma invasão pendente até que você escolha.\nNa coleta, o calor pode desencadear uma invasão: você escolhe a perda de estoque, o tempo de inatividade da instalação ou uma multa em dinheiro antes de receber o saque.\nVocê pode resfriar o calor com dinheiro ou ser discreto (temporariamente sem nova produção).\nUma vitrine darkweb nunca vende silenciosamente: a venda automática é opcional, com taxa e atenção extra.\nOs medicamentos de produção própria recebem um pequeno bônus de margem nas casas noturnas. Lotes de qualidade podem ser depositados no armazenamento de medicamentos da Crew.\nOs cartões de instalações mostram os requisitos de preço, classificação e educação antes da compra ou atualização.\nA partir do Inventário, você pode exportar uma carga de atacado para outro país: você permanece no local, paga o frete e recebe o dinheiro B2B de destino quando o contêiner chega. A apreensão não paga nada. Venda de rua, boate, darkweb e Marketplace permanecem no varejo.';
+      'O sistema de medicamentos utiliza um cabeçalho de foto mais três abas: Instalações (atualização da capacidade de produção), Produção (linhas de produção ativas com temporizador) e Estoque (produtos acabados).\nCompre matérias-primas através do mercado negro (guia Materiais, também vinculada ao cabeçalho Drogas e Produção) ou troque. Combine-os em uma instalação para produzir drogas.\nOs cronômetros de produção são executados enquanto você está offline. Você recebe uma notificação quando um lote está pronto para ser coletado.\nVocê pode gastar créditos premium para terminar um lote mais cedo, comprar um slot extra temporário ou ativar um escudo térmico de 24 horas (sem rendimento extra).\nA produção finalizada permanece visível na Produção e mantém o espaço da instalação ocupado até você coletá-la; A coleta automática VIP processa a saída pronta, mas ignora uma invasão pendente até que você escolha.\nNa coleta, o calor pode desencadear uma invasão: você escolhe a perda de estoque, o tempo de inatividade da instalação ou uma multa em dinheiro antes de receber o saque.\nVocê pode resfriar o calor com dinheiro ou ser discreto (temporariamente sem nova produção).\nUma vitrine darkweb nunca vende silenciosamente: a venda automática é opcional, com taxa e atenção extra.\nOs medicamentos de produção própria recebem um pequeno bônus de margem nas casas noturnas. Lotes de qualidade podem ser depositados no armazenamento de medicamentos da Crew.\nOs cartões de instalações mostram os requisitos de preço, classificação e educação antes da compra ou atualização.\nA partir do Inventário, você pode exportar uma carga de atacado para outro país: você permanece no local, paga o frete e recebe o dinheiro B2B de destino quando o contêiner chega. A apreensão não paga nada. Venda de rua, boate, darkweb e Marketplace permanecem no varejo.\nLow profile lasts 4 hours by default: you cannot start new production, extra heat is halved, and batches already cooking keep running. You cannot cancel it. After it ends you wait 8 hours from the moment you started before you can go low-profile again. Remaining time is shown on the Drugs hub and on production cards.';
 
   @override
   String get helpTopicDrugsTips =>
-      'Compre materiais na guia Materiais antes de iniciar os lotes. \nMantenha o calor da droga baixo com baixo perfil ou com dinheiro fresco quando você coleta muito. \nEm uma invasão: escolha o tempo de inatividade se quiser manter o lote ou o dinheiro se a instalação precisar continuar funcionando. \nAtive a venda automática darkweb apenas se você aceitar a taxa e o calor. \nA produção própria armazenada na boate ganha uma pequena margem extra. \nVender para um clube com Aan club / Vender para um clube quando um proprietário local abriu o fornecimento de jogadores; a exportação por atacado continua sendo a opção de longa distância. \nExporte somente se aceitar o risco de frete e apreensão; viagens mais vendas nas ruas ainda pagam mais por grama.';
+      'Compre materiais na guia Materiais antes de iniciar os lotes. \nMantenha o calor da droga baixo com baixo perfil ou com dinheiro fresco quando você coleta muito. \nEm uma invasão: escolha o tempo de inatividade se quiser manter o lote ou o dinheiro se a instalação precisar continuar funcionando. \nAtive a venda automática darkweb apenas se você aceitar a taxa e o calor. \nA produção própria armazenada na boate ganha uma pequena margem extra. \nVender para um clube com Aan club / Vender para um clube quando um proprietário local abriu o fornecimento de jogadores; a exportação por atacado continua sendo a opção de longa distância. \nExporte somente se aceitar o risco de frete e apreensão; viagens mais vendas nas ruas ainda pagam mais por grama.\nUse Low profile when heat is climbing and you can pause new batches. Cash cool drops heat immediately without blocking production.';
 
   @override
   String get helpTopicNightclubCategory => 'Império';
@@ -20167,6 +20172,20 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get drugsHeatLowProfile => 'Low profile';
+
+  @override
+  String drugsHeatLowProfileActiveRemaining(String remaining) {
+    return 'Perfil discreto ativo · $remaining';
+  }
+
+  @override
+  String drugsHeatLowProfileCooldown(String remaining) {
+    return 'Perfil discreto · $remaining';
+  }
+
+  @override
+  String get drugsHeatLowProfileHint =>
+      'Nenhum novo lote até que o cronômetro termine. O calor extra é reduzido pela metade. Os lotes que já estão cozinhando continuam funcionando. Você não pode cancelar isso.';
 
   @override
   String drugsHeatCashCool(String cost) {

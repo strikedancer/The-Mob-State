@@ -18366,6 +18366,11 @@ class AppLocalizationsDe extends AppLocalizations {
       'Low-Profile: neue Produktion ist vorübergehend blockiert.';
 
   @override
+  String drugsProdLowProfileBlockRemaining(String remaining) {
+    return 'Unauffällig: Neue Produktion ist für $remaining gesperrt.';
+  }
+
+  @override
   String get drugsProdFacilityDowntime =>
       'Diese Anlage liegt nach einer Razzia still.';
 
@@ -18703,11 +18708,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicDrugsHow =>
-      'Das Arzneimittelsystem verwendet eine Fotokopfzeile und drei Registerkarten: Einrichtungen (Produktionskapazität verbessern), Produktion (aktive Produktionslinien mit Timer) und Inventar (fertige Produkte).\nKaufen Sie Rohstoffe über den Schwarzmarkt (Registerkarte „Materialien“, auch über die Rubrik „Medikamente“ und „Produktion“ verlinkt) oder handeln Sie. Kombinieren Sie sie in einer Anlage zur Herstellung von Arzneimitteln.\nProduktionstimer laufen, während Sie offline sind. Sie erhalten eine Benachrichtigung, wenn eine Charge zur Abholung bereit ist.\nSie können Premium-Credits ausgeben, um eine Charge vorzeitig abzuschließen, einen vorübergehenden zusätzlichen Platz zu kaufen oder einen 24-Stunden-Hitzeschild zu aktivieren (kein zusätzlicher Ertrag).\nDie fertige Produktion bleibt in der Produktion sichtbar und der Anlagenplatz bleibt besetzt, bis Sie sie abholen. VIP Auto-Collect verarbeitet die fertige Ausgabe, überspringt jedoch einen ausstehenden Raid, bis Sie dies auswählen.\nBeim Sammeln kann Hitze einen Überfall auslösen: Sie entscheiden sich für einen Lagerverlust, einen Anlagenausfall oder eine Geldstrafe, bevor Sie die Beute erhalten.\nSie können die Hitze mit Bargeld abkühlen oder unauffällig bleiben (vorübergehend keine Neuproduktion).\nEin Darkweb-Schaufenster verkauft niemals stillschweigend: Der automatische Verkauf erfolgt optional, mit einer Gebühr und zusätzlicher Hitze.\nEigenproduzierte Medikamente erhalten einen kleinen Margenbonus im Nightclub. Qualitätschargen können im Medikamentenlager der Crew deponiert werden.\nAuf den Anlagenkarten werden Preis, Rang und Bildungsanforderungen vor dem Kauf oder Upgrade angezeigt.\nVon Inventory aus können Sie eine Großhandelsladung in ein anderes Land exportieren: Sie bleiben an Ort und Stelle, zahlen die Fracht und erhalten das gewünschte B2B-Bargeld, wenn der Container ankommt. Beschlagnahmung zahlt nichts. Straßenverkäufe, Nachtclubs, Darkweb und Marktplätze bleiben im Einzelhandel.';
+      'Das Arzneimittelsystem verwendet eine Fotokopfzeile und drei Registerkarten: Einrichtungen (Produktionskapazität verbessern), Produktion (aktive Produktionslinien mit Timer) und Inventar (fertige Produkte).\nKaufen Sie Rohstoffe über den Schwarzmarkt (Registerkarte „Materialien“, auch über die Rubrik „Medikamente“ und „Produktion“ verlinkt) oder handeln Sie. Kombinieren Sie sie in einer Anlage zur Herstellung von Arzneimitteln.\nProduktionstimer laufen, während Sie offline sind. Sie erhalten eine Benachrichtigung, wenn eine Charge zur Abholung bereit ist.\nSie können Premium-Credits ausgeben, um eine Charge vorzeitig abzuschließen, einen vorübergehenden zusätzlichen Platz zu kaufen oder einen 24-Stunden-Hitzeschild zu aktivieren (kein zusätzlicher Ertrag).\nDie fertige Produktion bleibt in der Produktion sichtbar und der Anlagenplatz bleibt besetzt, bis Sie sie abholen. VIP Auto-Collect verarbeitet die fertige Ausgabe, überspringt jedoch einen ausstehenden Raid, bis Sie dies auswählen.\nBeim Sammeln kann Hitze einen Überfall auslösen: Sie entscheiden sich für einen Lagerverlust, einen Anlagenausfall oder eine Geldstrafe, bevor Sie die Beute erhalten.\nSie können die Hitze mit Bargeld abkühlen oder unauffällig bleiben (vorübergehend keine Neuproduktion).\nEin Darkweb-Schaufenster verkauft niemals stillschweigend: Der automatische Verkauf erfolgt optional, mit einer Gebühr und zusätzlicher Hitze.\nEigenproduzierte Medikamente erhalten einen kleinen Margenbonus im Nightclub. Qualitätschargen können im Medikamentenlager der Crew deponiert werden.\nAuf den Anlagenkarten werden Preis, Rang und Bildungsanforderungen vor dem Kauf oder Upgrade angezeigt.\nVon Inventory aus können Sie eine Großhandelsladung in ein anderes Land exportieren: Sie bleiben an Ort und Stelle, zahlen die Fracht und erhalten das gewünschte B2B-Bargeld, wenn der Container ankommt. Beschlagnahmung zahlt nichts. Straßenverkäufe, Nachtclubs, Darkweb und Marktplätze bleiben im Einzelhandel.\nLow profile lasts 4 hours by default: you cannot start new production, extra heat is halved, and batches already cooking keep running. You cannot cancel it. After it ends you wait 8 hours from the moment you started before you can go low-profile again. Remaining time is shown on the Drugs hub and on production cards.';
 
   @override
   String get helpTopicDrugsTips =>
-      'Kaufen Sie Materialien auf der Registerkarte „Materialien“, bevor Sie mit der Charge beginnen. \nHalten Sie den Drogenkonsum mit Low-Profile oder Cash-Cool niedrig, wenn Sie viel sammeln. \nBei einer Razzia: Wählen Sie Ausfallzeiten, wenn Sie die Charge behalten möchten, oder Bargeld, wenn die Anlage weiterlaufen muss. \nAktivieren Sie den automatischen Darkweb-Verkauf nur, wenn Sie die Gebühr und den Preis akzeptieren. \nDie im Nightclub gelagerte Eigenproduktion bringt eine kleine Extramarge ein. \nAn einen Klub mit Aan-Klub verkaufen / An Klub verkaufen, als ein lokaler Eigentümer das Spielerangebot eröffnete; Der Großhandelsexport bleibt die Fernoption. \nExportieren Sie nur, wenn Sie das Fracht- und Pfändungsrisiko übernehmen; Reisen plus Straßenverkauf zahlt immer noch mehr pro Gramm.';
+      'Kaufen Sie Materialien auf der Registerkarte „Materialien“, bevor Sie mit der Charge beginnen. \nHalten Sie den Drogenkonsum mit Low-Profile oder Cash-Cool niedrig, wenn Sie viel sammeln. \nBei einer Razzia: Wählen Sie Ausfallzeiten, wenn Sie die Charge behalten möchten, oder Bargeld, wenn die Anlage weiterlaufen muss. \nAktivieren Sie den automatischen Darkweb-Verkauf nur, wenn Sie die Gebühr und den Preis akzeptieren. \nDie im Nightclub gelagerte Eigenproduktion bringt eine kleine Extramarge ein. \nAn einen Klub mit Aan-Klub verkaufen / An Klub verkaufen, als ein lokaler Eigentümer das Spielerangebot eröffnete; Der Großhandelsexport bleibt die Fernoption. \nExportieren Sie nur, wenn Sie das Fracht- und Pfändungsrisiko übernehmen; Reisen plus Straßenverkauf zahlt immer noch mehr pro Gramm.\nUse Low profile when heat is climbing and you can pause new batches. Cash cool drops heat immediately without blocking production.';
 
   @override
   String get helpTopicNightclubCategory => 'Reich';
@@ -20269,6 +20274,20 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get drugsHeatLowProfile => 'Low profile';
+
+  @override
+  String drugsHeatLowProfileActiveRemaining(String remaining) {
+    return 'Low Profile aktiv · $remaining';
+  }
+
+  @override
+  String drugsHeatLowProfileCooldown(String remaining) {
+    return 'Niedriges Profil · $remaining';
+  }
+
+  @override
+  String get drugsHeatLowProfileHint =>
+      'Keine neuen Chargen, bis der Timer abgelaufen ist. Die zusätzliche Hitze wird halbiert. Bereits kochende Chargen laufen weiter. Sie können dies nicht stornieren.';
 
   @override
   String drugsHeatCashCool(String cost) {

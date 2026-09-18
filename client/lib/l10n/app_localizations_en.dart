@@ -18143,6 +18143,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Low-profile: new production is temporarily blocked.';
 
   @override
+  String drugsProdLowProfileBlockRemaining(String remaining) {
+    return 'Low-profile: new production is blocked for $remaining.';
+  }
+
+  @override
   String get drugsProdFacilityDowntime =>
       'This facility is shut down after a raid.';
 
@@ -18476,11 +18481,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicDrugsHow =>
-      'The drug system uses a photo header plus three tabs: Facilities (upgrade production capacity), Production (active production lines with timer) and Inventory (finished products).\nBuy raw materials via the black market or trade. Combine them in a facility to produce drugs.\nProduction timers run while you are offline. No active clicking needed: check back when the timer finishes.\nFinished output stays visible in Production and keeps that facility slot occupied until you collect it; VIP auto-collect processes ready output automatically in the background.\nCollect puts the product in your backpack, not automatically in the nightclub. If the bag is full, store the drugs in the club (MAX or Store all from backpack) or in a house, then collect again.\nStorage capacity is limited per facility. When storage is full production stops automatically.\nA darkweb storefront or other facility does not auto-sell finished output: selling still happens manually through the intended sale flow.\nSell drugs via the black market, Colombia or other special sales locations for the highest margin.\nFBI Heat rises every production cycle and extra on large sales. High heat leads to raid events that can shut down your operation.\nFacility upgrades reduce production time, increase output and expand storage capacity.\nVIP players get a lightning button on production cards: after a confirmation modal, you can buy all missing batch materials in one click.\nAdvanced slot and equipment upgrades are tied to the new Narcotics education track (Hydroponics Specialist, Process Electrics Specialist, Clandestine Chemist). Without the required level/certification you cannot progress to the next upgrade tier.\nDrugs in inventory increase confiscation risk during travel and police checks.';
+      'The drug system uses a photo header plus three tabs: Facilities (upgrade production capacity), Production (active production lines with timer) and Inventory (finished products).\nBuy raw materials via the black market or trade. Combine them in a facility to produce drugs.\nProduction timers run while you are offline. No active clicking needed: check back when the timer finishes.\nFinished output stays visible in Production and keeps that facility slot occupied until you collect it; VIP auto-collect processes ready output automatically in the background.\nCollect puts the product in your backpack, not automatically in the nightclub. If the bag is full, store the drugs in the club (MAX or Store all from backpack) or in a house, then collect again.\nStorage capacity is limited per facility. When storage is full production stops automatically.\nA darkweb storefront or other facility does not auto-sell finished output: selling still happens manually through the intended sale flow.\nSell drugs via the black market, Colombia or other special sales locations for the highest margin.\nFBI Heat rises every production cycle and extra on large sales. High heat leads to raid events that can shut down your operation.\nFacility upgrades reduce production time, increase output and expand storage capacity.\nVIP players get a lightning button on production cards: after a confirmation modal, you can buy all missing batch materials in one click.\nAdvanced slot and equipment upgrades are tied to the new Narcotics education track (Hydroponics Specialist, Process Electrics Specialist, Clandestine Chemist). Without the required level/certification you cannot progress to the next upgrade tier.\nDrugs in inventory increase confiscation risk during travel and police checks.\nLow profile lasts 4 hours by default: you cannot start new production, extra heat is halved, and batches already cooking keep running. You cannot cancel it. After it ends you wait 8 hours from the moment you started before you can go low-profile again. Remaining time is shown on the Drugs hub and on production cards.';
 
   @override
   String get helpTopicDrugsTips =>
-      'Upgrade storage before production: full storage stops production and you lose that production time.\nKeep FBI Heat below 50: above that threshold you are actively hunted with heavy raid chances that shut everything down.\nCombine drug sales with smuggling for higher margins and distributed risk.';
+      'Upgrade storage before production: full storage stops production and you lose that production time.\nKeep FBI Heat below 50: above that threshold you are actively hunted with heavy raid chances that shut everything down.\nCombine drug sales with smuggling for higher margins and distributed risk.\nUse Low profile when heat is climbing and you can pause new batches. Cash cool drops heat immediately without blocking production.';
 
   @override
   String get helpTopicNightclubCategory => 'Empire';
@@ -20026,6 +20031,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get drugsHeatLowProfile => 'Low profile';
+
+  @override
+  String drugsHeatLowProfileActiveRemaining(String remaining) {
+    return 'Low profile active · $remaining';
+  }
+
+  @override
+  String drugsHeatLowProfileCooldown(String remaining) {
+    return 'Low profile · $remaining';
+  }
+
+  @override
+  String get drugsHeatLowProfileHint =>
+      'No new batches until the timer ends. Extra heat is halved. Batches already cooking keep running. You cannot cancel this.';
 
   @override
   String drugsHeatCashCool(String cost) {

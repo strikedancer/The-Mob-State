@@ -18364,6 +18364,11 @@ class AppLocalizationsFr extends AppLocalizations {
       'Profil bas : la nouvelle production est temporairement bloquée.';
 
   @override
+  String drugsProdLowProfileBlockRemaining(String remaining) {
+    return 'Profil bas : la nouvelle production est bloquée pour $remaining.';
+  }
+
+  @override
   String get drugsProdFacilityDowntime =>
       'Cette installation est à l\'arrêt après un raid.';
 
@@ -18699,11 +18704,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicDrugsHow =>
-      'Le système de médicaments utilise un en-tête de photo et trois onglets : Installations (amélioration de la capacité de production), Production (lignes de production actives avec minuterie) et Inventaire (produits finis).\nAchetez des matières premières via le marché noir (onglet Matériaux, également lié depuis la rubrique Médicaments et Production) ou via le commerce. Combinez-les dans une installation pour produire des médicaments.\nLes minuteries de production s\'exécutent lorsque vous êtes hors ligne. Vous recevez une notification lorsqu\'un lot est prêt à être collecté.\nVous pouvez dépenser des crédits premium pour terminer un lot plus tôt, acheter un emplacement supplémentaire temporaire ou activer un bouclier thermique de 24 heures (pas de rendement supplémentaire).\nLa production terminée reste visible dans Production et maintient cet emplacement d\'installation occupé jusqu\'à ce que vous le récupériez ; La collecte automatique VIP traite la sortie prête, mais ignore un raid en attente jusqu\'à ce que vous le choisissiez.\nLors de la collecte, la chaleur peut déclencher un raid : vous choisissez la perte de stock, l\'arrêt des installations ou une amende en espèces avant de recevoir le butin.\nVous pouvez refroidir la chaleur avec de l’argent ou faire profil bas (temporairement pas de nouvelle production).\nUne vitrine darkweb ne vend jamais en silence : la vente automatique est facultative, avec des frais et une chaleur supplémentaire.\nLes médicaments de production propre bénéficient d’un petit bonus sur la marge des boîtes de nuit. Des lots de qualité peuvent être déposés dans le stockage des médicaments de l’équipage.\nLes cartes d\'établissement indiquent les exigences en matière de prix, de rang et de formation avant l\'achat ou la mise à niveau.\nDepuis Inventaire, vous pouvez exporter un chargement en gros vers un autre pays : vous restez sur place, payez le fret et recevez l\'argent B2B le plus important à l\'arrivée du conteneur. La saisie ne rapporte rien. La vente de rue, les discothèques, le darkweb et le Marketplace restent au détail.';
+      'Le système de médicaments utilise un en-tête de photo et trois onglets : Installations (amélioration de la capacité de production), Production (lignes de production actives avec minuterie) et Inventaire (produits finis).\nAchetez des matières premières via le marché noir (onglet Matériaux, également lié depuis la rubrique Médicaments et Production) ou via le commerce. Combinez-les dans une installation pour produire des médicaments.\nLes minuteries de production s\'exécutent lorsque vous êtes hors ligne. Vous recevez une notification lorsqu\'un lot est prêt à être collecté.\nVous pouvez dépenser des crédits premium pour terminer un lot plus tôt, acheter un emplacement supplémentaire temporaire ou activer un bouclier thermique de 24 heures (pas de rendement supplémentaire).\nLa production terminée reste visible dans Production et maintient cet emplacement d\'installation occupé jusqu\'à ce que vous le récupériez ; La collecte automatique VIP traite la sortie prête, mais ignore un raid en attente jusqu\'à ce que vous le choisissiez.\nLors de la collecte, la chaleur peut déclencher un raid : vous choisissez la perte de stock, l\'arrêt des installations ou une amende en espèces avant de recevoir le butin.\nVous pouvez refroidir la chaleur avec de l’argent ou faire profil bas (temporairement pas de nouvelle production).\nUne vitrine darkweb ne vend jamais en silence : la vente automatique est facultative, avec des frais et une chaleur supplémentaire.\nLes médicaments de production propre bénéficient d’un petit bonus sur la marge des boîtes de nuit. Des lots de qualité peuvent être déposés dans le stockage des médicaments de l’équipage.\nLes cartes d\'établissement indiquent les exigences en matière de prix, de rang et de formation avant l\'achat ou la mise à niveau.\nDepuis Inventaire, vous pouvez exporter un chargement en gros vers un autre pays : vous restez sur place, payez le fret et recevez l\'argent B2B le plus important à l\'arrivée du conteneur. La saisie ne rapporte rien. La vente de rue, les discothèques, le darkweb et le Marketplace restent au détail.\nLow profile lasts 4 hours by default: you cannot start new production, extra heat is halved, and batches already cooking keep running. You cannot cancel it. After it ends you wait 8 hours from the moment you started before you can go low-profile again. Remaining time is shown on the Drugs hub and on production cards.';
 
   @override
   String get helpTopicDrugsTips =>
-      'Achetez des matériaux dans l\'onglet Matériaux avant de démarrer des lots. \nGardez la chaleur des médicaments à un niveau bas avec un profil bas ou un cash-cool lorsque vous en collectez beaucoup. \nLors d\'un raid : choisissez des temps d\'arrêt si vous souhaitez conserver le lot, ou de l\'argent si l\'installation doit continuer à fonctionner. \nN\'activez la vente automatique sur le darkweb que si vous acceptez les frais et la chaleur. \nLa propre production stockée dans la discothèque rapporte une petite marge supplémentaire. \nVendre à un club avec le club Aan / Vendre au club lorsqu\'un propriétaire local a ouvert l\'approvisionnement en joueurs ; l’exportation en gros reste l’option longue distance. \nExportez uniquement si vous acceptez les risques de fret et de saisie ; les voyages et la vente dans la rue paient toujours plus par gramme.';
+      'Achetez des matériaux dans l\'onglet Matériaux avant de démarrer des lots. \nGardez la chaleur des médicaments à un niveau bas avec un profil bas ou un cash-cool lorsque vous en collectez beaucoup. \nLors d\'un raid : choisissez des temps d\'arrêt si vous souhaitez conserver le lot, ou de l\'argent si l\'installation doit continuer à fonctionner. \nN\'activez la vente automatique sur le darkweb que si vous acceptez les frais et la chaleur. \nLa propre production stockée dans la discothèque rapporte une petite marge supplémentaire. \nVendre à un club avec le club Aan / Vendre au club lorsqu\'un propriétaire local a ouvert l\'approvisionnement en joueurs ; l’exportation en gros reste l’option longue distance. \nExportez uniquement si vous acceptez les risques de fret et de saisie ; les voyages et la vente dans la rue paient toujours plus par gramme.\nUse Low profile when heat is climbing and you can pause new batches. Cash cool drops heat immediately without blocking production.';
 
   @override
   String get helpTopicNightclubCategory => 'Empire';
@@ -20257,6 +20262,20 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get drugsHeatLowProfile => 'Low profile';
+
+  @override
+  String drugsHeatLowProfileActiveRemaining(String remaining) {
+    return 'Profil bas actif · $remaining';
+  }
+
+  @override
+  String drugsHeatLowProfileCooldown(String remaining) {
+    return 'Profil bas · $remaining';
+  }
+
+  @override
+  String get drugsHeatLowProfileHint =>
+      'Aucun nouveau lot jusqu\'à la fin du minuteur. La chaleur supplémentaire est réduite de moitié. Les lots déjà en cuisson continuent de fonctionner. Vous ne pouvez pas annuler cela.';
 
   @override
   String drugsHeatCashCool(String cost) {

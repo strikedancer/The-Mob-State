@@ -8276,8 +8276,8 @@
   "helpTopicDrugsCategory": "Imperium",
   "helpTopicDrugsTitle": "Narkotyki",
   "helpTopicDrugsSummary": "Zbuduj kompletną operację leku od surowców po gotowy produkt. Prowadź łańcuchy produkcyjne, zarządzaj magazynami i sprzedawaj z wysoką marżą, ale poważnym ryzykiem.",
-  "helpTopicDrugsHow": "System leków wykorzystuje nagłówek zdjęcia oraz trzy zakładki: Obiekty (modernizacja mocy produkcyjnych), Produkcja (aktywne linie produkcyjne z timerem) i Zapasy (produkty gotowe).\nKupuj surowce na czarnym rynku (zakładka Materiały, do której link znajduje się także w nagłówku Narkotyki i Produkcja) lub handluj. Połącz je w zakładzie produkującym leki.\nLiczniki produkcji działają, gdy jesteś offline. Otrzymasz powiadomienie, gdy partia będzie gotowa do odbioru.\nMożesz wydać kredyty premium, aby wcześniej zakończyć partię, kupić tymczasowe dodatkowe miejsce lub aktywować 24-godzinną osłonę termiczną (bez dodatkowego zysku).\nUkończony produkt pozostaje widoczny w Produkcji i zajmuje miejsce w placówce, dopóki go nie odbierzesz; Automatyczne zbieranie VIP przetwarza gotowe dane wyjściowe, ale pomija oczekujący nalot, dopóki nie wybierzesz.\nPodczas odbioru ciepło może wywołać nalot: przed otrzymaniem łupu wybierasz utratę zapasów, przestój w obiekcie lub karę pieniężną.\nMożesz schłodzić ciepło gotówką lub przejść na niski profil (chwilowo brak nowej produkcji).\nSklep w ciemnej sieci nigdy nie sprzedaje po cichu: automatyczna sprzedaż jest dobrowolna i wiąże się z opłatą oraz dodatkowym ogrzewaniem.\nNarkotyki własnej produkcji otrzymują niewielką premię za marżę klubu nocnego. Partie wysokiej jakości można zdeponować w magazynie leków dla załogi.\nKarty obiektów pokazują cenę, rangę i wymagania dotyczące wykształcenia przed zakupem lub ulepszeniem.\nZ poziomu magazynu możesz wyeksportować ładunek hurtowy do innego kraju: pozostajesz na miejscu, płacisz za fracht i otrzymujesz gotówkę B2B po przybyciu kontenera. Zajęcie nic nie płaci. Sprzedaż uliczna, Nightclub, darkweb i Marketplace pozostają detaliczne.",
-  "helpTopicDrugsTips": "Kup materiały w zakładce Materiały przed rozpoczęciem partii. \nUtrzymuj niską temperaturę narkotyków dzięki dyskretnemu lub chłodnemu wpływowi, gdy zbierzesz dużo. \nPodczas nalotu: wybierz przestój, jeśli chcesz zachować partię, lub gotówkę, jeśli obiekt musi nadal działać. \nWłącz automatyczną sprzedaż w Darkweb tylko wtedy, gdy zaakceptujesz opłatę i ciepło. \nWłasna produkcja przechowywana w nocnym klubie zapewnia niewielką dodatkową marżę. \nSprzedaj klubowi z klubem Aan / Sprzedaj klubowi, gdy lokalny właściciel otworzył zapasy zawodników; eksport hurtowy pozostaje opcją na duże odległości. \nEksportuj tylko wtedy, gdy akceptujesz ryzyko frachtu i zajęcia; podróże i sprzedaż uliczna nadal płacą więcej za gram.",
+  "helpTopicDrugsHow": "System leków wykorzystuje nagłówek zdjęcia oraz trzy zakładki: Obiekty (modernizacja mocy produkcyjnych), Produkcja (aktywne linie produkcyjne z timerem) i Zapasy (produkty gotowe).\nKupuj surowce na czarnym rynku (zakładka Materiały, do której link znajduje się także w nagłówku Narkotyki i Produkcja) lub handluj. Połącz je w zakładzie produkującym leki.\nLiczniki produkcji działają, gdy jesteś offline. Otrzymasz powiadomienie, gdy partia będzie gotowa do odbioru.\nMożesz wydać kredyty premium, aby wcześniej zakończyć partię, kupić tymczasowe dodatkowe miejsce lub aktywować 24-godzinną osłonę termiczną (bez dodatkowego zysku).\nUkończony produkt pozostaje widoczny w Produkcji i zajmuje miejsce w placówce, dopóki go nie odbierzesz; Automatyczne zbieranie VIP przetwarza gotowe dane wyjściowe, ale pomija oczekujący nalot, dopóki nie wybierzesz.\nPodczas odbioru ciepło może wywołać nalot: przed otrzymaniem łupu wybierasz utratę zapasów, przestój w obiekcie lub karę pieniężną.\nMożesz schłodzić ciepło gotówką lub przejść na niski profil (chwilowo brak nowej produkcji).\nSklep w ciemnej sieci nigdy nie sprzedaje po cichu: automatyczna sprzedaż jest dobrowolna i wiąże się z opłatą oraz dodatkowym ogrzewaniem.\nNarkotyki własnej produkcji otrzymują niewielką premię za marżę klubu nocnego. Partie wysokiej jakości można zdeponować w magazynie leków dla załogi.\nKarty obiektów pokazują cenę, rangę i wymagania dotyczące wykształcenia przed zakupem lub ulepszeniem.\nZ poziomu magazynu możesz wyeksportować ładunek hurtowy do innego kraju: pozostajesz na miejscu, płacisz za fracht i otrzymujesz gotówkę B2B po przybyciu kontenera. Zajęcie nic nie płaci. Sprzedaż uliczna, Nightclub, darkweb i Marketplace pozostają detaliczne.\nLow profile lasts 4 hours by default: you cannot start new production, extra heat is halved, and batches already cooking keep running. You cannot cancel it. After it ends you wait 8 hours from the moment you started before you can go low-profile again. Remaining time is shown on the Drugs hub and on production cards.",
+  "helpTopicDrugsTips": "Kup materiały w zakładce Materiały przed rozpoczęciem partii. \nUtrzymuj niską temperaturę narkotyków dzięki dyskretnemu lub chłodnemu wpływowi, gdy zbierzesz dużo. \nPodczas nalotu: wybierz przestój, jeśli chcesz zachować partię, lub gotówkę, jeśli obiekt musi nadal działać. \nWłącz automatyczną sprzedaż w Darkweb tylko wtedy, gdy zaakceptujesz opłatę i ciepło. \nWłasna produkcja przechowywana w nocnym klubie zapewnia niewielką dodatkową marżę. \nSprzedaj klubowi z klubem Aan / Sprzedaj klubowi, gdy lokalny właściciel otworzył zapasy zawodników; eksport hurtowy pozostaje opcją na duże odległości. \nEksportuj tylko wtedy, gdy akceptujesz ryzyko frachtu i zajęcia; podróże i sprzedaż uliczna nadal płacą więcej za gram.\nUse Low profile when heat is climbing and you can pause new batches. Cash cool drops heat immediately without blocking production.",
   "helpTopicNightclubCategory": "Imperium",
   "helpTopicNightclubTitle": "Klub nocny",
   "helpTopicNightclubSummary": "Prowadź Nightclub jako część swojego przestępczego imperium. Zarządzaj personelem, bezpieczeństwem i dostawami, aby uzyskać pasywny i aktywny dochód za pomocą dedykowanej tabeli liderów sezonu.",
@@ -13034,5 +13034,30 @@
         "type": "String"
       }
     }
-  }
+  },
+  "drugsProdLowProfileBlockRemaining": "Niski profil: nowa produkcja jest zablokowana na {remaining}.",
+  "@drugsProdLowProfileBlockRemaining": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsHeatLowProfileActiveRemaining": "Aktywny niski profil · {remaining}",
+  "@drugsHeatLowProfileActiveRemaining": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsHeatLowProfileCooldown": "Niski profil · {remaining}",
+  "@drugsHeatLowProfileCooldown": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsHeatLowProfileHint": "No new batches until the timer ends. Dodatkowe ciepło jest zmniejszone o połowę. Batches already cooking keep running. Nie możesz tego anulować."
 }
