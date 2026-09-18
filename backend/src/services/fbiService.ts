@@ -11,6 +11,7 @@ import { propertyStorageService } from './propertyStorageService';
 import { showroomService } from './showroomService';
 import { seizeCarriedOnArrest } from './carriedInventory';
 import { announcePlayerJailed } from './prisonWorldChat';
+import { withPrismaWriteRetry } from '../lib/prismaRetry';
 
 async function runFbiSideEffect(
   label: string,
@@ -191,18 +192,27 @@ export async function decayFBIHeat(playerId: number): Promise<void> {
  * Creates a crime attempt record with federal=true flag
  */
 export async function jailPlayerFederal(playerId: number, jailTime: number): Promise<void> {
-  await prisma.crimeAttempt.create({
-    data: {
-      playerId,
-      crimeId: 'federal_arrest',
-      success: false,
-      reward: 0,
-      xpGained: 0,
-      jailed: true,
-      jailTime,
-      createdAt: new Date(),
-    },
-  });
+  const jailRelease = new Date(Date.now() + jailTime * 60 * 1000);
+  await withPrismaWriteRetry(() =>
+    prisma.$transaction(async (tx) => {
+      await tx.crimeAttempt.create({
+        data: {
+          playerId,
+          crimeId: 'federal_arrest',
+          success: false,
+          reward: 0,
+          xpGained: 0,
+          jailed: true,
+          jailTime,
+          createdAt: new Date(),
+        },
+      });
+      await tx.player.update({
+        where: { id: playerId },
+        data: { jailRelease },
+      });
+    })
+  );
 
   await runFbiSideEffect('ARREST activity', async () => {
     await activityService.logActivity(
@@ -212,6 +222,7 @@ export async function jailPlayerFederal(playerId: number, jailTime: number): Pro
       {
         authority: 'FBI',
         jailTime,
+        jailedUntil: jailRelease.toISOString(),
       },
       true
     );

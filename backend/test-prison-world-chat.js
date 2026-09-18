@@ -52,6 +52,11 @@ assertEqual(
   'fbi line',
 );
 assertEqual(
+  buildJailAnnouncement('Rico', 'Border Police', 30),
+  'Rico is opgepakt door de grenspolitie voor 30 minuten.',
+  'border police line',
+);
+assertEqual(
   buildJailAnnouncement('Rico', 'black_money', 30),
   'Rico is opgepakt wegens zwart geld voor 30 minuten.',
   'black money line',

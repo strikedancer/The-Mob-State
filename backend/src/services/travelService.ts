@@ -11,6 +11,7 @@ import { activityService } from './activityService';
 import { notificationService } from './notificationService';
 import { announcePlayerJailed } from './prisonWorldChat';
 import { clearPlayerCrimeVehicle } from './vehicleToolService';
+import { withPrismaWriteRetry } from '../lib/prismaRetry';
 import countries from '../../content/countries.json';
 import travelRoutes from '../../content/travelRoutes.json';
 import {
@@ -414,17 +415,25 @@ async function sendPlayerToJail(playerId: number, jailTimeMinutes: number): Prom
   const now = new Date();
   const jailRelease = new Date(now.getTime() + jailTimeMinutes * 60 * 1000);
 
-  await prisma.crimeAttempt.create({
-    data: {
-      playerId,
-      crimeId: 'travel_leg',
-      success: false,
-      reward: 0,
-      xpGained: 0,
-      jailed: true,
-      jailTime: jailTimeMinutes,
-    },
-  });
+  await withPrismaWriteRetry(() =>
+    prisma.$transaction(async (tx) => {
+      await tx.crimeAttempt.create({
+        data: {
+          playerId,
+          crimeId: 'travel_leg',
+          success: false,
+          reward: 0,
+          xpGained: 0,
+          jailed: true,
+          jailTime: jailTimeMinutes,
+        },
+      });
+      await tx.player.update({
+        where: { id: playerId },
+        data: { jailRelease },
+      });
+    })
+  );
 
   await activityService.logActivity(
     playerId,

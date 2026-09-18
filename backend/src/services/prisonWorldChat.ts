@@ -92,6 +92,16 @@ export async function announcePlayerJailed(
       minutes = Math.max(1, Math.round((until - Date.now()) / 60000));
     }
   }
+  if (!Number.isFinite(minutes) || minutes <= 0) {
+    const latest = await prisma.crimeAttempt.findFirst({
+      where: { playerId, jailed: true, jailTime: { gt: 0 } },
+      orderBy: { createdAt: 'desc' },
+      select: { jailTime: true },
+    });
+    if (latest?.jailTime) {
+      minutes = latest.jailTime;
+    }
+  }
   await post(
     buildJailAnnouncement(
       player.username,
