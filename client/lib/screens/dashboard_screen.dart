@@ -1429,7 +1429,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           if (_selectedWebSection != _WebSection.messages &&
               _selectedWebSection != _WebSection.worldChat)
             GameSupportDonateAvatar(
-              leftOffset: showLeftSidebar ? 248 : 8,
+              leftOffset: 8,
               bottomOffset: showLeftSidebar ? 20 : 16,
             ),
         ],
