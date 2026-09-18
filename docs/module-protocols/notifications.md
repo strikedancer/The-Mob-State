@@ -34,7 +34,7 @@ Pushnotificaties, inbox-signalen, web/native FCM gedrag, permission entrypoints 
 - Safari/iOS PWA moet `payload.data.title/body` fallback houden wanneer `payload.notification` ontbreekt.
 - `firebase-messaging-sw.js` moet als update-kritieke service worker altijd met `no-cache, no-store, must-revalidate` worden geserveerd; een nieuwe deploy mag nooit op een oude push-service-worker blijven hangen.
 - Push dispatch failures mogen hoofdflows niet rollbacken.
-- Arrest-hulp-push (`sendArrestAwaitingHelpNotifications`) mag wereldchat-jail-regels niet blokkeren en omgekeerd: chatfouten mogen vrienden/crew-push niet rollbacken.
+- Arrest-hulp-push (`sendArrestAwaitingHelpNotifications`) mag wereldchat-jail-regels niet blokkeren en omgekeerd: chatfouten mogen vrienden/crew-push niet rollbacken. World-chat jail lines are posted from the jail-clock writers (`announcePlayerJailed`), not from this push helper, so one arrest cannot fan out two Gevangenis rows.
 
 ## Backend Guardrails
 - Voor cooldown-expiry meldingen: voeg nieuwe cooldown-actions toe in zowel `notificationService.sendCooldownExpiredNotification(...)` als de notifier-registratie in `cooldownService` of een gelijkwaardige scheduler.

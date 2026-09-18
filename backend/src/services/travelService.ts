@@ -9,6 +9,7 @@ import prisma from '../lib/prisma';
 import { worldEventService } from './worldEventService';
 import { activityService } from './activityService';
 import { notificationService } from './notificationService';
+import { announcePlayerJailed } from './prisonWorldChat';
 import { clearPlayerCrimeVehicle } from './vehicleToolService';
 import countries from '../../content/countries.json';
 import travelRoutes from '../../content/travelRoutes.json';
@@ -437,6 +438,10 @@ async function sendPlayerToJail(playerId: number, jailTimeMinutes: number): Prom
     },
     true
   );
+
+  void announcePlayerJailed(playerId, 'Border Police', jailTimeMinutes).catch((error) => {
+    console.error('[Travel Service] world chat jail announcement failed:', error);
+  });
 
   void notificationService.sendArrestAwaitingHelpNotifications(
     playerId,

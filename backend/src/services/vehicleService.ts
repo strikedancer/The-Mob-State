@@ -17,6 +17,7 @@ import {
 } from '../utils/vehicleTheftRisk';
 import { activityService } from './activityService';
 import { notificationService } from './notificationService';
+import { announcePlayerJailed } from './prisonWorldChat';
 import { applyReputationAction } from './reputationService';
 import { economyBalanceService } from './economyBalanceService';
 import { checkAndUnlockAchievements, serializeAchievementForClient } from './achievementService';
@@ -3939,6 +3940,10 @@ export const vehicleService = {
         },
         true
       );
+
+      void announcePlayerJailed(playerId, 'Police', jailTime).catch((error) => {
+        console.error('[Vehicle Service] world chat jail announcement failed:', error);
+      });
 
       void notificationService.sendArrestAwaitingHelpNotifications(
         playerId,

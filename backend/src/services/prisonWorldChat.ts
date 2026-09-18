@@ -3,6 +3,8 @@ import { globalChatService } from './globalChatService';
 import { isNpcPlayerId } from './npcLookup';
 
 const SYSTEM_NAME = 'Gevangenis';
+const JAIL_ANNOUNCE_DEDUPE_MS = 60_000;
+const lastJailAnnounceAt = new Map<number, number>();
 
 function safeName(raw: string | null | undefined): string {
   const cleaned = (raw ?? '').replace(/[\r\n\t]+/g, ' ').trim();
@@ -17,6 +19,36 @@ function authorityPhrase(authority?: string): string {
   return 'de politie';
 }
 
+export function formatJailDurationNl(minutesRaw: number): string {
+  const minutes = Math.max(1, Math.round(Number(minutesRaw) || 0));
+  const hours = Math.floor(minutes / 60);
+  const rest = minutes % 60;
+  if (hours <= 0) {
+    return minutes === 1 ? '1 minuut' : `${minutes} minuten`;
+  }
+  const hourPart = hours === 1 ? '1 uur' : `${hours} uur`;
+  if (rest === 0) return hourPart;
+  const minPart = rest === 1 ? '1 minuut' : `${rest} minuten`;
+  return `${hourPart} en ${minPart}`;
+}
+
+export function buildJailAnnouncement(
+  username: string,
+  authority?: string,
+  jailTimeMinutes?: number,
+): string {
+  const name = safeName(username);
+  const duration =
+    jailTimeMinutes != null && jailTimeMinutes > 0
+      ? ` voor ${formatJailDurationNl(jailTimeMinutes)}`
+      : '';
+  const key = (authority ?? '').toLowerCase();
+  if (key.includes('black_money') || key.includes('zwart')) {
+    return `${name} is opgepakt wegens zwart geld${duration}.`;
+  }
+  return `${name} is opgepakt door ${authorityPhrase(authority)}${duration}.`;
+}
+
 async function post(message: string): Promise<void> {
   try {
     await globalChatService.sendSystemAnnouncement(SYSTEM_NAME, message);
@@ -25,26 +57,48 @@ async function post(message: string): Promise<void> {
   }
 }
 
+function claimJailAnnounceSlot(playerId: number): boolean {
+  const now = Date.now();
+  const previous = lastJailAnnounceAt.get(playerId) ?? 0;
+  if (now - previous < JAIL_ANNOUNCE_DEDUPE_MS) {
+    return false;
+  }
+  lastJailAnnounceAt.set(playerId, now);
+  return true;
+}
+
 export async function announcePlayerJailed(
   playerId: number,
   authority?: string,
+  jailTimeMinutes?: number,
 ): Promise<void> {
+  if (!claimJailAnnounceSlot(playerId)) {
+    return;
+  }
   if (await isNpcPlayerId(playerId)) {
     return;
   }
   const player = await prisma.player.findUnique({
     where: { id: playerId },
-    select: { username: true },
+    select: { username: true, jailRelease: true },
   });
   if (!player?.username) {
     return;
   }
-  const key = (authority ?? '').toLowerCase();
-  if (key.includes('black_money') || key.includes('zwart')) {
-    await post(`${safeName(player.username)} is opgepakt wegens zwart geld.`);
-    return;
+  let minutes = Number(jailTimeMinutes);
+  if (!Number.isFinite(minutes) || minutes <= 0) {
+    const until = player.jailRelease?.getTime() ?? 0;
+    if (until > Date.now()) {
+      minutes = Math.max(1, Math.round((until - Date.now()) / 60000));
+    }
   }
-  await post(`${safeName(player.username)} is opgepakt door ${authorityPhrase(authority)}.`);
+  await post(
+    buildJailAnnouncement(
+      player.username,
+      authority,
+      Number.isFinite(minutes) && minutes > 0 ? minutes : undefined,
+    ),
+  );
 }
 
 export async function announcePlayerFreedBy(

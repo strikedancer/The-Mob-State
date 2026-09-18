@@ -384,7 +384,7 @@ export async function setJailReleaseClock(
   }).catch((error) => {
     console.error('[Police Service] backpack seize failed:', error);
   });
-  void announcePlayerJailed(playerId, authority).catch((error) => {
+  void announcePlayerJailed(playerId, authority, jailTimeMinutes).catch((error) => {
     console.error('[Police Service] world chat jail announcement failed:', error);
   });
   return jailRelease;
@@ -452,6 +452,14 @@ export async function jailPlayer(
     );
   }).catch((error) => {
     console.error('[Police Service] backpack seize failed:', error);
+  });
+
+  void announcePlayerJailed(
+    playerId,
+    isBlackMoney ? 'black_money' : authority,
+    jailTime,
+  ).catch((error) => {
+    console.error('[Police Service] world chat jail announcement failed:', error);
   });
 
   void notificationService.sendArrestAwaitingHelpNotifications(

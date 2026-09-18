@@ -10,6 +10,7 @@ import { notificationService } from './notificationService';
 import { propertyStorageService } from './propertyStorageService';
 import { showroomService } from './showroomService';
 import { seizeCarriedOnArrest } from './carriedInventory';
+import { announcePlayerJailed } from './prisonWorldChat';
 
 async function runFbiSideEffect(
   label: string,
@@ -250,6 +251,10 @@ export async function jailPlayerFederal(playerId: number, jailTime: number): Pro
       result,
       true,
     );
+  });
+
+  void announcePlayerJailed(playerId, 'FBI', jailTime).catch((error) => {
+    console.error('[FBI Service] world chat jail announcement failed:', error);
   });
 
   void notificationService.sendArrestAwaitingHelpNotifications(

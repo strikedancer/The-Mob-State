@@ -24,7 +24,7 @@ One public in-game lobby for every logged-in player, with a curated sticker pack
 - Keep DMs and crew chat unchanged.
 - Filter on the server, never only in the client.
 - Live updates use SSE `global_chat.message` / `global_chat.message_deleted` via `eventBroadcaster.broadcast`. `global_chat.message` also sends `serverNow` so clients can correct device-clock skew on relative times. Do not write world-chat lines into the personal activity feed. No push per public message.
-- System lines (`source: system`, sender `Gevangenis`) announce when a **real player** is jailed, bought out, or jailbroken. Names are in the body. NPCs are skipped. Own bail / self-escape stay silent. These lines still mirror to the Discord wereldchat lobby; they never go to `#updates`.
+- System lines (`source: system`, sender `Gevangenis`) announce when a **real player** is jailed, bought out, or jailbroken. Jail lines include sentence length (`voor 45 minuten` / `voor 1 uur en 30 minuten`). One line per arrest: `announcePlayerJailed` dedupes the same player for 60s so police clock + friend/crew push cannot double-post. Names are in the body. NPCs are skipped. Own bail / self-escape stay silent. These lines still mirror to the Discord wereldchat lobby; they never go to `#updates`.
 - Hide the live-event rail on World chat (same as Messages / Crew) so it cannot cover send.
 - World chat stays open before rank 5.
 - Relative timestamps (`Nu` / `5m`) use UTC instants plus `serverNow` from `GET/POST /global-chat/messages` and SSE `global_chat.message`. Do not diff `DateTime.parse(...).toLocal()` against the device clock; a skewed phone clock shows “51m” on a just-sent line.
@@ -71,7 +71,7 @@ Player OAuth stays `identify` + `email` only. The chat bot is a separate token.
 6. Live-event rail hidden on the screen; Enter sends.
 7. Without Discord env, in-game chat still works.
 8. With webhook only: game posts appear in Discord; Discord replies do not enter the game until bot+channel are set.
-9. Jail a real player (or buy out / jailbreak another): a `Gevangenis` system line appears live. An NPC arrest does not.
+9. Jail a real player (or buy out / jailbreak another): **one** `Gevangenis` system line appears live, with sentence length. A second identical arrest line must not follow. An NPC arrest does not.
 10. Linked Mod/Ops in `#wereldchat`: `!hulp` lists commands; reply `!wis` deletes; `!mute Name 15` mutes world chat. A player without staffRole cannot run those commands.
 
 ## i18n and Messaging

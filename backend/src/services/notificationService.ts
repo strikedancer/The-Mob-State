@@ -4,8 +4,6 @@ import prisma from '../lib/prisma';
 import { normalizePlayerLanguage, type SupportedPlayerLanguage } from '../config/supportedLanguages';
 import { translationService, type Language } from './translationService';
 import { playerNotificationPreferenceService } from './playerNotificationPreferenceService';
-import { announcePlayerJailed } from './prisonWorldChat';
-
 /** Push body uses this word for `cooldown_expired` per language. */
 const COOLDOWN_ACTION_LABEL: Record<string, Partial<Record<SupportedPlayerLanguage, string>>> = {
   crime: { en: 'crime', nl: 'misdaad', es: 'crimen', de: 'Verbrechen', fr: 'crime', it: 'reato', pl: 'przestępstwo', pt: 'crime' },
@@ -468,10 +466,6 @@ export class NotificationService {
       if (!player) {
         return;
       }
-
-      void announcePlayerJailed(arrestedPlayerId, authority).catch((error) => {
-        console.error('[NotificationService] world chat jail announcement failed:', error);
-      });
 
       const recipients = new Map<number, { isFriend: boolean; isCrew: boolean }>();
 

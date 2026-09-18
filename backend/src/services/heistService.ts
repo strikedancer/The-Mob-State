@@ -2,6 +2,7 @@ import prisma from '../lib/prisma';
 import * as crewService from './crewService';
 import { worldEventService } from './worldEventService';
 import { notificationService } from './notificationService';
+import { announcePlayerJailed } from './prisonWorldChat';
 import { activityService } from './activityService';
 import * as bankRobberyService from './bankRobberyService';
 import { playerService } from './playerService';
@@ -452,6 +453,12 @@ export async function startHeist(
         true
       );
     }
+
+    await Promise.allSettled(
+      crew.members.map((member) =>
+        announcePlayerJailed(member.playerId, 'Police', heist.jailTimeOnFailure)
+      )
+    );
 
     await Promise.allSettled(
       crew.members.map((member) =>
