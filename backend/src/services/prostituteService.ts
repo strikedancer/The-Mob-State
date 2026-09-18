@@ -14,7 +14,9 @@ import {
   getTierConfig,
   occupancyRate,
   occupancyRentMultiplier,
+  rldOccupancyCapacity,
 } from './rldConfig';
+import { ensureAssignableRldRoom } from './redLightDistrictService';
 
 const RECRUITMENT_COOLDOWN_MINUTES = 5;
 const RECRUITMENT_SUCCESS_CHANCE = 0.75; // 75% kans op succesvolle werving
@@ -307,8 +309,9 @@ function computePassiveEarningsSlice(args: {
     const tier = room.tier || 1;
     const tierConfig = tierEarnings(tier);
     const occupied = room.redLightDistrict.rooms.filter((r) => r.occupied).length;
-    const totalRooms =
-      room.redLightDistrict.rooms.length || room.redLightDistrict.roomCount || 1;
+    const totalRooms = rldOccupancyCapacity(
+      room.redLightDistrict.rooms.length || room.redLightDistrict.roomCount || 0
+    );
     const rentMult = occupancyRentMultiplier(occupancyRate(occupied, totalRooms));
     const guardMult = room.guardUntil && room.guardUntil > args.now ? 0.5 : 1;
     const grossEarnings = Math.floor(
@@ -1439,6 +1442,7 @@ export const prostituteService = {
           id: true,
           ownerId: true,
           countryCode: true,
+          tier: true,
         },
       });
 
@@ -1458,32 +1462,14 @@ export const prostituteService = {
         };
       }
 
-      const availableRoom = await prisma.redLightRoom.findFirst({
-        where: {
-          redLightDistrictId: district.id,
-          occupied: false,
-          prostitute: null,
-        },
-        orderBy: { roomNumber: 'asc' },
-        include: {
-          prostitute: true,
-          redLightDistrict: {
-            select: {
-              id: true,
-              ownerId: true,
-              countryCode: true,
-            },
-          },
-        },
-      });
-
+      const availableRoom = await ensureAssignableRldRoom(district.id, district.tier || 1);
       if (availableRoom) {
         room = availableRoom;
       } else {
         return {
           success: false,
           message:
-            'Alle kamers zijn vol. De eigenaar moet eerst kamers upgraden voordat je hier kunt plaatsen.',
+            'Het district van dit land zit vol. Er is maar één Red Light District per land.',
         };
       }
     }

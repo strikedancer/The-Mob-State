@@ -12786,7 +12786,7 @@
   "rldTierPrestige": "Prestiż",
   "rldTierPenthouse": "Daszek",
   "rldUpgradeRooms": "Więcej pokoi",
-  "rldUpgradeRoomsSubtitle": "Kup dodatkowe pokoje, zanim będziesz mógł umieścić tu więcej rekrutów.",
+  "rldUpgradeRoomsSubtitle": "Optional extra empty rooms on the board. Recruits still get a room automatically until this country’s district hits 1000.",
   "rldUpgradeRoomsButton": "Buduj pokoje · €{cost}",
   "@rldUpgradeRoomsButton": {
     "placeholders": {
@@ -12806,8 +12806,8 @@
       }
     }
   },
-  "rldMaxRooms": "W tej dzielnicy osiągnięto limit lokali.",
-  "rldRoomsFullHint": "Wszystkie pokoje są pełne. Najpierw zmodernizuj pokoje.",
+  "rldMaxRooms": "Room upgrades are fully built. Recruits can still be placed until this country’s 1000-room cap.",
+  "rldRoomsFullHint": "This country’s only district is full (1000 rooms).",
   "rldOccupancyBusy": "Zajęty dom przyciąga policję",
   "rldOccupancyFull": "Zatłoczona dzielnica przyciąga dodatkową uwagę policji",
   "rldGuard": "Strażnik",

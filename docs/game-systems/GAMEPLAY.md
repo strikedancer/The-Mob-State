@@ -662,7 +662,7 @@ interest = 0
 - **Collect** int dezelfde openstaande straat/RLD-inkomsten als de KPI Te innen (`settleEarnings`, ook fractionele uren; tick stort hetzelfde). Nachtclub en 8u-shifts keren apart uit.
 - **Werven** vereist een huis of appartement **in het huidige land**. Plekken uit woningen in andere landen tellen niet om hier te werven. Totale netwerk-capaciteit blijft wereldwijd (slots/huur).
 - Events-tab: straatavonden voor iedereen, VIP-salon alleen met actieve Player VIP. Events gebruiken land-slugs (`netherlands`), niet ISO-2. Scheduler houdt per land 1 actief + 1 aankomend event; `settleEventEarnings` elk uur.
-- RLD-detail: kamer-upgrade, inkomsten-tier (tot Penthouse/VIP) en beveiliging 0–5. Nieuwe koop start met 4 kamers; plaatsen maakt geen extra kamers meer. Op de RLD-lijst zie je bezette kamers over de echte capaciteit van dat district (4 tot 20), geen miljoenen-placeholder.
+- RLD-detail: kamer-upgrade, inkomsten-tier (tot Penthouse/VIP) en beveiliging 0–5. Nieuwe koop start met 4 lege kamers; plaatsen maakt extra kamers tot 1000 per land (er is maar één RLD per land). Op de RLD-lijst zie je bezette kamers over dat landelijk maximum, geen miljoenen-placeholder.
 - Rivaliteit starten: vul **spelersnaam** in (numeriek ID blijft ook werken). Server: `POST /rivalries/start` met `rivalUsername` en/of `rivalPlayerId`. Zie `docs/module-protocols/prostitution.md`.
 - RLD PvP: stelen van een recruit (12u op straat, terughalen) en zeldzame district-contest (voorbereiding → gevecht → wissel van eigenaar). Huurders en kamers blijven bij het pand.
 

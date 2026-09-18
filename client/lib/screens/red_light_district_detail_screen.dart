@@ -489,6 +489,11 @@ class _RedLightDistrictDetailScreenState
     final tierInfo = _upgradeInfo?['tier'] as Map<String, dynamic>?;
     final securityInfo = _upgradeInfo?['security'] as Map<String, dynamic>?;
     final expansionInfo = _upgradeInfo?['expansion'] as Map<String, dynamic>?;
+    final maxRooms = (expansionInfo?['maxRooms'] as num?)?.toInt() ?? 1000;
+    final visibleRooms = [
+      ...rooms.where((r) => r.occupied),
+      ...rooms.where((r) => !r.occupied).take(6),
+    ];
     final contestStatus = (district.contest?['status'] ?? 'idle').toString();
     final myId = context.read<AuthProvider>().currentPlayer?.id;
     final isOwner = district.ownerId == myId;
@@ -511,7 +516,7 @@ class _RedLightDistrictDetailScreenState
               title: countryLabel,
               subtitle: l10n.prostitutionRoomsOccupied(
                 '$occupied',
-                '${rooms.length}',
+                '$maxRooms',
               ),
             ),
             Wrap(
@@ -529,7 +534,7 @@ class _RedLightDistrictDetailScreenState
                 ),
                 _statChip(
                   l10n.prostitutionRooms,
-                  '$occupied / ${rooms.length}',
+                  '$occupied / $maxRooms',
                 ),
               ],
             ),
@@ -785,13 +790,13 @@ class _RedLightDistrictDetailScreenState
               icon: Icons.meeting_room,
               title: l10n.prostitutionRooms,
             ),
-            if (rooms.isEmpty)
+            if (visibleRooms.isEmpty)
               _panel(child: Text(l10n.prostitutionNoAvailableDistricts))
             else
               GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: rooms.length,
+                itemCount: visibleRooms.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: 10,
@@ -799,7 +804,7 @@ class _RedLightDistrictDetailScreenState
                   childAspectRatio: 0.95,
                 ),
                 itemBuilder: (context, index) {
-                  final room = rooms[index];
+                  final room = visibleRooms[index];
                   final occupiedRoom = room.occupied;
                   return Container(
                     padding: const EdgeInsets.all(12),

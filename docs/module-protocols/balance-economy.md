@@ -55,7 +55,7 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 - **Expunge petition:** cash cost `100_000 + max(0, convictions-1)*1_000`, 12h `expunge_petition` cooldown, success clamped 8–70%. Fail is cash-only (no jail/wanted/FBI). Success does not release from jail. VIP shortens the cooldown like other action timeouts. See [court.md](court.md).
 
 ## Documented static modifiers (red light districts)
-- **Start rooms:** 4 on a new buy. Expansion 0–8 adds 2 rooms per step (€40k → €500k). Existing rooms are grandfathered.
+- **Start rooms:** 4 empty rooms on a new buy. Assigning a recruit auto-grows rooms up to **1000 per country** (one shared district). Expansion 0–8 still adds 2 optional empty rooms per step (€40k → €500k). Existing rooms are grandfathered.
 - **Income tiers:** Basic → Lounge → Luxury → Prestige → Penthouse (VIP). Gross/rent per room in `rldConfig.ts`.
 - **Security:** 0–5, escalating cost. Lowers raid chance (~3%/level) and steal chance.
 - **Occupancy:** ≥70% occupancy raises rent and raid/steal chance; 100% also ticks FBI heat on the owner.

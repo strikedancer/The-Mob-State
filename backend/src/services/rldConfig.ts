@@ -3,6 +3,8 @@
 export const RLD_START_ROOMS = 4;
 export const RLD_EXPANSION_MAX = 8;
 export const RLD_ROOMS_PER_EXPANSION = 2;
+/** Shared country cap: one district per country, all players place here. */
+export const RLD_MAX_ROOMS = 1000;
 export const RLD_SECURITY_MAX = 5;
 export const RLD_TIER_MAX = 5;
 export const RLD_PENTHOUSE_TIER = 5;
@@ -214,7 +216,12 @@ export function normalizeRldCountry(code: string | null | undefined): string {
 
 export function expansionTargetRooms(expansionLevel: number): number {
   const level = Math.max(0, Math.min(RLD_EXPANSION_MAX, expansionLevel));
-  return RLD_START_ROOMS + level * RLD_ROOMS_PER_EXPANSION;
+  return Math.min(RLD_MAX_ROOMS, RLD_START_ROOMS + level * RLD_ROOMS_PER_EXPANSION);
+}
+
+/** Occupancy / raid / rent use the country cap, not the handful of built empty rooms. */
+export function rldOccupancyCapacity(physicalRooms = 0): number {
+  return Math.max(RLD_MAX_ROOMS, physicalRooms);
 }
 
 export function impliedExpansionLevel(roomCount: number): number {

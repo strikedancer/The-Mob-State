@@ -1,6 +1,6 @@
 import prisma from '../lib/prisma';
 import { applyReputationAction } from './reputationService';
-import { occupancyRaidBonus, occupancyRate } from './rldConfig';
+import { occupancyRaidBonus, occupancyRate, rldOccupancyCapacity } from './rldConfig';
 import { countryEventActive } from './rldPvpService';
 
 // Raid Configuration
@@ -200,7 +200,7 @@ export const policeRaidService = {
     let eventBonus = 0;
     for (const district of districts) {
       const occupied = district.rooms.filter((r) => r.occupied).length;
-      const total = district.rooms.length || district.roomCount || 1;
+      const total = rldOccupancyCapacity(district.rooms.length || district.roomCount);
       occupancyBonus = Math.max(occupancyBonus, occupancyRaidBonus(occupancyRate(occupied, total)));
       if (await countryEventActive(district.countryCode)) {
         eventBonus = 0.04;
@@ -252,7 +252,7 @@ export const policeRaidService = {
     let occupancyLevel: 'full' | 'busy' | '' = '';
     for (const district of districts) {
       const occupied = district.rooms.filter((r) => r.occupied).length;
-      const total = district.rooms.length || district.roomCount || 1;
+      const total = rldOccupancyCapacity(district.rooms.length || district.roomCount);
       const rate = occupancyRate(occupied, total);
       const bonus = occupancyRaidBonus(rate);
       if (bonus > occupancyBonus) {

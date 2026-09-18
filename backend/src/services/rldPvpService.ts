@@ -41,6 +41,7 @@ import {
   isWorkerOnShift,
   isWorkerResting,
   occupancyRate,
+  rldOccupancyCapacity,
 } from './rldConfig';
 
 type ActionResult = { success: boolean; message: string; [key: string]: unknown };
@@ -260,7 +261,9 @@ export const rldPvpService = {
     }
 
     const occupied = room.redLightDistrict.rooms.filter((r) => r.occupied).length;
-    const total = room.redLightDistrict.rooms.length || room.redLightDistrict.roomCount || 1;
+    const total = rldOccupancyCapacity(
+      room.redLightDistrict.rooms.length || room.redLightDistrict.roomCount || 0
+    );
     const onEvent = await isInActiveEvent(worker.id);
     const rivalry = await hasRivalry(playerId, worker.playerId);
     const protection = await hasProtection(worker.playerId);

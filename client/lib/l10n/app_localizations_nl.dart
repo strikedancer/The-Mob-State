@@ -12013,7 +12013,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get rldUpgradeRoomsSubtitle =>
-      'Koop extra kamers voordat je hier meer recruits plaatst.';
+      'Optionele extra lege kamers op het bord. Recruits krijgen vanzelf een kamer tot dit land 1000 plekken vol heeft.';
 
   @override
   String rldUpgradeRoomsButton(String cost) {
@@ -12026,10 +12026,12 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get rldMaxRooms => 'Dit district zit aan het maximum kamers.';
+  String get rldMaxRooms =>
+      'Kamer-upgrades zijn klaar. Recruits kun je nog plaatsen tot het landelijk maximum van 1000.';
 
   @override
-  String get rldRoomsFullHint => 'Alle kamers zijn vol. Upgrade eerst kamers.';
+  String get rldRoomsFullHint =>
+      'Het enige district van dit land zit vol (1000 kamers).';
 
   @override
   String get rldOccupancyBusy => 'Drukke zaak trekt politie';
@@ -19151,7 +19153,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicProstitutionHow =>
-      'Je werft in het land waar je nu bent, en alleen als je daar een huis of appartement hebt. Vrije woonplekken uit andere landen tellen niet.\nElke recruit krijgt level via werk-shifts van 8 uur, daarna rust.\nVerplaats recruits tussen straat, Red Light District en nachtclub. Een district heeft alleen zoveel kamers als de eigenaar heeft vrijgespeeld. Is het vol, blijft ze op straat.\nEen gestolen recruit staat 12 uur op straat. De oude baas kan haar in dat venster terughalen. De dief mag haar nog niet in een district of nachtclub zetten.\nEvents zijn drukke avonden: extra geld, extra politie, makkelijker stelen. Straatavonden zijn voor iedereen. VIP-salon is voor Player VIP.\nRivaliteit onder Sociaal steelt nog cash of tipt de politie. Een recruit stelen is een aparte knop op een kamerschaal.\nPolitie-heat stijgt bij een vol district en bij events. Hoge FBI-heat kan raids geven.\nStraat- en Red Light-geld loopt door terwijl ze werken. Nu ophalen zet het bedrag onder Te innen op je rekening; de server stort datzelfde bedrag ook vanzelf. Je hoeft niet meer op een vol uur te wachten. Een werkshift van 8 uur keert apart uit. Nachtclub loopt via de club, niet via deze knop.';
+      'Je werft in het land waar je nu bent, en alleen als je daar een huis of appartement hebt. Vrije woonplekken uit andere landen tellen niet.\nElke recruit krijgt level via werk-shifts van 8 uur, daarna rust.\nVerplaats recruits tussen straat, Red Light District en nachtclub. Elk land heeft één district. Recruits krijgen vanzelf een kamer tot dat district 1000 werksters vol heeft. Is het vol, blijft ze op straat.\nEen gestolen recruit staat 12 uur op straat. De oude baas kan haar in dat venster terughalen. De dief mag haar nog niet in een district of nachtclub zetten.\nEvents zijn drukke avonden: extra geld, extra politie, makkelijker stelen. Straatavonden zijn voor iedereen. VIP-salon is voor Player VIP.\nRivaliteit onder Sociaal steelt nog cash of tipt de politie. Een recruit stelen is een aparte knop op een kamerschaal.\nPolitie-heat stijgt bij een vol district en bij events. Hoge FBI-heat kan raids geven.\nStraat- en Red Light-geld loopt door terwijl ze werken. Nu ophalen zet het bedrag onder Te innen op je rekening; de server stort datzelfde bedrag ook vanzelf. Je hoeft niet meer op een vol uur te wachten. Een werkshift van 8 uur keert apart uit. Nachtclub loopt via de club, niet via deze knop.';
 
   @override
   String get helpTopicProstitutionTips =>
@@ -19169,7 +19171,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicRedLightDistrictsHow =>
-      'Koop het district in het land waar je nu bent. Een nieuwe koop start met vier kamers. Extra kamers komen uit de kamer-upgrade, niet door extra recruits te plaatsen.\nInkomsten-upgrades verhogen de huur per kamer (Basic, Lounge, Luxury, Prestige, Penthouse). Penthouse vraagt Player VIP. Beveiliging verlaagt raid-kans en maakt stelen lastiger.\nEen volle zaak betaalt meer huur en trekt meer politie. Bewaak een ster om diefstal bijna te blokken, tegen de helft van de verdienste.\nAndere spelers in hetzelfde land kunnen een recruit uit een bezette kamer stelen. Een zeldzame contest kan de eigenaar wisselen. Kamers, upgrades en huurders blijven bij het pand; huur gaat naar de nieuwe baas.\nEen contest heeft een korte voorbereiding, een live gevecht en een slot. Stelen en sabotage scoren voor de uitdager; de eigenaar kan Houden voor cash en heat.\nPolitieraids lopen nog bij hoge FBI-heat. Events in dat land maken raids en diefstal waarschijnlijker.';
+      'Koop het district in het land waar je nu bent. Een nieuwe koop start met vier lege kamers. Plaatsen van een recruit opent een extra kamer tot het landelijk maximum van 1000. Kamer-upgrades van de eigenaar zijn optioneel.\nInkomsten-upgrades verhogen de huur per kamer (Basic, Lounge, Luxury, Prestige, Penthouse). Penthouse vraagt Player VIP. Beveiliging verlaagt raid-kans en maakt stelen lastiger.\nEen volle zaak betaalt meer huur en trekt meer politie. Bewaak een ster om diefstal bijna te blokken, tegen de helft van de verdienste.\nAndere spelers in hetzelfde land kunnen een recruit uit een bezette kamer stelen. Een zeldzame contest kan de eigenaar wisselen. Kamers, upgrades en huurders blijven bij het pand; huur gaat naar de nieuwe baas.\nEen contest heeft een korte voorbereiding, een live gevecht en een slot. Stelen en sabotage scoren voor de uitdager; de eigenaar kan Houden voor cash en heat.\nPolitieraids lopen nog bij hoge FBI-heat. Events in dat land maken raids en diefstal waarschijnlijker.';
 
   @override
   String get helpTopicRedLightDistrictsTips =>

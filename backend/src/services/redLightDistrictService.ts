@@ -11,6 +11,7 @@ import {
   RLD_PENTHOUSE_TIER,
   RLD_SECURITY_COSTS,
   RLD_SECURITY_MAX,
+  RLD_MAX_ROOMS,
   RLD_START_ROOMS,
   RLD_TIER_MAX,
   RLD_TIER_UPGRADE_COSTS,
@@ -19,6 +20,7 @@ import {
   occupancyRaidBonus,
   occupancyRate,
   occupancyRentMultiplier,
+  rldOccupancyCapacity,
 } from './rldConfig';
 
 const DEFAULT_RED_LIGHT_DISTRICTS = [
@@ -92,15 +94,16 @@ async function createMissingRooms(
   targetCount: number,
   tier: number
 ): Promise<number> {
+  const cappedTarget = Math.min(RLD_MAX_ROOMS, Math.max(0, targetCount));
   const existing = await prisma.redLightRoom.findMany({
     where: { redLightDistrictId: districtId },
     select: { roomNumber: true },
     orderBy: { roomNumber: 'desc' },
   });
   const have = existing.length;
-  if (have >= targetCount) return have;
+  if (have >= cappedTarget) return have;
   let nextNumber = (existing[0]?.roomNumber ?? 0) + 1;
-  const toCreate = targetCount - have;
+  const toCreate = cappedTarget - have;
   await prisma.redLightRoom.createMany({
     data: Array.from({ length: toCreate }, (_, i) => ({
       redLightDistrictId: districtId,
@@ -108,7 +111,50 @@ async function createMissingRooms(
       tier,
     })),
   });
-  return targetCount;
+  await prisma.redLightDistrict.update({
+    where: { id: districtId },
+    data: { roomCount: cappedTarget },
+  });
+  return cappedTarget;
+}
+
+const ASSIGNABLE_ROOM_INCLUDE = {
+  prostitute: true,
+  redLightDistrict: {
+    select: {
+      id: true,
+      ownerId: true,
+      countryCode: true,
+    },
+  },
+} as const;
+
+/** Grow one empty room when the country district is full of workers, up to RLD_MAX_ROOMS. */
+export async function ensureAssignableRldRoom(districtId: number, tier: number) {
+  const empty = await prisma.redLightRoom.findFirst({
+    where: {
+      redLightDistrictId: districtId,
+      occupied: false,
+      prostitute: null,
+    },
+    orderBy: { roomNumber: 'asc' },
+    include: ASSIGNABLE_ROOM_INCLUDE,
+  });
+  if (empty) return empty;
+
+  const have = await prisma.redLightRoom.count({ where: { redLightDistrictId: districtId } });
+  if (have >= RLD_MAX_ROOMS) return null;
+
+  await createMissingRooms(districtId, have + 1, tier);
+  return prisma.redLightRoom.findFirst({
+    where: {
+      redLightDistrictId: districtId,
+      occupied: false,
+      prostitute: null,
+    },
+    orderBy: { roomNumber: 'desc' },
+    include: ASSIGNABLE_ROOM_INCLUDE,
+  });
 }
 
 export function serializeContest(district: {
@@ -285,7 +331,7 @@ export const redLightDistrictService = {
 
     const now = new Date();
     const occupied = district.rooms.length;
-    const rate = occupancyRate(occupied, district.roomCount || occupied);
+    const rate = occupancyRate(occupied, rldOccupancyCapacity(district.roomCount));
     const rentMult = occupancyRentMultiplier(rate);
     const tierRent = getTierConfig(district.tier).rent;
     let totalIncome = 0;
@@ -326,8 +372,8 @@ export const redLightDistrictService = {
     }
 
     const occupiedRooms = district.rooms.filter((r) => r.occupied).length;
-    const availableRooms = district.rooms.filter((r) => !r.occupied).length;
-    const totalRooms = district.rooms.length || district.roomCount;
+    const totalRooms = rldOccupancyCapacity(district.rooms.length || district.roomCount);
+    const availableRooms = Math.max(0, totalRooms - occupiedRooms);
     const rate = occupancyRate(occupiedRooms, totalRooms);
     const tierRent = getTierConfig(district.tier).rent;
     const hourlyIncome = Math.floor(
@@ -637,6 +683,7 @@ export const redLightDistrictService = {
         nextRooms: canUpgradeExpansion ? nextRooms : null,
         extraRooms: canUpgradeExpansion ? Math.max(0, nextRooms - currentRooms) : 0,
         upgradeCost: canUpgradeExpansion ? RLD_EXPANSION_COSTS[expansionLevel] : null,
+        maxRooms: RLD_MAX_ROOMS,
       },
     };
   },
@@ -653,7 +700,7 @@ export const redLightDistrictService = {
     for (const district of owned) {
       if (!district.ownerId) continue;
       const occupied = district.rooms.filter((r) => r.occupied).length;
-      const total = district.rooms.length || district.roomCount || 1;
+      const total = rldOccupancyCapacity(district.rooms.length || district.roomCount);
       const rate = occupancyRate(occupied, total);
       if (rate < RLD_OCCUPANCY_FULL) continue;
       if (district.lastOccupancyHeatAt && district.lastOccupancyHeatAt > hourAgo) continue;

@@ -12109,7 +12109,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get rldUpgradeRoomsSubtitle =>
-      'Achetez des chambres supplémentaires avant de pouvoir placer plus de recrues ici.';
+      'Optional extra empty rooms on the board. Recruits still get a room automatically until this country’s district hits 1000.';
 
   @override
   String rldUpgradeRoomsButton(String cost) {
@@ -12122,11 +12122,12 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get rldMaxRooms => 'Ce quartier est à son plafond de pièce.';
+  String get rldMaxRooms =>
+      'Room upgrades are fully built. Recruits can still be placed until this country’s 1000-room cap.';
 
   @override
   String get rldRoomsFullHint =>
-      'Toutes les salles sont pleines. Améliorez d\'abord les chambres.';
+      'This country’s only district is full (1000 rooms).';
 
   @override
   String get rldOccupancyBusy => 'Une maison animée attire la police';

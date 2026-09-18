@@ -20906,7 +20906,7 @@ abstract class AppLocalizations {
   /// No description provided for @rldUpgradeRoomsSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Buy extra rooms before you can place more recruits here.'**
+  /// **'Optional extra empty rooms on the board. Recruits still get a room automatically until this country’s district hits 1000.'**
   String get rldUpgradeRoomsSubtitle;
 
   /// No description provided for @rldUpgradeRoomsButton.
@@ -20924,13 +20924,13 @@ abstract class AppLocalizations {
   /// No description provided for @rldMaxRooms.
   ///
   /// In en, this message translates to:
-  /// **'This district is at its room cap.'**
+  /// **'Room upgrades are fully built. Recruits can still be placed until this country’s 1000-room cap.'**
   String get rldMaxRooms;
 
   /// No description provided for @rldRoomsFullHint.
   ///
   /// In en, this message translates to:
-  /// **'All rooms are full. Upgrade rooms first.'**
+  /// **'This country’s only district is full (1000 rooms).'**
   String get rldRoomsFullHint;
 
   /// No description provided for @rldOccupancyBusy.
@@ -32849,7 +32849,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicProstitutionHow.
   ///
   /// In en, this message translates to:
-  /// **'You recruit in the country you are in, and only if you own a house or apartment there. Spare housing slots in other countries do not let you recruit here.\nEach recruit has a level from work shifts. Shifts last 8 hours, then she needs rest.\nMove recruits between street, Red Light District and nightclub. A district only has as many rooms as its owner has unlocked with upgrades. If rooms are full, she stays on the street.\nA stolen recruit sits on the street for 12 hours. The old boss can take her back in that window. The thief cannot put her in a district or nightclub yet.\nEvents are busy nights: extra earnings, extra police, easier theft. Street nights are for everyone. VIP salon nights need Player VIP.\nRivalry on Social still steals cash or tips police. Stealing a recruit is a separate action on a district room.\nPolice heat rises with a packed district and with events. High FBI heat can raid workers.\nStreet and Red Light cash keeps accruing while they work. Collect now puts the pending amount from To collect onto your account; the server also deposits that same amount on its own. You no longer have to wait for a full hour. An 8-hour work shift pays separately. Nightclub income runs through the club, not this button.'**
+  /// **'You recruit in the country you are in, and only if you own a house or apartment there. Spare housing slots in other countries do not let you recruit here.\nEach recruit has a level from work shifts. Shifts last 8 hours, then she needs rest.\nMove recruits between street, Red Light District and nightclub. Each country has one district. Recruits get a room automatically until that district hits 1000 workers. If it is full, she stays on the street.\nA stolen recruit sits on the street for 12 hours. The old boss can take her back in that window. The thief cannot put her in a district or nightclub yet.\nEvents are busy nights: extra earnings, extra police, easier theft. Street nights are for everyone. VIP salon nights need Player VIP.\nRivalry on Social still steals cash or tips police. Stealing a recruit is a separate action on a district room.\nPolice heat rises with a packed district and with events. High FBI heat can raid workers.\nStreet and Red Light cash keeps accruing while they work. Collect now puts the pending amount from To collect onto your account; the server also deposits that same amount on its own. You no longer have to wait for a full hour. An 8-hour work shift pays separately. Nightclub income runs through the club, not this button.'**
   String get helpTopicProstitutionHow;
 
   /// No description provided for @helpTopicProstitutionTips.
@@ -32879,7 +32879,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicRedLightDistrictsHow.
   ///
   /// In en, this message translates to:
-  /// **'Buy the district in the country you are in. A new buy starts with four rooms. Extra rooms come from the room upgrade, not from placing more recruits.\nIncome upgrades raise rent per room (Basic, Lounge, Luxury, Prestige, Penthouse). Penthouse needs Player VIP. Security lowers raid chance and makes theft harder.\nA full house pays more rent and draws more police. Guard a star to almost block theft for a few hours at half earnings.\nOther players in the same country can steal a recruit from an occupied room. A rare contest can change the owner. Rooms, upgrades and tenants stay with the building; rent goes to the new boss.\nA contest has a short prep, a live fight, then a close. Stealing and sabotage score for the challenger; the owner can Hold for cash and heat.\nPolice raids still run when FBI heat is high. Events in that country make raids and theft more likely.'**
+  /// **'Buy the district in the country you are in. A new buy starts with four empty rooms. Placing a recruit opens another room until the country cap of 1000. Owner room upgrades are optional extras.\nIncome upgrades raise rent per room (Basic, Lounge, Luxury, Prestige, Penthouse). Penthouse needs Player VIP. Security lowers raid chance and makes theft harder.\nA full house pays more rent and draws more police. Guard a star to almost block theft for a few hours at half earnings.\nOther players in the same country can steal a recruit from an occupied room. A rare contest can change the owner. Rooms, upgrades and tenants stay with the building; rent goes to the new boss.\nA contest has a short prep, a live fight, then a close. Stealing and sabotage score for the challenger; the owner can Hold for cash and heat.\nPolice raids still run when FBI heat is high. Events in that country make raids and theft more likely.'**
   String get helpTopicRedLightDistrictsHow;
 
   /// No description provided for @helpTopicRedLightDistrictsTips.

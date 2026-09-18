@@ -12786,7 +12786,7 @@
   "rldTierPrestige": "Prestige",
   "rldTierPenthouse": "Penthouse",
   "rldUpgradeRooms": "Mehr Zimmer",
-  "rldUpgradeRoomsSubtitle": "Kaufen Sie zusätzliche Räume, bevor Sie hier weitere Rekruten unterbringen können.",
+  "rldUpgradeRoomsSubtitle": "Optional extra empty rooms on the board. Recruits still get a room automatically until this country’s district hits 1000.",
   "rldUpgradeRoomsButton": "Räume bauen · {cost}",
   "@rldUpgradeRoomsButton": {
     "placeholders": {
@@ -12806,8 +12806,8 @@
       }
     }
   },
-  "rldMaxRooms": "Dieser Bezirk ist an seiner Grenze.",
-  "rldRoomsFullHint": "Alle Räume sind voll. Rüsten Sie zuerst die Zimmer auf.",
+  "rldMaxRooms": "Room upgrades are fully built. Recruits can still be placed until this country’s 1000-room cap.",
+  "rldRoomsFullHint": "This country’s only district is full (1000 rooms).",
   "rldOccupancyBusy": "Ein geschäftiges Haus zieht die Polizei an",
   "rldOccupancyFull": "Ein überfüllter Bezirk erregt zusätzliche Aufmerksamkeit der Polizei",
   "rldGuard": "Bewachen",
