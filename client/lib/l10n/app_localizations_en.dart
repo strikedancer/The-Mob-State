@@ -6231,6 +6231,49 @@ class AppLocalizationsEn extends AppLocalizations {
   String get premiumUiCheckoutOpenFailed => 'Failed to open the payment page.';
 
   @override
+  String get gameSupportDonateTooltip => 'Support the game';
+
+  @override
+  String get gameSupportDonateTitle => 'Support The Mob State';
+
+  @override
+  String get gameSupportDonateBody =>
+      'A one-time gift keeps the game running: servers, development and the work behind it. You do not receive credits, in-game cash or VIP for this.';
+
+  @override
+  String get gameSupportDonateOneTimeNote =>
+      'This is a one-time payment, not a subscription.';
+
+  @override
+  String get gameSupportDonateAmountLabel => 'Amount in euros';
+
+  @override
+  String get gameSupportDonateAmountHint => '1.00 – 250.00';
+
+  @override
+  String get gameSupportDonateButton => 'Donate';
+
+  @override
+  String get gameSupportDonateInvalidAmount =>
+      'Enter an amount between €1.00 and €250.00.';
+
+  @override
+  String get gameSupportDonateCheckoutFailed =>
+      'The payment page could not be opened. Try again.';
+
+  @override
+  String get gameSupportDonateRedirectPaid =>
+      'Thank you. Your gift helps keep The Mob State online.';
+
+  @override
+  String get gameSupportDonateRedirectCancelled =>
+      'Donation cancelled. You were not charged.';
+
+  @override
+  String get gameSupportDonateRedirectFailed =>
+      'Donation failed or expired. You were not charged.';
+
+  @override
   String get premiumUiRedeemNeedsVehicle =>
       'This item requires a vehicle selection and will be redeemed from the vehicle screen.';
 
@@ -19148,15 +19191,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicPremiumSummary =>
-      'Buy Player VIP, Crew VIP, credit packs and in-game cash in Shop, under Dashboard. Skip waits on the screen where you wait, not here.';
+      'Buy Player VIP, Crew VIP, credit packs and in-game cash in Shop, under Dashboard. Skip waits on the screen where you wait, not here. A round portrait bottom-left lets you give a one-time gift to keep the game running.';
 
   @override
   String get helpTopicPremiumHow =>
-      'Open Shop directly under Dashboard in the side menu. The VIP tab shows subscriptions; the Credits tab shows credit packs and in-game cash. Skip waits with the lightning button on the screen where you wait, not here.\nThe dashboard top bar also shows whether Player VIP is active and how long it still lasts; tap it to open VIP. With no expiry date it shows Active.\nOn each purchase row, tap the i icon for full details and benefits.\nPlayer VIP is personal. Crew VIP applies to your crew and only has value when you are already in a crew. Every member can donate into the crew VIP pot on the Crew page, or one member can take the monthly subscription in Shop.\nPlayer VIP gives 10 percent shorter action timeouts (jail time remains unchanged), 100 weekly credits, a VIP one-click purchase button for missing materials in Drug Production after cost confirmation, and a softer death reset: bank/crypto/education/achievements stay, while assets, inventory and drug stock are wiped.\nCrew VIP unlocks VIP HQ, buildings above 10, +10 percent war points and Shield for the whole crew.\nAfter checkout you return to this page so you can see VIP status and your new credit or cash balance.\nCredit packs let you choose quantity 1-20 in one payment. Event Pass and VIP stay one purchase.\nIn-game cash packs pay in euros and land in your wallet. You can also convert credits to cash if that bundle is listed.\nCancel auto-renew any time; your paid period stays active. Gift VIP by player or crew name. Prestige tiers are display only.\nPrices and available items are managed live in admin.';
+      'Open Shop directly under Dashboard in the side menu. The VIP tab shows subscriptions; the Credits tab shows credit packs and in-game cash. Skip waits with the lightning button on the screen where you wait, not here.\nThe dashboard top bar also shows whether Player VIP is active and how long it still lasts; tap it to open VIP. With no expiry date it shows Active.\nOn each purchase row, tap the i icon for full details and benefits.\nPlayer VIP is personal. Crew VIP applies to your crew and only has value when you are already in a crew. Every member can donate into the crew VIP pot on the Crew page, or one member can take the monthly subscription in Shop.\nPlayer VIP gives 10 percent shorter action timeouts (jail time remains unchanged), 100 weekly credits, a VIP one-click purchase button for missing materials in Drug Production after cost confirmation, and a softer death reset: bank/crypto/education/achievements stay, while assets, inventory and drug stock are wiped.\nCrew VIP unlocks VIP HQ, buildings above 10, +10 percent war points and Shield for the whole crew.\nAfter checkout you return to this page so you can see VIP status and your new credit or cash balance.\nCredit packs let you choose quantity 1-20 in one payment. Event Pass and VIP stay one purchase.\nIn-game cash packs pay in euros and land in your wallet. You can also convert credits to cash if that bundle is listed.\nCancel auto-renew any time; your paid period stays active. Gift VIP by player or crew name. Prestige tiers are display only.\nPrices and available items are managed live in admin.\nBottom-left on most screens you will find a round portrait. Tap it to give a one-time euro amount toward development and monthly costs. That payment does not grant VIP, credits or cash.';
 
   @override
   String get helpTopicPremiumTips =>
-      'Check your credit balance and expiry date before buying again; extending is often better than stacking blindly.\nCancel auto-renew in time if you do not want ongoing charges; your paid-through period still runs.\nUse credits mainly on time-critical boosts or protection, not automatically on every small shortcut.\nIf you are not in a crew yet, start with Player VIP or a credit bundle before Crew VIP.';
+      'Check your credit balance and expiry date before buying again; extending is often better than stacking blindly.\nCancel auto-renew in time if you do not want ongoing charges; your paid-through period still runs.\nUse credits mainly on time-critical boosts or protection, not automatically on every small shortcut.\nIf you are not in a crew yet, start with Player VIP or a credit bundle before Crew VIP.\nThe left donate portrait is a gift to the game, not a shop purchase.';
 
   @override
   String get landingHeroTitle => 'The Mob State';

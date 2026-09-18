@@ -13281,5 +13281,17 @@
   },
   "premiumUiNoCashBundles": "No cash packs are for sale right now.",
   "premiumUiCreditsToCashTitle": "Or convert credits to cash",
-  "premiumUiSpeedupHint": "Need to skip a wait? Use the lightning button on that screen. This page is only for purchases."
+  "premiumUiSpeedupHint": "Need to skip a wait? Use the lightning button on that screen. This page is only for purchases.",
+  "gameSupportDonateTooltip": "Support the game",
+  "gameSupportDonateTitle": "Support The Mob State",
+  "gameSupportDonateBody": "A one-time gift keeps the game running: servers, development and the work behind it. You do not receive credits, in-game cash or VIP for this.",
+  "gameSupportDonateOneTimeNote": "This is a one-time payment, not a subscription.",
+  "gameSupportDonateAmountLabel": "Amount in euros",
+  "gameSupportDonateAmountHint": "1.00 – 250.00",
+  "gameSupportDonateButton": "Donate",
+  "gameSupportDonateInvalidAmount": "Enter an amount between €1.00 and €250.00.",
+  "gameSupportDonateCheckoutFailed": "The payment page could not be opened. Try again.",
+  "gameSupportDonateRedirectPaid": "Thank you. Your gift helps keep The Mob State online.",
+  "gameSupportDonateRedirectCancelled": "Donation cancelled. You were not charged.",
+  "gameSupportDonateRedirectFailed": "Donation failed or expired. You were not charged."
 }

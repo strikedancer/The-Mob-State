@@ -24,6 +24,7 @@ import '../widgets/pwa_install_banner.dart';
 import '../widgets/push_enable_prompt.dart';
 import '../widgets/discord_link_prompt.dart';
 import '../widgets/live_event_rail.dart';
+import '../widgets/game_support_donate_avatar.dart';
 import '../utils/game_event_theme.dart';
 import '../utils/localized_game_event_template.dart';
 import '../utils/top_right_notification.dart';
@@ -614,6 +615,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       });
       _loadActiveGameEventsForRail();
       _consumeDiscordLinkReturn();
+      _showPaymentReturnFeedback();
     });
   }
 
@@ -641,6 +643,40 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 : l10n.discordLinkFailed;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(text)),
+    );
+  }
+
+  void _showPaymentReturnFeedback() {
+    if (!kIsWeb) return;
+    final status = (Uri.base.queryParameters['status'] ?? '').toLowerCase();
+    final purchase = (Uri.base.queryParameters['purchase'] ?? '').toLowerCase();
+    if (status.isEmpty || purchase != 'game_support_donate') return;
+
+    final l10n = AppLocalizations.of(context)!;
+    late final String message;
+    late final Color color;
+    if (status == 'paid' || status == 'success') {
+      message = l10n.gameSupportDonateRedirectPaid;
+      color = Colors.green;
+    } else if (status == 'cancelled') {
+      message = l10n.gameSupportDonateRedirectCancelled;
+      color = Colors.orange;
+    } else if (status == 'failed' || status == 'expired') {
+      message = l10n.gameSupportDonateRedirectFailed;
+      color = Colors.red;
+    } else {
+      return;
+    }
+
+    replaceBrowserPath('/dashboard');
+    showTopRightFromSnackBar(
+      context,
+      SnackBar(
+        content: Text(message),
+        backgroundColor: color,
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.zero,
+      ),
     );
   }
 
@@ -1389,6 +1425,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
               // Body already sits above the mobile footer; keep a small inset.
               bottomOffset: showLeftSidebar ? 20 : 16,
               maxVisible: 6,
+            ),
+          if (_selectedWebSection != _WebSection.messages &&
+              _selectedWebSection != _WebSection.worldChat)
+            GameSupportDonateAvatar(
+              leftOffset: showLeftSidebar ? 248 : 8,
+              bottomOffset: showLeftSidebar ? 20 : 16,
             ),
         ],
       ),

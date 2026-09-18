@@ -5,7 +5,8 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 
 ## Primary Frontend Entry
 - `client/lib/screens/premium_screen.dart` (VIP tab: buy/extend, gift, cancel auto-renew, prestige KPI; Credits tab: credit packs + in-game cash)
-- `client/lib/screens/dashboard_screen.dart` (HUD VIP-cel: actief/nee + resterende tijd, tik naar Premium)
+- `client/lib/screens/dashboard_screen.dart` (HUD VIP-cel: actief/nee + resterende tijd, tik naar Premium; linksonder ronde donate-avatar)
+- `client/lib/widgets/game_support_donate_avatar.dart` (eenmalige game-support donatie)
 - `client/lib/screens/crew_screen.dart` (crew VIP checkout entry)
 
 ## Primary Backend Entry
@@ -21,6 +22,7 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 - **Gift Crew VIP:** `POST /subscriptions/checkout/gift-crew-vip` met `recipientCrewName`; webhook type `crew_vip_gift` verlengt crew VIP 30 dagen (geen auto-renew). Iedere speler mag cadeau doen (niet alleen leaders). UI toont `giftPrices.crewVipEur`.
 - **Crew VIP-pot:** elk crewlid kan `POST /subscriptions/checkout/crew-vip-donate` (`amountEur` in €1 / €2.50 / €5 / restbedrag / maandprijs). Webhook `crew_vip_donate` telt euro-cents op `crews.vipFundCents`; bij een volle maandprijs volgt +30 dagen zonder Mollie-subscription. `GET /subscriptions/crew-vip-fund` voedt alleen het Crew-overzicht; Winkel toont de pot niet.
 - **Crew VIP-abonnement:** `POST /subscriptions/checkout/crew-vip` mag elk lid starten (niet alleen de leader). Als de crew al `mollieSubscriptionId` heeft, is extra betaling een eenmalige maand zonder tweede subscription.
+- **Game-support donatie:** ronde avatar linksonder (zelfde Clash-stijl als event-avatars rechts). Modal met zelf gekozen eurobedrag (€1,00–€250,00) → `POST /subscriptions/checkout/game-support-donate`. Mollie `sequenceType` ontbreekt bewust (eenmalig, geen abonnement). Webhook-type `game_support_donate` schrijft alleen een fulfillment-record; geen VIP, credits of cash. Return landt op Dashboard met dankbericht.
 - Prestige KPI toont lifetime days + dagen tot volgende tier (bronze 30 / silver 180 / gold 365; display-only).
 - **Prestige (display-only):** lifetime VIP-dagen → tiers bronze/silver/gold (30/180/365); geen gameplay power.
 - Cron `vipExpirySweep` zet verlopen `isVip` uit (crew buildings downgraden).
@@ -107,6 +109,8 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 9. Premium tiles laden op web correct via de externe runtime-route en tonen na een refresh de actuele cache-bust versie.
 10. Admin player-management kan premium credits set/add uitvoeren met correcte permissies (viewer blok, moderator limiet, super admin volledige limiet).
 11. Admin full player reset houdt VIP/auto-renew intact en zet `premiumCredits` op het restant van gekochte packs (niet op 0, niet inclusief stipend/event/vault).
+12. Game-support donatie opent Mollie one-time checkout; paid webhook grant geen in-game rewards.
+13. Bedrag onder €1 of boven €250 wordt server-side geweigerd.
 
 ## i18n and Messaging
 - Prijslabels en benefit-teksten in NL en EN synchroon houden.

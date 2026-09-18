@@ -11098,6 +11098,78 @@ abstract class AppLocalizations {
   /// **'Failed to open the payment page.'**
   String get premiumUiCheckoutOpenFailed;
 
+  /// No description provided for @gameSupportDonateTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Support the game'**
+  String get gameSupportDonateTooltip;
+
+  /// No description provided for @gameSupportDonateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Support The Mob State'**
+  String get gameSupportDonateTitle;
+
+  /// No description provided for @gameSupportDonateBody.
+  ///
+  /// In en, this message translates to:
+  /// **'A one-time gift keeps the game running: servers, development and the work behind it. You do not receive credits, in-game cash or VIP for this.'**
+  String get gameSupportDonateBody;
+
+  /// No description provided for @gameSupportDonateOneTimeNote.
+  ///
+  /// In en, this message translates to:
+  /// **'This is a one-time payment, not a subscription.'**
+  String get gameSupportDonateOneTimeNote;
+
+  /// No description provided for @gameSupportDonateAmountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount in euros'**
+  String get gameSupportDonateAmountLabel;
+
+  /// No description provided for @gameSupportDonateAmountHint.
+  ///
+  /// In en, this message translates to:
+  /// **'1.00 – 250.00'**
+  String get gameSupportDonateAmountHint;
+
+  /// No description provided for @gameSupportDonateButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Donate'**
+  String get gameSupportDonateButton;
+
+  /// No description provided for @gameSupportDonateInvalidAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter an amount between €1.00 and €250.00.'**
+  String get gameSupportDonateInvalidAmount;
+
+  /// No description provided for @gameSupportDonateCheckoutFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The payment page could not be opened. Try again.'**
+  String get gameSupportDonateCheckoutFailed;
+
+  /// No description provided for @gameSupportDonateRedirectPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you. Your gift helps keep The Mob State online.'**
+  String get gameSupportDonateRedirectPaid;
+
+  /// No description provided for @gameSupportDonateRedirectCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Donation cancelled. You were not charged.'**
+  String get gameSupportDonateRedirectCancelled;
+
+  /// No description provided for @gameSupportDonateRedirectFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Donation failed or expired. You were not charged.'**
+  String get gameSupportDonateRedirectFailed;
+
   /// No description provided for @premiumUiRedeemNeedsVehicle.
   ///
   /// In en, this message translates to:
@@ -32921,19 +32993,19 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicPremiumSummary.
   ///
   /// In en, this message translates to:
-  /// **'Buy Player VIP, Crew VIP, credit packs and in-game cash in Shop, under Dashboard. Skip waits on the screen where you wait, not here.'**
+  /// **'Buy Player VIP, Crew VIP, credit packs and in-game cash in Shop, under Dashboard. Skip waits on the screen where you wait, not here. A round portrait bottom-left lets you give a one-time gift to keep the game running.'**
   String get helpTopicPremiumSummary;
 
   /// No description provided for @helpTopicPremiumHow.
   ///
   /// In en, this message translates to:
-  /// **'Open Shop directly under Dashboard in the side menu. The VIP tab shows subscriptions; the Credits tab shows credit packs and in-game cash. Skip waits with the lightning button on the screen where you wait, not here.\nThe dashboard top bar also shows whether Player VIP is active and how long it still lasts; tap it to open VIP. With no expiry date it shows Active.\nOn each purchase row, tap the i icon for full details and benefits.\nPlayer VIP is personal. Crew VIP applies to your crew and only has value when you are already in a crew. Every member can donate into the crew VIP pot on the Crew page, or one member can take the monthly subscription in Shop.\nPlayer VIP gives 10 percent shorter action timeouts (jail time remains unchanged), 100 weekly credits, a VIP one-click purchase button for missing materials in Drug Production after cost confirmation, and a softer death reset: bank/crypto/education/achievements stay, while assets, inventory and drug stock are wiped.\nCrew VIP unlocks VIP HQ, buildings above 10, +10 percent war points and Shield for the whole crew.\nAfter checkout you return to this page so you can see VIP status and your new credit or cash balance.\nCredit packs let you choose quantity 1-20 in one payment. Event Pass and VIP stay one purchase.\nIn-game cash packs pay in euros and land in your wallet. You can also convert credits to cash if that bundle is listed.\nCancel auto-renew any time; your paid period stays active. Gift VIP by player or crew name. Prestige tiers are display only.\nPrices and available items are managed live in admin.'**
+  /// **'Open Shop directly under Dashboard in the side menu. The VIP tab shows subscriptions; the Credits tab shows credit packs and in-game cash. Skip waits with the lightning button on the screen where you wait, not here.\nThe dashboard top bar also shows whether Player VIP is active and how long it still lasts; tap it to open VIP. With no expiry date it shows Active.\nOn each purchase row, tap the i icon for full details and benefits.\nPlayer VIP is personal. Crew VIP applies to your crew and only has value when you are already in a crew. Every member can donate into the crew VIP pot on the Crew page, or one member can take the monthly subscription in Shop.\nPlayer VIP gives 10 percent shorter action timeouts (jail time remains unchanged), 100 weekly credits, a VIP one-click purchase button for missing materials in Drug Production after cost confirmation, and a softer death reset: bank/crypto/education/achievements stay, while assets, inventory and drug stock are wiped.\nCrew VIP unlocks VIP HQ, buildings above 10, +10 percent war points and Shield for the whole crew.\nAfter checkout you return to this page so you can see VIP status and your new credit or cash balance.\nCredit packs let you choose quantity 1-20 in one payment. Event Pass and VIP stay one purchase.\nIn-game cash packs pay in euros and land in your wallet. You can also convert credits to cash if that bundle is listed.\nCancel auto-renew any time; your paid period stays active. Gift VIP by player or crew name. Prestige tiers are display only.\nPrices and available items are managed live in admin.\nBottom-left on most screens you will find a round portrait. Tap it to give a one-time euro amount toward development and monthly costs. That payment does not grant VIP, credits or cash.'**
   String get helpTopicPremiumHow;
 
   /// No description provided for @helpTopicPremiumTips.
   ///
   /// In en, this message translates to:
-  /// **'Check your credit balance and expiry date before buying again; extending is often better than stacking blindly.\nCancel auto-renew in time if you do not want ongoing charges; your paid-through period still runs.\nUse credits mainly on time-critical boosts or protection, not automatically on every small shortcut.\nIf you are not in a crew yet, start with Player VIP or a credit bundle before Crew VIP.'**
+  /// **'Check your credit balance and expiry date before buying again; extending is often better than stacking blindly.\nCancel auto-renew in time if you do not want ongoing charges; your paid-through period still runs.\nUse credits mainly on time-critical boosts or protection, not automatically on every small shortcut.\nIf you are not in a crew yet, start with Player VIP or a credit bundle before Crew VIP.\nThe left donate portrait is a gift to the game, not a shop purchase.'**
   String get helpTopicPremiumTips;
 
   /// No description provided for @landingHeroTitle.

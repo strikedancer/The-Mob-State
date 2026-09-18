@@ -167,7 +167,9 @@ class _PremiumScreenState extends State<PremiumScreen> {
     String? message;
     Color color = Colors.green;
     if (status == 'paid' || status == 'success') {
-      if (purchase == 'one_time') {
+      if (purchase == 'game_support_donate') {
+        message = l10n.gameSupportDonateRedirectPaid;
+      } else if (purchase == 'one_time') {
         message = l10n.premiumUiRedirectPaidOneTime;
       } else if (purchase == 'crew_vip') {
         message = l10n.premiumUiRedirectPaidCrewVip;
@@ -175,14 +177,18 @@ class _PremiumScreenState extends State<PremiumScreen> {
         message = l10n.premiumUiRedirectPaidVip;
       }
     } else if (status == 'cancelled') {
-      if (purchase == 'one_time') {
+      if (purchase == 'game_support_donate') {
+        message = l10n.gameSupportDonateRedirectCancelled;
+      } else if (purchase == 'one_time') {
         message = l10n.premiumUiRedirectCancelledOneTime;
       } else {
         message = l10n.premiumUiRedirectCancelledSubscription;
       }
       color = Colors.orange;
     } else if (status == 'failed' || status == 'expired') {
-      if (purchase == 'one_time') {
+      if (purchase == 'game_support_donate') {
+        message = l10n.gameSupportDonateRedirectFailed;
+      } else if (purchase == 'one_time') {
         message = l10n.premiumUiRedirectFailedOneTime;
       } else {
         message = l10n.premiumUiRedirectFailedSubscription;

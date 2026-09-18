@@ -6330,6 +6330,49 @@ class AppLocalizationsFr extends AppLocalizations {
       'Échec de l\'ouverture de la page de paiement.';
 
   @override
+  String get gameSupportDonateTooltip => 'Support the game';
+
+  @override
+  String get gameSupportDonateTitle => 'Support The Mob State';
+
+  @override
+  String get gameSupportDonateBody =>
+      'A one-time gift keeps the game running: servers, development and the work behind it. You do not receive credits, in-game cash or VIP for this.';
+
+  @override
+  String get gameSupportDonateOneTimeNote =>
+      'This is a one-time payment, not a subscription.';
+
+  @override
+  String get gameSupportDonateAmountLabel => 'Amount in euros';
+
+  @override
+  String get gameSupportDonateAmountHint => '1.00 – 250.00';
+
+  @override
+  String get gameSupportDonateButton => 'Donate';
+
+  @override
+  String get gameSupportDonateInvalidAmount =>
+      'Enter an amount between €1.00 and €250.00.';
+
+  @override
+  String get gameSupportDonateCheckoutFailed =>
+      'The payment page could not be opened. Try again.';
+
+  @override
+  String get gameSupportDonateRedirectPaid =>
+      'Thank you. Your gift helps keep The Mob State online.';
+
+  @override
+  String get gameSupportDonateRedirectCancelled =>
+      'Donation cancelled. You were not charged.';
+
+  @override
+  String get gameSupportDonateRedirectFailed =>
+      'Donation failed or expired. You were not charged.';
+
+  @override
   String get premiumUiRedeemNeedsVehicle =>
       'Cet objet nécessite une sélection de véhicule et sera utilisé à partir de l\'écran du véhicule.';
 

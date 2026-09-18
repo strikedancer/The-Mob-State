@@ -6271,6 +6271,49 @@ class AppLocalizationsNl extends AppLocalizations {
       'Kan de betalingspagina niet openen.';
 
   @override
+  String get gameSupportDonateTooltip => 'Steun het spel';
+
+  @override
+  String get gameSupportDonateTitle => 'Steun The Mob State';
+
+  @override
+  String get gameSupportDonateBody =>
+      'Een eenmalige gift houdt het spel draaiende: servers, ontwikkeling en de inzet erachter. Je krijgt hiervoor geen credits, in-game geld of VIP.';
+
+  @override
+  String get gameSupportDonateOneTimeNote =>
+      'Dit is een eenmalige betaling, geen abonnement.';
+
+  @override
+  String get gameSupportDonateAmountLabel => 'Bedrag in euro\'s';
+
+  @override
+  String get gameSupportDonateAmountHint => '1,00 – 250,00';
+
+  @override
+  String get gameSupportDonateButton => 'Doneren';
+
+  @override
+  String get gameSupportDonateInvalidAmount =>
+      'Vul een bedrag in tussen €1,00 en €250,00.';
+
+  @override
+  String get gameSupportDonateCheckoutFailed =>
+      'De betaalpagina kon niet worden geopend. Probeer het opnieuw.';
+
+  @override
+  String get gameSupportDonateRedirectPaid =>
+      'Dank je. Jouw gift helpt The Mob State online te houden.';
+
+  @override
+  String get gameSupportDonateRedirectCancelled =>
+      'Donatie geannuleerd. Er is niets afgeschreven.';
+
+  @override
+  String get gameSupportDonateRedirectFailed =>
+      'Donatie mislukt of verlopen. Er is niets afgeschreven.';
+
+  @override
   String get premiumUiRedeemNeedsVehicle =>
       'Voor dit item is een voertuigselectie vereist en het wordt ingewisseld via het voertuigscherm.';
 
@@ -19194,15 +19237,15 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicPremiumSummary =>
-      'Koop Player VIP, Crew VIP, creditbundels en in-game geld in Winkel, onder Dashboard. Wachttijden verkorten doe je op het scherm waar je wacht, niet hier.';
+      'Koop Player VIP, Crew VIP, creditbundels en in-game geld in Winkel, onder Dashboard. Wachttijden verkorten doe je op het scherm waar je wacht, niet hier. Linksonder kun je via een rond portret een eenmalige gift geven om het spel online te houden.';
 
   @override
   String get helpTopicPremiumHow =>
-      'Open Winkel direct onder Dashboard in het zijmenu. De tab VIP toont abonnementen; de tab Credits toont creditbundels en in-game cash. Wachttijden verkorten doe je met de bliksemknop op het scherm waar je wacht, niet hier.\nIn de bovenbalk van het dashboard zie je ook of Player VIP actief is en hoe lang die nog loopt; tik daarop om VIP te openen. Zonder einddatum staat er Actief.\nOp elke aankooprij kun je op het i-icoon tikken voor de volledige uitleg en voordelen.\nPlayer VIP is persoonlijk. Crew VIP geldt voor je crew en heeft alleen waarde als je al in een crew zit. Ieder lid kan in de Crew VIP-pot doneren op de Crew-pagina, of één lid neemt het maandabonnement in Winkel.\nPlayer VIP geeft 10 procent kortere action timeouts (gevangenistijd blijft gelijk), wekelijkse 100 credits, een VIP 1-klik aankoopknop voor ontbrekende materialen in Drugs Productie (na kostenbevestiging) en een zachtere death-reset: je houdt bank/crypto/opleidingen/achievements, maar verliest wel assets, inventory en drugsvoorraad.\nCrew VIP ontgrendelt VIP-HQ, gebouwen boven 10, +10 procent oorlogspunten en Schild voor de hele crew.\nNa checkout keer je terug naar deze pagina, zodat je VIP-status en je nieuwe credit- of cashsaldo meteen ziet.\nCreditbundels laten je 1-20 pakketten in één betaling kiezen. Event Pass en VIP blijven één aankoop.\nIn-game cashpakketten betaal je in euro\'s en komen op je hand. Je kunt credits ook omwisselen naar cash als dat pakket in de lijst staat.\nStop auto-renew wanneer je wilt; je betaalde periode blijft actief. Geef VIP cadeau via speler- of crewnaam. Prestige-tiers zijn alleen display.\nPrijzen en beschikbare items worden live in admin beheerd.';
+      'Open Winkel direct onder Dashboard in het zijmenu. De tab VIP toont abonnementen; de tab Credits toont creditbundels en in-game cash. Wachttijden verkorten doe je met de bliksemknop op het scherm waar je wacht, niet hier.\nIn de bovenbalk van het dashboard zie je ook of Player VIP actief is en hoe lang die nog loopt; tik daarop om VIP te openen. Zonder einddatum staat er Actief.\nOp elke aankooprij kun je op het i-icoon tikken voor de volledige uitleg en voordelen.\nPlayer VIP is persoonlijk. Crew VIP geldt voor je crew en heeft alleen waarde als je al in een crew zit. Ieder lid kan in de Crew VIP-pot doneren op de Crew-pagina, of één lid neemt het maandabonnement in Winkel.\nPlayer VIP geeft 10 procent kortere action timeouts (gevangenistijd blijft gelijk), wekelijkse 100 credits, een VIP 1-klik aankoopknop voor ontbrekende materialen in Drugs Productie (na kostenbevestiging) en een zachtere death-reset: je houdt bank/crypto/opleidingen/achievements, maar verliest wel assets, inventory en drugsvoorraad.\nCrew VIP ontgrendelt VIP-HQ, gebouwen boven 10, +10 procent oorlogspunten en Schild voor de hele crew.\nNa checkout keer je terug naar deze pagina, zodat je VIP-status en je nieuwe credit- of cashsaldo meteen ziet.\nCreditbundels laten je 1-20 pakketten in één betaling kiezen. Event Pass en VIP blijven één aankoop.\nIn-game cashpakketten betaal je in euro\'s en komen op je hand. Je kunt credits ook omwisselen naar cash als dat pakket in de lijst staat.\nStop auto-renew wanneer je wilt; je betaalde periode blijft actief. Geef VIP cadeau via speler- of crewnaam. Prestige-tiers zijn alleen display.\nPrijzen en beschikbare items worden live in admin beheerd.\nLinksonder op de meeste schermen staat een rond portret. Tik daarop om een eenmalig eurobedrag te geven voor ontwikkeling en maandkosten. Die betaling geeft geen VIP, credits of cash.';
 
   @override
   String get helpTopicPremiumTips =>
-      'Controleer eerst je creditsaldo en vervaldatum voordat je opnieuw koopt; vaak is verlengen nuttiger dan blind stapelen.\nStop auto-renew op tijd als je niet wilt doorbetalen; je betaalde periode blijft gewoon lopen.\nGebruik credits vooral op tijdkritische boosts of bescherming, niet automatisch op elke kleine versnelling.\nZit je nog niet in een crew, begin dan eerder met Player VIP of een creditbundel dan met Crew VIP.';
+      'Controleer eerst je creditsaldo en vervaldatum voordat je opnieuw koopt; vaak is verlengen nuttiger dan blind stapelen.\nStop auto-renew op tijd als je niet wilt doorbetalen; je betaalde periode blijft gewoon lopen.\nGebruik credits vooral op tijdkritische boosts of bescherming, niet automatisch op elke kleine versnelling.\nZit je nog niet in een crew, begin dan eerder met Player VIP of een creditbundel dan met Crew VIP.\nHet linker doneerportret is een gift aan het spel, geen winkel-aankoop.';
 
   @override
   String get landingHeroTitle => 'The Mob State';

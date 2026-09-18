@@ -63,7 +63,7 @@ type PremiumOfferRecord = {
 };
 
 type PaymentMetadata = {
-  type: 'player_vip' | 'crew_vip' | 'one_time' | 'player_vip_gift' | 'crew_vip_gift' | 'crew_vip_donate';
+  type: 'player_vip' | 'crew_vip' | 'one_time' | 'player_vip_gift' | 'crew_vip_gift' | 'crew_vip_donate' | 'game_support_donate';
   playerId: string;
   crewId?: string;
   productKey?: string;
@@ -74,8 +74,15 @@ type PaymentMetadata = {
   amountCents?: string;
 };
 
+const GAME_SUPPORT_DONATE_MIN_CENTS = 100;
+const GAME_SUPPORT_DONATE_MAX_CENTS = 25000;
+
 function isOneOffVipType(type: PaymentMetadataType | undefined): boolean {
   return type === 'player_vip_gift' || type === 'crew_vip_gift' || type === 'crew_vip_donate';
+}
+
+function isGameSupportDonateType(type: PaymentMetadataType | undefined): boolean {
+  return type === 'game_support_donate';
 }
 
 type PaymentMetadataType = PaymentMetadata['type'];
@@ -571,7 +578,7 @@ function isLegacyBlockedOffer(offer: PremiumOfferRecord): boolean {
 
 function checkoutTypeFromMetadata(type: PaymentMetadataType): 'PLAYER_VIP' | 'CREW_VIP' | 'ONE_TIME' {
   if (type === 'crew_vip' || type === 'crew_vip_gift' || type === 'crew_vip_donate') return 'CREW_VIP';
-  if (type === 'one_time') return 'ONE_TIME';
+  if (type === 'one_time' || type === 'game_support_donate') return 'ONE_TIME';
   return 'PLAYER_VIP';
 }
 
@@ -579,6 +586,10 @@ async function activateVipFromMetadata(
   metadata: PaymentMetadata,
   subscriptionId?: string
 ): Promise<void> {
+  if (metadata.type === 'game_support_donate') {
+    return;
+  }
+
   if (metadata.type === 'player_vip_gift') {
     const recipientId = parseInt(metadata.recipientPlayerId || '', 10);
     if (!recipientId) return;
@@ -843,6 +854,26 @@ async function upsertPaymentTransaction(payload: {
   });
 }
 
+async function fulfillGameSupportDonate(
+  paymentId: string,
+  metadata: PaymentMetadata,
+): Promise<void> {
+  const playerId = Number(metadata.playerId);
+  if (!Number.isFinite(playerId) || playerId <= 0) {
+    console.warn('[Mollie webhook] Invalid game-support donate metadata', { paymentId, metadata });
+    return;
+  }
+
+  await prisma.$executeRawUnsafe(
+    `INSERT IGNORE INTO stripe_payment_fulfillments (stripeSessionId, playerId, productKey, payload, fulfilledAt)
+     VALUES (?, ?, ?, ?, NOW(3))`,
+    paymentId,
+    playerId,
+    'support:game_support_donate',
+    JSON.stringify(metadata),
+  );
+}
+
 async function fulfillOneTimePurchase(paymentId: string, metadata: PaymentMetadata): Promise<void> {
   const playerId = Number(metadata.playerId);
   const productKey = metadata.productKey || '';
@@ -1013,7 +1044,13 @@ function getRequestedPurchaseTypes(req: Request): PaymentMetadataType[] | undefi
     .trim()
     .toLowerCase();
 
-  if (purchase === 'player_vip' || purchase === 'crew_vip' || purchase === 'crew_vip_donate' || purchase === 'one_time') {
+  if (
+    purchase === 'player_vip' ||
+    purchase === 'crew_vip' ||
+    purchase === 'crew_vip_donate' ||
+    purchase === 'one_time' ||
+    purchase === 'game_support_donate'
+  ) {
     if (purchase === 'crew_vip' || purchase === 'crew_vip_donate') {
       return ['crew_vip', 'crew_vip_gift', 'crew_vip_donate'];
     }
@@ -1077,6 +1114,8 @@ async function reconcileRecentPaidTransactions(
     if (payment.status === 'paid') {
       if (metadata.type === 'one_time') {
         await fulfillOneTimePurchase(payment.id, metadata);
+      } else if (isGameSupportDonateType(metadata.type)) {
+        await fulfillGameSupportDonate(payment.id, metadata);
       } else {
         const skipSubscription = isOneOffVipType(metadata.type);
         let subscriptionId = skipSubscription ? undefined : payment.subscriptionId || undefined;
@@ -1116,7 +1155,8 @@ async function ensureVipSubscription(metadata: PaymentMetadata, customerId: stri
     metadata.type === 'player_vip_gift' ||
     metadata.type === 'crew_vip_gift' ||
     metadata.type === 'crew_vip_donate' ||
-    metadata.type === 'one_time'
+    metadata.type === 'one_time' ||
+    metadata.type === 'game_support_donate'
   ) {
     return undefined;
   }
@@ -1192,15 +1232,17 @@ async function createMollieCheckout(options: {
   metadata: PaymentMetadata;
   redirectStatus: 'success' | 'paid';
   sequenceType?: 'first';
+  redirectSection?: string;
 }) {
   const mollie = getMollieClient();
+  const section = options.redirectSection || 'premium';
   const redirectParams = new URLSearchParams({
-    section: 'premium',
+    section,
     status: options.redirectStatus,
     purchase: options.metadata.type,
   });
   const cancelParams = new URLSearchParams({
-    section: 'premium',
+    section,
     status: 'cancelled',
     purchase: options.metadata.type,
   });
@@ -1566,6 +1608,56 @@ router.get(
       const fund = await getCrewVipFundStatus(membership.crewId);
       return res.json({ fund });
     } catch (error) {
+      return next(error);
+    }
+  }
+);
+
+router.post(
+  '/checkout/game-support-donate',
+  authenticate,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const playerId = (req as any).player?.id as number;
+      const amountEur = String((req.body as { amountEur?: string })?.amountEur || '').trim();
+      const amountCents = euroValueToCents(amountEur);
+      if (
+        amountCents < GAME_SUPPORT_DONATE_MIN_CENTS ||
+        amountCents > GAME_SUPPORT_DONATE_MAX_CENTS
+      ) {
+        return res.status(400).json({ event: 'error.invalid_support_donate_amount', params: {} });
+      }
+
+      const player = await prisma.player.findUnique({
+        where: { id: playerId },
+        select: { email: true },
+      });
+      const customerId = await getOrCreateMollieCustomer(playerId, player?.email);
+      const amountValue = fundCentsToEuroValue(amountCents);
+      const payment = await createMollieCheckout({
+        playerId,
+        customerId,
+        amountValue,
+        description: `The Mob State support ${amountValue} EUR`,
+        checkoutType: 'ONE_TIME',
+        redirectStatus: 'paid',
+        redirectSection: 'dashboard',
+        metadata: {
+          type: 'game_support_donate',
+          playerId: String(playerId),
+          amountCents: String(amountCents),
+          productKey: 'game_support_donate',
+        },
+      });
+
+      const checkoutUrl = payment.getCheckoutUrl?.() || null;
+      if (!checkoutUrl) {
+        return res.status(500).json({ event: 'error.payment_creation_failed', params: {} });
+      }
+
+      return res.json({ url: checkoutUrl, provider: 'mollie' });
+    } catch (error: unknown) {
+      console.error('[Mollie] checkout/game-support-donate error:', error);
       return next(error);
     }
   }
@@ -1940,6 +2032,8 @@ router.post('/webhook', async (req: Request, res: Response) => {
     if (payment.status === 'paid') {
       if (metadata.type === 'one_time') {
         await fulfillOneTimePurchase(payment.id, metadata);
+      } else if (isGameSupportDonateType(metadata.type)) {
+        await fulfillGameSupportDonate(payment.id, metadata);
       } else {
         const skipSubscription = isOneOffVipType(metadata.type);
         let subscriptionId = skipSubscription ? undefined : payment.subscriptionId || undefined;
