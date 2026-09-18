@@ -8,20 +8,26 @@ import '../l10n/app_localizations.dart';
 import '../services/auth_service.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
+import '../utils/formatters.dart';
 import '../widgets/game_page_info.dart';
 import '../widgets/empire_page_hero.dart';
+
+enum PremiumStoreTab { vip, credits }
 
 class PremiumScreen extends StatefulWidget {
   const PremiumScreen({
     super.key,
     this.embedded = false,
     this.focusProductKey,
+    this.initialTab = PremiumStoreTab.vip,
   });
 
   final bool embedded;
 
   /// When set (e.g. `season_pass_monthly`), scroll that offer into view after load.
   final String? focusProductKey;
+
+  final PremiumStoreTab initialTab;
 
   @override
   State<PremiumScreen> createState() => _PremiumScreenState();
@@ -30,7 +36,7 @@ class PremiumScreen extends StatefulWidget {
 class _PremiumScreenState extends State<PremiumScreen> {
   // Premium tiles are hosted in runtime external images (/images/*).
   static const String _premiumTilesBasePath = 'images/premium_tiles';
-  static const String _premiumTilesCacheVersion = '20260423c';
+  static const String _premiumTilesCacheVersion = '20260918a';
 
   bool _loading = true;
   bool _processingCheckout = false;
@@ -43,6 +49,16 @@ class _PremiumScreenState extends State<PremiumScreen> {
   int _creditBalance = 0;
   final GlobalKey _passOffersKey = GlobalKey();
   bool _didFocusProduct = false;
+
+  int get _initialTabIndex {
+    final key = (widget.focusProductKey ?? '').trim();
+    if (key.startsWith('money_') ||
+        key.startsWith('credits_') ||
+        key == 'cash_bundle_250k') {
+      return PremiumStoreTab.credits.index;
+    }
+    return widget.initialTab.index.clamp(0, 1);
+  }
 
   /// Catalog fields from API are provided as Dutch + English only.
   bool _useNlCatalogCopy(BuildContext context) =>
@@ -739,6 +755,17 @@ class _PremiumScreenState extends State<PremiumScreen> {
       )
       .toList();
 
+  List<Map<String, dynamic>> get _moneyPurchaseOffers => _products
+      .where(
+        (product) =>
+            ((product['reward'] as Map?)?['type'] ?? '').toString() == 'money',
+      )
+      .toList();
+
+  List<Map<String, dynamic>> get _cashFromCreditItems => _creditItems
+      .where((item) => (item['effectType'] ?? '').toString() == 'CASH_BUNDLE')
+      .toList();
+
   /// Monthly Event Pass only (no short 7-day event boost packs here).
   List<Map<String, dynamic>> get _passPurchaseOffers => _products.where((product) {
     final type = ((product['reward'] as Map?)?['type'] ?? '').toString();
@@ -795,66 +822,11 @@ class _PremiumScreenState extends State<PremiumScreen> {
     return '$_premiumTilesBasePath/credits_250.png';
   }
 
-  Color _creditItemAccentColor(String effectType) {
-    switch (effectType) {
-      case 'CASH_BUNDLE':
-        return Colors.green.shade700;
-      case 'HIT_PROTECTION':
-        return Colors.indigo.shade700;
-      case 'VEHICLE_REPAIR_FINISH':
-        return Colors.deepOrange.shade700;
-      case 'VEHICLE_TUNE_RESET':
-        return Colors.purple.shade600;
-      case 'ACTION_COOLDOWN_RESET':
-        return Colors.blueGrey.shade700;
-      case 'EVENT_BOOST':
-        return Colors.pink.shade600;
-      default:
-        return Colors.blueGrey.shade600;
-    }
-  }
-
-  String _creditItemImagePath(Map<String, dynamic> item) {
-    switch ((item['effectType'] ?? '').toString()) {
-      case 'CASH_BUNDLE':
-        return '$_premiumTilesBasePath/shop_cash_bundle.png';
-      case 'HIT_PROTECTION':
-        return '$_premiumTilesBasePath/shop_hit_protection.png';
-      case 'VEHICLE_REPAIR_FINISH':
-        return '$_premiumTilesBasePath/shop_vehicle_repair.png';
-      case 'VEHICLE_TUNE_RESET':
-        return '$_premiumTilesBasePath/shop_tune_reset.png';
-      case 'ACTION_COOLDOWN_RESET':
-        return '$_premiumTilesBasePath/shop_cooldown_reset.png';
-      case 'EVENT_BOOST':
-        return '$_premiumTilesBasePath/shop_event_boost.png';
-      default:
-        return '$_premiumTilesBasePath/credits_250.png';
-    }
-  }
-
-  String _creditItemThemeLabel(Map<String, dynamic> item, AppLocalizations l10n) {
-    final effectType = (item['effectType'] ?? '').toString();
-    final actionType = (item['actionType'] ?? '').toString();
-    switch (effectType) {
-      case 'CASH_BUNDLE':
-        return l10n.premiumUiCreditThemeCashBoost;
-      case 'HIT_PROTECTION':
-        return l10n.premiumUiCreditThemeSecurity;
-      case 'VEHICLE_REPAIR_FINISH':
-        return l10n.premiumUiCreditThemeGarage;
-      case 'VEHICLE_TUNE_RESET':
-        return l10n.premiumUiCreditThemeTuneShop;
-      case 'ACTION_COOLDOWN_RESET':
-        if (actionType.isNotEmpty) {
-          return l10n.premiumUiCreditThemeCooldown(actionType);
-        }
-        return l10n.premiumUiCreditThemeCooldownReset;
-      case 'EVENT_BOOST':
-        return l10n.premiumUiCreditThemeEvents;
-      default:
-        return l10n.premiumUiCreditThemePremium;
-    }
+  String _moneyImagePath(int amount) {
+    if (amount >= 1000000) return '$_premiumTilesBasePath/money_1m.png';
+    if (amount >= 400000) return '$_premiumTilesBasePath/money_400k.png';
+    if (amount >= 120000) return '$_premiumTilesBasePath/money_120k.png';
+    return '$_premiumTilesBasePath/money_50k.png';
   }
 
   Future<void> _showTileInfoDialog({
@@ -1098,6 +1070,162 @@ class _PremiumScreenState extends State<PremiumScreen> {
     );
   }
 
+  Widget _buildCatalogRow({
+    required String title,
+    required String subtitle,
+    required String imagePath,
+    required Color accent,
+    required IconData icon,
+    required String actionLabel,
+    required VoidCallback? onPressed,
+    String? priceLabel,
+    String? badgeLabel,
+    String? infoTitle,
+    String? infoBody,
+  }) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final thumb = ClipRRect(
+      borderRadius: BorderRadius.circular(8),
+      child: SizedBox(
+        width: 64,
+        height: 64,
+        child: _buildTileImage(
+          imagePath: imagePath,
+          icon: icon,
+          accent: accent,
+          fallbackBackground: colorScheme.surfaceContainerHighest,
+        ),
+      ),
+    );
+    final copy = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+            if ((infoBody ?? '').trim().isNotEmpty)
+              IconButton(
+                visualDensity: VisualDensity.compact,
+                tooltip: title,
+                onPressed: () => _showTileInfoDialog(
+                  title: (infoTitle ?? title).trim(),
+                  body: infoBody!.trim(),
+                ),
+                icon: const Icon(Icons.info_outline, size: 18),
+              ),
+          ],
+        ),
+        if (subtitle.trim().isNotEmpty)
+          Text(
+            subtitle,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+            ),
+          ),
+        if ((badgeLabel ?? '').trim().isNotEmpty ||
+            (priceLabel ?? '').trim().isNotEmpty) ...[
+          const SizedBox(height: 6),
+          Wrap(
+            spacing: 8,
+            runSpacing: 4,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              if ((priceLabel ?? '').trim().isNotEmpty)
+                Text(
+                  priceLabel!,
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: accent,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              if ((badgeLabel ?? '').trim().isNotEmpty)
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
+                  decoration: BoxDecoration(
+                    color: accent.withValues(alpha: 0.16),
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: Text(
+                    badgeLabel!,
+                    style: Theme.of(context).textTheme.labelSmall
+                        ?.copyWith(fontWeight: FontWeight.w700),
+                  ),
+                ),
+            ],
+          ),
+        ],
+      ],
+    );
+    final cta = FilledButton(
+      onPressed: onPressed,
+      style: FilledButton.styleFrom(
+        visualDensity: VisualDensity.compact,
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      ),
+      child: Text(
+        actionLabel,
+        textAlign: TextAlign.center,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
+
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: colorScheme.surface.withValues(alpha: 0.72),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: accent.withValues(alpha: 0.28)),
+      ),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final stacked = constraints.maxWidth < 560;
+          if (stacked) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    thumb,
+                    const SizedBox(width: 12),
+                    Expanded(child: copy),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Align(alignment: Alignment.centerRight, child: cta),
+              ],
+            );
+          }
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              thumb,
+              const SizedBox(width: 12),
+              Expanded(child: copy),
+              const SizedBox(width: 12),
+              cta,
+            ],
+          );
+        },
+      ),
+    );
+  }
+
   Widget _buildResponsiveTileGrid({
     required List<Widget> children,
     double minTileWidth = 260,
@@ -1124,213 +1252,6 @@ class _PremiumScreenState extends State<PremiumScreen> {
               .toList(),
         );
       },
-    );
-  }
-
-  Widget _buildVisualTile({
-    required String title,
-    required String subtitle,
-    required String imagePath,
-    required Color accent,
-    required IconData icon,
-    required String actionLabel,
-    required VoidCallback? onPressed,
-    String? primaryValue,
-    String? secondaryValue,
-    String? badgeLabel,
-    String? infoTitle,
-    String? infoBody,
-    bool highlighted = false,
-  }) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final resolvedInfoTitle = (infoTitle ?? title).trim();
-    final resolvedInfoBody = (infoBody ?? subtitle).trim();
-    final hasTitle = title.trim().isNotEmpty;
-
-    return Container(
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-        color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: highlighted ? accent : accent.withOpacity(0.35),
-          width: highlighted ? 2.4 : 1,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: accent.withOpacity(highlighted ? 0.28 : 0.1),
-            blurRadius: highlighted ? 22 : 16,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: AspectRatio(
-        aspectRatio: 1,
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            _buildTileImage(
-              imagePath: imagePath,
-              icon: icon,
-              accent: accent,
-              fallbackBackground: colorScheme.surfaceContainerHighest,
-            ),
-            DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.black.withOpacity(0.08),
-                    Colors.black.withOpacity(0.68),
-                  ],
-                ),
-              ),
-            ),
-            if (badgeLabel != null && badgeLabel.trim().isNotEmpty)
-              Positioned(
-                top: 10,
-                right: 10,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 5,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.52),
-                    borderRadius: BorderRadius.circular(100),
-                    border: Border.all(color: Colors.white.withOpacity(0.35)),
-                  ),
-                  child: Text(
-                    badgeLabel,
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-              ),
-            if (resolvedInfoBody.isNotEmpty)
-              Positioned(
-                top: 10,
-                left: 10,
-                child: Material(
-                  color: Colors.black.withOpacity(0.52),
-                  shape: const CircleBorder(),
-                  child: InkWell(
-                    customBorder: const CircleBorder(),
-                    onTap: () => _showTileInfoDialog(
-                      title: resolvedInfoTitle,
-                      body: resolvedInfoBody,
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(8),
-                      child: Icon(
-                        Icons.info_outline,
-                        color: Colors.white,
-                        size: 18,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            Positioned(
-              left: 12,
-              right: 12,
-              bottom: 12,
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  final compact = constraints.maxWidth < 225;
-                  return Container(
-                    padding: EdgeInsets.all(compact ? 10 : 12),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.5),
-                      borderRadius: BorderRadius.circular(14),
-                      border: Border.all(color: Colors.white.withOpacity(0.2)),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (hasTitle)
-                          Row(
-                            children: [
-                              Icon(
-                                icon,
-                                color: Colors.white,
-                                size: compact ? 16 : 18,
-                              ),
-                              const SizedBox(width: 6),
-                              Expanded(
-                                child: Text(
-                                  title,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.titleSmall
-                                      ?.copyWith(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        if (primaryValue != null &&
-                            primaryValue.trim().isNotEmpty) ...[
-                          const SizedBox(height: 4),
-                          Text(
-                            primaryValue,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.titleSmall
-                                ?.copyWith(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                          ),
-                        ],
-                        if (secondaryValue != null &&
-                            secondaryValue.trim().isNotEmpty) ...[
-                          const SizedBox(height: 4),
-                          Text(
-                            secondaryValue,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(
-                                  color: Colors.white.withOpacity(0.8),
-                                ),
-                          ),
-                        ],
-                        const SizedBox(height: 8),
-                        SizedBox(
-                          width: double.infinity,
-                          child: FilledButton(
-                            onPressed: onPressed,
-                            style: FilledButton.styleFrom(
-                              backgroundColor: accent,
-                              foregroundColor: Colors.white,
-                              minimumSize: Size.fromHeight(compact ? 34 : 38),
-                              padding: EdgeInsets.symmetric(
-                                vertical: compact ? 8 : 10,
-                              ),
-                            ),
-                            child: Text(
-                              actionLabel,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -1471,59 +1392,58 @@ class _PremiumScreenState extends State<PremiumScreen> {
           accent: Colors.amber.shade700,
         ),
         const SizedBox(height: 12),
-        _buildResponsiveTileGrid(
-          minTileWidth: 300,
-          maxColumns: 2,
-          children: [
-            _buildVisualTile(
-              title: l10n.premiumUiKpiPlayerVip,
-              subtitle: l10n.premiumUiPlayerVipSubtitle,
-              imagePath: '$_premiumTilesBasePath/player_vip.png',
-              accent: Colors.amber.shade700,
-              icon: Icons.person,
-              primaryValue: _priceLabel(playerVip['monthlyPriceEur'], l10n),
-              secondaryValue: playerSecondary(),
-              badgeLabel: playerVip['isVip'] == true
-                  ? l10n.premiumUiStatusActive
-                  : l10n.premiumUiBadgeVip,
-              actionLabel: playerVip['isVip'] == true
-                  ? l10n.premiumUiExtendVip
-                  : l10n.premiumUiBuyVip,
-              infoTitle: l10n.premiumUiPlayerVipBenefitsTitle,
-              infoBody: l10n.premiumUiPlayerVipBenefitsBody,
-              onPressed: _processingCheckout
-                  ? null
-                  : () => _startCheckout('player_vip'),
-            ),
-            _buildVisualTile(
-              title: l10n.premiumUiKpiCrewVip,
-              subtitle: crewVip == null
-                  ? l10n.premiumUiCrewVipSubtitleNoCrew
-                  : l10n.premiumUiCrewVipSubtitleInCrew,
-              imagePath: '$_premiumTilesBasePath/crew_vip.png',
-              accent: Colors.indigo.shade600,
-              icon: Icons.groups,
-              primaryValue: _priceLabel(crewVip?['monthlyPriceEur'], l10n),
-              secondaryValue: crewSecondary(),
-              badgeLabel: crewVip == null
-                  ? l10n.premiumUiBadgeCrewNeeded
-                  : (crewVip['isVip'] == true
-                        ? l10n.premiumUiStatusActive
-                        : l10n.premiumUiBadgeCrewVipLabel),
-              actionLabel: crewVip == null
-                  ? l10n.premiumUiCtaCrewRequired
-                  : (crewVip['isVip'] == true
-                        ? l10n.premiumUiExtendCrewVip
-                        : l10n.premiumUiBuyCrewVip),
-              infoTitle: l10n.premiumUiCrewVipBenefitsTitle,
-              infoBody: crewVip == null
-                  ? l10n.premiumUiCrewVipBenefitsNoCrewBody
-                  : l10n.premiumUiCrewVipBenefitsInCrewBody,
-              onPressed: crewVip == null || _processingCheckout
-                  ? null
-                  : () => _startCheckout('crew_vip'),
-            ),
-          ],
+        _buildCatalogRow(
+          title: l10n.premiumUiKpiPlayerVip,
+          subtitle: [
+            l10n.premiumUiPlayerVipSubtitle,
+            if (playerSecondary() != null) playerSecondary()!,
+          ].join(' · '),
+          imagePath: '$_premiumTilesBasePath/player_vip.png',
+          accent: Colors.amber.shade700,
+          icon: Icons.person,
+          priceLabel: _priceLabel(playerVip['monthlyPriceEur'], l10n),
+          badgeLabel: playerVip['isVip'] == true
+              ? l10n.premiumUiStatusActive
+              : l10n.premiumUiBadgeVip,
+          actionLabel: playerVip['isVip'] == true
+              ? l10n.premiumUiExtendVip
+              : l10n.premiumUiBuyVip,
+          infoTitle: l10n.premiumUiPlayerVipBenefitsTitle,
+          infoBody: l10n.premiumUiPlayerVipBenefitsBody,
+          onPressed: _processingCheckout
+              ? null
+              : () => _startCheckout('player_vip'),
+        ),
+        const SizedBox(height: 10),
+        _buildCatalogRow(
+          title: l10n.premiumUiKpiCrewVip,
+          subtitle: [
+            crewVip == null
+                ? l10n.premiumUiCrewVipSubtitleNoCrew
+                : l10n.premiumUiCrewVipSubtitleInCrew,
+            if (crewSecondary() != null) crewSecondary()!,
+          ].join(' · '),
+          imagePath: '$_premiumTilesBasePath/crew_vip.png',
+          accent: Colors.indigo.shade600,
+          icon: Icons.groups,
+          priceLabel: _priceLabel(crewVip?['monthlyPriceEur'], l10n),
+          badgeLabel: crewVip == null
+              ? l10n.premiumUiBadgeCrewNeeded
+              : (crewVip['isVip'] == true
+                    ? l10n.premiumUiStatusActive
+                    : l10n.premiumUiBadgeCrewVipLabel),
+          actionLabel: crewVip == null
+              ? l10n.premiumUiCtaCrewRequired
+              : (crewVip['isVip'] == true
+                    ? l10n.premiumUiExtendCrewVip
+                    : l10n.premiumUiBuyCrewVip),
+          infoTitle: l10n.premiumUiCrewVipBenefitsTitle,
+          infoBody: crewVip == null
+              ? l10n.premiumUiCrewVipBenefitsNoCrewBody
+              : l10n.premiumUiCrewVipBenefitsInCrewBody,
+          onPressed: crewVip == null || _processingCheckout
+              ? null
+              : () => _startCheckout('crew_vip'),
         ),
         if (crewVip != null) ...[
           const SizedBox(height: 12),
@@ -1581,10 +1501,11 @@ class _PremiumScreenState extends State<PremiumScreen> {
           accent: const Color(0xFFB388FF),
         ),
         const SizedBox(height: 8),
-        _buildResponsiveTileGrid(
-          minTileWidth: 280,
-          maxColumns: 2,
-          children: offers.map((product) => _buildPassOfferCard(product, l10n)).toList(),
+        ...offers.map(
+          (product) => Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: _buildPassOfferCard(product, l10n),
+          ),
         ),
       ],
     );
@@ -1621,23 +1542,18 @@ class _PremiumScreenState extends State<PremiumScreen> {
     if (bonusCredits > 0) {
       secondaryBits.add(l10n.premiumUiCreditsCount(bonusCredits));
     }
-    final focusKey = (widget.focusProductKey ?? '').trim();
-    final highlighted =
-        focusKey.isNotEmpty && focusKey == (product['key'] ?? '').toString();
 
-    return _buildVisualTile(
+    return _buildCatalogRow(
       title: resolvedTitle,
       subtitle: resolvedDescription,
       imagePath: imagePath,
       accent: accent,
       icon: Icons.emoji_events,
-      primaryValue: price,
-      secondaryValue: secondaryBits.join(' · '),
+      priceLabel: secondaryBits.join(' · '),
       badgeLabel: l10n.premiumUiBadgeSeasonPass,
       actionLabel: l10n.premiumUiBuyPassCta(price),
       infoTitle: resolvedTitle,
       infoBody: resolvedDescription,
-      highlighted: highlighted,
       onPressed: _processingCheckout
           ? null
           : () => _startCheckout(
@@ -1663,13 +1579,22 @@ class _PremiumScreenState extends State<PremiumScreen> {
             l10n.premiumUiNoCreditBundles,
           )
         else
-          _buildResponsiveTileGrid(
-            minTileWidth: 230,
-            maxColumns: 4,
-            children: _creditPurchaseOffers
-                .map((product) => _buildCreditOfferCard(product, l10n))
-                .toList(),
+          Column(
+            children: [
+              for (final product in _creditPurchaseOffers)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: _buildCreditOfferCard(product, l10n),
+                ),
+            ],
           ),
+        const SizedBox(height: 8),
+        Text(
+          l10n.premiumUiSpeedupHint,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
+        ),
       ],
     );
   }
@@ -1701,14 +1626,13 @@ class _PremiumScreenState extends State<PremiumScreen> {
     final bundleCta = l10n.premiumUiBuyCredits(amount);
     final bundlePrice = _oneTimePriceLabel(product['priceEur']);
 
-    return _buildVisualTile(
-      title: '',
+    return _buildCatalogRow(
+      title: resolvedTitle,
       subtitle: resolvedDescription,
       imagePath: imagePath,
       accent: accent,
       icon: Icons.token,
-      primaryValue: l10n.premiumUiCreditsCount(amount),
-      secondaryValue: bundlePrice,
+      priceLabel: '${l10n.premiumUiCreditsCount(amount)} · $bundlePrice',
       badgeLabel: amount >= 2500
           ? l10n.premiumUiBadgeUltraDeal
           : (isLargeOffer
@@ -1721,109 +1645,175 @@ class _PremiumScreenState extends State<PremiumScreen> {
         bundlePrice,
         resolvedDescription,
       ),
-      onPressed: _processingCheckout
-          ? null
-          : () => _buyCreditBundle(product),
+      onPressed: _processingCheckout ? null : () => _buyCreditBundle(product),
     );
   }
 
-  Widget _buildCreditShop(AppLocalizations l10n) {
+  int _moneyAmountFromProduct(Map<String, dynamic> product) {
+    final reward =
+        (product['reward'] as Map?)?.cast<String, dynamic>() ?? const {};
+    return (reward['amount'] as num?)?.toInt() ?? 0;
+  }
+
+  Widget _buildCashPurchases(AppLocalizations l10n) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildSectionHeader(
-          title: l10n.premiumUiSectionShopTitle,
-          subtitle: l10n.premiumUiSectionShopSubtitle,
-          icon: Icons.local_mall,
-          accent: Colors.purple.shade500,
+          title: l10n.premiumUiSectionBuyCashTitle,
+          subtitle: l10n.premiumUiSectionBuyCashSubtitle,
+          icon: Icons.savings,
+          accent: Colors.green.shade700,
         ),
         const SizedBox(height: 8),
-        _buildResponsiveTileGrid(
-          minTileWidth: 240,
-          maxColumns: 4,
-          children: _creditItems.map((item) {
-            final fallbackCost = (item['creditCost'] as num?)?.toInt() ?? 0;
-            final effectiveCost =
-                (item['effectiveCreditCost'] as num?)?.toInt() ?? fallbackCost;
-            final canRedeemNow = item['canRedeemNow'] != false;
-            final unavailableReason = (item['unavailableReason'] ?? '')
-                .toString()
-                .trim();
-            final useNl = _useNlCatalogCopy(context);
-            final title = useNl
-                ? (item['titleNl'] ?? '')
-                : (item['titleEn'] ?? '');
-            final description = useNl
-                ? (item['descriptionNl'] ?? '')
-                : (item['descriptionEn'] ?? '');
-            final disabled =
-                _processingRedeem ||
-                _creditBalance < effectiveCost ||
-                !canRedeemNow;
-            final effectType = (item['effectType'] ?? '').toString();
-            final accent = _creditItemAccentColor(effectType);
-            final resolvedTitle = title.toString().trim().isEmpty
-                ? l10n.premiumUiShopItemFallbackTitle
-                : title.toString();
-            final resolvedDescription = description.toString().trim().isEmpty
-                ? l10n.premiumUiShopItemFallbackDescription
-                : description.toString();
-            final themeLabel = _creditItemThemeLabel(item, l10n);
-            final actionLabel =
-                !canRedeemNow &&
-                    unavailableReason == 'ACTION_COOLDOWN_NOT_ACTIVE'
-                ? l10n.premiumUiShopNoActiveCooldown
-                : (_creditBalance < effectiveCost
-                      ? l10n.premiumUiShopNotEnoughCredits
-                      : l10n.premiumUiShopRedeem);
+        if (_moneyPurchaseOffers.isEmpty)
+          Text(l10n.premiumUiNoCashBundles)
+        else
+          Column(
+            children: [
+              for (final product in _moneyPurchaseOffers)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: _buildMoneyOfferCard(product, l10n),
+                ),
+            ],
+          ),
+        if (_cashFromCreditItems.isNotEmpty) ...[
+          const SizedBox(height: 8),
+          Text(
+            l10n.premiumUiCreditsToCashTitle,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 8),
+          for (final item in _cashFromCreditItems)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: _buildCreditCashRow(item, l10n),
+            ),
+        ],
+      ],
+    );
+  }
 
-            return _buildVisualTile(
-              title: resolvedTitle,
-              subtitle: resolvedDescription,
-              imagePath: _creditItemImagePath(item),
-              accent: accent,
-              icon: Icons.auto_awesome,
-              primaryValue: l10n.premiumUiCreditsCount(effectiveCost),
-              secondaryValue: themeLabel,
-              badgeLabel: l10n.premiumUiBadgeShop,
-              actionLabel: actionLabel,
-              infoTitle: resolvedTitle,
-              infoBody: l10n.premiumUiShopItemInfo(
-                resolvedDescription,
-                themeLabel,
-                effectiveCost,
+  Widget _buildMoneyOfferCard(
+    Map<String, dynamic> product,
+    AppLocalizations l10n,
+  ) {
+    final amount = _moneyAmountFromProduct(product);
+    final useNl = _useNlCatalogCopy(context);
+    final title = useNl
+        ? (product['titleNl'] ?? '').toString()
+        : (product['titleEn'] ?? '').toString();
+    final description = useNl
+        ? (product['descriptionNl'] ?? '').toString()
+        : (product['descriptionEn'] ?? '').toString();
+    final configuredImage = (product['imageUrl'] ?? '').toString().trim();
+    final imagePath = configuredImage.isNotEmpty
+        ? configuredImage
+        : _moneyImagePath(amount);
+    final price = _oneTimePriceLabel(product['priceEur']);
+    final resolvedTitle = title.trim().isEmpty
+        ? formatCurrency(amount)
+        : title.trim();
+    final resolvedDescription = description.trim().isEmpty
+        ? l10n.premiumUiSectionBuyCashSubtitle
+        : description.trim();
+    return _buildCatalogRow(
+      title: resolvedTitle,
+      subtitle: resolvedDescription,
+      imagePath: imagePath,
+      accent: Colors.green.shade700,
+      icon: Icons.payments,
+      priceLabel: price,
+      badgeLabel: formatCurrency(amount),
+      actionLabel: l10n.premiumUiBuyCashCta(price),
+      infoTitle: resolvedTitle,
+      infoBody: resolvedDescription,
+      onPressed: _processingCheckout
+          ? null
+          : () => _startCheckout(
+              'one_time',
+              productKey: (product['key'] ?? '').toString(),
+            ),
+    );
+  }
+
+  Widget _buildCreditCashRow(
+    Map<String, dynamic> item,
+    AppLocalizations l10n,
+  ) {
+    final fallbackCost = (item['creditCost'] as num?)?.toInt() ?? 0;
+    final effectiveCost =
+        (item['effectiveCreditCost'] as num?)?.toInt() ?? fallbackCost;
+    final useNl = _useNlCatalogCopy(context);
+    final title = useNl
+        ? (item['titleNl'] ?? '').toString()
+        : (item['titleEn'] ?? '').toString();
+    final description = useNl
+        ? (item['descriptionNl'] ?? '').toString()
+        : (item['descriptionEn'] ?? '').toString();
+    final resolvedTitle = title.trim().isEmpty
+        ? l10n.premiumUiCreditThemeCashBoost
+        : title.trim();
+    final resolvedDescription = description.trim().isEmpty
+        ? l10n.premiumUiShopItemFallbackDescription
+        : description.trim();
+    final disabled =
+        _processingRedeem || _creditBalance < effectiveCost;
+    return _buildCatalogRow(
+      title: resolvedTitle,
+      subtitle: resolvedDescription,
+      imagePath: '$_premiumTilesBasePath/shop_cash_bundle.png',
+      accent: Colors.green.shade800,
+      icon: Icons.swap_horiz,
+      priceLabel: l10n.premiumUiCreditsCount(effectiveCost),
+      actionLabel: disabled
+          ? l10n.premiumUiShopNotEnoughCredits
+          : l10n.premiumUiShopRedeem,
+      infoTitle: resolvedTitle,
+      infoBody: resolvedDescription,
+      onPressed: disabled ? null : () => _redeemCreditItem(item),
+    );
+  }
+
+  Widget _buildEntitlements(AppLocalizations l10n) {
+    if (_entitlements.isEmpty) return const SizedBox.shrink();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          l10n.premiumUiActiveEffectsTitle,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: _entitlements.map((entitlement) {
+            final key = (entitlement['key'] ?? '').toString();
+            final expiresAt = entitlement['expiresAt'];
+            return Chip(
+              label: Text(
+                expiresAt == null
+                    ? key
+                    : l10n.premiumUiEntitlementChip(key, _formatDate(expiresAt)),
               ),
-              onPressed: disabled ? null : () => _redeemCreditItem(item),
             );
           }).toList(),
         ),
-        if (_entitlements.isNotEmpty) ...[
-          const SizedBox(height: 16),
-          Text(
-            l10n.premiumUiActiveEffectsTitle,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          const SizedBox(height: 8),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: _entitlements.map((entitlement) {
-              final key = (entitlement['key'] ?? '').toString();
-              final expiresAt = entitlement['expiresAt'];
-              return Chip(
-                label: Text(
-                  expiresAt == null
-                      ? key
-                      : l10n.premiumUiEntitlementChip(
-                          key,
-                          _formatDate(expiresAt),
-                        ),
-                ),
-              );
-            }).toList(),
-          ),
-        ],
       ],
+    );
+  }
+
+  Widget _tabScroll({required List<Widget> children}) {
+    return RefreshIndicator(
+      onRefresh: _loadData,
+      child: ListView(
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 28),
+        children: children,
+      ),
     );
   }
 
@@ -1850,24 +1840,33 @@ class _PremiumScreenState extends State<PremiumScreen> {
       );
     }
 
-    return RefreshIndicator(
-      onRefresh: _loadData,
-      child: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          _buildStatusStrip(l10n),
-          const SizedBox(height: 24),
-          _buildVipPlans(l10n),
-          if (_passPurchaseOffers.isNotEmpty) ...[
-            const SizedBox(height: 24),
-            _buildPassPurchases(l10n),
+    return TabBarView(
+      children: [
+        _tabScroll(
+          children: [
+            _buildStatusStrip(l10n),
+            const SizedBox(height: 20),
+            _buildVipPlans(l10n),
+            if (_passPurchaseOffers.isNotEmpty) ...[
+              const SizedBox(height: 20),
+              _buildPassPurchases(l10n),
+            ],
+            if (_entitlements.isNotEmpty) ...[
+              const SizedBox(height: 20),
+              _buildEntitlements(l10n),
+            ],
           ],
-          const SizedBox(height: 24),
-          _buildCreditPurchases(l10n),
-          const SizedBox(height: 24),
-          _buildCreditShop(l10n),
-        ],
-      ),
+        ),
+        _tabScroll(
+          children: [
+            _buildStatusStrip(l10n),
+            const SizedBox(height: 20),
+            _buildCreditPurchases(l10n),
+            const SizedBox(height: 24),
+            _buildCashPurchases(l10n),
+          ],
+        ),
+      ],
     );
   }
 
@@ -1882,16 +1881,34 @@ class _PremiumScreenState extends State<PremiumScreen> {
 
   Widget _buildPageInfoChild(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return EmpireHubScaffold(
-      embedded: widget.embedded,
-      title: l10n.premiumAndCredits,
-      subtitle: l10n.premiumUiIntroSubtitle,
-      imageAsset: 'assets/images/premium_tiles/credits_medium.png',
-      topicId: 'premium',
-      onRefresh: _loadData,
-      refreshEnabled: !_loading && !_processingCheckout && !_processingRedeem,
-      fallbackIcon: Icons.workspace_premium,
-      body: _buildBody(),
+    return DefaultTabController(
+      length: 2,
+      initialIndex: _initialTabIndex,
+      child: EmpireHubScaffold(
+        embedded: widget.embedded,
+        title: widget.initialTab == PremiumStoreTab.credits
+            ? l10n.hudCredits
+            : l10n.hudVip,
+        subtitle: l10n.premiumUiIntroSubtitle,
+        imageAsset: 'assets/images/premium_tiles/credits_medium.png',
+        cacheBust: _premiumTilesCacheVersion,
+        topicId: 'premium',
+        onRefresh: _loadData,
+        refreshEnabled: !_loading && !_processingCheckout && !_processingRedeem,
+        fallbackIcon: Icons.workspace_premium,
+        tabBar: TabBar(
+          isScrollable: true,
+          labelColor: kEmpireGold,
+          unselectedLabelColor: Colors.white70,
+          indicatorColor: kEmpireGold,
+          dividerColor: kEmpireGold.withValues(alpha: 0.22),
+          tabs: [
+            Tab(text: l10n.hudVip),
+            Tab(text: l10n.hudCredits),
+          ],
+        ),
+        body: _buildBody(),
+      ),
     );
   }
 }

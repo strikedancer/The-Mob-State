@@ -20,11 +20,15 @@ Bestandsnamen:
 5. `credits_1000.png`
 6. `credits_2500.png`
 7. `shop_cash_bundle.png`
-8. `shop_hit_protection.png`
-9. `shop_vehicle_repair.png`
-10. `shop_tune_reset.png`
-11. `shop_cooldown_reset.png`
-12. `shop_event_boost.png`
+8. `money_50k.png`
+9. `money_120k.png`
+10. `money_400k.png`
+11. `money_1m.png`
+12. `shop_hit_protection.png`
+13. `shop_vehicle_repair.png`
+14. `shop_tune_reset.png`
+15. `shop_cooldown_reset.png`
+16. `shop_event_boost.png`
 
 Deze namen zijn gekoppeld aan de client mapping in `client/lib/screens/premium_screen.dart`.
 
@@ -74,7 +78,11 @@ Check minimaal:
 4. `https://<host>/images/premium_tiles/credits_500.png`
 5. `https://<host>/images/premium_tiles/credits_1000.png`
 6. `https://<host>/images/premium_tiles/credits_2500.png`
-7. `https://<host>/images/premium_tiles/shop_hit_protection.png`
+7. `https://<host>/images/premium_tiles/money_50k.png`
+8. `https://<host>/images/premium_tiles/money_120k.png`
+9. `https://<host>/images/premium_tiles/money_400k.png`
+10. `https://<host>/images/premium_tiles/money_1m.png`
+11. `https://<host>/images/premium_tiles/shop_cash_bundle.png`
 
 Als deze `200` teruggeven, pakt Premium & Credits de afbeeldingen automatisch.
 
@@ -87,6 +95,7 @@ Als deze `200` teruggeven, pakt Premium & Credits de afbeeldingen automatisch.
   - `player_vip` = individuele elite status
   - `crew_vip` = team/syndicaat/crew power
   - `credits_*` = premium currency bundels (250 / 500 / 1000 / 2500)
+  - `money_*` = in-game cashpakketten (€50k / €120k / €400k / €1m)
   - `shop_hit_protection` = bescherming/security
   - `shop_vehicle_repair` = garage/repair
   - `shop_tune_reset` = tuning reset

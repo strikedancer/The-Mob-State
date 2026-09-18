@@ -6398,6 +6398,28 @@ class AppLocalizationsNl extends AppLocalizations {
       'Kies een bundel en hoeveel pakketten je in één betaling wilt.';
 
   @override
+  String get premiumUiSectionBuyCashTitle => 'In-game geld kopen';
+
+  @override
+  String get premiumUiSectionBuyCashSubtitle =>
+      'Betaal in euro\'s. Na de betaling staat het cash op je hand. Dit is geen VIP en geen credits.';
+
+  @override
+  String premiumUiBuyCashCta(String price) {
+    return 'Koop $price';
+  }
+
+  @override
+  String get premiumUiNoCashBundles => 'Er zijn nu geen cashpakketten te koop.';
+
+  @override
+  String get premiumUiCreditsToCashTitle => 'Of wissel credits om naar cash';
+
+  @override
+  String get premiumUiSpeedupHint =>
+      'Wil je een wachttijd overslaan? Gebruik de bliksemknop op dat scherm. Deze pagina is alleen voor aankopen.';
+
+  @override
   String get premiumUiSectionPassesTitle => 'Event Pass';
 
   @override
@@ -6536,7 +6558,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get premiumUiIntroSubtitle =>
-      'Hier beheren spelers hun VIP abonnementen, creditbundels en credit-shop items.';
+      'Koop VIP, credits en in-game geld. Wachttijden verkorten doe je op het scherm waar je wacht.';
 
   @override
   String premiumUiEntitlementChip(String key, String date) {
@@ -19169,11 +19191,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicPremiumSummary =>
-      'Koop en beheer hier Player VIP, Crew VIP en creditbundels. Je ziet auto-renew, kunt VIP cadeau doen, en VIP-prestige (alleen display) opbouwen.';
+      'Koop Player VIP, Crew VIP, creditbundels en in-game geld via VIP en Credits onder Dashboard. Wachttijden verkorten doe je op het scherm waar je wacht, niet hier.';
 
   @override
   String get helpTopicPremiumHow =>
-      'Open in het zijmenu de aparte pagina `Premium & Credits` om je VIP-status, vervaldatums, credit-saldo en koopopties te bekijken.\nIn de bovenbalk van het dashboard zie je ook of Player VIP actief is en hoe lang die nog loopt; tik daarop om Premium & Credits te openen. Zonder einddatum staat er Actief.\nOp elke aankooptegel kun je linksboven op het `i`-icoon tikken/klikken voor de volledige uitleg en voordelen; de tegel zelf toont bewust alleen korte kerninfo en de koopknop.\nPlayer VIP is persoonlijk. Crew VIP geldt voor je crew en heeft alleen waarde als je al in een crew zit. Ieder lid kan in de Crew VIP-pot doneren, of één lid neemt het maandabonnement.\nPlayer VIP geeft 10% kortere action timeouts (gevangenistijd blijft gelijk), wekelijkse 100 credits, een VIP 1-klik aankoopknop voor ontbrekende materialen in Drugs Productie (na kostenbevestiging) en een zachtere death-reset: je houdt bank/crypto/opleidingen/achievements, maar verliest wel assets, inventory en drugsvoorraad.\nVIP checkout opent de betaalpagina en landt daarna terug in de game op `Premium & Credits`, zodat je direct ziet of de aankoop is gelukt en tot wanneer je VIP loopt.\nAls auto-renew actief is, kun je verlenging stopzetten; je huidige VIP blijft tot de vervaldatum geldig.\nMet VIP cadeau koop je 30 dagen Player VIP voor een andere speler via gebruikersnaam (eenmalig, zonder auto-renew voor de ontvanger).\nMet Crew VIP cadeau koop je 30 dagen Crew VIP voor een crew via de crewnaam (eenmalig, zonder auto-renew).\nVIP prestige (brons/zilver/goud) is puur zichtbaar op basis van lifetime VIP-dagen en geeft geen gameplay-power.\nCreditbundels koop je met echt geld. Tik op een pakket, kies hoeveel je in één keer wilt (tot 20) en betaal het totaal in één checkout; na succesvolle betaling verschijnen alle credits meteen in je wallet.\nEvent Pass (7 dagen, echt geld) staat in hetzelfde eenmalige overzicht: +10% score op live spelerevents, plus een klein bonuscredits-pakket na betaling. Dit is side-grade: geen directe combat- of PvP-boost; het helpt vooral bij leaderboard-prestaties binnen lopende events.\nCredit-items gebruiken wallet-credits in plaats van euro\'s. Denk aan hit protection, cooldown resets, event boosts of cash bundles, afhankelijk van wat admin live actief heeft gezet.\nBij actieve cooldowns zie je op ondersteunde timeout-schermen (zoals crimes, jobs, voertuig/boot diefstal en school) ook direct een knop om met credits te versnellen; je hoeft daarvoor niet eerst terug naar Premium & Credits.\nSommige credit-items werken direct vanuit dit scherm. Context-gebonden items, zoals bepaalde voertuigacties, gebruik je pas vanuit het juiste voertuigen- of garagescherm (bij beschadigde voertuigen staat op de kaart direct een instant-repair knop).\nBij contextknoppen zoals reparatie-versnellen wordt de actuele credit-kost direct op de knop/tooltip getoond.\nPrijzen en beschikbare items worden live in admin beheerd. VIP-prijzen, credit-kosten en het aanbod kunnen dus wijzigen zonder app-update.';
+      'Open VIP of Credits direct onder Dashboard in het zijmenu. VIP toont abonnementen; Credits toont creditbundels en in-game cash. Wachttijden verkorten doe je met de bliksemknop op het scherm waar je wacht, niet hier.\nIn de bovenbalk van het dashboard zie je ook of Player VIP actief is en hoe lang die nog loopt; tik daarop om VIP te openen. Zonder einddatum staat er Actief.\nOp elke aankooprij kun je op het i-icoon tikken voor de volledige uitleg en voordelen.\nPlayer VIP is persoonlijk. Crew VIP geldt voor je crew en heeft alleen waarde als je al in een crew zit. Ieder lid kan in de Crew VIP-pot doneren, of één lid neemt het maandabonnement.\nPlayer VIP geeft 10 procent kortere action timeouts (gevangenistijd blijft gelijk), wekelijkse 100 credits, een VIP 1-klik aankoopknop voor ontbrekende materialen in Drugs Productie (na kostenbevestiging) en een zachtere death-reset: je houdt bank/crypto/opleidingen/achievements, maar verliest wel assets, inventory en drugsvoorraad.\nCrew VIP ontgrendelt VIP-HQ, gebouwen boven 10, +10 procent oorlogspunten en Schild voor de hele crew.\nNa checkout keer je terug naar deze pagina, zodat je VIP-status en je nieuwe credit- of cashsaldo meteen ziet.\nCreditbundels laten je 1-20 pakketten in één betaling kiezen. Event Pass en VIP blijven één aankoop.\nIn-game cashpakketten betaal je in euro\'s en komen op je hand. Je kunt credits ook omwisselen naar cash als dat pakket in de lijst staat.\nStop auto-renew wanneer je wilt; je betaalde periode blijft actief. Geef VIP cadeau via speler- of crewnaam. Prestige-tiers zijn alleen display.\nPrijzen en beschikbare items worden live in admin beheerd.';
 
   @override
   String get helpTopicPremiumTips =>

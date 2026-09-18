@@ -112,6 +112,38 @@ def _premium_assets(output_root: Path) -> List[dict]:
             ),
         },
         {
+            "name": "money_50k",
+            "out": output_root / "money_50k.png",
+            "prompt": (
+                "Cinematic dark-mafia product photo, modest stack of euro banknotes on mahogany desk, "
+                "gold spotlight, luxury crime atmosphere, no text"
+            ),
+        },
+        {
+            "name": "money_120k",
+            "out": output_root / "money_120k.png",
+            "prompt": (
+                "Cinematic dark-mafia product photo, thicker euro cash stack with gold paper band, "
+                "noir gold lighting, no text"
+            ),
+        },
+        {
+            "name": "money_400k",
+            "out": output_root / "money_400k.png",
+            "prompt": (
+                "Cinematic dark-mafia product photo, dense euro cash bricks on black marble, "
+                "gold spotlight, no text"
+            ),
+        },
+        {
+            "name": "money_1m",
+            "out": output_root / "money_1m.png",
+            "prompt": (
+                "Cinematic dark-mafia product photo, open black leather briefcase packed with euro cash, "
+                "gold rim light, no text"
+            ),
+        },
+        {
             "name": "shop_cash_bundle",
             "out": output_root / "shop_cash_bundle.png",
             "prompt": (

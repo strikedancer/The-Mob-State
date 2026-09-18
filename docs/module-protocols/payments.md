@@ -4,7 +4,7 @@
 Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premium credits en credit-redemptions. Scope omvat checkout, webhook-fulfillment, wallet/ledger, entitlement-status en admin-beheer van catalogusdata. Niet in scope: generieke bank/economieflows zonder premium-relatie.
 
 ## Primary Frontend Entry
-- `client/lib/screens/premium_screen.dart` (VIP buy/extend, gift, cancel auto-renew, prestige KPI)
+- `client/lib/screens/premium_screen.dart` (VIP tab: buy/extend, gift, cancel auto-renew, prestige KPI; Credits tab: credit packs + in-game cash)
 - `client/lib/screens/dashboard_screen.dart` (HUD VIP-cel: actief/nee + resterende tijd, tik naar Premium)
 - `client/lib/screens/crew_screen.dart` (crew VIP checkout entry)
 
@@ -55,8 +55,9 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 - Admin moet premium credits veilig handmatig kunnen toekennen voor support/correcties, met role-checks, limieten en audit trail.
 - Checkout failure of webhook-delay mag geen halve grants of negatieve saldo's veroorzaken.
 - Bestaande gameplay-perks mogen niet gratis bereikbaar worden door premium regressies.
-- Player premium toegang hoort via een dedicated Premium & Credits scherm beschikbaar te zijn, niet alleen via verborgen crew-subflows.
-- Externe betaalredirects moeten na checkout terug landen in de ingesloten game-shell op de Premium & Credits sectie; een losse fullpage premium-route is geen voorkeursflow voor web/PWA.
+- Player premium toegang hoort via **VIP** en **Credits** onder Dashboard beschikbaar te zijn, niet alleen via verborgen crew-subflows. Cooldown/time-skip credit-sinks horen op het actiescherm, niet op deze aankooppagina.
+- Externe betaalredirects moeten na checkout terug landen in de ingesloten game-shell op VIP of Credits; een losse fullpage premium-route is geen voorkeursflow voor web/PWA.
+- In-game cash one-time offers (`rewardType: money`) horen in de Credits-tab zichtbaar te zijn. `ensureDefaultMoneyBundleOffers` seedt `money_small` / `money_large` / `money_stack` / `money_chest` idempotent.
 - Player VIP en Crew VIP prijzen moeten runtime-config-gestuurd blijven zodat admin ze live kan aanpassen zonder backend deploy.
 - Player VIP voordelen met economy-impact (zoals cooldown-reductie of periodieke credit grants) moeten via backendregels afdwingbaar blijven en in de player copy expliciet vermeld worden.
 - Als Player VIP nieuwe module-specifieke QoL-perks krijgt (zoals VIP one-click ontbrekende materials kopen in Drugs Productie), moet die benefit expliciet in de VIP aankoop- en info-copy staan (NL+EN).
@@ -70,7 +71,7 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 - Voor `ACTION_COOLDOWN_RESET` items geldt dynamische prijsstelling op basis van resterende cooldown en action-value; expose deze altijd als runtime `effectiveCreditCost` in de overview.
 - Dynamische cooldown-prijsstelling moet progressief maar mild blijven: korte cooldowns (zoals crime ~1-2 minuten) horen geen disproportioneel hoge creditprijs te krijgen.
 - Cooldown-reset redemptions moeten blokkeren zonder actieve cooldown (`ACTION_COOLDOWN_NOT_ACTIVE`) om creditverlies te voorkomen.
-- Ondersteunde gameplay-timeout overlays (crime, jobs, school, voertuig- en bootdiefstal, en andere actieve cooldown-schermen met matchende actionType) moeten een directe credit speed-up knop tonen; speler mag niet geforceerd worden eerst terug te navigeren naar `Premium & Credits`.
+- Ondersteunde gameplay-timeout overlays (crime, jobs, school, voertuig- en bootdiefstal, en andere actieve cooldown-schermen met matchende actionType) moeten een directe credit speed-up knop tonen; speler mag niet geforceerd worden eerst terug te navigeren naar VIP of Credits.
 - Voor `VEHICLE_REPAIR_FINISH` moet op beschadigde voertuigkaarten (garage/marina) een contextuele credits-knop zichtbaar zijn; de flow start indien nodig eerst reparatie en rondt daarna direct af via dezelfde redeem-flow met `vehicleInventoryId`.
 - Drug production speedup gebruikt een dedicated drugs-API (`/drugs/productions/:id/speedup-quote` + `/speedup`) met ledger `reasonKey=drug_production_speedup`; geen catalog-item in de premium shop.
 - Het instant-repair icoon op voertuigkaarten gebruikt een gecombineerde visual (steeksleutel + bliksem) zodat de actie herkenbaar blijft als reparatie én instant effect.
@@ -89,7 +90,8 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 ## Frontend Loading Guardrails
 - Premium catalogus, VIP-status en credits-overzicht moeten los kunnen falen zonder het hele premiumblok leeg te trekken.
 - Toon duidelijke feedback voor open/cancelled/paid checkout-terugkeer.
-- Houd mobile cards compact; prijzen en benefits moeten zonder horizontale overflow leesbaar blijven.
+- Houd mobile cards compact; prijzen en benefits moeten zonder horizontale overflow leesbaar blijven. De store gebruikt compacte rijen, geen vierkante fototegels.
+- In-game cash (`rewardType=money`) hoort in de Credits-tab zichtbaar en checkoutbaar te zijn. Default packs: €50k / €120k / €400k / €1m.
 
 ## QA Checklist
 1. Player VIP checkout opent Mollie en paid webhook activeert VIP.

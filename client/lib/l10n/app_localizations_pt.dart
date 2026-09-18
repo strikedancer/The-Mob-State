@@ -6410,6 +6410,28 @@ class AppLocalizationsPt extends AppLocalizations {
       'Escolha um pacote e, em seguida, quantos pacotes comprar em um único pagamento.';
 
   @override
+  String get premiumUiSectionBuyCashTitle => 'Buy in-game cash';
+
+  @override
+  String get premiumUiSectionBuyCashSubtitle =>
+      'Pay in euros. After payment the cash lands in your wallet. This is not VIP and not credits.';
+
+  @override
+  String premiumUiBuyCashCta(String price) {
+    return 'Buy $price';
+  }
+
+  @override
+  String get premiumUiNoCashBundles => 'No cash packs are for sale right now.';
+
+  @override
+  String get premiumUiCreditsToCashTitle => 'Or convert credits to cash';
+
+  @override
+  String get premiumUiSpeedupHint =>
+      'Need to skip a wait? Use the lightning button on that screen. This page is only for purchases.';
+
+  @override
   String get premiumUiSectionPassesTitle => 'Season & event passes';
 
   @override
@@ -6549,7 +6571,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get premiumUiIntroSubtitle =>
-      'Os jogadores gerenciam assinaturas VIP, pacotes de créditos e itens da loja de créditos aqui.';
+      'Compre VIP, créditos e dinheiro do jogo. Os atalhos de tempo ficam na tela em que você espera.';
 
   @override
   String premiumUiEntitlementChip(String key, String date) {
@@ -19265,7 +19287,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicPremiumSummary =>
-      'Compre e gerencie Player VIP, Crew VIP e pacotes de créditos aqui. Veja renovação automática, presenteie VIP e ganhe prestígio VIP (somente exibição).';
+      'Compre Player VIP, Crew VIP, pacotes de créditos e dinheiro do jogo em VIP e Credits abaixo de Dashboard. Pule esperas na tela em que você espera, não aqui.';
 
   @override
   String get helpTopicPremiumHow =>

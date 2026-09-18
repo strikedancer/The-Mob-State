@@ -11326,6 +11326,42 @@ abstract class AppLocalizations {
   /// **'Pick a bundle, then choose how many packs to buy in one payment.'**
   String get premiumUiSectionBuyCreditsSubtitle;
 
+  /// No description provided for @premiumUiSectionBuyCashTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy in-game cash'**
+  String get premiumUiSectionBuyCashTitle;
+
+  /// No description provided for @premiumUiSectionBuyCashSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay in euros. After payment the cash lands in your wallet. This is not VIP and not credits.'**
+  String get premiumUiSectionBuyCashSubtitle;
+
+  /// No description provided for @premiumUiBuyCashCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy {price}'**
+  String premiumUiBuyCashCta(String price);
+
+  /// No description provided for @premiumUiNoCashBundles.
+  ///
+  /// In en, this message translates to:
+  /// **'No cash packs are for sale right now.'**
+  String get premiumUiNoCashBundles;
+
+  /// No description provided for @premiumUiCreditsToCashTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Or convert credits to cash'**
+  String get premiumUiCreditsToCashTitle;
+
+  /// No description provided for @premiumUiSpeedupHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Need to skip a wait? Use the lightning button on that screen. This page is only for purchases.'**
+  String get premiumUiSpeedupHint;
+
   /// No description provided for @premiumUiSectionPassesTitle.
   ///
   /// In en, this message translates to:
@@ -11537,7 +11573,7 @@ abstract class AppLocalizations {
   /// No description provided for @premiumUiIntroSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Players manage VIP subscriptions, credit bundles and credit shop items here.'**
+  /// **'Buy VIP, credits and in-game cash. Time skips stay on the screen where you wait.'**
   String get premiumUiIntroSubtitle;
 
   /// No description provided for @premiumUiEntitlementChip.
@@ -32879,13 +32915,13 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicPremiumSummary.
   ///
   /// In en, this message translates to:
-  /// **'Buy and manage Player VIP, Crew VIP and credit bundles here. See auto-renew, gift VIP, and build VIP prestige (display only).'**
+  /// **'Buy Player VIP, Crew VIP, credit packs and in-game cash from VIP and Credits under Dashboard. Skip waits on the screen where you wait, not here.'**
   String get helpTopicPremiumSummary;
 
   /// No description provided for @helpTopicPremiumHow.
   ///
   /// In en, this message translates to:
-  /// **'Open the separate `Premium & Credits` page from the side menu to view your VIP status, expiry dates, credit balance and purchase options.\nThe dashboard top bar also shows whether Player VIP is active and how long it still lasts; tap it to open Premium & Credits. With no expiry date it shows Active.\nOn each purchase tile, tap/click the `i` icon at the top-left for full details and benefits; the tile itself intentionally shows only short core info and the buy button.\nPlayer VIP is personal. Crew VIP applies to your crew and only has value when you are already in a crew. Every member can donate into the crew VIP pot, or one member can take the monthly subscription.\nPlayer VIP gives 10% shorter action timeouts (jail time remains unchanged), 100 weekly credits, a VIP one-click purchase button for missing materials in Drug Production (after cost confirmation), and a softer death reset: bank/crypto/education/achievements stay, while assets, inventory and drug stock are removed.\nVIP checkout opens the payment page and then returns to the in-game `Premium & Credits` section, so you immediately see whether the purchase succeeded and how long your VIP runs.\nWhen auto-renew is active you can cancel renewal; your current VIP stays valid until the expiry date.\nGift VIP buys 30 days of Player VIP for another player by username (one-time; recipient does not get auto-renew).\nGift Crew VIP buys 30 days of Crew VIP for a crew by crew name (one-time; no auto-renew).\nVIP prestige (bronze/silver/gold) is display-only from lifetime VIP days and grants no gameplay power.\nCredit bundles are bought with real money. Tap a pack, choose how many to buy at once (up to 20) and pay the total in one checkout; after a successful payment all credits appear in your wallet right away.\nEvent Pass (7 days, real money) is listed in the one-time offer grid: +10% score on live player events, plus a small credit bonus after purchase. It is a side-grade: not a direct combat or PvP boost; it mainly helps leaderboard results during running events.\nCredit items use wallet credits instead of euros. Think of hit protection, cooldown resets, event boosts or cash bundles, depending on what admin currently has enabled live.\nOn supported timeout screens (such as crimes, jobs, vehicle/boat theft and school) you also get a direct speed-up button for active cooldowns, so you do not need to go back to Premium & Credits first.\nSome credit items work directly from this screen. Context-bound items, such as certain vehicle actions, are used from the correct vehicle or garage screen instead (damaged vehicles show an instant-repair button directly on the card).\nFor contextual buttons such as repair speed-up, the current credit cost is shown directly on the button/tooltip.\nPrices and available items are managed live in admin. That means VIP prices, credit costs and the available offer can change without an app update.'**
+  /// **'Open VIP or Credits directly under Dashboard in the side menu. VIP shows subscriptions; Credits shows credit packs and in-game cash. Skip waits with the lightning button on the screen where you wait, not here.\nThe dashboard top bar also shows whether Player VIP is active and how long it still lasts; tap it to open VIP. With no expiry date it shows Active.\nOn each purchase row, tap the i icon for full details and benefits.\nPlayer VIP is personal. Crew VIP applies to your crew and only has value when you are already in a crew. Every member can donate into the crew VIP pot, or one member can take the monthly subscription.\nPlayer VIP gives 10 percent shorter action timeouts (jail time remains unchanged), 100 weekly credits, a VIP one-click purchase button for missing materials in Drug Production after cost confirmation, and a softer death reset: bank/crypto/education/achievements stay, while assets, inventory and drug stock are wiped.\nCrew VIP unlocks VIP HQ, buildings above 10, +10 percent war points and Shield for the whole crew.\nAfter checkout you return to this page so you can see VIP status and your new credit or cash balance.\nCredit packs let you choose quantity 1-20 in one payment. Event Pass and VIP stay one purchase.\nIn-game cash packs pay in euros and land in your wallet. You can also convert credits to cash if that bundle is listed.\nCancel auto-renew any time; your paid period stays active. Gift VIP by player or crew name. Prestige tiers are display only.\nPrices and available items are managed live in admin.'**
   String get helpTopicPremiumHow;
 
   /// No description provided for @helpTopicPremiumTips.

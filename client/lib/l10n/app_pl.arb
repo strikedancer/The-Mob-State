@@ -7705,7 +7705,7 @@
   },
   "premiumUiBadgeShop": "Sklep",
   "premiumUiActiveEffectsTitle": "Aktywne efekty premium",
-  "premiumUiIntroSubtitle": "Gracze zarządzają tutaj subskrypcjami VIP, pakietami kredytów i przedmiotami w sklepie kredytów.",
+  "premiumUiIntroSubtitle": "Kup VIP, kredyty i pieniądze w grze. Skracanie czasu zostaje na ekranie, na którym czekasz.",
   "premiumUiEntitlementChip": "{key} - {date}",
   "@premiumUiEntitlementChip": {
     "placeholders": {
@@ -8395,7 +8395,7 @@
   "helpTopicSettingsTips": "Włącz powiadomienia push dla zamówień kryptograficznych i zdarzeń napadów: są to systemy, w których liczy się czas i szybkość reakcji. \nUstaw prywatność lokalizacji na tylko dla załogi, gdy jesteś aktywny na liście trafień: w przeciwnym razie inni gracze będą mogli Cię dokładnie wskazać.",
   "helpTopicPremiumCategory": "Rdzeń",
   "helpTopicPremiumTitle": "Premie i kredyty",
-  "helpTopicPremiumSummary": "Kupuj i zarządzaj tutaj VIP-ami Gracza, VIP-ami załogi i pakietami kredytów. Zobacz automatyczne odnawianie, podaruj VIP i buduj prestiż VIP (tylko wyświetlanie).",
+  "helpTopicPremiumSummary": "Kup Player VIP, Crew VIP, pakiety kredytów i pieniądze w grze w VIP i Credits pod Dashboard. Czas skracasz na ekranie oczekiwania, nie tutaj.",
   "helpTopicPremiumHow": "Otwórz oddzielną stronę „Premium i kredyty” w bocznym menu, aby wyświetlić swój status VIP, daty wygaśnięcia, saldo środków i opcje zakupu. \nGórny pasek pulpitu nawigacyjnego pokazuje również, czy Player VIP jest aktywny i jak długo jeszcze trwa; dotknij go, aby otworzyć Premium i Kredyty. Bez daty ważności pokazuje Aktywny. \nNa każdym kafelku zakupu dotknij/kliknij ikonę „i” w lewym górnym rogu, aby uzyskać szczegółowe informacje i korzyści; sam kafelek celowo pokazuje tylko krótkie podstawowe informacje i przycisk zakupu. \nGracz VIP jest osobisty. VIP dla załogi dotyczy Twojej załogi i ma wartość tylko wtedy, gdy jesteś już w załodze. Każdy członek może przekazać darowiznę do puli VIP załogi lub jeden członek może wykupić miesięczną subskrypcję. \nGracz VIP zapewnia o 10% krótsze limity czasu na działanie (czas więzienia pozostaje niezmieniony), 100 tygodniowych kredytów, przycisk VIP do zakupu jednym kliknięciem brakujących materiałów w produkcji narkotyków (po potwierdzeniu kosztów) oraz łagodniejszy reset po śmierci: bank/krypto/edukacja/osiągnięcia pozostają, podczas gdy aktywa, ekwipunek i zapasy leków są usuwane. \nKasa VIP otwiera stronę płatności, a następnie powraca do sekcji „Premium i kredyty” w grze, dzięki czemu od razu widzisz, czy zakup się powiódł i jak długo ważny jest Twój VIP. \nGdy automatyczne odnawianie jest aktywne, możesz anulować odnowienie; Twój aktualny VIP pozostaje ważny do daty wygaśnięcia. \nGift VIP kupuje 30 dni Player VIP dla innego gracza według nazwy użytkownika (jednorazowo; odbiorca nie otrzymuje automatycznego odnowienia). \nGift Crew VIP kupuje 30 dni Crew VIP dla załogi według nazwy załogi (jednorazowo; bez automatycznego odnawiania). \nPrestiż VIP (brązowy/srebrny/złoty) jest wyświetlany tylko w okresie dożywotnich dni VIP i nie zapewnia żadnej mocy w rozgrywce. \nPakiety kredytów kupuje się za prawdziwe pieniądze. Kliknij paczkę, wybierz, ile chcesz kupić na raz (do 20) i zapłać całość w jednej kasie; po pomyślnej płatności wszystkie środki natychmiast pojawią się w Twoim portfelu. \nKarnet na wydarzenie (7 dni, prawdziwe pieniądze) jest wymieniony w siatce ofert jednorazowych: +10% wyniku w wydarzeniach dla graczy na żywo oraz niewielki bonus kredytowy po zakupie. Jest to poziom poboczny: nie jest to bezpośrednia walka ani wzmocnienie PvP; pomaga głównie w wynikach rankingów podczas wydarzeń biegowych. \nW przypadku pozycji kredytowych wykorzystywane są środki z portfela zamiast euro. Pomyśl o ochronie przed trafieniami, resetowaniu czasu odnowienia, wzmocnieniach wydarzeń lub pakietach pieniężnych, w zależności od tego, co administrator aktualnie włączył na żywo. \nNa obsługiwanych ekranach limitów czasu (takich jak przestępstwa, praca, kradzież pojazdu/łodzi i szkoła) dostępny jest także bezpośredni przycisk przyspieszenia dla aktywnych czasów odnowienia, dzięki czemu nie musisz najpierw wracać do konta premium i kredytów. \nNiektóre pozycje kredytowe działają bezpośrednio z tego ekranu. Zamiast tego elementy powiązane z kontekstem, takie jak określone akcje pojazdu, są używane na ekranie odpowiedniego pojazdu lub garażu (uszkodzone pojazdy mają przycisk natychmiastowej naprawy bezpośrednio na karcie). \nW przypadku przycisków kontekstowych, takich jak przyspieszenie naprawy, bieżący koszt kredytu jest wyświetlany bezpośrednio na przycisku/etykiecie narzędzia. \nCeny i dostępne produkty są zarządzane na żywo w panelu administracyjnym. Oznacza to, że ceny VIP, koszty kredytu i dostępna oferta mogą ulec zmianie bez aktualizacji aplikacji.",
   "helpTopicPremiumTips": "Przed ponownym zakupem sprawdź saldo kredytu i datę jego wygaśnięcia; przedłużanie jest często lepsze niż układanie na ślepo. \nAnuluj automatyczne odnawianie na czas, jeśli nie chcesz bieżących opłat; Twój okres rozliczeniowy nadal trwa. \nWykorzystuj kredyty głównie na krytyczne czasowo wzmocnienia lub ochronę, a nie automatycznie na każdym małym skrócie. \nJeśli nie jesteś jeszcze w załodze, zacznij od Gracza VIP lub pakietu kredytów przed Crew VIP.",
   "landingHeroTitle": "Państwo tłumu",
@@ -13267,5 +13267,18 @@
   "crewUiMissionSortSuccess": "Szansa na sukces",
   "crewUiMissionNoMatches": "Żadna misja nie pasuje do tego filtra.",
   "crewUiStorageEmpty": "Pusty",
-  "crewUiStorageViewContents": "Zobacz zawartość"
+  "crewUiStorageViewContents": "Zobacz zawartość",
+  "premiumUiSectionBuyCashTitle": "Buy in-game cash",
+  "premiumUiSectionBuyCashSubtitle": "Pay in euros. After payment the cash lands in your wallet. This is not VIP and not credits.",
+  "premiumUiBuyCashCta": "Buy {price}",
+  "@premiumUiBuyCashCta": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "premiumUiNoCashBundles": "No cash packs are for sale right now.",
+  "premiumUiCreditsToCashTitle": "Or convert credits to cash",
+  "premiumUiSpeedupHint": "Need to skip a wait? Use the lightning button on that screen. This page is only for purchases."
 }

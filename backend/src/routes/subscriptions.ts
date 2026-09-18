@@ -136,6 +136,53 @@ const DEFAULT_CREDIT_BUNDLE_OFFERS = [
   },
 ];
 
+const DEFAULT_MONEY_BUNDLE_OFFERS = [
+  {
+    key: 'money_small',
+    titleNl: '€50.000 cash',
+    titleEn: '€50,000 cash',
+    descriptionNl: 'Kleine cash-injectie op je hand. Geen credits, geen VIP.',
+    descriptionEn: 'A small cash injection into your wallet. No credits, no VIP.',
+    imageUrl: 'images/premium_tiles/money_50k.png',
+    priceEurCents: 499,
+    moneyAmount: 50000,
+    sortOrder: 50,
+  },
+  {
+    key: 'money_large',
+    titleNl: '€120.000 cash',
+    titleEn: '€120,000 cash',
+    descriptionNl: 'Stevige cashboost voor deals, reizen en voorraden.',
+    descriptionEn: 'A solid cash boost for deals, travel and stock.',
+    imageUrl: 'images/premium_tiles/money_120k.png',
+    priceEurCents: 999,
+    moneyAmount: 120000,
+    sortOrder: 60,
+  },
+  {
+    key: 'money_stack',
+    titleNl: '€400.000 cash',
+    titleEn: '€400,000 cash',
+    descriptionNl: 'Grote stapel voor serieuze uitgaven zonder credits te wisselen.',
+    descriptionEn: 'A large stack for serious spending without converting credits.',
+    imageUrl: 'images/premium_tiles/money_400k.png',
+    priceEurCents: 1999,
+    moneyAmount: 400000,
+    sortOrder: 70,
+  },
+  {
+    key: 'money_chest',
+    titleNl: '€1.000.000 cash',
+    titleEn: '€1,000,000 cash',
+    descriptionNl: 'Koffer met een miljoen voor empire-investeringen.',
+    descriptionEn: 'A briefcase with a million for empire investments.',
+    imageUrl: 'images/premium_tiles/money_1m.png',
+    priceEurCents: 3999,
+    moneyAmount: 1000000,
+    sortOrder: 80,
+  },
+];
+
 async function ensureEventPassOffer(): Promise<void> {
   // Monthly Event Pass replaced the old 7-day Event Pass pack — keep it off the catalog.
   try {
@@ -229,6 +276,50 @@ async function ensureDefaultCreditBundleOffers(): Promise<void> {
   });
 }
 
+async function ensureDefaultMoneyBundleOffers(): Promise<void> {
+  await prisma.premiumOneTimeOffer.createMany({
+    data: DEFAULT_MONEY_BUNDLE_OFFERS.map((offer) => ({
+      key: offer.key,
+      titleNl: offer.titleNl,
+      titleEn: offer.titleEn,
+      descriptionNl: offer.descriptionNl,
+      descriptionEn: offer.descriptionEn,
+      imageUrl: offer.imageUrl,
+      priceEurCents: offer.priceEurCents,
+      rewardType: 'money' as const,
+      moneyAmount: offer.moneyAmount,
+      ammoType: null,
+      ammoQuantity: null,
+      creditAmount: null,
+      rewardKey: null,
+      durationHours: null,
+      rewardValue: null,
+      metadataJson: null,
+      isActive: true,
+      showPopupOnOpen: false,
+      sortOrder: offer.sortOrder,
+    })),
+    skipDuplicates: true,
+  });
+  for (const offer of DEFAULT_MONEY_BUNDLE_OFFERS) {
+    await prisma.premiumOneTimeOffer.updateMany({
+      where: { key: offer.key },
+      data: {
+        titleNl: offer.titleNl,
+        titleEn: offer.titleEn,
+        descriptionNl: offer.descriptionNl,
+        descriptionEn: offer.descriptionEn,
+        imageUrl: offer.imageUrl,
+        priceEurCents: offer.priceEurCents,
+        rewardType: 'money',
+        moneyAmount: offer.moneyAmount,
+        isActive: true,
+        sortOrder: offer.sortOrder,
+      },
+    });
+  }
+}
+
 const centsToEuroValue = (cents: number): string => (cents / 100).toFixed(2);
 
 const mapMollieStatus = (status?: string) => {
@@ -307,7 +398,7 @@ function getVipDescription(type: 'player_vip' | 'crew_vip', locale: 'nl' | 'en')
 
 function buildRewardSummary(offer: PremiumOfferRecord, locale: 'nl' | 'en') {
   if (offer.rewardType === 'money') {
-    return locale === 'nl' ? `+â‚¬${offer.moneyAmount ?? 0}` : `+â‚¬${offer.moneyAmount ?? 0}`;
+    return locale === 'nl' ? `+€${offer.moneyAmount ?? 0}` : `+€${offer.moneyAmount ?? 0}`;
   }
 
   if (offer.rewardType === 'ammo') {
@@ -446,6 +537,7 @@ function formatOfferForCatalog(offer: PremiumOfferRecord) {
 
 async function listActivePremiumOffers() {
   await ensureDefaultCreditBundleOffers();
+  await ensureDefaultMoneyBundleOffers();
   await ensureEventPassOffer();
   await ensureSeasonPassOffer();
   const offers = await premiumOfferRepo.findMany({
@@ -457,6 +549,7 @@ async function listActivePremiumOffers() {
 
 async function getActivePremiumOfferByKey(key: string) {
   await ensureDefaultCreditBundleOffers();
+  await ensureDefaultMoneyBundleOffers();
   await ensureEventPassOffer();
   await ensureSeasonPassOffer();
   const offer = await premiumOfferRepo.findFirst({

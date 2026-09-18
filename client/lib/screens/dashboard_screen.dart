@@ -127,6 +127,9 @@ enum _NavGroup { actions, world, social, economy, empire, assets, more }
 _WebSection _webSectionFromQueryParam(String? value) {
   switch ((value ?? '').toLowerCase()) {
     case 'premium':
+    case 'vip':
+    case 'credits':
+    case 'cash':
       return _WebSection.premium;
     case 'vault':
       return _WebSection.vault;
@@ -423,6 +426,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   _NavGroup? _expandedNavGroup;
   /// Optional product to highlight when opening Premium (e.g. season_pass_monthly).
   String? _premiumFocusProductKey;
+  PremiumStoreTab _premiumTab = PremiumStoreTab.vip;
   int? _inventoryInitialPropertyId;
 
   void _openInventoryStorage(int propertyId) {
@@ -473,7 +477,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  void _selectWebSection(_WebSection section, {String? focusProductKey}) {
+  void _selectWebSection(
+    _WebSection section, {
+    String? focusProductKey,
+    PremiumStoreTab? premiumTab,
+  }) {
     if (_isLateMenuLocked(section)) {
       _showLateMenuLocked();
       return;
@@ -487,7 +495,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
       return;
     }
     setState(() {
-      if (_selectedWebSection == section) {
+      if (section == _WebSection.premium) {
+        final nextTab = premiumTab ??
+            (((focusProductKey ?? '').startsWith('credits_') ||
+                    (focusProductKey ?? '').startsWith('money_'))
+                ? PremiumStoreTab.credits
+                : PremiumStoreTab.vip);
+        if (_selectedWebSection == section && _premiumTab == nextTab) {
+          _webSectionRefreshSeed++;
+        } else {
+          _selectedWebSection = section;
+        }
+        _premiumTab = nextTab;
+      } else if (_selectedWebSection == section) {
         _webSectionRefreshSeed++;
       } else {
         _selectedWebSection = section;
@@ -528,7 +548,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.crypto:
       case _WebSection.stockMarket:
       case _WebSection.smuggling:
-      case _WebSection.premium:
         return _NavGroup.economy;
       case _WebSection.drugs:
       case _WebSection.nightclub:
@@ -552,6 +571,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.achievements:
         return _NavGroup.more;
       case _WebSection.dashboard:
+      case _WebSection.premium:
       case _WebSection.messages:
       case _WebSection.settings:
       case _WebSection.garage:
@@ -568,6 +588,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _selectedWebSection = _webSectionFromQueryParam(
       Uri.base.queryParameters['section'],
     );
+    final sectionQuery = (Uri.base.queryParameters['section'] ?? '').toLowerCase();
+    if (sectionQuery == 'credits' || sectionQuery == 'cash') {
+      _premiumTab = PremiumStoreTab.credits;
+    } else if (sectionQuery == 'vip' || sectionQuery == 'premium') {
+      _premiumTab = PremiumStoreTab.vip;
+    }
     _expandedNavGroup = _navGroupForSection(_selectedWebSection);
     // Connect to event stream when dashboard opens
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -1568,13 +1594,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
     VoidCallback? onBeforeNavigate,
   }) {
     final query = _menuSearchController.text.trim().toLowerCase();
-    ({IconData icon, String label, _WebSection section, int badge}) navItem({
+    ({IconData icon, String label, _WebSection section, int badge, PremiumStoreTab? storeTab}) navItem({
       required IconData icon,
       required String label,
       required _WebSection section,
       int badge = 0,
+      PremiumStoreTab? storeTab,
     }) {
-      return (icon: icon, label: label, section: section, badge: badge);
+      return (icon: icon, label: label, section: section, badge: badge, storeTab: storeTab);
     }
 
     final dashboard = navItem(
@@ -1582,7 +1609,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       label: l10n.dashboard,
       section: _WebSection.dashboard,
     );
-    final groups = <_NavGroup, List<({IconData icon, String label, _WebSection section, int badge})>>{
+    final groups = <_NavGroup, List<({IconData icon, String label, _WebSection section, int badge, PremiumStoreTab? storeTab})>>{
       _NavGroup.actions: [
         navItem(icon: Icons.warning, label: l10n.crimes, section: _WebSection.crimes),
         navItem(icon: Icons.work, label: l10n.jobs, section: _WebSection.jobs),
@@ -1610,7 +1637,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
         navItem(icon: Icons.currency_bitcoin, label: l10n.crypto, section: _WebSection.crypto),
         navItem(icon: Icons.show_chart, label: l10n.stockMarketTitle, section: _WebSection.stockMarket),
         navItem(icon: Icons.local_shipping, label: l10n.smuggling, section: _WebSection.smuggling),
-        navItem(icon: Icons.workspace_premium, label: l10n.premiumAndCredits, section: _WebSection.premium),
         if (query.isNotEmpty) ...[
           navItem(icon: Icons.build, label: l10n.tools, section: _WebSection.tools),
           navItem(icon: Icons.shield, label: l10n.security, section: _WebSection.security),
@@ -1640,17 +1666,45 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ],
     };
 
+    final vip = navItem(
+      icon: Icons.workspace_premium,
+      label: l10n.hudVip,
+      section: _WebSection.premium,
+      storeTab: PremiumStoreTab.vip,
+    );
+    final credits = navItem(
+      icon: Icons.token,
+      label: l10n.hudCredits,
+      section: _WebSection.premium,
+      storeTab: PremiumStoreTab.credits,
+    );
+
     bool matches(String label) =>
         query.isEmpty || label.toLowerCase().contains(query);
+    bool matchesRow(
+      ({IconData icon, String label, _WebSection section, int badge, PremiumStoreTab? storeTab}) row,
+    ) {
+      if (matches(row.label)) return true;
+      if (row.section == _WebSection.premium && matches(l10n.premiumAndCredits)) {
+        return true;
+      }
+      return false;
+    }
 
     final widgets = <Widget>[];
     if (matches(dashboard.label)) {
       widgets.add(_buildNavTile(dashboard, onBeforeNavigate));
     }
+    if (matchesRow(vip)) {
+      widgets.add(_buildNavTile(vip, onBeforeNavigate, indent: 12));
+    }
+    if (matchesRow(credits)) {
+      widgets.add(_buildNavTile(credits, onBeforeNavigate, indent: 12));
+    }
 
-    var anyMatch = matches(dashboard.label);
+    var anyMatch = matches(dashboard.label) || matchesRow(vip) || matchesRow(credits);
     for (final group in _NavGroup.values) {
-      final groupItems = (groups[group] ?? []).where((row) => matches(row.label)).toList();
+      final groupItems = (groups[group] ?? []).where((row) => matchesRow(row)).toList();
       if (groupItems.isEmpty) continue;
       anyMatch = true;
       // Search: keep matching groups open. Otherwise accordion: only `_expandedNavGroup`.
@@ -1711,10 +1765,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildNavTile(
-    ({IconData icon, String label, _WebSection section, int badge}) item,
-    VoidCallback? onBeforeNavigate,
-  ) {
-    final selected = _selectedWebSection == item.section;
+    ({IconData icon, String label, _WebSection section, int badge, PremiumStoreTab? storeTab}) item,
+    VoidCallback? onBeforeNavigate, {
+    double indent = 0,
+  }) {
+    final selected = item.section == _WebSection.premium
+        ? (_selectedWebSection == _WebSection.premium &&
+            _premiumTab == (item.storeTab ?? PremiumStoreTab.vip))
+        : _selectedWebSection == item.section;
     final locked = _isLateMenuLocked(item.section);
     final iconColor = locked
         ? Colors.white38
@@ -1723,7 +1781,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ? Colors.white38
         : (selected ? Colors.white : const Color(0xCCFFFFFF));
     return Padding(
-      padding: const EdgeInsets.only(bottom: 2),
+      padding: EdgeInsets.only(bottom: 2, left: indent),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -1736,6 +1794,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
             onBeforeNavigate?.call();
             if (item.section == _WebSection.vehicleHeist) {
               _openVehicleHeist(0);
+            } else if (item.section == _WebSection.premium) {
+              _selectWebSection(
+                _WebSection.premium,
+                premiumTab: item.storeTab ?? PremiumStoreTab.vip,
+              );
             } else {
               _selectWebSection(item.section);
             }
@@ -1991,7 +2054,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
       label: l10n.hudCredits,
       value: formatCompactNumber(player.premiumCredits ?? 0),
       valueColor: Colors.amber.shade200,
-      onTap: () => _selectWebSection(_WebSection.premium),
+      onTap: () => _selectWebSection(
+        _WebSection.premium,
+        premiumTab: PremiumStoreTab.credits,
+      ),
     );
     final vipCell = Expanded(
       child: ValueListenableBuilder<int>(
@@ -2009,7 +2075,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     )
                   : l10n.hudVipInactive;
           return InkWell(
-            onTap: () => _selectWebSection(_WebSection.premium),
+            onTap: () => _selectWebSection(
+              _WebSection.premium,
+              premiumTab: PremiumStoreTab.vip,
+            ),
             child: DashboardHudCell(
               label: l10n.hudVip,
               value: value,
@@ -2317,7 +2386,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return const CrewScreen(embedded: true);
       case _WebSection.premium:
         return PremiumScreen(
+          key: ValueKey('premium-${_premiumTab.name}-$_webSectionRefreshSeed'),
           embedded: true,
+          initialTab: _premiumTab,
           focusProductKey: _premiumFocusProductKey,
         );
       case _WebSection.friends:

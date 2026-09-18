@@ -117,6 +117,9 @@ cp -rf client/assets/images/homes/. runtime/client-images/homes/ 2>/dev/null || 
 # Don hub photo cards (/images/don/*)
 mkdir -p runtime/client-images/don || true
 cp -f client/assets/images/don/*.png runtime/client-images/don/ 2>/dev/null || true
+# Premium store tiles (/images/premium_tiles/*)
+mkdir -p runtime/client-images/premium_tiles || true
+cp -f client/assets/images/premium_tiles/*.png runtime/client-images/premium_tiles/ 2>/dev/null || true
 # Midnight Races hero (/images/races/*)
 mkdir -p runtime/client-images/races || true
 cp -f client/assets/images/races/*.png runtime/client-images/races/ 2>/dev/null || true
