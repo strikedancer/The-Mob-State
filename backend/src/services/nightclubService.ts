@@ -2337,14 +2337,38 @@ class NightclubService {
       take: 24,
       select: { eventType: true, startsAt: true, endsAt: true, investment: true, expectedVisitors: true },
     });
-    const pricingEvent = await prisma.nightclubEvent.findFirst({
+    const lastStockEvent = await prisma.nightclubEvent.findFirst({
+      where: {
+        venueId,
+        eventType: { startsWith: this.HOSPITALITY_STOCK_EVENT_PREFIX },
+      },
+      orderBy: { startsAt: 'desc' },
+      select: { eventType: true },
+    });
+    const lastPackKeyRaw =
+      lastStockEvent?.eventType?.replace(this.HOSPITALITY_STOCK_EVENT_PREFIX, '') ?? '';
+    const lastPackKey =
+      lastPackKeyRaw in this.HOSPITALITY_STOCK_PACKS ? lastPackKeyRaw : null;
+
+    const activePricingEvent = await prisma.nightclubEvent.findFirst({
       where: {
         venueId,
         eventType: { startsWith: this.HOSPITALITY_PRICING_EVENT_PREFIX },
+        endsAt: { gte: now },
       },
       orderBy: { startsAt: 'desc' },
       select: { eventType: true, startsAt: true },
     });
+    const pricingEvent =
+      activePricingEvent ??
+      (await prisma.nightclubEvent.findFirst({
+        where: {
+          venueId,
+          eventType: { startsWith: this.HOSPITALITY_PRICING_EVENT_PREFIX },
+        },
+        orderBy: { startsAt: 'desc' },
+        select: { eventType: true, startsAt: true },
+      }));
 
     const pricingKey =
       pricingEvent?.eventType?.replace(this.HOSPITALITY_PRICING_EVENT_PREFIX, '') ?? 'balanced';
@@ -2374,6 +2398,7 @@ class NightclubService {
 
     return {
       pricingKey,
+      lastPackKey,
       pricingMode,
       drinksPoints,
       foodPoints,
@@ -2484,18 +2509,30 @@ class NightclubService {
       };
     }
 
-    await prisma.nightclubEvent.create({
-      data: {
-        venueId,
-        eventType: `${this.HOSPITALITY_PRICING_EVENT_PREFIX}${pricingMode}`,
-        eventName: this.localize(language, mode.nl, mode.en),
-        startsAt: new Date(),
-        endsAt: new Date(),
-        expectedVisitors: 0,
-        investment: 0,
-        eventSuccess: true,
-      },
-    });
+    const now = new Date();
+    const persistUntil = new Date(now.getTime() + 10 * 365 * 24 * 60 * 60 * 1000);
+    await prisma.$transaction([
+      prisma.nightclubEvent.updateMany({
+        where: {
+          venueId,
+          eventType: { startsWith: this.HOSPITALITY_PRICING_EVENT_PREFIX },
+          endsAt: { gte: now },
+        },
+        data: { endsAt: now },
+      }),
+      prisma.nightclubEvent.create({
+        data: {
+          venueId,
+          eventType: `${this.HOSPITALITY_PRICING_EVENT_PREFIX}${pricingMode}`,
+          eventName: this.localize(language, mode.nl, mode.en),
+          startsAt: now,
+          endsAt: persistUntil,
+          expectedVisitors: 0,
+          investment: 0,
+          eventSuccess: true,
+        },
+      }),
+    ]);
 
     return {
       success: true,
@@ -3859,6 +3896,7 @@ class NightclubService {
             foodPoints: hospitality.foodPoints,
             activeStocksCount: hospitality.activeStocksCount,
             pricingKey: hospitality.pricingKey,
+            lastPackKey: hospitality.lastPackKey,
             pricingLabelNl: hospitality.pricingMode.nl,
             pricingLabelEn: hospitality.pricingMode.en,
             drinksMargin: hospitality.pricingMode.drinksMargin,

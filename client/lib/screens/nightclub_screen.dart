@@ -71,6 +71,8 @@ class _NightclubScreenState extends State<NightclubScreen> {
   String _selectedSmugglingRoute = 'harbor';
   String _selectedHospitalityPack = 'beer_crates';
   String _selectedHospitalityPricing = 'balanced';
+  int? _hospitalityHydratedVenueId;
+  bool _advancedExpanded = false;
   String? _selectedRivalName;
   String _selectedManagementSection = _managementSectionCrew;
   List<dynamic> _rivalSearchResults = const [];
@@ -417,6 +419,130 @@ class _NightclubScreenState extends State<NightclubScreen> {
     }
   }
 
+  static const String _hospitalityPackPrefPrefix = 'nightclub_hospitality_pack_';
+  static const String _hospitalityPricingPrefPrefix =
+      'nightclub_hospitality_pricing_';
+  final Map<int, String> _savedHospitalityPackByVenue = <int, String>{};
+  final Map<int, String> _savedHospitalityPricingByVenue = <int, String>{};
+  bool _hospitalityPrefsLoaded = false;
+
+  Map<String, dynamic> _hospitalityData() {
+    final data = (_stats?['data'] as Map<String, dynamic>?) ?? const {};
+    final operations = (data['operations'] as Map<String, dynamic>?) ?? const {};
+    final expansion =
+        (operations['expansion'] as Map<String, dynamic>?) ?? const {};
+    return (expansion['hospitality'] as Map<String, dynamic>?) ?? const {};
+  }
+
+  String _hospitalityOptionLabel(String optionsField, String key) {
+    final list =
+        (_hospitalityData()[optionsField] as List<dynamic>?) ?? const [];
+    for (final raw in list) {
+      if (raw is! Map) continue;
+      final map = Map<String, dynamic>.from(raw);
+      if ((map['key'] ?? '').toString() == key) {
+        return _apiOptionLabel(map);
+      }
+    }
+    return key;
+  }
+
+  Set<String> _hospitalityOptionKeys(dynamic rawOptions) {
+    return ((rawOptions as List<dynamic>?) ?? const [])
+        .whereType<Map>()
+        .map((item) => (item['key'] ?? '').toString())
+        .where((key) => key.isNotEmpty)
+        .toSet();
+  }
+
+  String? _validDropdownValue(String current, Iterable<String> keys) {
+    return keys.contains(current) ? current : null;
+  }
+
+  Future<void> _ensureHospitalityPrefsLoaded() async {
+    if (_hospitalityPrefsLoaded) return;
+    final prefs = await SharedPreferences.getInstance();
+    for (final key in prefs.getKeys()) {
+      final value = prefs.getString(key);
+      if (value == null || value.isEmpty) continue;
+      if (key.startsWith(_hospitalityPackPrefPrefix)) {
+        final id = int.tryParse(key.substring(_hospitalityPackPrefPrefix.length));
+        if (id != null) {
+          _savedHospitalityPackByVenue[id] = value;
+        }
+      } else if (key.startsWith(_hospitalityPricingPrefPrefix)) {
+        final id = int.tryParse(
+          key.substring(_hospitalityPricingPrefPrefix.length),
+        );
+        if (id != null) {
+          _savedHospitalityPricingByVenue[id] = value;
+        }
+      }
+    }
+    _hospitalityPrefsLoaded = true;
+  }
+
+  Future<void> _persistHospitalityPrefs(int? venueId) async {
+    if (venueId == null) return;
+    _savedHospitalityPackByVenue[venueId] = _selectedHospitalityPack;
+    _savedHospitalityPricingByVenue[venueId] = _selectedHospitalityPricing;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(
+      '$_hospitalityPackPrefPrefix$venueId',
+      _selectedHospitalityPack,
+    );
+    await prefs.setString(
+      '$_hospitalityPricingPrefPrefix$venueId',
+      _selectedHospitalityPricing,
+    );
+  }
+
+  void _restoreHospitalitySelections(
+    int venueId,
+    Map<String, dynamic> statsData,
+  ) {
+    final operations =
+        (statsData['operations'] as Map<String, dynamic>?) ?? const {};
+    final expansion =
+        (operations['expansion'] as Map<String, dynamic>?) ?? const {};
+    final hospitality =
+        (expansion['hospitality'] as Map<String, dynamic>?) ?? const {};
+
+    final stockKeys = _hospitalityOptionKeys(hospitality['stockOptions']);
+    final pricingKeys = _hospitalityOptionKeys(hospitality['pricingOptions']);
+    final lastPack = (hospitality['lastPackKey'] ?? '').toString();
+    final pricingKey = (hospitality['pricingKey'] ?? '').toString();
+    final savedPack = _savedHospitalityPackByVenue[venueId];
+    final savedPricing = _savedHospitalityPricingByVenue[venueId];
+    final sameVenue = _hospitalityHydratedVenueId == venueId;
+
+    if (!sameVenue || !stockKeys.contains(_selectedHospitalityPack)) {
+      if (stockKeys.contains(lastPack)) {
+        _selectedHospitalityPack = lastPack;
+      } else if (savedPack != null && stockKeys.contains(savedPack)) {
+        _selectedHospitalityPack = savedPack;
+      } else if (stockKeys.isNotEmpty &&
+          !stockKeys.contains(_selectedHospitalityPack)) {
+        _selectedHospitalityPack = stockKeys.first;
+      }
+    }
+
+    if (!sameVenue || !pricingKeys.contains(_selectedHospitalityPricing)) {
+      if (pricingKeys.contains(pricingKey)) {
+        _selectedHospitalityPricing = pricingKey;
+      } else if (savedPricing != null && pricingKeys.contains(savedPricing)) {
+        _selectedHospitalityPricing = savedPricing;
+      } else if (pricingKeys.contains('balanced')) {
+        _selectedHospitalityPricing = 'balanced';
+      } else if (pricingKeys.isNotEmpty &&
+          !pricingKeys.contains(_selectedHospitalityPricing)) {
+        _selectedHospitalityPricing = pricingKeys.first;
+      }
+    }
+
+    _hospitalityHydratedVenueId = venueId;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -461,6 +587,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
     }
 
     try {
+      await _ensureHospitalityPrefsLoaded();
       final venues = await _nightclubService.getMyVenues();
       int? venueIdLocal = _venueId;
 
@@ -665,6 +792,8 @@ class _NightclubScreenState extends State<NightclubScreen> {
                 }
               }
             }
+
+            _restoreHospitalitySelections(venueIdLocal!, statsData);
           });
         }
 
@@ -911,7 +1040,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
 
     _showResultMessage(result, _t.nightclubStoreDrugsSuccess);
     _showAchievementsFromResult(result);
-    await _load();
+    await _load(silent: true);
   }
 
   Future<void> _storeAllBackpackDrugs() async {
@@ -919,7 +1048,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
     final result = await _nightclubService.storeAllDrugs(venueId: _venueId!);
     _showResultMessage(result, _t.nightclubStoreAllSuccess);
     _showAchievementsFromResult(result);
-    await _load();
+    await _load(silent: true);
   }
 
   Future<void> _hireResidentDj() async {
@@ -962,7 +1091,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
       result,
       _t.nightclubMarketingUpgradeFailed,
     );
-    await _load();
+    await _load(silent: true);
   }
 
   Future<void> _applyUpgradeTreeChoice() async {
@@ -1096,7 +1225,10 @@ class _NightclubScreenState extends State<NightclubScreen> {
       result,
       _t.nightclubHospitalityStockFailed,
     );
-    await _load();
+    if (result['success'] == true) {
+      await _persistHospitalityPrefs(_venueId);
+    }
+    await _load(silent: true);
   }
 
   Future<void> _setHospitalityPricingMode() async {
@@ -1109,7 +1241,10 @@ class _NightclubScreenState extends State<NightclubScreen> {
       result,
       _t.nightclubHospitalityPricingFailed,
     );
-    await _load();
+    if (result['success'] == true) {
+      await _persistHospitalityPrefs(_venueId);
+    }
+    await _load(silent: true);
   }
 
   @override
@@ -1136,20 +1271,20 @@ class _NightclubScreenState extends State<NightclubScreen> {
                   title: _t.nightclubManagementTitle,
                   imageAsset: bg,
                   topicId: 'nightclub',
-                  onRefresh: _loading ? null : () { _load(); },
+                  onRefresh: _loading ? null : () { _load(silent: true); },
                   refreshEnabled: !_loading,
                   fallbackIcon: Icons.nightlife,
                 ),
               ),
             ),
           ],
-          body: _loading
+          body: _loading && _stats == null
               ? const Center(child: CircularProgressIndicator(color: kEmpireGold))
               : _venueId == null
                   ? _emptyState()
                   : RefreshIndicator(
                       color: kEmpireGold,
-                      onRefresh: () => _load(),
+                      onRefresh: () => _load(silent: true),
                       child: ListView(
                         padding: EdgeInsets.all(_contentPadding()),
                         children: [
@@ -1162,7 +1297,11 @@ class _NightclubScreenState extends State<NightclubScreen> {
                           _operationsDeckCard(),
                           const SizedBox(height: 12),
                           ExpansionTile(
-                            initiallyExpanded: false,
+                            key: const PageStorageKey('nightclub-advanced'),
+                            initiallyExpanded: _advancedExpanded,
+                            onExpansionChanged: (expanded) {
+                              _advancedExpanded = expanded;
+                            },
                             title: Text(
                               Localizations.localeOf(context).languageCode ==
                                       'nl'
@@ -1320,6 +1459,15 @@ class _NightclubScreenState extends State<NightclubScreen> {
                 _kpiChip(_t.nightclubKpiCrowd, '${crowd.toStringAsFixed(0)}%'),
                 _kpiChip(_t.nightclubStockStatus, stock),
               ],
+            ),
+            const SizedBox(height: 8),
+            Text(
+              isNl
+                  ? 'Restock gebruikt ${_hospitalityOptionLabel('stockOptions', _selectedHospitalityPack)} · ${_hospitalityOptionLabel('pricingOptions', _selectedHospitalityPricing)}'
+                  : 'Restock uses ${_hospitalityOptionLabel('stockOptions', _selectedHospitalityPack)} · ${_hospitalityOptionLabel('pricingOptions', _selectedHospitalityPricing)}',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Colors.white70,
+              ),
             ),
             const SizedBox(height: 12),
             Wrap(
@@ -2741,27 +2889,43 @@ class _NightclubScreenState extends State<NightclubScreen> {
               ],
             ),
             const SizedBox(height: 6),
-            DropdownButtonFormField<String>(
-              value: _selectedHospitalityPack,
-              items:
-                  ((hospitality['stockOptions'] as List<dynamic>?) ?? const [])
-                      .map((raw) {
-                        final map = raw as Map<String, dynamic>;
-                        final key = (map['key'] ?? '').toString();
-                        final label = _apiOptionLabel(map);
-                        return DropdownMenuItem(
-                          value: key,
-                          child: Text('$label • €${map['cost'] ?? 0}'),
-                        );
-                      })
-                      .toList(),
-              onChanged: (v) {
-                if (v == null) return;
-                setState(() => _selectedHospitalityPack = v);
+            Builder(
+              builder: (context) {
+                final packItems =
+                    ((hospitality['stockOptions'] as List<dynamic>?) ??
+                            const [])
+                        .whereType<Map>()
+                        .map((raw) {
+                          final map = Map<String, dynamic>.from(raw);
+                          final key = (map['key'] ?? '').toString();
+                          final label = _apiOptionLabel(map);
+                          return DropdownMenuItem<String>(
+                            value: key,
+                            child: Text('$label • €${map['cost'] ?? 0}'),
+                          );
+                        })
+                        .where((item) => (item.value ?? '').isNotEmpty)
+                        .toList();
+                final packKeys = packItems
+                    .map((item) => item.value)
+                    .whereType<String>()
+                    .toSet();
+                return DropdownButtonFormField<String>(
+                  value: _validDropdownValue(
+                    _selectedHospitalityPack,
+                    packKeys,
+                  ),
+                  items: packItems,
+                  onChanged: (v) {
+                    if (v == null) return;
+                    setState(() => _selectedHospitalityPack = v);
+                    _persistHospitalityPrefs(_venueId);
+                  },
+                  decoration: InputDecoration(
+                    labelText: _t.nightclubDrinksFoodStock,
+                  ),
+                );
               },
-              decoration: InputDecoration(
-                labelText: _t.nightclubDrinksFoodStock,
-              ),
             ),
             const SizedBox(height: 6),
             FilledButton.icon(
@@ -2770,25 +2934,43 @@ class _NightclubScreenState extends State<NightclubScreen> {
               label: Text(_t.nightclubBuyStock),
             ),
             const SizedBox(height: 6),
-            DropdownButtonFormField<String>(
-              value: _selectedHospitalityPricing,
-              items:
-                  ((hospitality['pricingOptions'] as List<dynamic>?) ??
-                          const [])
-                      .map((raw) {
-                        final map = raw as Map<String, dynamic>;
-                        final key = (map['key'] ?? '').toString();
-                        final label = _apiOptionLabel(map);
-                        return DropdownMenuItem(value: key, child: Text(label));
-                      })
-                      .toList(),
-              onChanged: (v) {
-                if (v == null) return;
-                setState(() => _selectedHospitalityPricing = v);
+            Builder(
+              builder: (context) {
+                final pricingItems =
+                    ((hospitality['pricingOptions'] as List<dynamic>?) ??
+                            const [])
+                        .whereType<Map>()
+                        .map((raw) {
+                          final map = Map<String, dynamic>.from(raw);
+                          final key = (map['key'] ?? '').toString();
+                          final label = _apiOptionLabel(map);
+                          return DropdownMenuItem<String>(
+                            value: key,
+                            child: Text(label),
+                          );
+                        })
+                        .where((item) => (item.value ?? '').isNotEmpty)
+                        .toList();
+                final pricingKeys = pricingItems
+                    .map((item) => item.value)
+                    .whereType<String>()
+                    .toSet();
+                return DropdownButtonFormField<String>(
+                  value: _validDropdownValue(
+                    _selectedHospitalityPricing,
+                    pricingKeys,
+                  ),
+                  items: pricingItems,
+                  onChanged: (v) {
+                    if (v == null) return;
+                    setState(() => _selectedHospitalityPricing = v);
+                    _persistHospitalityPrefs(_venueId);
+                  },
+                  decoration: InputDecoration(
+                    labelText: _t.nightclubMenuPricingMode,
+                  ),
+                );
               },
-              decoration: InputDecoration(
-                labelText: _t.nightclubMenuPricingMode,
-              ),
             ),
             const SizedBox(height: 6),
             FilledButton.icon(

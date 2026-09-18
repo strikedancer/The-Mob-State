@@ -48,6 +48,7 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 - Smuggling, supplier and promoter actions must remain side-grade choices (risk/reliability/price trade-off), not flat guaranteed power spikes.
 - Smuggling routes must enforce a visible backend cooldown window (no infinite repeat spam), with remaining lock time exposed in stats payload for UI feedback.
 - Bar & Kitchen management (drinks/food stock + menu pricing) must show stock state, spoilage risk and pricing impact in NL+EN before confirmation.
+- Restock and menu-pricing selections must survive a restock/refresh: hydrate pack from last purchased stock event (`lastPackKey`) and pricing from `pricingKey`, keep Geavanceerd open, and never unmount the page behind a full-screen spinner after the first load. Tonight Restock uses the same remembered pack.
 - Open venues can host **Midnight Races** rake in their country (`races.md`); this is not a nightclub screen feature, but club owners receive the rake when a meeting settles.
 - Weekly season ranking (`weekly-nightclub-season`) only ranks clubs with **week sales > €0**. Crowd/staff with idle €0 turnover must not take a place or payout. If nobody sold, there is no winner that week.
 
@@ -63,6 +64,7 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
 - Verify tab switching does not reset valid selections unexpectedly.
+- Verify restock keeps the last drinks/food pack and menu pricing after refresh, and that Tonight Restock buys that same pack.
 - Verify image selectors render with correct fallback icon when image reference is missing or invalid.
 - Simulate one failing/sluggish nightclub endpoint and verify the screen still opens with partial data.
 - Verify a live environment with empty DJ/security tables still shows hireable staff because backend bootstrap/fallback repopulates the availability lists.

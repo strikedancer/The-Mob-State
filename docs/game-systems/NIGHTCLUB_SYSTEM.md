@@ -475,4 +475,4 @@ Canonical protocol (keep this file as history + UI addenda): `docs/module-protoc
 - Ops Lab is uitgebreid naar 11 systemen met extra lagen: police heat + raid risk, supplier contracts, promoter profiles, VIP clientele scoring, staff traits, smuggling routes, bar & kitchen management, reputation season score, rival counter-intel sweep en een operationele timeline.
 - Nieuwe operations-acties lopen via backend endpoints en blijven side-grade balancing: hogere output kan tegelijk hogere kosten of interceptierisico geven.
 - Smuggling routes hebben een server-side cooldown om spam te blokkeren (Harbor 60 min, Airstrip 90 min, Borderline 120 min); cooldown-status wordt meegeleverd in de Ops payload.
-- Ops Lab heeft nu ook Bar & Kitchen management: spelers kopen drank/food packs, kiezen pricing mode (budget/balanced/premium) en sturen service-level vs crowd-retentie met bederfrisico.
+- Ops Lab heeft nu ook Bar & Kitchen management: spelers kopen drank/food packs, kiezen pricing mode (budget/balanced/premium) en sturen service-level vs crowd-retentie met bederfrisico. Restock onthoudt de laatste pack en pricing van die club; Tonight Restock gebruikt dezelfde set.
