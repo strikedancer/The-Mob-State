@@ -244,95 +244,6 @@ class _PremiumScreenState extends State<PremiumScreen> {
     }
   }
 
-  Future<void> _startCrewVipDonate(String amountEur) async {
-    setState(() => _processingCheckout = true);
-    try {
-      final response = await AuthService().apiClient.post(
-        '/subscriptions/checkout/crew-vip-donate',
-        {'amountEur': amountEur},
-      );
-      if (response.statusCode != 200) {
-        throw Exception('donate_failed');
-      }
-      final data = jsonDecode(response.body) as Map<String, dynamic>;
-      final checkoutUrl = data['url'] as String?;
-      if (checkoutUrl == null || checkoutUrl.isEmpty) {
-        throw Exception('checkout_missing_url');
-      }
-      await _openCheckoutUrl(checkoutUrl);
-    } catch (_) {
-      if (!mounted) return;
-      _showTopRightMessage(
-        AppLocalizations.of(context)!.premiumUiCheckoutOpenFailed,
-        Colors.red,
-      );
-    } finally {
-      if (mounted) setState(() => _processingCheckout = false);
-    }
-  }
-
-  Widget _buildCrewVipFundCard(
-    AppLocalizations l10n,
-    Map<String, dynamic> crewVip,
-  ) {
-    final fund = (crewVip['fund'] as Map?)?.cast<String, dynamic>();
-    if (fund == null) return const SizedBox.shrink();
-    final fundedCents = (fund['fundCents'] as num?)?.toInt() ?? 0;
-    final priceCents = (fund['priceCents'] as num?)?.toInt() ?? 999;
-    final remainingCents = (fund['remainingCents'] as num?)?.toInt() ?? priceCents;
-    final progress = priceCents <= 0 ? 0.0 : (fundedCents / priceCents).clamp(0.0, 1.0);
-    final amounts = (fund['suggestedAmountsEur'] as List<dynamic>? ?? [])
-        .map((item) => item.toString())
-        .where((item) => item.isNotEmpty)
-        .toList();
-    final remainingEur = (remainingCents / 100).toStringAsFixed(2);
-    final fullEur = (priceCents / 100).toStringAsFixed(2);
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(l10n.crewUiVipDonateTitle, style: const TextStyle(fontWeight: FontWeight.w700)),
-            const SizedBox(height: 4),
-            Text(l10n.crewUiVipDonateHint, style: TextStyle(fontSize: 12, color: Colors.grey[600])),
-            const SizedBox(height: 8),
-            LinearProgressIndicator(
-              value: progress,
-              minHeight: 8,
-              backgroundColor: Colors.indigo.withValues(alpha: 0.15),
-              color: Colors.indigo,
-            ),
-            const SizedBox(height: 6),
-            Text(
-              l10n.crewUiVipFundProgress(
-                '€${(fundedCents / 100).toStringAsFixed(2)}',
-                '€$fullEur',
-              ),
-              style: TextStyle(fontSize: 12, color: Colors.grey[700]),
-            ),
-            const SizedBox(height: 8),
-            Wrap(
-              spacing: 6,
-              runSpacing: 6,
-              children: amounts.map((amount) {
-                final isRest = remainingCents > 0 && amount == remainingEur && amount != fullEur;
-                return OutlinedButton(
-                  onPressed: _processingCheckout ? null : () => _startCrewVipDonate(amount),
-                  child: Text(
-                    isRest
-                        ? l10n.crewUiVipDonateRest('€$amount')
-                        : l10n.crewUiVipDonateAmount('€$amount'),
-                  ),
-                );
-              }).toList(),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   String _prestigeLabel(AppLocalizations l10n, String? tier) {
     switch ((tier ?? 'none').toLowerCase()) {
       case 'bronze':
@@ -1445,10 +1356,6 @@ class _PremiumScreenState extends State<PremiumScreen> {
               ? null
               : () => _startCheckout('crew_vip'),
         ),
-        if (crewVip != null) ...[
-          const SizedBox(height: 12),
-          _buildCrewVipFundCard(l10n, crewVip),
-        ],
         const SizedBox(height: 10),
         Wrap(
           spacing: 8,

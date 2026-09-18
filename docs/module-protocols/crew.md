@@ -73,7 +73,7 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - Verify the Overview HQ block shows the villa/camping/etc still on a narrow phone width, with `1 lid` (not `1 leden`) for a solo crew.
 - Verify a freshly created crew immediately has HQ level 1 plus all storage buildings on level 1, including cash storage, and can deposit into the crew bank without a separate unlock step.
 - Verify Overview crew-bank buttons say **Storten** / **Opnemen** in Dutch (and equivalent bank verbs in other UI languages), not Borg or Terugtrekken.
-- Verify Crew Overview and Premium show the Crew VIP pot with donate chips for every member, and that one member can still start the monthly subscription. In-game cash must not buy Crew VIP.
+- Verify Crew Overview shows the Crew VIP pot with donate chips for every member, and that one member can still start the monthly subscription from Winkel. In-game cash must not buy Crew VIP. The pot must not appear on Winkel.
 - Verify cash-storage level 1 can hold more than the level-2 upgrade price, so the crew can pay that upgrade from the crew bank.
 - Verify the Crew HQ level overview shows a continuous member-cap curve across all HQ styles and reaches 150 members at the top end instead of restarting from the base caps.
 - Verify car storage accepts both cars and motorcycles, while boat storage still only accepts boats.

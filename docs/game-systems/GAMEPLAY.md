@@ -1065,7 +1065,7 @@ Bob: â‚¬300K counter-hit
 
 - Spelers hebben **Winkel** direct onder Dashboard in het zijmenu; web/PWA checkouts landen daarna terug in die ingesloten game-sectie.
 - VIP-tab: Player VIP, Crew VIP, Event Pass, status. Credits-tab: creditbundels en in-game cashpakketten. Tegels om wachttijden te verkorten staan hier niet; die blijven op het scherm waar je wacht.
-- Player VIP is persoonlijk. Crew VIP werkt alleen als je in een crew zit: VIP-HQ, bijgebouwen boven 10, +10% oorlogspunten en Schild voor de hele crew. Ieder lid kan euro's in de Crew VIP-pot doneren tot een maand vol is, of één lid neemt het maandabonnement. In-game crew-bank koopt geen Crew VIP.
+- Player VIP is persoonlijk. Crew VIP werkt alleen als je in een crew zit: VIP-HQ, bijgebouwen boven 10, +10% oorlogspunten en Schild voor de hele crew. Ieder lid kan euro's in de Crew VIP-pot doneren op de **Crew**-pagina tot een maand vol is, of één lid neemt het maandabonnement in Winkel. In-game crew-bank koopt geen Crew VIP.
 - Cosmetische credit-items (zoals het gouden landgoedhek) geven geen combat-power.
 - VIP- en credit-checkouts openen de betaalpagina en keren daarna terug naar **Winkel** in de game-shell, zodat de speler direct de uitkomst, vernieuwde VIP-status en bijgewerkte credits ziet.
 - Creditbundels openen eerst een aantalkeuze (1–20 pakketten). Je betaalt het totaal in één checkout; Event Pass en VIP blijven één stuk.
