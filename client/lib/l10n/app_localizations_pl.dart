@@ -11555,7 +11555,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get prostitutionRedLight => 'Czerwone światło';
 
   @override
-  String get prostitutionPotentialEarnings => 'Zyski';
+  String get prostitutionPotentialEarnings => 'Do odbioru';
 
   @override
   String get prostitutionCollect => 'Zbierać';
@@ -18972,7 +18972,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicProstitutionHow =>
-      'Rekrutujesz w kraju, w którym się znajdujesz i tylko jeśli posiadasz tam dom lub mieszkanie. Miejsca na mieszkania zastępcze w innych krajach nie pozwalają na rekrutację tutaj. \nKażdy rekrut ma poziom ze zmian roboczych. Zmiany trwają 8 godzin, potem potrzebuje odpoczynku. \nPrzenoś rekrutów pomiędzy ulicą, Dzielnicą Czerwonych Latarni i klubem nocnym. Dzielnica ma tylko tyle pomieszczeń, ile jej właściciel odblokował dzięki ulepszeniom. Jeśli sale są pełne, zostaje na ulicy. \nSkradziony rekrut siedzi na ulicy przez 12 godzin. Stary szef może ją zabrać z powrotem przez to okno. Złodziej nie może jeszcze umieścić jej w dzielnicy lub klubie nocnym. \nWydarzenia to pracowite noce: dodatkowe zarobki, dodatkowa policja, łatwiejsza kradzież. Noce uliczne są dla każdego. Noce w salonach VIP wymagają Gracza VIP. \nRivalry on Social nadal kradnie pieniądze lub napiwki policji. Kradzież rekruta to osobna akcja w pokoju dzielnicy. \nPolicyjne upały rosną wraz z zatłoczoną dzielnicą i wydarzeniami. Wysoka temperatura FBI może napadać na pracowników.';
+      'Rekrutujesz w kraju, w którym się znajdujesz i tylko jeśli posiadasz tam dom lub mieszkanie. Miejsca na mieszkania zastępcze w innych krajach nie pozwalają na rekrutację tutaj. \nKażdy rekrut ma poziom ze zmian roboczych. Zmiany trwają 8 godzin, potem potrzebuje odpoczynku. \nPrzenoś rekrutów pomiędzy ulicą, Dzielnicą Czerwonych Latarni i klubem nocnym. Dzielnica ma tylko tyle pomieszczeń, ile jej właściciel odblokował dzięki ulepszeniom. Jeśli sale są pełne, zostaje na ulicy. \nSkradziony rekrut siedzi na ulicy przez 12 godzin. Stary szef może ją zabrać z powrotem przez to okno. Złodziej nie może jeszcze umieścić jej w dzielnicy lub klubie nocnym. \nWydarzenia to pracowite noce: dodatkowe zarobki, dodatkowa policja, łatwiejsza kradzież. Noce uliczne są dla każdego. Noce w salonach VIP wymagają Gracza VIP. \nRivalry on Social nadal kradnie pieniądze lub napiwki policji. Kradzież rekruta to osobna akcja w pokoju dzielnicy. \nPolicyjne upały rosną wraz z zatłoczoną dzielnicą i wydarzeniami. Wysoka temperatura FBI może napadać na pracowników. \nPieniądze z ulic i czerwonych latarni stale napływają podczas ich pracy. Kolekcjonuj teraz umieszcza oczekującą kwotę z Do pobrania na Twoim koncie; serwer również wpłaca tę samą kwotę samodzielnie. Nie musisz już czekać pełnej godziny. Za 8-godzinną pracę zmianową płaci się osobno. Dochód z klubu nocnego przechodzi przez klub, a nie przez ten przycisk.';
 
   @override
   String get helpTopicProstitutionTips =>

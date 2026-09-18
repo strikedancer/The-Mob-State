@@ -222,6 +222,16 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
     }
   }
 
+  Future<void> _refreshWorkersQuietly() async {
+    final result = await _service.getProstitutes();
+    if (!mounted || result['success'] != true) return;
+    setState(() {
+      _prostitutes = result['prostitutes'] as List<Prostitute>;
+      _housingSummary = result['housingSummary'] as ProstituteHousingSummary?;
+      _stats = result['stats'] as ProstituteStats?;
+    });
+  }
+
   Future<void> _loadVipEvents() async {
     final activeResult = await _service.getActiveEvents(_currentCountry);
     final upcomingResult = await _service.getUpcomingEvents(
@@ -698,38 +708,40 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
   Future<void> _collectEarnings() async {
     if (_isCollecting) return;
     final l10n = AppLocalizations.of(context)!;
-    final potential = _stats?.potentialEarnings ?? 0;
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: Colors.grey.shade900,
-        title: Text(l10n.prostitutionCollect),
-        content: Text(
-          potential > 0
-              ? l10n.prostitutionCollectConfirm(potential.toString())
-              : l10n.prostitutionCollectEmpty,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: Text(l10n.cancel),
-          ),
-          if (potential > 0)
-            FilledButton(
-              onPressed: () => Navigator.pop(ctx, true),
-              style: FilledButton.styleFrom(
-                backgroundColor: kProstitutionGold,
-                foregroundColor: Colors.black,
-              ),
-              child: Text(l10n.prostitutionCollect),
-            ),
-        ],
-      ),
-    );
-    if (confirmed != true || !mounted) return;
-
     setState(() => _isCollecting = true);
     try {
+      await _refreshWorkersQuietly();
+      if (!mounted) return;
+      final potential = _stats?.potentialEarnings ?? 0;
+      final confirmed = await showDialog<bool>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          backgroundColor: Colors.grey.shade900,
+          title: Text(l10n.prostitutionCollect),
+          content: Text(
+            potential > 0
+                ? l10n.prostitutionCollectConfirm(potential.toString())
+                : l10n.prostitutionCollectEmpty,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: Text(l10n.cancel),
+            ),
+            if (potential > 0)
+              FilledButton(
+                onPressed: () => Navigator.pop(ctx, true),
+                style: FilledButton.styleFrom(
+                  backgroundColor: kProstitutionGold,
+                  foregroundColor: Colors.black,
+                ),
+                child: Text(l10n.prostitutionCollect),
+              ),
+          ],
+        ),
+      );
+      if (confirmed != true || !mounted) return;
+
       final result = await _service.settleEarnings();
       if (!mounted) return;
       final earnings = (result['earnings'] as num?)?.toInt() ?? 0;
@@ -1067,9 +1079,18 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                         padding: const EdgeInsets.only(top: 6),
                         child: Text(
                           () {
-                            final latest = _prostitutes
-                                .map((p) => p.lastEarningsAt)
-                                .reduce((a, b) => a.isAfter(b) ? a : b);
+                            final pending = _prostitutes.where(
+                              (p) =>
+                                  p.location != 'nightclub' &&
+                                  !p.isCurrentlyBusted,
+                            );
+                            final stamps = (pending.isEmpty
+                                    ? _prostitutes
+                                    : pending)
+                                .map((p) => p.lastEarningsAt);
+                            final latest = stamps.reduce(
+                              (a, b) => a.isAfter(b) ? a : b,
+                            );
                             final local = latest.toLocal();
                             final stamp =
                                 '${local.day}/${local.month} ${local.hour.toString().padLeft(2, '0')}:${local.minute.toString().padLeft(2, '0')}';

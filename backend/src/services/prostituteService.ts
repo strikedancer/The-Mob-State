@@ -225,6 +225,124 @@ function tierEarnings(tier: number) {
   return { gross: config.gross, rent: config.rent };
 }
 
+const PASSIVE_EARNINGS_INCLUDE = {
+  redLightRoom: {
+    include: {
+      redLightDistrict: {
+        include: { rooms: { select: { occupied: true } } },
+      },
+    },
+  },
+} as const;
+
+type PassiveEarningsRoom = {
+  sabotagedUntil: Date | null;
+  guardUntil: Date | null;
+  tier: number | null;
+  redLightDistrict: {
+    ownerId: number | null;
+    roomCount: number | null;
+    rooms: { occupied: boolean }[];
+  };
+};
+
+type PassiveEarningsSlice = {
+  hoursElapsed: number;
+  earnings: number;
+  rentPaid: number;
+  ownerId: number | null;
+  skipReason: 'busted' | 'nightclub' | 'sabotaged' | 'too_soon' | null;
+};
+
+function computePassiveEarningsSlice(args: {
+  location: string;
+  level: number;
+  variant: number;
+  lastEarningsAt: Date;
+  isBusted: boolean;
+  bustedUntil: Date | null;
+  redLightRoom: PassiveEarningsRoom | null;
+  now: Date;
+}): PassiveEarningsSlice {
+  const empty: PassiveEarningsSlice = {
+    hoursElapsed: 0,
+    earnings: 0,
+    rentPaid: 0,
+    ownerId: null,
+    skipReason: 'too_soon',
+  };
+
+  if (args.isBusted && args.bustedUntil && args.now < args.bustedUntil) {
+    return { ...empty, skipReason: 'busted' };
+  }
+
+  const hoursElapsed =
+    (args.now.getTime() - args.lastEarningsAt.getTime()) / (1000 * 60 * 60);
+  if (hoursElapsed <= 0) {
+    return empty;
+  }
+
+  if (args.location === 'nightclub') {
+    return { ...empty, hoursElapsed, skipReason: 'nightclub' };
+  }
+
+  const levelBonus = 1 + (args.level - 1) * EARNINGS_BONUS_PER_LEVEL;
+  const vipMultiplier = isVipProstitute(args.variant)
+    ? VIP_PROSTITUTE_EARNINGS_MULTIPLIER
+    : 1;
+
+  if (args.location === 'redlight' && args.redLightRoom) {
+    const room = args.redLightRoom;
+    const ownerId = room.redLightDistrict.ownerId;
+    if (room.sabotagedUntil && room.sabotagedUntil > args.now) {
+      return {
+        hoursElapsed,
+        earnings: 0,
+        rentPaid: 0,
+        ownerId,
+        skipReason: 'sabotaged',
+      };
+    }
+
+    const tier = room.tier || 1;
+    const tierConfig = tierEarnings(tier);
+    const occupied = room.redLightDistrict.rooms.filter((r) => r.occupied).length;
+    const totalRooms =
+      room.redLightDistrict.rooms.length || room.redLightDistrict.roomCount || 1;
+    const rentMult = occupancyRentMultiplier(occupancyRate(occupied, totalRooms));
+    const guardMult = room.guardUntil && room.guardUntil > args.now ? 0.5 : 1;
+    const grossEarnings = Math.floor(
+      tierConfig.gross * hoursElapsed * levelBonus * rentMult * guardMult
+    );
+    const rentPaid = Math.floor(
+      tierConfig.rent * hoursElapsed * rentMult * guardMult
+    );
+    const earnings = Math.max(
+      0,
+      Math.floor((grossEarnings - rentPaid) * vipMultiplier)
+    );
+
+    return {
+      hoursElapsed,
+      earnings,
+      rentPaid,
+      ownerId,
+      skipReason: earnings <= 0 && rentPaid <= 0 ? 'too_soon' : null,
+    };
+  }
+
+  const earnings = Math.floor(
+    STREET_EARNINGS_PER_HOUR * hoursElapsed * levelBonus * vipMultiplier
+  );
+  return {
+    hoursElapsed,
+    earnings,
+    rentPaid: 0,
+    ownerId: null,
+    skipReason: earnings <= 0 ? 'too_soon' : null,
+  };
+}
+
 const PROSTITUTE_NAMES = [
   'Scarlett',
   'Ruby',
@@ -1160,109 +1278,77 @@ export const prostituteService = {
 
     const prostitutes = await prisma.prostitute.findMany({
       where: { playerId },
-      include: {
-        redLightRoom: {
-          include: {
-            redLightDistrict: {
-              include: { rooms: { select: { occupied: true } } },
-            },
-          },
-        },
-      },
+      include: PASSIVE_EARNINGS_INCLUDE,
     });
 
     let totalEarnings = 0;
     const now = new Date();
 
     for (const prostitute of prostitutes) {
-      // Skip if busted
-      if (prostitute.isBusted && prostitute.bustedUntil && now < prostitute.bustedUntil) {
-        continue;
-      }
-
-      // Clear busted status if time expired
-      if (prostitute.isBusted && prostitute.bustedUntil && now >= prostitute.bustedUntil) {
+      let isBusted = prostitute.isBusted;
+      let bustedUntil = prostitute.bustedUntil;
+      if (isBusted && bustedUntil && now >= bustedUntil) {
         await prisma.prostitute.update({
           where: { id: prostitute.id },
           data: { isBusted: false, bustedUntil: null },
         });
+        isBusted = false;
+        bustedUntil = null;
       }
 
-      const hoursElapsed = (now.getTime() - prostitute.lastEarningsAt.getTime()) / (1000 * 60 * 60);
-      const fullHoursElapsed = Math.floor(hoursElapsed);
+      const slice = computePassiveEarningsSlice({
+        location: prostitute.location,
+        level: prostitute.level,
+        variant: prostitute.variant,
+        lastEarningsAt: prostitute.lastEarningsAt,
+        isBusted,
+        bustedUntil,
+        redLightRoom: prostitute.redLightRoom,
+        now,
+      });
 
-      if (prostitute.location === 'nightclub') {
+      if (slice.skipReason === 'busted' || slice.skipReason === 'nightclub') {
+        continue;
+      }
+
+      if (slice.skipReason === 'sabotaged') {
         await prisma.prostitute.update({
           where: { id: prostitute.id },
           data: { lastEarningsAt: now },
         });
+        if (prostitute.redLightRoomId) {
+          await prisma.redLightRoom.update({
+            where: { id: prostitute.redLightRoomId },
+            data: { lastEarningsAt: now },
+          });
+        }
         continue;
       }
 
-      // Settle only on full hours (hourly payout)
-      if (fullHoursElapsed < 1) continue;
-
-      const settledUntil = new Date(
-        prostitute.lastEarningsAt.getTime() + fullHoursElapsed * 60 * 60 * 1000
-      );
-
-      let earnings = 0;
-      let rentPaid = 0;
-      const levelBonus = 1 + (prostitute.level - 1) * EARNINGS_BONUS_PER_LEVEL;
-      const vipMultiplier = isVipProstitute(prostitute.variant)
-        ? VIP_PROSTITUTE_EARNINGS_MULTIPLIER
-        : 1;
-
-      if (prostitute.location === 'redlight' && prostitute.redLightRoom) {
-        const room = prostitute.redLightRoom;
-        if (room.sabotagedUntil && room.sabotagedUntil > now) {
-          await prisma.prostitute.update({
-            where: { id: prostitute.id },
-            data: { lastEarningsAt: settledUntil },
-          });
-          continue;
-        }
-        const tier = room.tier || 1;
-        const tierConfig = tierEarnings(tier);
-        const occupied = room.redLightDistrict.rooms.filter((r) => r.occupied).length;
-        const totalRooms =
-          room.redLightDistrict.rooms.length || room.redLightDistrict.roomCount || 1;
-        const rentMult = occupancyRentMultiplier(occupancyRate(occupied, totalRooms));
-        const guardMult = room.guardUntil && room.guardUntil > now ? 0.5 : 1;
-        const grossEarnings = Math.floor(
-          tierConfig.gross * fullHoursElapsed * levelBonus * rentMult * guardMult
-        );
-        rentPaid = Math.floor(tierConfig.rent * fullHoursElapsed * rentMult * guardMult);
-        earnings = Math.floor((grossEarnings - rentPaid) * vipMultiplier);
-
-        if (room.redLightDistrict.ownerId) {
-          await prisma.player.update({
-            where: { id: room.redLightDistrict.ownerId },
-            data: { money: { increment: rentPaid } },
-          });
-        }
-      } else {
-        // On street
-        earnings = Math.floor(
-          STREET_EARNINGS_PER_HOUR * fullHoursElapsed * levelBonus * vipMultiplier
-        );
+      if (slice.skipReason === 'too_soon') {
+        continue;
       }
 
+      const earnings = slice.earnings;
+      const rentPaid = slice.rentPaid;
       totalEarnings += earnings;
 
-      // Update prostitute (no auto-XP: XP only gained via explicit work-shift)
+      if (rentPaid > 0 && slice.ownerId) {
+        await prisma.player.update({
+          where: { id: slice.ownerId },
+          data: { money: { increment: rentPaid } },
+        });
+      }
+
       await prisma.prostitute.update({
         where: { id: prostitute.id },
-        data: {
-          lastEarningsAt: settledUntil,
-        },
+        data: { lastEarningsAt: now },
       });
 
-      // Update room lastEarningsAt if in red light
       if (prostitute.redLightRoomId) {
         await prisma.redLightRoom.update({
           where: { id: prostitute.redLightRoomId },
-          data: { lastEarningsAt: settledUntil },
+          data: { lastEarningsAt: now },
         });
       }
     }
@@ -1503,13 +1589,7 @@ export const prostituteService = {
 
     const prostitutes = await prisma.prostitute.findMany({
       where: { playerId },
-      include: {
-        redLightRoom: {
-          include: {
-            redLightDistrict: true,
-          },
-        },
-      },
+      include: PASSIVE_EARNINGS_INCLUDE,
     });
 
     const now = new Date();
@@ -1519,36 +1599,33 @@ export const prostituteService = {
     let bustedCount = 0;
 
     for (const prostitute of prostitutes) {
-      // Check if busted
-      if (prostitute.isBusted && prostitute.bustedUntil && now < prostitute.bustedUntil) {
+      const slice = computePassiveEarningsSlice({
+        location: prostitute.location,
+        level: prostitute.level,
+        variant: prostitute.variant,
+        lastEarningsAt: prostitute.lastEarningsAt,
+        isBusted: prostitute.isBusted,
+        bustedUntil: prostitute.bustedUntil,
+        redLightRoom: prostitute.redLightRoom,
+        now,
+      });
+
+      if (slice.skipReason === 'busted') {
         bustedCount++;
         continue;
       }
 
-      const hoursElapsed = (now.getTime() - prostitute.lastEarningsAt.getTime()) / (1000 * 60 * 60);
-      const levelBonus = 1 + (prostitute.level - 1) * EARNINGS_BONUS_PER_LEVEL;
-      const vipMultiplier = isVipProstitute(prostitute.variant)
-        ? VIP_PROSTITUTE_EARNINGS_MULTIPLIER
-        : 1;
-
-      if (prostitute.location === 'nightclub') {
+      if (slice.skipReason === 'nightclub') {
         continue;
       }
 
       if (prostitute.location === 'redlight' && prostitute.redLightRoom) {
-        const tier = prostitute.redLightRoom.tier || 1;
-        const tierConfig = tierEarnings(tier);
-
-        const grossEarnings = Math.floor(tierConfig.gross * hoursElapsed * levelBonus);
-        const rentPaid = Math.floor(tierConfig.rent * hoursElapsed);
-        potentialEarnings += Math.floor((grossEarnings - rentPaid) * vipMultiplier);
         redlightCount++;
-      } else {
-        potentialEarnings += Math.floor(
-          STREET_EARNINGS_PER_HOUR * hoursElapsed * levelBonus * vipMultiplier
-        );
+      } else if (prostitute.location !== 'nightclub') {
         streetCount++;
       }
+
+      potentialEarnings += slice.earnings;
     }
 
     return {

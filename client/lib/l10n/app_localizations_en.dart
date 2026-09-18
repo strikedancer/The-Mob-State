@@ -11490,7 +11490,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get prostitutionRedLight => 'Red Light';
 
   @override
-  String get prostitutionPotentialEarnings => 'Earnings';
+  String get prostitutionPotentialEarnings => 'To collect';
 
   @override
   String get prostitutionCollect => 'Collect now';
@@ -18836,7 +18836,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicProstitutionHow =>
-      'You recruit in the country you are in, and only if you own a house or apartment there. Spare housing slots in other countries do not let you recruit here.\nEach recruit has a level from work shifts. Shifts last 8 hours, then she needs rest.\nMove recruits between street, Red Light District and nightclub. A district only has as many rooms as its owner has unlocked with upgrades. If rooms are full, she stays on the street.\nA stolen recruit sits on the street for 12 hours. The old boss can take her back in that window. The thief cannot put her in a district or nightclub yet.\nEvents are busy nights: extra earnings, extra police, easier theft. Street nights are for everyone. VIP salon nights need Player VIP.\nRivalry on Social still steals cash or tips police. Stealing a recruit is a separate action on a district room.\nPolice heat rises with a packed district and with events. High FBI heat can raid workers.';
+      'You recruit in the country you are in, and only if you own a house or apartment there. Spare housing slots in other countries do not let you recruit here.\nEach recruit has a level from work shifts. Shifts last 8 hours, then she needs rest.\nMove recruits between street, Red Light District and nightclub. A district only has as many rooms as its owner has unlocked with upgrades. If rooms are full, she stays on the street.\nA stolen recruit sits on the street for 12 hours. The old boss can take her back in that window. The thief cannot put her in a district or nightclub yet.\nEvents are busy nights: extra earnings, extra police, easier theft. Street nights are for everyone. VIP salon nights need Player VIP.\nRivalry on Social still steals cash or tips police. Stealing a recruit is a separate action on a district room.\nPolice heat rises with a packed district and with events. High FBI heat can raid workers.\nStreet and Red Light cash keeps accruing while they work. Collect now puts the pending amount from To collect onto your account; the server also deposits that same amount on its own. You no longer have to wait for a full hour. An 8-hour work shift pays separately. Nightclub income runs through the club, not this button.';
 
   @override
   String get helpTopicProstitutionTips =>

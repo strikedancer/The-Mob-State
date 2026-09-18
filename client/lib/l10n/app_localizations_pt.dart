@@ -11552,7 +11552,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get prostitutionRedLight => 'Luz Vermelha';
 
   @override
-  String get prostitutionPotentialEarnings => 'Ganhos';
+  String get prostitutionPotentialEarnings => 'A receber';
 
   @override
   String get prostitutionCollect => 'Coletar';
@@ -18973,7 +18973,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicProstitutionHow =>
-      'Você recruta no país em que está e somente se possuir uma casa ou apartamento lá. Vagas vagas em outros países não permitem que você recrute aqui. \nCada recruta tem um nível de turnos de trabalho. Os turnos duram 8 horas, então ela precisa descansar. \nMova os recrutas entre a rua, o Red Light District e a boate. Um distrito tem apenas tantos quartos quanto seu proprietário desbloqueou com atualizações. Se os quartos estiverem cheios, ela fica na rua. \nUm recruta roubado fica na rua por 12 horas. O antigo chefe pode levá-la de volta àquela janela. O ladrão ainda não pode colocá-la em um bairro ou boate. \nOs eventos são noites movimentadas: ganhos extras, polícia extra, roubos mais fáceis. As noites de rua são para todos. As noites de salão VIP precisam do Player VIP. \nRivalry on Social ainda rouba dinheiro ou dá gorjetas à polícia. Roubar um recruta é uma ação separada em uma sala distrital. \nO calor policial aumenta com um bairro lotado e com eventos. A alta pressão do FBI pode atacar os trabalhadores.';
+      'Você recruta no país em que está e somente se possuir uma casa ou apartamento lá. Vagas vagas em outros países não permitem que você recrute aqui. \nCada recruta tem um nível de turnos de trabalho. Os turnos duram 8 horas, então ela precisa descansar. \nMova os recrutas entre a rua, o Red Light District e a boate. Um distrito tem apenas tantos quartos quanto seu proprietário desbloqueou com atualizações. Se os quartos estiverem cheios, ela fica na rua. \nUm recruta roubado fica na rua por 12 horas. O antigo chefe pode levá-la de volta àquela janela. O ladrão ainda não pode colocá-la em um bairro ou boate. \nOs eventos são noites movimentadas: ganhos extras, polícia extra, roubos mais fáceis. As noites de rua são para todos. As noites de salão VIP precisam do Player VIP. \nRivalry on Social ainda rouba dinheiro ou dá gorjetas à polícia. Roubar um recruta é uma ação separada em uma sala distrital. \nO calor policial aumenta com um bairro lotado e com eventos. A alta pressão do FBI pode atacar os trabalhadores. \nO dinheiro da rua e da luz vermelha continua acumulando enquanto eles trabalham. A cobrança agora coloca o valor pendente de A cobrar em sua conta; o servidor também deposita a mesma quantia por conta própria. Você não precisa mais esperar uma hora inteira. Um turno de trabalho de 8 horas é pago à parte. A receita da boate passa pelo clube, não por este botão.';
 
   @override
   String get helpTopicProstitutionTips =>

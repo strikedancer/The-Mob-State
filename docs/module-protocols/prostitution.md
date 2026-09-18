@@ -33,6 +33,7 @@ Deze waarden sturen housing capaciteit/risico en weekhuur in de prostitutieflow.
 
 ## Must Preserve
 - Collect-label is “Nu ophalen” / “Collect now” en toont een last-settle hint. Tick blijft automatisch verrekenen.
+- `settleEarnings` en `getEarningsStats.potentialEarnings` gebruiken dezelfde passieve som (straat/RLD, fractionele uren, occupancy/guard/sabotage). Collect mag nooit “leeg” zeggen terwijl de KPI Te innen > €0 toont. Nachtclub zit niet in die passieve som.
 - Clear success and failure feedback for the player.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
@@ -64,7 +65,7 @@ Deze waarden sturen housing capaciteit/risico en weekhuur in de prostitutieflow.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
 - Verify prostitute cards in Workers are never bottom-clipped; card height must follow content (auto height) on web/tablet/desktop.
-- Verify Collect settles pending earnings and refreshes KPI; empty collect shows empty copy.
+- Verify Collect settles the same pending amount as the Te innen / To collect KPI (including amounts under one hour) and refreshes; empty collect only when that KPI is €0.
 - Verify mobile “Red Light Districts” opens hub tab RLD (index 1), not Events.
 - Verify Events tab lists street nights and VIP salon (country slug, not ISO-2).
 - Verify reclaim panel appears for a hot stolen worker and that she cannot be placed in RLD/nightclub until cool.

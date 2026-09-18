@@ -58,6 +58,7 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 - **Occupancy:** ≥70% occupancy raises rent and raid/steal chance; 100% also ticks FBI heat on the owner.
 - **Steal:** €15k + heat, 7h cooldown, 12h reclaim window. Contest stake €100k, rank 4+, 15 min prep / 60 min fight / 10 min close, 48h district cooldown after.
 - See [red-light-districts.md](red-light-districts.md) and [prostitution.md](prostitution.md).
+- **Prostitution collect:** straat/RLD-passief is innenbaar zodra er minstens €1 klaarstaat (zelfde formule als KPI Te innen, inclusief minuten). Tick stort hetzelfde. 8u-shifts blijven een aparte lumpsum. Nachtclub zit niet in deze pot.
 
 ## Documented static modifiers (ammo factory)
 - **Claim interval:** `PRODUCTION_INTERVAL_MINUTES = 20` in `ammoFactoryService.ts` (was 10 after Apr 2026; originally 5).

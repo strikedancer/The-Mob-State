@@ -11629,7 +11629,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get prostitutionRedLight => 'Lumière rouge';
 
   @override
-  String get prostitutionPotentialEarnings => 'Gains';
+  String get prostitutionPotentialEarnings => 'À encaisser';
 
   @override
   String get prostitutionCollect => 'Collecter';
@@ -19059,7 +19059,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicProstitutionHow =>
-      'Vous recrutez dans le pays dans lequel vous vous trouvez et uniquement si vous y êtes propriétaire d\'une maison ou d\'un appartement. Les logements disponibles dans d\'autres pays ne vous permettent pas de recruter ici. \nChaque recrue a un niveau issu des quarts de travail. Les quarts de travail durent 8 heures, puis elle a besoin de repos. \nDéplacez les recrues entre la rue, le quartier rouge et la discothèque. Un quartier ne dispose que du nombre de pièces débloqué par son propriétaire grâce aux améliorations. Si les chambres sont pleines, elle reste dans la rue. \nUne recrue volée reste assise dans la rue pendant 12 heures. L\'ancien patron peut la ramener par cette fenêtre. Le voleur ne peut pas encore la mettre dans un quartier ou une discothèque. \nLes événements sont des nuits chargées : gains supplémentaires, police supplémentaire, vols plus faciles. Les soirées dans la rue sont pour tout le monde. Les soirées dans les salons VIP nécessitent Player VIP. \nLa rivalité sur les réseaux sociaux vole toujours de l\'argent ou donne des pourboires à la police. Voler une recrue est une action distincte sur une salle de district. \nLa chaleur policière monte avec un quartier bondé et avec des événements. La chaleur élevée du FBI peut attaquer les travailleurs.';
+      'Vous recrutez dans le pays dans lequel vous vous trouvez et uniquement si vous y êtes propriétaire d\'une maison ou d\'un appartement. Les logements disponibles dans d\'autres pays ne vous permettent pas de recruter ici. \nChaque recrue a un niveau issu des quarts de travail. Les quarts de travail durent 8 heures, puis elle a besoin de repos. \nDéplacez les recrues entre la rue, le quartier rouge et la discothèque. Un quartier ne dispose que du nombre de pièces débloqué par son propriétaire grâce aux améliorations. Si les chambres sont pleines, elle reste dans la rue. \nUne recrue volée reste assise dans la rue pendant 12 heures. L\'ancien patron peut la ramener par cette fenêtre. Le voleur ne peut pas encore la mettre dans un quartier ou une discothèque. \nLes événements sont des nuits chargées : gains supplémentaires, police supplémentaire, vols plus faciles. Les soirées dans la rue sont pour tout le monde. Les soirées dans les salons VIP nécessitent Player VIP. \nLa rivalité sur les réseaux sociaux vole toujours de l\'argent ou donne des pourboires à la police. Voler une recrue est une action distincte sur une salle de district. \nLa chaleur policière monte avec un quartier bondé et avec des événements. La chaleur élevée du FBI peut attaquer les travailleurs. \nL\'argent des rues et des feux rouges continue de s\'accumuler pendant qu\'ils travaillent. Collecter place désormais le montant en attente de À collecter sur votre compte ; le serveur dépose également lui-même le même montant. Vous n\'avez plus besoin d\'attendre une heure complète. Un quart de travail de 8 heures est payé séparément. Les revenus des discothèques passent par le club, pas par ce bouton.';
 
   @override
   String get helpTopicProstitutionTips =>

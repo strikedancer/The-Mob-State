@@ -11625,7 +11625,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get prostitutionRedLight => 'Rotlicht';
 
   @override
-  String get prostitutionPotentialEarnings => 'Ergebnis';
+  String get prostitutionPotentialEarnings => 'Zum Abholen';
 
   @override
   String get prostitutionCollect => 'Sammeln';
@@ -19063,7 +19063,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicProstitutionHow =>
-      'Sie rekrutieren in dem Land, in dem Sie sich befinden, und nur, wenn Sie dort ein Haus oder eine Wohnung besitzen. Freie Wohnplätze in anderen Ländern ermöglichen es Ihnen nicht, hier zu rekrutieren. \nJeder Rekrut hat eine Stufe aus Arbeitsschichten. Die Schichten dauern 8 Stunden, danach braucht sie Ruhe.\n Bewegen Sie Rekruten zwischen Straße, Rotlichtviertel und Nightclub. Ein Bezirk hat nur so viele Räume, wie sein Besitzer durch Upgrades freigeschaltet hat. Wenn die Räume voll sind, bleibt sie auf der Straße. \nEin gestohlener Rekrut sitzt 12 Stunden lang auf der Straße. Der alte Chef kann sie in diesem Fenster zurückbringen. Der Dieb kann sie noch nicht in ein Viertel oder einen Nightclub bringen.\n Veranstaltungen sind arbeitsreiche Nächte: zusätzliche Einnahmen, zusätzliche Polizei, einfacherer Diebstahl. Straßennächte sind für alle da. VIP-Salonabende erfordern Spieler-VIP. \nRivalry on Social stiehlt immer noch Bargeld oder gibt der Polizei Trinkgeld. Das Stehlen eines Rekruten ist eine separate Aktion in einem Bezirksraum.\n Die Hitze der Polizei nimmt mit einem überfüllten Bezirk und den Ereignissen zu. Hohe FBI-Hitze kann zu Überfällen auf Arbeiter führen.';
+      'Sie rekrutieren in dem Land, in dem Sie sich befinden, und nur, wenn Sie dort ein Haus oder eine Wohnung besitzen. Freie Wohnplätze in anderen Ländern ermöglichen es Ihnen nicht, hier zu rekrutieren. \nJeder Rekrut hat eine Stufe aus Arbeitsschichten. Die Schichten dauern 8 Stunden, danach braucht sie Ruhe. \nBewegen Sie Rekruten zwischen Straße, Rotlichtviertel und Nightclub. Ein Bezirk hat nur so viele Räume, wie sein Besitzer durch Upgrades freigeschaltet hat. Wenn die Räume voll sind, bleibt sie auf der Straße. \nEin gestohlener Rekrut sitzt 12 Stunden lang auf der Straße. Der alte Chef kann sie in diesem Fenster zurückbringen. Der Dieb kann sie noch nicht in ein Viertel oder einen Nightclub bringen. \nVeranstaltungen sind arbeitsreiche Nächte: zusätzliche Einnahmen, zusätzliche Polizei, einfacherer Diebstahl. Straßennächte sind für alle da. VIP-Salonabende erfordern Spieler-VIP. \nRivalry on Social stiehlt immer noch Bargeld oder gibt der Polizei Trinkgeld. Das Stehlen eines Rekruten ist eine separate Aktion in einem Bezirksraum. \nDie Hitze der Polizei nimmt mit einem überfüllten Bezirk und den Ereignissen zu. Hohe FBI-Hitze kann zu Überfällen auf Arbeiter führen. \nWährend sie arbeiten, sammelt sich weiterhin Straßen- und Rotlichtgeld an. Durch „Jetzt sammeln“ wird der ausstehende Betrag von „Zu sammeln“ Ihrem Konto gutgeschrieben; Der Server zahlt den gleichen Betrag auch selbst ein. Sie müssen nicht mehr eine ganze Stunde warten. Eine 8-Stunden-Arbeitsschicht wird gesondert vergütet. Die Einnahmen aus dem Nightclub laufen über den Club, nicht über diesen Knopf.';
 
   @override
   String get helpTopicProstitutionTips =>

@@ -11597,7 +11597,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get prostitutionRedLight => 'Luce rossa';
 
   @override
-  String get prostitutionPotentialEarnings => 'Guadagni';
+  String get prostitutionPotentialEarnings => 'Da riscuotere';
 
   @override
   String get prostitutionCollect => 'Raccogliere';
@@ -19033,7 +19033,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicProstitutionHow =>
-      'Recluti nel paese in cui ti trovi e solo se possiedi una casa o un appartamento lì. Gli alloggi liberi in altri paesi non ti consentono di reclutare qui. \nOgni recluta ha un livello da turni di lavoro. I turni durano 8 ore, poi ha bisogno di riposo. \nSposta le reclute tra la strada, il quartiere a luci rosse e la discoteca. Un quartiere ha solo tante stanze quante ne ha sbloccate il proprietario con i potenziamenti. Se le stanze sono piene, lei resta per strada. \nUna recluta rubata resta per strada per 12 ore. Il vecchio capo può riportarla in quella finestra. Il ladro non può ancora metterla in un quartiere o in una discoteca. \nGli eventi sono notti impegnative: guadagni extra, polizia extra, furti più facili. Le serate di strada sono per tutti. Le serate nei saloni VIP necessitano di Player VIP. \nLa rivalità sui social continua a rubare denaro o mance alla polizia. Rubare una recluta è un\'azione separata in una stanza del distretto. \nIl calore della polizia aumenta con un distretto affollato e con gli eventi. L\'elevato calore dell\'FBI può fare irruzione nei lavoratori.';
+      'Recluti nel paese in cui ti trovi e solo se possiedi una casa o un appartamento lì. Gli alloggi liberi in altri paesi non ti consentono di reclutare qui. \nOgni recluta ha un livello da turni di lavoro. I turni durano 8 ore, poi ha bisogno di riposo. \nSposta le reclute tra la strada, il quartiere a luci rosse e la discoteca. Un quartiere ha solo tante stanze quante ne ha sbloccate il proprietario con i potenziamenti. Se le stanze sono piene, lei resta per strada. \nUna recluta rubata resta per strada per 12 ore. Il vecchio capo può riportarla in quella finestra. Il ladro non può ancora metterla in un quartiere o in una discoteca. \nGli eventi sono notti impegnative: guadagni extra, polizia extra, furti più facili. Le serate di strada sono per tutti. Le serate nei saloni VIP necessitano di Player VIP. \nLa rivalità sui social continua a rubare denaro o mance alla polizia. Rubare una recluta è un\'azione separata in una stanza del distretto. \nIl calore della polizia aumenta con un distretto affollato e con gli eventi. L\'elevato calore dell\'FBI può fare irruzione nei lavoratori. \nI contanti di Street e Red Light continuano ad accumularsi mentre lavorano. Ritira ora inserisce l\'importo in sospeso da Riscuotere sul tuo conto; anche il server deposita lo stesso importo da solo. Non dovrai più aspettare un\'ora intera. Un turno di lavoro di 8 ore viene pagato separatamente. Le entrate del night club passano attraverso il club, non attraverso questo pulsante.';
 
   @override
   String get helpTopicProstitutionTips =>

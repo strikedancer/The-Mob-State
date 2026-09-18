@@ -11587,7 +11587,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get prostitutionRedLight => 'Luz roja';
 
   @override
-  String get prostitutionPotentialEarnings => 'Ganancias';
+  String get prostitutionPotentialEarnings => 'A cobrar';
 
   @override
   String get prostitutionCollect => 'Recolectar';
@@ -19002,7 +19002,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicProstitutionHow =>
-      'Contratas en el país en el que te encuentras y sólo si eres propietario de una casa o apartamento allí. Las plazas de alojamiento disponibles en otros países no permiten contratar aquí. \nCada recluta tiene un nivel por turnos de trabajo. Los turnos duran 8 horas, luego necesita descansar. \nMueve a los reclutas entre la calle, el Barrio Rojo y la discoteca. Un distrito solo tiene tantas habitaciones como las que su propietario haya desbloqueado con mejoras. Si las habitaciones están llenas, se queda en la calle. \nUn recluta robado permanece en la calle durante 12 horas. El viejo jefe puede llevarla de regreso a esa ventana. El ladrón todavía no puede llevarla a ningún barrio ni a una discoteca. \nLos eventos son noches ocupadas: ganancias adicionales, policía adicional, robos más fáciles. Las noches de calle son para todos. Las noches de salón VIP necesitan Player VIP. \nRivalry on Social todavía roba dinero en efectivo o da propina a la policía. Robar un recluta es una acción separada en una sala de distrito. \nLa tensión policial aumenta con un distrito abarrotado y con eventos. El alto calor del FBI puede atacar a los trabajadores.';
+      'Contratas en el país en el que te encuentras y sólo si eres propietario de una casa o apartamento allí. Las plazas de alojamiento disponibles en otros países no permiten contratar aquí. \nCada recluta tiene un nivel por turnos de trabajo. Los turnos duran 8 horas, luego necesita descansar. \nMueve a los reclutas entre la calle, el Barrio Rojo y la discoteca. Un distrito solo tiene tantas habitaciones como las que su propietario haya desbloqueado con mejoras. Si las habitaciones están llenas, se queda en la calle. \nUn recluta robado permanece en la calle durante 12 horas. El viejo jefe puede llevarla de regreso a esa ventana. El ladrón todavía no puede llevarla a ningún barrio ni a una discoteca. \nLos eventos son noches ocupadas: ganancias adicionales, policía adicional, robos más fáciles. Las noches de calle son para todos. Las noches de salón VIP necesitan Player VIP. \nRivalry on Social todavía roba dinero en efectivo o da propina a la policía. Robar un recluta es una acción separada en una sala de distrito. \nLa tensión policial aumenta con un distrito abarrotado y con eventos. El alto calor del FBI puede atacar a los trabajadores. \nEl efectivo de Street y Red Light sigue acumulándose mientras trabajan. Cobrar ahora coloca el monto pendiente de Cobrar en su cuenta; el servidor también deposita esa misma cantidad por sí solo. Ya no tendrás que esperar una hora completa. Una jornada de trabajo de 8 horas se paga aparte. Los ingresos del Nightclub pasan por el club, no por este botón.';
 
   @override
   String get helpTopicProstitutionTips =>

@@ -648,7 +648,7 @@ interest = 0
 
 ### Prostitutie (Empire hub)
 - Eén entry **Prostitution** met tabs Workers | RLD | Events | Social. Web-zijmenu “Red Light Districts” deep-linkt naar hub-tab RLD; mobiel RLD-menu idem (niet VIP Events).
-- **Collect** int openstaande inkomsten (`settleEarnings`); KPI-strip toont o.a. collectable, housing slots, recruit-cooldown en €/uur.
+- **Collect** int dezelfde openstaande straat/RLD-inkomsten als de KPI Te innen (`settleEarnings`, ook fractionele uren; tick stort hetzelfde). Nachtclub en 8u-shifts keren apart uit.
 - **Werven** vereist een huis of appartement **in het huidige land**. Plekken uit woningen in andere landen tellen niet om hier te werven. Totale netwerk-capaciteit blijft wereldwijd (slots/huur).
 - Events-tab: straatavonden voor iedereen, VIP-salon alleen met actieve Player VIP. Events gebruiken land-slugs (`netherlands`), niet ISO-2. Scheduler houdt per land 1 actief + 1 aankomend event; `settleEventEarnings` elk uur.
 - RLD-detail: kamer-upgrade, inkomsten-tier (tot Penthouse/VIP) en beveiliging 0–5. Nieuwe koop start met 4 kamers; plaatsen maakt geen extra kamers meer. Op de RLD-lijst zie je bezette kamers over de echte capaciteit van dat district (4 tot 20), geen miljoenen-placeholder.
