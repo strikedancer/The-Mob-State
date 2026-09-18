@@ -1558,6 +1558,9 @@ function mapCrewVehicleOpsError(error: unknown, res: Response, next: NextFunctio
   if (message === 'VEHICLE_NOT_FOUND') {
     return res.status(404).json({ event: 'error.vehicle_not_found', params: {} });
   }
+  if (message === 'INSUFFICIENT_CREW_FUNDS') {
+    return res.status(400).json({ event: 'error.insufficient_crew_funds', params: {} });
+  }
   if (message.startsWith('TUNE_COOLDOWN_ACTIVE')) {
     const remainingSeconds = Number(message.split(':')[1] ?? 0);
     return res.status(400).json({
@@ -1572,7 +1575,6 @@ function mapCrewVehicleOpsError(error: unknown, res: Response, next: NextFunctio
     'VEHICLE_REPAIR_IN_PROGRESS',
     'FUEL_TANK_FULL',
     'VEHICLE_NOT_BROKEN',
-    'INSUFFICIENT_FUNDS',
     'INSUFFICIENT_PARTS',
     'TUNE_STAT_MAXED',
     'CASH_STORAGE_FULL',
@@ -1597,7 +1599,7 @@ function crewVehicleKindFromPath(kind: string): crewVehicleOpsService.CrewVehicl
 
 /**
  * POST /crews/:id/storage/:kind/:itemId/refuel
- * Fill a parked crew vehicle from the acting member's cash.
+ * Fill a parked crew vehicle from the crew bank.
  */
 router.post(
   '/:id/storage/:kind/:itemId/refuel',
@@ -1619,7 +1621,6 @@ router.post(
       return res.json({
         event: 'crew.vehicle_refueled',
         params: result,
-        player: { money: result.newMoney },
       });
     } catch (error: unknown) {
       return mapCrewVehicleOpsError(error, res, next);
@@ -1629,7 +1630,7 @@ router.post(
 
 /**
  * POST /crews/:id/storage/:kind/:itemId/repair
- * Start a timed repair on a parked crew vehicle. Paid by the acting member.
+ * Start a timed repair on a parked crew vehicle. Paid from the crew bank.
  */
 router.post(
   '/:id/storage/:kind/:itemId/repair',
@@ -1651,7 +1652,6 @@ router.post(
       return res.json({
         event: 'crew.vehicle_repair_started',
         params: result,
-        player: { money: result.newMoney },
       });
     } catch (error: unknown) {
       return mapCrewVehicleOpsError(error, res, next);
@@ -1692,7 +1692,7 @@ router.post(
 
 /**
  * POST /crews/:id/storage/:kind/:itemId/tuning
- * Upgrade speed/stealth/armor on a parked crew vehicle with player cash + parts.
+ * Upgrade speed/stealth/armor on a parked crew vehicle. Money from the crew bank; parts from the actor.
  */
 router.post(
   '/:id/storage/:kind/:itemId/tuning',
@@ -1722,7 +1722,6 @@ router.post(
       return res.json({
         event: 'crew.vehicle_tuned',
         params: result,
-        player: { money: result.newMoney },
       });
     } catch (error: unknown) {
       return mapCrewVehicleOpsError(error, res, next);

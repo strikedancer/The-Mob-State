@@ -6092,10 +6092,13 @@ class _CrewScreenState extends State<CrewScreen>
     if (event == 'error.vehicle_not_found') {
       return loc.tuneShopErrorVehicleNotFound;
     }
+    if (event == 'error.insufficient_crew_funds') {
+      return loc.crewUiTr6;
+    }
     final params = (data['params'] as Map?)?.cast<String, dynamic>() ?? {};
     switch (params['reason']?.toString()) {
-      case 'INSUFFICIENT_FUNDS':
-        return loc.notEnoughMoney;
+      case 'INSUFFICIENT_CREW_FUNDS':
+        return loc.crewUiTr6;
       case 'INSUFFICIENT_PARTS':
         return loc.tuneShopErrorInsufficientParts;
       case 'TUNE_STAT_MAXED':
@@ -6233,13 +6236,8 @@ class _CrewScreenState extends State<CrewScreen>
                     ),
                   );
                   await _loadCrewStorage();
+                  await _loadMyCrew();
                   _crewStorageDialogRefresh?.call();
-                  try {
-                    await Provider.of<AuthProvider>(
-                      context,
-                      listen: false,
-                    ).refreshPlayer();
-                  } catch (_) {}
                 } else {
                   final data = response.body.isNotEmpty
                       ? _decodeJsonBody(response.body)

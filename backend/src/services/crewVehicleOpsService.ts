@@ -85,6 +85,16 @@ async function requireMembership(crewId: number, playerId: number) {
   return membership;
 }
 
+async function requireCrewBankFunds(crewId: number, amount: number) {
+  const crew = await prisma.crew.findUnique({
+    where: { id: crewId },
+    select: { bankBalance: true },
+  });
+  if (!crew) throw new Error('CREW_NOT_FOUND');
+  if ((crew.bankBalance ?? 0) < amount) throw new Error('INSUFFICIENT_CREW_FUNDS');
+  return crew;
+}
+
 async function loadCrewVehicle(
   crewId: number,
   kind: CrewVehicleKind,
@@ -248,19 +258,14 @@ export async function refuelCrewVehicle(
   const quote = vehicleService.quoteRefuelFill(row.vehicleId, row.fuelLevel);
   if (quote.liters <= 0) throw new Error('FUEL_TANK_FULL');
 
-  const player = await prisma.player.findUnique({
-    where: { id: playerId },
-    select: { money: true },
-  });
-  if (!player) throw new Error('PLAYER_NOT_FOUND');
-  if ((player.money ?? 0) < quote.totalCost) throw new Error('INSUFFICIENT_FUNDS');
+  await requireCrewBankFunds(crewId, quote.totalCost);
 
   const table = tableName(kind);
-  const [updatedPlayer] = await prisma.$transaction([
-    prisma.player.update({
-      where: { id: playerId },
-      data: { money: { decrement: quote.totalCost } },
-      select: { money: true },
+  const [updatedCrew] = await prisma.$transaction([
+    prisma.crew.update({
+      where: { id: crewId },
+      data: { bankBalance: { decrement: quote.totalCost } },
+      select: { bankBalance: true },
     }),
     prisma.$executeRawUnsafe(`UPDATE ${table} SET fuelLevel = 100 WHERE id = ?`, itemId),
   ]);
@@ -269,7 +274,7 @@ export async function refuelCrewVehicle(
     fuelAdded: quote.liters,
     totalCost: quote.totalCost,
     newFuel: 100,
-    newMoney: updatedPlayer.money,
+    crewBalance: updatedCrew.bankBalance,
   };
 }
 
@@ -286,19 +291,14 @@ export async function repairCrewVehicle(
   if (row.condition >= 100) throw new Error('VEHICLE_NOT_BROKEN');
 
   const quote = vehicleService.quoteRepair(row.vehicleId, row.condition);
-  const player = await prisma.player.findUnique({
-    where: { id: playerId },
-    select: { money: true },
-  });
-  if (!player) throw new Error('PLAYER_NOT_FOUND');
-  if ((player.money ?? 0) < quote.repairCost) throw new Error('INSUFFICIENT_FUNDS');
+  await requireCrewBankFunds(crewId, quote.repairCost);
 
   const table = tableName(kind);
-  const [updatedPlayer] = await prisma.$transaction([
-    prisma.player.update({
-      where: { id: playerId },
-      data: { money: { decrement: quote.repairCost } },
-      select: { money: true },
+  const [updatedCrew] = await prisma.$transaction([
+    prisma.crew.update({
+      where: { id: crewId },
+      data: { bankBalance: { decrement: quote.repairCost } },
+      select: { bankBalance: true },
     }),
     prisma.$executeRawUnsafe(
       `UPDATE ${table}
@@ -314,7 +314,7 @@ export async function repairCrewVehicle(
   return {
     repairCost: quote.repairCost,
     repairDurationSeconds: quote.repairDurationSeconds,
-    newMoney: updatedPlayer.money,
+    crewBalance: updatedCrew.bankBalance,
   };
 }
 
@@ -398,12 +398,7 @@ export async function upgradeCrewVehicleTuning(
   const quote = vehicleService.quoteTuneUpgrade(vehicleType, stat, levels[stat]);
   if (quote.maxed) throw new Error('TUNE_STAT_MAXED');
 
-  const player = await prisma.player.findUnique({
-    where: { id: playerId },
-    select: { money: true },
-  });
-  if (!player) throw new Error('PLAYER_NOT_FOUND');
-  if ((player.money ?? 0) < quote.moneyCost) throw new Error('INSUFFICIENT_FUNDS');
+  await requireCrewBankFunds(crewId, quote.moneyCost);
 
   await prisma.$executeRaw`
     INSERT INTO player_vehicle_parts (player_id, car_parts, motorcycle_parts, boat_parts)
@@ -438,11 +433,11 @@ export async function upgradeCrewVehicleTuning(
   const table = tableName(kind);
   const cooldownSeconds = vehicleService.tuneCooldownSeconds(vehicleType);
 
-  const [updatedPlayer] = await prisma.$transaction([
-    prisma.player.update({
-      where: { id: playerId },
-      data: { money: { decrement: quote.moneyCost } },
-      select: { money: true },
+  const [updatedCrew] = await prisma.$transaction([
+    prisma.crew.update({
+      where: { id: crewId },
+      data: { bankBalance: { decrement: quote.moneyCost } },
+      select: { bankBalance: true },
     }),
     prisma.$executeRawUnsafe(
       `UPDATE player_vehicle_parts SET ${partsColumn} = ${partsColumn} - ? WHERE player_id = ?`,
@@ -461,7 +456,7 @@ export async function upgradeCrewVehicleTuning(
 
   const nextLevels = { ...levels, [stat]: levels[stat] + 1 };
   return {
-    newMoney: updatedPlayer.money,
+    crewBalance: updatedCrew.bankBalance,
     tuningLevels: nextLevels,
     upgradeCost: quote,
   };

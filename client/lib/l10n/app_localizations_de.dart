@@ -4828,7 +4828,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get crewUiVehiclePayFromPocket =>
-      'Repair, refuel and tune are paid from your own cash and parts. The vehicle stays in crew storage.';
+      'Repair, refuel and tune are paid from the crew bank. Tuning still uses your own parts.';
 
   @override
   String get crewUiVehicleSellToBank =>
