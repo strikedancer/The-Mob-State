@@ -19040,7 +19040,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpAlmanacBlurb =>
-      'Complete handleiding plus catalogi. Vraag de Almanak waar je de beste auto, boot of motor steelt, of log daar in voor jouw geld, rank en resterende VIP: wiki.themobstate.com';
+      'Complete handleiding plus catalogi. Vraag de Almanak waar je de beste auto, boot of motor steelt. Open hem vanuit Help terwijl je in het spel ingelogd bent om je eigen geld, rank en resterende VIP te vragen — log niet opnieuw in op de Almanak zelf.';
 
   @override
   String landingCopyright(int year) {

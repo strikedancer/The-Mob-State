@@ -19218,7 +19218,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpAlmanacBlurb =>
-      'Manuel complet plus catalogues. Demande à l’almanach où voler la meilleure voiture, bateau ou moto, ou connecte-toi là pour ton argent, rang et VIP restant : wiki.themobstate.com';
+      'Manuel complet et catalogues. Demandez à l\'Almanach où voler la meilleure voiture, bateau ou moto. Ouvrez-le depuis l\'aide pendant que vous êtes connecté au jeu pour poser des questions sur votre propre argent, votre rang et vos VIP restants – ne vous connectez pas sur l\'Almanach lui-même.';
 
   @override
   String landingCopyright(int year) {

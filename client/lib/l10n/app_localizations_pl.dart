@@ -19130,7 +19130,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpAlmanacBlurb =>
-      'Kompletny poradnik plus katalogi. Zapytaj almanach, gdzie ukraść najlepsze auto, łódź lub motocykl, albo zaloguj się tam po kasę, rangę i pozostały VIP: wiki.themobstate.com';
+      'Kompletny podręcznik plus katalogi. Zapytaj Almanach, gdzie ukraść najlepszy samochód, łódź lub motocykl. Otwórz go w Pomocy, gdy jesteś zalogowany do gry, aby zapytać o własne pieniądze, rangę i pozostały VIP – nie loguj się do samego Almanachu.';
 
   @override
   String landingCopyright(int year) {

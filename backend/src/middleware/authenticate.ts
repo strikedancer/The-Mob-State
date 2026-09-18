@@ -13,12 +13,14 @@ export interface AuthRequest extends Request {
     currentCountry: string;
     staffRole?: 'NONE' | 'MOD' | 'OPS';
   };
+  tokenPurpose?: string;
 }
 
 interface JwtPayload {
   playerId: number;
   username: string;
   iat?: number;
+  purpose?: string;
 }
 
 function logAuthFailure(req: Request, reason: string, context?: Record<string, unknown>) {
@@ -52,6 +54,17 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
 
     // Verify JWT
     const decoded = jwt.verify(token, config.jwtSecret) as JwtPayload;
+    if (decoded.purpose === 'almanac') {
+      const path = String(req.originalUrl || req.url || '').split('?')[0];
+      if (!path.startsWith('/almanac')) {
+        logAuthFailure(req, 'ALMANAC_TOKEN_SCOPE', { playerId: decoded.playerId });
+        return res.status(401).json({
+          event: 'auth.unauthorized',
+          params: { reason: 'ALMANAC_TOKEN_SCOPE' },
+        });
+      }
+    }
+    authReq.tokenPurpose = decoded.purpose;
 
     // Verify player still exists. Single-session uses players.lastSessionAt
     // (set at login) — do not scan world_events on this hot path.

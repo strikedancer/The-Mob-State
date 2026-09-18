@@ -32705,7 +32705,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpAlmanacBlurb.
   ///
   /// In en, this message translates to:
-  /// **'Complete handbook plus catalogues. Ask the Almanac where to steal the best car, boat or motorcycle, or sign in there for your money, rank and remaining VIP: wiki.themobstate.com'**
+  /// **'Complete handbook plus catalogues. Ask the Almanac where to steal the best car, boat or motorcycle. Open it from Help while you are logged into the game to ask about your own money, rank and remaining VIP — do not sign in on the Almanac itself.'**
   String get helpAlmanacBlurb;
 
   /// Footer copyright; year is injected from the app clock.

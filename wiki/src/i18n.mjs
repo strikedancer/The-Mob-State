@@ -118,14 +118,14 @@ export const UI = {
   askTitle: pack('Almanak-hulp', 'Almanac help', 'Almanach-Hilfe', 'Aide de l’almanach', 'Ayuda del almanaque', 'Aiuto almanacco', 'Pomoc almanachu', 'Ajuda do almanaque'),
   askKicker: pack('Handleiding · catalogus · jouw cijfers', 'Handbook · catalogue · your stats', 'Handbuch · Katalog · deine Zahlen', 'Manuel · catalogue · tes chiffres', 'Manual · catálogo · tus cifras', 'Manuale · catalogo · i tuoi numeri', 'Poradnik · katalog · twoje liczby', 'Manual · catálogo · os teus números'),
   askWelcome: pack(
-    'Vraag hoe een scherm werkt, waar je de beste auto steelt, welke baan of misdaad op jouw rang past, waar een drug in de catalogus doorgaans lager staat, hoe je reist, of — na inloggen hier — hoeveel geld en VIP je nog hebt. Live straatprijzen blijven in het spel.',
-    'Ask how a screen works, where to steal the best car, which job or crime fits your rank, where a drug is typically cheaper in the catalogue, how to travel, or — after signing in here — how much money and VIP you have left. Live street prices stay in the game.',
-    'Frag, wie ein Bildschirm funktioniert, wo du das beste Auto stiehlst, welcher Job oder welche Tat zu deinem Rang passt, wo eine Droge im Katalog typisch günstiger ist, wie du reist, oder — nach Login hier — Geld und VIP. Live-Straßenpreise bleiben im Spiel.',
-    'Demande comment marche un écran, où voler la meilleure voiture, quel emploi ou crime va à ton rang, où une drogue est typiquement plus basse au catalogue, comment voyager, ou — après connexion ici — ton argent et VIP. Les prix live restent en jeu.',
-    'Pregunta cómo funciona una pantalla, dónde robar el mejor coche, qué trabajo o crimen encaja en tu rango, dónde una droga suele ser más baja en el catálogo, cómo viajar, o — tras entrar aquí — tu dinero y VIP. Los precios en vivo siguen en el juego.',
-    'Chiedi come funziona una schermata, dove rubare la migliore auto, quale lavoro o crimine sta al tuo grado, dove una droga è di solito più bassa nel catalogo, come viaggiare, o — dopo l’accesso qui — soldi e VIP. I prezzi live restano in gioco.',
-    'Pytaj, jak działa ekran, gdzie ukraść najlepsze auto, jaka praca lub przestępstwo pasuje do rangi, gdzie narkotyk jest zwykle tańszy w katalogu, jak podróżować, albo — po logowaniu tutaj — kasę i VIP. Żywe ceny zostają w grze.',
-    'Pergunta como funciona um ecrã, onde roubar o melhor carro, que emprego ou crime cabe na tua patente, onde uma droga costuma ser mais baixa no catálogo, como viajar, ou — após entrar aqui — dinheiro e VIP. Preços ao vivo ficam no jogo.'
+    'Vraag hoe een scherm werkt, waar je de beste auto steelt, welke baan of misdaad op jouw rang past, waar een drug in de catalogus doorgaans lager staat, hoe je reist, of — als je de Almanak vanuit het spel opent terwijl je daar ingelogd bent — hoeveel geld en VIP je nog hebt. Log hier niet opnieuw in: dan vlieg je uit het spel. Live straatprijzen blijven in het spel.',
+    'Ask how a screen works, where to steal the best car, which job or crime fits your rank, where a drug is typically cheaper in the catalogue, how to travel, or — if you open the Almanac from the game while signed in there — how much money and VIP you have left. Do not sign in here: that kicks you out of the game. Live street prices stay in the game.',
+    'Frag, wie ein Bildschirm funktioniert, wo du das beste Auto stiehlst, welcher Job oder welche Tat zu deinem Rang passt, wo eine Droge im Katalog typisch günstiger ist, wie du reist, oder — wenn du den Almanach aus dem Spiel öffnest, während du dort angemeldet bist — Geld und VIP. Melde dich hier nicht extra an: dann fliegst du aus dem Spiel. Live-Straßenpreise bleiben im Spiel.',
+    'Demande comment marche un écran, où voler la meilleure voiture, quel emploi ou crime va à ton rang, où une drogue est typiquement plus basse au catalogue, comment voyager, ou — si tu ouvres l’almanach depuis le jeu tout en étant connecté — ton argent et VIP. Ne te connecte pas ici : tu serais expulsé du jeu. Les prix live restent en jeu.',
+    'Pregunta cómo funciona una pantalla, dónde robar el mejor coche, qué trabajo o crimen encaja en tu rango, dónde una droga suele ser más baja en el catálogo, cómo viajar, o — si abres el almanaque desde el juego estando dentro — tu dinero y VIP. No entres aquí: te echaría del juego. Los precios en vivo siguen en el juego.',
+    'Chiedi come funziona una schermata, dove rubare la migliore auto, quale lavoro o crimine sta al tuo grado, dove una droga è di solito più bassa nel catalogo, come viaggiare, o — se apri l’almanacco dal gioco mentre sei connesso — soldi e VIP. Non accedere qui: verresti cacciato dal gioco. I prezzi live restano in gioco.',
+    'Pytaj, jak działa ekran, gdzie ukraść najlepsze auto, jaka praca lub przestępstwo pasuje do rangi, gdzie narkotyk jest zwykle tańszy w katalogu, jak podróżować, albo — jeśli otworzysz almanach z gry będąc zalogowanym — kasę i VIP. Nie loguj się tutaj: wylecisz z gry. Żywe ceny zostają w grze.',
+    'Pergunta como funciona um ecrã, onde roubar o melhor carro, que emprego ou crime cabe na tua patente, onde uma droga costuma ser mais baixa no catálogo, como viajar, ou — se abrires o almanaque a partir do jogo enquanto estás dentro — dinheiro e VIP. Não entres aqui: sais do jogo. Preços ao vivo ficam no jogo.'
   ),
   askPlaceholder: pack('Bijvoorbeeld: waar steel ik de beste auto?', 'For example: where do I steal the best car?', 'Zum Beispiel: wo stehle ich das beste Auto?', 'Par exemple : où voler la meilleure voiture ?', 'Por ejemplo: ¿dónde robo el mejor coche?', 'Ad esempio: dove rubo la migliore auto?', 'Na przykład: gdzie ukraść najlepsze auto?', 'Por exemplo: onde roubo o melhor carro?'),
   askSend: pack('Vraag', 'Ask', 'Fragen', 'Demander', 'Preguntar', 'Chiedi', 'Pytaj', 'Perguntar'),
@@ -187,14 +187,14 @@ export const UI = {
     'Onde roubo o melhor carro?|Quanto dinheiro tenho?|Que emprego posso fazer?|Onde a cocaína costuma ser mais baixa?'
   ),
   askLoginNeed: pack(
-    'Log in met je The Mob State-account om jouw eigen cijfers te zien. Dat gebeurt op deze officiële Almanak; we bewaren alleen een sessie in deze browser.',
-    'Sign in with your The Mob State account to see your own numbers. This is the official Almanac; we only keep a session in this browser.',
-    'Melde dich mit deinem The Mob State-Konto an, um deine Zahlen zu sehen. Offizieller Almanach; Sitzung nur in diesem Browser.',
-    'Connecte-toi avec ton compte The Mob State pour voir tes chiffres. Almanach officiel ; session uniquement dans ce navigateur.',
-    'Entra con tu cuenta de The Mob State para ver tus cifras. Almanaque oficial; la sesión queda en este navegador.',
-    'Accedi con il tuo account The Mob State per vedere i tuoi numeri. Almanacco ufficiale; sessione solo in questo browser.',
-    'Zaloguj się kontem The Mob State, by zobaczyć swoje liczby. Oficjalny almanach; sesja tylko w tej przeglądarce.',
-    'Entra com a tua conta The Mob State para ver os teus números. Almanaque oficial; a sessão fica só neste browser.'
+    'Die vragen over jouw geld, rank of VIP kun je alleen stellen als je in het spel ingelogd bent en de Almanak vanuit Help opent. Hier opnieuw inloggen gooit je uit het spel.',
+    'Questions about your money, rank or VIP only work if you are signed in to the game and open the Almanac from Help. Signing in here kicks you out of the game.',
+    'Fragen zu Geld, Rang oder VIP gehen nur, wenn du im Spiel angemeldet bist und den Almanach über Hilfe öffnest. Ein Login hier wirft dich aus dem Spiel.',
+    'Les questions sur ton argent, rang ou VIP marchent seulement si tu es connecté en jeu et que tu ouvres l’almanach depuis Aide. Te connecter ici te vire du jeu.',
+    'Las preguntas de dinero, rango o VIP solo van si estás dentro del juego y abres el almanaque desde Ayuda. Entrar aquí te echa del juego.',
+    'Le domande su soldi, grado o VIP funzionano solo se sei connesso nel gioco e apri l’almanacco da Aiuto. Accedere qui ti caccia dal gioco.',
+    'Pytania o kasę, rangę lub VIP działają tylko, gdy jesteś zalogowany w grze i otworzysz almanach z Pomocy. Logowanie tutaj wyrzuca cię z gry.',
+    'Perguntas sobre dinheiro, patente ou VIP só funcionam se estiveres dentro do jogo e abrires o almanaque em Ajuda. Entrar aqui tira-te do jogo.'
   ),
   askLoginUser: pack('Gebruikersnaam', 'Username', 'Benutzername', 'Nom d’utilisateur', 'Usuario', 'Nome utente', 'Nazwa użytkownika', 'Nome de utilizador'),
   askLoginPass: pack('Wachtwoord', 'Password', 'Passwort', 'Mot de passe', 'Contraseña', 'Password', 'Hasło', 'Palavra-passe'),

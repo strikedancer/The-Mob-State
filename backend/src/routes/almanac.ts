@@ -1,4 +1,6 @@
 import { Router, Response } from 'express';
+import jwt from 'jsonwebtoken';
+import config from '../config';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
 import { createRateLimiter } from '../middleware/rateLimit';
 import { playerService } from '../services/playerService';
@@ -24,6 +26,57 @@ function remainingMs(expiresAt: Date | null | undefined, now: number): number | 
   const ms = expiresAt.getTime() - now;
   return Number.isFinite(ms) ? Math.max(0, ms) : null;
 }
+
+const HANDOFF_EXPIRES_SEC = 30 * 60;
+
+const handoffLimiter = createRateLimiter({
+  windowMs: 60 * 1000,
+  maxRequests: 20,
+  message: 'ALMANAC_HANDOFF_RATE_LIMIT',
+  keyGenerator: (req) => {
+    const ip = req.ip || req.socket.remoteAddress || 'unknown';
+    return `almanac_handoff:${ip}`;
+  },
+});
+
+/**
+ * POST /almanac/handoff
+ * Mint a short-lived Almanac-only JWT from the current game session.
+ * Does not rotate lastSessionAt — the game stays logged in.
+ */
+router.post('/handoff', handoffLimiter, authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    if (req.tokenPurpose === 'almanac') {
+      return res.status(401).json({
+        event: 'auth.unauthorized',
+        params: { reason: 'ALMANAC_TOKEN_SCOPE' },
+      });
+    }
+    const player = req.player;
+    if (!player) {
+      return res.status(401).json({
+        event: 'auth.unauthorized',
+        params: { reason: 'MISSING_TOKEN' },
+      });
+    }
+    const token = jwt.sign(
+      { playerId: player.id, username: player.username, purpose: 'almanac' },
+      config.jwtSecret,
+      { expiresIn: '30m' }
+    );
+    return res.status(200).json({
+      event: 'almanac.handoff',
+      token,
+      expiresInSec: HANDOFF_EXPIRES_SEC,
+    });
+  } catch (error) {
+    console.error('[AlmanacRoute] Failed to mint /almanac/handoff', {
+      playerId: req.player?.id,
+      error,
+    });
+    return res.status(500).json({ event: 'error.internal', params: {} });
+  }
+});
 
 /**
  * GET /almanac/me

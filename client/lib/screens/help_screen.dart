@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-import '../config/app_config.dart';
+import '../utils/almanac_launcher.dart';
 import '../data/help_content.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/help_topic_localizations.dart';
@@ -206,10 +205,7 @@ class _HelpScreenState extends State<HelpScreen> {
           FilledButton.icon(
             onPressed: () {
               final lang = Localizations.localeOf(context).languageCode;
-              launchUrl(
-                Uri.parse(AppConfig.wikiGuideUrl(lang)),
-                mode: LaunchMode.externalApplication,
-              );
+              AlmanacLauncher.open(languageCode: lang, guide: true);
             },
             style: FilledButton.styleFrom(
               backgroundColor: const Color(0xFFD4AF37),

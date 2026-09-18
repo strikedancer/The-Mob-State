@@ -19192,7 +19192,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpAlmanacBlurb =>
-      'Manuale completo più cataloghi. Chiedi all’almanacco dove rubare la migliore auto, barca o moto, o accedi lì per soldi, grado e VIP rimasto: wiki.themobstate.com';
+      'Manuale completo più cataloghi. Chiedi all\'Almanacco dove rubare la migliore auto, barca o moto. Aprilo da Aiuto mentre sei connesso al gioco per chiedere informazioni sul tuo denaro, sul tuo grado e sui VIP rimanenti: non accedere all\'Almanacco stesso.';
 
   @override
   String landingCopyright(int year) {

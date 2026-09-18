@@ -193,6 +193,43 @@ const TOKEN_KEY = 'tms-almanac-token';
 let playerSnapshot = null;
 let playerSnapshotAt = 0;
 
+function readStoredToken() {
+  try {
+    return sessionStorage.getItem(TOKEN_KEY) || '';
+  } catch {
+    return '';
+  }
+}
+
+function writeStoredToken(value) {
+  try {
+    if (value) sessionStorage.setItem(TOKEN_KEY, value);
+    else sessionStorage.removeItem(TOKEN_KEY);
+  } catch {
+    /* ignore */
+  }
+  try {
+    localStorage.removeItem(TOKEN_KEY);
+  } catch {
+    /* ignore */
+  }
+}
+
+function consumeHandoffToken() {
+  try {
+    localStorage.removeItem(TOKEN_KEY);
+  } catch {
+    /* ignore */
+  }
+  const hash = String(location.hash || '');
+  if (!hash.startsWith('#tms=')) return false;
+  const raw = decodeURIComponent(hash.slice(5).split('&')[0] || '').trim();
+  if (!raw) return false;
+  writeStoredToken(raw);
+  history.replaceState(null, '', `${location.pathname}${location.search}`);
+  return true;
+}
+
 function loadFacts() {
   const panel = document.getElementById('almanac-chat');
   const url = panel?.dataset.facts;
@@ -252,20 +289,11 @@ function initAsk() {
   const session = { lastTitle: '', lastHref: '', lastQuery: '' };
 
   function token() {
-    try {
-      return localStorage.getItem(TOKEN_KEY) || '';
-    } catch {
-      return '';
-    }
+    return readStoredToken();
   }
 
   function setToken(value) {
-    try {
-      if (value) localStorage.setItem(TOKEN_KEY, value);
-      else localStorage.removeItem(TOKEN_KEY);
-    } catch {
-      /* ignore */
-    }
+    writeStoredToken(value || '');
     playerSnapshot = null;
     playerSnapshotAt = 0;
   }
@@ -320,13 +348,8 @@ function initAsk() {
     }
   }
 
-  function loginFormHtml(pending) {
-    return `<p>${escHtml(copy.loginNeed)}</p>
-      <form class="ask-login" data-pending="${escHtml(pending || '')}">
-        <label>${escHtml(copy.loginUser)}<input name="username" autocomplete="username" required maxlength="50"></label>
-        <label>${escHtml(copy.loginPass)}<input name="password" type="password" autocomplete="current-password" required maxlength="200"></label>
-        <button type="submit">${escHtml(copy.loginSubmit)}</button>
-      </form>`;
+  function loginFormHtml() {
+    return `<p>${escHtml(copy.loginNeed)}</p>`;
   }
 
   function openPanel() {
@@ -406,42 +429,6 @@ function initAsk() {
     renderAnswer(result);
   }
 
-  async function submitLogin(loginForm) {
-    const username = String(loginForm.username?.value || '').trim();
-    const password = String(loginForm.password?.value || '');
-    const pending = loginForm.dataset.pending || session.lastQuery || '';
-    const btn = loginForm.querySelector('button');
-    if (btn) btn.disabled = true;
-    try {
-      const res = await fetch(`${apiBase}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (res.status === 403 && data?.params?.reason === 'EMAIL_NOT_VERIFIED') {
-        addMsg('bot', `<p>${escHtml(copy.loginUnverified)}</p>`);
-        return;
-      }
-      if (res.status === 403 && (data?.event === 'auth.banned' || data?.params?.reason === 'PLAYER_BANNED')) {
-        addMsg('bot', `<p>${escHtml(copy.loginBanned)}</p>`);
-        return;
-      }
-      if (!res.ok || !data.token) {
-        addMsg('bot', `<p>${escHtml(copy.loginFail)}</p>${loginFormHtml(pending)}`);
-        return;
-      }
-      setToken(data.token);
-      await fetchSnapshot(true);
-      addMsg('bot', `<p>${escHtml(copy.session.replace('{name}', playerSnapshot?.username || username))}</p>`);
-      if (pending) await answerQuestion(pending, true);
-    } catch {
-      addMsg('bot', `<p>${escHtml(copy.loginFail)}</p>${loginFormHtml(pending)}`);
-    } finally {
-      if (btn) btn.disabled = false;
-    }
-  }
-
   toggle.addEventListener('click', () => {
     if (panel.hidden) openPanel();
     else closePanel();
@@ -460,18 +447,19 @@ function initAsk() {
     input.value = btn.dataset.ask || btn.textContent || '';
     form.requestSubmit();
   });
-  panel.addEventListener('submit', (event) => {
-    const loginForm = event.target.closest('.ask-login');
-    if (!loginForm || !panel.contains(loginForm)) return;
-    event.preventDefault();
-    submitLogin(loginForm);
-  });
   form.addEventListener('submit', (event) => {
     event.preventDefault();
     const value = input.value;
     input.value = '';
     answerQuestion(value);
   });
+
+  const handedOff = consumeHandoffToken();
+  if (handedOff) {
+    openPanel();
+  } else if (token()) {
+    fetchSnapshot();
+  }
 }
 
 initAsk();
