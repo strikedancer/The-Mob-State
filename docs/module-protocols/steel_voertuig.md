@@ -46,7 +46,7 @@ Onderdeel hiervan is TuneShop: onderdelen-economie via sloop en upgrades voor sp
 - In de gecombineerde Vehicle Heist shell mag geen dubbele categorie-navigatie bestaan: gebruik één primaire categorie-selector (lane cards) en vermijd een tweede redundante tab-rij met dezelfde drie categorieën.
 - Lane cards in Vehicle Heist tonen ook opslagcapaciteit per type (opslag gebruikt/totaal + upgradelevel), zodat spelers niet hoeven te scrollen naar losse capaciteitsbalken.
 - Help & Uitleg (gouden `i` op Voertuig stelen) moet uitleggen dat opslag-upgrades alleen gelden voor het **huidige land** en per type (auto/motor/boot) gescheiden blijven; upgrades geven extra plekken, geen hogere steelkans.
-- Vehicle Ops uitbreidingen (hotspots, parts market, crew ops, category heat, chop contracts, dynamic police patterns) moeten per voertuigcategorie duidelijk zichtbaar en uitlegbaar blijven.
+- Vehicle Ops acties Claim contract en Koop onderdelen mogen geen interne 500 geven: chop-claim filtert repair via `vehicle_repair_jobs` (geen Prisma-veld `repairInProgress`), en parts-buy gebruikt alleen PrismaPromises in `$transaction`.
 - Advanced Vehicle Ops uitbreidingen (hotspot intercept windows, crew role-bonussen, ops-reputatie unlocks, regionale blacklist-events, contraband insurance, ops-telemetry) moeten coherent blijven met balance-economy guardrails.
 - Vehicle Ops omvat nu ook Counter-Intercept missies, Crew Matchmaking met seizoensladder, country modifiers (inflatie/corruptie/havenstaking), contracts board met weekly legendary contracts en insurance dispute-resolutie.
 - Vehicle Ops moet live cooldowns per hoofdactie zichtbaar tonen met actieve countdown, niet alleen statische secondenwaarden na handmatige refresh.
@@ -94,4 +94,5 @@ Onderdeel hiervan is TuneShop: onderdelen-economie via sloop en upgrades voor sp
 - Event-only politievoertuigen verschijnen alleen tijdens actieve events.
 - Timed repairs en timers blijven correct na refresh.
 - Verkoop en sloop verlagen inventory en laten world-cap correct roteren.
+- Claim contract en Koop onderdelen in Vehicle Ops slagen als de speler een geschikt voertuig/cash heeft; geen generieke "actie mislukt" door een serverfout.
 - Het verkoopbedrag op de steal-popup (auto/motor/boot) is hetzelfde bedrag als in de melding rechtsboven na verkoop: landmarktprijs × conditie × tuning, zonder extra dobbelsteen bij checkout.

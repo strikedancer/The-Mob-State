@@ -1393,6 +1393,11 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
       );
       return;
     }
+    final reason = params['message']?.toString() ?? 'FAILED';
+    if (reason == 'INSUFFICIENT_FUNDS') {
+      _showTopMessage(l10n.notEnoughMoney);
+      return;
+    }
     _showTopMessage(
       l10n.vehicleHeistOpsPartsPurchaseFailed,
     );
@@ -1424,6 +1429,16 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
         l10n.vehicleHeistOpsChopContractCooldownActive(
           formatAdaptiveDurationFromSeconds(sec, localeName: l10n.localeName),
         ),
+      );
+    } else if (reason == 'REGIONAL_BLACKLIST_ACTIVE') {
+      final isNl = Localizations.localeOf(context).languageCode == 'nl';
+      final detail = isNl
+          ? (params['reasonNl']?.toString() ?? '')
+          : (params['reasonEn']?.toString() ?? '');
+      _showTopMessage(
+        detail.isNotEmpty
+            ? detail
+            : l10n.vehicleHeistOpsChopContractClaimFailed,
       );
     } else {
       _showTopMessage(l10n.vehicleHeistOpsChopContractClaimFailed);

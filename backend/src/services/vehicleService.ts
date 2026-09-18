@@ -2846,52 +2846,60 @@ export const vehicleService = {
       boat: heatSnapshot.boat,
     });
     const unitPrice = prices[partsType];
-    const totalCost = unitPrice * safeQuantity;
 
     const player = await prisma.player.findUnique({
       where: { id: playerId },
       select: { id: true, money: true, currentCountry: true },
     });
     if (!player) throw new Error('PLAYER_NOT_FOUND');
-    if ((player.money ?? 0) < totalCost) {
+    const countryModifier = getCountryOpsModifiers(
+      player.currentCountry ?? '',
+      partsType,
+      new Date()
+    );
+    const quotedUnitPrice = Math.max(
+      300,
+      Math.round(unitPrice * countryModifier.partsPriceMultiplier)
+    );
+    const quotedTotalCost = quotedUnitPrice * safeQuantity;
+    if ((player.money ?? 0) < quotedTotalCost) {
       return {
         success: false,
         message: 'INSUFFICIENT_FUNDS',
-        unitPrice,
-        totalCost,
+        unitPrice: quotedUnitPrice,
+        totalCost: quotedTotalCost,
+        currentMoney: player.money ?? 0,
       };
     }
 
     await ensurePlayerPartsRow(playerId);
+    const partsUpdate =
+      partsType === 'boat'
+        ? prisma.$executeRaw`
+            UPDATE player_vehicle_parts
+            SET boat_parts = boat_parts + ${safeQuantity}
+            WHERE player_id = ${playerId}
+          `
+        : partsType === 'motorcycle'
+          ? prisma.$executeRaw`
+              UPDATE player_vehicle_parts
+              SET motorcycle_parts = motorcycle_parts + ${safeQuantity}
+              WHERE player_id = ${playerId}
+            `
+          : prisma.$executeRaw`
+              UPDATE player_vehicle_parts
+              SET car_parts = car_parts + ${safeQuantity}
+              WHERE player_id = ${playerId}
+            `;
     const [updatedPlayer] = await prisma.$transaction([
       prisma.player.update({
         where: { id: playerId },
         data: {
-          money: { decrement: totalCost },
+          money: { decrement: quotedTotalCost },
         },
         select: { money: true },
       }),
-      (async () => {
-        if (partsType === 'boat') {
-          await prisma.$executeRaw`
-            UPDATE player_vehicle_parts
-            SET boat_parts = boat_parts + ${safeQuantity}
-            WHERE player_id = ${playerId}
-          `;
-        } else if (partsType === 'motorcycle') {
-          await prisma.$executeRaw`
-            UPDATE player_vehicle_parts
-            SET motorcycle_parts = motorcycle_parts + ${safeQuantity}
-            WHERE player_id = ${playerId}
-          `;
-        } else {
-          await prisma.$executeRaw`
-            UPDATE player_vehicle_parts
-            SET car_parts = car_parts + ${safeQuantity}
-            WHERE player_id = ${playerId}
-          `;
-        }
-      })(),
+      partsUpdate,
     ]);
 
     const parts = await getPlayerPartsInventory(playerId);
@@ -2903,8 +2911,8 @@ export const vehicleService = {
         success: true,
         vehicleType: partsType,
         quantity: safeQuantity,
-        unitPrice,
-        totalCost,
+        unitPrice: quotedUnitPrice,
+        totalCost: quotedTotalCost,
         country: player.currentCountry ?? null,
       },
       false
@@ -2912,9 +2920,9 @@ export const vehicleService = {
     return {
       success: true,
       message: 'PARTS_PURCHASED',
-      unitPrice,
+      unitPrice: quotedUnitPrice,
       quantity: safeQuantity,
-      totalCost,
+      totalCost: quotedTotalCost,
       newMoney: updatedPlayer.money,
       parts,
       partsType,
@@ -2952,16 +2960,18 @@ export const vehicleService = {
         endsAt: blacklist.endsAt,
       };
     }
+    const repairingIds = [...(await getActiveRepairJobs(playerId)).keys()];
     const candidate = await prisma.vehicleInventory.findFirst({
       where: {
         playerId,
         vehicleType,
         marketListing: false,
         transportStatus: null,
-        repairInProgress: false,
+        showroomPropertyId: null,
         condition: {
           gte: contract.minCondition,
         },
+        ...(repairingIds.length > 0 ? { id: { notIn: repairingIds } } : {}),
       },
       orderBy: [{ condition: 'asc' }, { id: 'asc' }],
     });
@@ -2975,16 +2985,26 @@ export const vehicleService = {
     }
 
     await setCooldown(playerId, cooldownType);
-    const [updatedPlayer] = await prisma.$transaction([
-      prisma.vehicleInventory.delete({
+    await ensureRepairJobsTable();
+    await ensureTuneTables();
+    const updatedPlayer = await prisma.$transaction(async (tx) => {
+      await tx.$executeRaw`
+        DELETE FROM vehicle_repair_jobs
+        WHERE vehicle_inventory_id = ${candidate.id}
+      `;
+      await tx.$executeRaw`
+        DELETE FROM vehicle_tuning_upgrades
+        WHERE vehicle_inventory_id = ${candidate.id}
+      `;
+      await tx.vehicleInventory.delete({
         where: { id: candidate.id },
-      }),
-      prisma.player.update({
+      });
+      return tx.player.update({
         where: { id: playerId },
         data: { money: { increment: contract.rewardMoney } },
         select: { money: true },
-      }),
-    ]);
+      });
+    });
 
     await increasePlayerVehicleHeat(playerId, vehicleType, 4);
     await addVehicleOpsRep(playerId, vehicleType, 12);

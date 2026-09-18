@@ -441,6 +441,7 @@ router.post('/ops/parts/buy', authenticate, async (req: AuthRequest, res: Respon
         params: { reason: 'PLAYER_NOT_FOUND' },
       });
     }
+    console.error('[vehicles] ops/parts/buy failed:', error);
     return res.status(500).json({
       event: 'error.internal',
       params: {},
@@ -459,7 +460,8 @@ router.post('/ops/chop-contract/claim', authenticate, async (req: AuthRequest, r
       params: result,
       player: result.success ? { money: result.newMoney } : undefined,
     });
-  } catch {
+  } catch (error) {
+    console.error('[vehicles] ops/chop-contract/claim failed:', error);
     return res.status(500).json({
       event: 'error.internal',
       params: {},
