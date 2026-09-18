@@ -154,6 +154,70 @@ function tagTravel(data) {
   return { hubs, routes, inbound };
 }
 
+const JOB_ALIASES = {
+  newspaper_delivery: ['krant', 'newspaper', 'zeitung', 'journal'],
+  pizza_delivery: ['pizza'],
+  taxi_driver: ['taxi'],
+  bartender: ['barkeeper', 'barman', 'barmaid'],
+  airline_pilot: ['piloot', 'pilot', 'piloto', 'pilote'],
+  doctor: ['dokter', 'doctor', 'arzt', 'medecin', 'medico'],
+  lawyer: ['advocaat', 'lawyer', 'anwalt', 'avocat', 'abogado', 'avvocato'],
+  programmer: ['programmeur', 'developer'],
+  mechanic: ['monteur', 'mechanic'],
+  accountant: ['boekhouder'],
+  stockbroker: ['broker', 'effectenmakelaar'],
+  real_estate_agent: ['makelaar'],
+  chef: ['kok'],
+  security_guard: ['beveiliger', 'security'],
+  truck_driver: ['vrachtwagen', 'truck'],
+  plumber: ['loodgieter'],
+  electrician: ['elektricien'],
+  paramedic: ['ambulance'],
+};
+
+const DRUG_ALIASES = {
+  cocaine: ['coke', 'kokain', 'kokaina', 'cocaina', 'coca'],
+  heroin: ['heroine', 'heroina'],
+  xtc: ['ecstasy', 'mdma'],
+  hash: ['hasj', 'hashish', 'haszysz'],
+  lsd: ['acid'],
+  crystal_meth: ['meth', 'crystal meth', 'metamfetamine'],
+  speed: ['amfetamine', 'amphetamine'],
+  fentanyl: ['fentanyl'],
+  magic_mushrooms: ['paddos', 'paddo', 'paddenstoelen', 'magic mushrooms'],
+  white_widow: ['white widow'],
+  amnesia_haze: ['amnesia haze'],
+  og_kush: ['og kush'],
+};
+
+function tagJobs(data, lang) {
+  return (data.jobs || []).map((job) => ({
+    id: job.id,
+    name: nameOf(job, lang),
+    names: uniqueNames([...allItemNames(job), ...(JOB_ALIASES[job.id] || [])]),
+    minLevel: Number(job.minLevel) || 1,
+    maxEarnings: Number(job.maxEarnings) || 0,
+    xp: Number(job.xpReward) || 0,
+  }));
+}
+
+function tagDrugs(data, lang) {
+  return (data.drugs || []).map((drug) => {
+    const pricing = {};
+    for (const [id, value] of Object.entries(drug.countryPricing || {})) {
+      const n = Number(value);
+      if (Number.isFinite(n)) pricing[String(id).toLowerCase()] = n;
+    }
+    return {
+      id: drug.id,
+      name: nameOf(drug, lang),
+      names: uniqueNames([...allItemNames(drug), ...(DRUG_ALIASES[drug.id] || [])]),
+      type: String(drug.type || ''),
+      pricing,
+    };
+  });
+}
+
 export function topVehicles(vehicles, kind, limit = 5) {
   return vehicles
     .filter((v) => v.kind === kind && !v.eventOnly)
@@ -185,6 +249,8 @@ export function buildFacts(data, lang) {
     vehicles: tagVehicles(data, lang),
     weapons: tagWeapons(data, lang),
     crimes: tagCrimes(data, lang),
+    jobs: tagJobs(data, lang),
+    drugs: tagDrugs(data, lang),
     travel: tagTravel(data),
     countries,
     rankTitles: RANK_BANDS.map(([min, max, key]) => ({
@@ -213,6 +279,8 @@ export function buildFacts(data, lang) {
       followStealMine: ui(lang, 'askFollowStealMine'),
       followWeapon: ui(lang, 'askFollowWeapon'),
       followCrime: ui(lang, 'askFollowCrime'),
+      followJob: ui(lang, 'askFollowJob'),
+      followDrug: ui(lang, 'askFollowDrug'),
       followTravel: ui(lang, 'askFollowTravel'),
       followRank: ui(lang, 'askFollowRank'),
       followVip: ui(lang, 'askFollowVip'),
@@ -242,9 +310,17 @@ export function buildFacts(data, lang) {
       crimeBest: ui(lang, 'askCrimeBest'),
       crimeMine: ui(lang, 'askCrimeMine'),
       crimeEmpty: ui(lang, 'askCrimeEmpty'),
+      jobBest: ui(lang, 'askJobBest'),
+      jobMine: ui(lang, 'askJobMine'),
+      jobEmpty: ui(lang, 'askJobEmpty'),
+      drugTypical: ui(lang, 'askDrugTypical'),
+      drugEmpty: ui(lang, 'askDrugEmpty'),
+      weaponNamed: ui(lang, 'askWeaponNamed'),
       travel: ui(lang, 'travel'),
       weapons: ui(lang, 'weapons'),
       crimes: ui(lang, 'crimes'),
+      jobs: ui(lang, 'jobs'),
+      drugs: ui(lang, 'drugs'),
       travelTo: ui(lang, 'askTravelTo'),
       travelHubs: ui(lang, 'askTravelHubs'),
       travelEmpty: ui(lang, 'askTravelEmpty'),

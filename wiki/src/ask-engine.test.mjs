@@ -111,6 +111,9 @@ const facts = {
     spain: { name: 'Spanje', canon: 'spain', aliases: [] },
     usa: { name: 'Verenigde Staten', canon: 'usa', aliases: ['amerika'] },
     germany: { name: 'Duitsland', canon: 'germany', aliases: [] },
+    colombia: { name: 'Colombia', canon: 'colombia', aliases: [] },
+    mexico: { name: 'Mexico', canon: 'mexico', aliases: [] },
+    japan: { name: 'Japan', canon: 'japan', aliases: [] },
   },
   rankTitles: [{ min: 1, max: 150, title: 'Cadet' }],
   copy: {
@@ -167,10 +170,33 @@ const facts = {
     followTravel: 'Hoe kom ik in {country}?',
     followRank: 'Welke rank ben ik?',
     followVip: 'Hoe lang heb ik nog VIP?',
+    followJob: 'Welke baan kan ik op mijn rank?',
+    followDrug: 'Waar is cocaïne doorgaans lager?',
+    jobBest: 'Topbaan {name} rang {rank} tot {reward}.',
+    jobMine: 'Op rang {mine} kun je {names}. Top is {name} tot {reward}.',
+    jobEmpty: 'geen baan',
+    drugTypical: '{name} doorgaans lager in {cheap} en hoger in {dear}. Geen live straatprijs.',
+    drugEmpty: 'geen drugfactor',
+    weaponNamed: '{name} schade {damage} rang {rank} {price}.',
+    jobs: 'Banen',
+    drugs: 'Drugs',
   },
   weapons: [
-    { id: 'knife', name: 'Mes', damage: 15, price: 50, requiredRank: 1, type: 'melee' },
-    { id: 'rifle', name: 'Geweer', damage: 80, price: 9000, requiredRank: 20, type: 'rifle' },
+    { id: 'knife', name: 'Mes', names: ['Mes', 'knife'], damage: 15, price: 50, requiredRank: 1, type: 'melee' },
+    { id: 'rifle', name: 'Geweer', names: ['Geweer', 'rifle'], damage: 80, price: 9000, requiredRank: 20, type: 'rifle' },
+  ],
+  jobs: [
+    { id: 'newspaper_delivery', name: 'Krant Bezorgen', names: ['krant'], minLevel: 1, maxEarnings: 100, xp: 5 },
+    { id: 'airline_pilot', name: 'Piloot', names: ['piloot', 'pilot'], minLevel: 25, maxEarnings: 6000, xp: 300 },
+  ],
+  drugs: [
+    {
+      id: 'cocaine',
+      name: 'Cocaïne',
+      names: ['cocaine', 'coke', 'kokain', 'cocaina'],
+      type: 'COCAINE',
+      pricing: { colombia: 40, mexico: 60, netherlands: 100, japan: 200 },
+    },
   ],
   crimes: [
     { id: 'pickpocket', name: 'Zakkenrollen', minLevel: 1, maxReward: 200, xp: 25 },
@@ -343,5 +369,73 @@ const mixed = AlmanacAsk.answerQuestion({
   copy: { empty: 'empty', blockedPrice: 'price', blockedAccount: 'account', followTpl: 'Meer over {title}?' },
 });
 assert(mixed.sources.length >= 2, `handbook should cite multiple pages, got ${JSON.stringify(mixed.sources)}`);
+
+const jobMine = AlmanacAsk.answerQuestion({
+  stats,
+  facts,
+  question: 'Welke baan kan ik op mijn rank?',
+  copy: stealCopy,
+  player: { rank: 1 },
+});
+assert(jobMine.intent === 'job' && /Krant/i.test(jobMine.body), `job mine: ${jobMine.body}`);
+assert(!/Piloot/i.test(jobMine.body), `rank-1 job should not pick pilot: ${jobMine.body}`);
+
+const jobBest = AlmanacAsk.answerQuestion({
+  stats,
+  facts,
+  question: 'Welchen Job kann ich?',
+  copy: stealCopy,
+});
+assert(jobBest.intent === 'job' && /Piloot/i.test(jobBest.body), `DE job: ${jobBest.body}`);
+assert(AlmanacAsk.detectJobIntent('Quel emploi puis-je faire ?', facts), 'FR job');
+assert(AlmanacAsk.detectJobIntent('¿Qué trabajo puedo hacer?', facts), 'ES job');
+assert(AlmanacAsk.detectJobIntent('Che lavoro posso fare?', facts), 'IT job');
+assert(AlmanacAsk.detectJobIntent('Jaką pracę mogę?', facts), 'PL job');
+assert(AlmanacAsk.detectJobIntent('Que emprego posso fazer?', facts), 'PT job');
+assert(AlmanacAsk.detectJobIntent('Which job can I do?', facts), 'EN job');
+
+const drugQ = AlmanacAsk.answerQuestion({
+  stats,
+  facts,
+  question: 'Waar is cocaïne doorgaans lager?',
+  copy: stealCopy,
+});
+assert(drugQ.intent === 'drug' && /Colombia/i.test(drugQ.body), `drug cheap: ${drugQ.body}`);
+assert(/Japan/i.test(drugQ.body), `drug dear: ${drugQ.body}`);
+assert(!/€\s*40|€40/.test(drugQ.body), `drug must not leak typical euros: ${drugQ.body}`);
+assert(AlmanacAsk.blockedIntent('huidige prijs cocaïne') === 'price', 'coke live price still blocked');
+
+const drugDe = AlmanacAsk.answerQuestion({
+  stats,
+  facts,
+  question: 'Wo ist Kokain typisch niedriger?',
+  copy: stealCopy,
+});
+assert(drugDe.intent === 'drug' && /Colombia/i.test(drugDe.body), `DE drug: ${drugDe.body}`);
+
+const drugFr = AlmanacAsk.answerQuestion({
+  stats,
+  facts,
+  question: 'Où la cocaïne est-elle typiquement plus basse ?',
+  copy: stealCopy,
+});
+assert(drugFr.intent === 'drug' && /Colombia/i.test(drugFr.body), `FR drug: ${drugFr.body}`);
+
+const namedWeapon = AlmanacAsk.answerQuestion({
+  stats,
+  facts,
+  question: 'Hoeveel schade heeft Geweer?',
+  copy: stealCopy,
+});
+assert(namedWeapon.intent === 'weapon' && /Geweer/i.test(namedWeapon.body) && /80/.test(namedWeapon.body), `named weapon: ${namedWeapon.body}`);
+
+const frMyWeapons = AlmanacAsk.answerQuestion({
+  stats,
+  facts,
+  question: 'quelles sont mes armes',
+  copy: stealCopy,
+});
+assert(frMyWeapons.intent === 'weapon' && /Geweer/i.test(frMyWeapons.body), `FR mes armes should be strongest, got ${frMyWeapons.body}`);
+assert(!/Mes/.test(frMyWeapons.body) || /Geweer/i.test(frMyWeapons.body), `FR mes armes must not be knife-only: ${frMyWeapons.body}`);
 
 console.log('ask-engine tests ok');

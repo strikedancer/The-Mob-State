@@ -118,14 +118,14 @@ export const UI = {
   askTitle: pack('Almanak-hulp', 'Almanac help', 'Almanach-Hilfe', 'Aide de l’almanach', 'Ayuda del almanaque', 'Aiuto almanacco', 'Pomoc almanachu', 'Ajuda do almanaque'),
   askKicker: pack('Handleiding · catalogus · jouw cijfers', 'Handbook · catalogue · your stats', 'Handbuch · Katalog · deine Zahlen', 'Manuel · catalogue · tes chiffres', 'Manual · catálogo · tus cifras', 'Manuale · catalogo · i tuoi numeri', 'Poradnik · katalog · twoje liczby', 'Manual · catálogo · os teus números'),
   askWelcome: pack(
-    'Vraag hoe een scherm werkt, waar je de beste auto, boot of motor steelt, hoe je naar een land reist, welk wapen of welke misdaad past, of — na inloggen hier — hoeveel geld je hebt, welke rank je bent en hoelang VIP nog loopt. Live straatprijzen blijven in het spel.',
-    'Ask how a screen works, where to steal the best car, boat or motorcycle, how to travel to a country, which weapon or crime fits, or — after signing in here — how much money you have, which rank you are and how long VIP lasts. Live street prices stay in the game.',
-    'Frag, wie ein Bildschirm funktioniert, wo du das beste Auto, Boot oder Motorrad stiehlst, wie du in ein Land reist, welche Waffe oder Tat passt, oder — nach Login hier — wie viel Geld, welchen Rang und wie lange VIP noch läuft. Live-Straßenpreise bleiben im Spiel.',
-    'Demande comment marche un écran, où voler la meilleure voiture, bateau ou moto, comment aller dans un pays, quelle arme ou crime convient, ou — après connexion ici — ton argent, ton rang et le temps VIP restant. Les prix live restent en jeu.',
-    'Pregunta cómo funciona una pantalla, dónde robar el mejor coche, barco o moto, cómo viajar a un país, qué arma o crimen encaja, o — tras entrar aquí — tu dinero, rango y VIP restante. Los precios en vivo siguen en el juego.',
-    'Chiedi come funziona una schermata, dove rubare la migliore auto, barca o moto, come arrivare in un paese, quale arma o crimine sta, o — dopo l’accesso qui — soldi, grado e VIP rimasto. I prezzi live restano in gioco.',
-    'Pytaj, jak działa ekran, gdzie ukraść najlepsze auto, łódź lub motocykl, jak dojechać do kraju, jaka broń lub przestępstwo pasuje, albo — po logowaniu tutaj — ile masz kasy, jaką rangę i ile VIP-u zostało. Żywe ceny zostają w grze.',
-    'Pergunta como funciona um ecrã, onde roubar o melhor carro, barco ou moto, como viajar para um país, que arma ou crime serve, ou — após entrar aqui — o teu dinheiro, patente e VIP restante. Preços ao vivo ficam no jogo.'
+    'Vraag hoe een scherm werkt, waar je de beste auto steelt, welke baan of misdaad op jouw rang past, waar een drug in de catalogus doorgaans lager staat, hoe je reist, of — na inloggen hier — hoeveel geld en VIP je nog hebt. Live straatprijzen blijven in het spel.',
+    'Ask how a screen works, where to steal the best car, which job or crime fits your rank, where a drug is typically cheaper in the catalogue, how to travel, or — after signing in here — how much money and VIP you have left. Live street prices stay in the game.',
+    'Frag, wie ein Bildschirm funktioniert, wo du das beste Auto stiehlst, welcher Job oder welche Tat zu deinem Rang passt, wo eine Droge im Katalog typisch günstiger ist, wie du reist, oder — nach Login hier — Geld und VIP. Live-Straßenpreise bleiben im Spiel.',
+    'Demande comment marche un écran, où voler la meilleure voiture, quel emploi ou crime va à ton rang, où une drogue est typiquement plus basse au catalogue, comment voyager, ou — après connexion ici — ton argent et VIP. Les prix live restent en jeu.',
+    'Pregunta cómo funciona una pantalla, dónde robar el mejor coche, qué trabajo o crimen encaja en tu rango, dónde una droga suele ser más baja en el catálogo, cómo viajar, o — tras entrar aquí — tu dinero y VIP. Los precios en vivo siguen en el juego.',
+    'Chiedi come funziona una schermata, dove rubare la migliore auto, quale lavoro o crimine sta al tuo grado, dove una droga è di solito più bassa nel catalogo, come viaggiare, o — dopo l’accesso qui — soldi e VIP. I prezzi live restano in gioco.',
+    'Pytaj, jak działa ekran, gdzie ukraść najlepsze auto, jaka praca lub przestępstwo pasuje do rangi, gdzie narkotyk jest zwykle tańszy w katalogu, jak podróżować, albo — po logowaniu tutaj — kasę i VIP. Żywe ceny zostają w grze.',
+    'Pergunta como funciona um ecrã, onde roubar o melhor carro, que emprego ou crime cabe na tua patente, onde uma droga costuma ser mais baixa no catálogo, como viajar, ou — após entrar aqui — dinheiro e VIP. Preços ao vivo ficam no jogo.'
   ),
   askPlaceholder: pack('Bijvoorbeeld: waar steel ik de beste auto?', 'For example: where do I steal the best car?', 'Zum Beispiel: wo stehle ich das beste Auto?', 'Par exemple : où voler la meilleure voiture ?', 'Por ejemplo: ¿dónde robo el mejor coche?', 'Ad esempio: dove rubo la migliore auto?', 'Na przykład: gdzie ukraść najlepsze auto?', 'Por exemplo: onde roubo o melhor carro?'),
   askSend: pack('Vraag', 'Ask', 'Fragen', 'Demander', 'Preguntar', 'Chiedi', 'Pytaj', 'Perguntar'),
@@ -177,14 +177,14 @@ export const UI = {
     'Não dou palavras-passe nem códigos. Recupera no jogo.'
   ),
   askSuggest: pack(
-    'Waar steel ik de beste auto?|Hoeveel geld heb ik?|Welke rank ben ik?|Hoe lang heb ik nog VIP?',
-    'Where do I steal the best car?|How much money do I have?|What rank am I?|How long is my VIP left?',
-    'Wo stehle ich das beste Auto?|Wie viel Geld habe ich?|Welchen Rang habe ich?|Wie lange läuft mein VIP noch?',
-    'Où voler la meilleure voiture ?|Combien d’argent ai-je ?|Quel est mon rang ?|Combien de temps de VIP reste-t-il ?',
-    '¿Dónde robo el mejor coche?|¿Cuánto dinero tengo?|¿Qué rango soy?|¿Cuánto VIP me queda?',
-    'Dove rubo la migliore auto?|Quanti soldi ho?|Che grado sono?|Quanto VIP mi resta?',
-    'Gdzie ukraść najlepsze auto?|Ile mam pieniędzy?|Jaka jest moja ranga?|Ile zostało mi VIP-u?',
-    'Onde roubo o melhor carro?|Quanto dinheiro tenho?|Qual é a minha patente?|Quanto VIP me resta?'
+    'Waar steel ik de beste auto?|Hoeveel geld heb ik?|Welke baan kan ik?|Waar is cocaïne doorgaans lager?',
+    'Where do I steal the best car?|How much money do I have?|Which job can I do?|Where is cocaine typically lower?',
+    'Wo stehle ich das beste Auto?|Wie viel Geld habe ich?|Welchen Job kann ich?|Wo ist Kokain typisch niedriger?',
+    'Où voler la meilleure voiture ?|Combien d’argent ai-je ?|Quel emploi puis-je faire ?|Où la cocaïne est-elle typiquement plus basse ?',
+    '¿Dónde robo el mejor coche?|¿Cuánto dinero tengo?|¿Qué trabajo puedo hacer?|¿Dónde suele ser más baja la cocaína?',
+    'Dove rubo la migliore auto?|Quanti soldi ho?|Che lavoro posso fare?|Dove la cocaina è di solito più bassa?',
+    'Gdzie ukraść najlepsze auto?|Ile mam pieniędzy?|Jaką pracę mogę?|Gdzie kokaina jest zwykle niższa?',
+    'Onde roubo o melhor carro?|Quanto dinheiro tenho?|Que emprego posso fazer?|Onde a cocaína costuma ser mais baixa?'
   ),
   askLoginNeed: pack(
     'Log in met je The Mob State-account om jouw eigen cijfers te zien. Dat gebeurt op deze officiële Almanak; we bewaren alleen een sessie in deze browser.',
@@ -373,6 +373,50 @@ export const UI = {
   ),
   askTravelEmpty: pack('Voor dat land staat geen reiscatalogus.', 'There is no travel catalogue for that country.', 'Für dieses Land steht kein Reisekatalog.', 'Pas de catalogue de voyage pour ce pays.', 'No hay catálogo de viaje para ese país.', 'Non c’è catalogo viaggi per quel paese.', 'Nie ma katalogu podróży dla tego kraju.', 'Não há catálogo de viagem para esse país.'),
   askTravelNone: pack('nergens rechtstreeks in de catalogus', 'nowhere directly in the catalogue', 'nirgends direkt im Katalog', 'nulle part en direct dans le catalogue', 'en ningún sitio en directo en el catálogo', 'da nessuna parte in diretto nel catalogo', 'nigdzie bezpośrednio w katalogu', 'em lado nenhum em direto no catálogo'),
+  askFollowJob: pack('Welke baan kan ik op mijn rank?', 'Which job can I do at my rank?', 'Welchen Job kann ich auf meinem Rang?', 'Quel emploi puis-je faire à mon rang ?', '¿Qué trabajo puedo hacer en mi rango?', 'Che lavoro posso fare al mio grado?', 'Jaką pracę mogę na mojej randze?', 'Que emprego posso fazer na minha patente?'),
+  askFollowDrug: pack('Waar is cocaïne doorgaans lager?', 'Where is cocaine typically lower?', 'Wo ist Kokain typisch niedriger?', 'Où la cocaïne est-elle typiquement plus basse ?', '¿Dónde suele ser más baja la cocaína?', 'Dove la cocaina è di solito più bassa?', 'Gdzie kokaina jest zwykle niższa?', 'Onde a cocaína costuma ser mais baixa?'),
+  askJobBest: pack(
+    'De catalogus-baan met de hoogste max-poen is {name} (vanaf rang {rank}, tot {reward}, XP {xp}). Live kansen staan in het spel.',
+    'The catalogue job with the highest max pay is {name} (from rank {rank}, up to {reward}, XP {xp}). Live odds stay in the game.',
+    'Der Katalog-Job mit dem höchsten Max-Lohn ist {name} (ab Rang {rank}, bis {reward}, XP {xp}). Live-Chancen bleiben im Spiel.',
+    'L’emploi catalogue au plus haut gain max est {name} (dès le rang {rank}, jusqu’à {reward}, XP {xp}). Les chances live restent en jeu.',
+    'El trabajo de catálogo con mayor pago máximo es {name} (desde rango {rank}, hasta {reward}, XP {xp}). Las probabilidades en vivo siguen en el juego.',
+    'Il lavoro da catalogo col payout massimo più alto è {name} (dal grado {rank}, fino a {reward}, XP {xp}). Le probabilità live restano in gioco.',
+    'Praca katalogowa z najwyższą max-wypłatą to {name} (od rangi {rank}, do {reward}, XP {xp}). Szanse na żywo zostają w grze.',
+    'O emprego de catálogo com maior pagamento máximo é {name} (a partir da patente {rank}, até {reward}, XP {xp}). Probabilidades ao vivo ficam no jogo.'
+  ),
+  askJobMine: pack(
+    'Op rang {mine} kun je onder meer {names}. De hoogste catalogus-max op jouw rang is {name} (tot {reward}).',
+    'At rank {mine} you can do, among others, {names}. The highest catalogue max at your rank is {name} (up to {reward}).',
+    'Auf Rang {mine} kannst du unter anderem {names}. Die höchste Katalog-Max auf deinem Rang ist {name} (bis {reward}).',
+    'Au rang {mine} tu peux notamment {names}. Le max catalogue le plus haut à ton rang est {name} (jusqu’à {reward}).',
+    'En rango {mine} puedes, entre otros, {names}. El máximo de catálogo más alto en tu rango es {name} (hasta {reward}).',
+    'Al grado {mine} puoi, tra gli altri, {names}. Il max da catalogo più alto al tuo grado è {name} (fino a {reward}).',
+    'Na randze {mine} możesz m.in. {names}. Najwyższe max katalogowe na twojej randze to {name} (do {reward}).',
+    'Na patente {mine} podes, entre outros, {names}. O máximo de catálogo mais alto na tua patente é {name} (até {reward}).'
+  ),
+  askJobEmpty: pack('In die catalogus staat voor die rang geen baan.', 'The catalogue has no job for that rank.', 'Im Katalog steht dazu kein Job.', 'Le catalogue n’a pas d’emploi pour ce rang.', 'El catálogo no tiene trabajo para ese rango.', 'Il catalogo non ha un lavoro per quel grado.', 'Katalog nie ma pracy na tę rangę.', 'O catálogo não tem emprego para essa patente.'),
+  askDrugTypical: pack(
+    'In de catalogus staat {name} doorgaans lager in {cheap} en hoger in {dear}. Dat zijn vaste landfactoren, geen live straatprijs.',
+    'In the catalogue {name} is typically lower in {cheap} and higher in {dear}. Those are fixed country factors, not a live street price.',
+    'Im Katalog steht {name} typisch niedriger in {cheap} und höher in {dear}. Das sind feste Landesfaktoren, kein Live-Straßenpreis.',
+    'Au catalogue {name} est typiquement plus bas à {cheap} et plus haut à {dear}. Ce sont des facteurs pays fixes, pas un prix live.',
+    'En el catálogo {name} suele ser más baja en {cheap} y más alta en {dear}. Son factores de país fijos, no un precio en vivo.',
+    'Nel catalogo {name} è di solito più bassa a {cheap} e più alta a {dear}. Sono fattori paese fissi, non un prezzo live.',
+    'W katalogu {name} jest zwykle niższa w {cheap} i wyższa w {dear}. To stałe mnożniki kraju, nie żywa cena uliczna.',
+    'No catálogo {name} costuma ser mais baixa em {cheap} e mais alta em {dear}. São fatores de país fixos, não um preço ao vivo.'
+  ),
+  askDrugEmpty: pack('Voor die drug staat geen catalogusfactor.', 'There is no catalogue factor for that drug.', 'Für diese Droge steht kein Katalogfaktor.', 'Pas de facteur catalogue pour cette drogue.', 'No hay factor de catálogo para esa droga.', 'Non c’è fattore catalogo per quella droga.', 'Nie ma mnożnika katalogowego dla tego narkotyku.', 'Não há fator de catálogo para essa droga.'),
+  askWeaponNamed: pack(
+    '{name} heeft catalogusschade {damage}, vanaf rang {rank}, catalogusprijs {price}. Straatprijzen staan niet in de Almanak.',
+    '{name} has catalogue damage {damage}, from rank {rank}, catalogue price {price}. Street prices are not in the Almanac.',
+    '{name} hat Katalogschaden {damage}, ab Rang {rank}, Katalogpreis {price}. Straßenpreise stehen nicht im Almanach.',
+    '{name} a {damage} de dégâts catalogue, dès le rang {rank}, prix catalogue {price}. Les prix de rue ne sont pas dans l’almanach.',
+    '{name} tiene daño de catálogo {damage}, desde rango {rank}, precio de catálogo {price}. Los precios de calle no están en el almanaque.',
+    '{name} ha danno da catalogo {damage}, dal grado {rank}, prezzo catalogo {price}. I prezzi di strada non sono nell’almanacco.',
+    '{name} ma obrażenia katalogowe {damage}, od rangi {rank}, cena katalogowa {price}. Cen ulicznych nie ma w almanachu.',
+    '{name} tem dano de catálogo {damage}, a partir da patente {rank}, preço de catálogo {price}. Preços de rua não estão no almanaque.'
+  ),
   rankEmptySuit: pack('Leeg pak', 'Empty Suit', 'Leerer Anzug', 'Costume vide', 'Traje vacío', 'Abito vuoto', 'Pusty garnitur', 'Terno Vazio'),
   rankDeliveryBoy: pack('Bezorger', 'Delivery Boy', 'Bote', 'Livreur', 'Repartidor', 'Ragazzo delle consegne', 'Dostawca', 'Entregador'),
   rankPicciotto: pack('Picciotto', 'Picciotto', 'Picciotto', 'Picciotto', 'Picciotto', 'Picciotto', 'Picciotto', 'Picciotto'),

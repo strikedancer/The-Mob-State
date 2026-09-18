@@ -31,6 +31,9 @@
     ['stelen', 'steal', 'jatten', 'diefstal', 'heist', 'stehlen', 'voler', 'robar', 'rubare', 'ukrasc', 'roubar'],
     ['wapen', 'weapon', 'waffe', 'arme', 'arma', 'bron'],
     ['misdaad', 'crime', 'verbrechen', 'crimen', 'crimine', 'przestepstwo'],
+    ['baan', 'banen', 'job', 'jobs', 'emploi', 'trabajo', 'lavoro', 'praca', 'emprego', 'arbeit'],
+    ['cocaine', 'coke', 'kokain', 'kokaina', 'cocaina'],
+    ['wiet', 'weed', 'cannabis'],
     ['reizen', 'travel', 'reisen', 'voyage', 'viaje', 'viaggio', 'podroz'],
   ];
 
@@ -58,6 +61,16 @@
   const WEAPON_RE = /\b(wapens?|weapons?|waffe(?:n)?|armes?|armas?|armi|bron(?:i)?)\b/i;
   const CRIME_RE =
     /\b(misda(?:ad|den)|crimes?|verbrechen|crimen(?:es)?|crimini?|przestepstw\w*)\b/i;
+  const JOB_RE =
+    /\b(baan|banen|jobs?|arbeit|emploi(?:s)?|trabajo(?:s)?|lavor[io]|prac[ae]|emprego(?:s)?)\b/i;
+  const DRUG_RE =
+    /\b(drugs?|drogen|drogues?|drogas?|narkotyk\w*|coca[i]?ne|coke|kokain\w*|wiet|weed|hero[i]?n\w*|xtc|ecstasy|hasj|hash|lsd|meth|fentanyl)\b/i;
+  const CHEAP_RE =
+    /\b(lager|goedkoop(?:st(?:e)?)?|cheaper|cheapest|lower|niedriger|gunstig(?:er|st)?|moins\s+cher|plus\s+bas(?:se)?|mas\s+(?:baja|barata)|piu\s+bassa|nizsz\w*|mais\s+baixa)\b/i;
+  const DEAR_RE =
+    /\b(hoger|duur(?:der|ste)?|higher|dearer|expensive|teurer|teuerste|plus\s+cher|plus\s+haut(?:e)?|mas\s+(?:alta|cara)|piu\s+alta|wyzsz\w*|mais\s+alta)\b/i;
+  const TYPICAL_RE =
+    /\b(doorgaans|typically|typisch|typiquement|suele|di\s+solito|zwykle|costuma)\b/i;
   const TRAVEL_RE =
     /\b(hoe\s+kom\s+ik|how\s+(?:do\s+i\s+|to\s+)?get\s+to|wie\s+komme\s+ich|comment\s+(?:aller|venir|je\s+vais)|como\s+(?:llego|chegar|chego)|come\s+arriv[oa]|jak\s+(?:dojechac|dostac\s+sie)|reis\s+naar|travel\s+to|vliegen\s+naar|flug\s+nach|voler\s+vers|volare\s+a)\b/i;
   const HUB_RE = /\b(reis.?hubs?|travel\s*hubs?|reise-?hubs?|hubs?\s+de\s+voyage)\b/i;
@@ -346,7 +359,12 @@
     if (
       fields.includes('rank') &&
       !identity &&
-      (CRIME_RE.test(q) || WEAPON_RE.test(q) || STEAL_RE.test(q) || detectKinds(q).length || MINE_RE.test(q))
+      (CRIME_RE.test(q) ||
+        WEAPON_RE.test(q) ||
+        JOB_RE.test(q) ||
+        STEAL_RE.test(q) ||
+        detectKinds(q).length ||
+        MINE_RE.test(q))
     ) {
       fields.splice(fields.indexOf('rank'), 1);
     }
@@ -387,18 +405,27 @@
     return best;
   }
 
-  function findNamedVehicle(facts, question) {
+  function findNamedIn(list, question, minLen = 3) {
     const q = fold(question);
-    if (!facts?.vehicles || q.length < 4) return null;
+    if (!list?.length || q.length < minLen) return null;
+    const tokens = new Set(
+      q
+        .replace(/[^\p{L}\p{N}]+/gu, ' ')
+        .split(/\s+/)
+        .filter(Boolean)
+    );
     let best = null;
     let bestLen = 0;
-    for (const vehicle of facts.vehicles) {
-      const names = [vehicle.name, String(vehicle.id || '').replace(/_/g, ' '), ...(vehicle.names || [])]
+    for (const item of list) {
+      const names = [item.name, String(item.id || '').replace(/_/g, ' '), ...(item.names || [])]
         .map(fold)
-        .filter((n) => n.length >= 4);
+        .filter((n) => n.length >= minLen);
       for (const name of names) {
-        if (q.includes(name) && name.length > bestLen) {
-          best = vehicle;
+        const hit = name.includes(' ')
+          ? q.includes(name)
+          : tokens.has(name) || (name.length >= 4 && q.includes(name));
+        if (hit && name.length > bestLen) {
+          best = item;
           bestLen = name.length;
         }
       }
@@ -406,10 +433,28 @@
     return best;
   }
 
+  function findNamedVehicle(facts, question) {
+    return findNamedIn(facts?.vehicles, question, 4);
+  }
+
+  function findNamedWeapon(facts, question) {
+    return findNamedIn(facts?.weapons, question, 3);
+  }
+
+  function findNamedDrug(facts, question) {
+    const named = findNamedIn(facts?.drugs, question, 3);
+    if (named) return named;
+    const q = fold(question);
+    if (!/\b(wiet|weed|cannabis)\b/.test(q)) return null;
+    return (facts?.drugs || []).find((d) => d.id === 'white_widow' || d.type === 'WEED') || null;
+  }
+
   function isStealQuestion(question) {
     const q = fold(question);
     if (WEAPON_RE.test(q) && !detectKinds(q).length) return false;
     if (CRIME_RE.test(q) && !detectKinds(q).length) return false;
+    if (JOB_RE.test(q) && !detectKinds(q).length) return false;
+    if (DRUG_RE.test(q) && !detectKinds(q).length && !STEAL_RE.test(q)) return false;
     if (TRAVEL_RE.test(q) && !STEAL_RE.test(q) && !detectKinds(q).length) return false;
     if (STEAL_RE.test(q)) return true;
     if (WHERE_RE.test(q) && (BEST_RE.test(q) || detectKinds(q).length)) return true;
@@ -660,6 +705,7 @@
       out.push(fill(copy.followTravel, { country: countryLabel(facts, intent.country) }));
     }
     if (copy.followWeapon) out.push(copy.followWeapon);
+    if (copy.followJob) out.push(copy.followJob);
     return [...new Set(out)].slice(0, 3);
   }
 
@@ -672,13 +718,25 @@
   }
 
   function whichLike(question) {
-    return /\b(welk|welke|which|welche(?:s|r)?|quelle|quel|cual|que|quale|jaka|jaki|qual)\b/i.test(fold(question));
+    return /\b(welk|welke|which|welche(?:s|r|n|m)?|quelle|quel(?:le|s|les)?|cual|que|che|quale|jaka|jaki|qual)\b/i.test(
+      fold(question)
+    );
   }
 
   function detectWeaponIntent(question, facts, player) {
     const q = fold(question);
-    if (!facts?.weapons?.length || !WEAPON_RE.test(q)) return null;
+    if (!facts?.weapons?.length) return null;
     if (detectKinds(q).length) return null;
+    const named = findNamedWeapon(facts, q);
+    if (named && !BEST_RE.test(q) && !MINE_RE.test(q)) {
+      const short = fold(named.name).replace(/\s+/g, '').length < 4;
+      const detail =
+        /\b(schade|damage|degats|dano|obrazen|schaden|prijs|price|preis|prix|precio|prezzo|cena|rang|rank)\b/i.test(
+          q
+        );
+      if (!short || detail) return { intent: 'weapon', named };
+    }
+    if (!WEAPON_RE.test(q)) return null;
     if (!(BEST_RE.test(q) || MINE_RE.test(q) || whichLike(q))) return null;
     return {
       intent: 'weapon',
@@ -688,6 +746,29 @@
 
   function formatWeaponAnswer(intent, facts, copy, player) {
     const lang = facts.lang || 'nl';
+    if (intent.named) {
+      const top = intent.named;
+      return {
+        intent: 'weapon',
+        blocked: null,
+        empty: false,
+        needAuth: false,
+        body: clip(
+          fill(copy.weaponNamed || copy.weaponBest, {
+            name: top.name,
+            damage: top.damage,
+            rank: top.requiredRank,
+            price: moneyFmt(top.price),
+          }),
+          900
+        ),
+        sources: [
+          { title: top.name, href: `/${lang}/weapons/${top.id}/` },
+          { title: copy.weapons || 'Weapons', href: `/${lang}/weapons/` },
+        ],
+        followups: [copy.followCrime, copy.followJob, copy.followStealCar].filter(Boolean).slice(0, 3),
+      };
+    }
     const maxRank = intent.mine && player?.rank ? Number(player.rank) : null;
     let rows = (facts.weapons || [])
       .filter((w) => maxRank == null || w.requiredRank <= maxRank)
@@ -785,7 +866,137 @@
         { title: top.name, href: `/${lang}/crimes/${top.id}/` },
         { title: copy.crimes || 'Crimes', href: `/${lang}/crimes/` },
       ],
-      followups: [copy.followWeapon, copy.followStealCar].filter(Boolean).slice(0, 3),
+      followups: [copy.followWeapon, copy.followJob, copy.followStealCar].filter(Boolean).slice(0, 3),
+    };
+  }
+
+  function detectJobIntent(question, facts, player) {
+    const q = fold(question);
+    if (!facts?.jobs?.length || !JOB_RE.test(q)) return null;
+    if (detectKinds(q).length) return null;
+    if (!(BEST_RE.test(q) || MINE_RE.test(q) || whichLike(q))) return null;
+    return {
+      intent: 'job',
+      mine: MINE_RE.test(q) || Boolean(player?.rank && (BEST_RE.test(q) || whichLike(q))),
+    };
+  }
+
+  function formatJobAnswer(intent, facts, copy, player) {
+    const lang = facts.lang || 'nl';
+    const maxRank = intent.mine && player?.rank ? Number(player.rank) : null;
+    const ranked = (facts.jobs || [])
+      .filter((job) => maxRank == null || job.minLevel <= maxRank)
+      .sort((a, b) => b.maxEarnings - a.maxEarnings || a.minLevel - b.minLevel);
+    const top = ranked[0];
+    if (!top) {
+      return {
+        intent: 'job',
+        blocked: null,
+        empty: true,
+        needAuth: false,
+        body: copy.jobEmpty || copy.empty,
+        sources: [{ title: copy.jobs || 'Jobs', href: `/${lang}/jobs/` }],
+        followups: [copy.followCrime, copy.followStealCar].filter(Boolean),
+      };
+    }
+    const names = listJoin(
+      ranked.slice(0, 4).map((job) => job.name),
+      copy
+    );
+    const tpl = maxRank != null ? copy.jobMine : copy.jobBest;
+    return {
+      intent: 'job',
+      blocked: null,
+      empty: false,
+      needAuth: false,
+      body: clip(
+        fill(tpl, {
+          name: top.name,
+          names,
+          rank: top.minLevel,
+          reward: moneyFmt(top.maxEarnings),
+          xp: top.xp,
+          mine: maxRank || '',
+        }),
+        900
+      ),
+      sources: [
+        { title: top.name, href: `/${lang}/jobs/${top.id}/` },
+        { title: copy.jobs || 'Jobs', href: `/${lang}/jobs/` },
+      ],
+      followups: [copy.followCrime, copy.followDrug, copy.followStealCar].filter(Boolean).slice(0, 3),
+    };
+  }
+
+  function detectDrugIntent(question, facts) {
+    const q = fold(question);
+    if (!facts?.drugs?.length) return null;
+    if (detectKinds(q).length || STEAL_RE.test(q)) return null;
+    const wantsTypical = WHERE_RE.test(q) || CHEAP_RE.test(q) || DEAR_RE.test(q) || TYPICAL_RE.test(q);
+    if (!wantsTypical) return null;
+    const named = findNamedDrug(facts, q);
+    const fallback =
+      DRUG_RE.test(q) && !named
+        ? (facts.drugs || []).find((d) => d.id === 'cocaine') || facts.drugs[0]
+        : null;
+    const drug = named || fallback;
+    if (!drug) return null;
+    return { intent: 'drug', drug };
+  }
+
+  function typicalDrugCountries(drug, facts, limit = 3) {
+    const rows = Object.entries(drug.pricing || {})
+      .map(([id, value]) => ({
+        id,
+        value: Number(value),
+        canon: facts.countries?.[id]?.canon || null,
+      }))
+      .filter((row) => row.canon && Number.isFinite(row.value));
+    const cheap = [...rows].sort((a, b) => a.value - b.value || a.id.localeCompare(b.id)).slice(0, limit);
+    const dear = [...rows].sort((a, b) => b.value - a.value || a.id.localeCompare(b.id)).slice(0, limit);
+    return { cheap, dear };
+  }
+
+  function formatDrugAnswer(intent, facts, copy) {
+    const lang = facts.lang || 'nl';
+    const drug = intent.drug;
+    const { cheap, dear } = typicalDrugCountries(drug, facts);
+    const sources = [
+      { title: drug.name, href: `/${lang}/drugs/${drug.id}/` },
+      { title: copy.drugs || 'Drugs', href: `/${lang}/drugs/` },
+    ];
+    if (!cheap.length && !dear.length) {
+      return {
+        intent: 'drug',
+        blocked: null,
+        empty: true,
+        needAuth: false,
+        body: copy.drugEmpty || copy.empty,
+        sources,
+        followups: [copy.followJob, copy.followStealCar].filter(Boolean),
+      };
+    }
+    return {
+      intent: 'drug',
+      blocked: null,
+      empty: false,
+      needAuth: false,
+      body: clip(
+        fill(copy.drugTypical, {
+          name: drug.name,
+          cheap: listJoin(
+            cheap.map((row) => countryLabel(facts, row.id)),
+            copy
+          ),
+          dear: listJoin(
+            dear.map((row) => countryLabel(facts, row.id)),
+            copy
+          ),
+        }),
+        900
+      ),
+      sources,
+      followups: [copy.followJob, copy.followStealCar].filter(Boolean).slice(0, 3),
     };
   }
 
@@ -914,6 +1125,20 @@
       return result;
     }
 
+    const drugIntent = detectDrugIntent(resolved, facts);
+    if (drugIntent) {
+      const result = formatDrugAnswer(drugIntent, facts, merged);
+      remember(session, result, question);
+      return result;
+    }
+
+    const jobIntent = detectJobIntent(resolved, facts, player);
+    if (jobIntent) {
+      const result = formatJobAnswer(jobIntent, facts, merged, player);
+      remember(session, result, question);
+      return result;
+    }
+
     const weaponIntent = detectWeaponIntent(resolved, facts, player);
     if (weaponIntent) {
       const result = formatWeaponAnswer(weaponIntent, facts, merged, player);
@@ -983,6 +1208,8 @@
     detectStealIntent,
     detectWeaponIntent,
     detectCrimeIntent,
+    detectJobIntent,
+    detectDrugIntent,
     detectTravelIntent,
     formatStealAnswer,
     formatPlayerAnswer,
