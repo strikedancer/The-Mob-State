@@ -19040,7 +19040,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpAlmanacBlurb =>
-      'Complete handleiding (profiel, avatar, selfie-portret en alle schermen) plus catalogi met officiële beelden, alle talen: wiki.themobstate.com';
+      'Complete handleiding plus catalogi. Vraag de Almanak waar je de beste auto, boot of motor steelt, of log daar in voor jouw geld, rank en resterende VIP: wiki.themobstate.com';
 
   @override
   String landingCopyright(int year) {

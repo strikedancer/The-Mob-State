@@ -1,7 +1,7 @@
 import { LANGS, LANG_LABEL, ui } from './i18n.mjs';
 
 /** Query-bust CSS/JS; nginx caches those files for 7 days. */
-const ASSET_V = '20260918a';
+const ASSET_V = '20260918b';
 
 export function esc(value) {
   return String(value ?? '')
@@ -104,13 +104,17 @@ export function page({ lang, title, path, hero, crumbs, body, description }) {
   </main>
   <footer class="footer">${esc(ui(lang, 'footer'))}</footer>
   <button type="button" class="ask-toggle" id="almanac-ask" aria-expanded="false" aria-controls="almanac-chat">${esc(ui(lang, 'askOpen'))}</button>
-  <aside id="almanac-chat" class="ask-panel" hidden role="dialog" aria-labelledby="almanac-ask-title" data-welcome="${esc(ui(lang, 'askWelcome'))}" data-empty="${esc(ui(lang, 'askEmpty'))}" data-read="${esc(ui(lang, 'askRead'))}" data-more="${esc(ui(lang, 'askMore'))}" data-sources="${esc(ui(lang, 'askSources'))}" data-follow="${esc(ui(lang, 'askFollow'))}" data-follow-tpl="${esc(ui(lang, 'askFollowTpl'))}" data-thinking="${esc(ui(lang, 'askThinking'))}" data-blocked-price="${esc(ui(lang, 'askBlockedPrice'))}" data-blocked-account="${esc(ui(lang, 'askBlockedAccount'))}">
+  <aside id="almanac-chat" class="ask-panel" hidden role="dialog" aria-labelledby="almanac-ask-title" data-welcome="${esc(ui(lang, 'askWelcome'))}" data-empty="${esc(ui(lang, 'askEmpty'))}" data-read="${esc(ui(lang, 'askRead'))}" data-more="${esc(ui(lang, 'askMore'))}" data-sources="${esc(ui(lang, 'askSources'))}" data-follow="${esc(ui(lang, 'askFollow'))}" data-follow-tpl="${esc(ui(lang, 'askFollowTpl'))}" data-thinking="${esc(ui(lang, 'askThinking'))}" data-blocked-price="${esc(ui(lang, 'askBlockedPrice'))}" data-blocked-account="${esc(ui(lang, 'askBlockedAccount'))}" data-blocked-secret="${esc(ui(lang, 'askBlockedSecret'))}" data-login-need="${esc(ui(lang, 'askLoginNeed'))}" data-login-user="${esc(ui(lang, 'askLoginUser'))}" data-login-pass="${esc(ui(lang, 'askLoginPass'))}" data-login-submit="${esc(ui(lang, 'askLoginSubmit'))}" data-login-fail="${esc(ui(lang, 'askLoginFail'))}" data-login-unverified="${esc(ui(lang, 'askLoginUnverified'))}" data-login-banned="${esc(ui(lang, 'askLoginBanned'))}" data-logout="${esc(ui(lang, 'askLogout'))}" data-session="${esc(ui(lang, 'askSession'))}" data-facts="/${lang}/facts.json" data-api="https://api.themobstate.com">
     <header class="ask-head">
       <div>
         <p class="ask-kicker">${esc(ui(lang, 'askKicker'))}</p>
         <h2 id="almanac-ask-title">${esc(ui(lang, 'askTitle'))}</h2>
+        <p class="ask-session" id="almanac-ask-session" hidden></p>
       </div>
-      <button type="button" class="ask-close" id="almanac-ask-close" aria-label="${esc(ui(lang, 'askClose'))}">×</button>
+      <div class="ask-head-actions">
+        <button type="button" class="ask-logout" id="almanac-ask-logout" hidden>${esc(ui(lang, 'askLogout'))}</button>
+        <button type="button" class="ask-close" id="almanac-ask-close" aria-label="${esc(ui(lang, 'askClose'))}">×</button>
+      </div>
     </header>
     <div class="ask-log" id="almanac-ask-log"></div>
     <div class="ask-suggest">${ui(lang, 'askSuggest')

@@ -3,7 +3,7 @@
 ## Scope
 Public, read-only player almanac generated from `backend/content/*.json` and served at `https://wiki.themobstate.com`. Pages are regenerated automatically when those catalogs (or wiki templates) change on the VPS. Noir/gold static HTML in all player locales (`nl`, `en`, `de`, `fr`, `es`, `it`, `pl`, `pt`). Original game images come from the same `runtime/client-images` mount as the Flutter client (`/images/...`). Home titles/descriptions name **The Mob State** plus a local “text-based mafia game” phrase (`seoDocumentTitle` / `seoDocumentDescription` in `wiki/src/i18n.mjs`). Sitemap: `https://wiki.themobstate.com/sitemap.xml` (also listed from `themobstate.com/robots.txt`). Search Console: aparte URL-prefix property — zie `docs/seo.md`.
 
-This is a catalogue and typical-relative guide, not live Black Market quotes. Street prices still move in-game. The **Handleiding** chapter (`/{lang}/guide/`) publishes the full in-game Help & Uitleg, including **Don**, **Midnight Races**, **Profiel & avatar**, **Prostitutie** and **Red Light Districts**. Search in the header uses `/{lang}/search.json` and matches every generated page, not only the cards on the current screen. A bottom-right **Ask the Almanac** panel answers player questions from that same index with BM25 retrieval, slang synonyms (e.g. hoeren → prostitutie), multi-passage answers, source citations and follow-up prompts (handbook first). It is not a live-price bot, does not know account balances, and does not call the game API.
+This is a catalogue and typical-relative guide, not live Black Market quotes. Street prices still move in-game. The **Handleiding** chapter (`/{lang}/guide/`) publishes the full in-game Help & Uitleg, including **Don**, **Midnight Races**, **Profiel & avatar**, **Prostitutie** and **Red Light Districts**. Search in the header uses `/{lang}/search.json` and matches every generated page, not only the cards on the current screen. A bottom-right **Ask the Almanac** panel answers player questions from that same index (BM25, slang, sources) plus catalog **steal intents** (`/{lang}/facts.json`: where the highest-catalogue car/boat/motorcycle can appear; you do not pick the model on the street). After signing in on the wiki it may call `GET /almanac/me` for **own** money, rank, VIP remaining, jail and location. Live street prices and passwords stay blocked.
 
 ## Primary Frontend Entry
 - Generator: `wiki/src/build.mjs` (one-shot), `wiki/src/watch.mjs` (rebuild on file change) and `wiki/src/guides.mjs` (Help handbook)
@@ -12,7 +12,8 @@ This is a catalogue and typical-relative guide, not live Black Market quotes. St
 - In-game links: Help (`helpAlmanacOpen`) and landing/login footer (`landingFooterAlmanac`) → `AppConfig.wikiHomeUrl`
 
 ## Primary Backend Entry
-- None. The almanac does not call the API. Catalog JSON is bind-mounted from `backend/content` (`/content` in the wiki container). HTML is generated at container start and rebuilt when those JSON files or `wiki/src` templates change.
+- Catalog HTML is still generated at container start from bind-mounted `backend/content` (`/content` in the wiki container). Rebuilds when those JSON files or `wiki/src` templates change.
+- Optional live snapshot: `GET /almanac/me` (JWT, CORS `wiki.themobstate.com`) returns the signed-in player's own cash/bank, rank, VIP/Crew VIP remaining, health, wanted, country, credits and jail time. Wiki login uses existing `POST /auth/login`. No other players, no email, no live street prices.
 
 ## Change Rules
 - Catalog or copy changes in `backend/content/`, Help ARBs (`client/lib/l10n/app_*.arb`) and `wiki/src/` refresh the live almanac after they land on the VPS (`git pull` / standard deploy). No extra `wiki/content` copy is required.
@@ -32,9 +33,11 @@ This is a catalogue and typical-relative guide, not live Black Market quotes. St
 - Almanac -> Territory / Crew (`/{lang}/guide/territory/` and `/{lang}/guide/crew/`): HQ reserve vs frontline arms cache, ammo spend, weapon wear, type match, long supply tax, loot/burn on region loss, personal inventory does not count. Those sentences must land in `/{lang}/search.json` so header search and Ask the Almanac find them. `writeSearchIndexes` keeps handbook `answer` (8000) and page `text` (24000); Ask the Almanac scores snippet + answer + text. Do not shrink those slices without checking that `/guide/territory/` still matches “wapendepot” / “frontline arsenal”.
 - Almanac -> Player Profile / Player Portraits (guide topic `profile`)
 - Almanac -> Balance & Economy (do not leak live economy; typical factors only)
+- Almanac -> Auth / Player (`GET /almanac/me`, wiki CORS origin, own snapshot only)
+- Almanac -> Vehicles / Steel voertuig (steal intents: spawn countries + street-theft, no model picker)
 
 ## Must Preserve
-- One owned-bag / live-price gameplay stays in the client, not on the wiki.
+- One owned-bag / live-price gameplay stays in the client, not on the wiki. Own-account snapshot on the wiki is opt-in via Almanac login and never includes other players or live street quotes.
 - Help & Uitleg remains the in-game “how this screen works” layer; the almanac publishes the same handbook plus catalogues.
 
 ## QA Checklist
@@ -47,11 +50,12 @@ This is a catalogue and typical-relative guide, not live Black Market quotes. St
 7. Changing a file under `backend/content/` on the VPS rebuilds HTML without a wiki image rebuild (container logs show `wiki: rebuilding`).
 8. `/{lang}/guide/` lists every Help topic; `/guide/don/` covers rackets, loans, officials and contracts; `/guide/profile/` covers public profile, preset avatars and selfie portraits.
 9. Header search on any page finds Don, handbook topics (including Red Light District rooms, occupancy heat, events, steal/reclaim and contest, plus Territory arsenal / crew ammo feeding Territory) and catalog items via `/{lang}/search.json`. After changing `wiki/src/client.js`, `ask-engine.js` or `theme.css`, bump `ASSET_V` in `layout.mjs` so browsers skip the 7-day static cache.
-10. The Ask the Almanac button answers “how does Don work?” / slang like “hoeren innen” from `search.json` (BM25 + synonyms, handbook ranked first), cites source pages, offers follow-ups, and refuses live prices / account balances. After changing `wiki/src/client.js`, `ask-engine.js` or `theme.css`, bump `ASSET_V` in `layout.mjs` so browsers skip the 7-day static cache.
+10. The Ask the Almanac button answers “how does Don work?” / slang like “hoeren innen” from `search.json` (BM25 + synonyms, handbook ranked first), cites source pages, offers follow-ups, and refuses live prices and passwords. After changing `wiki/src/client.js`, `ask-engine.js` or `theme.css`, bump `ASSET_V` in `layout.mjs` so browsers skip the 7-day static cache.
+11. Steal questions (“waar steel ik de beste auto/boot/motor”) name catalog spawn countries and rank gates from `/{lang}/facts.json` / `/{lang}/vehicles/steal/`, and state that street theft has no model picker. Own-account questions (“hoeveel geld heb ik”, rank, VIP remaining) prompt wiki login then `GET /almanac/me`.
 
 ## i18n and Messaging
 - Wiki UI: `wiki/src/i18n.mjs`
 - Client CTA keys: `landingFooterAlmanac`, `helpAlmanacOpen`, `helpAlmanacBlurb` in all ARBs.
 
 ## When To Update This File
-Catalog chapters added/removed, subdomain/port changes, or a decision to expose live prices (should stay no).
+Catalog chapters added/removed, Ask-the-Almanac intents (steal / own-account snapshot), subdomain/port changes, or a decision to expose live prices (should stay no).

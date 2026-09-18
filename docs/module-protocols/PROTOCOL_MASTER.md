@@ -70,7 +70,7 @@ Acceptatie-eis:
 - Admin -> Alle gameplay modules met logs, assets of economy-impact
 - Player-facing lists/avatars/namen -> Player Profile
 - Flutter Web/Mobile/PWA shell behavior -> Frontend Platform, Notifications
-- Player Almanac (`wiki.themobstate.com`) -> Trade, Travel, Vehicles, Weapons, Drugs, Materials, Properties, Aviation, Help, Marketing web
+- Player Almanac (`wiki.themobstate.com`) -> Trade, Travel, Vehicles, Weapons, Drugs, Materials, Properties, Aviation, Help, Marketing web, Auth, Player
 - Referrals -> Friends, Auth, Facebook/Google/Discord login, Crimes, Jobs, Messages, Dashboard, Balance & Economy, Marketing web
 - Discord -> Auth, Marketing web, Help, Settings, Referrals, Crew Wars (apart staff-webhook), World chat (optionele kanaalbrug)
 - World chat -> Dashboard, Discord, Messages (blijft privé), Crew chat (blijft crew-only), Admin, Staff roles (Mod/Ops)

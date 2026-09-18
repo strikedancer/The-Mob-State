@@ -19160,7 +19160,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpAlmanacBlurb =>
-      'Manual completo (perfil, avatar, retrato selfie y todas las pantallas) además de catálogos con arte oficial, todos los idiomas: wiki.themobstate.com';
+      'Manual completo más catálogos. Pregunta al almanaque dónde robar el mejor coche, barco o moto, o entra allí para tu dinero, rango y VIP restante: wiki.themobstate.com';
 
   @override
   String landingCopyright(int year) {

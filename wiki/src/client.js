@@ -187,6 +187,34 @@ if (select) {
   });
 }
 
+let askFacts = null;
+let askFactsPromise = null;
+const TOKEN_KEY = 'tms-almanac-token';
+let playerSnapshot = null;
+let playerSnapshotAt = 0;
+
+function loadFacts() {
+  const panel = document.getElementById('almanac-chat');
+  const url = panel?.dataset.facts;
+  if (!url) return Promise.resolve(null);
+  if (askFactsPromise) return askFactsPromise;
+  askFactsPromise = fetch(url)
+    .then((res) => {
+      if (!res.ok) throw new Error('facts missing');
+      return res.json();
+    })
+    .then((data) => {
+      askFacts = data;
+      return data;
+    })
+    .catch(() => {
+      askFactsPromise = null;
+      askFacts = null;
+      return null;
+    });
+  return askFactsPromise;
+}
+
 function initAsk() {
   const toggle = document.getElementById('almanac-ask');
   const panel = document.getElementById('almanac-chat');
@@ -194,8 +222,11 @@ function initAsk() {
   const form = document.getElementById('almanac-ask-form');
   const input = document.getElementById('almanac-ask-input');
   const close = document.getElementById('almanac-ask-close');
+  const logout = document.getElementById('almanac-ask-logout');
+  const sessionEl = document.getElementById('almanac-ask-session');
   if (!toggle || !panel || !log || !form || !input) return;
 
+  const apiBase = (panel.dataset.api || 'https://api.themobstate.com').replace(/\/$/, '');
   const copy = {
     welcome: panel.dataset.welcome || '',
     empty: panel.dataset.empty || '',
@@ -207,8 +238,37 @@ function initAsk() {
     thinking: panel.dataset.thinking || '…',
     blockedPrice: panel.dataset.blockedPrice || '',
     blockedAccount: panel.dataset.blockedAccount || '',
+    blockedSecret: panel.dataset.blockedSecret || panel.dataset.blockedAccount || '',
+    loginNeed: panel.dataset.loginNeed || '',
+    loginUser: panel.dataset.loginUser || '',
+    loginPass: panel.dataset.loginPass || '',
+    loginSubmit: panel.dataset.loginSubmit || '',
+    loginFail: panel.dataset.loginFail || '',
+    loginUnverified: panel.dataset.loginUnverified || '',
+    loginBanned: panel.dataset.loginBanned || '',
+    logout: panel.dataset.logout || '',
+    session: panel.dataset.session || '{name}',
   };
   const session = { lastTitle: '', lastHref: '', lastQuery: '' };
+
+  function token() {
+    try {
+      return localStorage.getItem(TOKEN_KEY) || '';
+    } catch {
+      return '';
+    }
+  }
+
+  function setToken(value) {
+    try {
+      if (value) localStorage.setItem(TOKEN_KEY, value);
+      else localStorage.removeItem(TOKEN_KEY);
+    } catch {
+      /* ignore */
+    }
+    playerSnapshot = null;
+    playerSnapshotAt = 0;
+  }
 
   function addMsg(kind, html, extraClass) {
     const row = document.createElement('div');
@@ -219,11 +279,63 @@ function initAsk() {
     return row;
   }
 
+  function paintSession() {
+    if (!sessionEl || !logout) return;
+    if (playerSnapshot?.username) {
+      sessionEl.hidden = false;
+      sessionEl.textContent = copy.session.replace('{name}', playerSnapshot.username);
+      logout.hidden = false;
+    } else {
+      sessionEl.hidden = true;
+      sessionEl.textContent = '';
+      logout.hidden = !token();
+    }
+  }
+
+  async function fetchSnapshot(force) {
+    const auth = token();
+    if (!auth) {
+      playerSnapshot = null;
+      paintSession();
+      return null;
+    }
+    if (!force && playerSnapshot && Date.now() - playerSnapshotAt < 60000) return playerSnapshot;
+    try {
+      const res = await fetch(`${apiBase}/almanac/me`, {
+        headers: { Authorization: `Bearer ${auth}` },
+      });
+      if (res.status === 401 || res.status === 403) {
+        setToken('');
+        paintSession();
+        return null;
+      }
+      if (!res.ok) return playerSnapshot;
+      const data = await res.json();
+      playerSnapshot = data.snapshot || null;
+      playerSnapshotAt = Date.now();
+      paintSession();
+      return playerSnapshot;
+    } catch {
+      return playerSnapshot;
+    }
+  }
+
+  function loginFormHtml(pending) {
+    return `<p>${escHtml(copy.loginNeed)}</p>
+      <form class="ask-login" data-pending="${escHtml(pending || '')}">
+        <label>${escHtml(copy.loginUser)}<input name="username" autocomplete="username" required maxlength="50"></label>
+        <label>${escHtml(copy.loginPass)}<input name="password" type="password" autocomplete="current-password" required maxlength="200"></label>
+        <button type="submit">${escHtml(copy.loginSubmit)}</button>
+      </form>`;
+  }
+
   function openPanel() {
     panel.hidden = false;
     toggle.setAttribute('aria-expanded', 'true');
     if (!log.childElementCount && copy.welcome) addMsg('bot', `<p>${escHtml(copy.welcome)}</p>`);
     loadSearchIndex();
+    loadFacts();
+    fetchSnapshot();
     input.focus();
   }
 
@@ -234,11 +346,15 @@ function initAsk() {
   }
 
   function renderAnswer(result) {
+    if (result.needAuth) {
+      addMsg('bot', loginFormHtml(result.pending || session.lastQuery || ''));
+      return;
+    }
     if (result.empty || result.blocked) {
       addMsg('bot', `<p>${escHtml(result.body)}</p>`);
       return;
     }
-    const sources = result.sources.length
+    const sources = (result.sources || []).length
       ? `<p class="ask-related">${escHtml(copy.sources)}</p><ul class="ask-sources">${result.sources
           .map(
             (item) =>
@@ -246,7 +362,7 @@ function initAsk() {
           )
           .join('')}</ul>`
       : '';
-    const follow = result.followups.length
+    const follow = (result.followups || []).length
       ? `<p class="ask-related">${escHtml(copy.follow)}</p><div class="ask-follow">${result.followups
           .map((q) => `<button type="button" data-ask="${escHtml(q)}">${escHtml(q)}</button>`)
           .join('')}</div>`
@@ -254,16 +370,25 @@ function initAsk() {
     addMsg('bot', `<p>${escHtml(result.body)}</p>${sources}${follow}`);
   }
 
-  async function answerQuestion(raw) {
+  async function answerQuestion(raw, silentUser) {
     const question = (raw || '').trim();
     if (!question) return;
-    addMsg('user', `<p>${escHtml(question)}</p>`);
+    if (!silentUser) addMsg('user', `<p>${escHtml(question)}</p>`);
     const thinking = addMsg('bot', `<p>${escHtml(copy.thinking)}</p>`, 'thinking');
     const index = await loadSearchIndex();
+    const facts = await loadFacts();
+    const player = await fetchSnapshot();
     const engine = window.AlmanacAsk;
     let result;
     if (engine && askStats) {
-      result = engine.answerQuestion({ stats: askStats, question, session, copy });
+      result = engine.answerQuestion({
+        stats: askStats,
+        facts,
+        question,
+        session,
+        copy,
+        player,
+      });
     } else {
       const ranked = rankEntries(index, question, 4);
       result = ranked.length
@@ -277,7 +402,44 @@ function initAsk() {
         : { blocked: null, empty: true, body: copy.empty, sources: [], followups: [] };
     }
     thinking.remove();
+    if (result.needAuth) result.pending = question;
     renderAnswer(result);
+  }
+
+  async function submitLogin(loginForm) {
+    const username = String(loginForm.username?.value || '').trim();
+    const password = String(loginForm.password?.value || '');
+    const pending = loginForm.dataset.pending || session.lastQuery || '';
+    const btn = loginForm.querySelector('button');
+    if (btn) btn.disabled = true;
+    try {
+      const res = await fetch(`${apiBase}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.status === 403 && data?.params?.reason === 'EMAIL_NOT_VERIFIED') {
+        addMsg('bot', `<p>${escHtml(copy.loginUnverified)}</p>`);
+        return;
+      }
+      if (res.status === 403 && (data?.event === 'auth.banned' || data?.params?.reason === 'PLAYER_BANNED')) {
+        addMsg('bot', `<p>${escHtml(copy.loginBanned)}</p>`);
+        return;
+      }
+      if (!res.ok || !data.token) {
+        addMsg('bot', `<p>${escHtml(copy.loginFail)}</p>${loginFormHtml(pending)}`);
+        return;
+      }
+      setToken(data.token);
+      await fetchSnapshot(true);
+      addMsg('bot', `<p>${escHtml(copy.session.replace('{name}', playerSnapshot?.username || username))}</p>`);
+      if (pending) await answerQuestion(pending, true);
+    } catch {
+      addMsg('bot', `<p>${escHtml(copy.loginFail)}</p>${loginFormHtml(pending)}`);
+    } finally {
+      if (btn) btn.disabled = false;
+    }
   }
 
   toggle.addEventListener('click', () => {
@@ -285,6 +447,10 @@ function initAsk() {
     else closePanel();
   });
   close?.addEventListener('click', closePanel);
+  logout?.addEventListener('click', () => {
+    setToken('');
+    paintSession();
+  });
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && !panel.hidden) closePanel();
   });
@@ -293,6 +459,12 @@ function initAsk() {
     if (!btn || !panel.contains(btn)) return;
     input.value = btn.dataset.ask || btn.textContent || '';
     form.requestSubmit();
+  });
+  panel.addEventListener('submit', (event) => {
+    const loginForm = event.target.closest('.ask-login');
+    if (!loginForm || !panel.contains(loginForm)) return;
+    event.preventDefault();
+    submitLogin(loginForm);
   });
   form.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -303,4 +475,3 @@ function initAsk() {
 }
 
 initAsk();
-

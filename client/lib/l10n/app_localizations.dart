@@ -32705,7 +32705,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpAlmanacBlurb.
   ///
   /// In en, this message translates to:
-  /// **'Complete handbook (profile, avatar, selfie portrait and every screen) plus catalogues with official art, all languages: wiki.themobstate.com'**
+  /// **'Complete handbook plus catalogues. Ask the Almanac where to steal the best car, boat or motorcycle, or sign in there for your money, rank and remaining VIP: wiki.themobstate.com'**
   String get helpAlmanacBlurb;
 
   /// Footer copyright; year is injected from the app clock.

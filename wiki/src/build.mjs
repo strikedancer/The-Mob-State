@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import { LANGS, ui, countryName } from './i18n.mjs';
 import { esc, money, page, card, stat } from './layout.mjs';
 import { guidePages, guideSitemapPaths, loadHelpTopics, resolveHelpPaths } from './guides.mjs';
+import { buildFacts, topVehicles } from './facts.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const args = Object.fromEntries(
@@ -385,9 +386,60 @@ function vehiclePages(data, lang) {
         { href: `/${lang}/vehicles/`, label: ui(lang, 'vehicles') },
       ],
       body: `<div class="filters" data-filter-bar="vehicles">${filters}</div>
+        <p class="lede"><a href="/${lang}/vehicles/steal/">${esc(ui(lang, 'askStealTitle'))}</a> — ${esc(ui(lang, 'askStealLead'))}</p>
         <div class="grid" data-kind="vehicles" data-filter-group>${list}<p class="empty" hidden>${esc(ui(lang, 'empty'))}</p></div>`,
     })
   );
+  const facts = buildFacts(data, lang);
+  const stealList = (kind) =>
+    topVehicles(facts.vehicles, kind, 8)
+      .filter((v) => v.global || (v.countries || []).some((id) => facts.countries[id]?.canon))
+      .slice(0, 5)
+      .map((v) => {
+        const playable = (v.countries || []).filter((id) => facts.countries[id]?.canon);
+        const lands = v.global
+          ? esc(ui(lang, 'askStealEverywhere'))
+          : playable
+              .map((id) => {
+                const canon = facts.countries[id]?.canon;
+                const label = esc(countryName(lang, id));
+                return canon ? `<a href="/${lang}/countries/${canon}/">${label}</a>` : label;
+              })
+              .join(' · ');
+        return `<li><a href="/${lang}/vehicles/${v.id}/">${esc(v.name)}</a> · ${ui(lang, 'rank')} ${v.requiredRank} · ${money(v.value)} · ${lands}</li>`;
+      })
+      .join('');
+  write(
+    `${lang}/vehicles/steal/index.html`,
+    page({
+      lang,
+      path: 'vehicles/steal/',
+      title: ui(lang, 'askStealTitle'),
+      description: ui(lang, 'askStealLead'),
+      hero: {
+        image: '/images/backgrounds/garage_background.png',
+        kicker: ui(lang, 'vehicles'),
+        title: ui(lang, 'askStealTitle'),
+        lead: ui(lang, 'askStealLead'),
+      },
+      crumbs: [
+        { href: `/${lang}/`, label: ui(lang, 'home') },
+        { href: `/${lang}/vehicles/`, label: ui(lang, 'vehicles') },
+        { href: `/${lang}/vehicles/steal/`, label: ui(lang, 'askStealTitle') },
+      ],
+      body: `<div class="manual">
+        <p class="lede">${esc(ui(lang, 'askStealLead'))}</p>
+        <p>${esc(ui(lang, 'askStealHow'))}</p>
+        <h2>${esc(ui(lang, 'cars'))}</h2>
+        <ul>${stealList('cars')}</ul>
+        <h2>${esc(ui(lang, 'boats'))}</h2>
+        <ul>${stealList('boats')}</ul>
+        <h2>${esc(ui(lang, 'motorcycles'))}</h2>
+        <ul>${stealList('motorcycles')}</ul>
+      </div>`,
+    })
+  );
+  write(`${lang}/facts.json`, JSON.stringify(facts));
   for (const v of items) {
     const countries = (v.availableInCountries || [])
       .map((id) => `<a href="/${lang}/countries/${id}/">${esc(countryName(lang, id))}</a>`)
@@ -852,6 +904,7 @@ function robotsAndSitemap() {
     'countries',
     'trade',
     'vehicles',
+    'vehicles/steal',
     'weapons',
     'ammo',
     'security',

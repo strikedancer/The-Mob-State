@@ -19130,7 +19130,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpAlmanacBlurb =>
-      'Kompletny podręcznik (profil, awatar, portret selfie i każdy ekran) plus katalogi z oficjalną grafiką, we wszystkich językach: wiki.themobstate.com';
+      'Kompletny poradnik plus katalogi. Zapytaj almanach, gdzie ukraść najlepsze auto, łódź lub motocykl, albo zaloguj się tam po kasę, rangę i pozostały VIP: wiki.themobstate.com';
 
   @override
   String landingCopyright(int year) {
