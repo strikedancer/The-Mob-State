@@ -1054,15 +1054,6 @@ class _FriendsScreenState extends State<FriendsScreen>
                       Text(
                         l10n.friendsUiLineRank('${result.rank}'),
                       ),
-                      if (result.currentCountry != null)
-                        Text(
-                          l10n.friendsUiLineLocation(
-                            CountryHelper.getLocalizedCountryName(
-                              result.currentCountry,
-                              l10n,
-                            ),
-                          ),
-                        ),
                       if (result.crewName != null)
                         Text(
                           l10n.friendsUiLineCrew(result.crewName!),

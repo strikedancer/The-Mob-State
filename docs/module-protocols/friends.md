@@ -11,6 +11,7 @@ Friend graph, requests, social activity and player-to-player discovery.
 - Keep Dutch and English copy in sync for any user-visible change.
 - Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell.
 - Friends list, activity feed and the 4-tab bar must stay usable on ~360px: load failure shows retry (`MobileLoadError`), not “no friends / no activity”. TabBar is scrollable.
+- Player **search** (Vrienden → Zoeken) must not show or return `currentCountry`. Location stays on the accepted-friends list only.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
 
 ## Check Before Editing

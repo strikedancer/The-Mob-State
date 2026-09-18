@@ -372,7 +372,6 @@ export const friendService = {
       id: number;
       username: string;
       rank: number;
-      currentCountry: string;
       avatar: string | null;
       activePortraitPath: string | null;
       crewId: number | null;
@@ -382,7 +381,6 @@ export const friendService = {
         p.id, 
         p.username, 
         p.rank, 
-        p.currentCountry,
         p.avatar,
         pp_active.imagePath as activePortraitPath,
         cm.crewId,
@@ -427,7 +425,6 @@ export const friendService = {
           id: player.id,
           username: player.username,
           rank: player.rank,
-          currentCountry: player.currentCountry,
           avatar: player.avatar,
           activePortraitPath: activePortraitPathFromRow(player.activePortraitPath),
           crewName: player.crewName,
