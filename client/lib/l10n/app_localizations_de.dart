@@ -4918,6 +4918,37 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get crewUiMissionFilterAll => 'Alle Missionen';
+
+  @override
+  String get crewUiMissionFilterAvailable => 'Für Ihre Crew freigeschaltet';
+
+  @override
+  String get crewUiMissionSectionReady => 'Bereit zum Start';
+
+  @override
+  String get crewUiMissionSectionNeedsGear => 'Noch Lagerplatz nötig';
+
+  @override
+  String get crewUiMissionSectionLocked => 'Noch nicht freigeschaltet';
+
+  @override
+  String get crewUiMissionSortLabel => 'Sortieren';
+
+  @override
+  String get crewUiMissionSortReward => 'Top-Belohnung';
+
+  @override
+  String get crewUiMissionSortTier => 'Stufe';
+
+  @override
+  String get crewUiMissionSortSuccess => 'Erfolgschance';
+
+  @override
+  String get crewUiMissionNoMatches =>
+      'Keine Missionen entsprechen diesem Filter.';
+
+  @override
   String get crewUiLabelCrewMissionProgress =>
       'Fortschritt der Besatzungsmission';
 
@@ -18676,7 +18707,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicCrewTips =>
-      'Neue Besatzungen können sofort Geld einzahlen und den gemeinsamen Lagerraum nutzen; Konzentrieren Sie sich danach auf Upgrades für mehr Kapazität statt auf einen separaten Starterkauf. \nSchauen Sie zunächst im War Room nach, ob sich Ihre Crew noch in der Abklingzeit befindet, bevor Sie versuchen, einen neuen Krieg zu erklären. \nKoordinieren Sie Zielanrufe im Crew-Chat. Sie können Kill oder Mug nicht für immer auf denselben Gegner anwenden; Wählen Sie jemand anderen oder warten Sie ein bisschen. \nKoordinieren Sie die Startzeiten des Raubüberfalls im Crew-Chat, damit alle online sind und niemand im Gefängnis sitzt. \nWählen Sie eine Crew in derselben Zeitzone oder demselben Aktivitätsmuster, um bessere Erfolgsraten bei Raubüberfällen zu erzielen. \nNutzen Sie den gemeinsamen Lagerraum für die Crew, um riskante Güter von Ihrem persönlichen Inventar zu trennen. \nGeben Sie Autos, Motorräder oder Boote nur dann bei der Crew ab, wenn Sie sie wirklich für Schmuggel, Missionen oder Geschäfte benötigen; Sie können sie anschließend nicht selbst verwenden. \nWenn die Kaution einer Person hoch ist, hilft eine Übernahme durch die Bank, aber Sie müssen damit rechnen, dass Sie selbst für schmutziges Geld ins Gefängnis gehen müssen. \nÜberprüfen Sie, wie viele Ihrer Waffen und Munition im Territorium gesperrt sind, bevor Sie eine Crew Wars-Raid-Woche planen. \nSetzen Sie an einer Front, die zusammenbrechen könnte, nur das ein, was Sie sich leisten können, zu verlieren. \nWar Room Shield funktioniert mit Ihrem Spieler-VIP oder Crew-VIP. Intel und Boost bleiben Spieler-VIP. \nEine gescheiterte Crew-Mission bringt Sie nicht ins Gefängnis. Die Crew-Bank zahlt die Fehlschlagsstrafe und dann beginnt die Abklingzeit; Sie erhalten dafür eine Benachrichtigung. \nCrew-VIP kann aus einem gemeinsamen Topf bei Overview oder Premium bezahlt werden: Jedes Mitglied spendet echtes Geld, bis der Monat voll ist oder ein Mitglied das Abonnement übernimmt.\nFill Tool Storage and the other shared bays if you want the new storage missions. Better condition, fuel and drug quality raise the chance; empty private pockets do nothing.';
+      'Neue Besatzungen können sofort Geld einzahlen und den gemeinsamen Lagerraum nutzen; Konzentrieren Sie sich danach auf Upgrades für mehr Kapazität statt auf einen separaten Starterkauf. \nSchauen Sie zunächst im War Room nach, ob sich Ihre Crew noch in der Abklingzeit befindet, bevor Sie versuchen, einen neuen Krieg zu erklären. \nKoordinieren Sie Zielanrufe im Crew-Chat. Sie können Kill oder Mug nicht für immer auf denselben Gegner anwenden; Wählen Sie jemand anderen oder warten Sie ein bisschen. \nKoordinieren Sie die Startzeiten des Raubüberfalls im Crew-Chat, damit alle online sind und niemand im Gefängnis sitzt. \nWählen Sie eine Crew in derselben Zeitzone oder demselben Aktivitätsmuster, um bessere Erfolgsraten bei Raubüberfällen zu erzielen. \nNutzen Sie den gemeinsamen Lagerraum für die Crew, um riskante Güter von Ihrem persönlichen Inventar zu trennen. \nGeben Sie Autos, Motorräder oder Boote nur dann bei der Crew ab, wenn Sie sie wirklich für Schmuggel, Missionen oder Geschäfte benötigen; Sie können sie anschließend nicht selbst verwenden. \nWenn die Kaution einer Person hoch ist, hilft eine Übernahme durch die Bank, aber Sie müssen damit rechnen, dass Sie selbst für schmutziges Geld ins Gefängnis gehen müssen. \nÜberprüfen Sie, wie viele Ihrer Waffen und Munition im Territorium gesperrt sind, bevor Sie eine Crew Wars-Raid-Woche planen. \nSetzen Sie an einer Front, die zusammenbrechen könnte, nur das ein, was Sie sich leisten können, zu verlieren. \nWar Room Shield funktioniert mit Ihrem Spieler-VIP oder Crew-VIP. Intel und Boost bleiben Spieler-VIP. \nEine gescheiterte Crew-Mission bringt Sie nicht ins Gefängnis. Die Crew-Bank zahlt die Fehlschlagsstrafe und dann beginnt die Abklingzeit; Sie erhalten dafür eine Benachrichtigung. \nCrew-VIP kann aus einem gemeinsamen Topf bei Overview oder Premium bezahlt werden: Jedes Mitglied spendet echtes Geld, bis der Monat voll ist oder ein Mitglied das Abonnement übernimmt.\nFill Tool Storage and the other shared bays if you want the new storage missions. Better condition, fuel and drug quality raise the chance; empty private pockets do nothing.\nOn Crew Missions, use All / Unlocked like Crimes: ready jobs, jobs that still need storage, and locked jobs sit in separate groups.';
 
   @override
   String get helpTopicFriendsCategory => 'Sozial';

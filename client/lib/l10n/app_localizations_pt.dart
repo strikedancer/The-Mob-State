@@ -4894,6 +4894,37 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String get crewUiMissionFilterAll => 'Todas as missões';
+
+  @override
+  String get crewUiMissionFilterAvailable => 'Desbloqueado para sua Crew';
+
+  @override
+  String get crewUiMissionSectionReady => 'Pronto para começar';
+
+  @override
+  String get crewUiMissionSectionNeedsGear => 'Ainda precisa de armazenamento';
+
+  @override
+  String get crewUiMissionSectionLocked => 'Ainda não desbloqueado';
+
+  @override
+  String get crewUiMissionSortLabel => 'Organizar';
+
+  @override
+  String get crewUiMissionSortReward => 'Melhor recompensa';
+
+  @override
+  String get crewUiMissionSortTier => 'Nível';
+
+  @override
+  String get crewUiMissionSortSuccess => 'Chance de sucesso';
+
+  @override
+  String get crewUiMissionNoMatches =>
+      'Nenhuma missão corresponde a este filtro.';
+
+  @override
   String get crewUiLabelCrewMissionProgress => 'Progressão da missão da Crew';
 
   @override
@@ -18588,7 +18619,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicCrewTips =>
-      'Novas equipes podem depositar dinheiro e usar o armazenamento compartilhado imediatamente; depois disso, concentre-se em atualizações para obter mais capacidade, em vez de uma compra inicial separada. \nVerifique primeiro a Sala de Guerra para ver se sua Crew ainda está em espera antes de tentar declarar uma nova guerra. \nCoordene chamadas de alvo no bate-papo da equipe. Você não pode continuar usando Kill ou Mug no mesmo oponente para sempre; escolha outra pessoa ou espere um pouco. \nCoordene os horários de início do assalto no bate-papo da equipe para que todos estejam online e ninguém esteja na prisão. \nEscolha uma equipe no mesmo fuso horário ou padrão de atividade para obter melhores taxas de sucesso de assalto. \nUse o armazenamento compartilhado da Crew para separar mercadorias de risco do seu inventário pessoal. \nSó deposite carros, motos ou barcos na Crew se realmente quiser para contrabando, missões ou negócios; você não pode usá-los sozinho depois. \nA compra do banco da Crew ajuda quando a fiança de alguém é alta, mas espere que você mesmo possa ir para a prisão por dinheiro sujo. \nVerifique quantas de suas armas e munições estão bloqueadas no Território antes de planejar uma semana de ataque do Crew Wars. \nComprometa apenas o que você pode perder em uma frente que pode cair. \nWar Room Shield funciona com seu Player VIP ou Crew VIP; Intel e Boost permanecem Jogador VIP. \nUma missão de Crew fracassada não o manda para a prisão. O banco da Crew paga a penalidade de falha e então o tempo de espera começa; você recebe uma notificação para isso. \nO Crew VIP pode ser pago com um pote compartilhado no Overview ou Premium: cada membro doa dinheiro real até o mês terminar ou um membro faz a assinatura.\nFill Tool Storage and the other shared bays if you want the new storage missions. Better condition, fuel and drug quality raise the chance; empty private pockets do nothing.';
+      'Novas equipes podem depositar dinheiro e usar o armazenamento compartilhado imediatamente; depois disso, concentre-se em atualizações para obter mais capacidade, em vez de uma compra inicial separada. \nVerifique primeiro a Sala de Guerra para ver se sua Crew ainda está em espera antes de tentar declarar uma nova guerra. \nCoordene chamadas de alvo no bate-papo da equipe. Você não pode continuar usando Kill ou Mug no mesmo oponente para sempre; escolha outra pessoa ou espere um pouco. \nCoordene os horários de início do assalto no bate-papo da equipe para que todos estejam online e ninguém esteja na prisão. \nEscolha uma equipe no mesmo fuso horário ou padrão de atividade para obter melhores taxas de sucesso de assalto. \nUse o armazenamento compartilhado da Crew para separar mercadorias de risco do seu inventário pessoal. \nSó deposite carros, motos ou barcos na Crew se realmente quiser para contrabando, missões ou negócios; você não pode usá-los sozinho depois. \nA compra do banco da Crew ajuda quando a fiança de alguém é alta, mas espere que você mesmo possa ir para a prisão por dinheiro sujo. \nVerifique quantas de suas armas e munições estão bloqueadas no Território antes de planejar uma semana de ataque do Crew Wars. \nComprometa apenas o que você pode perder em uma frente que pode cair. \nWar Room Shield funciona com seu Player VIP ou Crew VIP; Intel e Boost permanecem Jogador VIP. \nUma missão de Crew fracassada não o manda para a prisão. O banco da Crew paga a penalidade de falha e então o tempo de espera começa; você recebe uma notificação para isso. \nO Crew VIP pode ser pago com um pote compartilhado no Overview ou Premium: cada membro doa dinheiro real até o mês terminar ou um membro faz a assinatura.\nFill Tool Storage and the other shared bays if you want the new storage missions. Better condition, fuel and drug quality raise the chance; empty private pockets do nothing.\nOn Crew Missions, use All / Unlocked like Crimes: ready jobs, jobs that still need storage, and locked jobs sit in separate groups.';
 
   @override
   String get helpTopicFriendsCategory => 'Social';

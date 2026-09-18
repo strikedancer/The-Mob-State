@@ -27,6 +27,10 @@ import 'black_market_screen.dart';
 import '../widgets/game_page_info.dart';
 import '../widgets/empire_page_hero.dart';
 
+enum _CrewMissionListFilter { all, available }
+
+enum _CrewMissionListSort { reward, tier, success }
+
 class CrewScreen extends StatefulWidget {
   const CrewScreen({super.key, this.embedded = false});
 
@@ -101,6 +105,8 @@ class _CrewScreenState extends State<CrewScreen>
   bool _crewWarLoading = false;
   bool _crewMissionsLoading = false;
   bool _crewMissionActionLoading = false;
+  _CrewMissionListFilter _crewMissionListFilter = _CrewMissionListFilter.available;
+  _CrewMissionListSort _crewMissionListSort = _CrewMissionListSort.reward;
   Timer? _crewMissionTick;
   String _selectedWarType = 'kill_war';
   int? _selectedWarTargetCrewId;
@@ -7898,6 +7904,223 @@ class _CrewScreenState extends State<CrewScreen>
     }
   }
 
+  bool _crewMissionIsUnlocked(Map<String, dynamic> template) =>
+      template['unlocked'] == true;
+
+  bool _crewMissionStorageReady(Map<String, dynamic> template) =>
+      template['storageReady'] != false;
+
+  bool _crewMissionCanStart(Map<String, dynamic> template) =>
+      _crewMissionIsUnlocked(template) && _crewMissionStorageReady(template);
+
+  int _crewMissionRewardMax(Map<String, dynamic> template) =>
+      (template['rewardCashMax'] as num?)?.toInt() ?? 0;
+
+  int _crewMissionTierValue(Map<String, dynamic> template) =>
+      (template['tier'] as num?)?.toInt() ?? 1;
+
+  double _crewMissionSuccessValue(Map<String, dynamic> template) =>
+      (template['quotedSuccessChance'] as num?)?.toDouble() ??
+      (template['successChance'] as num?)?.toDouble() ??
+      0;
+
+  void _sortCrewMissionList(List<Map<String, dynamic>> missions) {
+    missions.sort((a, b) {
+      switch (_crewMissionListSort) {
+        case _CrewMissionListSort.tier:
+          final tierCmp = _crewMissionTierValue(a).compareTo(_crewMissionTierValue(b));
+          if (tierCmp != 0) return tierCmp;
+          return _crewMissionRewardMax(b).compareTo(_crewMissionRewardMax(a));
+        case _CrewMissionListSort.success:
+          final successCmp =
+              _crewMissionSuccessValue(b).compareTo(_crewMissionSuccessValue(a));
+          if (successCmp != 0) return successCmp;
+          return _crewMissionRewardMax(b).compareTo(_crewMissionRewardMax(a));
+        case _CrewMissionListSort.reward:
+          return _crewMissionRewardMax(b).compareTo(_crewMissionRewardMax(a));
+      }
+    });
+  }
+
+  _CrewMissionListGroups _groupedCrewMissions(
+    List<Map<String, dynamic>> templates,
+  ) {
+    final ready = <Map<String, dynamic>>[];
+    final needsGear = <Map<String, dynamic>>[];
+    final locked = <Map<String, dynamic>>[];
+    for (final template in templates) {
+      if (_crewMissionCanStart(template)) {
+        ready.add(template);
+      } else if (_crewMissionIsUnlocked(template)) {
+        needsGear.add(template);
+      } else {
+        locked.add(template);
+      }
+    }
+    _sortCrewMissionList(ready);
+    _sortCrewMissionList(needsGear);
+    _sortCrewMissionList(locked);
+    if (_crewMissionListFilter == _CrewMissionListFilter.available) {
+      return _CrewMissionListGroups(
+        ready: ready,
+        needsGear: needsGear,
+        locked: const [],
+      );
+    }
+    return _CrewMissionListGroups(
+      ready: ready,
+      needsGear: needsGear,
+      locked: locked,
+    );
+  }
+
+  Widget _buildCrewMissionFilterSortBar(AppLocalizations loc) {
+    const gold = Color(0xFFD4AF37);
+    const panelBg = Color(0xFF151B28);
+    const panelBorder = Color(0xFF2A3344);
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        color: panelBg.withValues(alpha: 0.92),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: panelBorder),
+      ),
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: [
+          ChoiceChip(
+            label: Text(loc.crewUiMissionFilterAll),
+            selected: _crewMissionListFilter == _CrewMissionListFilter.all,
+            onSelected: (_) =>
+                setState(() => _crewMissionListFilter = _CrewMissionListFilter.all),
+            selectedColor: gold.withValues(alpha: 0.25),
+            backgroundColor: const Color(0xFF1E2636),
+            labelStyle: TextStyle(
+              color: _crewMissionListFilter == _CrewMissionListFilter.all
+                  ? gold
+                  : Colors.white70,
+              fontWeight: FontWeight.w600,
+            ),
+            side: BorderSide(
+              color: _crewMissionListFilter == _CrewMissionListFilter.all
+                  ? gold.withValues(alpha: 0.6)
+                  : panelBorder,
+            ),
+          ),
+          ChoiceChip(
+            label: Text(loc.crewUiMissionFilterAvailable),
+            selected: _crewMissionListFilter == _CrewMissionListFilter.available,
+            onSelected: (_) => setState(
+              () => _crewMissionListFilter = _CrewMissionListFilter.available,
+            ),
+            selectedColor: Colors.greenAccent.withValues(alpha: 0.18),
+            backgroundColor: const Color(0xFF1E2636),
+            labelStyle: TextStyle(
+              color: _crewMissionListFilter == _CrewMissionListFilter.available
+                  ? Colors.greenAccent
+                  : Colors.white70,
+              fontWeight: FontWeight.w600,
+            ),
+            side: BorderSide(
+              color: _crewMissionListFilter == _CrewMissionListFilter.available
+                  ? Colors.greenAccent.withValues(alpha: 0.55)
+                  : panelBorder,
+            ),
+          ),
+          const SizedBox(width: 4),
+          Text(
+            loc.crewUiMissionSortLabel,
+            style: const TextStyle(color: Colors.white54, fontSize: 12),
+          ),
+          DropdownButton<_CrewMissionListSort>(
+            value: _crewMissionListSort,
+            dropdownColor: panelBg,
+            underline: const SizedBox.shrink(),
+            iconEnabledColor: gold,
+            style: const TextStyle(color: Colors.white, fontSize: 12.5),
+            items: [
+              DropdownMenuItem(
+                value: _CrewMissionListSort.reward,
+                child: Text(loc.crewUiMissionSortReward),
+              ),
+              DropdownMenuItem(
+                value: _CrewMissionListSort.tier,
+                child: Text(loc.crewUiMissionSortTier),
+              ),
+              DropdownMenuItem(
+                value: _CrewMissionListSort.success,
+                child: Text(loc.crewUiMissionSortSuccess),
+              ),
+            ],
+            onChanged: (value) {
+              if (value == null) return;
+              setState(() => _crewMissionListSort = value);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCrewMissionListSectionHeader({
+    required String title,
+    required int count,
+    required Color accent,
+    required IconData icon,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 6, bottom: 8),
+      child: Row(
+        children: [
+          Icon(icon, size: 16, color: accent),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              title,
+              style: TextStyle(
+                color: accent,
+                fontWeight: FontWeight.w700,
+                fontSize: 13,
+              ),
+            ),
+          ),
+          Text(
+            '$count',
+            style: const TextStyle(color: Colors.white54, fontSize: 12),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCrewMissionTemplateWrap({
+    required List<Map<String, dynamic>> templates,
+    required AppLocalizations loc,
+    required bool canManage,
+    required bool hasActiveRun,
+  }) {
+    return Wrap(
+      spacing: 12,
+      runSpacing: 12,
+      children: templates
+          .map(
+            (template) => SizedBox(
+              width: 340,
+              child: _buildCrewMissionTemplateCard(
+                template,
+                loc: loc,
+                canManage: canManage,
+                hasActiveRun: hasActiveRun,
+              ),
+            ),
+          )
+          .toList(),
+    );
+  }
+
   Widget _buildCrewMissionsTab() {
     if (_myCrew == null) {
       return Center(
@@ -7940,6 +8163,7 @@ class _CrewScreenState extends State<CrewScreen>
         : (activeRun['status']?.toString() == 'completed'
               ? _secondsUntil(activeRun['cooldownUntil']?.toString())
               : 0);
+    final groups = _groupedCrewMissions(templates);
 
     return RefreshIndicator(
       onRefresh: () => _loadCrewMissionsOverview(),
@@ -8073,6 +8297,8 @@ class _CrewScreenState extends State<CrewScreen>
                   _buildActiveCrewMissionCard(activeRun, canManage, l10n),
                   const SizedBox(height: 16),
                 ],
+                _buildCrewMissionFilterSortBar(l10n),
+                const SizedBox(height: 12),
                 if (templates.isEmpty)
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20),
@@ -8081,24 +8307,60 @@ class _CrewScreenState extends State<CrewScreen>
                       style: const TextStyle(color: Colors.grey),
                     ),
                   )
-                else
-                  Wrap(
-                    spacing: 12,
-                    runSpacing: 12,
-                    children: templates
-                        .map(
-                          (template) => SizedBox(
-                            width: 340,
-                            child: _buildCrewMissionTemplateCard(
-                              template,
-                              loc: l10n,
-                              canManage: canManage,
-                              hasActiveRun: activeRun != null,
-                            ),
-                          ),
-                        )
-                        .toList(),
-                  ),
+                else if (groups.isEmpty)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Text(
+                      l10n.crewUiMissionNoMatches,
+                      style: const TextStyle(color: Colors.grey),
+                    ),
+                  )
+                else ...[
+                  if (groups.ready.isNotEmpty) ...[
+                    _buildCrewMissionListSectionHeader(
+                      title: l10n.crewUiMissionSectionReady,
+                      count: groups.ready.length,
+                      accent: Colors.greenAccent,
+                      icon: Icons.check_circle_outline,
+                    ),
+                    _buildCrewMissionTemplateWrap(
+                      templates: groups.ready,
+                      loc: l10n,
+                      canManage: canManage,
+                      hasActiveRun: activeRun != null,
+                    ),
+                    const SizedBox(height: 12),
+                  ],
+                  if (groups.needsGear.isNotEmpty) ...[
+                    _buildCrewMissionListSectionHeader(
+                      title: l10n.crewUiMissionSectionNeedsGear,
+                      count: groups.needsGear.length,
+                      accent: const Color(0xFFFFC107),
+                      icon: Icons.inventory_2_outlined,
+                    ),
+                    _buildCrewMissionTemplateWrap(
+                      templates: groups.needsGear,
+                      loc: l10n,
+                      canManage: canManage,
+                      hasActiveRun: activeRun != null,
+                    ),
+                    const SizedBox(height: 12),
+                  ],
+                  if (groups.locked.isNotEmpty) ...[
+                    _buildCrewMissionListSectionHeader(
+                      title: l10n.crewUiMissionSectionLocked,
+                      count: groups.locked.length,
+                      accent: Colors.white54,
+                      icon: Icons.lock_outline,
+                    ),
+                    _buildCrewMissionTemplateWrap(
+                      templates: groups.locked,
+                      loc: l10n,
+                      canManage: canManage,
+                      hasActiveRun: activeRun != null,
+                    ),
+                  ],
+                ],
                 const SizedBox(height: 18),
                 Text(
                   _t(l10n, 'label.recentMissions'),
@@ -8905,6 +9167,20 @@ class _CrewScreenState extends State<CrewScreen>
 
     return CrewChatWidget(crewId: _myCrew!.id);
   }
+}
+
+class _CrewMissionListGroups {
+  const _CrewMissionListGroups({
+    required this.ready,
+    required this.needsGear,
+    required this.locked,
+  });
+
+  final List<Map<String, dynamic>> ready;
+  final List<Map<String, dynamic>> needsGear;
+  final List<Map<String, dynamic>> locked;
+
+  bool get isEmpty => ready.isEmpty && needsGear.isEmpty && locked.isEmpty;
 }
 
 // Extension to format numbers with thousand separators

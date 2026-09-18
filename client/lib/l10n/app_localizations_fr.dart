@@ -4929,6 +4929,37 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get crewUiMissionFilterAll => 'Toutes les missions';
+
+  @override
+  String get crewUiMissionFilterAvailable => 'Débloqué pour votre équipage';
+
+  @override
+  String get crewUiMissionSectionReady => 'Prêt à commencer';
+
+  @override
+  String get crewUiMissionSectionNeedsGear => 'Encore besoin de stockage';
+
+  @override
+  String get crewUiMissionSectionLocked => 'Pas encore débloqué';
+
+  @override
+  String get crewUiMissionSortLabel => 'Trier';
+
+  @override
+  String get crewUiMissionSortReward => 'Meilleure récompense';
+
+  @override
+  String get crewUiMissionSortTier => 'Étage';
+
+  @override
+  String get crewUiMissionSortSuccess => 'Chances de réussite';
+
+  @override
+  String get crewUiMissionNoMatches =>
+      'Aucune mission ne correspond à ce filtre.';
+
+  @override
   String get crewUiLabelCrewMissionProgress =>
       'Progression de la mission de l\'équipage';
 
@@ -18674,7 +18705,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicCrewTips =>
-      'Les nouveaux équipages peuvent déposer de l’argent et utiliser immédiatement le stockage partagé ; après cela, concentrez-vous sur les mises à niveau pour plus de capacité au lieu d’un achat de départ séparé. \nVérifiez d\'abord la War Room pour voir si votre équipage est toujours en temps de recharge avant d\'essayer de déclarer une nouvelle guerre. \nCoordonnez les appels cibles dans le chat de l\'équipage. Vous ne pouvez pas continuer à utiliser Kill ou Mug sur le même adversaire pour toujours ; choisissez quelqu\'un d\'autre ou attendez un peu. \nCoordonnez les heures de début des braquages ​​dans le chat de l\'équipe afin que tout le monde soit en ligne et que personne ne soit en prison. \nChoisissez un équipage dans le même fuseau horaire ou modèle d’activité pour de meilleurs taux de réussite des braquages. \nUtilisez le stockage partagé de l’équipage pour séparer les marchandises à risque de votre inventaire personnel. \nNe déposez des voitures, des motos ou des bateaux dans l\'équipage que si vous les souhaitez vraiment pour de la contrebande, des missions ou des transactions ; vous ne pouvez pas les utiliser vous-même par la suite. \nLe rachat par une banque d\'équipage est utile lorsque la caution de quelqu\'un est élevée, mais attendez-vous à ce que vous puissiez vous-même aller en prison pour de l\'argent sale. \nVérifiez quelle quantité de vos armes et munitions est verrouillée dans le territoire avant de planifier une semaine de raid Crew Wars. \nN’engagez que ce que vous pouvez vous permettre de perdre sur un front qui pourrait s’effondrer. \nWar Room Shield fonctionne avec votre joueur VIP ou votre équipage VIP ; Intel et Boost restent Player VIP. \nUne mission d\'équipage ratée ne vous envoie pas en prison. La banque d\'équipage paie la pénalité d\'échec, puis le temps de recharge commence ; vous recevez une notification pour cela. \nCrew VIP peut être payé à partir d\'une cagnotte partagée sur Overview ou Premium : chaque membre donne de l\'argent réel jusqu\'à ce que le mois soit complet, ou qu\'un membre prenne l\'abonnement.\nFill Tool Storage and the other shared bays if you want the new storage missions. Better condition, fuel and drug quality raise the chance; empty private pockets do nothing.';
+      'Les nouveaux équipages peuvent déposer de l’argent et utiliser immédiatement le stockage partagé ; après cela, concentrez-vous sur les mises à niveau pour plus de capacité au lieu d’un achat de départ séparé. \nVérifiez d\'abord la War Room pour voir si votre équipage est toujours en temps de recharge avant d\'essayer de déclarer une nouvelle guerre. \nCoordonnez les appels cibles dans le chat de l\'équipage. Vous ne pouvez pas continuer à utiliser Kill ou Mug sur le même adversaire pour toujours ; choisissez quelqu\'un d\'autre ou attendez un peu. \nCoordonnez les heures de début des braquages ​​dans le chat de l\'équipe afin que tout le monde soit en ligne et que personne ne soit en prison. \nChoisissez un équipage dans le même fuseau horaire ou modèle d’activité pour de meilleurs taux de réussite des braquages. \nUtilisez le stockage partagé de l’équipage pour séparer les marchandises à risque de votre inventaire personnel. \nNe déposez des voitures, des motos ou des bateaux dans l\'équipage que si vous les souhaitez vraiment pour de la contrebande, des missions ou des transactions ; vous ne pouvez pas les utiliser vous-même par la suite. \nLe rachat par une banque d\'équipage est utile lorsque la caution de quelqu\'un est élevée, mais attendez-vous à ce que vous puissiez vous-même aller en prison pour de l\'argent sale. \nVérifiez quelle quantité de vos armes et munitions est verrouillée dans le territoire avant de planifier une semaine de raid Crew Wars. \nN’engagez que ce que vous pouvez vous permettre de perdre sur un front qui pourrait s’effondrer. \nWar Room Shield fonctionne avec votre joueur VIP ou votre équipage VIP ; Intel et Boost restent Player VIP. \nUne mission d\'équipage ratée ne vous envoie pas en prison. La banque d\'équipage paie la pénalité d\'échec, puis le temps de recharge commence ; vous recevez une notification pour cela. \nCrew VIP peut être payé à partir d\'une cagnotte partagée sur Overview ou Premium : chaque membre donne de l\'argent réel jusqu\'à ce que le mois soit complet, ou qu\'un membre prenne l\'abonnement.\nFill Tool Storage and the other shared bays if you want the new storage missions. Better condition, fuel and drug quality raise the chance; empty private pockets do nothing.\nOn Crew Missions, use All / Unlocked like Crimes: ready jobs, jobs that still need storage, and locked jobs sit in separate groups.';
 
   @override
   String get helpTopicFriendsCategory => 'Sociale';

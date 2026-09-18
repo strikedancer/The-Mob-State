@@ -4883,6 +4883,36 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String get crewUiMissionFilterAll => 'Alle missies';
+
+  @override
+  String get crewUiMissionFilterAvailable => 'Vrij voor je crew';
+
+  @override
+  String get crewUiMissionSectionReady => 'Klaar om te starten';
+
+  @override
+  String get crewUiMissionSectionNeedsGear => 'Nog opslag nodig';
+
+  @override
+  String get crewUiMissionSectionLocked => 'Nog niet vrijgespeeld';
+
+  @override
+  String get crewUiMissionSortLabel => 'Sorteer';
+
+  @override
+  String get crewUiMissionSortReward => 'Hoogste beloning';
+
+  @override
+  String get crewUiMissionSortTier => 'Laag';
+
+  @override
+  String get crewUiMissionSortSuccess => 'Slagingskans';
+
+  @override
+  String get crewUiMissionNoMatches => 'Geen missies voor deze filter.';
+
+  @override
   String get crewUiLabelCrewMissionProgress =>
       'Voortgang van de bemanningsmissie';
 
@@ -18493,7 +18523,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicCrewTips =>
-      'Nieuwe crews kunnen direct geld storten en gedeelde opslag gebruiken; focus daarna op upgrades voor extra capaciteit in plaats van op een losse startaankoop.\nGebruik de War Room eerst om te zien of je crew al in cooldown zit voordat je een nieuwe oorlog probeert te declareren.\nVerdeel target calls in de crew-chat. Dezelfde tegenstander kun je niet eindeloos met Doden of Beroven raken; kies dan iemand anders of wacht even.\nCoördineer heist-starttijden in de crew-chat zodat iedereen online is en niemand in de cel zit.\nKies een crew die in dezelfde tijdzone of activiteitspatroon zit als jij voor betere heist-success rates.\nGebruik gedeelde crew-opslag om risicovolle goederen los te koppelen van je persoonlijke inventaris.\nStort alleen auto\'s, motoren of boten in de crew als je ze echt voor smokkel, missies of deals wilt inzetten; daarna kun je ze niet meer zelf gebruiken.\nCrewbank-uitkoop is handig als iemands borg hoog is, maar reken erop dat jij zelf de cel in kunt gaan wegens zwart geld.\nKijk hoeveel wapens en kogels vastliggen in Territory voordat je een Crew Wars-raidweek plant.\nCommit alleen wat je kunt missen op een front dat kan vallen.\nSchild in de War Room werkt met jouw Player VIP of met Crew VIP; Intel en Boost blijven Player VIP.\nEen mislukte crew-missie zet je niet in de cel. De crew-bank betaalt de fail-straf en daarna geldt de cooldown; je krijgt daar een melding van.\nCrew VIP kun je samen betalen via de pot op Overzicht of Premium: ieder lid doneert tot de maand vol is, of één lid neemt het abonnement.\nVul de Gereedschapopslag en de andere gedeelde opslag als je de nieuwe opslagmissies wilt. Betere staat, brandstof en drugkwaliteit verhogen de kans; een volle privé-zak telt niet.';
+      'Nieuwe crews kunnen direct geld storten en gedeelde opslag gebruiken; focus daarna op upgrades voor extra capaciteit in plaats van op een losse startaankoop.\nGebruik de War Room eerst om te zien of je crew al in cooldown zit voordat je een nieuwe oorlog probeert te declareren.\nVerdeel target calls in de crew-chat. Dezelfde tegenstander kun je niet eindeloos met Doden of Beroven raken; kies dan iemand anders of wacht even.\nCoördineer heist-starttijden in de crew-chat zodat iedereen online is en niemand in de cel zit.\nKies een crew die in dezelfde tijdzone of activiteitspatroon zit als jij voor betere heist-success rates.\nGebruik gedeelde crew-opslag om risicovolle goederen los te koppelen van je persoonlijke inventaris.\nStort alleen auto\'s, motoren of boten in de crew als je ze echt voor smokkel, missies of deals wilt inzetten; daarna kun je ze niet meer zelf gebruiken.\nCrewbank-uitkoop is handig als iemands borg hoog is, maar reken erop dat jij zelf de cel in kunt gaan wegens zwart geld.\nKijk hoeveel wapens en kogels vastliggen in Territory voordat je een Crew Wars-raidweek plant.\nCommit alleen wat je kunt missen op een front dat kan vallen.\nSchild in de War Room werkt met jouw Player VIP of met Crew VIP; Intel en Boost blijven Player VIP.\nEen mislukte crew-missie zet je niet in de cel. De crew-bank betaalt de fail-straf en daarna geldt de cooldown; je krijgt daar een melding van.\nCrew VIP kun je samen betalen via de pot op Overzicht of Premium: ieder lid doneert tot de maand vol is, of één lid neemt het abonnement.\nVul de Gereedschapopslag en de andere gedeelde opslag als je de nieuwe opslagmissies wilt. Betere staat, brandstof en drugkwaliteit verhogen de kans; een volle privé-zak telt niet.\nOp Crew Missions gebruik je Alle / Vrij zoals bij Misdaden: klaar, nog opslag nodig, en locked staan in aparte groepen.';
 
   @override
   String get helpTopicFriendsCategory => 'Sociaal';

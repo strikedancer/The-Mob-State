@@ -4899,6 +4899,38 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String get crewUiMissionFilterAll => 'Tutte le missioni';
+
+  @override
+  String get crewUiMissionFilterAvailable => 'Sbloccato per il tuo Crew';
+
+  @override
+  String get crewUiMissionSectionReady => 'Pronto per iniziare';
+
+  @override
+  String get crewUiMissionSectionNeedsGear =>
+      'Serve ancora lo spazio di stoccaggio';
+
+  @override
+  String get crewUiMissionSectionLocked => 'Non ancora sbloccato';
+
+  @override
+  String get crewUiMissionSortLabel => 'Ordinare';
+
+  @override
+  String get crewUiMissionSortReward => 'La massima ricompensa';
+
+  @override
+  String get crewUiMissionSortTier => 'Livello';
+
+  @override
+  String get crewUiMissionSortSuccess => 'Possibilità di successo';
+
+  @override
+  String get crewUiMissionNoMatches =>
+      'Nessuna missione corrisponde a questo filtro.';
+
+  @override
   String get crewUiLabelCrewMissionProgress =>
       'Progressione della missione dell\'Crew';
 
@@ -18646,7 +18678,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicCrewTips =>
-      'I nuovi equipaggi possono depositare denaro e utilizzare immediatamente lo spazio di archiviazione condiviso; successivamente, concentrati sugli aggiornamenti per una maggiore capacità invece di un acquisto iniziale separato. \nControlla prima la War Room per vedere se il tuo Crew è ancora in ricarica prima di provare a dichiarare una nuova guerra. \nCoordina le chiamate ai target nella chat dell\'Crew. Non puoi continuare a usare Kill o Mug sullo stesso avversario per sempre; scegli qualcun altro o aspetta un po\'. \nCoordina gli orari di inizio delle rapine nella chat dell\'Crew in modo che tutti siano online e nessuno sia in prigione. \nScegli una squadra nello stesso fuso orario o nello stesso schema di attività per ottenere migliori percentuali di successo delle rapine. \nUtilizza il deposito condiviso per l\'Crew per separare le merci rischiose dal tuo inventario personale. \nDeposita auto, moto o barche nell\'Crew solo se le vuoi veramente per contrabbando, missioni o affari; non puoi usarli tu stesso in seguito. \nL\'acquisizione da parte di una banca aiuta quando la cauzione di qualcuno è alta, ma aspettati che tu stesso possa andare in prigione per soldi sporchi. \nControlla quante armi e munizioni sono bloccate nel Territorio prima di pianificare una settimana di raid di Crew Wars. \nImpegna solo ciò che puoi permetterti di perdere su un fronte che potrebbe crollare. \nWar Room Shield funziona con il tuo giocatore VIP o VIP Crew; Intel e Boost rimangono Giocatori VIP. \nUna missione dell\'Crew fallita non ti manda in prigione. La crew bank paga la penalità per il fallimento e poi inizia il cooldown; riceverai una notifica per questo. \nLa Crew VIP può essere pagata da un piatto condiviso su Overview o Premium: ogni membro dona soldi veri fino alla fine del mese, oppure un membro sottoscrive l\'abbonamento.\nFill Tool Storage and the other shared bays if you want the new storage missions. Better condition, fuel and drug quality raise the chance; empty private pockets do nothing.';
+      'I nuovi equipaggi possono depositare denaro e utilizzare immediatamente lo spazio di archiviazione condiviso; successivamente, concentrati sugli aggiornamenti per una maggiore capacità invece di un acquisto iniziale separato. \nControlla prima la War Room per vedere se il tuo Crew è ancora in ricarica prima di provare a dichiarare una nuova guerra. \nCoordina le chiamate ai target nella chat dell\'Crew. Non puoi continuare a usare Kill o Mug sullo stesso avversario per sempre; scegli qualcun altro o aspetta un po\'. \nCoordina gli orari di inizio delle rapine nella chat dell\'Crew in modo che tutti siano online e nessuno sia in prigione. \nScegli una squadra nello stesso fuso orario o nello stesso schema di attività per ottenere migliori percentuali di successo delle rapine. \nUtilizza il deposito condiviso per l\'Crew per separare le merci rischiose dal tuo inventario personale. \nDeposita auto, moto o barche nell\'Crew solo se le vuoi veramente per contrabbando, missioni o affari; non puoi usarli tu stesso in seguito. \nL\'acquisizione da parte di una banca aiuta quando la cauzione di qualcuno è alta, ma aspettati che tu stesso possa andare in prigione per soldi sporchi. \nControlla quante armi e munizioni sono bloccate nel Territorio prima di pianificare una settimana di raid di Crew Wars. \nImpegna solo ciò che puoi permetterti di perdere su un fronte che potrebbe crollare. \nWar Room Shield funziona con il tuo giocatore VIP o VIP Crew; Intel e Boost rimangono Giocatori VIP. \nUna missione dell\'Crew fallita non ti manda in prigione. La crew bank paga la penalità per il fallimento e poi inizia il cooldown; riceverai una notifica per questo. \nLa Crew VIP può essere pagata da un piatto condiviso su Overview o Premium: ogni membro dona soldi veri fino alla fine del mese, oppure un membro sottoscrive l\'abbonamento.\nFill Tool Storage and the other shared bays if you want the new storage missions. Better condition, fuel and drug quality raise the chance; empty private pockets do nothing.\nOn Crew Missions, use All / Unlocked like Crimes: ready jobs, jobs that still need storage, and locked jobs sit in separate groups.';
 
   @override
   String get helpTopicFriendsCategory => 'Sociale';

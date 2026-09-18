@@ -4896,6 +4896,36 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
+  String get crewUiMissionFilterAll => 'Wszystkie misje';
+
+  @override
+  String get crewUiMissionFilterAvailable => 'Odblokowane dla Twojej załogi';
+
+  @override
+  String get crewUiMissionSectionReady => 'Gotowy do rozpoczęcia';
+
+  @override
+  String get crewUiMissionSectionNeedsGear => 'Brakuje magazynu';
+
+  @override
+  String get crewUiMissionSectionLocked => 'Jeszcze nie odblokowany';
+
+  @override
+  String get crewUiMissionSortLabel => 'Sortować';
+
+  @override
+  String get crewUiMissionSortReward => 'Najlepsza nagroda';
+
+  @override
+  String get crewUiMissionSortTier => 'Szczebel';
+
+  @override
+  String get crewUiMissionSortSuccess => 'Szansa na sukces';
+
+  @override
+  String get crewUiMissionNoMatches => 'Żadna misja nie pasuje do tego filtra.';
+
+  @override
   String get crewUiLabelCrewMissionProgress => 'Postęp misji załogi';
 
   @override
@@ -18586,7 +18616,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicCrewTips =>
-      'Nowe załogi mogą od razu wpłacać pieniądze i korzystać ze wspólnego magazynu; następnie skup się na ulepszeniach zapewniających większą pojemność, zamiast na oddzielnym zakupie początkowym. \nNajpierw sprawdź Pokój Wojenny, aby zobaczyć, czy twoja Crew nadal znajduje się w fazie odnowienia, zanim spróbujesz wypowiedzieć nową wojnę. \nKoordynuj połączenia docelowe na czacie załogi. Nie możesz w nieskończoność używać Zabicia lub Przebicia na tym samym przeciwniku; wybierz kogoś innego lub poczekaj chwilę. \nKoordynuj godziny rozpoczęcia napadów na czacie załogi, aby wszyscy byli online i nikt nie był w więzieniu. \nWybierz załogę w tej samej strefie czasowej lub schemacie aktywności, aby zwiększyć skuteczność napadów. \nSkorzystaj ze wspólnego magazynu załogi, aby oddzielić ryzykowne towary od osobistego ekwipunku. \nOddawaj samochody, motocykle lub łodzie załodze tylko wtedy, gdy naprawdę potrzebujesz ich do przemytu, misji lub transakcji; nie możesz ich później używać samodzielnie. \nWykup w banku zastępczym pomaga, gdy czyjaś kaucja jest wysoka, ale spodziewaj się, że sam możesz pójść do więzienia za brudne pieniądze. \nZanim zaplanujesz tydzień najazdów Crew Wars, sprawdź, ile twojej broni i amunicji jest zamknięte na terytorium. \nPowierzaj tylko tyle, ile możesz stracić na froncie, który może upaść. \nTarcza pokoju wojennego współpracuje z Twoim VIP-em gracza lub VIP-em załogi; Intel i Boost pozostają VIP-ami dla Graczy. \nNieudana misja załogi nie wysyła cię do więzienia. Bank załogi płaci karę za niepowodzenie i rozpoczyna się czas odnowienia; otrzymasz o tym powiadomienie. \nCrew VIP można opłacić ze wspólnej puli w trybie Przegląd lub Premium: każdy członek przekazuje prawdziwe pieniądze do wyczerpania miesiąca lub do momentu, gdy jeden członek wykupi subskrypcję.\nFill Tool Storage and the other shared bays if you want the new storage missions. Better condition, fuel and drug quality raise the chance; empty private pockets do nothing.';
+      'Nowe załogi mogą od razu wpłacać pieniądze i korzystać ze wspólnego magazynu; następnie skup się na ulepszeniach zapewniających większą pojemność, zamiast na oddzielnym zakupie początkowym. \nNajpierw sprawdź Pokój Wojenny, aby zobaczyć, czy twoja Crew nadal znajduje się w fazie odnowienia, zanim spróbujesz wypowiedzieć nową wojnę. \nKoordynuj połączenia docelowe na czacie załogi. Nie możesz w nieskończoność używać Zabicia lub Przebicia na tym samym przeciwniku; wybierz kogoś innego lub poczekaj chwilę. \nKoordynuj godziny rozpoczęcia napadów na czacie załogi, aby wszyscy byli online i nikt nie był w więzieniu. \nWybierz załogę w tej samej strefie czasowej lub schemacie aktywności, aby zwiększyć skuteczność napadów. \nSkorzystaj ze wspólnego magazynu załogi, aby oddzielić ryzykowne towary od osobistego ekwipunku. \nOddawaj samochody, motocykle lub łodzie załodze tylko wtedy, gdy naprawdę potrzebujesz ich do przemytu, misji lub transakcji; nie możesz ich później używać samodzielnie. \nWykup w banku zastępczym pomaga, gdy czyjaś kaucja jest wysoka, ale spodziewaj się, że sam możesz pójść do więzienia za brudne pieniądze. \nZanim zaplanujesz tydzień najazdów Crew Wars, sprawdź, ile twojej broni i amunicji jest zamknięte na terytorium. \nPowierzaj tylko tyle, ile możesz stracić na froncie, który może upaść. \nTarcza pokoju wojennego współpracuje z Twoim VIP-em gracza lub VIP-em załogi; Intel i Boost pozostają VIP-ami dla Graczy. \nNieudana misja załogi nie wysyła cię do więzienia. Bank załogi płaci karę za niepowodzenie i rozpoczyna się czas odnowienia; otrzymasz o tym powiadomienie. \nCrew VIP można opłacić ze wspólnej puli w trybie Przegląd lub Premium: każdy członek przekazuje prawdziwe pieniądze do wyczerpania miesiąca lub do momentu, gdy jeden członek wykupi subskrypcję.\nFill Tool Storage and the other shared bays if you want the new storage missions. Better condition, fuel and drug quality raise the chance; empty private pockets do nothing.\nOn Crew Missions, use All / Unlocked like Crimes: ready jobs, jobs that still need storage, and locked jobs sit in separate groups.';
 
   @override
   String get helpTopicFriendsCategory => 'Społeczny';

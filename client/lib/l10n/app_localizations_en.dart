@@ -4854,6 +4854,36 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get crewUiMissionFilterAll => 'All missions';
+
+  @override
+  String get crewUiMissionFilterAvailable => 'Unlocked for your crew';
+
+  @override
+  String get crewUiMissionSectionReady => 'Ready to start';
+
+  @override
+  String get crewUiMissionSectionNeedsGear => 'Still need storage';
+
+  @override
+  String get crewUiMissionSectionLocked => 'Not unlocked yet';
+
+  @override
+  String get crewUiMissionSortLabel => 'Sort';
+
+  @override
+  String get crewUiMissionSortReward => 'Top reward';
+
+  @override
+  String get crewUiMissionSortTier => 'Tier';
+
+  @override
+  String get crewUiMissionSortSuccess => 'Success chance';
+
+  @override
+  String get crewUiMissionNoMatches => 'No missions match this filter.';
+
+  @override
   String get crewUiLabelCrewMissionProgress => 'Crew mission progression';
 
   @override
@@ -18447,7 +18477,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicCrewTips =>
-      'New crews can deposit money and use shared storage immediately; after that, focus on upgrades for more capacity instead of a separate starter purchase.\nCheck the War Room first to see whether your crew is still on cooldown before trying to declare a new war.\nCoordinate target calls in crew chat. You cannot keep using Kill or Mug on the same opponent forever; pick someone else or wait a bit.\nCoordinate heist start times in crew chat so everyone is online and nobody is in jail.\nChoose a crew in the same timezone or activity pattern for better heist success rates.\nUse shared crew storage to separate risky goods from your personal inventory.\nOnly deposit cars, motorcycles or boats into the crew if you really want them for smuggling, missions or deals; you cannot use them yourself afterwards.\nCrew-bank buyout helps when someone\'s bail is high, but expect that you yourself can go to jail for dirty money.\nCheck how much of your weapons and ammo is locked in Territory before you plan a Crew Wars raid week.\nOnly commit what you can afford to lose on a front that might fall.\nWar Room Shield works with your Player VIP or Crew VIP; Intel and Boost stay Player VIP.\nA failed crew mission does not send you to jail. The crew bank pays the fail penalty and then the cooldown starts; you get a notification for that.\nCrew VIP can be paid from a shared pot on Overview or Premium: every member donates real money until the month is full, or one member takes the subscription.\nFill Tool Storage and the other shared bays if you want the new storage missions. Better condition, fuel and drug quality raise the chance; empty private pockets do nothing.';
+      'New crews can deposit money and use shared storage immediately; after that, focus on upgrades for more capacity instead of a separate starter purchase.\nCheck the War Room first to see whether your crew is still on cooldown before trying to declare a new war.\nCoordinate target calls in crew chat. You cannot keep using Kill or Mug on the same opponent forever; pick someone else or wait a bit.\nCoordinate heist start times in crew chat so everyone is online and nobody is in jail.\nChoose a crew in the same timezone or activity pattern for better heist success rates.\nUse shared crew storage to separate risky goods from your personal inventory.\nOnly deposit cars, motorcycles or boats into the crew if you really want them for smuggling, missions or deals; you cannot use them yourself afterwards.\nCrew-bank buyout helps when someone\'s bail is high, but expect that you yourself can go to jail for dirty money.\nCheck how much of your weapons and ammo is locked in Territory before you plan a Crew Wars raid week.\nOnly commit what you can afford to lose on a front that might fall.\nWar Room Shield works with your Player VIP or Crew VIP; Intel and Boost stay Player VIP.\nA failed crew mission does not send you to jail. The crew bank pays the fail penalty and then the cooldown starts; you get a notification for that.\nCrew VIP can be paid from a shared pot on Overview or Premium: every member donates real money until the month is full, or one member takes the subscription.\nFill Tool Storage and the other shared bays if you want the new storage missions. Better condition, fuel and drug quality raise the chance; empty private pockets do nothing.\nOn Crew Missions, use All / Unlocked like Crimes: ready jobs, jobs that still need storage, and locked jobs sit in separate groups.';
 
   @override
   String get helpTopicFriendsCategory => 'Social';
