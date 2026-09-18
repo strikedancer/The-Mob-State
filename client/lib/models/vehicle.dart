@@ -80,6 +80,14 @@ class VehicleDefinition {
 
     return imageNew ?? imageDirty ?? imageDamaged;
   }
+
+  /// Catalog / stealable-model still (100% look). Never the shared `image` placeholder.
+  String? get catalogImage {
+    if (imageNew != null && imageNew!.isNotEmpty) return imageNew;
+    if (imageDirty != null && imageDirty!.isNotEmpty) return imageDirty;
+    if (imageDamaged != null && imageDamaged!.isNotEmpty) return imageDamaged;
+    return null;
+  }
 }
 
 @JsonSerializable()

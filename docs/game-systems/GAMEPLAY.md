@@ -727,7 +727,7 @@ Er zijn **drie landvoertuig-omgevingen** plus vliegtuigen:
 - **Boot (Marina):** havenopslag, eigen steelkans en world-cap. Verkoopbedrag werkt hetzelfde als bij auto's.
 - **Vliegtuig (Hangar):** reizen/smokkel, catalogus in `aircraft.json`.
 
-In **Voertuig stelen** kies je Auto / Motor / Boot via de drie lane-cards. Help & Uitleg (gouden `i`) en de Almanak-handleiding hebben voor elk van die omgevingen een eigen hoofdstuk. Admin → Voertuigen toont dezelfde vier catalogi (auto's, motoren, boten, vliegtuigen); nieuw/vies/defect als klikbare thumbs, geen bestandsnamen.
+In **Voertuig stelen** kies je Auto / Motor / Boot via de drie lane-cards. Catalogus en diefstal-popup tonen de unieke foto per model (100%, vies of kapot), niet de gedeelde placeholder. Help & Uitleg (gouden `i`) en de Almanak-handleiding hebben voor elk van die omgevingen een eigen hoofdstuk. Admin → Voertuigen toont dezelfde vier catalogi (auto's, motoren, boten, vliegtuigen); nieuw/vies/defect als klikbare thumbs, geen bestandsnamen.
 
 - Bij beschadigde voertuigen in Garage / Motorstalling / Marina staat op de voertuigkaart een contextuele credits-knop voor instant repair; als reparatie nog niet loopt wordt die eerst gestart en meteen daarna afgerond. Een reparatiejob waarvan de auto al weg is (verkocht, gesloopt of in beslag) mag de garage-inventaris niet laten crashen. Hetzelfde geldt als een voertuig in transport intussen is verdwenen: de garage-lijst blijft laden.
 - Voertuigkaarten in Garage / Motorstalling / Marina tonen linksboven op de voertuigfoto een korte **zeldzaamheid-badge** (Gewoon/Ongewoon/Zeldzaam/Episch/Legendarisch).

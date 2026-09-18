@@ -243,7 +243,7 @@ class _VehicleCatalogDialogState extends State<VehicleCatalogDialog> {
   }
 
   Widget _buildCatalogCard(AppLocalizations l10n, VehicleDefinition vehicle) {
-    final image = vehicle.imageNew ?? vehicle.image;
+    final image = vehicle.catalogImage;
     final rarity = (vehicle.rarity ?? 'common').toLowerCase();
     final marketValue =
         vehicle.marketValue?[widget.currentCountry] ?? vehicle.baseValue ?? 0;
