@@ -342,6 +342,12 @@ export interface AdminTerritoryOverview {
     maxRegionsPerCrew: number;
     maxConcurrentContestsPerCrew: number;
     passiveIncomeIntervalMinutes: number;
+    holdGraceHours?: number;
+    holdWindowHours?: number;
+    holdMaxDuePerCrew?: number;
+    holdIncomeMiss1Percent?: number;
+    holdIncomeMiss2Percent?: number;
+    holdUnrestCapturePenalty?: number;
     hqRegionCapPerLevel?: number;
     hqRegionLevelsPerSlot?: number;
     hqRegionCapBonusCap?: number;

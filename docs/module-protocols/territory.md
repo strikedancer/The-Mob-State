@@ -97,6 +97,7 @@ Scope-afbakening:
 - Territory scoring en ownership wijzigingen zijn server-authoritative.
 - Territory-inkomsten en totale territory-opbrengst moeten backend-authoritative zijn; UI mag geen tiertekst of geschatte placeholder-bedragen tonen wanneer echte serverwaarden beschikbaar zijn.
 - Territory-passive income naar de crew-bank moet dezelfde cash-storage cap respecteren als normale crew deposits; volle cashopslag betekent geen verdere Territory-bijschrijving totdat er weer ruimte is.
+- Aanwezigheidsplicht: per crew hoogstens één due-regio tegelijk. Gemiste plicht snijdt inkomen op díé regio en voegt onrust toe; ownership blijft. Geen NPC-rivalen en geen automatische ownership-flip in v1.
 - NL en EN copy synchroon voor alle nieuwe labels, flows, errors, meldingen en push/inbox events.
 - UI blijft bruikbaar op mobiel/tablet/desktop met 1 primaire verticale scrollflow onder sticky headers.
 - Live countdown in de regio-modal is display-only: de client mag resterende cooldown/fase-tijd lokaal aftellen, maar `contestStatus` en actieknoppen blijven server-authoritative. Bij het aflopen van een timer stil mapdata herladen zodat knoppen ontgrendelen zonder de SVG-kaart elke seconde opnieuw te tekenen.
@@ -201,8 +202,14 @@ Verplichte keys:
 - `TERRITORY_ACTION_COOLDOWN_SECONDS`
 - `TERRITORY_ACTION_DAILY_CAP`
 - `TERRITORY_CAPTURE_THRESHOLD_PERCENT`
-- `TERRITORY_DECAY_PER_HOUR`
-- `TERRITORY_DECAY_GRACE_MINUTES`
+- `TERRITORY_DECAY_PER_HOUR` (legacy knob: bij een gemiste hold-plicht gaat er zoveel stability van die regio af)
+- `TERRITORY_DECAY_GRACE_MINUTES` (vervangen door `TERRITORY_HOLD_GRACE_HOURS`; niet meer de hold-timer)
+- `TERRITORY_HOLD_GRACE_HOURS` (default `24`)
+- `TERRITORY_HOLD_WINDOW_HOURS` (default `12`)
+- `TERRITORY_HOLD_MAX_DUE_PER_CREW` (default `1`)
+- `TERRITORY_HOLD_INCOME_MISS1_PERCENT` (default `50`)
+- `TERRITORY_HOLD_INCOME_MISS2_PERCENT` (default `0`)
+- `TERRITORY_HOLD_UNREST_CAPTURE_PENALTY` (default `10`; lagere capture-drempel vanaf 2 misses)
 - `TERRITORY_MAX_REGIONS_PER_CREW`
 - `TERRITORY_HQ_REGION_LEVELS_PER_SLOT` (default `3`; integer HQ-stappen, vervangt de trage `0.2`-vermenigvuldiger)
 - `TERRITORY_HQ_REGION_CAP_BONUS_CAP` (default `5`)
@@ -325,6 +332,13 @@ Admin moderation:
 - Geen nieuwe country activatie zonder succesvolle map validation en smoke tests.
 - Gameplay-acties in Territory moeten altijd valideren tegen de huidige Travel-locatie; alleen map-view endpoints mogen landoverschrijdend blijven.
 
+## Aanwezigheidsplicht (hold duty)
+- Cron `processTerritoryHoldDuties()` in de bestaande territory-tick: na grace (`TERRITORY_HOLD_GRACE_HOURS`) komt per crew max. `TERRITORY_HOLD_MAX_DUE_PER_CREW` regio op de rol (langst zonder aanwezigheid eerst).
+- Peacetime `patrol` / `supply_run` op eigen due-regio via `POST /territory/action` met `regionKey` (geen `contestId`), zelfde country-gate en cooldown. Tijdens een live contest telt defender patrol/supply_run ook als aanwezigheid.
+- Gemiste window: `holdMissStreak++`, inkomen × miss1/miss2 percent, `lastDecayAt` + stability-`TERRITORY_DECAY_PER_HOUR`, nieuwe window om te herstellen. Vanaf streak 2: capture-drempel − `TERRITORY_HOLD_UNREST_CAPTURE_PENALTY`. Ownership blijft.
+- Succesvolle patrouille: `lastHoldAt` nu, due weg, streak −1 (op tijd zonder eerdere miss → 0). Push/inbox `territory_hold_due` / `territory_hold_missed`.
+- `TERRITORY_DECAY_GRACE_MINUTES` is geen hold-timer meer; grace loopt via `TERRITORY_HOLD_GRACE_HOURS`.
+
 ## QA Checklist
 1. Happy flow: crew start contest -> build influence -> capture region.
 2. Failure flow: cooldown/cap/permission block met duidelijke feedback.
@@ -349,6 +363,7 @@ Admin moderation:
 20. Owned regio: deploy garnizoen uit crew-bank; kaart toont `G`; tweede regio mag tot `TERRITORY_GARRISON_MAX_ACTIVE_PER_CREW`; vanaf `effectiveMaxRegions >= TERRITORY_GARRISON_EXTRA_AT_REGION_CAP` (default 8) is een extra garnizoen toegestaan; contest blijft startbaar; capture-drempel stijgt alleen zolang het effect loopt.
 22. Region-cap: starter-crew (HQ 1, 5 leden) ziet 5; extra slot vereist zowel HQ-stap als leden-stap; `POST /territory/contest/start` weigert `REGIONS_CAP_REACHED` bij owned >= effective; `doAction` defense blijft toegestaan. Geen cap per land.
 21. Omsloten binnengebied: als alle buren van een owned regio van dezelfde crew zijn (min. 3 buren), verdwijnt de aanvalsknop en weigert `POST /territory/contest/start` met `territory.region_encircled`; een open buur maakt het weer aanvalbaar.
+23. Hold duty: na grace één due-regio per crew; peacetime patrol in het juiste land wist due; miss snijdt alleen inkomen van díé regio; ownership blijft; push `territory_hold_due` / `territory_hold_missed`.
 
 ## When To Update This File
 Update bij nieuwe action types, scoring model veranderingen, nieuwe admin moderation actions, season wijzigingen, anti-abuse regels, of onboardingflow voor extra landen.

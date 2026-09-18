@@ -362,6 +362,20 @@
     "territoryErrorArsenalInvalidQuantity": "Enter a whole number above zero.",
     "territoryErrorArsenalWeaponStorageFull": "Crew weapon storage is full.",
     "territoryErrorArsenalAmmoStorageFull": "Crew ammo storage is full.",
+    "territoryHoldDueBadge": "Patrol",
+    "territoryHoldUnrestBadge": "Unrest",
+    "territoryHoldDueTitle": "This region needs a presence patrol",
+    "territoryHoldDueLine": "{region} needs a patrol — {remaining} left.",
+    "territoryHoldIncomeCut": "Passive income on this region is now {percent}%.",
+    "territoryHoldUnrestLine": "Unrest: rivals need fewer contest points to capture this land. Ownership stays yours until they actually win.",
+    "territoryHoldPatrolHint": "Travel to this country, then run Patrol or Supply run. Only one owned region is on the rota at a time.",
+    "territoryErrorHoldNotOwner": "Only the crew that owns this region can run a presence patrol here.",
+    "territoryErrorHoldNotDue": "This region is not on the rota right now.",
+    "territoryErrorHoldContestActive": "A contest is live here. Use the contest defense actions instead.",
+    "territoryHoldSnackOk": "Presence recorded. This region is off the rota for now.",
+    "territoryLegendHoldDue": "Needs patrol",
+    "territoryLegendHoldUnrest": "Unrest (lower income)",
+    "territoryHoldDashboardChip": "{region} needs a patrol — {remaining} left.",
     "@territoryArsenalFill": {
       "placeholders": {
         "percent": { "type": "int" }
@@ -600,6 +614,20 @@
     "territoryErrorArsenalRecallLocked": "Terughalen kan niet tijdens een live contest. Vul bij via bevoorrading.",
     "territoryErrorArsenalInvalidQuantity": "Vul een heel getal groter dan nul in.",
     "territoryErrorArsenalWeaponStorageFull": "De crew-wapenopslag is vol.",
-    "territoryErrorArsenalAmmoStorageFull": "De crew-munitieopslag is vol."
+    "territoryErrorArsenalAmmoStorageFull": "De crew-munitieopslag is vol.",
+    "territoryHoldDueBadge": "Patrouille",
+    "territoryHoldUnrestBadge": "Onrust",
+    "territoryHoldDueTitle": "Dit gebied vraagt een aanwezigheidspatrouille",
+    "territoryHoldDueLine": "{region} vraagt een patrouille — nog {remaining}.",
+    "territoryHoldIncomeCut": "Passief inkomen op dit gebied is nu {percent}%.",
+    "territoryHoldUnrestLine": "Onrust: rivalen hebben minder contestpunten nodig om dit land in te nemen. Het blijft van jullie tot ze echt winnen.",
+    "territoryHoldPatrolHint": "Reis naar dit land en tik daarna Patrouille of Bevoorrading. Per crew staat telkens maar één gebied op de rol.",
+    "territoryErrorHoldNotOwner": "Alleen de crew die dit gebied bezit kan hier een aanwezigheidspatrouille doen.",
+    "territoryErrorHoldNotDue": "Dit gebied staat nu niet op de rol.",
+    "territoryErrorHoldContestActive": "Er loopt hier een contest. Gebruik de verdedigingsacties van de contest.",
+    "territoryHoldSnackOk": "Aanwezigheid genoteerd. Dit gebied gaat van de rol.",
+    "territoryLegendHoldDue": "Patrouille nodig",
+    "territoryLegendHoldUnrest": "Onrust (minder inkomen)",
+    "territoryHoldDashboardChip": "{region} vraagt een patrouille — nog {remaining}."
   }
 }

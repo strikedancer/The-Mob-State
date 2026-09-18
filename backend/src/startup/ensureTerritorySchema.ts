@@ -40,6 +40,12 @@ const TERRITORY_CONFIG_DEFAULTS: Record<string, string> = {
   TERRITORY_CAPTURE_THRESHOLD_PERCENT: '60',
   TERRITORY_DECAY_PER_HOUR: '2',
   TERRITORY_DECAY_GRACE_MINUTES: '60',
+  TERRITORY_HOLD_GRACE_HOURS: '24',
+  TERRITORY_HOLD_WINDOW_HOURS: '12',
+  TERRITORY_HOLD_MAX_DUE_PER_CREW: '1',
+  TERRITORY_HOLD_INCOME_MISS1_PERCENT: '50',
+  TERRITORY_HOLD_INCOME_MISS2_PERCENT: '0',
+  TERRITORY_HOLD_UNREST_CAPTURE_PENALTY: '10',
   TERRITORY_MAX_REGIONS_PER_CREW: '5',
   TERRITORY_MAX_CONCURRENT_CONTESTS_PER_CREW: '2',
   TERRITORY_PRIME_TIME_START_HOUR_UTC: '17',
@@ -450,8 +456,33 @@ export async function ensureTerritorySchema(): Promise<void> {
     'ALTER TABLE territory_control ADD COLUMN ownedSince DATETIME NULL AFTER lastIncomeAt',
   );
 
+  await ensureColumn(
+    'territory_control',
+    'lastHoldAt',
+    'ALTER TABLE territory_control ADD COLUMN lastHoldAt DATETIME NULL AFTER ownedSince',
+  );
+
+  await ensureColumn(
+    'territory_control',
+    'holdDueAt',
+    'ALTER TABLE territory_control ADD COLUMN holdDueAt DATETIME NULL AFTER lastHoldAt',
+  );
+
+  await ensureColumn(
+    'territory_control',
+    'holdMissStreak',
+    'ALTER TABLE territory_control ADD COLUMN holdMissStreak INT NOT NULL DEFAULT 0 AFTER holdDueAt',
+  );
+
   await prisma.$executeRawUnsafe(
     'UPDATE territory_control SET lastIncomeAt = COALESCE(lastIncomeAt, NOW())',
+  );
+
+  // Existing holdings get a fresh grace from deploy so every crew is not due at once.
+  await prisma.$executeRawUnsafe(
+    `UPDATE territory_control
+     SET lastHoldAt = COALESCE(lastHoldAt, NOW())
+     WHERE ownerCrewId IS NOT NULL AND lastHoldAt IS NULL`,
   );
 
   await prisma.$executeRawUnsafe(

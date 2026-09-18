@@ -241,6 +241,16 @@ export interface Translations {
       pushBody: (regionKey: string) => string;
       inboxMessage: (regionKey: string) => string;
     };
+    territoryHoldDue: {
+      title: string;
+      pushBody: (regionName: string, hoursLeft: string) => string;
+      inboxMessage: (regionName: string, hoursLeft: string) => string;
+    };
+    territoryHoldMissed: {
+      title: string;
+      pushBody: (regionName: string, incomePercent: string) => string;
+      inboxMessage: (regionName: string, incomePercent: string) => string;
+    };
     rldStolen: {
       title: string;
       pushBody: (thiefName: string, workerName: string) => string;
@@ -579,6 +589,30 @@ const translations: Record<'en' | 'nl', Translations> = {
             '',
             `Region: ${regionKey}`,
             'The weapons and ammo committed to this region were not sent back to HQ. The winner took a share; the rest burned.',
+          ].join('\n'),
+      },
+      territoryHoldDue: {
+        title: 'Territory patrol needed',
+        pushBody: (regionName, hoursLeft) => `${regionName} needs a patrol — ${hoursLeft} hours left.`,
+        inboxMessage: (regionName, hoursLeft) =>
+          [
+            'Territory patrol needed',
+            '',
+            `Region: ${regionName}`,
+            `A crew member must travel there and run a patrol or supply run within ${hoursLeft} hours.`,
+            'Miss it and that region pays less until someone shows up. Ownership stays with your crew.',
+          ].join('\n'),
+      },
+      territoryHoldMissed: {
+        title: 'Territory patrol missed',
+        pushBody: (regionName, incomePercent) => `${regionName} now pays ${incomePercent}% until someone patrols.`,
+        inboxMessage: (regionName, incomePercent) =>
+          [
+            'Territory patrol missed',
+            '',
+            `Region: ${regionName}`,
+            `Passive income from this region is now ${incomePercent}% until a crew member travels there and patrols.`,
+            'The land is still yours. Repeated misses also make it easier for a rival to capture.',
           ].join('\n'),
       },
       rldStolen: {
@@ -949,6 +983,30 @@ const translations: Record<'en' | 'nl', Translations> = {
             '',
             `Regio: ${regionKey}`,
             'Wapens en kogels die hier vastlagen gingen niet terug naar HQ. De winnaar pakte een deel; de rest is verbrand.',
+          ].join('\n'),
+      },
+      territoryHoldDue: {
+        title: 'Territorium vraagt een patrouille',
+        pushBody: (regionName, hoursLeft) => `${regionName} vraagt een patrouille — nog ${hoursLeft} uur.`,
+        inboxMessage: (regionName, hoursLeft) =>
+          [
+            'Territorium vraagt een patrouille',
+            '',
+            `Regio: ${regionName}`,
+            `Iemand van de crew moet daarheen reizen en binnen ${hoursLeft} uur een patrouille of bevoorrading doen.`,
+            'Laat je het liggen, dan verdient dit gebied minder tot iemand langskomt. Het land blijft van jullie crew.',
+          ].join('\n'),
+      },
+      territoryHoldMissed: {
+        title: 'Patrouille gemist',
+        pushBody: (regionName, incomePercent) => `${regionName} levert nu ${incomePercent}% tot iemand patrouilleert.`,
+        inboxMessage: (regionName, incomePercent) =>
+          [
+            'Patrouille gemist',
+            '',
+            `Regio: ${regionName}`,
+            `Het passieve inkomen van dit gebied is nu ${incomePercent}% tot een crewlid erheen reist en patrouilleert.`,
+            'Het land blijft van jullie. Wie het vaker laat liggen, maakt het voor een rivaal makkelijker om in te nemen.',
           ].join('\n'),
       },
       rldStolen: {

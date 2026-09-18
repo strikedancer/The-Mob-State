@@ -137,6 +137,21 @@ const META = {
       total: { type: 'int' },
     },
   },
+  territoryHoldDueLine: {
+    placeholders: {
+      region: { type: 'String' },
+      remaining: { type: 'String' },
+    },
+  },
+  territoryHoldIncomeCut: {
+    placeholders: { percent: { type: 'int' } },
+  },
+  territoryHoldDashboardChip: {
+    placeholders: {
+      region: { type: 'String' },
+      remaining: { type: 'String' },
+    },
+  },
 };
 
 const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));

@@ -46,6 +46,12 @@ async function getTerritoryConfig() {
     'TERRITORY_CAPTURE_THRESHOLD_PERCENT',
     'TERRITORY_DECAY_PER_HOUR',
     'TERRITORY_DECAY_GRACE_MINUTES',
+    'TERRITORY_HOLD_GRACE_HOURS',
+    'TERRITORY_HOLD_WINDOW_HOURS',
+    'TERRITORY_HOLD_MAX_DUE_PER_CREW',
+    'TERRITORY_HOLD_INCOME_MISS1_PERCENT',
+    'TERRITORY_HOLD_INCOME_MISS2_PERCENT',
+    'TERRITORY_HOLD_UNREST_CAPTURE_PENALTY',
     'TERRITORY_MAX_REGIONS_PER_CREW',
     'TERRITORY_MAX_CONCURRENT_CONTESTS_PER_CREW',
     'TERRITORY_PRIME_TIME_START_HOUR_UTC',
@@ -159,6 +165,12 @@ async function getTerritoryConfig() {
     captureThresholdPercent: Number(cfg['TERRITORY_CAPTURE_THRESHOLD_PERCENT'] ?? 60),
     decayPerHour: Number(cfg['TERRITORY_DECAY_PER_HOUR'] ?? 2),
     decayGraceMinutes: Number(cfg['TERRITORY_DECAY_GRACE_MINUTES'] ?? 60),
+    holdGraceHours: Number(cfg['TERRITORY_HOLD_GRACE_HOURS'] ?? 24),
+    holdWindowHours: Number(cfg['TERRITORY_HOLD_WINDOW_HOURS'] ?? 12),
+    holdMaxDuePerCrew: Number(cfg['TERRITORY_HOLD_MAX_DUE_PER_CREW'] ?? 1),
+    holdIncomeMiss1Percent: Number(cfg['TERRITORY_HOLD_INCOME_MISS1_PERCENT'] ?? 50),
+    holdIncomeMiss2Percent: Number(cfg['TERRITORY_HOLD_INCOME_MISS2_PERCENT'] ?? 0),
+    holdUnrestCapturePenalty: Number(cfg['TERRITORY_HOLD_UNREST_CAPTURE_PENALTY'] ?? 10),
     maxRegionsPerCrew: Number(cfg['TERRITORY_MAX_REGIONS_PER_CREW'] ?? 5),
     maxConcurrentContestsPerCrew: Number(cfg['TERRITORY_MAX_CONCURRENT_CONTESTS_PER_CREW'] ?? 2),
     primeTimeStartHour: Number(cfg['TERRITORY_PRIME_TIME_START_HOUR_UTC'] ?? 17),
@@ -367,7 +379,20 @@ async function buildViewerTerritoryCaps(
 
 type TerritoryRow = { id: number; countryCode: string; displayNameNl: string; displayNameEn: string; svgAssetKey: string; enabled: number };
 type RegionRow = { id: number; countryCode: string; regionKey: string; nameNl: string; nameEn: string; svgElementId: string; valueTier: number; strategicTagsJson: string | null; neighborsJson: string | null; enabled: number };
-type ControlRow = { id: number; regionKey: string; ownerCrewId: number | null; controlJson: string | null; stability: number; lastDecayAt: Date | null; lastIncomeAt: Date | null; ownedSince: Date | null; updatedAt: Date };
+type ControlRow = {
+  id: number;
+  regionKey: string;
+  ownerCrewId: number | null;
+  controlJson: string | null;
+  stability: number;
+  lastDecayAt: Date | null;
+  lastIncomeAt: Date | null;
+  ownedSince: Date | null;
+  lastHoldAt: Date | null;
+  holdDueAt: Date | null;
+  holdMissStreak: number;
+  updatedAt: Date;
+};
 type ContestRow = { id: number; regionKey: string; status: string; attackerCrewId: number; defenderCrewId: number | null; startedAt: Date; activeAt: Date | null; lockdownAt: Date | null; resolveAt: Date | null; resolvedAt: Date | null; winnerCrewId: number | null; metadataJson: string | null };
 type SeasonRow = { id: number; seasonKey: string; status: string; startsAt: Date; endsAt: Date; rewardConfigJson: string | null };
 type MapContestRow = ContestRow & { attackerCrewName: string | null; defenderCrewName: string | null };
@@ -377,6 +402,7 @@ type PassiveIncomeRegionRow = {
   ownerCrewId: number;
   valueTier: number;
   lastIncomeAt: Date | null;
+  holdMissStreak: number;
 };
 
 type PassiveIncomePayoutRow = {
@@ -433,6 +459,18 @@ type TerritoryCrewEconomySummary = {
   passiveIncomePerDay: number;
   totalPassiveIncomeEarned: number;
   crewBankBalance: number;
+  holdDuty: TerritoryHoldDutySnapshot | null;
+};
+
+type TerritoryHoldDutySnapshot = {
+  regionKey: string;
+  nameNl: string;
+  nameEn: string;
+  countryCode: string;
+  dueAt: Date;
+  missStreak: number;
+  incomePercent: number;
+  unrest: boolean;
 };
 
 const TRAVEL_TO_TERRITORY_COUNTRY_CODE: Record<string, string> = {
@@ -551,12 +589,55 @@ function applyPercentReduction(amount: number, reductionPercent: number): number
   return Math.max(0, Math.round(amount * (1 - (reductionPercent / 100))));
 }
 
+/** Peacetime hold actions are stored with contestId 0 so they never collide with real contests. */
+const HOLD_ACTION_CONTEST_ID = 0;
+
+export function holdIncomePercentForStreak(
+  missStreak: number,
+  miss1Percent: number = 50,
+  miss2Percent: number = 0,
+): number {
+  const streak = Math.max(0, Math.floor(Number(missStreak) || 0));
+  if (streak >= 2) return Math.max(0, Math.min(100, Math.floor(Number(miss2Percent) || 0)));
+  if (streak >= 1) return Math.max(0, Math.min(100, Math.floor(Number(miss1Percent) || 0)));
+  return 100;
+}
+
+export function applyHoldIncomeMultiplier(amount: number, percent: number): number {
+  const clamped = Math.max(0, Math.min(100, Math.floor(Number(percent) || 0)));
+  if (clamped >= 100) return Math.max(0, Math.round(amount));
+  if (clamped <= 0) return 0;
+  return Math.max(0, Math.round(amount * (clamped / 100)));
+}
+
+function holdConfigFromTerritoryCfg(cfg: {
+  holdGraceHours: number;
+  holdWindowHours: number;
+  holdMaxDuePerCrew: number;
+  holdIncomeMiss1Percent: number;
+  holdIncomeMiss2Percent: number;
+  holdUnrestCapturePenalty: number;
+  decayPerHour: number;
+}) {
+  return {
+    graceHours: Math.max(1, Math.floor(cfg.holdGraceHours || 24)),
+    windowHours: Math.max(1, Math.floor(cfg.holdWindowHours || 12)),
+    maxDuePerCrew: Math.max(1, Math.floor(cfg.holdMaxDuePerCrew || 1)),
+    miss1Percent: Math.max(0, Math.min(100, Math.floor(cfg.holdIncomeMiss1Percent))),
+    miss2Percent: Math.max(0, Math.min(100, Math.floor(cfg.holdIncomeMiss2Percent))),
+    unrestCapturePenalty: Math.max(0, Math.floor(cfg.holdUnrestCapturePenalty || 0)),
+    decayPerHour: Math.max(0, Math.floor(cfg.decayPerHour || 0)),
+  };
+}
+
 export {
   getTerritoryConfig,
   getStrategicTagModifiers,
   applyPercentBonus,
   applyPercentReduction,
   parseStringArray as parseTerritoryStringArray,
+  holdIncomePercentForStreak,
+  applyHoldIncomeMultiplier,
 };
 
 /** True when the crew owns at least one enabled region with the given strategic tag in a territory country. */
@@ -1199,6 +1280,156 @@ async function getAdjacentOwnedRegionCount(region: RegionRow, crewId: number): P
   return toNumeric(rows[0]?.cnt ?? 0);
 }
 
+async function fulfillTerritoryHoldDuty(
+  regionKey: string,
+  crewId: number,
+  now: Date = new Date(),
+): Promise<void> {
+  const rows = await prisma.$queryRawUnsafe<Array<{
+    ownerCrewId: number | null;
+    holdMissStreak: number;
+    holdDueAt: Date | null;
+  }>>(
+    `SELECT ownerCrewId, COALESCE(holdMissStreak, 0) AS holdMissStreak, holdDueAt
+     FROM territory_control WHERE regionKey = ? LIMIT 1`,
+    regionKey,
+  );
+  const row = rows[0];
+  if (!row || toNumeric(row.ownerCrewId) !== crewId) return;
+
+  const previousStreak = toNumeric(row.holdMissStreak);
+  const nextStreak = previousStreak <= 0 ? 0 : previousStreak - 1;
+  const stabilityBoost = row.holdDueAt ? 4 : 2;
+
+  await prisma.$executeRawUnsafe(
+    `UPDATE territory_control
+     SET lastHoldAt = ?,
+         holdDueAt = NULL,
+         holdMissStreak = ?,
+         stability = GREATEST(0, LEAST(100, stability + ?)),
+         updatedAt = NOW()
+     WHERE regionKey = ? AND ownerCrewId = ?`,
+    now,
+    nextStreak,
+    stabilityBoost,
+    regionKey,
+    crewId,
+  );
+}
+
+async function resetTerritoryHoldOnOwnershipChange(regionKey: string, now: Date = new Date()): Promise<void> {
+  await prisma.$executeRawUnsafe(
+    `UPDATE territory_control
+     SET lastHoldAt = ?, holdDueAt = NULL, holdMissStreak = 0
+     WHERE regionKey = ?`,
+    now,
+    regionKey,
+  );
+}
+
+async function processTerritoryHoldDuties(
+  now: Date,
+  cfg: Awaited<ReturnType<typeof getTerritoryConfig>>,
+): Promise<void> {
+  const hold = holdConfigFromTerritoryCfg(cfg);
+  const graceMinutes = hold.graceHours * 60;
+  const windowHours = hold.windowHours;
+
+  const expired = await prisma.$queryRawUnsafe<Array<{
+    regionKey: string;
+    ownerCrewId: number;
+    holdMissStreak: number;
+    nameNl: string;
+    nameEn: string;
+  }>>(
+    `SELECT tc.regionKey, tc.ownerCrewId, COALESCE(tc.holdMissStreak, 0) AS holdMissStreak,
+            tr.nameNl, tr.nameEn
+     FROM territory_control tc
+     JOIN territory_regions tr ON tr.regionKey = tc.regionKey
+     WHERE tc.ownerCrewId IS NOT NULL
+       AND tc.holdDueAt IS NOT NULL
+       AND tc.holdDueAt <= ?
+       AND tr.enabled = 1`,
+    now,
+  );
+
+  for (const row of expired) {
+    const ownerCrewId = toNumeric(row.ownerCrewId);
+    const nextStreak = toNumeric(row.holdMissStreak) + 1;
+    const updated = await prisma.$executeRawUnsafe(
+      `UPDATE territory_control
+       SET holdMissStreak = ?,
+           lastDecayAt = ?,
+           holdDueAt = TIMESTAMPADD(HOUR, ?, ?),
+           stability = GREATEST(0, stability - ?),
+           updatedAt = NOW()
+       WHERE regionKey = ? AND ownerCrewId = ? AND holdDueAt IS NOT NULL AND holdDueAt <= ?`,
+      nextStreak,
+      now,
+      windowHours,
+      now,
+      hold.decayPerHour,
+      row.regionKey,
+      ownerCrewId,
+      now,
+    );
+    if (Number(updated) <= 0) continue;
+    const incomePercent = holdIncomePercentForStreak(nextStreak, hold.miss1Percent, hold.miss2Percent);
+    _notifyCrewHoldMissed(ownerCrewId, row.regionKey, row.nameNl, row.nameEn, incomePercent).catch(() => {});
+  }
+
+  const dueCounts = await prisma.$queryRawUnsafe<Array<{ ownerCrewId: number; dueCount: number }>>(
+    `SELECT ownerCrewId, COUNT(*) AS dueCount
+     FROM territory_control
+     WHERE ownerCrewId IS NOT NULL AND holdDueAt IS NOT NULL
+     GROUP BY ownerCrewId`,
+  );
+  const dueByCrew = new Map<number, number>();
+  for (const row of dueCounts) {
+    dueByCrew.set(toNumeric(row.ownerCrewId), toNumeric(row.dueCount));
+  }
+
+  const candidates = await prisma.$queryRawUnsafe<Array<{
+    regionKey: string;
+    ownerCrewId: number;
+    nameNl: string;
+    nameEn: string;
+  }>>(
+    `SELECT tc.regionKey, tc.ownerCrewId, tr.nameNl, tr.nameEn
+     FROM territory_control tc
+     JOIN territory_regions tr ON tr.regionKey = tc.regionKey
+     WHERE tc.ownerCrewId IS NOT NULL
+       AND tc.holdDueAt IS NULL
+       AND tr.enabled = 1
+       AND TIMESTAMPDIFF(
+         MINUTE,
+         COALESCE(tc.lastHoldAt, tc.ownedSince, tc.lastIncomeAt, tc.updatedAt),
+         ?
+       ) >= ?
+     ORDER BY COALESCE(tc.lastHoldAt, tc.ownedSince, tc.lastIncomeAt, tc.updatedAt) ASC, tc.id ASC`,
+    now,
+    graceMinutes,
+  );
+
+  for (const candidate of candidates) {
+    const ownerCrewId = toNumeric(candidate.ownerCrewId);
+    if ((dueByCrew.get(ownerCrewId) ?? 0) >= hold.maxDuePerCrew) continue;
+
+    const dueAt = new Date(now.getTime() + windowHours * 60 * 60 * 1000);
+    const updated = await prisma.$executeRawUnsafe(
+      `UPDATE territory_control
+       SET holdDueAt = ?, updatedAt = NOW()
+       WHERE regionKey = ? AND ownerCrewId = ? AND holdDueAt IS NULL`,
+      dueAt,
+      candidate.regionKey,
+      ownerCrewId,
+    );
+    if (Number(updated) <= 0) continue;
+    dueByCrew.set(ownerCrewId, (dueByCrew.get(ownerCrewId) ?? 0) + 1);
+    _notifyCrewHoldDue(ownerCrewId, candidate.regionKey, candidate.nameNl, candidate.nameEn, windowHours).catch(() => {});
+  }
+}
+
 async function processPassiveTerritoryIncome(
   now: Date,
   cfg: Awaited<ReturnType<typeof getTerritoryConfig>>,
@@ -1211,7 +1442,8 @@ async function processPassiveTerritoryIncome(
   const seasonKey = seasons[0]?.seasonKey ?? 'territory-open';
 
   const rows = await prisma.$queryRawUnsafe<Array<PassiveIncomeRegionRow & { strategicTagsJson: string | null }>>(
-    `SELECT tc.regionKey, tr.countryCode, tc.ownerCrewId, tr.valueTier, tr.strategicTagsJson, tc.lastIncomeAt
+    `SELECT tc.regionKey, tr.countryCode, tc.ownerCrewId, tr.valueTier, tr.strategicTagsJson, tc.lastIncomeAt,
+            COALESCE(tc.holdMissStreak, 0) AS holdMissStreak
      FROM territory_control tc
      JOIN territory_regions tr ON tr.regionKey = tc.regionKey
      WHERE tc.ownerCrewId IS NOT NULL AND tr.enabled = 1`,
@@ -1246,7 +1478,13 @@ async function processPassiveTerritoryIncome(
     const amountPerCycle = penaltyPercent > 0
       ? Math.max(0, Math.round(withIndustry * (1 - (penaltyPercent / 100))))
       : withIndustry;
-    const payoutAmount = payoutCycles * amountPerCycle;
+    const holdPercent = holdIncomePercentForStreak(
+      toNumeric(row.holdMissStreak),
+      cfg.holdIncomeMiss1Percent,
+      cfg.holdIncomeMiss2Percent,
+    );
+    const heldAmountPerCycle = applyHoldIncomeMultiplier(amountPerCycle, holdPercent);
+    const payoutAmount = payoutCycles * heldAmountPerCycle;
     const newLastIncomeAt = new Date(lastIncomeAt.getTime() + (payoutCycles * intervalMs));
 
     const ownerCrewId = toNumeric(row.ownerCrewId);
@@ -1330,9 +1568,9 @@ export async function getCrewEconomySummary(crewId: number): Promise<TerritoryCr
   await syncContestLifecycle();
 
   const cfg = await getTerritoryConfig();
-  const [controlledRows, rewardRows, crew] = await Promise.all([
-    prisma.$queryRawUnsafe<Array<{ regionKey: string; countryCode: string; valueTier: number }>>(
-      `SELECT tr.regionKey, tr.countryCode, tr.valueTier
+  const [controlledRows, rewardRows, crew, holdDuty] = await Promise.all([
+    prisma.$queryRawUnsafe<Array<{ regionKey: string; countryCode: string; valueTier: number; holdMissStreak: number }>>(
+      `SELECT tr.regionKey, tr.countryCode, tr.valueTier, COALESCE(tc.holdMissStreak, 0) AS holdMissStreak
        FROM territory_control tc
        JOIN territory_regions tr ON tr.regionKey = tc.regionKey
        WHERE tc.ownerCrewId = ? AND tr.enabled = 1`,
@@ -1348,11 +1586,18 @@ export async function getCrewEconomySummary(crewId: number): Promise<TerritoryCr
       where: { id: crewId },
       select: { bankBalance: true },
     }),
+    getCrewHoldDuty(crewId, cfg),
   ]);
 
   const countriesOwned = new Set(controlledRows.map((row) => row.countryCode)).size;
   const passiveIncomePerInterval = controlledRows.reduce((sum, row) => {
-    return sum + buildPassiveIncomeSnapshot(toNumeric(row.valueTier), cfg).amountPerInterval;
+    const base = buildPassiveIncomeSnapshot(toNumeric(row.valueTier), cfg).amountPerInterval;
+    const holdPercent = holdIncomePercentForStreak(
+      toNumeric(row.holdMissStreak),
+      cfg.holdIncomeMiss1Percent,
+      cfg.holdIncomeMiss2Percent,
+    );
+    return sum + applyHoldIncomeMultiplier(base, holdPercent);
   }, 0);
   const cyclesPerHour = 60 / Math.max(1, cfg.passiveIncomeIntervalMinutes);
   const passiveIncomePerHour = Math.round(passiveIncomePerInterval * cyclesPerHour);
@@ -1366,6 +1611,49 @@ export async function getCrewEconomySummary(crewId: number): Promise<TerritoryCr
     passiveIncomePerDay: passiveIncomePerHour * 24,
     totalPassiveIncomeEarned: toNumeric(rewardRows[0]?.totalCash ?? 0),
     crewBankBalance: toNumeric(crew?.bankBalance ?? 0),
+    holdDuty,
+  };
+}
+
+export async function getCrewHoldDuty(
+  crewId: number,
+  cfgInput?: Awaited<ReturnType<typeof getTerritoryConfig>>,
+): Promise<TerritoryHoldDutySnapshot | null> {
+  const cfg = cfgInput ?? await getTerritoryConfig();
+  const rows = await prisma.$queryRawUnsafe<Array<{
+    regionKey: string;
+    nameNl: string;
+    nameEn: string;
+    countryCode: string;
+    holdDueAt: Date;
+    holdMissStreak: number;
+  }>>(
+    `SELECT tc.regionKey, tr.nameNl, tr.nameEn, tr.countryCode, tc.holdDueAt,
+            COALESCE(tc.holdMissStreak, 0) AS holdMissStreak
+     FROM territory_control tc
+     JOIN territory_regions tr ON tr.regionKey = tc.regionKey
+     WHERE tc.ownerCrewId = ? AND tc.holdDueAt IS NOT NULL AND tr.enabled = 1
+     ORDER BY tc.holdDueAt ASC
+     LIMIT 1`,
+    crewId,
+  );
+  const row = rows[0];
+  if (!row?.holdDueAt) return null;
+  const missStreak = toNumeric(row.holdMissStreak);
+  const incomePercent = holdIncomePercentForStreak(
+    missStreak,
+    cfg.holdIncomeMiss1Percent,
+    cfg.holdIncomeMiss2Percent,
+  );
+  return {
+    regionKey: row.regionKey,
+    nameNl: row.nameNl,
+    nameEn: row.nameEn,
+    countryCode: row.countryCode,
+    dueAt: row.holdDueAt,
+    missStreak,
+    incomePercent,
+    unrest: missStreak >= 1,
   };
 }
 
@@ -1436,6 +1724,7 @@ async function syncContestLifecycle(now: Date = new Date()): Promise<void> {
     }
   }
 
+  await processTerritoryHoldDuties(now, cfg);
   await processPassiveTerritoryIncome(now, cfg);
   await territoryMetaService.rotateRegionEvents(now, {
     enabled: cfg.regionEventEnabled,
@@ -1550,6 +1839,12 @@ export async function getMapData(
       fillLevel: 'empty' | 'half' | 'full';
       fillPercent: number;
     } | null;
+    holdDueAt: Date | null;
+    lastHoldAt: Date | null;
+    holdMissStreak: number;
+    holdIncomePercent: number;
+    holdUnrest: boolean;
+    holdCanAct: boolean;
   }>;
 }> {
   await syncContestLifecycle();
@@ -1685,6 +1980,29 @@ export async function getMapData(
     );
   }
 
+  let viewerHoldCooldownByRegion: Record<string, { nextActionAt: Date; secondsRemaining: number }> = {};
+  if (viewer?.viewerPlayerId) {
+    const latestHoldActions = await prisma.$queryRawUnsafe<Array<{ regionKey: string; lastActionAt: Date }>>(
+      `SELECT regionKey, MAX(createdAt) AS lastActionAt
+       FROM territory_actions
+       WHERE actorId = ? AND contestId = ?
+       GROUP BY regionKey`,
+      viewer.viewerPlayerId,
+      HOLD_ACTION_CONTEST_ID,
+    );
+    viewerHoldCooldownByRegion = latestHoldActions.reduce<Record<string, { nextActionAt: Date; secondsRemaining: number }>>(
+      (acc, action) => {
+        const nextActionAt = new Date(action.lastActionAt.getTime() + (cfg.actionCooldownSeconds * 1000));
+        const secondsRemaining = Math.max(0, Math.ceil((nextActionAt.getTime() - now.getTime()) / 1000));
+        if (secondsRemaining > 0) {
+          acc[action.regionKey] = { nextActionAt, secondsRemaining };
+        }
+        return acc;
+      },
+      {},
+    );
+  }
+
   let contestPointsById: Record<number, { attackerPoints: number; defenderPoints: number }> = {};
   if (contests.length > 0) {
     const contestIds = contests.map((contest) => contest.id);
@@ -1715,7 +2033,9 @@ export async function getMapData(
     const viewerContestRole = viewer?.viewerCrewId == null || !contest
       ? null
       : (contest.attackerCrewId === viewer.viewerCrewId ? 'attacker' : (contest.defenderCrewId === viewer.viewerCrewId ? 'defender' : null));
-    const viewerCooldown = contest ? viewerCooldownByContestId[contest.id] : undefined;
+    const viewerCooldown = contest
+      ? viewerCooldownByContestId[contest.id]
+      : viewerHoldCooldownByRegion[r.regionKey];
     const controlPercent = ctrl ? (() => {
       const cpJson = parseJson(ctrl.controlJson ?? null);
       if (!ctrl.ownerCrewId) return 0;
@@ -1739,6 +2059,15 @@ export async function getMapData(
       amountPerHour = Math.max(0, Math.round(amountPerHour * factor));
       amountPerDay = Math.max(0, Math.round(amountPerDay * factor));
     }
+    const holdMissStreak = toNumeric(ctrl?.holdMissStreak ?? 0);
+    const holdIncomePercent = holdIncomePercentForStreak(
+      holdMissStreak,
+      cfg.holdIncomeMiss1Percent,
+      cfg.holdIncomeMiss2Percent,
+    );
+    amountPerInterval = applyHoldIncomeMultiplier(amountPerInterval, holdIncomePercent);
+    amountPerHour = applyHoldIncomeMultiplier(amountPerHour, holdIncomePercent);
+    amountPerDay = applyHoldIncomeMultiplier(amountPerDay, holdIncomePercent);
     const boostedIncome = {
       amountPerInterval,
       intervalMinutes: incomeSnapshot.intervalMinutes,
@@ -1861,6 +2190,17 @@ export async function getMapData(
           fillPercent: arsenalSummary.fillPercent,
         }
         : null),
+      holdDueAt: ctrl?.holdDueAt ?? null,
+      lastHoldAt: ctrl?.lastHoldAt ?? null,
+      holdMissStreak,
+      holdIncomePercent,
+      holdUnrest: holdMissStreak >= 1,
+      holdCanAct: Boolean(
+        viewer?.viewerCrewId
+        && ctrl?.ownerCrewId === viewer.viewerCrewId
+        && ctrl?.holdDueAt
+        && !contest,
+      ),
     };
   });
 
@@ -2689,6 +3029,14 @@ export async function doAction(
       config: projectConfig,
     });
 
+  if (
+    !abuseFlagged
+    && contest.defenderCrewId === crewId
+    && (actionType === 'patrol' || actionType === 'supply_run')
+  ) {
+    await fulfillTerritoryHoldDuty(contest.regionKey, crewId);
+  }
+
   // Update control percentages
   await _recalcContestControl(contestId, contest.regionKey, crewId, pointsDelta);
 
@@ -2707,6 +3055,222 @@ export async function doAction(
     stabilityDelta,
     projectEffect,
     message: abuseFlagged ? 'ANTI_FARM_LIMITED' : 'ACTION_OK',
+  };
+}
+
+export async function doHoldAction(
+  playerId: number,
+  crewId: number,
+  regionKey: string,
+  actionType: string,
+  currentCountry: string | null | undefined,
+): Promise<{
+  pointsDelta: number;
+  adjacentOwnedRegions: number;
+  actionBonusPoints: number;
+  strategicActionBonuses: Array<{
+    bonusPoints: number;
+    source: StrategicActionBonus['source'];
+    labelNl: string;
+    labelEn: string;
+  }>;
+  stabilityDelta: number;
+  projectEffect: territoryProjectService.ContestProjectEffect | null;
+  message: string;
+  holdDutyCleared: boolean;
+}> {
+  await syncContestLifecycle();
+
+  const cfg = await getTerritoryConfig();
+  if (!cfg.enabled) throw new Error('TERRITORY_DISABLED');
+  if (actionType !== 'patrol' && actionType !== 'supply_run') {
+    throw new Error('INVALID_ACTION_TYPE');
+  }
+
+  const crewProgression = await getCrewTerritoryProgression(crewId);
+  const projectConfig = getProjectConfig(cfg);
+  const requiredHqLevel = Math.max(
+    0,
+    Math.floor(cfg.actionUnlockHqLevels[actionType as keyof typeof cfg.actionUnlockHqLevels] ?? 0),
+  );
+  if (crewProgression.hqGlobalLevel < requiredHqLevel) {
+    throw new Error('HQ_LEVEL_REQUIRED');
+  }
+
+  const regions = await prisma.$queryRawUnsafe<RegionRow[]>(
+    'SELECT * FROM territory_regions WHERE regionKey = ? AND enabled = 1 LIMIT 1',
+    regionKey,
+  );
+  const region = regions[0];
+  if (!region) throw new Error('REGION_NOT_FOUND');
+  assertPlayerInTerritoryCountry(currentCountry, region.countryCode);
+
+  const controlRows = await prisma.$queryRawUnsafe<Array<{
+    ownerCrewId: number | null;
+    holdDueAt: Date | null;
+  }>>(
+    'SELECT ownerCrewId, holdDueAt FROM territory_control WHERE regionKey = ? LIMIT 1',
+    regionKey,
+  );
+  const control = controlRows[0];
+  if (!control || toNumeric(control.ownerCrewId) !== crewId) {
+    throw new Error('HOLD_NOT_OWNER');
+  }
+  if (!control.holdDueAt) {
+    throw new Error('HOLD_NOT_DUE');
+  }
+
+  const liveContests = await prisma.$queryRawUnsafe<Array<{ id: number }>>(
+    `SELECT id FROM territory_contests
+     WHERE regionKey = ? AND status NOT IN ('resolved', 'cancelled')
+     LIMIT 1`,
+    regionKey,
+  );
+  if (liveContests[0]) {
+    throw new Error('HOLD_CONTEST_ACTIVE');
+  }
+
+  const recentActions = await prisma.$queryRawUnsafe<Array<{ cnt: number }>>(
+    `SELECT COUNT(*) AS cnt FROM territory_actions
+     WHERE actorId = ? AND regionKey = ? AND contestId = ? AND createdAt > DATE_SUB(NOW(), INTERVAL ? SECOND)`,
+    playerId, regionKey, HOLD_ACTION_CONTEST_ID, cfg.actionCooldownSeconds,
+  );
+  if (Number(recentActions[0]?.cnt ?? 0) > 0) throw new Error('ACTION_COOLDOWN');
+
+  if (cfg.actionDailyCap > 0) {
+    const todayActions = await prisma.$queryRawUnsafe<Array<{ cnt: number }>>(
+      `SELECT COUNT(*) AS cnt FROM territory_actions
+       WHERE actorId = ? AND createdAt > DATE_SUB(NOW(), INTERVAL 24 HOUR)`,
+      playerId,
+    );
+    if (Number(todayActions[0]?.cnt ?? 0) >= cfg.actionDailyCap) throw new Error('DAILY_CAP_REACHED');
+  }
+
+  const antiFarmCount = await prisma.$queryRawUnsafe<Array<{ cnt: number }>>(
+    `SELECT COUNT(*) AS cnt FROM territory_actions
+     WHERE actorId = ? AND regionKey = ? AND contestId = ? AND createdAt > DATE_SUB(NOW(), INTERVAL ? SECOND)`,
+    playerId, regionKey, HOLD_ACTION_CONTEST_ID, cfg.antiFarmWindowSeconds,
+  );
+  const abuseFlagged = Number(antiFarmCount[0]?.cnt ?? 0) >= cfg.antiFarmRepeatTargetCap ? 1 : 0;
+
+  const ACTION_POINTS: Record<string, number> = {
+    patrol: 4,
+    supply_run: 5,
+  };
+  const adjacentOwnedRegions = await getAdjacentOwnedRegionCount(region, crewId);
+  const garrisonOffer = garrisonOfferFromConfig(cfg);
+  const garrisonByRegion = await getActiveGarrisonEffects(
+    [regionKey],
+    new Date(),
+    {
+      defenseBonusPoints: garrisonOffer.defenseBonusPoints,
+      captureThresholdBonus: garrisonOffer.captureThresholdBonus,
+    },
+  );
+  const arsenalFill = await territoryArsenalService.getRegionArsenalFill(regionKey, crewId);
+  const regionProjects = await territoryProjectService.getProjectsByRegionKeys([regionKey], projectConfig);
+  const progressionBonuses = withoutStocklessWeaponBuildingBonuses(
+    buildProgressionActionBonuses(crewProgression, cfg),
+  );
+  const projectBonuses = mapProjectBonusesToStrategic(regionProjects[regionKey] ?? null, projectConfig);
+  const garrisonBonuses = buildGarrisonDefenseBonuses(
+    garrisonByRegion[regionKey] ?? null,
+    crewId,
+    crewId,
+    arsenalFill,
+  );
+  let arsenalSpend: Awaited<ReturnType<typeof territoryArsenalService.applyCombatLogistics>> | null = null;
+  let supplyRun = { movedWeapons: 0, movedAmmo: 0, from: 'none' as 'hq' | 'adjacent' | 'none' };
+  if (!abuseFlagged) {
+    arsenalSpend = await territoryArsenalService.applyCombatLogistics({
+      actionType,
+      regionKey,
+      crewId,
+      weaponBuildingLevel: crewProgression.buildingLevels.weaponStorage,
+      ammoBuildingLevel: crewProgression.buildingLevels.ammoStorage,
+    });
+    if (arsenalSpend.crossedLow) {
+      territoryArsenalService.notifyArsenalLow(crewId, regionKey).catch(() => {});
+    }
+    if (actionType === 'supply_run') {
+      supplyRun = await territoryArsenalService.applySupplyRunResupply({
+        regionKey,
+        crewId,
+        neighbors: parseStringArray(region.neighborsJson),
+      });
+    }
+  }
+  const arsenalBonuses = toArsenalStrategicBonuses(arsenalSpend?.bonuses ?? []);
+  const allActionBonuses = [
+    ...progressionBonuses,
+    ...projectBonuses,
+    ...garrisonBonuses,
+    ...arsenalBonuses,
+  ];
+  const actionBonusPoints = getActionBonusForType(allActionBonuses, actionType);
+  const pointsDelta = abuseFlagged ? 0 : ((ACTION_POINTS[actionType] ?? 4) + actionBonusPoints);
+  const stabilityDelta = actionType === 'supply_run' ? 3 : 0;
+
+  const actionMetadata = JSON.stringify({
+    holdDuty: true,
+    ammoSpent: arsenalSpend?.ammoSpent ?? 0,
+    ammoType: arsenalSpend?.ammoType ?? null,
+    ammoRequested: arsenalSpend?.ammoRequested ?? 0,
+    weaponWear: arsenalSpend?.weaponWear ?? 0,
+    weaponBroken: arsenalSpend?.weaponBroken ?? 0,
+    dryFire: arsenalSpend?.dryFire ?? false,
+    source: arsenalSpend?.source ?? 'none',
+    longSupply: arsenalSpend?.longSupply ?? false,
+    fillPercent: arsenalSpend?.fillPercent ?? 0,
+    supplyRun,
+  });
+
+  await prisma.$executeRawUnsafe(
+    `INSERT INTO territory_actions (contestId, actorId, actorCrewId, regionKey, actionType, pointsDelta, stabilityDelta, abuseFlagged, metadataJson)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    HOLD_ACTION_CONTEST_ID, playerId, crewId, regionKey, actionType, pointsDelta, stabilityDelta, abuseFlagged, actionMetadata,
+  );
+
+  if (stabilityDelta !== 0) {
+    await prisma.$executeRawUnsafe(
+      `UPDATE territory_control
+       SET stability = GREATEST(0, LEAST(100, stability + ?)), updatedAt = NOW()
+       WHERE regionKey = ?`,
+      stabilityDelta,
+      regionKey,
+    );
+  }
+
+  const projectEffect = abuseFlagged
+    ? null
+    : await territoryProjectService.applyContestActionToProject({
+      regionKey,
+      actionType,
+      actorCrewId: crewId,
+      defenderCrewId: crewId,
+      config: projectConfig,
+    });
+
+  if (!abuseFlagged) {
+    await fulfillTerritoryHoldDuty(regionKey, crewId);
+  }
+
+  return {
+    pointsDelta,
+    adjacentOwnedRegions,
+    actionBonusPoints,
+    strategicActionBonuses: allActionBonuses
+      .filter((bonus) => bonus.actionType == actionType)
+      .map((bonus) => ({
+        bonusPoints: bonus.bonusPoints,
+        source: bonus.source,
+        labelNl: bonus.labelNl,
+        labelEn: bonus.labelEn,
+      })),
+    stabilityDelta,
+    projectEffect,
+    message: abuseFlagged ? 'ANTI_FARM_LIMITED' : 'HOLD_ACTION_OK',
+    holdDutyCleared: !abuseFlagged,
   };
 }
 
@@ -3082,6 +3646,17 @@ export async function resolveContest(contestId: number): Promise<{ winnerCrewId:
     captureThreshold = Math.max(45, captureThreshold - stabilityEase);
   }
 
+  if (contest.defenderCrewId != null) {
+    const holdRows = await prisma.$queryRawUnsafe<Array<{ holdMissStreak: number }>>(
+      `SELECT COALESCE(holdMissStreak, 0) AS holdMissStreak FROM territory_control WHERE regionKey = ? LIMIT 1`,
+      contest.regionKey,
+    );
+    const missStreak = toNumeric(holdRows[0]?.holdMissStreak);
+    if (missStreak >= 2 && cfg.holdUnrestCapturePenalty > 0) {
+      captureThreshold = Math.max(45, captureThreshold - Math.floor(cfg.holdUnrestCapturePenalty));
+    }
+  }
+
   if (totalPoints > 0) {
     const attackerPct = (attackerPoints / totalPoints) * 100;
     if (attackerPct >= captureThreshold) {
@@ -3149,6 +3724,7 @@ export async function resolveContest(contestId: number): Promise<{ winnerCrewId:
     );
 
     if (ownershipChanged) {
+      await resetTerritoryHoldOnOwnershipChange(contest.regionKey);
       await territoryArsenalService.transferCacheOnOwnershipChange({
         regionKey: contest.regionKey,
         previousOwnerId,
@@ -3191,6 +3767,7 @@ export async function adminAssignRegion(regionKey: string, crewId: number | null
     crewId,
     regionKey,
   );
+  await resetTerritoryHoldOnOwnershipChange(regionKey);
   if (crewId == null) {
     await territoryArsenalService.clearRegionCache(regionKey);
   } else if (previousOwnerId != null && previousOwnerId !== crewId) {
@@ -3220,6 +3797,7 @@ export async function adminResetRegion(regionKey: string): Promise<void> {
     `UPDATE territory_control SET ownerCrewId = NULL, controlJson = '{}', stability = 100, lastIncomeAt = NOW(), ownedSince = NULL WHERE regionKey = ?`,
     regionKey,
   );
+  await resetTerritoryHoldOnOwnershipChange(regionKey);
   await prisma.$executeRawUnsafe(
     `UPDATE territory_contests SET status = 'cancelled' WHERE regionKey = ? AND status NOT IN ('resolved', 'cancelled')`,
     regionKey,
@@ -3450,6 +4028,60 @@ async function _notifyCrewRegionLost(crewId: number, regionKey: string): Promise
       p.id,
       lang,
       n.territoryLost.inboxMessage(regionKey),
+    ).catch(() => {});
+  }
+}
+
+async function _notifyCrewHoldDue(
+  crewId: number,
+  regionKey: string,
+  nameNl: string,
+  nameEn: string,
+  windowHours: number,
+): Promise<void> {
+  const hoursLabel = String(Math.max(1, Math.round(windowHours)));
+  const players = await _getCrewPlayers(crewId);
+  for (const p of players) {
+    const lang = await _getPlayerLanguage(p.id);
+    const n = translationService.getTranslations(lang).notification;
+    const regionName = lang === 'nl' ? nameNl : nameEn;
+    await notificationService.sendToPlayer(
+      p.id,
+      n.territoryHoldDue.title,
+      n.territoryHoldDue.pushBody(regionName, hoursLabel),
+      { type: 'territory_hold_due', regionKey, countryHours: hoursLabel },
+    ).catch(() => {});
+    await _sendTerritoryInboxMessage(
+      p.id,
+      lang,
+      n.territoryHoldDue.inboxMessage(regionName, hoursLabel),
+    ).catch(() => {});
+  }
+}
+
+async function _notifyCrewHoldMissed(
+  crewId: number,
+  regionKey: string,
+  nameNl: string,
+  nameEn: string,
+  incomePercent: number,
+): Promise<void> {
+  const percentLabel = String(Math.max(0, Math.floor(incomePercent)));
+  const players = await _getCrewPlayers(crewId);
+  for (const p of players) {
+    const lang = await _getPlayerLanguage(p.id);
+    const n = translationService.getTranslations(lang).notification;
+    const regionName = lang === 'nl' ? nameNl : nameEn;
+    await notificationService.sendToPlayer(
+      p.id,
+      n.territoryHoldMissed.title,
+      n.territoryHoldMissed.pushBody(regionName, percentLabel),
+      { type: 'territory_hold_missed', regionKey, incomePercent: percentLabel },
+    ).catch(() => {});
+    await _sendTerritoryInboxMessage(
+      p.id,
+      lang,
+      n.territoryHoldMissed.inboxMessage(regionName, percentLabel),
     ).catch(() => {});
   }
 }

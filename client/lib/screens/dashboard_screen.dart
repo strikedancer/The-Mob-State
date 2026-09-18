@@ -4539,6 +4539,30 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                         _stats!.crewWar!.hotRegionKeys.take(3).join(', '),
                         Colors.orange.shade200,
                       ),
+                    if (_stats?.territoryHoldDuty != null) ...[
+                      const SizedBox(height: 12),
+                      _buildInfoRow(
+                        l10n.territoryHoldDueBadge,
+                        l10n.territoryHoldDashboardChip(
+                          Localizations.localeOf(context).languageCode == 'nl'
+                              ? (_stats!.territoryHoldDuty!.nameNl.isNotEmpty
+                                  ? _stats!.territoryHoldDuty!.nameNl
+                                  : _stats!.territoryHoldDuty!.regionKey)
+                              : (_stats!.territoryHoldDuty!.nameEn.isNotEmpty
+                                  ? _stats!.territoryHoldDuty!.nameEn
+                                  : _stats!.territoryHoldDuty!.regionKey),
+                          _stats!.territoryHoldDuty!.dueAt != null
+                              ? _formatCooldown(
+                                  _stats!.territoryHoldDuty!.dueAt!
+                                      .difference(DateTime.now())
+                                      .inSeconds
+                                      .clamp(0, 864000),
+                                )
+                              : l10n.territoryNow,
+                        ),
+                        Colors.amber.shade300,
+                      ),
+                    ],
                     if (_stats?.territoryLeaderStats != null) ...[
                       const SizedBox(height: 12),
                       const Divider(height: 1, color: dashboardHairline),

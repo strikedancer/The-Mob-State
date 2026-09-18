@@ -15,8 +15,11 @@ const startContestSchema = z.object({
 });
 
 const actionSchema = z.object({
-  contestId: z.number().int().positive(),
+  contestId: z.number().int().positive().optional(),
+  regionKey: z.string().min(2).max(60).optional(),
   actionType: z.enum(['patrol', 'intel_scan', 'sabotage', 'supply_run', 'raid', 'defense']),
+}).refine((value) => Boolean(value.contestId || value.regionKey), {
+  message: 'contestId or regionKey required',
 });
 
 const defendSchema = z.object({
@@ -95,6 +98,9 @@ function mapTerritoryError(error: unknown, res: Response, next: NextFunction) {
     INVALID_QUANTITY:               [400, 'territory.arsenal_invalid_quantity'],
     WEAPON_STORAGE_FULL:            [409, 'territory.arsenal_weapon_storage_full'],
     AMMO_STORAGE_FULL:              [409, 'territory.arsenal_ammo_storage_full'],
+    HOLD_NOT_OWNER:                 [403, 'territory.hold_not_owner'],
+    HOLD_NOT_DUE:                   [409, 'territory.hold_not_due'],
+    HOLD_CONTEST_ACTIVE:            [409, 'territory.hold_contest_active'],
   };
 
   const entry = map[error.message];
@@ -206,13 +212,21 @@ router.post('/action', authenticate, async (req: AuthRequest, res: Response, nex
     const crewId = await requireCrew(req, res);
     if (!crewId) return;
     const body = actionSchema.parse(req.body);
-    const result = await territoryService.doAction(
-      req.player!.id,
-      crewId,
-      body.contestId,
-      body.actionType,
-      req.player?.currentCountry,
-    );
+    const result = body.contestId
+      ? await territoryService.doAction(
+        req.player!.id,
+        crewId,
+        body.contestId,
+        body.actionType,
+        req.player?.currentCountry,
+      )
+      : await territoryService.doHoldAction(
+        req.player!.id,
+        crewId,
+        body.regionKey!,
+        body.actionType,
+        req.player?.currentCountry,
+      );
     return res.json({ event: 'territory.action_done', params: result });
   } catch (error) {
     if (error instanceof z.ZodError) {

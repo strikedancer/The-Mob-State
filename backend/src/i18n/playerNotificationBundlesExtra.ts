@@ -225,6 +225,30 @@ const notificationDE: Translations['notification'] = {
         'Waffen und Munition in diesem Gebiet kamen nicht zurück ins HQ. Der Sieger nahm einen Anteil, der Rest verbrannte.',
       ].join('\n'),
   },
+  territoryHoldDue: {
+    title: 'Territorium braucht Streife',
+    pushBody: (regionName, hoursLeft) => `${regionName} braucht eine Streife — noch ${hoursLeft} Stunden.`,
+    inboxMessage: (regionName, hoursLeft) =>
+      [
+        'Territorium braucht Streife',
+        '',
+        `Region: ${regionName}`,
+        `Ein Crewmitglied muss dorthin reisen und innerhalb von ${hoursLeft} Stunden streifen oder Nachschub fahren.`,
+        'Wer das liegen lässt, verdient dort weniger, bis jemand auftaucht. Das Land bleibt bei eurer Crew.',
+      ].join('\n'),
+  },
+  territoryHoldMissed: {
+    title: 'Streife verpasst',
+    pushBody: (regionName, incomePercent) => `${regionName} zahlt jetzt ${incomePercent}%, bis jemand streift.`,
+    inboxMessage: (regionName, incomePercent) =>
+      [
+        'Streife verpasst',
+        '',
+        `Region: ${regionName}`,
+        `Das passive Einkommen dieser Region beträgt jetzt ${incomePercent}%, bis ein Crewmitglied dorthin reist und streift.`,
+        'Das Land bleibt eures. Wiederholtes Versäumen macht es Rivalen leichter, es zu erobern.',
+      ].join('\n'),
+  },
   rldStolen: {
     title: 'Rekrut gestohlen',
     pushBody: (thiefName, workerName) => `${thiefName} hat ${workerName} aus deinem Rotlichtviertel gestohlen.`,
@@ -488,6 +512,30 @@ const notificationFR: Translations['notification'] = {
         'Les armes et munitions engagées ici ne sont pas revenues au QG. Le vainqueur a pris une part ; le reste a brûlé.',
       ].join('\n'),
   },
+  territoryHoldDue: {
+    title: 'Patrouille de territoire demandée',
+    pushBody: (regionName, hoursLeft) => `${regionName} demande une patrouille — ${hoursLeft} heures restantes.`,
+    inboxMessage: (regionName, hoursLeft) =>
+      [
+        'Patrouille de territoire demandée',
+        '',
+        `Région : ${regionName}`,
+        `Un membre de l’équipage doit s’y rendre et faire une patrouille ou un ravitaillement dans les ${hoursLeft} heures.`,
+        'Si vous ignorez ça, la région rapporte moins jusqu’à ce que quelqu’un passe. Le territoire reste à votre crew.',
+      ].join('\n'),
+  },
+  territoryHoldMissed: {
+    title: 'Patrouille manquée',
+    pushBody: (regionName, incomePercent) => `${regionName} rapporte maintenant ${incomePercent} % jusqu’à une patrouille.`,
+    inboxMessage: (regionName, incomePercent) =>
+      [
+        'Patrouille manquée',
+        '',
+        `Région : ${regionName}`,
+        `Le revenu passif de cette région est maintenant de ${incomePercent} % jusqu’à ce qu’un membre s’y rende et patrouille.`,
+        'La terre reste à vous. Plusieurs absences rendent aussi une capture plus facile pour un rival.',
+      ].join('\n'),
+  },
   rldStolen: {
     title: 'Recrue volée',
     pushBody: (thiefName, workerName) => `${thiefName} a volé ${workerName} dans ton quartier rouge.`,
@@ -748,6 +796,30 @@ const notificationES: Translations['notification'] = {
         '',
         `Región: ${regionKey}`,
         'Las armas y munición comprometidas aquí no volvieron al HQ. El ganador se llevó una parte; el resto se quemó.',
+      ].join('\n'),
+  },
+  territoryHoldDue: {
+    title: 'El territorio pide patrulla',
+    pushBody: (regionName, hoursLeft) => `${regionName} pide una patrulla — quedan ${hoursLeft} horas.`,
+    inboxMessage: (regionName, hoursLeft) =>
+      [
+        'El territorio pide patrulla',
+        '',
+        `Región: ${regionName}`,
+        `Un miembro de la crew debe viajar allí y hacer una patrulla o un reabastecimiento en ${hoursLeft} horas.`,
+        'Si lo dejáis, esa región paga menos hasta que alguien aparezca. La tierra sigue siendo de vuestra crew.',
+      ].join('\n'),
+  },
+  territoryHoldMissed: {
+    title: 'Patrulla perdida',
+    pushBody: (regionName, incomePercent) => `${regionName} ahora paga el ${incomePercent}% hasta que alguien patrulle.`,
+    inboxMessage: (regionName, incomePercent) =>
+      [
+        'Patrulla perdida',
+        '',
+        `Región: ${regionName}`,
+        `Los ingresos pasivos de esta región son ahora el ${incomePercent}% hasta que un miembro viaje allí y patrulle.`,
+        'La tierra sigue siendo vuestra. Fallar varias veces también facilita que un rival la capture.',
       ].join('\n'),
   },
   rldStolen: {
@@ -1013,6 +1085,30 @@ const notificationIT: Translations['notification'] = {
         'Armi e munizioni impegnate qui non sono tornate all’HQ. Il vincitore ha preso una parte; il resto è bruciato.',
       ].join('\n'),
   },
+  territoryHoldDue: {
+    title: 'Il territorio chiede una pattuglia',
+    pushBody: (regionName, hoursLeft) => `${regionName} chiede una pattuglia — ${hoursLeft} ore rimaste.`,
+    inboxMessage: (regionName, hoursLeft) =>
+      [
+        'Il territorio chiede una pattuglia',
+        '',
+        `Regione: ${regionName}`,
+        `Un membro della crew deve andarci e fare una pattuglia o un rifornimento entro ${hoursLeft} ore.`,
+        'Se lo ignorate, quella regione rende meno finché qualcuno non si presenta. La terra resta della vostra crew.',
+      ].join('\n'),
+  },
+  territoryHoldMissed: {
+    title: 'Pattuglia mancata',
+    pushBody: (regionName, incomePercent) => `${regionName} ora rende il ${incomePercent}% finché qualcuno non pattuglia.`,
+    inboxMessage: (regionName, incomePercent) =>
+      [
+        'Pattuglia mancata',
+        '',
+        `Regione: ${regionName}`,
+        `Il reddito passivo di questa regione è ora il ${incomePercent}% finché un membro non ci va e pattuglia.`,
+        'La terra resta vostra. Saltare più volte rende anche più facile una conquista per un rivale.',
+      ].join('\n'),
+  },
   rldStolen: {
     title: 'Recluta rubata',
     pushBody: (thiefName, workerName) => `${thiefName} ha rubato ${workerName} dal tuo quartiere a luci rosse.`,
@@ -1269,6 +1365,30 @@ const notificationPL: Translations['notification'] = {
         '',
         `Region: ${regionKey}`,
         'Broń i amunicja tutaj nie wróciły do HQ. Zwycięzca wziął część; reszta spłonęła.',
+      ].join('\n'),
+  },
+  territoryHoldDue: {
+    title: 'Terytorium wymaga patrolu',
+    pushBody: (regionName, hoursLeft) => `${regionName} wymaga patrolu — zostało ${hoursLeft} godz.`,
+    inboxMessage: (regionName, hoursLeft) =>
+      [
+        'Terytorium wymaga patrolu',
+        '',
+        `Region: ${regionName}`,
+        `Członek załogi musi tam dojechać i w ciągu ${hoursLeft} godz. zrobić patrol lub zaopatrzenie.`,
+        'Jeśli to odpuścicie, region płaci mniej, aż ktoś się pojawi. Ziemia zostaje waszej załodze.',
+      ].join('\n'),
+  },
+  territoryHoldMissed: {
+    title: 'Patrol pominięty',
+    pushBody: (regionName, incomePercent) => `${regionName} płaci teraz ${incomePercent}%, aż ktoś patroluje.`,
+    inboxMessage: (regionName, incomePercent) =>
+      [
+        'Patrol pominięty',
+        '',
+        `Region: ${regionName}`,
+        `Pasywny dochód z tego regionu wynosi teraz ${incomePercent}%, aż członek załogi tam dojedzie i patroluje.`,
+        'Ziemia nadal jest wasza. Kolejne braki ułatwiają też rywalowi zdobycie regionu.',
       ].join('\n'),
   },
   rldStolen: {
@@ -1529,6 +1649,30 @@ const notificationPT: Translations['notification'] = {
         '',
         `Região: ${regionKey}`,
         'As armas e a munição aqui não voltaram para o HQ. O vencedor ficou com uma parte; o resto queimou.',
+      ].join('\n'),
+  },
+  territoryHoldDue: {
+    title: 'O território pede patrulha',
+    pushBody: (regionName, hoursLeft) => `${regionName} pede uma patrulha — faltam ${hoursLeft} horas.`,
+    inboxMessage: (regionName, hoursLeft) =>
+      [
+        'O território pede patrulha',
+        '',
+        `Região: ${regionName}`,
+        `Um membro da crew tem de viajar para lá e fazer uma patrulha ou reabastecimento em ${hoursLeft} horas.`,
+        'Se ignorarem isto, a região rende menos até alguém aparecer. A terra continua da vossa crew.',
+      ].join('\n'),
+  },
+  territoryHoldMissed: {
+    title: 'Patrulha falhada',
+    pushBody: (regionName, incomePercent) => `${regionName} rende agora ${incomePercent}% até alguém patrulhar.`,
+    inboxMessage: (regionName, incomePercent) =>
+      [
+        'Patrulha falhada',
+        '',
+        `Região: ${regionName}`,
+        `O rendimento passivo desta região é agora ${incomePercent}% até um membro viajar para lá e patrulhar.`,
+        'A terra continua vossa. Falhar várias vezes também facilita a captura por um rival.',
       ].join('\n'),
   },
   rldStolen: {

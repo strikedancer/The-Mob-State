@@ -14,6 +14,7 @@ Deze file is een ontwerpdocument, geen live featurecontract. Implementatie-detai
 
 Wat al live aanwezig is:
 - Territory heeft echte regio's, multi-country maps, ownership, contests, seasons, anti-abuse en passieve crew-income.
+- `TERRITORY_DECAY_*` is geen automatische ownership-flip: v1 dwingt aanwezigheid via één due-regio per crew (patrouille in dat land). Gemiste plicht snijdt inkomen en voegt onrust toe; land blijft van de crew.
 - Territory is al gekoppeld aan Crew membership, Crew economy, Travel, Dashboard, Notifications en Admin.
 - Crew Wars gebruikt al echte Territory-regio's als war targets voor `territory_war` en `total_war`.
 - Crew leaders zien al territory economy samenvattingen in dashboard-statistieken.

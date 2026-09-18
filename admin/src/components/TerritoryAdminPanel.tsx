@@ -26,6 +26,24 @@ type TerritoryArsenalTuningForm = {
   arsenalAmmoCostSabotage: string
 }
 
+type TerritoryHoldTuningForm = {
+  holdGraceHours: string
+  holdWindowHours: string
+  holdMaxDuePerCrew: string
+  holdIncomeMiss1Percent: string
+  holdIncomeMiss2Percent: string
+  holdUnrestCapturePenalty: string
+}
+
+const defaultHoldTuning: TerritoryHoldTuningForm = {
+  holdGraceHours: '24',
+  holdWindowHours: '12',
+  holdMaxDuePerCrew: '1',
+  holdIncomeMiss1Percent: '50',
+  holdIncomeMiss2Percent: '0',
+  holdUnrestCapturePenalty: '10',
+}
+
 const defaultArsenalTuning: TerritoryArsenalTuningForm = {
   arsenalHqBonusMult: '0.5',
   arsenalHqAmmoTaxMult: '1.5',
@@ -133,6 +151,7 @@ export function TerritoryAdminPanel({ locale }: Props) {
     actionUnlockHqLevelDefense: '4',
   })
   const [arsenalTuning, setArsenalTuning] = useState<TerritoryArsenalTuningForm>(defaultArsenalTuning)
+  const [holdTuning, setHoldTuning] = useState<TerritoryHoldTuningForm>(defaultHoldTuning)
 
   const loadOverview = async () => {
     try {
@@ -183,6 +202,14 @@ export function TerritoryAdminPanel({ locale }: Props) {
         arsenalAmmoCostDefense: String(nextOverview.config.arsenalAmmoCostDefense ?? 30),
         arsenalAmmoCostPatrol: String(nextOverview.config.arsenalAmmoCostPatrol ?? 15),
         arsenalAmmoCostSabotage: String(nextOverview.config.arsenalAmmoCostSabotage ?? 8),
+      })
+      setHoldTuning({
+        holdGraceHours: String(nextOverview.config.holdGraceHours ?? 24),
+        holdWindowHours: String(nextOverview.config.holdWindowHours ?? 12),
+        holdMaxDuePerCrew: String(nextOverview.config.holdMaxDuePerCrew ?? 1),
+        holdIncomeMiss1Percent: String(nextOverview.config.holdIncomeMiss1Percent ?? 50),
+        holdIncomeMiss2Percent: String(nextOverview.config.holdIncomeMiss2Percent ?? 0),
+        holdUnrestCapturePenalty: String(nextOverview.config.holdUnrestCapturePenalty ?? 10),
       })
 
       if (!selectedRegionKey && nextOverview.regions.length > 0) {
@@ -411,6 +438,35 @@ export function TerritoryAdminPanel({ locale }: Props) {
     }
   }
 
+  const handleSaveHoldTuning = async () => {
+    const numericEntries = Object.entries(holdTuning).map(([key, value]) => ({
+      key,
+      value: Number.parseFloat(value),
+    }))
+    if (numericEntries.some((entry) => !Number.isFinite(entry.value) || entry.value < 0)) {
+      window.alert(tr(locale, 'Vul alleen geldige positieve getallen in.', 'Use valid non-negative numbers only.'))
+      return
+    }
+    const payload: Record<string, string> = {
+      TERRITORY_HOLD_GRACE_HOURS: holdTuning.holdGraceHours,
+      TERRITORY_HOLD_WINDOW_HOURS: holdTuning.holdWindowHours,
+      TERRITORY_HOLD_MAX_DUE_PER_CREW: holdTuning.holdMaxDuePerCrew,
+      TERRITORY_HOLD_INCOME_MISS1_PERCENT: holdTuning.holdIncomeMiss1Percent,
+      TERRITORY_HOLD_INCOME_MISS2_PERCENT: holdTuning.holdIncomeMiss2Percent,
+      TERRITORY_HOLD_UNREST_CAPTURE_PENALTY: holdTuning.holdUnrestCapturePenalty,
+    }
+    try {
+      setSubmitting(true)
+      await adminService.updateConfig(payload)
+      await loadOverview()
+      window.alert(tr(locale, 'Aanwezigheidsplicht opgeslagen.', 'Hold duty tuning saved.'))
+    } catch (error) {
+      window.alert(`${tr(locale, 'Opslaan mislukt', 'Save failed')}: ${(error as Error).message}`)
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
   return (
     <div className="d-flex flex-column gap-3">
       <div className="d-flex justify-content-between align-items-start flex-wrap gap-2">
@@ -496,6 +552,58 @@ export function TerritoryAdminPanel({ locale }: Props) {
               className="btn btn-primary"
               disabled={loading || submitting}
               onClick={() => void handleSaveProgressionTuning()}
+            >
+              {tr(locale, 'Opslaan en live toepassen', 'Save and apply live')}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      </div>
+
+      <div className="card">
+        <div className="card-header"><h5 className="mb-0">{tr(locale, 'Aanwezigheidsplicht (één gebied tegelijk)', 'Hold duty (one region at a time)')}</h5></div>
+        <div className="card-body">
+          <p className="text-muted small mb-3">
+            {tr(
+              locale,
+              'Na de grace komt per crew hoogstens één regio op de rol. Wie de timer laat verlopen, verdient minder op díé regio en krijgt onrust. Ownership blijft. TERRITORY_DECAY_PER_HOUR trekt bij een gemiste plicht een paar stabiliteitspunten af; TERRITORY_DECAY_GRACE_MINUTES is vervangen door grace-uren hier.',
+              'After grace each crew has at most one region on the rota. Missing the timer cuts income on that region and adds unrest. Ownership stays. TERRITORY_DECAY_PER_HOUR still knocks a little stability on a miss; TERRITORY_DECAY_GRACE_MINUTES is replaced by the grace hours here.',
+            )}
+          </p>
+          <div className="row g-3">
+            {(
+              [
+                ['holdGraceHours', 'Grace na capture of patrouille (uur)', 'Grace after capture or patrol (hours)'],
+                ['holdWindowHours', 'Tijd om te patrouilleren (uur)', 'Time to patrol (hours)'],
+                ['holdMaxDuePerCrew', 'Max. due-regio’s per crew', 'Max due regions per crew'],
+                ['holdIncomeMiss1Percent', 'Inkomen na 1e miss (%)', 'Income after 1st miss (%)'],
+                ['holdIncomeMiss2Percent', 'Inkomen na 2e miss (%)', 'Income after 2nd miss (%)'],
+                ['holdUnrestCapturePenalty', 'Capture-drempel min bij onrust', 'Capture threshold cut on unrest'],
+              ] as const
+            ).map(([key, nlLabel, enLabel]) => (
+              <div className="col-md-6 col-xl-4" key={key}>
+                <label className="form-label fw-semibold">{tr(locale, nlLabel, enLabel)}</label>
+                <input
+                  className="form-control"
+                  value={holdTuning[key]}
+                  onChange={(event) => {
+                    const value = event.target.value
+                    setHoldTuning((current) => ({
+                      ...current,
+                      [key]: value,
+                    }))
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+          <div className="d-flex justify-content-end mt-3">
+            <button
+              type="button"
+              className="btn btn-primary"
+              disabled={loading || submitting}
+              onClick={() => void handleSaveHoldTuning()}
             >
               {tr(locale, 'Opslaan en live toepassen', 'Save and apply live')}
             </button>

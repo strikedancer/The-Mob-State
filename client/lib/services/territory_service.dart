@@ -114,6 +114,25 @@ class TerritoryService {
     }
   }
 
+  Future<Map<String, dynamic>> doHoldAction(String regionKey, String actionType) async {
+    try {
+      final response = await _api.post('/territory/action', {
+        'regionKey': regionKey,
+        'actionType': actionType,
+      });
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      if (response.statusCode == 200) {
+        return {
+          'success': true,
+          ...data['params'] as Map<String, dynamic>? ?? {},
+        };
+      }
+      return {'success': false, 'event': data['event'], 'message': data['message'] ?? ''};
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
   Future<Map<String, dynamic>> startProject(
     String regionKey, {
     required String projectType,

@@ -16466,11 +16466,11 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String territoryMapNextUnlock(String time) {
-    return 'Next unlock: $time';
+    return 'Następne odblokowanie: $time';
   }
 
   @override
-  String get territoryMapActionsReady => 'Actions ready now';
+  String get territoryMapActionsReady => 'Działania gotowe już teraz';
 
   @override
   String get territoryNoticeCrewOnly =>
@@ -16556,50 +16556,50 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get territorySeasonBlurb =>
-      'This month’s round. Crews that capture, defend, or hold the war front get extra crew-bank cash when the season closes.';
+      'Runda tego miesiąca. Załogi, które przejmą, bronią lub utrzymają front wojenny, otrzymają dodatkową gotówkę z banku załogi po zakończeniu sezonu.';
 
   @override
-  String get territorySeasonStatusActive => 'Live';
+  String get territorySeasonStatusActive => 'Na żywo';
 
   @override
-  String get territorySeasonStatusClosed => 'Closed';
+  String get territorySeasonStatusClosed => 'Zamknięte';
 
   @override
-  String get territorySeasonStatusScheduled => 'Starts soon';
+  String get territorySeasonStatusScheduled => 'Zaczyna się wkrótce';
 
   @override
   String territorySeasonEndsIn(String countdown) {
-    return 'Ends in $countdown';
+    return 'Kończy się za $countdown';
   }
 
   @override
   String territorySeasonStartedOn(String date) {
-    return 'Started $date';
+    return 'Rozpoczęto $date';
   }
 
   @override
   String territoryDramaCaptureTook(String crew, String region) {
-    return '$crew took $region';
+    return '$crew wziął $region';
   }
 
   @override
   String territoryDramaContestVs(String attacker, String defender) {
-    return '$attacker vs $defender';
+    return '$attacker kontra $defender';
   }
 
   @override
   String territoryDramaRisingCaptures(int count) {
-    return '$count captures this week';
+    return '$count przechwytuje w tym tygodniu';
   }
 
   @override
   String territoryEventAttackBonusChip(int points) {
-    return '+$points contest points';
+    return '+$points punktów konkursowych';
   }
 
   @override
   String territoryEventIncomePenaltyChip(int percent) {
-    return '-$percent% hourly income';
+    return '-$percent% godzinnego dochodu';
   }
 
   @override
@@ -20432,7 +20432,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get territoryArsenalLegendFull => 'Skrytka na broń pełna';
 
   @override
-  String get territoryBonusArsenal => 'Arsenal stock';
+  String get territoryBonusArsenal => 'akcje Arsenalu';
 
   @override
   String get territoryArsenalKindWeapon => 'Broń';
@@ -20450,37 +20450,91 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get territoryErrorArsenalOfficerOnly =>
-      'Only the leader or co-leader can move the frontline cache.';
+      'Tylko lider lub współlider może przenosić skrytkę pierwszej linii.';
 
   @override
   String get territoryErrorArsenalCacheRequired =>
-      'This region needs an active arms cache first.';
+      'Region ten potrzebuje najpierw aktywnego składu broni.';
 
   @override
   String get territoryErrorArsenalNotOwner =>
-      'Only the crew that owns this region can move its cache.';
+      'Tylko Crew będąca właścicielem tego regionu może przenosić skrzynkę.';
 
   @override
   String get territoryErrorArsenalCacheFull =>
-      'The frontline cache is full for this building level.';
+      'Skrytka Linii frontu jest pełna dla tego poziomu budynku.';
 
   @override
   String get territoryErrorArsenalInsufficientStock =>
-      'Not enough of that item in HQ or in the cache.';
+      'Za mało tego przedmiotu w kwaterze głównej lub w pamięci podręcznej.';
 
   @override
   String get territoryErrorArsenalRecallLocked =>
-      'You cannot recall during a live contest. Use a supply run to refill instead.';
+      'Nie można przywołać podczas zawodów na żywo. Zamiast tego użyj biegu zaopatrzenia, aby uzupełnić zapasy.';
 
   @override
   String get territoryErrorArsenalInvalidQuantity =>
-      'Enter a whole number above zero.';
+      'Wprowadź liczbę całkowitą większą od zera.';
 
   @override
   String get territoryErrorArsenalWeaponStorageFull =>
-      'Crew weapon storage is full.';
+      'Magazyn broni załogi jest pełny.';
 
   @override
   String get territoryErrorArsenalAmmoStorageFull =>
-      'Crew ammo storage is full.';
+      'Magazyn amunicji załogi jest pełny.';
+
+  @override
+  String get territoryHoldDueBadge => 'Patrol';
+
+  @override
+  String get territoryHoldUnrestBadge => 'Niepokój';
+
+  @override
+  String get territoryHoldDueTitle => 'Ten region potrzebuje patrolu obecności';
+
+  @override
+  String territoryHoldDueLine(String region, String remaining) {
+    return '$region potrzebuje patrolu — pozostało $remaining.';
+  }
+
+  @override
+  String territoryHoldIncomeCut(int percent) {
+    return 'Dochód pasywny w tym regionie wynosi obecnie $percent%.';
+  }
+
+  @override
+  String get territoryHoldUnrestLine =>
+      'Niepokoje: rywale potrzebują mniej punktów rywalizacji, aby zdobyć tę ziemię. Własność pozostaje Twoja, dopóki faktycznie nie wygrają.';
+
+  @override
+  String get territoryHoldPatrolHint =>
+      'Udaj się do tego kraju, a następnie uruchom patrol lub bieg zaopatrzenia. W danym momencie w rotacji znajduje się tylko jeden posiadany region.';
+
+  @override
+  String get territoryErrorHoldNotOwner =>
+      'Tylko Crew będąca właścicielem tego regionu może przeprowadzać tu patrole obecności.';
+
+  @override
+  String get territoryErrorHoldNotDue =>
+      'Ten region nie jest obecnie uwzględniony w rotacji.';
+
+  @override
+  String get territoryErrorHoldContestActive =>
+      'Tutaj trwa konkurs. Zamiast tego użyj akcji obrony w walce.';
+
+  @override
+  String get territoryHoldSnackOk =>
+      'Obecność zarejestrowana. Ten region jest na razie wyłączony z harmonogramu.';
+
+  @override
+  String get territoryLegendHoldDue => 'Potrzebuje patrolu';
+
+  @override
+  String get territoryLegendHoldUnrest => 'Niepokoje (niższe dochody)';
+
+  @override
+  String territoryHoldDashboardChip(String region, String remaining) {
+    return '$region potrzebuje patrolu — pozostało $remaining.';
+  }
 }

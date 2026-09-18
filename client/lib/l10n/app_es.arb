@@ -12615,7 +12615,7 @@
       }
     }
   },
-  "territoryMapNextUnlock": "Next unlock: {time}",
+  "territoryMapNextUnlock": "Próximo desbloqueo: {time}",
   "@territoryMapNextUnlock": {
     "placeholders": {
       "time": {
@@ -12623,7 +12623,7 @@
       }
     }
   },
-  "territoryMapActionsReady": "Actions ready now",
+  "territoryMapActionsReady": "Acciones listas ahora",
   "casinoBlackjackHit": "Hit",
   "casinoBlackjackStand": "Stand",
   "casinoBlackjackPushTitle": "Push",
@@ -12640,11 +12640,11 @@
   "worldChatStaffReports": "Reports",
   "worldChatStaffReportsEmpty": "No open reports right now.",
   "worldChatStaffActionBody": "Remove this message, mute the sender, or send it to the report list.",
-  "territorySeasonBlurb": "This month’s round. Crews that capture, defend, or hold the war front get extra crew-bank cash when the season closes.",
-  "territorySeasonStatusActive": "Live",
-  "territorySeasonStatusClosed": "Closed",
-  "territorySeasonStatusScheduled": "Starts soon",
-  "territorySeasonEndsIn": "Ends in {countdown}",
+  "territorySeasonBlurb": "La ronda de este mes. Las tripulaciones que capturan, defienden o mantienen el frente de guerra obtienen dinero extra en el banco de la Crew cuando finaliza la temporada.",
+  "territorySeasonStatusActive": "Vivir",
+  "territorySeasonStatusClosed": "Cerrada",
+  "territorySeasonStatusScheduled": "comienza pronto",
+  "territorySeasonEndsIn": "Termina en {countdown}",
   "@territorySeasonEndsIn": {
     "placeholders": {
       "countdown": {
@@ -12652,7 +12652,7 @@
       }
     }
   },
-  "territorySeasonStartedOn": "Started {date}",
+  "territorySeasonStartedOn": "Comenzó {date}",
   "@territorySeasonStartedOn": {
     "placeholders": {
       "date": {
@@ -12660,7 +12660,7 @@
       }
     }
   },
-  "territoryDramaCaptureTook": "{crew} took {region}",
+  "territoryDramaCaptureTook": "{crew} tomó {region}",
   "@territoryDramaCaptureTook": {
     "placeholders": {
       "crew": {
@@ -12671,7 +12671,7 @@
       }
     }
   },
-  "territoryDramaContestVs": "{attacker} vs {defender}",
+  "territoryDramaContestVs": "{attacker} frente a {defender}",
   "@territoryDramaContestVs": {
     "placeholders": {
       "attacker": {
@@ -12682,7 +12682,7 @@
       }
     }
   },
-  "territoryDramaRisingCaptures": "{count} captures this week",
+  "territoryDramaRisingCaptures": "{count} capturas esta semana",
   "@territoryDramaRisingCaptures": {
     "placeholders": {
       "count": {
@@ -12690,7 +12690,7 @@
       }
     }
   },
-  "territoryEventAttackBonusChip": "+{points} contest points",
+  "territoryEventAttackBonusChip": "+{points} puntos del concurso",
   "@territoryEventAttackBonusChip": {
     "placeholders": {
       "points": {
@@ -12698,7 +12698,7 @@
       }
     }
   },
-  "territoryEventIncomePenaltyChip": "-{percent}% hourly income",
+  "territoryEventIncomePenaltyChip": "-{percent}% ingreso por hora",
   "@territoryEventIncomePenaltyChip": {
     "placeholders": {
       "percent": {
@@ -12865,20 +12865,20 @@
   "territoryArsenalLegendEmpty": "Caché de armas vacía",
   "territoryArsenalLegendHalf": "La mitad del caché de armas",
   "territoryArsenalLegendFull": "Caché de armas lleno",
-  "territoryBonusArsenal": "Arsenal stock",
+  "territoryBonusArsenal": "acciones del arsenal",
   "territoryArsenalKindWeapon": "Arma",
   "territoryArsenalKindAmmo": "Munición",
   "territoryArsenalPickItem": "Elige acciones",
   "territoryArsenalFormula": "Base {base} + logística {bonus} = {total}",
-  "territoryErrorArsenalOfficerOnly": "Only the leader or co-leader can move the frontline cache.",
-  "territoryErrorArsenalCacheRequired": "This region needs an active arms cache first.",
-  "territoryErrorArsenalNotOwner": "Only the crew that owns this region can move its cache.",
-  "territoryErrorArsenalCacheFull": "The frontline cache is full for this building level.",
-  "territoryErrorArsenalInsufficientStock": "Not enough of that item in HQ or in the cache.",
-  "territoryErrorArsenalRecallLocked": "You cannot recall during a live contest. Use a supply run to refill instead.",
-  "territoryErrorArsenalInvalidQuantity": "Enter a whole number above zero.",
-  "territoryErrorArsenalWeaponStorageFull": "Crew weapon storage is full.",
-  "territoryErrorArsenalAmmoStorageFull": "Crew ammo storage is full.",
+  "territoryErrorArsenalOfficerOnly": "Sólo el líder o colíder puede mover el caché de primera línea.",
+  "territoryErrorArsenalCacheRequired": "Esta región necesita primero un alijo de armas activo.",
+  "territoryErrorArsenalNotOwner": "Sólo la Crew propietaria de esta región puede mover su caché.",
+  "territoryErrorArsenalCacheFull": "El caché de primera línea está lleno para este nivel de edificio.",
+  "territoryErrorArsenalInsufficientStock": "No hay suficiente cantidad de ese objeto en el cuartel general o en el caché.",
+  "territoryErrorArsenalRecallLocked": "No puedes recordar durante un concurso en vivo. En su lugar, utilice un suministro para recargar.",
+  "territoryErrorArsenalInvalidQuantity": "Ingrese un número entero por encima de cero.",
+  "territoryErrorArsenalWeaponStorageFull": "El almacén de armas de la Crew está lleno.",
+  "territoryErrorArsenalAmmoStorageFull": "El almacenamiento de munición de la Crew está lleno.",
   "@territoryArsenalFill": {
     "placeholders": {
       "percent": {
@@ -12993,5 +12993,46 @@
   "crewUiVipAutoRenewOn": "La renovación automática ya está activada para este equipo.",
   "crewUiVipRecentDonors": "Donaciones recientes",
   "crewUiVipNotInCrew": "Únete a un equipo antes de poder pagar por Crew VIP.",
-  "crewUiVipInvalidDonate": "Elija uno de los montos de donación que se muestran."
+  "crewUiVipInvalidDonate": "Elija uno de los montos de donación que se muestran.",
+  "territoryHoldDueBadge": "Patrulla",
+  "territoryHoldUnrestBadge": "Disturbios",
+  "territoryHoldDueTitle": "Esta región necesita una patrulla de presencia.",
+  "territoryHoldDueLine": "{region} necesita una patrulla - {remaining} se fue.",
+  "territoryHoldIncomeCut": "Los ingresos pasivos en esta región son ahora del {percent}%.",
+  "territoryHoldUnrestLine": "Disturbios: los rivales necesitan menos puntos de competencia para capturar esta tierra. La propiedad sigue siendo suya hasta que realmente ganen.",
+  "territoryHoldPatrolHint": "Viaja a este país y luego ejecuta Patrulla o Entrega de suministros. Solo hay una región de propiedad en la rotación a la vez.",
+  "territoryErrorHoldNotOwner": "Sólo la Crew propietaria de esta región puede realizar una patrulla de presencia aquí.",
+  "territoryErrorHoldNotDue": "Esta región no está en la lista de turnos en este momento.",
+  "territoryErrorHoldContestActive": "Un concurso está en vivo aquí. Utilice en su lugar las acciones de defensa del concurso.",
+  "territoryHoldSnackOk": "Presencia registrada. Esta región está fuera de la lista por ahora.",
+  "territoryLegendHoldDue": "Necesita patrulla",
+  "territoryLegendHoldUnrest": "Disturbios (ingresos más bajos)",
+  "territoryHoldDashboardChip": "{region} necesita una patrulla - {remaining} se fue.",
+  "@territoryHoldDueLine": {
+    "placeholders": {
+      "region": {
+        "type": "String"
+      },
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "@territoryHoldIncomeCut": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "@territoryHoldDashboardChip": {
+    "placeholders": {
+      "region": {
+        "type": "String"
+      },
+      "remaining": {
+        "type": "String"
+      }
+    }
+  }
 }

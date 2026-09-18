@@ -535,6 +535,11 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       }
     }
 
+    final holdDueAt = _parseApiDate(region['holdDueAt']);
+    if (holdDueAt != null && !holdDueAt.isAfter(now)) {
+      return '$regionKey:hold-due';
+    }
+
     return null;
   }
 
@@ -981,6 +986,12 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         return t.territoryErrorArsenalWeaponStorageFull;
       case 'territory.arsenal_ammo_storage_full':
         return t.territoryErrorArsenalAmmoStorageFull;
+      case 'territory.hold_not_owner':
+        return t.territoryErrorHoldNotOwner;
+      case 'territory.hold_not_due':
+        return t.territoryErrorHoldNotDue;
+      case 'territory.hold_contest_active':
+        return t.territoryErrorHoldContestActive;
       default:
         return event.isEmpty ? t.territoryErrorUnknown : event;
     }
@@ -1613,6 +1624,17 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         '<text x="${cx + 22}" y="${cy + 25}" text-anchor="middle" font-size="7" fill="#0F172A" font-family="Arial,sans-serif" font-weight="700">A</text>',
       );
     }
+    if (region['holdDueAt'] != null) {
+      parts.add(
+        '<circle cx="${cx - 22}" cy="${cy + 22}" r="7" fill="#F59E0B" stroke="#111827" stroke-width="0.9"/>'
+        '<text x="${cx - 22}" y="${cy + 25}" text-anchor="middle" font-size="8" fill="#111827" font-family="Arial,sans-serif" font-weight="700">P</text>',
+      );
+    } else if (region['holdUnrest'] == true) {
+      parts.add(
+        '<circle cx="${cx - 22}" cy="${cy + 22}" r="7" fill="#B91C1C" stroke="#111827" stroke-width="0.9"/>'
+        '<text x="${cx - 22}" y="${cy + 25}" text-anchor="middle" font-size="8" fill="#FEF2F2" font-family="Arial,sans-serif" font-weight="700">U</text>',
+      );
+    }
     if (parts.isEmpty) return null;
     return '<g>${parts.join()}</g>';
   }
@@ -1739,6 +1761,14 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       _TerritoryLegendEntry(
         label: _l10n.territoryArsenalLegendFull,
         colorHex: '#22C55E',
+      ),
+      _TerritoryLegendEntry(
+        label: _l10n.territoryLegendHoldDue,
+        colorHex: '#F59E0B',
+      ),
+      _TerritoryLegendEntry(
+        label: _l10n.territoryLegendHoldUnrest,
+        colorHex: '#B91C1C',
       ),
       ...crewEntries,
     ];
@@ -2021,6 +2051,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         physics: const AlwaysScrollableScrollPhysics(),
         children: [
           if (viewerCaps != null) _buildViewerCapsChips(viewerCaps),
+          _buildHoldDutyChip(),
           _buildNextActionChip(),
           if (_crewTerritory != null) _buildCrewStatsCard(_crewTerritory!),
           _buildSvgMapOverview(regions),
@@ -2060,6 +2091,41 @@ class _TerritoryScreenState extends State<TerritoryScreen>
             side: BorderSide(
               color: ready ? Colors.green.shade700 : Colors.amber.shade800,
             ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildHoldDutyChip() {
+    return ValueListenableBuilder<DateTime>(
+      valueListenable: _nowNotifier,
+      builder: (context, now, _) {
+        final regions = (_mapData['regions'] as List<dynamic>?) ?? [];
+        Map<String, dynamic>? dueRegion;
+        for (final raw in regions) {
+          if (raw is! Map) continue;
+          final region = Map<String, dynamic>.from(raw);
+          if (region['holdDueAt'] == null) continue;
+          if (!_isMyCrewRegion(region)) continue;
+          dueRegion = region;
+          break;
+        }
+        if (dueRegion == null) return const SizedBox.shrink();
+        final dueAt = _parseApiDate(dueRegion['holdDueAt']);
+        final remaining = dueAt == null ? '' : _countdownLabel(dueAt, now);
+        final name = _localizedRegionNameFromMap(dueRegion);
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+          child: Chip(
+            avatar: Icon(
+              Icons.directions_walk,
+              size: 16,
+              color: Colors.amber[200],
+            ),
+            label: Text(_l10n.territoryHoldDashboardChip(name, remaining)),
+            backgroundColor: const Color(0xFF1E1414),
+            side: BorderSide(color: Colors.amber.shade800),
           ),
         );
       },
@@ -2594,6 +2660,12 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     final viewerCooldownSecondsRemaining = viewerCooldownUntil != null
         ? viewerCooldownUntil.difference(clock).inSeconds
         : ((region['viewerCooldownSecondsRemaining'] as num?)?.toInt() ?? 0);
+    final holdDueAt = _parseApiDate(region['holdDueAt']);
+    final holdMissStreak = (region['holdMissStreak'] as num?)?.toInt() ?? 0;
+    final holdIncomePercent =
+        (region['holdIncomePercent'] as num?)?.toInt() ?? 100;
+    final holdUnrest = region['holdUnrest'] == true;
+    final holdCanAct = region['holdCanAct'] == true;
     final tier = (region['valueTier'] as num?)?.toInt() ?? 1;
     final isMyCrewRegion = _isMyCrewRegion(region);
     final encircled = region['encircled'] == true;
@@ -2846,6 +2918,39 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         t.territoryDetailIncomeDay,
         formatCurrency(passiveIncomeCashDaily),
       ),
+      if (holdDueAt != null || holdUnrest || holdMissStreak > 0) ...[
+        _detailRow(
+          t.territoryHoldDueTitle,
+          holdDueAt != null
+              ? t.territoryHoldDueLine(regionName, _countdownLabel(holdDueAt, clock))
+              : t.territoryHoldIncomeCut(holdIncomePercent),
+        ),
+        if (holdIncomePercent < 100)
+          _detailRow(
+            t.territoryHoldUnrestBadge,
+            t.territoryHoldIncomeCut(holdIncomePercent),
+          ),
+        if (holdUnrest || holdMissStreak >= 2)
+          Padding(
+            padding: const EdgeInsets.only(top: 4, bottom: 4),
+            child: _buildInfoNotice(
+              t.territoryHoldUnrestLine,
+              borderColor: Colors.red.shade700,
+              backgroundColor: Colors.red.withValues(alpha: 0.12),
+              icon: Icons.warning_amber_outlined,
+            ),
+          ),
+        if (holdDueAt != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 4, bottom: 4),
+            child: _buildInfoNotice(
+              t.territoryHoldPatrolHint,
+              borderColor: Colors.amber.shade700,
+              backgroundColor: Colors.amber.withValues(alpha: 0.12),
+              icon: Icons.directions_walk,
+            ),
+          ),
+      ],
       if (regionProject != null) ...[
         _detailRow(
           t.territoryDetailProject,
@@ -3178,6 +3283,44 @@ class _TerritoryScreenState extends State<TerritoryScreen>
             icon: Icons.lock_outline,
           ),
         ),
+      if (holdCanAct && holdDueAt != null && !hasContest) ...[
+        const SizedBox(height: 10),
+        Text(
+          t.territoryHoldDueTitle,
+          style: const TextStyle(fontWeight: FontWeight.w700),
+        ),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            _smallHoldActionButton(
+              t.territoryActionPatrol,
+              'patrol',
+              region,
+              requiredHqLevel: actionUnlockHqLevels['patrol'] ?? 0,
+              viewerHqLevel: viewerHqGlobalLevel,
+            ),
+            _smallHoldActionButton(
+              t.territoryActionSupplyRun,
+              'supply_run',
+              region,
+              requiredHqLevel: actionUnlockHqLevels['supply_run'] ?? 0,
+              viewerHqLevel: viewerHqGlobalLevel,
+            ),
+          ],
+        ),
+        if (!canActInSelectedCountry)
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: _buildInfoNotice(
+              t.territoryErrorWrongCountry,
+              borderColor: Colors.blueGrey.shade600,
+              backgroundColor: Colors.blueGrey.withValues(alpha: 0.1),
+              icon: Icons.lock_outline,
+            ),
+          ),
+      ],
     ];
 
     return Padding(
@@ -3646,6 +3789,42 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       onPressed: _isActing || isLocked
           ? null
           : () => _doAction(contestId, actionType),
+      child: Text(
+        buttonLabel,
+        style: const TextStyle(fontSize: 11),
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+        textAlign: TextAlign.center,
+      ),
+    );
+
+    if (tooltipMessage.isEmpty) return button;
+    return Tooltip(message: tooltipMessage, child: button);
+  }
+
+  Widget _smallHoldActionButton(
+    String label,
+    String actionType,
+    Map<String, dynamic> region, {
+    required int requiredHqLevel,
+    required int viewerHqLevel,
+  }) {
+    final t = _l10n;
+    final isLocked = requiredHqLevel > viewerHqLevel;
+    final canAct = _canActInSelectedCountry();
+    final costLabel = _arsenalCostLabel(region, actionType);
+    final bonusLabel = _arsenalFormulaLabel(region, actionType);
+    final buttonLabel = isLocked
+        ? t.territoryHqButtonLocked(label, requiredHqLevel)
+        : (costLabel == null ? label : '$label · $costLabel');
+    final tooltipMessage = isLocked
+        ? t.territoryHqTooltipLocked(requiredHqLevel, viewerHqLevel)
+        : ([bonusLabel, costLabel].whereType<String>().join('\n'));
+    final regionKey = (region['regionKey'] as String?) ?? '';
+    final button = OutlinedButton(
+      onPressed: _isActing || isLocked || !canAct || regionKey.isEmpty
+          ? null
+          : () => _doHoldAction(regionKey, actionType),
       child: Text(
         buttonLabel,
         style: const TextStyle(fontSize: 11),
@@ -4410,6 +4589,38 @@ class _TerritoryScreenState extends State<TerritoryScreen>
             _l10n.territoryPointsDelta(pts.toString()),
           ),
           backgroundColor: Colors.blue,
+          duration: const Duration(seconds: 3),
+        ),
+      );
+      await _reloadOpenRegionOrMap();
+    } else {
+      final rawEvent = result['event'] ?? result['message'];
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_territoryErrorMessage(rawEvent)),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 4),
+        ),
+      );
+      if (_shouldReloadAfterTerritoryError(rawEvent)) {
+        await _reloadOpenRegionOrMap();
+      }
+    }
+  }
+
+  Future<void> _doHoldAction(String regionKey, String actionType) async {
+    setState(() => _isActing = true);
+    final result = await _service.doHoldAction(regionKey, actionType);
+    if (!mounted) return;
+    setState(() => _isActing = false);
+
+    if (result['success'] == true) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_l10n.territoryHoldSnackOk),
+          backgroundColor: Colors.green,
           duration: const Duration(seconds: 3),
         ),
       );

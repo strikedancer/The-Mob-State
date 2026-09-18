@@ -320,6 +320,8 @@ class NotificationService {
       case 'territory_contest_active':
       case 'territory_captured':
       case 'territory_lost':
+      case 'territory_hold_due':
+      case 'territory_hold_missed':
         return '/territory';
       case 'race_settled':
       case 'race_refunded':

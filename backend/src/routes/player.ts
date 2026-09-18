@@ -1352,11 +1352,24 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
     const cryptoSymbols = Array.from(
       new Set(cryptoHoldingRows.map((holding) => holding.asset_symbol))
     );
-    const [territoryLeaderStats, cryptoAssets] = await Promise.all([
+    const [territoryLeaderStats, territoryHoldDuty, cryptoAssets] = await Promise.all([
       crewMembership?.role === 'leader'
         ? territoryService.getCrewEconomySummary(crewMembership.crewId).catch((error) => {
             console.error(
               '[Dashboard] Territory crew summary failed during dashboard stats load:',
+              {
+                playerId,
+                crewId: crewMembership.crewId,
+                error,
+              }
+            );
+            return null;
+          })
+        : Promise.resolve(null),
+      crewMembership && crewMembership.role !== 'leader'
+        ? territoryService.getCrewHoldDuty(crewMembership.crewId).catch((error) => {
+            console.error(
+              '[Dashboard] Territory hold duty failed during dashboard stats load:',
               {
                 playerId,
                 crewId: crewMembership.crewId,
@@ -1728,6 +1741,7 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
             : [],
         },
         territoryLeaderStats,
+        territoryHoldDuty: territoryHoldDuty ?? territoryLeaderStats?.holdDuty ?? null,
         territoryDrama,
         vehicleOps: {
           hasCrew: Boolean(crewMembership),
