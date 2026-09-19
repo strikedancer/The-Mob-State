@@ -170,7 +170,13 @@ class GlobalChatDiscordBridge {
       );
       return String(response.data?.id || '').trim() || null;
     } catch (error) {
-      console.warn('[GlobalChat] Discord outbound failed', error instanceof Error ? error.message : error);
+      const status = axios.isAxiosError(error) ? error.response?.status : undefined;
+      const detail = axios.isAxiosError(error) ? error.response?.data : undefined;
+      console.warn(
+        '[GlobalChat] Discord outbound failed',
+        status ?? (error instanceof Error ? error.message : error),
+        detail && typeof detail === 'object' ? JSON.stringify(detail).slice(0, 300) : '',
+      );
       return null;
     }
   }

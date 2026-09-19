@@ -182,6 +182,7 @@ async function persistAndFanout(input: {
   imageUrl?: string | null;
   filtered: boolean;
   mirrorToDiscord: boolean;
+  awaitDiscord?: boolean;
 }): Promise<GlobalChatPublicMessage> {
   const row = await prisma.globalChatMessage.create({
     data: {
@@ -200,7 +201,7 @@ async function persistAndFanout(input: {
   const publicMessage = toPublic(row, staffRoleOf(roles, input.playerId));
   broadcastMessage(publicMessage);
   if (input.mirrorToDiscord) {
-    void globalChatDiscordBridge.mirrorGameMessage(publicMessage).then((mirroredId) => {
+    const mirror = globalChatDiscordBridge.mirrorGameMessage(publicMessage).then((mirroredId) => {
       if (!mirroredId || mirroredId === row.discordMessageId) return;
       return prisma.globalChatMessage
         .update({
@@ -209,6 +210,9 @@ async function persistAndFanout(input: {
         })
         .catch(() => undefined);
     });
+    if (input.awaitDiscord) {
+      await mirror;
+    }
   }
   return publicMessage;
 }
@@ -297,6 +301,7 @@ export const globalChatService = {
       imageUrl,
       filtered: false,
       mirrorToDiscord: true,
+      awaitDiscord: true,
     });
   },
 
