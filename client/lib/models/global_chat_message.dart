@@ -10,6 +10,7 @@ class GlobalChatMessage {
   final String? stickerEmoji;
   final String createdAt;
   final String? staffRole;
+  final bool silent;
 
   const GlobalChatMessage({
     required this.id,
@@ -21,19 +22,22 @@ class GlobalChatMessage {
     required this.stickerEmoji,
     required this.createdAt,
     this.staffRole,
+    this.silent = false,
   });
 
   factory GlobalChatMessage.fromJson(Map<String, dynamic> json) {
+    final source = json['source'] as String? ?? 'game';
     return GlobalChatMessage(
       id: (json['id'] as num).toInt(),
       playerId: json['playerId'] == null ? null : (json['playerId'] as num).toInt(),
       displayName: json['displayName'] as String? ?? '',
-      source: json['source'] as String? ?? 'game',
+      source: source,
       message: json['message'] as String? ?? '',
       stickerId: json['stickerId'] as String?,
       stickerEmoji: json['stickerEmoji'] as String?,
       createdAt: json['createdAt'] as String? ?? '',
       staffRole: json['staffRole'] as String?,
+      silent: json['silent'] == true || source == 'system',
     );
   }
 

@@ -27,6 +27,7 @@ export type GlobalChatPublicMessage = {
   stickerEmoji: string | null;
   createdAt: string;
   staffRole: 'MOD' | 'OPS' | null;
+  silent: boolean;
 };
 
 const sendTimes = new Map<number, number[]>();
@@ -91,16 +92,18 @@ function toPublic(
   staffRole?: unknown,
 ): GlobalChatPublicMessage {
   const sticker = getGlobalChatSticker(row.stickerId);
+  const source = row.source === 'discord' ? 'discord' : row.source === 'system' ? 'system' : 'game';
   return {
     id: row.id,
     playerId: row.playerId,
     displayName: row.displayName,
-    source: row.source === 'discord' ? 'discord' : row.source === 'system' ? 'system' : 'game',
+    source,
     message: row.message,
     stickerId: row.stickerId,
     stickerEmoji: sticker?.emoji ?? null,
     createdAt: row.createdAt.toISOString(),
     staffRole: publicStaffRole(staffRole),
+    silent: source === 'system',
   };
 }
 

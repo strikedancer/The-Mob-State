@@ -160,6 +160,7 @@ class GlobalChatDiscordBridge {
           ),
           content,
           allowed_mentions: { parse: [] },
+          ...(message.silent ? { flags: 4096 } : {}),
         },
         { timeout: 8000 },
       );

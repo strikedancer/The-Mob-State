@@ -24,7 +24,7 @@ One public in-game lobby for every logged-in player, with a curated sticker pack
 - Keep DMs and crew chat unchanged.
 - Filter on the server, never only in the client.
 - Live updates use SSE `global_chat.message` / `global_chat.message_deleted` via `eventBroadcaster.broadcast`. `global_chat.message` also sends `serverNow` so clients can correct device-clock skew on relative times. Do not write world-chat lines into the personal activity feed. No push per public message.
-- System lines (`source: system`, sender `Gevangenis`) announce when a **real player** is jailed, bought out, or jailbroken. Jail lines include sentence length (`voor 45 minuten` / `voor 1 uur en 30 minuten`). One line per arrest: `announcePlayerJailed` dedupes the same player for 60s so police clock + friend/crew push cannot double-post. Names are in the body. NPCs are skipped. Own bail / self-escape stay silent. These lines still mirror to the Discord wereldchat lobby; they never go to `#updates`.
+- System lines (`source: system`, sender `Gevangenis`) announce when a **real player** is jailed, bought out, or jailbroken. Jail lines include sentence length (`voor 45 minuten` / `voor 1 uur en 30 minuten`). One line per arrest: `announcePlayerJailed` dedupes the same player for 60s so police clock + friend/crew push cannot double-post. Names are in the body. NPCs are skipped. Own bail / self-escape stay silent. Public payloads mark these as `silent: true`. They still appear in the in-game lobby and still mirror to Discord `#wereldchat`, but Discord copies use webhook `flags: 4096` (no notification). Player chat still notifies. They never go to `#updates`.
 - Hide the live-event rail on World chat (same as Messages / Crew) so it cannot cover send.
 - World chat stays open before rank 5.
 - Relative timestamps (`Nu` / `5m`) use UTC instants plus `serverNow` from `GET/POST /global-chat/messages` and SSE `global_chat.message`. Do not diff `DateTime.parse(...).toLocal()` against the device clock; a skewed phone clock shows “51m” on a just-sent line.
@@ -64,7 +64,7 @@ Player OAuth stays `identify` + `email` only. The chat bot is a separate token.
 
 ## QA Checklist
 1. Send text + sticker in-game; second browser sees it live.
-2. Filter replaces blocked words with `***` instead of rejecting the whole line.
+2. Filter replaces blocked words with `****` instead of rejecting the whole line. Short standalone insults such as `kut` and `hoer` are blocked in every player language.
 3. Own delete within 10 minutes; later delete fails.
 4. Report someone else’s line; it shows in Admin.
 5. Mute blocks send with `GLOBAL_CHAT_MUTED`. A Mod/Ops badge appears on their lines, including their own bubbles; they can delete another player's line and mute from long-press. Discord copies of those lines show `[Ops]` / `[Mod]` on the webhook name.

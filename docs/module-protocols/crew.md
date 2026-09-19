@@ -33,7 +33,8 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - HQ progression CTA copy in `HQ & Upgrades` must stay level-based (upgrade to next level) instead of style-unlock wording.
 - Crew land-vehicle storage must accept both cars and motorcycles through the same crew storage path, while boats remain separate in boat storage.
 - Crew War actions that target an opponent player must offer a selectable list of enemy crew members in the War Room; players may not be forced to know or manually type raw player IDs.
-- Crew HQ and storage cards must show purchase and upgrade costs directly in the UI; price information may not be hidden behind failed actions.
+- Crew HQ and storage cards must show purchase and upgrade costs directly in the UI; price information may not be hidden behind failed actions. The HQ & Upgrades hub uses compact enterprise rows (72px thumb + title/level/cost + action), not full 2:3 portraits.
+- Crew heist Start buttons must show the leader’s personal 6h `heist` cooldown on the button (`GET /player/action-cooldowns` + `error.cooldown`). The cooldown is per leader, not per crew.
 - Zodra een HQ-stijl zijn max-level bereikt, moet de UI direct een actie tonen om de volgende HQ-stijl te ontgrendelen (als die bestaat), in plaats van stil op "max level" te blijven hangen.
 - Crew/HQ images must use the shared platform-safe loading path with icon fallback so externally mounted web assets do not disappear silently.
 - Side-building image style selection must follow the side-building level tier (L1-2 camping, L3-4 rural, L5-7 city, L8-10 villa, L11-15 vip) and may not be derived from current HQ style.

@@ -87,7 +87,7 @@ export function filterProfanity(
   let filtered = stripped !== input;
   for (const pattern of patternsFor(extraWords)) {
     pattern.lastIndex = 0;
-    const next = text.replace(pattern, '***');
+    const next = text.replace(pattern, '****');
     if (next !== text) {
       filtered = true;
       text = next;

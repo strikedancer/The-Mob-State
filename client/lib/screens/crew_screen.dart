@@ -721,7 +721,7 @@ class _CrewScreenState extends State<CrewScreen>
     final message = l10n.crewUiHqUpgradeSideBuildingsMessage(
       requiredSideLevel.toString(),
       missingSideBuildings.isEmpty
-          ? '—'
+          ? 'â€”'
           : '- ${missingSideBuildings.join('\n- ')}',
     );
 
@@ -1788,7 +1788,7 @@ class _CrewScreenState extends State<CrewScreen>
 
   Future<void> _onHeistResolved(Map<String, dynamic> result) async {
     final success = result['success'] == true;
-    final heistName = result['heistName']?.toString() ?? '—';
+    final heistName = result['heistName']?.toString() ?? 'â€”';
     final jailMinutes = (result['jailTime'] as num?)?.toInt() ?? 0;
     final jailed = result['jailed'] == true || jailMinutes > 0;
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
@@ -1890,7 +1890,7 @@ class _CrewScreenState extends State<CrewScreen>
         if (params['crew'] != null) {
           final crewData = Crew.fromJson(params['crew']);
           print(
-            '🏢 Loaded crew: ${crewData.name}, HQ Style: ${crewData.hqStyle}, HQ Level: ${crewData.hqLevel}',
+            'ðŸ¢ Loaded crew: ${crewData.name}, HQ Style: ${crewData.hqStyle}, HQ Level: ${crewData.hqLevel}',
           );
           setState(() {
             _myCrew = crewData;
@@ -2277,7 +2277,7 @@ class _CrewScreenState extends State<CrewScreen>
               return DropdownMenuItem<int>(
                 value: playerId,
                 child: Text(
-                  '$username • ${_formatCrewWarRole(loc, role)} (#$playerId) • ${loc.crewUiTr41}: $kills • ${loc.crewUiTr42}: $deaths',
+                  '$username â€¢ ${_formatCrewWarRole(loc, role)} (#$playerId) â€¢ ${loc.crewUiTr41}: $kills â€¢ ${loc.crewUiTr42}: $deaths',
                 ),
               );
             }).toList(),
@@ -2381,7 +2381,7 @@ class _CrewScreenState extends State<CrewScreen>
       suffixParts.add(ownerCrewName);
     }
     if (suffixParts.isEmpty) return name;
-    return '$name (${suffixParts.join(' • ')})';
+    return '$name (${suffixParts.join(' â€¢ ')})';
   }
 
   String _formatWarTerritoryTagLabel(AppLocalizations loc, String tag) {
@@ -2419,7 +2419,7 @@ class _CrewScreenState extends State<CrewScreen>
     if (strategicTags.isNotEmpty) {
       bonusParts.add(strategicTags.join('/'));
     }
-    return bonusParts.join(' • ');
+    return bonusParts.join(' â€¢ ');
   }
 
   Future<String?> _promptWarTerritory(
@@ -2440,7 +2440,7 @@ class _CrewScreenState extends State<CrewScreen>
                   (territory) => DropdownMenuItem<String>(
                     value: (territory['regionKey'] ?? '').toString(),
                     child: Text(
-                      '${_formatWarTerritoryOptionLabel(loc, territory)} • ${_formatWarTerritoryBonusSummary(loc, territory)}',
+                      '${_formatWarTerritoryOptionLabel(loc, territory)} â€¢ ${_formatWarTerritoryBonusSummary(loc, territory)}',
                     ),
                   ),
                 )
@@ -2797,8 +2797,8 @@ class _CrewScreenState extends State<CrewScreen>
               SnackBar(
                 content: Text(
                   Localizations.localeOf(context).languageCode == 'nl'
-                      ? 'Crew succesvol aangemaakt! (€50,000 betaald)'
-                      : 'Crew created successfully! (€50,000 paid)',
+                      ? 'Crew succesvol aangemaakt! (â‚¬50,000 betaald)'
+                      : 'Crew created successfully! (â‚¬50,000 paid)',
                 ),
                 backgroundColor: Colors.green,
               ),
@@ -2927,8 +2927,8 @@ class _CrewScreenState extends State<CrewScreen>
             const SizedBox(height: 4),
             Text(
               isNl
-                  ? 'Echte betalingen · maandelijks opzegbaar'
-                  : 'Real payments · cancel anytime',
+                  ? 'Echte betalingen Â· maandelijks opzegbaar'
+                  : 'Real payments Â· cancel anytime',
               style: TextStyle(fontSize: 11, color: Colors.grey[500]),
             ),
             const Divider(height: 20),
@@ -2976,7 +2976,7 @@ class _CrewScreenState extends State<CrewScreen>
                   children: [
                     Text(
                       _crewVipFund?['monthlyPriceEur'] != null
-                          ? '€${_crewVipFund!['monthlyPriceEur']}/${isNl ? 'maand' : 'mo'}'
+                          ? 'â‚¬${_crewVipFund!['monthlyPriceEur']}/${isNl ? 'maand' : 'mo'}'
                           : loc.crewUiTr73,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -3100,7 +3100,7 @@ class _CrewScreenState extends State<CrewScreen>
                   final type = (reward['type'] ?? '').toString();
                   if (type == 'money') {
                     final amount = (reward['amount'] ?? 0);
-                    rewardLabel = '+€$amount';
+                    rewardLabel = '+â‚¬$amount';
                   } else if (type == 'ammo') {
                     final ammoType = (reward['ammoType'] ?? '').toString();
                     final quantity = (reward['quantity'] ?? 0);
@@ -3137,7 +3137,7 @@ class _CrewScreenState extends State<CrewScreen>
                         ),
                       Flexible(
                         child: Text(
-                          '€$price · $title${rewardLabel.isNotEmpty ? ' · $rewardLabel' : ''}',
+                          'â‚¬$price Â· $title${rewardLabel.isNotEmpty ? ' Â· $rewardLabel' : ''}',
                         ),
                       ),
                     ],
@@ -3185,8 +3185,8 @@ class _CrewScreenState extends State<CrewScreen>
     final remainingEur = (remainingCents / 100).toStringAsFixed(2);
     final fullEur = (priceCents / 100).toStringAsFixed(2);
     final fundedLabel = loc.crewUiVipFundProgress(
-      '€${(fundedCents / 100).toStringAsFixed(2)}',
-      '€$fullEur',
+      'â‚¬${(fundedCents / 100).toStringAsFixed(2)}',
+      'â‚¬$fullEur',
     );
 
     return [
@@ -3225,8 +3225,8 @@ class _CrewScreenState extends State<CrewScreen>
             ),
             child: Text(
               isRest
-                  ? loc.crewUiVipDonateRest('€$amount')
-                  : loc.crewUiVipDonateAmount('€$amount'),
+                  ? loc.crewUiVipDonateRest('â‚¬$amount')
+                  : loc.crewUiVipDonateAmount('â‚¬$amount'),
               style: const TextStyle(fontSize: 11),
             ),
           );
@@ -3239,7 +3239,7 @@ class _CrewScreenState extends State<CrewScreen>
           final name = (row['username'] ?? '').toString();
           final amount = (row['amountEur'] ?? '').toString();
           return Text(
-            '$name · €$amount',
+            '$name Â· â‚¬$amount',
             style: TextStyle(fontSize: 11, color: Colors.grey[700]),
           );
         }),
@@ -3687,7 +3687,7 @@ class _CrewScreenState extends State<CrewScreen>
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 labelText: l10n.crewUiTr86,
-                prefixText: '€',
+                prefixText: 'â‚¬',
               ),
             ),
           ],
@@ -4055,7 +4055,7 @@ class _CrewScreenState extends State<CrewScreen>
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            Text('${_t(l10n, 'label.level')}: $currentLevel → $nextLevel'),
+            Text('${_t(l10n, 'label.level')}: $currentLevel â†’ $nextLevel'),
             if (nextCost != null) ...[
               const SizedBox(height: 8),
               Text('${l10n.crewUiTr95}: ${_money(nextCost)}'),
@@ -4196,7 +4196,7 @@ class _CrewScreenState extends State<CrewScreen>
                     (vehicle) => DropdownMenuItem<int>(
                       value: vehicle['id'] as int,
                       child: Text(
-                        '${vehicle['definition']?['name'] ?? vehicle['vehicleId']} • ${((vehicle['vehicleType'] ?? '').toString() == 'motorcycle') ? l10n.crewUiTr100 : ((vehicle['vehicleType'] ?? '').toString() == 'boat' ? l10n.crewUiTr101 : l10n.crewUiTr102)} (#${vehicle['id']})',
+                        '${vehicle['definition']?['name'] ?? vehicle['vehicleId']} â€¢ ${((vehicle['vehicleType'] ?? '').toString() == 'motorcycle') ? l10n.crewUiTr100 : ((vehicle['vehicleType'] ?? '').toString() == 'boat' ? l10n.crewUiTr101 : l10n.crewUiTr102)} (#${vehicle['id']})',
                       ),
                     ),
                   )
@@ -4910,12 +4910,12 @@ class _CrewScreenState extends State<CrewScreen>
 
   String? _getCrewHqImagePath(String? style, int? level) {
     if (style == null || level == null) {
-      print('🏢 HQ image path is null: style=$style, level=$level');
+      print('ðŸ¢ HQ image path is null: style=$style, level=$level');
       return null;
     }
     final imageLevel = level.clamp(0, 3);
     final path = 'assets/images/crew_hq/$style/hq_l$imageLevel.png';
-    print('🏢 HQ image path: $path');
+    print('ðŸ¢ HQ image path: $path');
     return path;
   }
 
@@ -5080,7 +5080,7 @@ class _CrewScreenState extends State<CrewScreen>
     final level = _myCrew?.hqLevel;
     final path = _getCrewHqImagePath(style, level);
     final caption = (style != null && level != null)
-        ? '${_localizedHqStyleLabel(l10n, style)} · ${_t(l10n, 'label.level')} $level'
+        ? '${_localizedHqStyleLabel(l10n, style)} Â· ${_t(l10n, 'label.level')} $level'
         : _t(l10n, 'status.notOwned');
 
     return Material(
@@ -5155,7 +5155,7 @@ class _CrewScreenState extends State<CrewScreen>
   Widget _buildPageInfoChild(BuildContext context) {
     if (_showHeistResult) {
       return CrimeResultOverlay(
-        crimeName: _heistResultName ?? '—',
+        crimeName: _heistResultName ?? 'â€”',
         reward: _heistResultPayout,
         xpGained: _heistResultXpGained,
         xpLost: _heistResultXpLost,
@@ -5316,9 +5316,9 @@ class _CrewScreenState extends State<CrewScreen>
                       ),
                       subtitle: Text(
                         '${_crewWeeklyGoal!['progress'] ?? 0}/${_crewWeeklyGoal!['target'] ?? 1}'
-                        ' · ${locale == 'nl' ? 'Beloning' : 'Reward'}: +${_money((_crewWeeklyGoal!['rewardCrewCash'] as num?)?.toInt() ?? 25000)} '
+                        ' Â· ${locale == 'nl' ? 'Beloning' : 'Reward'}: +${_money((_crewWeeklyGoal!['rewardCrewCash'] as num?)?.toInt() ?? 25000)} '
                         '${locale == 'nl' ? 'crewbank' : 'crew bank'} +${(_crewWeeklyGoal!['rewardPersonalXp'] as num?)?.toInt() ?? 40} XP'
-                        '${_crewWeeklyGoal!['claimed'] == true ? (locale == 'nl' ? ' · geclaimd' : ' · claimed') : ''}',
+                        '${_crewWeeklyGoal!['claimed'] == true ? (locale == 'nl' ? ' Â· geclaimd' : ' Â· claimed') : ''}',
                       ),
                       trailing: _crewWeeklyGoal!['claimable'] == true
                           ? TextButton(
@@ -5378,7 +5378,7 @@ class _CrewScreenState extends State<CrewScreen>
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              '€${_myCrew!.bankBalance.toLocaleString()}',
+                              'â‚¬${_myCrew!.bankBalance.toLocaleString()}',
                               style: const TextStyle(
                                 fontSize: 18,
                                 color: Colors.green,
@@ -5754,44 +5754,15 @@ class _CrewScreenState extends State<CrewScreen>
             ),
             const SizedBox(height: 16),
             Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: _buildSingleBuildingCard('hq', isLeader),
+              child: Column(
+                children: [
+                  _buildEnterpriseBuildingRow('hq', isLeader),
+                  for (final type in storageTypes) ...[
+                    const Divider(height: 1),
+                    _buildEnterpriseBuildingRow(type, isLeader),
+                  ],
+                ],
               ),
-            ),
-            const SizedBox(height: 16),
-            LayoutBuilder(
-              builder: (context, constraints) {
-                final fullWidth = constraints.maxWidth;
-                final columns = fullWidth >= 980
-                    ? 3
-                    : fullWidth >= 640
-                    ? 2
-                    : 1;
-                final totalSpacing = 16.0 * (columns - 1);
-                final cardWidth = (fullWidth - totalSpacing) / columns;
-
-                return Wrap(
-                  spacing: 16,
-                  runSpacing: 16,
-                  children: storageTypes
-                      .map(
-                        (type) => SizedBox(
-                          width: cardWidth,
-                          child: Card(
-                            child: Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: _buildSingleBuildingCard(
-                                type,
-                                isLeader,
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                );
-              },
             ),
           ],
         ),
@@ -5800,7 +5771,7 @@ class _CrewScreenState extends State<CrewScreen>
   }
 
   String _formatDealOffer(AppLocalizations loc, Map<String, dynamic>? offer) {
-    if (offer == null) return '—';
+    if (offer == null) return 'â€”';
     final parts = <String>[];
     final cash = (offer['cash'] as num?)?.toInt() ?? 0;
     if (cash > 0) parts.add(_money(cash));
@@ -5820,7 +5791,7 @@ class _CrewScreenState extends State<CrewScreen>
     if (ammo > 0) parts.add('$ammo ${loc.crewUiWarLootAmmo}');
     if (drugs > 0) parts.add('$drugs ${loc.crewUiWarLootDrug}');
     if (trade > 0) parts.add('$trade ${loc.crewUiWarLootTrade}');
-    return parts.isEmpty ? '—' : parts.join(' · ');
+    return parts.isEmpty ? 'â€”' : parts.join(' Â· ');
   }
 
   Map<String, dynamic> _collectDealOffer({
@@ -6174,7 +6145,7 @@ class _CrewScreenState extends State<CrewScreen>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '$initiator ↔ $counter',
+                        '$initiator â†” $counter',
                         style: const TextStyle(fontWeight: FontWeight.w600),
                       ),
                       Text(statusLabel, style: const TextStyle(color: Colors.grey)),
@@ -6337,7 +6308,7 @@ class _CrewScreenState extends State<CrewScreen>
         ? loc.crewUiVehicleRepairing(
             formatDuration(Duration(seconds: repairSeconds)),
           )
-        : '${loc.condition} $condition% · ${loc.vehicleFuel} $fuel%';
+        : '${loc.condition} $condition% Â· ${loc.vehicleFuel} $fuel%';
     return ListTile(
       dense: true,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16),
@@ -6475,7 +6446,7 @@ class _CrewScreenState extends State<CrewScreen>
               final locked = repairing || tuneCooldown > 0 || maxed;
               return ListTile(
                 dense: true,
-                title: Text('$label · $level'),
+                title: Text('$label Â· $level'),
                 subtitle: Text(
                   maxed
                       ? loc.tuneShopMaxLabel
@@ -6485,7 +6456,7 @@ class _CrewScreenState extends State<CrewScreen>
                             )
                           : repairing
                               ? loc.tuneShopLockedVehicleInRepair
-                              : '${_money(moneyCost)} · $partsCost ${loc.tuneShopPartsAbbrev}',
+                              : '${_money(moneyCost)} Â· $partsCost ${loc.tuneShopPartsAbbrev}',
                 ),
                 trailing: TextButton(
                   onPressed: locked || busy
@@ -6515,7 +6486,7 @@ class _CrewScreenState extends State<CrewScreen>
                       const SizedBox(height: 4),
                       Text(_crewVehicleLabel(row, loc)),
                       Text(
-                        '${loc.condition} $condition% · ${loc.vehicleFuel} $fuel%',
+                        '${loc.condition} $condition% Â· ${loc.vehicleFuel} $fuel%',
                       ),
                       if (repairing && repairSeconds > 0)
                         Padding(
@@ -6538,7 +6509,7 @@ class _CrewScreenState extends State<CrewScreen>
                         subtitle: Text(
                           refuelLiters <= 0
                               ? loc.crewUiVehicleFuelFull
-                              : '${_money(refuelCost)} · ${refuelLiters.toStringAsFixed(0)} L',
+                              : '${_money(refuelCost)} Â· ${refuelLiters.toStringAsFixed(0)} L',
                         ),
                         trailing: TextButton(
                           onPressed: busy || repairing || refuelLiters <= 0
@@ -6627,10 +6598,10 @@ class _CrewScreenState extends State<CrewScreen>
         : catalogIdFallbackLabel(vehicleId.isNotEmpty ? vehicleId : rawName);
     final type = (row['vehicleType'] ?? '').toString();
     if (type == 'motorcycle') {
-      return '$pretty · ${loc.crewUiTr100}';
+      return '$pretty Â· ${loc.crewUiTr100}';
     }
     if (type == 'boat') {
-      return '$pretty · ${loc.crewUiTr101}';
+      return '$pretty Â· ${loc.crewUiTr101}';
     }
     return pretty;
   }
@@ -6771,7 +6742,7 @@ class _CrewScreenState extends State<CrewScreen>
               fallback: Icons.gavel,
             ),
             title: Text(localizedWeaponDisplayName(loc, id, id)),
-            subtitle: Text('$qty× · ${loc.condition} $condition%'),
+            subtitle: Text('$qtyÃ— Â· ${loc.condition} $condition%'),
           );
         });
       case 'parts_storage':
@@ -6795,7 +6766,7 @@ class _CrewScreenState extends State<CrewScreen>
                 fallback: Icons.settings,
               ),
               title: Text(label),
-              subtitle: Text('$qty×'),
+              subtitle: Text('$qtyÃ—'),
             );
           },
         );
@@ -6826,7 +6797,7 @@ class _CrewScreenState extends State<CrewScreen>
               fallback: Icons.inventory_2,
             ),
             title: Text(localizedAmmoCaliber(ammoType)),
-            subtitle: Text('$qty×'),
+            subtitle: Text('$qtyÃ—'),
           );
         });
       case 'drug_storage':
@@ -6882,7 +6853,7 @@ class _CrewScreenState extends State<CrewScreen>
                 fallback: Icons.inventory,
               ),
               title: Text(TradeGoodL10n.name(loc, goodType)),
-              subtitle: Text('$qty×'),
+              subtitle: Text('$qtyÃ—'),
             );
           },
         );
@@ -7398,7 +7369,7 @@ class _CrewScreenState extends State<CrewScreen>
                       ),
                       subtitle: Text(
                         locale == 'nl'
-                            ? 'Open crews met deze optie joinen in één klik'
+                            ? 'Open crews met deze optie joinen in Ã©Ã©n klik'
                             : 'Open crews with this option join in one click',
                       ),
                       value: _myCrew!.autoAccept,
@@ -7904,7 +7875,7 @@ class _CrewScreenState extends State<CrewScreen>
                                 size: 18,
                               ),
                               label: Text(
-                                '${_formatWarTerritoryOptionLabel(l10n, territory)} • $holderLabel • ${_formatWarTerritoryBonusSummary(l10n, territory)}',
+                                '${_formatWarTerritoryOptionLabel(l10n, territory)} â€¢ $holderLabel â€¢ ${_formatWarTerritoryBonusSummary(l10n, territory)}',
                               ),
                             );
                           }).toList(),
@@ -7941,7 +7912,7 @@ class _CrewScreenState extends State<CrewScreen>
                             return Chip(
                               avatar: const Icon(Icons.person, size: 18),
                               label: Text(
-                                '$username • $role • K:$kills D:$deaths',
+                                '$username â€¢ $role â€¢ K:$kills D:$deaths',
                               ),
                             );
                           }).toList(),
@@ -8116,7 +8087,7 @@ class _CrewScreenState extends State<CrewScreen>
                                 : '#${standing['crewId']}',
                           ),
                           subtitle: Text(
-                            '${l10n.crewUiTr41}: ${standing['totalKills'] ?? 0} • ${l10n.crewUiTr42}: ${standing['totalDeaths'] ?? 0} • ${l10n.crewUiTr131}: ${standing['territoriesHeld'] ?? 0}',
+                            '${l10n.crewUiTr41}: ${standing['totalKills'] ?? 0} â€¢ ${l10n.crewUiTr42}: ${standing['totalDeaths'] ?? 0} â€¢ ${l10n.crewUiTr131}: ${standing['territoriesHeld'] ?? 0}',
                           ),
                           trailing: Text('${standing['totalPoints'] ?? 0} pt'),
                         ),
@@ -8152,7 +8123,7 @@ class _CrewScreenState extends State<CrewScreen>
                               contentPadding: EdgeInsets.zero,
                               leading: const Icon(Icons.bolt, size: 18),
                               title: Text(
-                                '${_formatWarActionType(l10n, action['actionType'] as String?)} • +${action['pointsAwarded'] ?? 0} pt',
+                                '${_formatWarActionType(l10n, action['actionType'] as String?)} â€¢ +${action['pointsAwarded'] ?? 0} pt',
                               ),
                               subtitle: Text(
                                 '${action['actor'] is Map ? ((action['actor'] as Map)['username'] ?? '#${action['actorId']}') : '#${action['actorId']}'} ${l10n.crewUiTr134} ${action['target'] is Map ? ((action['target'] as Map)['username'] ?? '-') : '-'}',
@@ -8197,7 +8168,7 @@ class _CrewScreenState extends State<CrewScreen>
                               : '#${entry['crewId']}',
                         ),
                         subtitle: Text(
-                          '${l10n.crewUiTr41}: ${entry['totalKills'] ?? 0} • ${l10n.crewUiTr137}: €${entry['totalLoot'] ?? 0}',
+                          '${l10n.crewUiTr41}: ${entry['totalKills'] ?? 0} â€¢ ${l10n.crewUiTr137}: â‚¬${entry['totalLoot'] ?? 0}',
                         ),
                         trailing: Text('${entry['totalPoints'] ?? 0} pt'),
                       ),
@@ -8231,7 +8202,7 @@ class _CrewScreenState extends State<CrewScreen>
                         contentPadding: EdgeInsets.zero,
                         leading: const Icon(Icons.history),
                         title: Text(
-                          '${_formatCrewWarType(l10n, war['warType'] as String?)} • ${_formatCrewWarStatus(l10n, war['status'] as String?)}',
+                          '${_formatCrewWarType(l10n, war['warType'] as String?)} â€¢ ${_formatCrewWarStatus(l10n, war['status'] as String?)}',
                         ),
                         subtitle: Text(
                           '${_crewNameFromHub(war['attackerCrew'], war['attackerCrewId'])} vs ${_crewNameFromHub(war['defenderCrew'], war['defenderCrewId'])}',
@@ -8279,10 +8250,7 @@ class _CrewScreenState extends State<CrewScreen>
     );
   }
 
-  Widget _buildSingleBuildingCard(
-    String buildingType,
-    bool isLeader,
-  ) {
+  Widget _buildEnterpriseBuildingRow(String buildingType, bool isLeader) {
     final building = _crewBuildings.firstWhere(
       (b) => (b['type'] as String?) == buildingType,
       orElse: () => {
@@ -8297,7 +8265,6 @@ class _CrewScreenState extends State<CrewScreen>
       orElse: () => {'style': 'camping'},
     );
     final hqStyle = currentHq['style'] as String? ?? 'camping';
-
     final type = building['type'] as String?;
     final level = building['level'] as int?;
     final maxLevel = building['maxLevel'] as int? ?? 0;
@@ -8308,507 +8275,159 @@ class _CrewScreenState extends State<CrewScreen>
     final memberCap = building['memberCap'] as int?;
     final parkingSlots = building['parkingSlots'] as int?;
     final nextCost = building['nextUpgradeCost'] as int?;
-    final crewVip = building['crewVip'] as bool? ?? false;
     final allowedLevelByHq = building['allowedLevelByHq'] as int? ?? 0;
-
+    final isHq = type == 'hq';
+    final nextStyle = isHq ? _getNextHqStyle() : null;
+    final canUnlockNextStyle =
+        isHq && level != null && level >= maxLevel && nextStyle != null;
+    final requiredSideLevel = isHq
+        ? _requiredSideBuildingLevelForHqUpgrade(
+            building['style'] as String?,
+            level,
+          )
+        : 0;
+    final missingSideBuildings = isHq &&
+            level != null &&
+            ((level < maxLevel && nextCost != null) || canUnlockNextStyle)
+        ? _getMissingSideBuildingsForHqUpgrade(requiredSideLevel, l10n)
+        : <String>[];
+    final hqUpgradeBlockedBySideBuildings = missingSideBuildings.isNotEmpty;
+    final displayLevel = isHq
+        ? _getHqGlobalLevel(building['style'] as String?, level)
+        : level;
     final status = level == null
         ? _t(l10n, 'status.notOwned')
-        : '${_t(l10n, 'label.level')} $level/$maxLevel';
+        : '${_t(l10n, 'label.level')} ${displayLevel ?? level}/$maxLevel';
 
-    if (type == 'hq') {
-      final displayLevel = _getHqGlobalLevel(
-        building['style'] as String?,
-        level,
-      );
-      final displayCap = memberCap ?? 0;
-      final nextStyle = _getNextHqStyle();
-      final canUnlockNextStyle =
-          level != null && level >= maxLevel && nextStyle != null;
-      final requiredSideLevel = _requiredSideBuildingLevelForHqUpgrade(
-        building['style'] as String?,
-        level,
-      );
-      final missingSideBuildings =
-          (level != null &&
-              ((level < maxLevel && nextCost != null) || canUnlockNextStyle))
-          ? _getMissingSideBuildingsForHqUpgrade(requiredSideLevel, l10n)
-          : <String>[];
-      final hqUpgradeBlockedBySideBuildings = missingSideBuildings.isNotEmpty;
-
-      return LayoutBuilder(
-        builder: (context, constraints) {
-          final width = constraints.maxWidth;
-          final imageWidth = width < 600
-              ? width
-              : width < 1000
-              ? 380.0
-              : 420.0;
-
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Text(
-                  localizedLabel,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 12),
-              Align(
-                alignment: Alignment.center,
-                child: SizedBox(
-                  width: imageWidth,
-                  child: AspectRatio(
-                    aspectRatio: 2 / 3,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Stack(
-                        children: [
-                          if (imagePath != null)
-                            Positioned.fill(
-                              child: WebAssetHelper.image(
-                                imagePath,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                        colors: [
-                                          Colors.grey.shade800,
-                                          Colors.grey.shade900,
-                                        ],
-                                      ),
-                                    ),
-                                    alignment: Alignment.center,
-                                    child: Icon(
-                                      Icons.business,
-                                      color: Colors.amber.shade600,
-                                      size: 56,
-                                    ),
-                                  );
-                                },
-                              ),
-                            )
-                          else
-                            Positioned.fill(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                    colors: [
-                                      Colors.grey.shade800,
-                                      Colors.grey.shade900,
-                                    ],
-                                  ),
-                                ),
-                                alignment: Alignment.center,
-                                child: Icon(
-                                  Icons.business,
-                                  color: Colors.amber.shade600,
-                                  size: 56,
-                                ),
-                              ),
-                            ),
-                          Positioned(
-                            top: 12,
-                            left: 12,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.55),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    Icons.star,
-                                    color: Colors.amber.shade400,
-                                    size: 18,
-                                  ),
-                                  const SizedBox(width: 6),
-                                  Text(
-                                    '$displayLevel',
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            top: 12,
-                            right: 12,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.55),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const Icon(
-                                    Icons.group,
-                                    color: Colors.white,
-                                    size: 18,
-                                  ),
-                                  const SizedBox(width: 6),
-                                  Text(
-                                    '$displayCap',
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 12),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: (level == null)
-                          ? (isLeader
-                                ? () => _purchaseBuilding(type ?? '')
-                                : null)
-                          : (level < maxLevel && nextCost != null)
-                          ? (isLeader && !hqUpgradeBlockedBySideBuildings
-                                ? () => _upgradeBuilding(type ?? '')
-                                : null)
-                          : canUnlockNextStyle
-                          ? (isLeader && !hqUpgradeBlockedBySideBuildings
-                                ? () => _purchaseBuilding(type ?? '')
-                                : null)
-                          : null,
-                      child: Text(
-                        (level == null)
-                            ? '${_t(l10n, 'action.purchase')}${nextCost != null ? ' (${_money(nextCost)})' : ''}'
-                            : (level < maxLevel && nextCost != null)
-                            ? '${_t(l10n, 'action.upgrade')} (${_money(nextCost)})'
-                            : canUnlockNextStyle
-                            ? '${_t(l10n, 'action.upgrade')}${nextCost != null ? ' (${_money(nextCost)})' : ''}'
-                            : status,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  IconButton(
-                    tooltip: _t(l10n, 'help.showCaps'),
-                    onPressed: () =>
-                        _showBuildingCapsDialog(type ?? '', label),
-                    icon: const Icon(Icons.info_outline),
-                  ),
-                ],
-              ),
-              if (!isLeader &&
-                  ((level == null) ||
-                      (level < maxLevel && nextCost != null) ||
-                      canUnlockNextStyle))
-                Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: Text(
-                    l10n.crewUiTr140,
-                    style: const TextStyle(color: Colors.grey),
-                  ),
-                ),
-              if (isLeader && hqUpgradeBlockedBySideBuildings)
-                Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: width < 600
-                      ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              l10n.crewUiTr141,
-                              style: const TextStyle(color: Colors.orange),
-                            ),
-                            const SizedBox(height: 4),
-                            TextButton.icon(
-                              onPressed: () => _showHqUpgradeRequirementsDialog(
-                                requiredSideLevel,
-                                missingSideBuildings,
-                              ),
-                              icon: const Icon(Icons.info_outline, size: 16),
-                              label: Text(_t(l10n, 'action.details')),
-                            ),
-                          ],
-                        )
-                      : Text(
-                          l10n.crewUiHqUpgradeSideBuildingsMessage(
-                            requiredSideLevel.toString(),
-                            missingSideBuildings.isEmpty
-                                ? '—'
-                                : '- ${missingSideBuildings.join('\n- ')}',
-                          ),
-                          style: const TextStyle(color: Colors.orange),
-                        ),
-                ),
-              if (isLeader &&
-                  level != null &&
-                  level < maxLevel &&
-                  nextCost == null)
-                Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: Text(
-                    l10n.crewUiTr142,
-                    style: const TextStyle(color: Colors.grey),
-                  ),
-                ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Text(
-                  l10n.territoryHqUpgradeHint,
-                  style: const TextStyle(color: Colors.grey, fontSize: 12),
-                ),
-              ),
-            ],
-          );
-        },
-      );
+    VoidCallback? onAction;
+    var actionLabel = status;
+    if (level == null) {
+      onAction = isLeader ? () => _purchaseBuilding(type ?? '') : null;
+      actionLabel =
+          '${_t(l10n, 'action.purchase')}${nextCost != null ? ' (${_money(nextCost)})' : ''}';
+    } else if (level < maxLevel && nextCost != null) {
+      onAction = isLeader && !hqUpgradeBlockedBySideBuildings
+          ? () => _upgradeBuilding(type ?? '')
+          : null;
+      actionLabel = '${_t(l10n, 'action.upgrade')} (${_money(nextCost)})';
+    } else if (canUnlockNextStyle) {
+      onAction = isLeader && !hqUpgradeBlockedBySideBuildings
+          ? () => _purchaseBuilding(type ?? '')
+          : null;
+      actionLabel =
+          '${_t(l10n, 'action.upgrade')}${nextCost != null ? ' (${_money(nextCost)})' : ''}';
     }
 
-    final displayLevel = level ?? 0;
-    final displayCapValue = capacity ?? parkingSlots ?? memberCap ?? 0;
-    final displayCapIcon = parkingSlots != null
-        ? Icons.local_parking
-        : (memberCap != null ? Icons.group : Icons.inventory_2);
+    final details = <String>[status];
+    if (memberCap != null) details.add('$memberCap');
+    if (capacity != null) details.add('$capacity');
+    if (parkingSlots != null) details.add('$parkingSlots');
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final width = constraints.maxWidth;
-        final imageWidth = width < 600
-            ? width
-            : width < 1000
-            ? 380.0
-            : 420.0;
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Text(
-                localizedLabel,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: SizedBox(
+                  width: 72,
+                  height: 72,
+                  child: imagePath == null
+                      ? ColoredBox(
+                          color: Colors.black26,
+                          child: Icon(
+                            _getCrewBuildingIcon(type),
+                            color: Colors.amber.shade600,
+                            size: 28,
+                          ),
+                        )
+                      : _buildCrewBuildingCardImage(
+                          type: type,
+                          imagePath: imagePath,
+                          level: level,
+                        ),
                 ),
               ),
-            ),
-            const SizedBox(height: 12),
-            Align(
-              alignment: Alignment.center,
-              child: SizedBox(
-                width: imageWidth,
-                child: AspectRatio(
-                  aspectRatio: 2 / 3,
-                  child: GestureDetector(
-                    onTap: (type ?? '').endsWith('_storage')
-                        ? () => _showCrewStorageContentsDialog(
-                            buildingType: type ?? buildingType,
-                            title: localizedLabel,
-                          )
-                        : null,
-                    child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Stack(
-                      children: [
-                        if (imagePath != null)
-                          Positioned.fill(
-                            child: _buildCrewBuildingCardImage(
-                              type: type,
-                              imagePath: imagePath,
-                              level: level,
-                            ),
-                          )
-                        else
-                          Positioned.fill(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [
-                                    Colors.grey.shade800,
-                                    Colors.grey.shade900,
-                                  ],
-                                ),
-                              ),
-                              alignment: Alignment.center,
-                              child: Icon(
-                                _getCrewBuildingIcon(type),
-                                color: Colors.amber.shade600,
-                                size: 56,
-                              ),
-                            ),
-                          ),
-                        Positioned(
-                          top: 12,
-                          left: 12,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.55),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.amber.shade400,
-                                  size: 18,
-                                ),
-                                const SizedBox(width: 6),
-                                Text(
-                                  '$displayLevel',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          top: 12,
-                          right: 12,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.55),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  displayCapIcon,
-                                  color: Colors.white,
-                                  size: 18,
-                                ),
-                                const SizedBox(width: 6),
-                                Text(
-                                  '$displayCapValue',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      localizedLabel,
+                      style: const TextStyle(fontWeight: FontWeight.w700),
                     ),
-                  ),
-                  ),
+                    const SizedBox(height: 2),
+                    Text(
+                      details.join(' Â· '),
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: (level == null)
-                        ? (isLeader
-                              ? () => _purchaseBuilding(type ?? '')
-                              : null)
-                        : (level < maxLevel && nextCost != null)
-                        ? (isLeader ? () => _upgradeBuilding(type ?? '') : null)
-                        : null,
-                    child: Text(
-                      (level == null)
-                          ? '${_t(l10n, 'action.purchase')}${nextCost != null ? ' (${_money(nextCost)})' : ''}'
-                          : (level < maxLevel && nextCost != null)
-                          ? '${_t(l10n, 'action.upgrade')} (${_money(nextCost)})'
-                          : status,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                if ((type ?? '').endsWith('_storage'))
-                  IconButton(
-                    tooltip: l10n.crewUiStorageViewContents,
-                    onPressed: () => _showCrewStorageContentsDialog(
-                      buildingType: type ?? buildingType,
-                      title: localizedLabel,
-                    ),
-                    icon: const Icon(Icons.list_alt),
-                  ),
+              if ((type ?? '').endsWith('_storage'))
                 IconButton(
-                  tooltip: _t(l10n, 'help.showCaps'),
-                  onPressed: () =>
-                      _showBuildingCapsDialog(type ?? '', label),
-                  icon: const Icon(Icons.info_outline),
+                  tooltip: l10n.crewUiStorageViewContents,
+                  onPressed: () => _showCrewStorageContentsDialog(
+                    buildingType: type ?? buildingType,
+                    title: localizedLabel,
+                  ),
+                  icon: const Icon(Icons.list_alt),
                 ),
-              ],
+              IconButton(
+                tooltip: _t(l10n, 'help.showCaps'),
+                onPressed: () => _showBuildingCapsDialog(type ?? '', label),
+                icon: const Icon(Icons.info_outline),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Align(
+            alignment: Alignment.centerRight,
+            child: FilledButton(
+              onPressed: onAction,
+              child: Text(actionLabel),
             ),
-            if (!isLeader &&
-                ((level == null) || (level < maxLevel && nextCost != null)))
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Text(
-                  l10n.crewUiTr140,
-                  style: const TextStyle(color: Colors.grey),
-                ),
+          ),
+          if (!isLeader &&
+              ((level == null) ||
+                  (level < maxLevel && nextCost != null) ||
+                  canUnlockNextStyle))
+            Padding(
+              padding: const EdgeInsets.only(top: 6),
+              child: Text(
+                l10n.crewUiTr140,
+                style: const TextStyle(color: Colors.grey, fontSize: 12),
               ),
-            if (level != null && allowedLevelByHq < level)
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Text(
-                  l10n.crewUiTr143,
-                  style: const TextStyle(color: Colors.orange),
+            ),
+          if (isHq && isLeader && hqUpgradeBlockedBySideBuildings)
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: TextButton.icon(
+                onPressed: () => _showHqUpgradeRequirementsDialog(
+                  requiredSideLevel,
+                  missingSideBuildings,
                 ),
+                icon: const Icon(Icons.info_outline, size: 16),
+                label: Text(_t(l10n, 'action.details')),
               ),
-            if (isLeader &&
-                level != null &&
-                level < maxLevel &&
-                nextCost == null)
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Text(
-                  level >= 10 && crewVip && hqStyle != 'vip'
-                      ? l10n.crewUiTr3
-                      : l10n.crewUiTr144,
-                  style: const TextStyle(color: Colors.grey),
-                ),
+            ),
+          if (!isHq && level != null && allowedLevelByHq < level)
+            Padding(
+              padding: const EdgeInsets.only(top: 6),
+              child: Text(
+                l10n.crewUiTr143,
+                style: const TextStyle(color: Colors.orange, fontSize: 12),
               ),
-          ],
-        );
-      },
+            ),
+        ],
+      ),
     );
   }
 
@@ -9818,7 +9437,7 @@ class _CrewScreenState extends State<CrewScreen>
                       ? username
                       : '#${playerId ?? 0}';
                   final chipText =
-                      '$chipTitle • ${_crewRoleLabel(loc, roleKey)} • ${_t(loc, 'label.contribution')} ${_formatContributionValue(contributionScore)}${payoutMultiplier != null && (payoutMultiplier - 1).abs() > 0.01 ? ' • ${_t(loc, 'label.multiplier')} x${_formatContributionValue(payoutMultiplier)}' : ''}';
+                      '$chipTitle â€¢ ${_crewRoleLabel(loc, roleKey)} â€¢ ${_t(loc, 'label.contribution')} ${_formatContributionValue(contributionScore)}${payoutMultiplier != null && (payoutMultiplier - 1).abs() > 0.01 ? ' â€¢ ${_t(loc, 'label.multiplier')} x${_formatContributionValue(payoutMultiplier)}' : ''}';
                   return Chip(
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     visualDensity: VisualDensity.compact,
@@ -9906,7 +9525,7 @@ class _CrewScreenState extends State<CrewScreen>
               : '#${playerId ?? 0}';
           return '$displayName (${_crewRoleLabel(loc, roleKey)} ${_formatContributionValue(contributionScore)})';
         })
-        .join(' • ');
+        .join(' â€¢ ');
 
     return Card(
       child: ListTile(

@@ -110,7 +110,7 @@ router.post(
       const result = await heistService.startHeist(heistId, playerCrew.id, playerId);
       
       // Set cooldown after heist attempt
-      await cooldownService.setCooldown(playerId, 'heist');
+      const cooldown = await cooldownService.setCooldown(playerId, 'heist');
 
       const newReputation = await applyReputationAction(
         playerId,
@@ -129,6 +129,7 @@ router.post(
             reputation: newReputation,
             vehicleConditionLoss: result.vehicleConditionLoss,
             vehicleFuelUsed: result.vehicleFuelUsed,
+            cooldown,
           },
         });
       } else {
@@ -144,6 +145,7 @@ router.post(
             vehicleConditionLoss: result.vehicleConditionLoss,
             vehicleFuelUsed: result.vehicleFuelUsed,
             vehicleChaseDamage: result.vehicleChaseDamage,
+            cooldown,
           },
         });
       }

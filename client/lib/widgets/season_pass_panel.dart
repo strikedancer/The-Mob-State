@@ -820,7 +820,24 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
             claimables: claimables,
             showEmpty: !widget.showGoalList,
           ),
-          if (widget.showGoalList) ...[
+          if (widget.showGoalList)
+            Theme(
+              data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+              child: ExpansionTile(
+                initiallyExpanded: false,
+                tilePadding: EdgeInsets.zero,
+                childrenPadding: EdgeInsets.zero,
+                collapsedIconColor: Colors.white70,
+                iconColor: _accent,
+                title: Text(
+                  l10n.seasonPassColumnGoal,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 13,
+                  ),
+                ),
+                children: [
             LayoutBuilder(
             builder: (context, constraints) {
               final compact = constraints.maxWidth < 620;
@@ -884,7 +901,9 @@ class _SeasonPassPanelState extends State<SeasonPassPanel> {
                 even: entry.key.isEven,
               );
             }),
-          ],
+                ],
+              ),
+            ),
         ],
       ),
     );

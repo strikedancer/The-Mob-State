@@ -30,6 +30,7 @@ import '../utils/localized_game_event_template.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/localized_api_message.dart';
 import '../utils/player_profile_navigation.dart';
+import '../utils/almanac_launcher.dart';
 import '../utils/web_history.dart';
 import '../utils/rank_display.dart';
 import '../theme/dashboard_chrome.dart';
@@ -1167,11 +1168,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         _selectWebSection(_WebSection.messages);
                         break;
                       case 'help':
-                        if (kIsWeb) {
-                          _selectWebSection(_WebSection.help);
-                        } else if (context.mounted) {
-                          Navigator.of(context).pushNamed('/help');
-                        }
+                        await AlmanacLauncher.open(
+                          languageCode: l10n.localeName.split('_').first,
+                        );
                         break;
                       case 'settings':
                         if (kIsWeb) {
@@ -1251,7 +1250,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         children: [
                           const Icon(Icons.menu_book, size: 20),
                           const SizedBox(width: 12),
-                          Text(l10n.helpAndGuide),
+                          Text(l10n.landingFooterAlmanac),
                         ],
                       ),
                     ),
@@ -1670,7 +1669,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
         navItem(icon: Icons.public, label: l10n.worldChatTitle, section: _WebSection.worldChat),
         navItem(icon: Icons.groups, label: l10n.crew, section: _WebSection.crew),
         navItem(icon: Icons.group, label: l10n.friends, section: _WebSection.friends, badge: _pendingFriendRequestCount),
-        navItem(icon: FontAwesomeIcons.commentsSolid, label: l10n.support, section: _WebSection.support, badge: _supportBadgeCount),
       ],
       _NavGroup.economy: [
         navItem(icon: Icons.account_balance, label: l10n.bank, section: _WebSection.bank),
@@ -1701,7 +1699,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
         navItem(icon: Icons.school, label: l10n.schoolMenuLabel, section: _WebSection.school),
       ],
       _NavGroup.more: [
-        navItem(icon: Icons.menu_book, label: l10n.helpAndGuide, section: _WebSection.help),
         navItem(icon: Icons.local_hospital, label: l10n.hospital, section: _WebSection.hospital),
         navItem(icon: Icons.gpp_bad, label: l10n.jail, section: _WebSection.prison),
         navItem(icon: Icons.emoji_events, label: l10n.achievements, section: _WebSection.achievements),
@@ -1712,6 +1709,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
       icon: Icons.shopping_bag,
       label: l10n.premiumShopMenuLabel,
       section: _WebSection.premium,
+    );
+    final support = navItem(
+      icon: FontAwesomeIcons.commentsSolid,
+      label: l10n.support,
+      section: _WebSection.support,
+      badge: _supportBadgeCount,
     );
 
     bool matches(String label) =>
@@ -1736,8 +1739,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (matchesRow(shop)) {
       widgets.add(_buildNavTile(shop, onBeforeNavigate));
     }
+    if (matches(l10n.landingFooterAlmanac) || matches(l10n.helpAndGuide)) {
+      widgets.add(_buildAlmanacNavTile(l10n, onBeforeNavigate));
+    }
+    if (matchesRow(support)) {
+      widgets.add(_buildNavTile(support, onBeforeNavigate));
+    }
 
-    var anyMatch = matches(dashboard.label) || matchesRow(shop);
+    var anyMatch = matches(dashboard.label) ||
+        matchesRow(shop) ||
+        matches(l10n.landingFooterAlmanac) ||
+        matches(l10n.helpAndGuide) ||
+        matchesRow(support);
     for (final group in _NavGroup.values) {
       final groupItems = (groups[group] ?? []).where((row) => matchesRow(row)).toList();
       if (groupItems.isEmpty) continue;
@@ -1891,6 +1904,52 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                   ),
               ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAlmanacNavTile(
+    AppLocalizations l10n,
+    VoidCallback? onBeforeNavigate,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 2),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(6),
+          onTap: () {
+            onBeforeNavigate?.call();
+            AlmanacLauncher.open(
+              languageCode: l10n.localeName.split('_').first,
+            );
+          },
+          child: SizedBox(
+            height: 36,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(
+                children: [
+                  const Icon(Icons.menu_book, size: 16, color: Colors.white70),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      l10n.landingFooterAlmanac,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: Color(0xCCFFFFFF),
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  const Icon(Icons.open_in_new, size: 13, color: Colors.white38),
+                ],
+              ),
             ),
           ),
         ),
@@ -2569,8 +2628,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 IconButton(
                   icon: const Icon(Icons.menu_book),
-                  onPressed: () => Navigator.of(context).pushNamed('/help'),
-                  tooltip: l10n.helpAndGuide,
+                  onPressed: () => AlmanacLauncher.open(
+                    languageCode: l10n.localeName.split('_').first,
+                  ),
+                  tooltip: l10n.landingFooterAlmanac,
                 ),
                 IconButton(
                   icon: const Icon(Icons.settings),
@@ -2829,9 +2890,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.menu_book,
-                                  label: l10n.helpAndGuide,
-                                  onTap: () =>
-                                      Navigator.pushNamed(context, '/help'),
+                                  label: l10n.landingFooterAlmanac,
+                                  onTap: () => AlmanacLauncher.open(
+                                    languageCode:
+                                        l10n.localeName.split('_').first,
+                                  ),
                                 ),
                                 _buildMenuTile(
                                   context,
@@ -4007,19 +4070,6 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
               ],
             ),
             const SizedBox(height: 4),
-            StartAndGoalsPanel(
-              playerRank: Provider.of<AuthProvider>(context, listen: false)
-                      .currentPlayer
-                      ?.rank ??
-                  1,
-              onGoalsChanged: () {
-                _loadStats();
-                _loadWeeklyGoals();
-              },
-            ),
-            const SizedBox(height: 8),
-            MarketTeaserTile(onOpenMarket: widget.onOpenMarket),
-            const SizedBox(height: 8),
             LayoutBuilder(
               builder: (context, constraints) {
                 // Dashboard cards: stack vertically on tablet, 3-column layout on desktop
@@ -4823,6 +4873,19 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                 );
               },
             ),
+            const SizedBox(height: 16),
+            StartAndGoalsPanel(
+              playerRank: Provider.of<AuthProvider>(context, listen: false)
+                      .currentPlayer
+                      ?.rank ??
+                  1,
+              onGoalsChanged: () {
+                _loadStats();
+                _loadWeeklyGoals();
+              },
+            ),
+            const SizedBox(height: 8),
+            MarketTeaserTile(onOpenMarket: widget.onOpenMarket),
           ],
         ),
       ),

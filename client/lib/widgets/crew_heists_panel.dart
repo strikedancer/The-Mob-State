@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
 import '../l10n/app_localizations.dart';
 import '../services/api_client.dart';
+import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 
 class CrewHeistsPanel extends StatefulWidget {
@@ -32,11 +34,58 @@ class _CrewHeistsPanelState extends State<CrewHeistsPanel> {
   String? _error;
   List<Map<String, dynamic>> _heists = [];
   Map<String, dynamic>? _crimeVehicle;
+  int _heistCooldownSeconds = 0;
+  Timer? _heistCooldownTimer;
 
   @override
   void initState() {
     super.initState();
     _load();
+  }
+
+  @override
+  void dispose() {
+    _heistCooldownTimer?.cancel();
+    super.dispose();
+  }
+
+  void _setHeistCooldown(int seconds) {
+    _heistCooldownTimer?.cancel();
+    final remaining = seconds < 0 ? 0 : seconds;
+    _heistCooldownSeconds = remaining;
+    if (remaining <= 0) return;
+    _heistCooldownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
+      setState(() {
+        if (_heistCooldownSeconds <= 1) {
+          _heistCooldownSeconds = 0;
+          timer.cancel();
+        } else {
+          _heistCooldownSeconds -= 1;
+        }
+      });
+    });
+  }
+
+  int _readCooldownSeconds(dynamic raw) {
+    if (raw is num) return raw.toInt();
+    return int.tryParse(raw?.toString() ?? '') ?? 0;
+  }
+
+  Future<void> _loadHeistCooldown() async {
+    try {
+      final response = await _apiClient.get('/player/action-cooldowns');
+      if (response.statusCode != 200 || response.body.isEmpty) return;
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final raw = data['cooldowns'];
+      if (raw is! Map) return;
+      final seconds = _readCooldownSeconds(raw['heist']);
+      if (!mounted) return;
+      setState(() => _setHeistCooldown(seconds));
+    } catch (_) {}
   }
 
   Future<void> _load() async {
@@ -49,6 +98,7 @@ class _CrewHeistsPanelState extends State<CrewHeistsPanel> {
       final heistsResponse =
           await _apiClient.get('/heists/crew/${widget.crewId}');
       final vehicleResponse = await _apiClient.get('/garage/crime-vehicle');
+      await _loadHeistCooldown();
 
       if (!mounted) return;
 
@@ -101,8 +151,23 @@ class _CrewHeistsPanelState extends State<CrewHeistsPanel> {
     return parts.isEmpty ? '' : '\n${parts.join('\n')}';
   }
 
+  void _applyCooldownFromParams(Map<String, dynamic> params) {
+    final cooldown = params['cooldown'];
+    if (cooldown is Map) {
+      final remaining = _readCooldownSeconds(cooldown['remainingSeconds']);
+      if (remaining > 0) {
+        _setHeistCooldown(remaining);
+        return;
+      }
+    }
+    final remaining = _readCooldownSeconds(params['remainingSeconds']);
+    if (remaining > 0) {
+      _setHeistCooldown(remaining);
+    }
+  }
+
   Future<void> _startHeist(Map<String, dynamic> heist) async {
-    if (!widget.isLeader || _starting) return;
+    if (!widget.isLeader || _starting || _heistCooldownSeconds > 0) return;
 
     final l10n = AppLocalizations.of(context)!;
     final requiresVehicle = heist['requiresVehicle'] != false;
@@ -127,6 +192,25 @@ class _CrewHeistsPanelState extends State<CrewHeistsPanel> {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
       final eventKey = data['event']?.toString() ?? '';
       final params = (data['params'] as Map<String, dynamic>?) ?? {};
+
+      if (eventKey == 'error.cooldown') {
+        _applyCooldownFromParams(params);
+        final remaining = _heistCooldownSeconds;
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              formatAdaptiveDurationFromSeconds(
+                remaining,
+                localeName: l10n.localeName,
+              ),
+            ),
+            backgroundColor: Colors.orange,
+          ),
+        );
+        return;
+      }
+
       final success = eventKey.contains('success');
       var message = success
           ? l10n.evStreamHeistOk(heistName, '${params['payout'] ?? 0}')
@@ -141,6 +225,13 @@ class _CrewHeistsPanelState extends State<CrewHeistsPanel> {
           message = l10n.crimeErrorVehicleBroken;
         } else if (reason == 'NO_FUEL') {
           message = l10n.crimeErrorNoFuel;
+        }
+      }
+
+      if (response.statusCode == 200) {
+        _applyCooldownFromParams(params);
+        if (_heistCooldownSeconds <= 0) {
+          await _loadHeistCooldown();
         }
       }
 
@@ -196,6 +287,12 @@ class _CrewHeistsPanelState extends State<CrewHeistsPanel> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final cooldownLabel = _heistCooldownSeconds > 0
+        ? formatAdaptiveDurationFromSeconds(
+            _heistCooldownSeconds,
+            localeName: l10n.localeName,
+          )
+        : l10n.crewHeistsStart;
 
     return Card(
       color: const Color(0xFF1E1414),
@@ -257,6 +354,7 @@ class _CrewHeistsPanelState extends State<CrewHeistsPanel> {
                 final canStart = widget.isLeader &&
                     widget.memberCount >= requiredMembers &&
                     (!_starting) &&
+                    _heistCooldownSeconds <= 0 &&
                     (!requiresVehicle || _crimeVehicle != null);
 
                 return Padding(
@@ -316,7 +414,7 @@ class _CrewHeistsPanelState extends State<CrewHeistsPanel> {
                         else
                           ElevatedButton(
                             onPressed: canStart ? () => _startHeist(heist) : null,
-                            child: Text(l10n.crewHeistsStart),
+                            child: Text(cooldownLabel),
                           ),
                       ],
                     ),

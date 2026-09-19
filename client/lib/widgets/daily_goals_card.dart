@@ -134,6 +134,11 @@ class _DailyGoalsCardState extends State<DailyGoalsCard> {
       return const SizedBox.shrink();
     }
 
+    final claimableCount = goals.whereType<Map>().where((raw) {
+      final g = Map<String, dynamic>.from(raw);
+      return g['claimable'] == true && g['claimed'] != true;
+    }).length;
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
@@ -187,7 +192,35 @@ class _DailyGoalsCardState extends State<DailyGoalsCard> {
               ],
             ],
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 6),
+          Theme(
+            data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+            child: ExpansionTile(
+              initiallyExpanded: false,
+              tilePadding: EdgeInsets.zero,
+              childrenPadding: EdgeInsets.zero,
+              collapsedIconColor: Colors.white70,
+              iconColor: Colors.lightGreenAccent,
+              title: Text(
+                claimableCount > 0
+                    ? l10n.readyToClaim(claimableCount.toString())
+                    : l10n.completedOutOfTotal(
+                        goals
+                            .whereType<Map>()
+                            .where((raw) =>
+                                Map<String, dynamic>.from(raw)['claimed'] ==
+                                true)
+                            .length
+                            .toString(),
+                        goals.length.toString(),
+                      ),
+                style: const TextStyle(
+                  color: Colors.white70,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              children: [
           ...goals.whereType<Map>().map((raw) {
             final g = Map<String, dynamic>.from(raw);
             final key = g['key']?.toString() ?? '';
@@ -306,6 +339,9 @@ class _DailyGoalsCardState extends State<DailyGoalsCard> {
               ),
             );
           }),
+              ],
+            ),
+          ),
         ],
       ),
     );
