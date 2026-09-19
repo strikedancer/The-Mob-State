@@ -673,6 +673,7 @@ model GlobalChatMessage {
   source           String    @db.VarChar(16)
   message          String    @db.Text
   stickerId        String?   @db.VarChar(40)
+  imageUrl         String?   @db.VarChar(160)
   filtered         Boolean   @default(false)
   deletedAt        DateTime?
   createdAt        DateTime  @default(now())

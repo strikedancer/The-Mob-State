@@ -8,6 +8,7 @@ class GlobalChatMessage {
   final String message;
   final String? stickerId;
   final String? stickerEmoji;
+  final String? imageUrl;
   final String createdAt;
   final String? staffRole;
   final bool silent;
@@ -20,6 +21,7 @@ class GlobalChatMessage {
     required this.message,
     required this.stickerId,
     required this.stickerEmoji,
+    this.imageUrl,
     required this.createdAt,
     this.staffRole,
     this.silent = false,
@@ -27,6 +29,7 @@ class GlobalChatMessage {
 
   factory GlobalChatMessage.fromJson(Map<String, dynamic> json) {
     final source = json['source'] as String? ?? 'game';
+    final imageUrl = (json['imageUrl'] as String?)?.trim();
     return GlobalChatMessage(
       id: (json['id'] as num).toInt(),
       playerId: json['playerId'] == null ? null : (json['playerId'] as num).toInt(),
@@ -35,9 +38,10 @@ class GlobalChatMessage {
       message: json['message'] as String? ?? '',
       stickerId: json['stickerId'] as String?,
       stickerEmoji: json['stickerEmoji'] as String?,
+      imageUrl: imageUrl == null || imageUrl.isEmpty ? null : imageUrl,
       createdAt: json['createdAt'] as String? ?? '',
       staffRole: json['staffRole'] as String?,
-      silent: json['silent'] == true || source == 'system',
+      silent: json['silent'] == true,
     );
   }
 

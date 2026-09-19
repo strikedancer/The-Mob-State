@@ -951,7 +951,7 @@ export async function submitExpungePetition(playerId: number): Promise<ExpungePe
 
 export async function expungeCriminalRecord(
   playerId: number,
-  source: 'crime' | 'petition' = 'crime'
+  source: 'crime' | 'petition' | 'amnesty' = 'crime'
 ): Promise<number> {
   const { visibleAttempts } = await getVisibleConvictionAttempts(playerId);
   const clearedCount = visibleAttempts.length;
@@ -971,4 +971,44 @@ export async function expungeCriminalRecord(
   );
 
   return clearedCount;
+}
+
+export async function expungeAllCriminalRecordsAmnesty(): Promise<{
+  playersCleared: number;
+  recordsCleared: number;
+}> {
+  const rows = await prisma.$queryRaw<Array<{ playerId: number }>>`
+    SELECT DISTINCT playerId
+    FROM crime_attempts
+    WHERE jailTime > 0
+  `;
+
+  const events: Array<{ eventKey: string; params: string; playerId: number }> = [];
+  let recordsCleared = 0;
+
+  for (const row of rows) {
+    const playerId = Number(row.playerId);
+    if (!Number.isFinite(playerId) || playerId <= 0) continue;
+    const { visibleAttempts } = await getVisibleConvictionAttempts(playerId);
+    if (visibleAttempts.length <= 0) continue;
+    events.push({
+      eventKey: 'trial.record_expunged',
+      params: JSON.stringify({
+        playerId,
+        clearedCount: visibleAttempts.length,
+        source: 'amnesty',
+      }),
+      playerId,
+    });
+    recordsCleared += visibleAttempts.length;
+  }
+
+  if (events.length > 0) {
+    await prisma.worldEvent.createMany({ data: events });
+  }
+
+  return {
+    playersCleared: events.length,
+    recordsCleared,
+  };
 }

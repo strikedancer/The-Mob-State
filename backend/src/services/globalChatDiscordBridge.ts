@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { getGlobalChatSticker } from '../data/globalChatStickers';
-import type { GlobalChatPublicMessage } from './globalChatService';
+import { publicChatImageUrl, type GlobalChatPublicMessage } from './globalChatService';
 import { parseDiscordStaffCommand, staffDiscordUsername } from '../utils/globalChatDiscordStaff';
 import { createAuditLog } from '../middleware/auditLog';
 
@@ -150,7 +150,8 @@ class GlobalChatDiscordBridge {
           .filter(Boolean)
           .join(' ')
           .slice(0, 1800);
-    if (!content.trim()) return null;
+    const imageUrl = publicChatImageUrl(message.imageUrl);
+    if (!content.trim() && !imageUrl) return null;
     try {
       const response = await axios.post<{ id?: string }>(
         `${url}?wait=true`,
@@ -158,7 +159,10 @@ class GlobalChatDiscordBridge {
           username: safeWebhookUsername(
             staffDiscordUsername(message.displayName, message.staffRole),
           ),
-          content,
+          ...(content.trim() ? { content } : {}),
+          ...(imageUrl
+            ? { embeds: [{ image: { url: imageUrl }, color: 0xc9a227 }] }
+            : {}),
           allowed_mentions: { parse: [] },
           ...(message.silent ? { flags: 4096 } : {}),
         },

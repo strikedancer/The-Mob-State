@@ -123,6 +123,9 @@ cp -f client/assets/images/premium_tiles/*.png runtime/client-images/premium_til
 # Midnight Races hero (/images/races/*)
 mkdir -p runtime/client-images/races || true
 cp -f client/assets/images/races/*.png runtime/client-images/races/ 2>/dev/null || true
+# World-chat promo stills (/images/promo/*)
+mkdir -p runtime/client-images/promo || true
+cp -f client/assets/images/promo/*.png runtime/client-images/promo/ 2>/dev/null || true
 # 8G host + Plesk + MariaDB. Uncapped `flutter build web` has frozen this VPS
 # (MariaDB crash recovery, SSH/HTTPS timeout). Keep a 4G swapfile and cap builds.
 if [ ! -f /swapfile ]; then

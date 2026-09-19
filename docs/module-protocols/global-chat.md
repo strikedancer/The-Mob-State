@@ -1,7 +1,7 @@
 # World chat (global lobby)
 
 ## Scope
-One public in-game lobby for every logged-in player, with a curated sticker pack and a server-side swear filter for the player UI languages (nl, en, de, fr, es, it, pl, pt). Optional Discord bridge mirrors the same lobby to a dedicated Discord channel so people can talk without opening the game. Direct messages and crew chat stay separate. No credit paywall. No image uploads.
+One public in-game lobby for every logged-in player, with a curated sticker pack and a server-side swear filter for the player UI languages (nl, en, de, fr, es, it, pl, pt). Optional Discord bridge mirrors the same lobby to a dedicated Discord channel so people can talk without opening the game. Direct messages and crew chat stay separate. No credit paywall. Players cannot upload images. Staff/system announcements may attach one allowlisted promo still (`promo/*.png` via `/images/promo/`).
 
 ## Primary Frontend Entry
 - `client/lib/screens/world_chat_screen.dart`
@@ -15,7 +15,7 @@ One public in-game lobby for every logged-in player, with a curated sticker pack
 - `DELETE /global-chat/messages/:id` (own message, ~10 minutes)
 - `POST /global-chat/messages/:id/report`
 - `GET /global-chat/stickers`
-- Admin: `GET /admin/global-chat/overview`, `PUT /admin/global-chat/settings`, `DELETE /admin/global-chat/messages/:id`, mute routes
+- Admin: `GET /admin/global-chat/overview`, `PUT /admin/global-chat/settings`, `DELETE /admin/global-chat/messages/:id`, mute routes, `POST /admin/trial/court-record-amnesty` (super-admin wipe + promo)
 - Player staff (Mod/Ops): `DELETE /global-chat/messages/:id/staff`, `POST /global-chat/mutes`, `DELETE /global-chat/mutes/:playerId`, `GET /global-chat/staff/overview`
 - Services: `globalChatService.ts`, `globalChatDiscordBridge.ts`, `profanityFilter.ts`
 - Startup: `ensureGlobalChatSchema.ts`
@@ -25,6 +25,7 @@ One public in-game lobby for every logged-in player, with a curated sticker pack
 - Filter on the server, never only in the client.
 - Live updates use SSE `global_chat.message` / `global_chat.message_deleted` via `eventBroadcaster.broadcast`. `global_chat.message` also sends `serverNow` so clients can correct device-clock skew on relative times. Do not write world-chat lines into the personal activity feed. No push per public message.
 - System lines (`source: system`, sender `Gevangenis`) announce when a **real player** is jailed, bought out, or jailbroken. Jail lines include sentence length (`voor 45 minuten` / `voor 1 uur en 30 minuten`). One line per arrest: `announcePlayerJailed` dedupes the same player for 60s so police clock + friend/crew push cannot double-post. Names are in the body. NPCs are skipped. Own bail / self-escape stay silent. Public payloads mark these as `silent: true`. They still appear in the in-game lobby and still mirror to Discord `#wereldchat`, but Discord copies use webhook `flags: 4096` (no notification). Player chat still notifies. They never go to `#updates`.
+- Staff/system promo lines may include `imageUrl` (`promo/<name>.png` only). Those lines render the still in the lobby and as a Discord embed. Promo stills are **not** silent, so Discord notifies. Player uploads stay blocked. System body max is 400 characters; player lines stay at 200.
 - Hide the live-event rail on World chat (same as Messages / Crew) so it cannot cover send.
 - World chat stays open before rank 5.
 - Relative timestamps (`Nu` / `5m`) use UTC instants plus `serverNow` from `GET/POST /global-chat/messages` and SSE `global_chat.message`. Do not diff `DateTime.parse(...).toLocal()` against the device clock; a skewed phone clock shows “51m” on a just-sent line.
@@ -57,7 +58,7 @@ Player OAuth stays `identify` + `email` only. The chat bot is a separate token.
 - Player Profile (tap a linked in-game name)
 
 ## Must Preserve
-- Rate limit (~1 / 3s, 10 / min). Max 200 characters.
+- Rate limit (~1 / 3s, 10 / min). Player lines max 200 characters. System promo lines max 400. Promo images are allowlisted `promo/*.png` only.
 - Stickers are a fixed catalog (`globalChatStickers.ts` / `global_chat_stickers.dart`), same ids.
 - Banned accounts cannot send. Linked Discord of a banned or muted player is dropped inbound.
 - Discord-sourced lines use the linked in-game username when `discordId` matches a player; otherwise the Discord username. Game-sourced lines always use the in-game username. Players who did not sign in with Discord can link later from Settings. Guests without a linked account still appear with a Discord tag.
@@ -72,7 +73,8 @@ Player OAuth stays `identify` + `email` only. The chat bot is a separate token.
 7. Without Discord env, in-game chat still works.
 8. With webhook only: game posts appear in Discord; Discord replies do not enter the game until bot+channel are set.
 9. Jail a real player by police, FBI or border police (or buy out / jailbreak another): **one** `Gevangenis` system line appears live, with sentence length (`voor 45 minuten` / `voor 1 uur en 30 minuten`). A second identical arrest line must not follow. An NPC arrest does not.
-10. Linked Mod/Ops in `#wereldchat`: `!hulp` lists commands; reply `!wis` deletes; `!mute Name 15` mutes world chat. A player without staffRole cannot run those commands.
+10. A staff promo with `imageUrl` `promo/court_record_wipe.png` shows the still in the lobby and as a Discord embed, and is not silent.
+11. Linked Mod/Ops in `#wereldchat`: `!hulp` lists commands; reply `!wis` deletes; `!mute Name 15` mutes world chat. A player without staffRole cannot run those commands.
 
 ## i18n and Messaging
 ARB prefix `worldChat*` plus Help `helpTopicWorldChat*` and `helpTopicModOps*`.

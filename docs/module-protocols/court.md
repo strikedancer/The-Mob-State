@@ -13,6 +13,7 @@ Judicial recovery, sentence handling and legal consequence flows.
 - POST `/trial/appeal`
 - POST `/trial/bribe`
 - POST `/trial/expunge-petition`
+- Admin `POST /admin/trial/court-record-amnesty` `{ confirm: "WIPE_ALL_RECORDS" }`
 
 ## Current System Contract
 - Court screen must load sentence and criminal record independently and remain usable when one part is empty.
@@ -25,6 +26,7 @@ Judicial recovery, sentence handling and legal consequence flows.
 - Record entries must preserve sentence changes and trial outcomes such as appeal granted, appeal denied and failed bribe attempts.
 - A successful judge bribe must clear only the linked active conviction from the criminal record, not wipe unrelated convictions.
 - If the player uses an external crime flow to wipe their full record, the court record must hide only convictions older than that expungement point and show new convictions normally afterward.
+- An official **amnesty** writes the same `trial.record_expunged` marker per player (`source: amnesty`) without SSE spam. After that wipe, new convictions show again. Super-admin trigger: `POST /admin/trial/court-record-amnesty` with `{ confirm: "WIPE_ALL_RECORDS" }`, or `node dist/scripts/runCourtRecordAmnesty.js`. That also posts the world-chat promo still.
 - Players can also file a paid **expunge petition** on Court (`GET /trial/expunge-quote`, `POST /trial/expunge-petition`) while free or jailed, as long as a visible record remains. Cost is `100_000 + max(0, n-1)*1_000`. Success chance uses `computeExpungePetitionOdds` (record length, hours since last arrest, reputation, Don judge/commissioner/alderman in the current country) and is clamped 8–70%. Failure deducts cash only. Success writes `trial.record_expunged` and does **not** release the player. Cooldown is 12 hours (`expunge_petition`). The late-game `criminal_record_wipe` crime stays.
 - **Law education bonus**: the player's `law` track level (0–5) grants +5% appeal success per level (max +25% at level 5). Base appeal chance is therefore 35%–60% before prior-convictions/wanted-level/FBI-heat adjustments. Hard cap is 10%–85%.
   - Optional Don judge patronage in the current country adds up to `DON_JUDGE_APPEAL_BONUS_PERCENT` (default +8%) before the same 10–85% clamp. It does **not** replace per-case `POST /trial/bribe`. See [don.md](don.md).

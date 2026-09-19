@@ -12,6 +12,7 @@ import '../providers/event_provider.dart';
 import '../services/auth_service.dart';
 import '../utils/chat_relative_time.dart';
 import '../utils/top_right_notification.dart';
+import '../utils/web_asset_helper.dart';
 import '../widgets/empire_page_hero.dart';
 import '../widgets/game_page_info.dart';
 import '../widgets/message_bubble.dart';
@@ -754,6 +755,36 @@ class _SystemChatLine extends StatelessWidget {
               letterSpacing: 0.6,
             ),
           ),
+          if (message.imageUrl != null && message.imageUrl!.isNotEmpty) ...[
+            const SizedBox(height: 10),
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 360),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: const Color(0x66FFB347)),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color(0x66000000),
+                      blurRadius: 12,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(11),
+                  child: AspectRatio(
+                    aspectRatio: 16 / 9,
+                    child: WebAssetHelper.imageHttpFirst(
+                      'images/${message.imageUrl}',
+                      fit: BoxFit.cover,
+                      cacheBust: '20260919',
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
           const SizedBox(height: 4),
           Text(
             message.message,

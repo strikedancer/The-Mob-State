@@ -7,7 +7,9 @@ import { isPlayerStaff, normalizeStaffRole, asPlayerId, type PlayerStaffRole } f
 import { readPlayerStaffRole } from '../middleware/requirePlayerStaff';
 
 const MAX_BODY = 200;
+const MAX_SYSTEM_BODY = 400;
 const HISTORY_LIMIT = 100;
+const PROMO_IMAGE_RE = /^promo\/[a-z0-9][a-z0-9._/-]{0,80}\.png$/i;
 const MIN_INTERVAL_MS = 3000;
 const MAX_PER_MINUTE = 10;
 const PLAYER_DELETE_WINDOW_MS = 10 * 60 * 1000;
@@ -25,10 +27,29 @@ export type GlobalChatPublicMessage = {
   message: string;
   stickerId: string | null;
   stickerEmoji: string | null;
+  imageUrl: string | null;
   createdAt: string;
   staffRole: 'MOD' | 'OPS' | null;
   silent: boolean;
 };
+
+export function sanitizeSystemImageUrl(raw: string | null | undefined): string | null {
+  const value = String(raw ?? '')
+    .trim()
+    .replace(/\\/g, '/')
+    .replace(/^\/+/, '');
+  const stripped = value.replace(/^(images\/|assets\/images\/)/, '');
+  if (!PROMO_IMAGE_RE.test(stripped)) return null;
+  return stripped;
+}
+
+export function publicChatImageUrl(imageUrl: string | null | undefined): string | null {
+  const relative = sanitizeSystemImageUrl(imageUrl);
+  if (!relative) return null;
+  const base = (process.env.APP_BASE_URL || 'https://themobstate.com').replace(/\/+$/, '');
+  const origin = /localhost|127\.0\.0\.1/.test(base) ? 'https://themobstate.com' : base;
+  return `${origin}/images/${relative}`;
+}
 
 const sendTimes = new Map<number, number[]>();
 
@@ -87,12 +108,14 @@ function toPublic(
     source: string;
     message: string;
     stickerId: string | null;
+    imageUrl?: string | null;
     createdAt: Date;
   },
   staffRole?: unknown,
 ): GlobalChatPublicMessage {
   const sticker = getGlobalChatSticker(row.stickerId);
   const source = row.source === 'discord' ? 'discord' : row.source === 'system' ? 'system' : 'game';
+  const imageUrl = sanitizeSystemImageUrl(row.imageUrl);
   return {
     id: row.id,
     playerId: row.playerId,
@@ -101,9 +124,10 @@ function toPublic(
     message: row.message,
     stickerId: row.stickerId,
     stickerEmoji: sticker?.emoji ?? null,
+    imageUrl,
     createdAt: row.createdAt.toISOString(),
     staffRole: publicStaffRole(staffRole),
-    silent: source === 'system',
+    silent: source === 'system' && !imageUrl,
   };
 }
 
@@ -155,6 +179,7 @@ async function persistAndFanout(input: {
   source: ChatSource;
   message: string;
   stickerId: string | null;
+  imageUrl?: string | null;
   filtered: boolean;
   mirrorToDiscord: boolean;
 }): Promise<GlobalChatPublicMessage> {
@@ -167,6 +192,7 @@ async function persistAndFanout(input: {
       source: input.source,
       message: input.message,
       stickerId: input.stickerId,
+      imageUrl: input.source === 'system' ? sanitizeSystemImageUrl(input.imageUrl) : null,
       filtered: input.filtered,
     },
   });
@@ -243,13 +269,24 @@ export const globalChatService = {
   async sendSystemAnnouncement(
     displayName: string,
     message: string,
+    options?: { imageUrl?: string | null; onceImage?: boolean },
   ): Promise<GlobalChatPublicMessage | null> {
     if (!(await isGlobalChatEnabled())) {
       return null;
     }
-    const body = message.trim().slice(0, MAX_BODY);
+    const body = message.trim().slice(0, MAX_SYSTEM_BODY);
+    const imageUrl = sanitizeSystemImageUrl(options?.imageUrl);
     if (!body) {
       return null;
+    }
+    if (options?.onceImage && imageUrl) {
+      const existing = await prisma.globalChatMessage.findFirst({
+        where: { source: 'system', imageUrl, deletedAt: null },
+        orderBy: { createdAt: 'desc' },
+      });
+      if (existing) {
+        return toPublic(existing);
+      }
     }
     return persistAndFanout({
       playerId: null,
@@ -257,6 +294,7 @@ export const globalChatService = {
       source: 'system',
       message: body,
       stickerId: null,
+      imageUrl,
       filtered: false,
       mirrorToDiscord: true,
     });

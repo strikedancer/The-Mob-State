@@ -27,6 +27,12 @@ import { supportTicketService } from '../services/supportTicketService';
 import { systemLogService } from '../services/systemLogService';
 import * as crewWarService from '../services/crewWarService';
 import { globalChatService } from '../services/globalChatService';
+import { expungeAllCriminalRecordsAmnesty } from '../services/judgeService';
+import {
+  COURT_RECORD_AMNESTY_DISPLAY_NAME,
+  COURT_RECORD_AMNESTY_IMAGE,
+  COURT_RECORD_AMNESTY_MESSAGE,
+} from '../data/courtRecordAmnestyPromo';
 import { economyBalanceService } from '../services/economyBalanceService';
 import {
   ECON_RUNTIME_SETTING_DEFAULTS,
@@ -5737,5 +5743,32 @@ router.delete(
     return res.status(500).json({ error: 'Failed to unmute player' });
   }
 });
+
+router.post(
+  '/trial/court-record-amnesty',
+  auditLog({ action: 'COURT_RECORD_AMNESTY', targetType: 'WorldEvent' }),
+  async (req, res) => {
+    try {
+      if (req.body?.confirm !== 'WIPE_ALL_RECORDS') {
+        return res.status(400).json({ error: 'Confirm WIPE_ALL_RECORDS to run the amnesty' });
+      }
+      const wipe = await expungeAllCriminalRecordsAmnesty();
+      const posted = await globalChatService.sendSystemAnnouncement(
+        COURT_RECORD_AMNESTY_DISPLAY_NAME,
+        COURT_RECORD_AMNESTY_MESSAGE,
+        { imageUrl: COURT_RECORD_AMNESTY_IMAGE, onceImage: true },
+      );
+      return res.json({
+        ok: true,
+        playersCleared: wipe.playersCleared,
+        recordsCleared: wipe.recordsCleared,
+        announcementId: posted?.id ?? null,
+      });
+    } catch (error) {
+      console.error('Admin court-record amnesty error:', error);
+      return res.status(500).json({ error: 'Failed to wipe criminal records' });
+    }
+  },
+);
 
 export default router;

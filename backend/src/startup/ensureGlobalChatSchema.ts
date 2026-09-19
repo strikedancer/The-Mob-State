@@ -10,6 +10,17 @@ async function tableExists(tableName: string): Promise<boolean> {
   return Number(rows?.[0]?.count ?? 0) > 0;
 }
 
+async function columnExists(tableName: string, columnName: string): Promise<boolean> {
+  const rows = await prisma.$queryRaw<Array<{ count: number }>>`
+    SELECT COUNT(*) AS count
+    FROM information_schema.COLUMNS
+    WHERE TABLE_SCHEMA = DATABASE()
+      AND TABLE_NAME = ${tableName}
+      AND COLUMN_NAME = ${columnName}
+  `;
+  return Number(rows?.[0]?.count ?? 0) > 0;
+}
+
 export async function ensureGlobalChatSchema(): Promise<void> {
   if (!(await tableExists('global_chat_messages'))) {
     await prisma.$executeRawUnsafe(`
@@ -22,6 +33,7 @@ export async function ensureGlobalChatSchema(): Promise<void> {
         source VARCHAR(16) NOT NULL,
         message TEXT NOT NULL,
         stickerId VARCHAR(40) NULL,
+        imageUrl VARCHAR(160) NULL,
         filtered TINYINT(1) NOT NULL DEFAULT 0,
         deletedAt DATETIME NULL,
         createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -32,6 +44,11 @@ export async function ensureGlobalChatSchema(): Promise<void> {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `);
     console.log('[StartupSchema] Created global_chat_messages');
+  } else if (!(await columnExists('global_chat_messages', 'imageUrl'))) {
+    await prisma.$executeRawUnsafe(
+      'ALTER TABLE global_chat_messages ADD COLUMN imageUrl VARCHAR(160) NULL AFTER stickerId',
+    );
+    console.log('[StartupSchema] Added global_chat_messages.imageUrl');
   }
 
   if (!(await tableExists('global_chat_mutes'))) {
