@@ -461,7 +461,7 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 - **Crewbank / geldopslag:** de kluis bepaalt hoeveel cash de crewbank aankan. Level 1 houdt €1.000.000. Upgrades van de geldopslag worden uit die bank betaald en kosten daarom altijd minder dan de huidige kluis (naar level 2: €450.000), zodat je niet vastloopt omdat de upgrade duurder is dan wat erin past. Op Overzicht storten en opnemen leden met **Storten** en **Opnemen** (geen borg of terugtrekken). Alleen de leader kan opnemen.
 - **Welkomstbericht:** inbox legt startcash, dagdoelen, The Rookies en “morgen weer” uit. VIP koopt geen winst. Crew krijgt een ping als je vastzit.
 - **Weekdoel**: één ISO-week doel per crew (meestal 1 crew-missie). Claim = crew-bank cash + kleine persoonlijke XP. Niet geclaimd = gemist.
-- **Overzicht (mobiel):** het HQ is een foto van de huidige stijl/level (tikken opent HQ & Upgrades). Lid-telling is `1 lid` en pas bij meer `leden`.
+- **Overzicht (mobiel):** het HQ is een foto van de huidige stijl/level (tikken opent HQ & Upgrades). Lid-telling is `1 lid` en pas bij meer `leden`. Het crewbank-saldo naast **Bemanningsbank** gebruikt dezelfde euro-formatter als de rest van het spel (`€8.479.900`), geen kapot teken voor het bedrag.
 
 #### Crew Benefits
 - **Heists**: Toegang tot grote heists

@@ -721,7 +721,7 @@ class _CrewScreenState extends State<CrewScreen>
     final message = l10n.crewUiHqUpgradeSideBuildingsMessage(
       requiredSideLevel.toString(),
       missingSideBuildings.isEmpty
-          ? 'â€”'
+          ? '—'
           : '- ${missingSideBuildings.join('\n- ')}',
     );
 
@@ -1788,7 +1788,7 @@ class _CrewScreenState extends State<CrewScreen>
 
   Future<void> _onHeistResolved(Map<String, dynamic> result) async {
     final success = result['success'] == true;
-    final heistName = result['heistName']?.toString() ?? 'â€”';
+    final heistName = result['heistName']?.toString() ?? '—';
     final jailMinutes = (result['jailTime'] as num?)?.toInt() ?? 0;
     final jailed = result['jailed'] == true || jailMinutes > 0;
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
@@ -2277,7 +2277,7 @@ class _CrewScreenState extends State<CrewScreen>
               return DropdownMenuItem<int>(
                 value: playerId,
                 child: Text(
-                  '$username â€¢ ${_formatCrewWarRole(loc, role)} (#$playerId) â€¢ ${loc.crewUiTr41}: $kills â€¢ ${loc.crewUiTr42}: $deaths',
+                  '$username • ${_formatCrewWarRole(loc, role)} (#$playerId) • ${loc.crewUiTr41}: $kills • ${loc.crewUiTr42}: $deaths',
                 ),
               );
             }).toList(),
@@ -2381,7 +2381,7 @@ class _CrewScreenState extends State<CrewScreen>
       suffixParts.add(ownerCrewName);
     }
     if (suffixParts.isEmpty) return name;
-    return '$name (${suffixParts.join(' â€¢ ')})';
+    return '$name (${suffixParts.join(' • ')})';
   }
 
   String _formatWarTerritoryTagLabel(AppLocalizations loc, String tag) {
@@ -2419,7 +2419,7 @@ class _CrewScreenState extends State<CrewScreen>
     if (strategicTags.isNotEmpty) {
       bonusParts.add(strategicTags.join('/'));
     }
-    return bonusParts.join(' â€¢ ');
+    return bonusParts.join(' • ');
   }
 
   Future<String?> _promptWarTerritory(
@@ -2440,7 +2440,7 @@ class _CrewScreenState extends State<CrewScreen>
                   (territory) => DropdownMenuItem<String>(
                     value: (territory['regionKey'] ?? '').toString(),
                     child: Text(
-                      '${_formatWarTerritoryOptionLabel(loc, territory)} â€¢ ${_formatWarTerritoryBonusSummary(loc, territory)}',
+                      '${_formatWarTerritoryOptionLabel(loc, territory)} • ${_formatWarTerritoryBonusSummary(loc, territory)}',
                     ),
                   ),
                 )
@@ -2797,8 +2797,8 @@ class _CrewScreenState extends State<CrewScreen>
               SnackBar(
                 content: Text(
                   Localizations.localeOf(context).languageCode == 'nl'
-                      ? 'Crew succesvol aangemaakt! (â‚¬50,000 betaald)'
-                      : 'Crew created successfully! (â‚¬50,000 paid)',
+                      ? 'Crew succesvol aangemaakt! (€50,000 betaald)'
+                      : 'Crew created successfully! (€50,000 paid)',
                 ),
                 backgroundColor: Colors.green,
               ),
@@ -2927,8 +2927,8 @@ class _CrewScreenState extends State<CrewScreen>
             const SizedBox(height: 4),
             Text(
               isNl
-                  ? 'Echte betalingen Â· maandelijks opzegbaar'
-                  : 'Real payments Â· cancel anytime',
+                  ? 'Echte betalingen · maandelijks opzegbaar'
+                  : 'Real payments · cancel anytime',
               style: TextStyle(fontSize: 11, color: Colors.grey[500]),
             ),
             const Divider(height: 20),
@@ -2976,7 +2976,7 @@ class _CrewScreenState extends State<CrewScreen>
                   children: [
                     Text(
                       _crewVipFund?['monthlyPriceEur'] != null
-                          ? 'â‚¬${_crewVipFund!['monthlyPriceEur']}/${isNl ? 'maand' : 'mo'}'
+                          ? '€${_crewVipFund!['monthlyPriceEur']}/${isNl ? 'maand' : 'mo'}'
                           : loc.crewUiTr73,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -3100,7 +3100,7 @@ class _CrewScreenState extends State<CrewScreen>
                   final type = (reward['type'] ?? '').toString();
                   if (type == 'money') {
                     final amount = (reward['amount'] ?? 0);
-                    rewardLabel = '+â‚¬$amount';
+                    rewardLabel = '+€$amount';
                   } else if (type == 'ammo') {
                     final ammoType = (reward['ammoType'] ?? '').toString();
                     final quantity = (reward['quantity'] ?? 0);
@@ -3137,7 +3137,7 @@ class _CrewScreenState extends State<CrewScreen>
                         ),
                       Flexible(
                         child: Text(
-                          'â‚¬$price Â· $title${rewardLabel.isNotEmpty ? ' Â· $rewardLabel' : ''}',
+                          '€$price · $title${rewardLabel.isNotEmpty ? ' · $rewardLabel' : ''}',
                         ),
                       ),
                     ],
@@ -3185,8 +3185,8 @@ class _CrewScreenState extends State<CrewScreen>
     final remainingEur = (remainingCents / 100).toStringAsFixed(2);
     final fullEur = (priceCents / 100).toStringAsFixed(2);
     final fundedLabel = loc.crewUiVipFundProgress(
-      'â‚¬${(fundedCents / 100).toStringAsFixed(2)}',
-      'â‚¬$fullEur',
+      '€${(fundedCents / 100).toStringAsFixed(2)}',
+      '€$fullEur',
     );
 
     return [
@@ -3225,8 +3225,8 @@ class _CrewScreenState extends State<CrewScreen>
             ),
             child: Text(
               isRest
-                  ? loc.crewUiVipDonateRest('â‚¬$amount')
-                  : loc.crewUiVipDonateAmount('â‚¬$amount'),
+                  ? loc.crewUiVipDonateRest('€$amount')
+                  : loc.crewUiVipDonateAmount('€$amount'),
               style: const TextStyle(fontSize: 11),
             ),
           );
@@ -3239,7 +3239,7 @@ class _CrewScreenState extends State<CrewScreen>
           final name = (row['username'] ?? '').toString();
           final amount = (row['amountEur'] ?? '').toString();
           return Text(
-            '$name Â· â‚¬$amount',
+            '$name · €$amount',
             style: TextStyle(fontSize: 11, color: Colors.grey[700]),
           );
         }),
@@ -3687,7 +3687,7 @@ class _CrewScreenState extends State<CrewScreen>
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 labelText: l10n.crewUiTr86,
-                prefixText: 'â‚¬',
+                prefixText: '€',
               ),
             ),
           ],
@@ -4196,7 +4196,7 @@ class _CrewScreenState extends State<CrewScreen>
                     (vehicle) => DropdownMenuItem<int>(
                       value: vehicle['id'] as int,
                       child: Text(
-                        '${vehicle['definition']?['name'] ?? vehicle['vehicleId']} â€¢ ${((vehicle['vehicleType'] ?? '').toString() == 'motorcycle') ? l10n.crewUiTr100 : ((vehicle['vehicleType'] ?? '').toString() == 'boat' ? l10n.crewUiTr101 : l10n.crewUiTr102)} (#${vehicle['id']})',
+                        '${vehicle['definition']?['name'] ?? vehicle['vehicleId']} • ${((vehicle['vehicleType'] ?? '').toString() == 'motorcycle') ? l10n.crewUiTr100 : ((vehicle['vehicleType'] ?? '').toString() == 'boat' ? l10n.crewUiTr101 : l10n.crewUiTr102)} (#${vehicle['id']})',
                       ),
                     ),
                   )
@@ -5080,7 +5080,7 @@ class _CrewScreenState extends State<CrewScreen>
     final level = _myCrew?.hqLevel;
     final path = _getCrewHqImagePath(style, level);
     final caption = (style != null && level != null)
-        ? '${_localizedHqStyleLabel(l10n, style)} Â· ${_t(l10n, 'label.level')} $level'
+        ? '${_localizedHqStyleLabel(l10n, style)} · ${_t(l10n, 'label.level')} $level'
         : _t(l10n, 'status.notOwned');
 
     return Material(
@@ -5155,7 +5155,7 @@ class _CrewScreenState extends State<CrewScreen>
   Widget _buildPageInfoChild(BuildContext context) {
     if (_showHeistResult) {
       return CrimeResultOverlay(
-        crimeName: _heistResultName ?? 'â€”',
+        crimeName: _heistResultName ?? '—',
         reward: _heistResultPayout,
         xpGained: _heistResultXpGained,
         xpLost: _heistResultXpLost,
@@ -5316,9 +5316,9 @@ class _CrewScreenState extends State<CrewScreen>
                       ),
                       subtitle: Text(
                         '${_crewWeeklyGoal!['progress'] ?? 0}/${_crewWeeklyGoal!['target'] ?? 1}'
-                        ' Â· ${locale == 'nl' ? 'Beloning' : 'Reward'}: +${_money((_crewWeeklyGoal!['rewardCrewCash'] as num?)?.toInt() ?? 25000)} '
+                        ' · ${locale == 'nl' ? 'Beloning' : 'Reward'}: +${_money((_crewWeeklyGoal!['rewardCrewCash'] as num?)?.toInt() ?? 25000)} '
                         '${locale == 'nl' ? 'crewbank' : 'crew bank'} +${(_crewWeeklyGoal!['rewardPersonalXp'] as num?)?.toInt() ?? 40} XP'
-                        '${_crewWeeklyGoal!['claimed'] == true ? (locale == 'nl' ? ' Â· geclaimd' : ' Â· claimed') : ''}',
+                        '${_crewWeeklyGoal!['claimed'] == true ? (locale == 'nl' ? ' · geclaimd' : ' · claimed') : ''}',
                       ),
                       trailing: _crewWeeklyGoal!['claimable'] == true
                           ? TextButton(
@@ -5378,7 +5378,7 @@ class _CrewScreenState extends State<CrewScreen>
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              'â‚¬${_myCrew!.bankBalance.toLocaleString()}',
+                              _money(_myCrew!.bankBalance),
                               style: const TextStyle(
                                 fontSize: 18,
                                 color: Colors.green,
@@ -5771,7 +5771,7 @@ class _CrewScreenState extends State<CrewScreen>
   }
 
   String _formatDealOffer(AppLocalizations loc, Map<String, dynamic>? offer) {
-    if (offer == null) return 'â€”';
+    if (offer == null) return '—';
     final parts = <String>[];
     final cash = (offer['cash'] as num?)?.toInt() ?? 0;
     if (cash > 0) parts.add(_money(cash));
@@ -5791,7 +5791,7 @@ class _CrewScreenState extends State<CrewScreen>
     if (ammo > 0) parts.add('$ammo ${loc.crewUiWarLootAmmo}');
     if (drugs > 0) parts.add('$drugs ${loc.crewUiWarLootDrug}');
     if (trade > 0) parts.add('$trade ${loc.crewUiWarLootTrade}');
-    return parts.isEmpty ? 'â€”' : parts.join(' Â· ');
+    return parts.isEmpty ? '—' : parts.join(' · ');
   }
 
   Map<String, dynamic> _collectDealOffer({
@@ -6308,7 +6308,7 @@ class _CrewScreenState extends State<CrewScreen>
         ? loc.crewUiVehicleRepairing(
             formatDuration(Duration(seconds: repairSeconds)),
           )
-        : '${loc.condition} $condition% Â· ${loc.vehicleFuel} $fuel%';
+        : '${loc.condition} $condition% · ${loc.vehicleFuel} $fuel%';
     return ListTile(
       dense: true,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16),
@@ -6446,7 +6446,7 @@ class _CrewScreenState extends State<CrewScreen>
               final locked = repairing || tuneCooldown > 0 || maxed;
               return ListTile(
                 dense: true,
-                title: Text('$label Â· $level'),
+                title: Text('$label · $level'),
                 subtitle: Text(
                   maxed
                       ? loc.tuneShopMaxLabel
@@ -6456,7 +6456,7 @@ class _CrewScreenState extends State<CrewScreen>
                             )
                           : repairing
                               ? loc.tuneShopLockedVehicleInRepair
-                              : '${_money(moneyCost)} Â· $partsCost ${loc.tuneShopPartsAbbrev}',
+                              : '${_money(moneyCost)} · $partsCost ${loc.tuneShopPartsAbbrev}',
                 ),
                 trailing: TextButton(
                   onPressed: locked || busy
@@ -6486,7 +6486,7 @@ class _CrewScreenState extends State<CrewScreen>
                       const SizedBox(height: 4),
                       Text(_crewVehicleLabel(row, loc)),
                       Text(
-                        '${loc.condition} $condition% Â· ${loc.vehicleFuel} $fuel%',
+                        '${loc.condition} $condition% · ${loc.vehicleFuel} $fuel%',
                       ),
                       if (repairing && repairSeconds > 0)
                         Padding(
@@ -6509,7 +6509,7 @@ class _CrewScreenState extends State<CrewScreen>
                         subtitle: Text(
                           refuelLiters <= 0
                               ? loc.crewUiVehicleFuelFull
-                              : '${_money(refuelCost)} Â· ${refuelLiters.toStringAsFixed(0)} L',
+                              : '${_money(refuelCost)} · ${refuelLiters.toStringAsFixed(0)} L',
                         ),
                         trailing: TextButton(
                           onPressed: busy || repairing || refuelLiters <= 0
@@ -6598,10 +6598,10 @@ class _CrewScreenState extends State<CrewScreen>
         : catalogIdFallbackLabel(vehicleId.isNotEmpty ? vehicleId : rawName);
     final type = (row['vehicleType'] ?? '').toString();
     if (type == 'motorcycle') {
-      return '$pretty Â· ${loc.crewUiTr100}';
+      return '$pretty · ${loc.crewUiTr100}';
     }
     if (type == 'boat') {
-      return '$pretty Â· ${loc.crewUiTr101}';
+      return '$pretty · ${loc.crewUiTr101}';
     }
     return pretty;
   }
@@ -6742,7 +6742,7 @@ class _CrewScreenState extends State<CrewScreen>
               fallback: Icons.gavel,
             ),
             title: Text(localizedWeaponDisplayName(loc, id, id)),
-            subtitle: Text('$qtyÃ— Â· ${loc.condition} $condition%'),
+            subtitle: Text('$qty× · ${loc.condition} $condition%'),
           );
         });
       case 'parts_storage':
@@ -6766,7 +6766,7 @@ class _CrewScreenState extends State<CrewScreen>
                 fallback: Icons.settings,
               ),
               title: Text(label),
-              subtitle: Text('$qtyÃ—'),
+              subtitle: Text('$qty×'),
             );
           },
         );
@@ -6797,7 +6797,7 @@ class _CrewScreenState extends State<CrewScreen>
               fallback: Icons.inventory_2,
             ),
             title: Text(localizedAmmoCaliber(ammoType)),
-            subtitle: Text('$qtyÃ—'),
+            subtitle: Text('$qty×'),
           );
         });
       case 'drug_storage':
@@ -6853,7 +6853,7 @@ class _CrewScreenState extends State<CrewScreen>
                 fallback: Icons.inventory,
               ),
               title: Text(TradeGoodL10n.name(loc, goodType)),
-              subtitle: Text('$qtyÃ—'),
+              subtitle: Text('$qty×'),
             );
           },
         );
@@ -7369,7 +7369,7 @@ class _CrewScreenState extends State<CrewScreen>
                       ),
                       subtitle: Text(
                         locale == 'nl'
-                            ? 'Open crews met deze optie joinen in Ã©Ã©n klik'
+                            ? 'Open crews met deze optie joinen in één klik'
                             : 'Open crews with this option join in one click',
                       ),
                       value: _myCrew!.autoAccept,
@@ -7875,7 +7875,7 @@ class _CrewScreenState extends State<CrewScreen>
                                 size: 18,
                               ),
                               label: Text(
-                                '${_formatWarTerritoryOptionLabel(l10n, territory)} â€¢ $holderLabel â€¢ ${_formatWarTerritoryBonusSummary(l10n, territory)}',
+                                '${_formatWarTerritoryOptionLabel(l10n, territory)} • $holderLabel • ${_formatWarTerritoryBonusSummary(l10n, territory)}',
                               ),
                             );
                           }).toList(),
@@ -7912,7 +7912,7 @@ class _CrewScreenState extends State<CrewScreen>
                             return Chip(
                               avatar: const Icon(Icons.person, size: 18),
                               label: Text(
-                                '$username â€¢ $role â€¢ K:$kills D:$deaths',
+                                '$username • $role • K:$kills D:$deaths',
                               ),
                             );
                           }).toList(),
@@ -8087,7 +8087,7 @@ class _CrewScreenState extends State<CrewScreen>
                                 : '#${standing['crewId']}',
                           ),
                           subtitle: Text(
-                            '${l10n.crewUiTr41}: ${standing['totalKills'] ?? 0} â€¢ ${l10n.crewUiTr42}: ${standing['totalDeaths'] ?? 0} â€¢ ${l10n.crewUiTr131}: ${standing['territoriesHeld'] ?? 0}',
+                            '${l10n.crewUiTr41}: ${standing['totalKills'] ?? 0} • ${l10n.crewUiTr42}: ${standing['totalDeaths'] ?? 0} • ${l10n.crewUiTr131}: ${standing['territoriesHeld'] ?? 0}',
                           ),
                           trailing: Text('${standing['totalPoints'] ?? 0} pt'),
                         ),
@@ -8123,7 +8123,7 @@ class _CrewScreenState extends State<CrewScreen>
                               contentPadding: EdgeInsets.zero,
                               leading: const Icon(Icons.bolt, size: 18),
                               title: Text(
-                                '${_formatWarActionType(l10n, action['actionType'] as String?)} â€¢ +${action['pointsAwarded'] ?? 0} pt',
+                                '${_formatWarActionType(l10n, action['actionType'] as String?)} • +${action['pointsAwarded'] ?? 0} pt',
                               ),
                               subtitle: Text(
                                 '${action['actor'] is Map ? ((action['actor'] as Map)['username'] ?? '#${action['actorId']}') : '#${action['actorId']}'} ${l10n.crewUiTr134} ${action['target'] is Map ? ((action['target'] as Map)['username'] ?? '-') : '-'}',
@@ -8168,7 +8168,7 @@ class _CrewScreenState extends State<CrewScreen>
                               : '#${entry['crewId']}',
                         ),
                         subtitle: Text(
-                          '${l10n.crewUiTr41}: ${entry['totalKills'] ?? 0} â€¢ ${l10n.crewUiTr137}: â‚¬${entry['totalLoot'] ?? 0}',
+                          '${l10n.crewUiTr41}: ${entry['totalKills'] ?? 0} • ${l10n.crewUiTr137}: €${entry['totalLoot'] ?? 0}',
                         ),
                         trailing: Text('${entry['totalPoints'] ?? 0} pt'),
                       ),
@@ -8202,7 +8202,7 @@ class _CrewScreenState extends State<CrewScreen>
                         contentPadding: EdgeInsets.zero,
                         leading: const Icon(Icons.history),
                         title: Text(
-                          '${_formatCrewWarType(l10n, war['warType'] as String?)} â€¢ ${_formatCrewWarStatus(l10n, war['status'] as String?)}',
+                          '${_formatCrewWarType(l10n, war['warType'] as String?)} • ${_formatCrewWarStatus(l10n, war['status'] as String?)}',
                         ),
                         subtitle: Text(
                           '${_crewNameFromHub(war['attackerCrew'], war['attackerCrewId'])} vs ${_crewNameFromHub(war['defenderCrew'], war['defenderCrewId'])}',
@@ -8362,7 +8362,7 @@ class _CrewScreenState extends State<CrewScreen>
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      details.join(' Â· '),
+                      details.join(' · '),
                       style: const TextStyle(
                         color: Colors.white70,
                         fontSize: 12,
@@ -9437,7 +9437,7 @@ class _CrewScreenState extends State<CrewScreen>
                       ? username
                       : '#${playerId ?? 0}';
                   final chipText =
-                      '$chipTitle â€¢ ${_crewRoleLabel(loc, roleKey)} â€¢ ${_t(loc, 'label.contribution')} ${_formatContributionValue(contributionScore)}${payoutMultiplier != null && (payoutMultiplier - 1).abs() > 0.01 ? ' â€¢ ${_t(loc, 'label.multiplier')} x${_formatContributionValue(payoutMultiplier)}' : ''}';
+                      '$chipTitle • ${_crewRoleLabel(loc, roleKey)} • ${_t(loc, 'label.contribution')} ${_formatContributionValue(contributionScore)}${payoutMultiplier != null && (payoutMultiplier - 1).abs() > 0.01 ? ' • ${_t(loc, 'label.multiplier')} x${_formatContributionValue(payoutMultiplier)}' : ''}';
                   return Chip(
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     visualDensity: VisualDensity.compact,
@@ -9525,7 +9525,7 @@ class _CrewScreenState extends State<CrewScreen>
               : '#${playerId ?? 0}';
           return '$displayName (${_crewRoleLabel(loc, roleKey)} ${_formatContributionValue(contributionScore)})';
         })
-        .join(' â€¢ ');
+        .join(' • ');
 
     return Card(
       child: ListTile(
