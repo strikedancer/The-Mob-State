@@ -171,6 +171,14 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   int get _actionCooldownSeconds =>
       (_overview['config']?['actionCooldownSeconds'] as num?)?.toInt() ?? 0;
 
+  int get _projectContributeCooldownSeconds {
+    final project = (_overview['config']?['projectContributeCooldownSeconds']
+            as num?)
+        ?.toInt();
+    if (project != null && project > 0) return project;
+    return _actionCooldownSeconds > 0 ? _actionCooldownSeconds : 900;
+  }
+
   String _countryDisplayName(Map<String, dynamic> country) {
     final lang = Localizations.localeOf(context).languageCode.toLowerCase();
     if (lang == 'nl') {
@@ -318,7 +326,14 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     ]);
 
     final mapDataMap = mapData as Map<String, dynamic>;
-    _stampViewerCooldowns(mapDataMap, DateTime.now());
+    final overviewMap = overview as Map<String, dynamic>;
+    _stampViewerCooldowns(
+      mapDataMap,
+      DateTime.now(),
+      projectContributeCooldownSeconds:
+          (overviewMap['config']?['projectContributeCooldownSeconds'] as num?)
+              ?.toInt(),
+    );
     final mapCountry = mapDataMap['country'] as Map<String, dynamic>?;
     final resolvedCountryCode =
         (mapCountry?['countryCode'] as String?)?.toLowerCase() ??
@@ -360,7 +375,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       _countries = countries;
       _selectedCountryCode = resolvedCountryCode;
       _mapData = mapDataMap;
-      _overview = overview as Map<String, dynamic>;
+      _overview = overviewMap;
       _leaderboard = leaderboard as List<dynamic>;
       _crewTerritory = crewTerritory;
       _isTerritoryEnabled = (_overview['config']?['enabled'] as bool?) ?? false;
@@ -408,10 +423,15 @@ class _TerritoryScreenState extends State<TerritoryScreen>
 
   void _stampViewerCooldowns(
     Map<String, dynamic> mapData,
-    DateTime fetchedAt,
-  ) {
+    DateTime fetchedAt, {
+    int? projectContributeCooldownSeconds,
+  }) {
     final regions = mapData['regions'];
     if (regions is! List) return;
+    final projectCooldown = projectContributeCooldownSeconds != null &&
+            projectContributeCooldownSeconds > 0
+        ? projectContributeCooldownSeconds
+        : 900;
     for (final raw in regions) {
       if (raw is! Map) continue;
       final nextAt = _parseApiDate(raw['viewerNextActionAt']);
@@ -424,6 +444,26 @@ class _TerritoryScreenState extends State<TerritoryScreen>
             fetchedAt.add(Duration(seconds: remaining)).toIso8601String();
       } else {
         raw.remove('viewerCooldownUntil');
+      }
+
+      final project = raw['regionProject'];
+      if (project is! Map) continue;
+      final projectNextAt = _parseApiDate(project['nextContributeAt']);
+      final projectRemaining =
+          (project['contributeCooldownSecondsRemaining'] as num?)?.toInt() ?? 0;
+      final lastContributeAt = _parseApiDate(project['lastContributeAt']);
+      DateTime? contributeUntil = projectNextAt;
+      if (contributeUntil == null && projectRemaining > 0) {
+        contributeUntil = fetchedAt.add(Duration(seconds: projectRemaining));
+      }
+      if (contributeUntil == null && lastContributeAt != null) {
+        contributeUntil =
+            lastContributeAt.add(Duration(seconds: projectCooldown));
+      }
+      if (contributeUntil != null && contributeUntil.isAfter(fetchedAt)) {
+        project['projectContributeUntil'] = contributeUntil.toIso8601String();
+      } else {
+        project.remove('projectContributeUntil');
       }
     }
   }
@@ -516,6 +556,12 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         cooldownUntil != null &&
         !cooldownUntil.isAfter(now)) {
       return '$regionKey:cooldown';
+    }
+
+    final project = (region['regionProject'] as Map?)?.cast<String, dynamic>();
+    final contributeUntil = _parseApiDate(project?['projectContributeUntil']);
+    if (contributeUntil != null && !contributeUntil.isAfter(now)) {
+      return '$regionKey:project-contribute';
     }
 
     final garrison = (region['garrison'] as Map?)?.cast<String, dynamic>();
@@ -2746,6 +2792,22 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         contestStatus == null &&
         regionProject != null &&
         (projectStatus == 'building' || projectStatus == 'damaged');
+    DateTime? projectContributeUntil = _parseApiDate(
+      regionProject?['projectContributeUntil'] ??
+          regionProject?['nextContributeAt'],
+    );
+    if (projectContributeUntil == null) {
+      final lastContributeAt = _parseApiDate(regionProject?['lastContributeAt']);
+      if (lastContributeAt != null && _projectContributeCooldownSeconds > 0) {
+        projectContributeUntil = lastContributeAt.add(
+          Duration(seconds: _projectContributeCooldownSeconds),
+        );
+      }
+    }
+    final projectContributeRemaining = projectContributeUntil == null
+        ? 0
+        : projectContributeUntil.difference(clock).inSeconds;
+    final projectContributeOnCooldown = projectContributeRemaining > 0;
     final contestAttackerPoints =
         (region['contestAttackerPoints'] as num?)?.toInt() ?? 0;
     final contestDefenderPoints =
@@ -3098,10 +3160,14 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         if (canContributeProject) ...[
           const SizedBox(height: 12),
           _buildActionButton(
-            label: t.territoryProjectContribute,
+            label: projectContributeOnCooldown
+                ? '${t.territoryProjectContribute} · ${_formatLiveDuration(Duration(seconds: projectContributeRemaining))}'
+                : t.territoryProjectContribute,
             icon: Icons.local_shipping_outlined,
             color: Colors.teal[700]!,
-            onTap: () => _contributeProject(region['regionKey'] as String),
+            onTap: projectContributeOnCooldown
+                ? null
+                : () => _contributeProject(region['regionKey'] as String),
           ),
         ],
         ..._buildArsenalMoveButtons(region),

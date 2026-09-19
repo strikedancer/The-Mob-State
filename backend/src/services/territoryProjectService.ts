@@ -38,6 +38,8 @@ export type TerritoryRegionProject = {
   hp: number;
   maxHp: number;
   lastContributeAt: Date | null;
+  nextContributeAt: Date | null;
+  contributeCooldownSecondsRemaining: number;
   incomeBonusPercent: number;
 };
 
@@ -177,7 +179,24 @@ function incomeBonusForProject(row: ProjectRow, config: TerritoryProjectConfig):
   return 0;
 }
 
+function contributeCooldownState(
+  row: ProjectRow,
+  config: TerritoryProjectConfig,
+): { nextContributeAt: Date | null; contributeCooldownSecondsRemaining: number } {
+  const seconds = Math.max(0, Math.floor(config.contributeCooldownSeconds));
+  if (!row.lastContributeAt || seconds <= 0) {
+    return { nextContributeAt: null, contributeCooldownSecondsRemaining: 0 };
+  }
+  const next = new Date(new Date(row.lastContributeAt).getTime() + seconds * 1000);
+  const remaining = Math.max(0, Math.ceil((next.getTime() - Date.now()) / 1000));
+  return {
+    nextContributeAt: remaining > 0 ? next : null,
+    contributeCooldownSecondsRemaining: remaining,
+  };
+}
+
 function mapProjectRow(row: ProjectRow, config: TerritoryProjectConfig): TerritoryRegionProject {
+  const cooldown = contributeCooldownState(row, config);
   return {
     id: toNumeric(row.id),
     regionKey: row.regionKey,
@@ -188,6 +207,8 @@ function mapProjectRow(row: ProjectRow, config: TerritoryProjectConfig): Territo
     hp: Math.max(0, toNumeric(row.hp)),
     maxHp: Math.max(1, toNumeric(row.maxHp)),
     lastContributeAt: row.lastContributeAt ?? null,
+    nextContributeAt: cooldown.nextContributeAt,
+    contributeCooldownSecondsRemaining: cooldown.contributeCooldownSecondsRemaining,
     incomeBonusPercent: incomeBonusForProject(row, config),
   };
 }
