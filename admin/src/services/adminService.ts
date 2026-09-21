@@ -721,6 +721,7 @@ export type CountryPoliceRuntimeConfigView = CrewMissionRuntimeConfigView;
 export type CasinoRuntimeConfigView = CrewMissionRuntimeConfigView;
 export type DrugRuntimeConfigView = CrewMissionRuntimeConfigView;
 export type CrewWarRuntimeConfigView = CrewMissionRuntimeConfigView;
+export type CourtRuntimeConfigView = CrewMissionRuntimeConfigView;
 
 export type GlobalChatAdminOverview = {
   enabled: boolean;
@@ -3416,6 +3417,31 @@ export const adminService = {
       },
     );
     await ensureOk(response, "Failed to run court-record amnesty");
+    return response.json();
+  },
+
+  async getCourtRuntimeConfig(): Promise<CourtRuntimeConfigView> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/trial/runtime-config`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    await ensureOk(response, "Failed to load court runtime config");
+    return response.json();
+  },
+
+  async updateCourtRuntimeConfig(
+    updates: Record<string, string | number>,
+  ): Promise<CourtRuntimeConfigView> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/trial/runtime-config`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ updates }),
+    });
+    await ensureOk(response, "Failed to update court runtime config");
     return response.json();
   },
 };

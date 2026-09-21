@@ -10,15 +10,21 @@ import { timeProvider } from '../utils/timeProvider';
 import {
   computeExpungePetitionCost,
   computeExpungePetitionOdds,
-  EXPUNGE_PETITION_COOLDOWN_SECONDS,
   type ExpungePetitionOddsBreakdown,
 } from './expungePetitionMath';
+import {
+  getCourtRuntimeConfig,
+  getExpungePetitionMathConfigFromCourt,
+  type CourtRuntimeConfig,
+} from './courtRuntimeConfig';
 
 export {
   computeExpungePetitionCost,
   computeExpungePetitionOdds,
   EXPUNGE_PETITION_COOLDOWN_SECONDS,
 } from './expungePetitionMath';
+export { getCourtRuntimeConfig } from './courtRuntimeConfig';
+export type { CourtRuntimeConfig } from './courtRuntimeConfig';
 
 type JudgeSpecialtyKey = 'violence' | 'financial' | 'drugs' | 'white_collar' | 'organized';
 
@@ -182,44 +188,60 @@ export function computeAppealOdds(input: {
   wantedLevel: number;
   fbiHeat: number;
   donJudgeBonusPercent?: number;
+  court?: CourtRuntimeConfig;
 }): AppealOddsBreakdown {
+  const court = input.court;
+  const basePercent = court?.appealBasePercent ?? 35;
+  const lawPerLevel = court?.appealLawBonusPerLevelPercent ?? 5;
+  const lawCap = court?.appealLawBonusCapPercent ?? 25;
+  const wantedThreshold = court?.appealWantedThreshold ?? 20;
+  const wantedPenalty = court?.appealWantedPenaltyPercent ?? 10;
+  const fbiThreshold = court?.appealFbiThreshold ?? 10;
+  const fbiPenalty = court?.appealFbiPenaltyPercent ?? 15;
+  const minPercent = court?.appealMinPercent ?? 10;
+  const maxPercent = court?.appealMaxPercent ?? 85;
+  const donBonusCap = court?.donJudgeAppealBonusPercent ?? 8;
+
   const lawLevel = Math.max(0, Math.min(5, Math.floor(input.lawLevel)));
-  const lawBonus = Math.min(lawLevel * 0.05, 0.25);
-  let successChance = 0.35 + lawBonus;
+  const lawBonusPercent = Math.min(lawLevel * lawPerLevel, lawCap);
+  let successPercent = basePercent + lawBonusPercent;
 
-  let priorConvictionModifier = 0;
+  let priorConvictionModifierPercent = 0;
   if (input.priorConvictions === 0) {
-    priorConvictionModifier = 0.2;
+    priorConvictionModifierPercent = 20;
   } else if (input.priorConvictions >= 5) {
-    priorConvictionModifier = -0.2;
+    priorConvictionModifierPercent = -20;
   }
-  successChance += priorConvictionModifier;
-  successChance += Math.max(0, Math.min(0.08, (input.donJudgeBonusPercent ?? 0) / 100));
+  successPercent += priorConvictionModifierPercent;
+  successPercent += Math.max(
+    0,
+    Math.min(donBonusCap, Number(input.donJudgeBonusPercent ?? 0)),
+  );
 
-  const wantedPenaltyApplied = input.wantedLevel > 20;
-  const fbiPenaltyApplied = input.fbiHeat > 10;
+  const wantedPenaltyApplied = input.wantedLevel > wantedThreshold;
+  const fbiPenaltyApplied = input.fbiHeat > fbiThreshold;
   if (wantedPenaltyApplied) {
-    successChance -= 0.1;
+    successPercent -= wantedPenalty;
   }
   if (fbiPenaltyApplied) {
-    successChance -= 0.15;
+    successPercent -= fbiPenalty;
   }
 
-  successChance = Math.max(0.1, Math.min(0.85, successChance));
+  successPercent = Math.max(minPercent, Math.min(maxPercent, successPercent));
 
   return {
     lawLevel,
-    lawBonusPercent: Math.round(lawBonus * 100),
+    lawBonusPercent: Math.round(lawBonusPercent),
     priorConvictions: input.priorConvictions,
-    priorConvictionModifierPercent: Math.round(priorConvictionModifier * 100),
+    priorConvictionModifierPercent: Math.round(priorConvictionModifierPercent),
     wantedLevel: input.wantedLevel,
     wantedPenaltyApplied,
-    wantedPenaltyPercent: wantedPenaltyApplied ? 10 : 0,
+    wantedPenaltyPercent: wantedPenaltyApplied ? wantedPenalty : 0,
     fbiHeat: input.fbiHeat,
     fbiPenaltyApplied,
-    fbiPenaltyPercent: fbiPenaltyApplied ? 15 : 0,
-    successChance,
-    successPercent: Math.round(successChance * 100),
+    fbiPenaltyPercent: fbiPenaltyApplied ? fbiPenalty : 0,
+    successChance: successPercent / 100,
+    successPercent: Math.round(successPercent),
   };
 }
 
@@ -500,18 +522,20 @@ export async function getCurrentSentence(playerId: number) {
     return null;
   }
 
-  const [educationProfile, player, prior, donJudgeBonusPercent] = await Promise.all([
-    educationService.getPlayerEducationProfile(playerId),
-    prisma.player.findUnique({
-      where: { id: playerId },
-      select: {
-        wantedLevel: true,
-        fbiHeat: true,
-      },
-    }),
-    getVisibleConvictionAttempts(playerId, crimeAttempt.id),
-    donService.getJudgeAppealBonusPercent(playerId),
-  ]);
+  const [educationProfile, player, prior, donJudgeBonusPercent, court] =
+    await Promise.all([
+      educationService.getPlayerEducationProfile(playerId),
+      prisma.player.findUnique({
+        where: { id: playerId },
+        select: {
+          wantedLevel: true,
+          fbiHeat: true,
+        },
+      }),
+      getVisibleConvictionAttempts(playerId, crimeAttempt.id),
+      donService.getJudgeAppealBonusPercent(playerId),
+      getCourtRuntimeConfig(),
+    ]);
 
   const appealOdds = computeAppealOdds({
     lawLevel: educationProfile.tracks['law']?.level ?? 0,
@@ -519,6 +543,7 @@ export async function getCurrentSentence(playerId: number) {
     wantedLevel: Number(player?.wantedLevel ?? 0),
     fbiHeat: Number(player?.fbiHeat ?? 0),
     donJudgeBonusPercent,
+    court,
   });
 
   return {
@@ -621,7 +646,11 @@ export async function appealSentence(
     throw new Error('PLAYER_NOT_FOUND');
   }
 
-  const appealCost = Math.min(Math.max(attempt.jailTime * 100, 2000), 50000);
+  const court = await getCourtRuntimeConfig();
+  const appealCost = Math.min(
+    Math.max(attempt.jailTime * court.appealCostPerMinute, court.appealCostMin),
+    court.appealCostMax,
+  );
   if (player.money < appealCost) {
     throw new Error('INSUFFICIENT_MONEY');
   }
@@ -639,6 +668,7 @@ export async function appealSentence(
     wantedLevel: Number(player.wantedLevel ?? 0),
     fbiHeat: Number(player.fbiHeat ?? 0),
     donJudgeBonusPercent,
+    court,
   });
   const success = Math.random() < appealOdds.successChance;
 
@@ -849,16 +879,21 @@ export async function getExpungePetitionQuote(playerId: number): Promise<Expunge
     throw new Error('PLAYER_NOT_FOUND');
   }
 
+  const court = await getCourtRuntimeConfig();
+  const mathConfig = getExpungePetitionMathConfigFromCourt(court);
   const convictionCount = visibleAttempts.length;
   const lastArrestAt = visibleAttempts[0]?.createdAt ?? null;
   const donFlags = await getExpungePetitionDonFlags(playerId, player.currentCountry);
-  const odds = computeExpungePetitionOdds({
-    convictionCount,
-    hoursSinceLastArrest: hoursSince(lastArrestAt, now),
-    reputation: Number(player.reputation ?? 0),
-    ...donFlags,
-  });
-  const cost = computeExpungePetitionCost(convictionCount);
+  const odds = computeExpungePetitionOdds(
+    {
+      convictionCount,
+      hoursSinceLastArrest: hoursSince(lastArrestAt, now),
+      reputation: Number(player.reputation ?? 0),
+      ...donFlags,
+    },
+    mathConfig,
+  );
+  const cost = computeExpungePetitionCost(convictionCount, mathConfig);
   let blockReason: ExpungePetitionQuote['blockReason'] = null;
   if (convictionCount <= 0) {
     blockReason = 'NO_CRIMINAL_RECORD';
@@ -915,10 +950,11 @@ export async function submitExpungePetition(playerId: number): Promise<ExpungePe
     throw new Error('INSUFFICIENT_MONEY');
   }
 
+  const court = await getCourtRuntimeConfig();
   const cooldown = await cooldownService.setCooldown(
     playerId,
     'expunge_petition',
-    EXPUNGE_PETITION_COOLDOWN_SECONDS
+    court.expungeCooldownSeconds,
   );
   const success = Math.random() < quote.odds.successChance;
   let clearedCount = 0;

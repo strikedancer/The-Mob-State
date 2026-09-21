@@ -13,8 +13,9 @@ Judicial recovery, sentence handling and legal consequence flows.
 - POST `/trial/appeal`
 - POST `/trial/bribe`
 - POST `/trial/expunge-petition`
+- Admin `GET/PUT /admin/trial/runtime-config` — live Rechtbank knobs (expunge petition + appeal odds/cost + shared `DON_JUDGE_APPEAL_BONUS_PERCENT`)
 - Admin `POST /admin/trial/court-record-amnesty` `{ confirm: "WIPE_ALL_RECORDS" }` (SUPER_ADMIN only)
-- Admin UI: **Rechtbank** tab (`admin/src/components/CourtAdminPanel.tsx`) — type confirm phrase, wipe + world-chat promo image
+- Admin UI: **Rechtbank** tab (`admin/src/components/CourtAdminPanel.tsx`) — runtime console + amnesty confirm phrase, wipe + world-chat promo image
 
 ## Current System Contract
 - Court screen must load sentence and criminal record independently and remain usable when one part is empty.
@@ -28,16 +29,17 @@ Judicial recovery, sentence handling and legal consequence flows.
 - A successful judge bribe must clear only the linked active conviction from the criminal record, not wipe unrelated convictions.
 - If the player uses an external crime flow to wipe their full record, the court record must hide only convictions older than that expungement point and show new convictions normally afterward.
 - An official **amnesty** writes the same `trial.record_expunged` marker per player (`source: amnesty`) without SSE spam. After that wipe, new convictions show again. Super-admin trigger: Admin → **Rechtbank** (confirm `WIPE_ALL_RECORDS`), or `POST /admin/trial/court-record-amnesty` with `{ confirm: "WIPE_ALL_RECORDS" }`, or `node dist/scripts/runCourtRecordAmnesty.js`. That also posts the world-chat promo still.
-- Players can also file a paid **expunge petition** on Court (`GET /trial/expunge-quote`, `POST /trial/expunge-petition`) while free or jailed, as long as a visible record remains. Cost is `100_000 + max(0, n-1)*1_000`. Success chance uses `computeExpungePetitionOdds` (record length, hours since last arrest, reputation, Don judge/commissioner/alderman in the current country) and is clamped 8–70%. The fresh-arrest penalty (−15%) applies only for the **first hour** after the last arrest (was 24h). Failure deducts cash only. Success writes `trial.record_expunged` and does **not** release the player. Cooldown is 12 hours (`expunge_petition`). The late-game `criminal_record_wipe` crime stays.
-- **Law education bonus**: the player's `law` track level (0–5) grants +5% appeal success per level (max +25% at level 5). Base appeal chance is therefore 35%–60% before prior-convictions/wanted-level/FBI-heat adjustments. Hard cap is 10%–85%.
-  - Optional Don judge patronage in the current country adds up to `DON_JUDGE_APPEAL_BONUS_PERCENT` (default +8%) before the same 10–85% clamp. It does **not** replace per-case `POST /trial/bribe`. See [don.md](don.md).
+- Players can also file a paid **expunge petition** on Court (`GET /trial/expunge-quote`, `POST /trial/expunge-petition`) while free or jailed, as long as a visible record remains. Live cost/odds/cooldown/fresh-arrest window come from `courtRuntimeConfig` (`COURT_EXPUNGE_*`; code defaults match the previous hardcodes: cost `100_000 + max(0, n-1)*1_000`, clamp 8–70%, fresh-arrest −15% for the first hour, 12h cooldown). Success chance still uses `computeExpungePetitionOdds` (record length, hours since last arrest, reputation, Don judge/commissioner/alderman). Failure deducts cash only. Success writes `trial.record_expunged` and does **not** release the player. The late-game `criminal_record_wipe` crime stays.
+- **Law education bonus**: the player's `law` track level (0–5) grants `COURT_APPEAL_LAW_BONUS_PER_LEVEL_PERCENT` per level (default +5%, cap `COURT_APPEAL_LAW_BONUS_CAP_PERCENT` default +25%). Base appeal chance is `COURT_APPEAL_BASE_PERCENT` (default 35%) before prior-convictions/wanted/FBI adjustments. Hard clamp is `COURT_APPEAL_MIN_PERCENT`–`COURT_APPEAL_MAX_PERCENT` (default 10–85%). Appeal cash cost is `jailMinutes * COURT_APPEAL_COST_PER_MINUTE` clamped to min/max.
+  - Optional Don judge patronage in the current country adds up to `DON_JUDGE_APPEAL_BONUS_PERCENT` (default +8%) before the same clamp. It does **not** replace per-case `POST /trial/bribe`. See [don.md](don.md).
   - Cross-dependency: `educationService.getPlayerEducationProfile` is called in parallel inside `judgeService.appealSentence` and `getCurrentSentence`.
   - `GET /trial/current-sentence` returns `appealOdds` (law level/bonus, prior-conviction modifier, wanted, FBI heat, estimated percent). The court screen shows this breakdown; odds are computed in `computeAppealOdds` so UI and roll stay aligned.
-  - Wanted above 20 subtracts 10% from appeal. FBI heat above 10 subtracts 15%. These modifiers do **not** change bribe chance (judge corruptibility + offer only). The bribe dialog still shows current Wanted/FBI so the player sees why appeal looks worse.
+  - Wanted above `COURT_APPEAL_WANTED_THRESHOLD` (default 20) subtracts `COURT_APPEAL_WANTED_PENALTY_PERCENT`. FBI heat above `COURT_APPEAL_FBI_THRESHOLD` (default 10) subtracts `COURT_APPEAL_FBI_PENALTY_PERCENT`. These modifiers do **not** change bribe chance (judge corruptibility + offer only). The bribe dialog still shows current Wanted/FBI so the player sees why appeal looks worse.
 - **Localized names**: judge payload uses family name + `specialtyKey` (`violence` | `financial` | `drugs` | `white_collar` | `organized`). Client localizes the judge title and specialty. Crime titles use `crimeId` via `CrimeLocalization.nameFromId` (English `crime` / `crimeName` is fallback only).
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.
+- Prefer runtime_config (`COURT_*` / shared Don key) over code deploys for balance knobs; keep code defaults identical to the previous hardcodes so unset keys do not change live odds.
 - Keep Dutch and English copy in sync for any user-visible change.
 - Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell.
 - Web dashboard Court hides the inner AppBar title; keep the shared status bar. On large screens the panels fill the dashboard content column (no 860px cap). The screen uses a noir hero (case status + conviction count + remaining time) plus sentence and record panels. Remaining time ticks locally every 30s and refreshes when the sentence ends.

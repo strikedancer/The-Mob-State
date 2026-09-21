@@ -1,3 +1,4 @@
+/** Code defaults — live values come from courtRuntimeConfig when available. */
 export const EXPUNGE_PETITION_BASE_COST = 100_000;
 export const EXPUNGE_PETITION_COST_PER_EXTRA = 1_000;
 export const EXPUNGE_PETITION_BASE_PERCENT = 38;
@@ -8,6 +9,19 @@ export const EXPUNGE_PETITION_DON_JUDGE_PERCENT = 8;
 export const EXPUNGE_PETITION_DON_COMMISSIONER_PERCENT = 6;
 export const EXPUNGE_PETITION_DON_ALDERMAN_PERCENT = 5;
 export const EXPUNGE_PETITION_COOLDOWN_SECONDS = 43_200;
+export const EXPUNGE_PETITION_FRESH_ARREST_HOURS = 1;
+
+export interface ExpungePetitionMathConfig {
+  baseCost?: number;
+  costPerExtra?: number;
+  basePercent?: number;
+  minPercent?: number;
+  maxPercent?: number;
+  donJudgePercent?: number;
+  donCommissionerPercent?: number;
+  donAldermanPercent?: number;
+  freshArrestHours?: number;
+}
 
 export interface ExpungePetitionOddsInput {
   convictionCount: number;
@@ -36,10 +50,29 @@ export interface ExpungePetitionOddsBreakdown {
   successPercent: number;
 }
 
-export function computeExpungePetitionCost(convictionCount: number): number {
+function resolve(cfg: ExpungePetitionMathConfig | undefined) {
+  return {
+    baseCost: cfg?.baseCost ?? EXPUNGE_PETITION_BASE_COST,
+    costPerExtra: cfg?.costPerExtra ?? EXPUNGE_PETITION_COST_PER_EXTRA,
+    basePercent: cfg?.basePercent ?? EXPUNGE_PETITION_BASE_PERCENT,
+    minPercent: cfg?.minPercent ?? EXPUNGE_PETITION_MIN_PERCENT,
+    maxPercent: cfg?.maxPercent ?? EXPUNGE_PETITION_MAX_PERCENT,
+    donJudgePercent: cfg?.donJudgePercent ?? EXPUNGE_PETITION_DON_JUDGE_PERCENT,
+    donCommissionerPercent:
+      cfg?.donCommissionerPercent ?? EXPUNGE_PETITION_DON_COMMISSIONER_PERCENT,
+    donAldermanPercent: cfg?.donAldermanPercent ?? EXPUNGE_PETITION_DON_ALDERMAN_PERCENT,
+    freshArrestHours: cfg?.freshArrestHours ?? EXPUNGE_PETITION_FRESH_ARREST_HOURS,
+  };
+}
+
+export function computeExpungePetitionCost(
+  convictionCount: number,
+  cfg?: ExpungePetitionMathConfig,
+): number {
+  const c = resolve(cfg);
   const n = Math.max(0, Math.floor(Number(convictionCount) || 0));
   if (n <= 0) return 0;
-  return EXPUNGE_PETITION_BASE_COST + Math.max(0, n - 1) * EXPUNGE_PETITION_COST_PER_EXTRA;
+  return c.baseCost + Math.max(0, n - 1) * c.costPerExtra;
 }
 
 export function computeExpungeRecordModifierPercent(convictionCount: number): number {
@@ -47,12 +80,16 @@ export function computeExpungeRecordModifierPercent(convictionCount: number): nu
   return Math.max(EXPUNGE_PETITION_RECORD_FLOOR, extra * -2);
 }
 
-export function computeExpungeRecencyModifierPercent(hoursSinceLastArrest: number | null): number {
+export function computeExpungeRecencyModifierPercent(
+  hoursSinceLastArrest: number | null,
+  cfg?: ExpungePetitionMathConfig,
+): number {
   if (hoursSinceLastArrest == null || !Number.isFinite(hoursSinceLastArrest)) {
     return 0;
   }
   const hours = Math.max(0, hoursSinceLastArrest);
-  if (hours < 1) return -15;
+  const freshHours = Math.max(0, resolve(cfg).freshArrestHours);
+  if (hours < freshHours) return -15;
   if (hours < 72) return -8;
   if (hours < 168) return 0;
   if (hours < 336) return 8;
@@ -65,21 +102,24 @@ export function computeExpungeReputationModifierPercent(reputation: number): num
 }
 
 export function computeExpungePetitionOdds(
-  input: ExpungePetitionOddsInput
+  input: ExpungePetitionOddsInput,
+  cfg?: ExpungePetitionMathConfig,
 ): ExpungePetitionOddsBreakdown {
+  const c = resolve(cfg);
   const convictionCount = Math.max(0, Math.floor(Number(input.convictionCount) || 0));
   const reputation = Math.max(0, Math.floor(Number(input.reputation) || 0));
   const recordModifierPercent = computeExpungeRecordModifierPercent(convictionCount);
-  const recencyModifierPercent = computeExpungeRecencyModifierPercent(input.hoursSinceLastArrest);
+  const recencyModifierPercent = computeExpungeRecencyModifierPercent(
+    input.hoursSinceLastArrest,
+    cfg,
+  );
   const reputationModifierPercent = computeExpungeReputationModifierPercent(reputation);
-  const donJudgePercent = input.hasJudge ? EXPUNGE_PETITION_DON_JUDGE_PERCENT : 0;
-  const donCommissionerPercent = input.hasCommissioner
-    ? EXPUNGE_PETITION_DON_COMMISSIONER_PERCENT
-    : 0;
-  const donAldermanPercent = input.hasAlderman ? EXPUNGE_PETITION_DON_ALDERMAN_PERCENT : 0;
+  const donJudgePercent = input.hasJudge ? c.donJudgePercent : 0;
+  const donCommissionerPercent = input.hasCommissioner ? c.donCommissionerPercent : 0;
+  const donAldermanPercent = input.hasAlderman ? c.donAldermanPercent : 0;
 
   const rawPercent =
-    EXPUNGE_PETITION_BASE_PERCENT +
+    c.basePercent +
     recordModifierPercent +
     recencyModifierPercent +
     reputationModifierPercent +
@@ -87,13 +127,13 @@ export function computeExpungePetitionOdds(
     donCommissionerPercent +
     donAldermanPercent;
   const successPercent = Math.max(
-    EXPUNGE_PETITION_MIN_PERCENT,
-    Math.min(EXPUNGE_PETITION_MAX_PERCENT, rawPercent)
+    c.minPercent,
+    Math.min(c.maxPercent, rawPercent),
   );
 
   return {
     convictionCount,
-    basePercent: EXPUNGE_PETITION_BASE_PERCENT,
+    basePercent: c.basePercent,
     recordModifierPercent,
     recencyModifierPercent,
     reputationModifierPercent,

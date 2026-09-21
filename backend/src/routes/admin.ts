@@ -29,6 +29,10 @@ import * as crewWarService from '../services/crewWarService';
 import { globalChatService } from '../services/globalChatService';
 import { expungeAllCriminalRecordsAmnesty } from '../services/judgeService';
 import {
+  getCourtRuntimeConfigView,
+  updateCourtRuntimeConfig,
+} from '../services/courtRuntimeConfig';
+import {
   COURT_RECORD_AMNESTY_DISPLAY_NAME,
   COURT_RECORD_AMNESTY_IMAGE,
   COURT_RECORD_AMNESTY_MESSAGE,
@@ -5950,5 +5954,37 @@ router.post(
     }
   },
 );
+
+router.get('/trial/runtime-config', async (_req, res) => {
+  try {
+    const config = await getCourtRuntimeConfigView();
+    return res.json(config);
+  } catch (error) {
+    console.error('Admin court runtime config error:', error);
+    return res.status(500).json({ error: 'Failed to fetch court runtime config' });
+  }
+});
+
+router.put('/trial/runtime-config', async (req, res) => {
+  try {
+    const parsed = runtimeNumericConfigUpdatesSchema.parse(req.body ?? {});
+    const updated = await updateCourtRuntimeConfig(parsed.updates);
+    return res.json(updated);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ error: 'Validation failed', details: error.flatten() });
+    }
+    if (error instanceof Error && error.message.startsWith('INVALID_RUNTIME_KEY:')) {
+      return res.status(400).json({ error: 'Invalid runtime key', details: error.message });
+    }
+    if (error instanceof Error && error.message.startsWith('RUNTIME_VALUE_NOT_NUMERIC:')) {
+      return res
+        .status(400)
+        .json({ error: 'Runtime value must be numeric', details: error.message });
+    }
+    console.error('Admin court runtime config update error:', error);
+    return res.status(500).json({ error: 'Failed to update court runtime config' });
+  }
+});
 
 export default router;
