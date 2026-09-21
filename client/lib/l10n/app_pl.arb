@@ -511,6 +511,7 @@
   "murders": "Morderstwa",
   "hitlistContracts": "Umowy z listą przebojów",
   "carsStolen": "Kradzież samochodów",
+  "motorcyclesOwned": "Owned motorcycles",
   "boatsStolen": "Skradziono łodzie",
   "crimeAttempts": "Próby przestępcze",
   "successful": "Udany",
@@ -6238,6 +6239,7 @@
     }
   },
   "nightclubNoStoredDrugs": "Nie ma jeszcze przechowywanych leków.",
+  "nightclubBackpackEmptyHint": "Your backpack has no drugs. Harvest or buy drugs first, or withdraw them from a house - then store them here with MAX or Store all.",
   "nightclubStockZeroSoldOut": "Aktualny stan magazynowy to 0g (wszystko zostało sprzedane).",
   "nightclubQualityWithValue": "Jakość: {value}",
   "@nightclubQualityWithValue": {
@@ -10601,6 +10603,14 @@
     }
   },
   "drugsCrewDepositAction": "To crew storage",
+  "drugsCrewDepositDialogTitle": "Deposit {name} to crew",
+  "@drugsCrewDepositDialogTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "drugsCrewDepositDone": "Moved to crew storage",
   "drugsCrewDepositFailed": "Crew deposit failed",
   "drugsCutAllOneGrade": "Cut all one grade down",

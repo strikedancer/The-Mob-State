@@ -1300,6 +1300,10 @@ class _NightclubScreenState extends State<NightclubScreen> {
                           const SizedBox(height: 12),
                           _operationsDeckCard(),
                           const SizedBox(height: 12),
+                          // Drug Storage lives in the main flow so players find
+                          // backpack → club store without opening Advanced.
+                          _storeCard(),
+                          const SizedBox(height: 12),
                           ExpansionTile(
                             key: const PageStorageKey('nightclub-advanced'),
                             initiallyExpanded: _advancedExpanded,
@@ -1940,7 +1944,11 @@ class _NightclubScreenState extends State<NightclubScreen> {
               ),
             DropdownButtonFormField<int>(
               isExpanded: true,
-              value: _selectedDjId,
+              value: _djs.any(
+                    (d) => (d['id'] as num).toInt() == _selectedDjId,
+                  )
+                  ? _selectedDjId
+                  : null,
               items: _djs
                   .map(
                     (d) => DropdownMenuItem<int>(
@@ -2149,6 +2157,16 @@ class _NightclubScreenState extends State<NightclubScreen> {
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
             const SizedBox(height: 8),
+            if (options.isEmpty)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Text(
+                  _t.nightclubBackpackEmptyHint,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Colors.orangeAccent,
+                  ),
+                ),
+              ),
             DropdownButtonFormField<String>(
               isExpanded: true,
               value: options.any((o) => o['key'] == _selectedDrugKey)
@@ -2167,27 +2185,25 @@ class _NightclubScreenState extends State<NightclubScreen> {
                             fallbackIcon: Icons.science,
                           ),
                           const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              '${o['quantity']}g • ${o['drugName']} (${o['quality']})',
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                          _dropdownItemLabel(
+                            '${o['quantity']}g • ${o['drugName']} (${o['quality']})',
                           ),
                         ],
                       ),
                     ),
                   )
                   .toList(),
-              onChanged: (v) {
-                setState(() {
-                  _selectedDrugKey = v;
-                  final max = _selectedStoreMax(options);
-                  if (max > 0) {
-                    _setStoreQuantityValue(max);
-                  }
-                });
-              },
+              onChanged: options.isEmpty
+                  ? null
+                  : (v) {
+                      setState(() {
+                        _selectedDrugKey = v;
+                        final max = _selectedStoreMax(options);
+                        if (max > 0) {
+                          _setStoreQuantityValue(max);
+                        }
+                      });
+                    },
               decoration: InputDecoration(labelText: _t.nightclubChooseStock),
             ),
             if (selected != null) ...[
@@ -2286,89 +2302,93 @@ class _NightclubScreenState extends State<NightclubScreen> {
                   final columns = maxWidth >= 1200
                       ? 4
                       : (maxWidth >= 800 ? 3 : (maxWidth >= 480 ? 2 : 1));
-                  return GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: stored.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: columns,
-                      mainAxisExtent: 200,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                    ),
-                    itemBuilder: (context, index) {
-                      final row = stored[index];
-                      final drugType = (row['drugType'] ?? '-').toString();
-                      final quality = (row['quality'] ?? '-').toString();
-                      final quantity =
-                          ((row['quantity'] as num?)?.toInt() ?? 0);
+                  const gap = 12.0;
+                  final cardWidth = columns <= 1
+                      ? maxWidth
+                      : ((maxWidth - gap * (columns - 1)) / columns)
+                          .floorToDouble();
 
-                      return Card(
-                        color: Colors.black.withOpacity(0.58),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18),
-                          side: const BorderSide(color: Color(0x33FFFFFF)),
-                        ),
-                        margin: EdgeInsets.zero,
-                        child: Padding(
-                          padding: const EdgeInsets.all(12),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Center(
-                                  child: _thumbFromImageRef(
-                                    fallbackAsset: _drugImageAsset(drugType),
-                                    fallbackIcon: Icons.inventory_2_outlined,
-                                    size: 80,
+                  return Wrap(
+                    spacing: gap,
+                    runSpacing: gap,
+                    children: [
+                      for (final row in stored)
+                        SizedBox(
+                          width: cardWidth,
+                          child: Card(
+                            color: Colors.black.withOpacity(0.58),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18),
+                              side: const BorderSide(color: Color(0x33FFFFFF)),
+                            ),
+                            margin: EdgeInsets.zero,
+                            child: Padding(
+                              padding: const EdgeInsets.all(12),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Center(
+                                    child: _thumbFromImageRef(
+                                      fallbackAsset: _drugImageAsset(
+                                        (row['drugType'] ?? '-').toString(),
+                                      ),
+                                      fallbackIcon:
+                                          Icons.inventory_2_outlined,
+                                      size: 80,
+                                    ),
                                   ),
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                drugType,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 14,
-                                ),
-                              ),
-                              const SizedBox(height: 6),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 3,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.08),
-                                  borderRadius: BorderRadius.circular(999),
-                                  border: Border.all(color: Colors.white24),
-                                ),
-                                child: Text(
-                                  _t.nightclubQualityWithValue(quality),
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.white70,
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    (row['drugType'] ?? '-').toString(),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14,
+                                    ),
                                   ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
+                                  const SizedBox(height: 6),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 3,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.08),
+                                      borderRadius: BorderRadius.circular(999),
+                                      border:
+                                          Border.all(color: Colors.white24),
+                                    ),
+                                    child: Text(
+                                      _t.nightclubQualityWithValue(
+                                        (row['quality'] ?? '-').toString(),
+                                      ),
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.white70,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    _t.nightclubGramsStock(
+                                      '${((row['quantity'] as num?)?.toInt() ?? 0)}',
+                                    ),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 13,
+                                      color: Colors.lightGreenAccent,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              const SizedBox(height: 4),
-                              Text(
-                                _t.nightclubGramsStock('$quantity'),
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 13,
-                                  color: Colors.lightGreenAccent,
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
-                      );
-                    },
+                    ],
                   );
                 },
               ),
@@ -3137,12 +3157,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
         title: _t.nightclubMgmtCrewTitle,
         subtitle: _t.nightclubMgmtCrewSubtitle,
       ),
-      _ManagementSectionMeta(
-        key: _managementSectionDrugs,
-        icon: Icons.science_rounded,
-        title: _t.nightclubMgmtDrugsTitle,
-        subtitle: _t.nightclubMgmtDrugsSubtitle,
-      ),
+      // Drug Storage is surfaced in the main page flow (above Advanced).
       _ManagementSectionMeta(
         key: _managementSectionDj,
         icon: Icons.queue_music_rounded,
@@ -3264,14 +3279,15 @@ class _NightclubScreenState extends State<NightclubScreen> {
     switch (key) {
       case _managementSectionCrew:
         return _staffCard();
-      case _managementSectionDrugs:
-        return _storeCard();
       case _managementSectionDj:
         return _djCard();
       case _managementSectionSecurity:
         return _securityCard();
       case _managementSectionOpsLab:
         return _operationsCard();
+      case _managementSectionDrugs:
+        // Drug Storage lives in the main flow; fall back if stale selection.
+        return _staffCard();
       default:
         return _staffCard();
     }

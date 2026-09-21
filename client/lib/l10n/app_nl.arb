@@ -3314,6 +3314,7 @@
   "nightclubStoredInNightclub": "Opgeslagen in nightclub",
   "nightclubCurrentStockGrams": "Huidige voorraad: {grams}g",
   "nightclubNoStoredDrugs": "Nog geen opgeslagen drugs.",
+  "nightclubBackpackEmptyHint": "Je rugzak heeft geen drugs. Oogst of koop eerst drugs, of haal ze uit een huis — zet ze hier daarna in met MAX of Alles uit rugzak.",
   "nightclubStockZeroSoldOut": "Voorraad is momenteel 0g (alles is verkocht).",
   "nightclubQualityWithValue": "Kwaliteit: {value}",
   "nightclubGramsStock": "{grams}g voorraad",
@@ -5809,8 +5810,9 @@
   "breakouts": "Uitbraken",
   "murders": "Moorden",
   "hitlistContracts": "Hitlist-contracten",
-  "carsStolen": "Auto's gestolen",
-  "boatsStolen": "Boten gestolen",
+  "carsStolen": "Auto's in bezit",
+  "motorcyclesOwned": "Motoren in bezit",
+  "boatsStolen": "Boten in bezit",
   "crimeAttempts": "Misdaadpogingen",
   "successful": "Geslaagd",
   "jobAttempts": "Werkpogingen",
@@ -12926,6 +12928,14 @@
     }
   },
   "drugsCrewDepositAction": "Naar crew-opslag",
+  "drugsCrewDepositDialogTitle": "{name} naar crew-opslag",
+  "@drugsCrewDepositDialogTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "drugsCrewDepositDone": "Naar crew-opslag verplaatst",
   "drugsCrewDepositFailed": "Crew-storting mislukt",
   "drugsCutAllOneGrade": "Alles één grade omlaag",

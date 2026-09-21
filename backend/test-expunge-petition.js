@@ -26,7 +26,7 @@ function computeExpungeRecencyModifierPercent(hoursSinceLastArrest) {
     return 0;
   }
   const hours = Math.max(0, hoursSinceLastArrest);
-  if (hours < 24) return -15;
+  if (hours < 1) return -15;
   if (hours < 72) return -8;
   if (hours < 168) return 0;
   if (hours < 336) return 8;
@@ -89,19 +89,30 @@ assertEqual(computeExpungePetitionCost(10), 109000, 'ten convictions are 109k');
 
 const oneFresh = computeExpungePetitionOdds({
   convictionCount: 1,
-  hoursSinceLastArrest: 4,
+  hoursSinceLastArrest: 0.5,
   reputation: 0,
   hasJudge: false,
   hasCommissioner: false,
   hasAlderman: false,
 });
 assertEqual(oneFresh.recordModifierPercent, 0, 'first conviction no extra record penalty');
-assertEqual(oneFresh.recencyModifierPercent, -15, 'under 24h recency');
+assertEqual(oneFresh.recencyModifierPercent, -15, 'under 1h recency');
 assertEqual(oneFresh.successPercent, 23, '38 - 15 recency');
+
+const oneAfterHour = computeExpungePetitionOdds({
+  convictionCount: 1,
+  hoursSinceLastArrest: 4,
+  reputation: 0,
+  hasJudge: false,
+  hasCommissioner: false,
+  hasAlderman: false,
+});
+assertEqual(oneAfterHour.recencyModifierPercent, -8, '1-72h recency');
+assertEqual(oneAfterHour.successPercent, 30, '38 - 8 recency');
 
 const tenFresh = computeExpungePetitionOdds({
   convictionCount: 10,
-  hoursSinceLastArrest: 2,
+  hoursSinceLastArrest: 0.5,
   reputation: 0,
   hasJudge: false,
   hasCommissioner: false,

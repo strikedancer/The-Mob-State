@@ -172,7 +172,7 @@ class _CourtScreenState extends State<CourtScreen> {
     final hours = odds.hoursSinceLastArrest;
     final percent = _signedPercent(odds.recencyModifierPercent);
     if (hours == null) return l10n.courtExpungeRecencyNeutral;
-    if (hours < 24) return l10n.courtExpungeRecencyRecent(percent);
+    if (hours < 1) return l10n.courtExpungeRecencyRecent(percent);
     if (hours < 72) return l10n.courtExpungeRecencyWarm(percent);
     if (hours < 168) return l10n.courtExpungeRecencyNeutral;
     if (hours < 336) return l10n.courtExpungeRecencyCool(percent);

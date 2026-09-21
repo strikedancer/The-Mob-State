@@ -47,6 +47,7 @@ Deze waarden sturen housing capaciteit/risico en weekhuur in de prostitutieflow.
 - Events: 1 actief + 1 aankomend per land (slug = `player.currentCountry`); hourly `settleEventEarnings`; event verhoogt raid/steal-kans.
 
 ## Empire hub IA
+- Empire hub Tab 0 Workers: `GET /prostitutes` (`getPlayerProstitutes`) returns only workers relevant to `player.currentCountry`: RLD placements filter by district `countryCode`; nightclub placements filter by venue `country` when present; street (and any placement without a country field) stay visible.
 - Tab 0 Workers: KPI strip (workers S/RLD/NC, €/h, collectable, housing, recruit CD), Collect → `settleEarnings`, recruit result via **`CrimeResultOverlay`** (same pattern as jobs/crimes; success + fail), Move menu + Work primary.
 - Tab 1 RLD: embedded `RedLightDistrictsScreen` (mobile RLD-menu and web sidebar deep-link hierheen, niet VIP Events).
 - Tab 2 Events: street nights for everyone and VIP salon (`vipOnly`) with participate/leave. Events use country slugs matching `player.currentCountry`.
@@ -68,6 +69,7 @@ Deze waarden sturen housing capaciteit/risico en weekhuur in de prostitutieflow.
 - Verify Collect settles the same pending amount as the Te innen / To collect KPI (including amounts under one hour) and refreshes; empty collect only when that KPI is €0.
 - Verify mobile “Red Light Districts” opens hub tab RLD (index 1), not Events.
 - Verify Events tab lists street nights and VIP salon (country slug, not ISO-2).
+- Verify Workers list omits RLD workers in other countries and nightclub workers whose venue country differs; street workers without a country field still appear.
 - Verify reclaim panel appears for a hot stolen worker and that she cannot be placed in RLD/nightclub until cool.
 
 ## When To Update This File

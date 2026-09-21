@@ -12,7 +12,7 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 ## Primary Backend Entry
 - `backend/src/routes/subscriptions.ts`
 - `backend/src/services/vipBenefitsService.ts` (VIP grant helpers, prestige tiers, expiry sweep)
-- `backend/src/routes/admin.ts` voor catalogusbeheer / VIP grant (`POST /admin/players/vip/grant` en `POST /admin/players/manage`)
+- `backend/src/routes/admin.ts` voor catalogusbeheer / VIP grant (`POST /admin/players/vip/grant` en `POST /admin/players/manage`), plus support grants `POST /admin/players/:playerId/season-pass/grant` en `POST /admin/players/:playerId/event-pass/grant`
 - `backend/prisma/schema.prisma`
 - Startup: `ensureVipPrestigeSchema.ts` (`players.vipLifetimeDays`, `crews.vipLifetimeDays`)
 
@@ -22,7 +22,7 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 - **Gift Crew VIP:** `POST /subscriptions/checkout/gift-crew-vip` met `recipientCrewName`; webhook type `crew_vip_gift` verlengt crew VIP 30 dagen (geen auto-renew). Iedere speler mag cadeau doen (niet alleen leaders). UI toont `giftPrices.crewVipEur`.
 - **Crew VIP-pot:** elk crewlid kan `POST /subscriptions/checkout/crew-vip-donate` (`amountEur` in €1 / €2.50 / €5 / restbedrag / maandprijs). Webhook `crew_vip_donate` telt euro-cents op `crews.vipFundCents`; bij een volle maandprijs volgt +30 dagen zonder Mollie-subscription. `GET /subscriptions/crew-vip-fund` voedt alleen het Crew-overzicht; Winkel toont de pot niet.
 - **Crew VIP-abonnement:** `POST /subscriptions/checkout/crew-vip` mag elk lid starten (niet alleen de leader). Als de crew al `mollieSubscriptionId` heeft, is extra betaling een eenmalige maand zonder tweede subscription.
-- **Game-support donatie:** ronde avatar linksonder (zelfde Clash-stijl als event-avatars rechts). Modal met zelf gekozen eurobedrag (€1,00–€250,00) → `POST /subscriptions/checkout/game-support-donate`. Mollie `sequenceType` ontbreekt bewust (eenmalig, geen abonnement). Webhook-type `game_support_donate` schrijft alleen een fulfillment-record; geen VIP, credits of cash. Return landt op Dashboard met dankbericht.
+- **Game-support donatie:** ronde avatar linksonder (zelfde Clash-stijl als event-avatars rechts). Op mobiel boven de sticky quick-nav (~72px + safe); desktop sidebar OK met klein inset. Modal met zelf gekozen eurobedrag (€1,00–€250,00) → `POST /subscriptions/checkout/game-support-donate`. Mollie `sequenceType` ontbreekt bewust (eenmalig, geen abonnement). Webhook-type `game_support_donate` schrijft alleen een fulfillment-record; geen VIP, credits of cash. Return landt op Dashboard met dankbericht.
 - Prestige KPI toont lifetime days + dagen tot volgende tier (bronze 30 / silver 180 / gold 365; display-only).
 - **Prestige (display-only):** lifetime VIP-dagen → tiers bronze/silver/gold (30/180/365); geen gameplay power.
 - Cron `vipExpirySweep` zet verlopen `isVip` uit (crew buildings downgraden).
@@ -35,6 +35,12 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 - `POST /admin/players/vip/grant` zoekt username case-insensitive.
 - Slaat niet meer de hele stat-formulier mee als alleen VIP wijzigt; dat voorkwam `Invalid input` (NaN/`null` money/health/country).
 - Help-topic `premium` (Help & Uitleg) dekt cancel/gift/prestige; sync via `scripts/_help_topics_extracted.json`.
+
+## Admin Event Pass / event-boost grant (UI)
+- Zelfde speler-Beheerblok, naast VIP:
+  - **Event Pass premium** → `POST /admin/players/:playerId/season-pass/grant` met reden (≥5). Roept `seasonPassService.unlockSeasonPassPremium` aan voor de huidige maand (`YYYY-MM`). Audit: `GRANT_SEASON_PASS`.
+  - **Event-boost toekennen** → `POST /admin/players/:playerId/event-pass/grant` met `days` en/of `hours` + reden. Maakt een timed `EVENT_BOOST` entitlement (zelfde family als checkout/credit redemption), default boost `eventContributionPct: 0.15`. Audit: `GRANT_EVENT_PASS`.
+- Viewer mag deze grants niet; moderator/super-admin wel.
 
 ## Change Rules
 - Gebruik provider-idempotentie: webhook-verwerking mag rewards nooit dubbel uitkeren.

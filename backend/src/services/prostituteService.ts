@@ -1237,6 +1237,12 @@ export const prostituteService = {
     await this.processHousingUpkeep(playerId);
     const residentialStats = await this.getResidentialPortfolioStats(playerId);
 
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { currentCountry: true },
+    });
+    const currentCountry = player?.currentCountry ?? '';
+
     const prostitutes = await prisma.prostitute.findMany({
       where: { playerId },
       include: {
@@ -1250,11 +1256,31 @@ export const prostituteService = {
             },
           },
         },
+        nightclubVenue: {
+          select: {
+            id: true,
+            country: true,
+          },
+        },
       },
       orderBy: { recruitedAt: 'desc' },
     });
 
-    return prostitutes.map((prostitute) => {
+    const inCurrentCountry = prostitutes.filter((prostitute) => {
+      const districtCountry =
+        prostitute.redLightRoom?.redLightDistrict?.countryCode;
+      if (districtCountry) {
+        return districtCountry === currentCountry;
+      }
+      const nightclubCountry = prostitute.nightclubVenue?.country;
+      if (nightclubCountry) {
+        return nightclubCountry === currentCountry;
+      }
+      // Street (and any placement without a country field) stays visible.
+      return true;
+    });
+
+    return inCurrentCountry.map((prostitute) => {
       const happinessScore = this.getProstituteHappinessScore(
         prostitute,
         residentialStats.averageResidentialUpgrade

@@ -11,7 +11,8 @@ Friend graph, requests, social activity and player-to-player discovery.
 - Keep Dutch and English copy in sync for any user-visible change.
 - Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell.
 - Friends list, activity feed and the 4-tab bar must stay usable on ~360px: load failure shows retry (`MobileLoadError`), not “no friends / no activity”. TabBar is scrollable.
-- Player **search** (Vrienden → Zoeken) must not show or return `currentCountry`. Location stays on the accepted-friends list only.
+- Player **search** (Vrienden → Zoeken) must not show or return `currentCountry`.
+- Accepted **friends list** (`GET /friends` / Friends tab) must also omit `currentCountry` — no location line on friend cards (rank, health, friends-since only). Country is not player-visible on the friends graph.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
 
 ## Check Before Editing
@@ -45,6 +46,8 @@ Friend graph, requests, social activity and player-to-player discovery.
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
+- Verify accepted friends cards show rank, health and friends-since — **no** country/location line; `GET /friends` omits `currentCountry`.
+- Verify player search still omits `currentCountry`.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

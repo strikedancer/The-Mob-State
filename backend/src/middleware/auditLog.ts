@@ -61,6 +61,7 @@ export function auditLog(logData: AuditLogData) {
       const targetId = logData.targetId ||
                        req.body?.playerId?.toString() ||
                        req.body?.targetId?.toString() ||
+                       req.params.playerId?.toString() ||
                        req.params.id;
       
       // Include request body as details (sanitize sensitive data)

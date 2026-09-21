@@ -413,6 +413,15 @@ router.post(
         });
       }
 
+      if (error.message === 'JAILED_IN_TRANSIT') {
+        return res.status(403).json({
+          event: 'error.jailed',
+          params: {
+            remainingTime: error.jailTime ?? 0,
+          },
+        });
+      }
+
       return next(error);
     }
   }

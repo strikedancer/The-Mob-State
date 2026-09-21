@@ -11,7 +11,6 @@ import 'package:provider/provider.dart';
 import '../providers/event_provider.dart';
 import '../utils/avatar_helper.dart';
 import '../l10n/app_localizations.dart';
-import '../utils/country_helper.dart';
 import '../utils/player_profile_navigation.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../utils/top_right_notification.dart';
@@ -788,14 +787,6 @@ class _FriendsScreenState extends State<FriendsScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(l10n.friendsUiLineRank('${friend.rank}')),
-                  Text(
-                    l10n.friendsUiLineLocation(
-                      CountryHelper.getLocalizedCountryName(
-                        friend.currentCountry,
-                        l10n,
-                      ),
-                    ),
-                  ),
                   Text(
                     l10n.friendsUiLineHealth('${friend.health}'),
                     style: TextStyle(

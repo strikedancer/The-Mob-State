@@ -263,7 +263,6 @@ export const friendService = {
             username: true, 
             rank: true,
             health: true,
-            currentCountry: true,
             avatar: true,
             activePortrait: { select: { imagePath: true } },
           } 
@@ -274,7 +273,6 @@ export const friendService = {
             username: true, 
             rank: true,
             health: true,
-            currentCountry: true,
             avatar: true,
             activePortrait: { select: { imagePath: true } },
           } 

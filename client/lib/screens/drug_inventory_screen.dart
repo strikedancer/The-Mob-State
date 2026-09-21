@@ -278,7 +278,7 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
 
   Future<void> _depositToCrew(DrugInventory drug) async {
     final t = AppLocalizations.of(context)!;
-    final qty = await _showSellDialog(drug);
+    final qty = await _showCrewDepositDialog(drug);
     if (qty == null || qty <= 0) return;
     final result = await _drugService.depositCrewDrugLot(
       drugType: drug.drugType,
@@ -286,17 +286,105 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
       quantity: qty,
     );
     if (!mounted) return;
+    final ok = result['success'] == true;
+    final rawMsg = result['message'] as String?;
     showTopRightFromSnackBar(
       context,
       SnackBar(
         content: Text(
-          (result['message'] as String?) ??
-              (result['success'] == true ? t.drugsCrewDepositDone : t.drugsCrewDepositFailed),
+          rawMsg != null && rawMsg.isNotEmpty
+              ? localizeDrugClientMessage(t, rawMsg)
+              : (ok ? t.drugsCrewDepositDone : t.drugsCrewDepositFailed),
         ),
-        backgroundColor: result['success'] == true ? Colors.green : Colors.red,
+        backgroundColor: ok ? Colors.green : Colors.red,
       ),
     );
-    if (result['success'] == true) _loadData();
+    if (ok) _loadData();
+  }
+
+  Future<int?> _showCrewDepositDialog(DrugInventory drug) async {
+    final t = AppLocalizations.of(context)!;
+    final controller = TextEditingController(text: '${drug.quantity}');
+
+    return showDialog<int>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(t.drugsCrewDepositDialogTitle(drug.drugName)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(t.drugsInvAvailableQty('${drug.quantity}')),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(
+                color: _parseQualityColor(drug.qualityColor).withOpacity(0.16),
+                borderRadius: BorderRadius.circular(999),
+              ),
+              child: Text(
+                t.drugsQualityWithGrade(drug.qualityLabel),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: _parseQualityColor(drug.qualityColor),
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Wrap(
+              spacing: 8,
+              children: [25, 50, 100].map((pct) {
+                return OutlinedButton(
+                  onPressed: () {
+                    final qty =
+                        ((drug.quantity * pct) / 100).round().clamp(1, drug.quantity);
+                    controller.text = '$qty';
+                  },
+                  child: Text('$pct%'),
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: controller,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                labelText: t.drugsQuantityGramsField,
+                border: const OutlineInputBorder(),
+                suffixText: '/ ${drug.quantity}',
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(t.cancel),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              final qty = int.tryParse(controller.text);
+              if (qty != null && qty > 0 && qty <= drug.quantity) {
+                Navigator.pop(context, qty);
+              } else {
+                showTopRightFromSnackBar(
+                  context,
+                  SnackBar(
+                    content: Text(t.drugsInvalidQuantity),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+              foregroundColor: Colors.white,
+            ),
+            child: Text(t.drugsCrewDepositAction),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<int?> _showSellDialog(DrugInventory drug) async {

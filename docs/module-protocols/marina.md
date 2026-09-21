@@ -45,7 +45,7 @@ Boat inventory, theft flow, timed repairs, country availability catalog, boat-sp
 - Does this change keep police event windows and boat-event rotation intact?
 
 ## Must Preserve
-- Clear success and failure feedback for the player. After a successful boat theft the result popup must offer sell and scrap on the same card (with confirm), plus keep.
+- Clear success and failure feedback for the player. After a successful boat theft the result popup must offer sell and scrap on the same card (with confirm), plus keep. On compact width the sell control stacks **Verkopen / Sell** above the euro amount so the payout is never ellipsized away.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.

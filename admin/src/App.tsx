@@ -330,6 +330,8 @@ interface PlayerManageForm {
   addPremiumCredits: string;
   vipEnabled: boolean;
   vipDays: string;
+  eventPassDays: string;
+  eventPassHours: string;
   ammoType: string;
   ammoQuantity: string;
   toolId: string;
@@ -750,6 +752,8 @@ function App() {
     addPremiumCredits: "0",
     vipEnabled: false,
     vipDays: "7",
+    eventPassDays: "7",
+    eventPassHours: "",
     ammoType: "9mm",
     ammoQuantity: "0",
     toolId: "",
@@ -3627,6 +3631,8 @@ function App() {
         addPremiumCredits: "0",
         vipEnabled: overview.player.isVip,
         vipDays: "7",
+        eventPassDays: "7",
+        eventPassHours: "",
         ammoType: "9mm",
         ammoQuantity: "0",
         toolId: "",
@@ -3969,6 +3975,185 @@ function App() {
       const message = err instanceof Error ? err.message : t.unknownError;
       alert(
         `${l("VIP toekennen mislukt", "Failed to grant VIP")}: ${message}`,
+      );
+    } finally {
+      setIsSavingPlayerManage(false);
+    }
+  };
+
+  const handleGrantSeasonPass = async () => {
+    if (!selectedPlayerId) return;
+    if (isSavingPlayerManage) return;
+    if (!canManagePlayers) {
+      alert(
+        l(
+          "Je hebt geen rechten om spelers te beheren.",
+          "You do not have permission to manage players.",
+        ),
+      );
+      return;
+    }
+
+    let reason = playerManageReason.trim();
+    if (reason.length < 5) {
+      const typed = window.prompt(
+        l(
+          "Reden voor Event Pass premium (min. 5 tekens):",
+          "Reason for Event Pass premium grant (min. 5 characters):",
+        ),
+        "Support season pass grant",
+      );
+      reason = typed?.trim() ?? "";
+    }
+    if (reason.length < 5) {
+      alert(
+        l(
+          "Event Pass premium geannuleerd: reden te kort.",
+          "Season pass grant cancelled: reason too short.",
+        ),
+      );
+      return;
+    }
+
+    const username =
+      selectedPlayerOverview?.player.username ?? String(selectedPlayerId);
+    const confirmed = window.confirm(
+      l(
+        `Premium-track van de maandelijkse Event Pass ontgrendelen voor ${username}?`,
+        `Unlock this month's Event Pass premium track for ${username}?`,
+      ),
+    );
+    if (!confirmed) return;
+
+    setIsSavingPlayerManage(true);
+    try {
+      await adminService.grantSeasonPass(selectedPlayerId, reason);
+      setPlayerManageReason("");
+      alert(
+        l(
+          `Event Pass premium ontgrendeld voor ${username}.`,
+          `Event Pass premium unlocked for ${username}.`,
+        ),
+      );
+    } catch (err) {
+      if (handleUnauthorized(err)) return;
+      const message = err instanceof Error ? err.message : t.unknownError;
+      alert(
+        `${l("Event Pass premium mislukt", "Failed to grant season pass")}: ${message}`,
+      );
+    } finally {
+      setIsSavingPlayerManage(false);
+    }
+  };
+
+  const handleGrantEventPassBoost = async () => {
+    if (!selectedPlayerId) return;
+    if (isSavingPlayerManage) return;
+    if (!canManagePlayers) {
+      alert(
+        l(
+          "Je hebt geen rechten om spelers te beheren.",
+          "You do not have permission to manage players.",
+        ),
+      );
+      return;
+    }
+
+    const toInt = (value: string): number | null => {
+      const trimmed = value.trim();
+      if (!trimmed) return null;
+      const parsed = Number(trimmed);
+      return Number.isFinite(parsed) ? Math.trunc(parsed) : null;
+    };
+    const days = toInt(playerManageForm.eventPassDays);
+    const hours = toInt(playerManageForm.eventPassHours);
+    if ((days === null || days < 1) && (hours === null || hours < 1)) {
+      alert(
+        l(
+          "Vul dagen en/of uren in (minimaal 1).",
+          "Enter days and/or hours (at least 1).",
+        ),
+      );
+      return;
+    }
+    if (days !== null && (days < 1 || days > 31)) {
+      alert(
+        l(
+          "Event-boost dagen moet tussen 1 en 31 liggen.",
+          "Event boost days must be between 1 and 31.",
+        ),
+      );
+      return;
+    }
+    if (hours !== null && (hours < 1 || hours > 744)) {
+      alert(
+        l(
+          "Event-boost uren moet tussen 1 en 744 liggen.",
+          "Event boost hours must be between 1 and 744.",
+        ),
+      );
+      return;
+    }
+
+    let reason = playerManageReason.trim();
+    if (reason.length < 5) {
+      const typed = window.prompt(
+        l(
+          "Reden voor event-boost (min. 5 tekens):",
+          "Reason for event boost grant (min. 5 characters):",
+        ),
+        "Support event pass grant",
+      );
+      reason = typed?.trim() ?? "";
+    }
+    if (reason.length < 5) {
+      alert(
+        l(
+          "Event-boost geannuleerd: reden te kort.",
+          "Event boost grant cancelled: reason too short.",
+        ),
+      );
+      return;
+    }
+
+    const username =
+      selectedPlayerOverview?.player.username ?? String(selectedPlayerId);
+    const durationLabel = [
+      days != null && days > 0 ? `${days}d` : null,
+      hours != null && hours > 0 ? `${hours}h` : null,
+    ]
+      .filter(Boolean)
+      .join(" + ");
+    const confirmed = window.confirm(
+      l(
+        `Event-boost (${durationLabel}, +15% event-score) toekennen aan ${username}?`,
+        `Grant event boost (${durationLabel}, +15% event score) to ${username}?`,
+      ),
+    );
+    if (!confirmed) return;
+
+    setIsSavingPlayerManage(true);
+    try {
+      const result = await adminService.grantEventPass(selectedPlayerId, {
+        reason,
+        ...(days != null && days > 0 ? { days } : {}),
+        ...(hours != null && hours > 0 ? { hours } : {}),
+      });
+      setPlayerManageReason("");
+      const until = result?.expiresAt
+        ? new Date(result.expiresAt).toLocaleString()
+        : l("onbekend", "unknown");
+      alert(
+        l(
+          `Event-boost toegekend tot ${until}.`,
+          `Event boost granted until ${until}.`,
+        ),
+      );
+    } catch (err) {
+      if (handleUnauthorized(err)) return;
+      const message = err instanceof Error ? err.message : t.unknownError;
+      alert(
+        `${l("Event-boost mislukt", "Failed to grant event boost")}: ${message}`,
       );
     } finally {
       setIsSavingPlayerManage(false);
@@ -8434,6 +8619,61 @@ function App() {
                                     </div>
                                   </div>
 
+                                  <div className="col-md-4">
+                                    <label className="form-label fw-semibold">
+                                      {l(
+                                        "Event-boost dagen",
+                                        "Event boost days",
+                                      )}
+                                    </label>
+                                    <input
+                                      className="form-control"
+                                      type="number"
+                                      min={1}
+                                      max={31}
+                                      value={playerManageForm.eventPassDays}
+                                      onChange={(e) =>
+                                        setPlayerManageForm({
+                                          ...playerManageForm,
+                                          eventPassDays: e.target.value,
+                                        })
+                                      }
+                                    />
+                                    <small className="text-muted">
+                                      {l(
+                                        "Optioneel; samen met uren. Max 31 dagen.",
+                                        "Optional; combine with hours. Max 31 days.",
+                                      )}
+                                    </small>
+                                  </div>
+                                  <div className="col-md-4">
+                                    <label className="form-label fw-semibold">
+                                      {l(
+                                        "Event-boost uren",
+                                        "Event boost hours",
+                                      )}
+                                    </label>
+                                    <input
+                                      className="form-control"
+                                      type="number"
+                                      min={1}
+                                      max={744}
+                                      value={playerManageForm.eventPassHours}
+                                      onChange={(e) =>
+                                        setPlayerManageForm({
+                                          ...playerManageForm,
+                                          eventPassHours: e.target.value,
+                                        })
+                                      }
+                                    />
+                                    <small className="text-muted">
+                                      {l(
+                                        "Optioneel; +15% event-score zolang actief.",
+                                        "Optional; +15% event score while active.",
+                                      )}
+                                    </small>
+                                  </div>
+
                                   <div className="col-12">
                                     <hr className="my-1" />
                                     <small className="text-muted">
@@ -8556,6 +8796,32 @@ function App() {
                                           "Grant VIP days",
                                         )}
                                       </>
+                                    )}
+                                  </button>
+                                  <button
+                                    className="btn btn-outline-success fw-bold"
+                                    onClick={handleGrantSeasonPass}
+                                    disabled={
+                                      isSavingPlayerManage || !canManagePlayers
+                                    }
+                                  >
+                                    <i className="ph-ticket me-2" />
+                                    {l(
+                                      "Event Pass premium",
+                                      "Grant Event Pass premium",
+                                    )}
+                                  </button>
+                                  <button
+                                    className="btn btn-outline-info fw-bold"
+                                    onClick={handleGrantEventPassBoost}
+                                    disabled={
+                                      isSavingPlayerManage || !canManagePlayers
+                                    }
+                                  >
+                                    <i className="ph-lightning me-2" />
+                                    {l(
+                                      "Event-boost toekennen",
+                                      "Grant event boost",
                                     )}
                                   </button>
                                   <button

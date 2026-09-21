@@ -26,20 +26,20 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 - Does this module depend on assets, videos, icons or generated media?
 
 ## Must Preserve
-- Tonight’s loop-kaart (crowd, stock, Restock, Boost crowd) blijft bovenaan; de rest van Ops Lab zit onder Geavanceerd. Geen handmatige omzet-collect (tick blijft leidend).
+- Tonight’s loop-kaart (crowd, stock, Restock, Boost crowd) blijft bovenaan; **Drug Storage** staat daaronder in de hoofdflow (niet alleen onder Geavanceerd). Ops Lab / crew / DJ / security blijven onder Geavanceerd. Geen handmatige omzet-collect (tick blijft leidend).
 - Clear success and failure feedback for the player.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
-- Stable dropdown behavior after async refreshes (no duplicate values, no invalid selected value).
+- Stable dropdown behavior after async refreshes (no duplicate values, no invalid selected value). DJ hire dropdown only sets `value` when `_selectedDjId` exists in the loaded DJ list.
 - Resilient screen load: one slow/failing API call may not block the whole nightclub screen.
 - Live staffing selectors must never depend on manual seed steps alone; DJ/security availability data needs a production-safe bootstrap or fallback so empty staff tables do not leave selectors blank.
-- Drug storage controls must keep grams visible on mobile (selected item + available grams), so players can make quantity decisions without hidden or truncated unit info.
+- Drug storage controls must keep grams visible on mobile (selected item + available grams), so players can make quantity decisions without hidden or truncated unit info. Drug dropdown items use the same fixed-width label pattern as DJ (`_dropdownItemLabel`), not `Expanded` inside `DropdownMenuItem`. Stored-drug cards use Wrap/intrinsic height (no fixed `mainAxisExtent`). Empty backpack shows an explicit hint before the store controls.
 - Own-production lots stored in the nightclub get a capped sale-margin bonus (`DRUG_NIGHTCLUB_OWN_PROD_BONUS_PERCENT`); this is not a credit/VIP yield boost.
 - Nightclub drug stock is **not** backpack inventory. Collect stays in the backpack. Storing from the backpack (`store` / `store-all`) must free backpack slots (`refreshInventorySlotUsage`). The gram field defaults to the full selected lot; leftover backpack grams are called out because they still occupy slots.
 - **Player supply (opt-in):** owner toggles `playerSupplyEnabled`. Same-country players sell grams at a server wholesale quote (`NIGHTCLUB_PLAYER_SUPPLY_PRICE_PERCENT`, default 55% of base×quality). Owner pays cash; stock is not marked `ownProduction`. Min/max grams via runtime keys. Self-sale is blocked (use Store).
 - Nightclub management UI must keep one primary vertical page scroll on mobile; the compact photo hero (`EmpirePageHero` + `NestedScrollView`) scrolls away. Do not embed fixed-height subpanels with independent scrollbars.
-- DJ status must reflect real active shift state; expired contracts must be cleaned up server-side so hire actions are not blocked by stale `currentDJId`.
+- DJ status must reflect real active shift state; expired or orphaned contracts (`djContractEndsAt` null/past with no live shift) must be cleaned up server-side so hire actions are not blocked by stale `currentDJId`. `hireDJ` / `hireResidentDJContract` must re-fetch the venue **after** `clearExpiredDjContract` before checking `currentDJId`.
 - If Nightclub overview is rendered as a single intelligence panel (without tabs), all former Overview/Revenue/Risk essentials must remain present in that one panel with clear section headers and mobile-safe spacing.
 - Rival-targeting UX in nightclub must be name-first (search by player username), never forcing players to input or know numeric player IDs.
 - Ops/management additions (resident DJ, events, upgrades, incident response, rival actions, alerts) must expose clear per-action cost/impact in NL+EN before confirmation.
@@ -69,7 +69,10 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 - Simulate one failing/sluggish nightclub endpoint and verify the screen still opens with partial data.
 - Verify a live environment with empty DJ/security tables still shows hireable staff because backend bootstrap/fallback repopulates the availability lists.
 - Verify mobile drug-storage selector keeps gram counts readable (no clipped labels) and quantity shortcuts respect available stock.
+- Verify Drug Storage is visible in the main nightclub flow (above Advanced) and shows a clear empty-backpack hint when there is nothing to store.
+- Verify stored-drug cards use Wrap/intrinsic height (no clipped labels from a fixed grid extent).
 - Verify expired DJ contracts clear automatically and a new DJ can be hired immediately after shift end.
+- Verify the DJ dropdown does not assert when the selected id is missing from the loaded list.
 - Verify rival actions can be triggered by searching/selecting player name and never require playerId entry.
 - Verify Operations Timeline shows mixed event types (sales, thefts, staffing, events) with clear severity labels.
 - Verify Buy from players toggle is off by default, and Inventory Aan club lists no clubs until an owner enables it.

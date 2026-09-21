@@ -770,11 +770,38 @@ class NightclubService {
   }
 
   private async clearExpiredDjContract(venueId: number): Promise<void> {
+    const venue = await prisma.nightclubVenue.findUnique({
+      where: { id: venueId },
+      select: {
+        currentDJId: true,
+        djContractEndsAt: true,
+      },
+    });
+    if (!venue?.currentDJId) return;
+
+    const now = new Date();
+    const contractStillValid =
+      venue.djContractEndsAt != null && venue.djContractEndsAt.getTime() >= now.getTime();
+    if (contractStillValid) {
+      return;
+    }
+
+    // Null or past endsAt: only keep the booking if a live/future shift still exists.
+    const liveOrUpcomingShift = await prisma.nightclubDJShift.findFirst({
+      where: {
+        venueId,
+        shiftEndAt: { gte: now },
+      },
+      select: { id: true },
+    });
+    if (liveOrUpcomingShift) {
+      return;
+    }
+
     await prisma.nightclubVenue.updateMany({
       where: {
         id: venueId,
         currentDJId: { not: null },
-        djContractEndsAt: { lt: new Date() },
       },
       data: {
         currentDJId: null,

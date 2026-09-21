@@ -1429,7 +1429,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
               _selectedWebSection != _WebSection.worldChat)
             GameSupportDonateAvatar(
               leftOffset: 8,
-              bottomOffset: showLeftSidebar ? 20 : 16,
+              // Mobile sticky quick-nav (~72) + safe inset inside the widget.
+              // Desktop sidebar layout keeps a small corner inset.
+              bottomOffset: showLeftSidebar ? 20 : 72,
             ),
         ],
       ),
@@ -4221,6 +4223,11 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                         _buildInfoRow(
                           l10n.carsStolen,
                           '${_stats?.vehicleThieves ?? 0}',
+                          Colors.white,
+                        ),
+                        _buildInfoRow(
+                          l10n.motorcyclesOwned,
+                          '${_stats?.motorcycleThieves ?? 0}',
                           Colors.white,
                         ),
                         _buildInfoRow(

@@ -52,7 +52,7 @@ export function computeExpungeRecencyModifierPercent(hoursSinceLastArrest: numbe
     return 0;
   }
   const hours = Math.max(0, hoursSinceLastArrest);
-  if (hours < 24) return -15;
+  if (hours < 1) return -15;
   if (hours < 72) return -8;
   if (hours < 168) return 0;
   if (hours < 336) return 8;

@@ -78,7 +78,7 @@ Elk vliegtuig heeft een vast aantal cargo-slots. Items nemen een bepaald aantal 
 | Wapen                 | 1              | ✅ ja              | ✅ ja                   |
 
 **Voorbeelden:**
-- Cessna 172 (20 slots): 2 auto's OF 4 motoren OF 20 drugspakketten OF 1 auto + 2 motoren (10+10)
+- Cessna 172 (100 cargo slots = hangar Cargo): e.g. 2 auto's OF 4 motoren OF 100 handelswaren-units OF mix binnen 100 slots
 - Gulfstream G200 (80 slots): 8 auto's OF 16 motoren OF 80 drugspakketten OF gemixte lading
 - Boeing 737 (200 slots): 20 auto's OF 40 motoren OF 200 drugspakketten OF combinaties
 
@@ -158,7 +158,7 @@ Catalogus staten in `backend/content/aircraft.json`:
 ```json
 {
   "aircraft": [
-    { "id": "cessna",     "name": "Cessna 172",          "price": 250000,    "requiredAviationLevel": 2, "requiredCertification": "flight_basic",     "cargoSlots": 20,  "travelBonus": 0.15, "smuggleRiskReduction": 0.10 },
+    { "id": "cessna",     "name": "Cessna 172",          "price": 250000,    "requiredAviationLevel": 2, "requiredCertification": "flight_basic",     "cargoSlots": 100, "travelBonus": 0.15, "smuggleRiskReduction": 0.10 },
     { "id": "king_air",   "name": "Beechcraft King Air", "price": 750000,    "requiredAviationLevel": 3, "requiredCertification": null,               "cargoSlots": 50,  "travelBonus": 0.25, "smuggleRiskReduction": 0.15 },
     { "id": "gulfstream", "name": "Gulfstream G200",     "price": 2500000,   "requiredAviationLevel": 4, "requiredCertification": "flight_commercial", "cargoSlots": 80,  "travelBonus": 0.35, "smuggleRiskReduction": 0.20 },
     { "id": "cargo_737",  "name": "Boeing 737 Cargo",    "price": 10000000,  "requiredAviationLevel": 5, "requiredCertification": null,               "cargoSlots": 200, "travelBonus": 0.30, "smuggleRiskReduction": 0.25 }
@@ -203,8 +203,8 @@ Catalogus staten in `backend/content/aircraft.json`:
 2. Koop poging met te laag level → 403 + melding "Vereist: Aviation niveau X".
 3. Koop poging zonder saldo → 402/400 + melding "Onvoldoende saldo".
 4. Reistijdbonus zichtbaar in Travel scherm na aankoop Gulfstream.
-5. Smokkel via eigen Cessna met cargo-manifest dat past (≤20 slots) → succesvol.
-6. Smokkel via eigen Cessna met te zware lading (>20 slots) → 400 CARGO_OVERFLOW.
+5. Smokkel via eigen Cessna met cargo-manifest dat past (≤100 slots = hangar Cargo) → succesvol.
+6. Smokkel via eigen Cessna met te zware lading (>100 slots) → 400 CARGO_OVERFLOW.
 7. Smokkel via boot met auto in lading → past (auto 10 slots, boot 30 slots).
 8. Smokkel via vliegtuig met boot in lading → 400 BOAT_CANNOT_FIT.
 9. Mislukte smokkel met eigen vliegtuig → confiscatie-kans gegooid, resultaat getoond.

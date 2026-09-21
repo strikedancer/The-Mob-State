@@ -37,7 +37,7 @@ FriendInfo _$FriendInfoFromJson(Map<String, dynamic> json) => FriendInfo(
   username: json['username'] as String,
   rank: (json['rank'] as num).toInt(),
   health: (json['health'] as num).toInt(),
-  currentCountry: json['currentCountry'] as String,
+  currentCountry: json['currentCountry'] as String?,
   avatar: json['avatar'] as String?,
   activePortraitPath: json['activePortraitPath'] as String?,
 );

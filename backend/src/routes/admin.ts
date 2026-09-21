@@ -63,8 +63,10 @@ import { deletePortrait, listPortraits } from '../services/playerPortraitService
 import { grantPlayerVipDays } from '../services/vipBenefitsService';
 import {
   applyCreditBalanceAdjustment,
+  createTimedCreditEntitlement,
   getPreservedPaidCredits,
 } from '../services/premiumCreditsService';
+import { seasonPassService } from '../services/seasonPassService';
 import {
   authService,
   AUTH_REQUIRE_EMAIL_VERIFICATION_KEY,
@@ -363,6 +365,26 @@ const optionalManageInt = (schema: z.ZodNumber) =>
     (value) => (value === null || value === '' || Number.isNaN(value) ? undefined : value),
     schema.optional()
   );
+
+const grantSeasonPassSchema = z.object({
+  reason: z.string().trim().min(5).max(500),
+});
+
+const grantEventPassSchema = z
+  .object({
+    reason: z.string().trim().min(5).max(500),
+    hours: optionalManageInt(z.coerce.number().int().positive().max(31 * 24)),
+    days: optionalManageInt(z.coerce.number().int().positive().max(31)),
+  })
+  .superRefine((value, ctx) => {
+    if (value.hours == null && value.days == null) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Provide hours and/or days',
+        path: ['hours'],
+      });
+    }
+  });
 
 const playerManageSchema = z.object({
   playerId: z.number().int().positive(),
@@ -5001,6 +5023,158 @@ router.post(
       }
       console.error('Admin grant VIP error:', error);
       res.status(500).json({ error: 'Failed to grant VIP' });
+    }
+  }
+);
+
+/**
+ * POST /api/admin/players/:playerId/season-pass/grant
+ * Unlock monthly Event Pass premium track for the current season.
+ */
+router.post(
+  '/players/:playerId/season-pass/grant',
+  auditLog({ action: 'GRANT_SEASON_PASS', targetType: 'Player' }),
+  async (req: AdminRequest, res) => {
+    try {
+      const adminRole = req.admin?.role;
+      if (!adminRole || adminRole === AdminRole.VIEWER) {
+        return res
+          .status(403)
+          .json({ error: 'FORBIDDEN', message: 'Viewer role cannot grant season pass' });
+      }
+
+      const playerId = Number(req.params.playerId);
+      if (!Number.isFinite(playerId) || playerId <= 0) {
+        return res.status(400).json({ error: 'Invalid player id' });
+      }
+
+      const { reason } = grantSeasonPassSchema.parse(req.body || {});
+      const player = await prisma.player.findUnique({
+        where: { id: playerId },
+        select: { id: true, username: true },
+      });
+      if (!player) {
+        return res.status(404).json({ error: 'Player not found' });
+      }
+
+      const seasonKey = seasonPassService.currentSeasonKey();
+      await seasonPassService.unlockSeasonPassPremium(playerId, seasonKey);
+
+      if (res.locals.auditLogData) {
+        res.locals.auditLogData.targetId = String(playerId);
+      }
+      res.locals.auditLogDetails = {
+        playerId,
+        username: player.username,
+        seasonKey,
+        reason,
+      };
+
+      res.json({
+        success: true,
+        message: `Season Pass premium unlocked for ${player.username} (${seasonKey})`,
+        playerId,
+        username: player.username,
+        seasonKey,
+        premiumUnlocked: true,
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: 'Invalid input', details: error.errors });
+      }
+      console.error('Admin grant season pass error:', error);
+      res.status(500).json({ error: 'Failed to grant season pass' });
+    }
+  }
+);
+
+/**
+ * POST /api/admin/players/:playerId/event-pass/grant
+ * Create a timed EVENT_BOOST entitlement (same effect family as checkout event boosts).
+ */
+router.post(
+  '/players/:playerId/event-pass/grant',
+  auditLog({ action: 'GRANT_EVENT_PASS', targetType: 'Player' }),
+  async (req: AdminRequest, res) => {
+    try {
+      const adminRole = req.admin?.role;
+      if (!adminRole || adminRole === AdminRole.VIEWER) {
+        return res
+          .status(403)
+          .json({ error: 'FORBIDDEN', message: 'Viewer role cannot grant event pass' });
+      }
+
+      const playerId = Number(req.params.playerId);
+      if (!Number.isFinite(playerId) || playerId <= 0) {
+        return res.status(400).json({ error: 'Invalid player id' });
+      }
+
+      const parsed = grantEventPassSchema.parse(req.body || {});
+      const durationHours =
+        (parsed.hours ?? 0) + (parsed.days != null ? parsed.days * 24 : 0);
+      if (durationHours < 1 || durationHours > 31 * 24) {
+        return res.status(400).json({
+          error: 'Invalid duration',
+          message: 'Duration must be between 1 hour and 31 days',
+        });
+      }
+
+      const player = await prisma.player.findUnique({
+        where: { id: playerId },
+        select: { id: true, username: true },
+      });
+      if (!player) {
+        return res.status(404).json({ error: 'Player not found' });
+      }
+
+      const entitlementKey = 'admin_event_pass';
+      let expiresAt: Date | null = null;
+      await prisma.$transaction(async (tx) => {
+        expiresAt = await createTimedCreditEntitlement(
+          tx,
+          playerId,
+          entitlementKey,
+          'EVENT_BOOST',
+          durationHours,
+          {
+            source: 'admin_grant',
+            boosts: { eventContributionPct: 0.15 },
+            reason: parsed.reason,
+            grantedByAdminId: req.admin?.id ?? null,
+          },
+        );
+      });
+
+      res.locals.auditLogDetails = {
+        playerId,
+        username: player.username,
+        durationHours,
+        hours: parsed.hours ?? null,
+        days: parsed.days ?? null,
+        entitlementKey,
+        expiresAt: expiresAt?.toISOString() ?? null,
+        reason: parsed.reason,
+      };
+
+      if (res.locals.auditLogData) {
+        res.locals.auditLogData.targetId = String(playerId);
+      }
+
+      res.json({
+        success: true,
+        message: `Event Pass boost granted to ${player.username} for ${durationHours}h`,
+        playerId,
+        username: player.username,
+        durationHours,
+        expiresAt,
+        effectType: 'EVENT_BOOST',
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: 'Invalid input', details: error.errors });
+      }
+      console.error('Admin grant event pass error:', error);
+      res.status(500).json({ error: 'Failed to grant event pass' });
     }
   }
 );

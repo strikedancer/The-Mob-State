@@ -2556,6 +2556,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get carsStolen => 'Voitures volées';
 
   @override
+  String get motorcyclesOwned => 'Owned motorcycles';
+
+  @override
   String get boatsStolen => 'Bateaux volés';
 
   @override
@@ -14437,6 +14440,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'Aucun médicament stocké pour l’instant.';
 
   @override
+  String get nightclubBackpackEmptyHint =>
+      'Your backpack has no drugs. Harvest or buy drugs first, or withdraw them from a house - then store them here with MAX or Store all.';
+
+  @override
   String get nightclubStockZeroSoldOut =>
       'Le stock actuel est de 0g (tout a été vendu).';
 
@@ -20682,6 +20689,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get drugsCrewDepositAction => 'To crew storage';
+
+  @override
+  String drugsCrewDepositDialogTitle(String name) {
+    return 'Deposit $name to crew';
+  }
 
   @override
   String get drugsCrewDepositDone => 'Moved to crew storage';

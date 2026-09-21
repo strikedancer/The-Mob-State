@@ -1833,6 +1833,43 @@ export const adminService = {
     return response.json();
   },
 
+  async grantSeasonPass(playerId: number, reason: string) {
+    const token = adminAuthService.getToken();
+    const response = await fetch(
+      `${API_URL}/admin/players/${playerId}/season-pass/grant`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ reason }),
+      },
+    );
+    await ensureOk(response, "Failed to grant season pass");
+    return response.json();
+  },
+
+  async grantEventPass(
+    playerId: number,
+    payload: { reason: string; hours?: number; days?: number },
+  ) {
+    const token = adminAuthService.getToken();
+    const response = await fetch(
+      `${API_URL}/admin/players/${playerId}/event-pass/grant`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      },
+    );
+    await ensureOk(response, "Failed to grant event pass");
+    return response.json();
+  },
+
   async resetPlayerProgress(playerId: number, reason?: string): Promise<{
     message: string;
     playerId: number;

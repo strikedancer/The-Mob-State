@@ -293,25 +293,20 @@ class SmugglingService {
   }
 
   private aircraftCargoSlots(aircraftType: string): number {
-    const knownSlots: Record<string, number> = {
-      cessna_172: 20,
-      king_air_350: 50,
-      citation_x: 70,
-      gulfstream_g650: 80,
-      boeing_737_cargo: 200,
-      antonov_an_225: 400,
-    };
-
-    if (knownSlots[aircraftType]) {
-      return knownSlots[aircraftType];
-    }
-
+    // Match hangar "Cargo" (aircraft.json cargoCapacity): 1 capacity unit = 1 smuggle slot.
     const definition = getAircraftById(aircraftType);
-    if (!definition) {
-      return 40;
+    if (definition?.cargoCapacity != null) {
+      return Math.max(1, Math.floor(Number(definition.cargoCapacity)));
     }
-
-    return Math.max(20, Math.round(definition.cargoCapacity / 10));
+    const legacySlots: Record<string, number> = {
+      cessna_172: 100,
+      king_air_350: 300,
+      citation_x: 500,
+      gulfstream_g650: 800,
+      boeing_737_cargo: 5000,
+      antonov_an_225: 25000,
+    };
+    return legacySlots[aircraftType] ?? 40;
   }
 
   private aircraftRiskReduction(aircraftType: string): number {

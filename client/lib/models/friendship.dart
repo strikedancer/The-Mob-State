@@ -42,7 +42,8 @@ class FriendInfo {
   final String username;
   final int rank;
   final int health;
-  final String currentCountry;
+  /// Omitted by `GET /friends` (privacy); kept optional for older payloads.
+  final String? currentCountry;
   final String? avatar;
   final String? activePortraitPath;
 
@@ -51,7 +52,7 @@ class FriendInfo {
     required this.username,
     required this.rank,
     required this.health,
-    required this.currentCountry,
+    this.currentCountry,
     this.avatar,
     this.activePortraitPath,
   });

@@ -17,7 +17,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 3. **Transfer** (`POST /drugs/materials/transfer`): `to_backpack` | `to_depot` still exists for leftover depot lots.
 4. **Backpack capacity**: materials, finished drugs and trade goods share slots with tools and unequipped weapons (`toolService.calculateInventoryUsage`). Worn crime/secondary weapons do not use backpack slots. Upgrade backpacks to carry more. Nightclub stock (`NightclubDrugInventory`) does **not** use backpack slots.
 5. **Collect** always credits the **backpack**. A full backpack blocks harvest with used/capacity in the error. The player must store drugs in the nightclub (or a house) first; collect does **not** auto-dump into the club.
-6. **Nightclub store**: `POST /nightclub/:venueId/drugs/store` moves backpack grams into the venue and refreshes backpack slots. The UI defaults the gram field to the **full selected lot** (not 10g). `POST /nightclub/:venueId/drugs/store-all` dumps every backpack drug lot. Leftover backpack grams are named in the success message because they still occupy slots.
+6. **Nightclub store**: `POST /nightclub/:venueId/drugs/store` moves backpack grams into the venue and refreshes backpack slots. The UI defaults the gram field to the **full selected lot** (not 10g). `POST /nightclub/:venueId/drugs/store-all` dumps every backpack drug lot. Leftover backpack grams are named in the success message because they still occupy slots. On the nightclub screen, Drug Storage is in the **main flow** (above Advanced) and shows an explicit empty-backpack hint when there is nothing to store.
 7. **Travel / fly / arrest**:
    - Country depots and house stock are **safe** on travel.
    - Backpack materials, drugs and trade raise **arrest chance** and can be **partially confiscated** per leg or hangar flight.
@@ -40,7 +40,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - `POST /drugs/heat/cool` `{ action: cash | low_profile }` — low profile lasts `DRUG_HEAT_LOW_PROFILE_HOURS` (default 4): blocks new production, halves heat-gain, existing batches keep running. After it ends, `DRUG_HEAT_LOW_PROFILE_COOLDOWN_HOURS` (default 8 from start) before you can use it again. Hub chip and production cards show remaining time.
 - `POST /drugs/raids/:id/resolve` `{ choice: lose | downtime | cash }`
 - `POST /drug-facilities/:id/auto-sale` `{ enabled }` (darkweb storefront only, default off)
-- `POST /drugs/crew-storage/deposit` / `withdraw` — quality `DrugInventory` lots to crew `drug_storage`
+- `POST /drugs/crew-storage/deposit` / `withdraw` — quality `DrugInventory` lots to crew `drug_storage`. Crew page **Add drugs** loads `GET /drugs/inventory` and deposits via this endpoint (`drugType` + `quality` + `quantity`); trade goods keep `/crews/:id/storage/trade/deposit`. Inventory **Naar crew-opslag** uses a deposit dialog (no sell-price UI).
 - `GET /drugs/wholesale/quote` — dest street vs B2B €/g, fee, ETA, seizure, heat preview (`scope=personal|crew`)
 - `POST /drugs/wholesale/export` — container send; `scope=personal` uses personal inventory, `scope=crew` uses `CrewDrugLot` + crew smuggle network + crew bank freight
 - `GET /drugs/wholesale/shipments` — personal wholesale rows plus the player's crew wholesale rows (settles due first)

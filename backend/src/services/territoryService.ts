@@ -2214,36 +2214,38 @@ export async function getOverview(): Promise<{
   drama: territoryMetaService.TerritoryDramaSnapshot;
   activeRegionEvents: territoryMetaService.ActiveRegionEvent[];
 }> {
-  await syncContestLifecycle();
+  return withPrismaWriteRetry(async () => {
+    await syncContestLifecycle();
 
-  const [cfg, seasons, leaderboard, drama] = await Promise.all([
-    getTerritoryConfig(),
-    prisma.$queryRawUnsafe<SeasonRow[]>(
-      `SELECT * FROM territory_seasons WHERE status = 'active' ORDER BY startsAt DESC LIMIT 1`
-    ),
-    prisma.$queryRawUnsafe<Array<{ crewId: number; crewName: string; regionsOwned: number; totalControl: number }>>(
-      `SELECT c.id AS crewId, c.name AS crewName, COUNT(tc.id) AS regionsOwned, 0 AS totalControl
-       FROM territory_control tc
-       JOIN crews c ON c.id = tc.ownerCrewId
-       WHERE tc.ownerCrewId IS NOT NULL
-       GROUP BY c.id, c.name
-       ORDER BY regionsOwned DESC
-       LIMIT 10`
-    ),
-    territoryMetaService.getTerritoryDramaSnapshot(),
-  ]);
-  return {
-    config: cfg,
-    activeSeason: seasons[0] ?? null,
-    leaderboard: leaderboard.map((entry) => ({
-      crewId: toNumeric(entry.crewId),
-      crewName: entry.crewName,
-      regionsOwned: toNumeric(entry.regionsOwned),
-      totalControl: toNumeric(entry.totalControl),
-    })),
-    drama,
-    activeRegionEvents: drama.activeRegionEvents,
-  };
+    const [cfg, seasons, leaderboard, drama] = await Promise.all([
+      getTerritoryConfig(),
+      prisma.$queryRawUnsafe<SeasonRow[]>(
+        `SELECT * FROM territory_seasons WHERE status = 'active' ORDER BY startsAt DESC LIMIT 1`
+      ),
+      prisma.$queryRawUnsafe<Array<{ crewId: number; crewName: string; regionsOwned: number; totalControl: number }>>(
+        `SELECT c.id AS crewId, c.name AS crewName, COUNT(tc.id) AS regionsOwned, 0 AS totalControl
+         FROM territory_control tc
+         JOIN crews c ON c.id = tc.ownerCrewId
+         WHERE tc.ownerCrewId IS NOT NULL
+         GROUP BY c.id, c.name
+         ORDER BY regionsOwned DESC
+         LIMIT 10`
+      ),
+      territoryMetaService.getTerritoryDramaSnapshot(),
+    ]);
+    return {
+      config: cfg,
+      activeSeason: seasons[0] ?? null,
+      leaderboard: leaderboard.map((entry) => ({
+        crewId: toNumeric(entry.crewId),
+        crewName: entry.crewName,
+        regionsOwned: toNumeric(entry.regionsOwned),
+        totalControl: toNumeric(entry.totalControl),
+      })),
+      drama,
+      activeRegionEvents: drama.activeRegionEvents,
+    };
+  });
 }
 
 export async function getAdminTelemetry(hoursInput: number = 24): Promise<TerritoryAdminTelemetry> {

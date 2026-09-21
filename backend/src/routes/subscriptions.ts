@@ -22,6 +22,7 @@ import {
   isAllowedDonateAmount,
 } from '../services/crewVipFundService';
 import { seasonPassService } from '../services/seasonPassService';
+import { withPrismaWriteRetry } from '../lib/prismaRetry';
 
 const { createMollieClient } = require('@mollie/api-client');
 
@@ -825,33 +826,35 @@ async function upsertPaymentTransaction(payload: {
     return null;
   }
 
-  return prisma.paymentTransaction.upsert({
-    where: { providerPaymentId: payload.providerPaymentId },
-    create: {
-      playerId: payload.playerId,
-      checkoutType: payload.checkoutType,
-      productKey: payload.productKey ?? null,
-      amountValue: payload.amountValue,
-      amountCurrency: 'EUR',
-      description: payload.description ?? null,
-      providerPaymentId: payload.providerPaymentId,
-      providerCustomerId: payload.providerCustomerId ?? null,
-      providerSubscriptionId: payload.providerSubscriptionId ?? null,
-      status: payload.status,
-      metadataJson: JSON.stringify(payload.metadata),
-      paidAt: payload.paidAt ?? null,
-    },
-    update: {
-      productKey: payload.productKey ?? null,
-      amountValue: payload.amountValue,
-      description: payload.description ?? null,
-      providerCustomerId: payload.providerCustomerId ?? null,
-      providerSubscriptionId: payload.providerSubscriptionId ?? null,
-      status: payload.status,
-      metadataJson: JSON.stringify(payload.metadata),
-      paidAt: payload.paidAt ?? null,
-    },
-  });
+  return withPrismaWriteRetry(() =>
+    prisma.paymentTransaction.upsert({
+      where: { providerPaymentId: payload.providerPaymentId },
+      create: {
+        playerId: payload.playerId,
+        checkoutType: payload.checkoutType,
+        productKey: payload.productKey ?? null,
+        amountValue: payload.amountValue,
+        amountCurrency: 'EUR',
+        description: payload.description ?? null,
+        providerPaymentId: payload.providerPaymentId,
+        providerCustomerId: payload.providerCustomerId ?? null,
+        providerSubscriptionId: payload.providerSubscriptionId ?? null,
+        status: payload.status,
+        metadataJson: JSON.stringify(payload.metadata),
+        paidAt: payload.paidAt ?? null,
+      },
+      update: {
+        productKey: payload.productKey ?? null,
+        amountValue: payload.amountValue,
+        description: payload.description ?? null,
+        providerCustomerId: payload.providerCustomerId ?? null,
+        providerSubscriptionId: payload.providerSubscriptionId ?? null,
+        status: payload.status,
+        metadataJson: JSON.stringify(payload.metadata),
+        paidAt: payload.paidAt ?? null,
+      },
+    }),
+  );
 }
 
 async function fulfillGameSupportDonate(

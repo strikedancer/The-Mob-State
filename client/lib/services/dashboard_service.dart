@@ -539,6 +539,7 @@ class DashboardStats {
   final int successfulCrimes;
   final int jobAttempts;
   final int vehicleThieves;
+  final int motorcycleThieves;
   final int boatThieves;
   final int streetProstitutes;
   final int redLightProstitutes;
@@ -574,6 +575,7 @@ class DashboardStats {
     required this.successfulCrimes,
     required this.jobAttempts,
     required this.vehicleThieves,
+    required this.motorcycleThieves,
     required this.boatThieves,
     required this.streetProstitutes,
     required this.redLightProstitutes,
@@ -611,6 +613,7 @@ class DashboardStats {
       successfulCrimes: json['successfulCrimes'] as int,
       jobAttempts: json['jobAttempts'] as int,
       vehicleThieves: json['vehicleThieves'] as int? ?? 0,
+      motorcycleThieves: json['motorcycleThieves'] as int? ?? 0,
       boatThieves: json['boatThieves'] as int? ?? 0,
       streetProstitutes: json['streetProstitutes'] as int? ?? 0,
       redLightProstitutes: json['redLightProstitutes'] as int? ?? 0,

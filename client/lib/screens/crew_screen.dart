@@ -4792,6 +4792,11 @@ class _CrewScreenState extends State<CrewScreen>
 
   Future<void> _depositDrugs({bool trade = false}) async {
     if (_myCrew == null) return;
+    if (!trade) {
+      await _depositQualityDrugsToCrew();
+      return;
+    }
+
     final locale = Localizations.localeOf(context).languageCode;
     try {
       final apiClient = AuthService().apiClient;
@@ -4877,9 +4882,7 @@ class _CrewScreenState extends State<CrewScreen>
 
       final quantity = int.tryParse(qtyController.text) ?? 0;
       final depositResponse = await apiClient.post(
-        trade
-            ? '/crews/${_myCrew!.id}/storage/trade/deposit'
-            : '/crews/${_myCrew!.id}/storage/drugs/deposit',
+        '/crews/${_myCrew!.id}/storage/trade/deposit',
         {'goodType': selectedGoodType, 'quantity': quantity},
       );
 
@@ -4901,6 +4904,144 @@ class _CrewScreenState extends State<CrewScreen>
           context,
           SnackBar(
             content: Text('Er is een fout opgetreden'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _depositQualityDrugsToCrew() async {
+    if (_myCrew == null) return;
+    final locale = Localizations.localeOf(context).languageCode;
+    try {
+      final service = DrugService();
+      final lots = await service.getDrugInventory();
+      if (!mounted) return;
+
+      if (lots.isEmpty) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              locale == 'nl'
+                  ? 'Geen drugs beschikbaar'
+                  : 'No drugs available',
+            ),
+          ),
+        );
+        return;
+      }
+
+      var selectedLot = lots.first;
+      final qtyController = TextEditingController(text: '1');
+
+      final confirmed = await showDialog<bool>(
+        context: context,
+        builder: (context) => StatefulBuilder(
+          builder: (context, setStateDialog) => AlertDialog(
+            title: Text(l10n.drugsCrewDepositAction),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                DropdownButtonFormField<int>(
+                  value: selectedLot.id,
+                  items: lots
+                      .map(
+                        (lot) => DropdownMenuItem<int>(
+                          value: lot.id,
+                          child: Text(
+                            '${lot.drugName} (${lot.qualityLabel}) — ${lot.quantity}g',
+                          ),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    if (value == null) return;
+                    setStateDialog(() {
+                      selectedLot = lots.firstWhere((lot) => lot.id == value);
+                      qtyController.text = '1';
+                    });
+                  },
+                  decoration: InputDecoration(
+                    labelText: locale == 'nl' ? 'Drug' : 'Drug',
+                  ),
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: qtyController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: l10n.crewUiTr107,
+                    suffixText: '/ ${selectedLot.quantity}g',
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: Text(l10n.crewUiTr43),
+              ),
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context, true),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                child: Text(l10n.drugsCrewDepositAction),
+              ),
+            ],
+          ),
+        ),
+      );
+
+      if (confirmed != true) return;
+
+      final quantity = int.tryParse(qtyController.text) ?? 0;
+      if (quantity <= 0 || quantity > selectedLot.quantity) {
+        if (mounted) {
+          showTopRightFromSnackBar(
+            context,
+            SnackBar(
+              content: Text(l10n.drugsInvalidQuantity),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+        return;
+      }
+
+      final result = await service.depositCrewDrugLot(
+        drugType: selectedLot.drugType,
+        quality: selectedLot.quality,
+        quantity: quantity,
+      );
+      if (!mounted) return;
+
+      final ok = result['success'] == true;
+      final rawMsg = result['message'] as String?;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            ok
+                ? (rawMsg != null && rawMsg.isNotEmpty
+                    ? localizeDrugClientMessage(l10n, rawMsg)
+                    : l10n.drugsCrewDepositDone)
+                : (rawMsg != null && rawMsg.isNotEmpty
+                    ? localizeDrugClientMessage(l10n, rawMsg)
+                    : l10n.drugsCrewDepositFailed),
+          ),
+          backgroundColor: ok ? Colors.green : Colors.red,
+        ),
+      );
+      if (ok) {
+        _loadData();
+      }
+    } catch (e) {
+      if (mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(l10n.drugsCrewDepositFailed),
             backgroundColor: Colors.red,
           ),
         );
@@ -8292,12 +8433,10 @@ class _CrewScreenState extends State<CrewScreen>
         ? _getMissingSideBuildingsForHqUpgrade(requiredSideLevel, l10n)
         : <String>[];
     final hqUpgradeBlockedBySideBuildings = missingSideBuildings.isNotEmpty;
-    final displayLevel = isHq
-        ? _getHqGlobalLevel(building['style'] as String?, level)
-        : level;
+    // Style-local level (e.g. rural 2/3), same as Overview — not HQ global (6/3).
     final status = level == null
         ? _t(l10n, 'status.notOwned')
-        : '${_t(l10n, 'label.level')} ${displayLevel ?? level}/$maxLevel';
+        : '${_t(l10n, 'label.level')} $level/$maxLevel';
 
     VoidCallback? onAction;
     var actionLabel = status;

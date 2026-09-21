@@ -662,10 +662,15 @@ class _StolenVehicleQuickActionsState extends State<_StolenVehicleQuickActions> 
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final sellValue = widget.vehicle.getMarketValue();
-    final sellLabel = sellValue > 0
-        ? l10n.vehicleHeistSellFor(formatCurrency(sellValue))
+    final sellAmount = sellValue > 0 ? formatCurrency(sellValue) : null;
+    final stackSellLabel =
+        widget.compactWidth && sellAmount != null;
+    final sellLabel = sellAmount != null
+        ? l10n.vehicleHeistSellFor(sellAmount)
         : l10n.sell;
-    final buttonHeight = widget.compactWidth ? 48.0 : 54.0;
+    final buttonHeight = stackSellLabel
+        ? 58.0
+        : (widget.compactWidth ? 48.0 : 54.0);
 
     return Column(
       children: [
@@ -681,11 +686,33 @@ class _StolenVehicleQuickActionsState extends State<_StolenVehicleQuickActions> 
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
                     : const Icon(Icons.sell, size: 18),
-                label: Text(
-                  sellLabel,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontWeight: FontWeight.w800),
-                ),
+                label: stackSellLabel
+                    ? Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            l10n.sell,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w800,
+                              fontSize: 13,
+                              height: 1.1,
+                            ),
+                          ),
+                          Text(
+                            sellAmount,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 11,
+                              height: 1.15,
+                            ),
+                          ),
+                        ],
+                      )
+                    : Text(
+                        sellLabel,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontWeight: FontWeight.w800),
+                      ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF2E7D32),
                   foregroundColor: Colors.white,
@@ -693,6 +720,9 @@ class _StolenVehicleQuickActionsState extends State<_StolenVehicleQuickActions> 
                       .withValues(alpha: 0.4),
                   elevation: 0,
                   minimumSize: Size.fromHeight(buttonHeight),
+                  padding: stackSellLabel
+                      ? const EdgeInsets.symmetric(horizontal: 8, vertical: 6)
+                      : null,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),

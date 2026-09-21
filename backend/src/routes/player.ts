@@ -1026,6 +1026,7 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
       successfulCrimes,
       jobAttempts,
       vehicleThieves,
+      motorcycleThieves,
       boatThieves,
       streetProstitutes,
       redLightProstitutes,
@@ -1291,6 +1292,9 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
       }),
       prisma.vehicleInventory.count({
         where: { playerId, vehicleType: 'car' },
+      }),
+      prisma.vehicleInventory.count({
+        where: { playerId, vehicleType: 'motorcycle' },
       }),
       prisma.vehicleInventory.count({
         where: { playerId, vehicleType: 'boat' },
@@ -1618,6 +1622,7 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
         successfulCrimes,
         jobAttempts,
         vehicleThieves,
+        motorcycleThieves,
         boatThieves,
         streetProstitutes,
         redLightProstitutes,

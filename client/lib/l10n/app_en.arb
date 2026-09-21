@@ -1724,8 +1724,9 @@
   "breakouts": "Breakouts",
   "murders": "Murders",
   "hitlistContracts": "Hitlist contracts",
-  "carsStolen": "Cars stolen",
-  "boatsStolen": "Boats stolen",
+  "carsStolen": "Owned cars",
+  "motorcyclesOwned": "Owned motorcycles",
+  "boatsStolen": "Owned boats",
   "crimeAttempts": "Crime attempts",
   "successful": "Successful",
   "jobAttempts": "Job attempts",
@@ -8799,6 +8800,7 @@
     }
   },
   "nightclubNoStoredDrugs": "No stored drugs yet.",
+  "nightclubBackpackEmptyHint": "Your backpack has no drugs. Harvest or buy drugs first, or withdraw them from a house — then store them here with MAX or Store all.",
   "nightclubStockZeroSoldOut": "Current stock is 0g (everything has been sold).",
   "nightclubQualityWithValue": "Quality: {value}",
   "@nightclubQualityWithValue": {
@@ -13101,6 +13103,14 @@
     }
   },
   "drugsCrewDepositAction": "To crew storage",
+  "drugsCrewDepositDialogTitle": "Deposit {name} to crew",
+  "@drugsCrewDepositDialogTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "drugsCrewDepositDone": "Moved to crew storage",
   "drugsCrewDepositFailed": "Crew deposit failed",
   "drugsCutAllOneGrade": "Cut all one grade down",

@@ -4412,13 +4412,19 @@ abstract class AppLocalizations {
   /// No description provided for @carsStolen.
   ///
   /// In en, this message translates to:
-  /// **'Cars stolen'**
+  /// **'Owned cars'**
   String get carsStolen;
+
+  /// No description provided for @motorcyclesOwned.
+  ///
+  /// In en, this message translates to:
+  /// **'Owned motorcycles'**
+  String get motorcyclesOwned;
 
   /// No description provided for @boatsStolen.
   ///
   /// In en, this message translates to:
-  /// **'Boats stolen'**
+  /// **'Owned boats'**
   String get boatsStolen;
 
   /// No description provided for @crimeAttempts.
@@ -24887,6 +24893,12 @@ abstract class AppLocalizations {
   /// **'No stored drugs yet.'**
   String get nightclubNoStoredDrugs;
 
+  /// No description provided for @nightclubBackpackEmptyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your backpack has no drugs. Harvest or buy drugs first, or withdraw them from a house — then store them here with MAX or Store all.'**
+  String get nightclubBackpackEmptyHint;
+
   /// No description provided for @nightclubStockZeroSoldOut.
   ///
   /// In en, this message translates to:
@@ -35099,6 +35111,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'To crew storage'**
   String get drugsCrewDepositAction;
+
+  /// No description provided for @drugsCrewDepositDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Deposit {name} to crew'**
+  String drugsCrewDepositDialogTitle(String name);
 
   /// No description provided for @drugsCrewDepositDone.
   ///

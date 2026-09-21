@@ -2539,10 +2539,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get hitlistContracts => 'Hitlist-contracten';
 
   @override
-  String get carsStolen => 'Auto\'s gestolen';
+  String get carsStolen => 'Auto\'s in bezit';
 
   @override
-  String get boatsStolen => 'Boten gestolen';
+  String get motorcyclesOwned => 'Motoren in bezit';
+
+  @override
+  String get boatsStolen => 'Boten in bezit';
 
   @override
   String get crimeAttempts => 'Misdaadpogingen';
@@ -14310,6 +14313,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get nightclubNoStoredDrugs => 'Nog geen opgeslagen drugs.';
 
   @override
+  String get nightclubBackpackEmptyHint =>
+      'Je rugzak heeft geen drugs. Oogst of koop eerst drugs, of haal ze uit een huis — zet ze hier daarna in met MAX of Alles uit rugzak.';
+
+  @override
   String get nightclubStockZeroSoldOut =>
       'Voorraad is momenteel 0g (alles is verkocht).';
 
@@ -20498,6 +20505,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get drugsCrewDepositAction => 'Naar crew-opslag';
+
+  @override
+  String drugsCrewDepositDialogTitle(String name) {
+    return '$name naar crew-opslag';
+  }
 
   @override
   String get drugsCrewDepositDone => 'Naar crew-opslag verplaatst';
