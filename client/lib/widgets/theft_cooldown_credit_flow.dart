@@ -3,8 +3,22 @@ import 'package:provider/provider.dart';
 
 import '../l10n/app_localizations.dart';
 import '../providers/auth_provider.dart';
+import '../providers/vehicle_provider.dart';
 import '../services/theft_cooldown_credit_service.dart';
 import '../utils/theft_cooldown_confirm_prefs.dart';
+
+String? _vehicleTypeForTheftCooldownAction(String cooldownActionType) {
+  switch (cooldownActionType) {
+    case 'vehicle_theft':
+      return 'car';
+    case 'motorcycle_theft':
+      return 'motorcycle';
+    case 'boat_theft':
+      return 'boat';
+    default:
+      return null;
+  }
+}
 
 /// Confirm + redeem credits to clear vehicle theft cooldown (no full-screen overlay).
 Future<void> runTheftCooldownCreditRedeem(
@@ -71,6 +85,11 @@ Future<void> runTheftCooldownCreditRedeem(
     }
     if (persistHideConfirm) {
       await TheftCooldownConfirmPrefs.setSkipConfirmDialog(true);
+    }
+    if (context.mounted) {
+      context.read<VehicleProvider>().clearLiveTheftCooldown(
+        vehicleType: _vehicleTypeForTheftCooldownAction(cooldownActionType),
+      );
     }
     await onAfterSuccess();
     if (!context.mounted) return;

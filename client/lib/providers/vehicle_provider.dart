@@ -139,6 +139,42 @@ class VehicleProvider with ChangeNotifier {
     }
   }
 
+  /// Clears client-side theft timers after a successful credit cooldown reset.
+  ///
+  /// Server deletes `actionCooldown`, but the UI also gates on the last steal
+  /// attempt snapshot and cached `laneTheftCooldowns` — those must be zeroed
+  /// or steal stays blocked until the local countdown expires.
+  void clearLiveTheftCooldown({String? vehicleType}) {
+    final normalized =
+        vehicleType == null ? null : _normalizeOpsType(vehicleType);
+    final matchesAttempt = normalized == null ||
+        _lastStealAttemptVehicleType == null ||
+        _lastStealAttemptVehicleType == normalized;
+    if (matchesAttempt) {
+      _applyTheftCooldownSnapshot(0);
+    }
+
+    final intel = _vehicleOpsIntelligence;
+    if (intel != null) {
+      final raw = intel['laneTheftCooldowns'];
+      if (raw is Map) {
+        final map = Map<String, dynamic>.from(raw);
+        if (normalized != null) {
+          map[normalized] = 0;
+        } else {
+          for (final key in map.keys.toList()) {
+            map[key] = 0;
+          }
+        }
+        _vehicleOpsIntelligence = {
+          ...intel,
+          'laneTheftCooldowns': map,
+        };
+      }
+    }
+    notifyListeners();
+  }
+
   Future<Map<String, String>> _getHeaders() async {
     final token = await _authService.apiClient.getToken();
     return {
