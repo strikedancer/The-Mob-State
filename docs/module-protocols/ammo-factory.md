@@ -34,6 +34,7 @@ Factory ownership, production, market stock, upgrades and ammo economy balance.
 - Read-only ownership/status loads must not mutate factory ownership; inactivity forfeiture may only be resolved by an owner action or a contested purchase flow, never by simply opening the screen after travel.
 - Vacant factories get an inactive NPC operator (`ensureVenueNpcOccupancy`) so the lot is occupied but still `forSale`. Buying from an NPC transfers `ownerId` at the listed price; do not treat NPC occupancy as `FACTORY_OWNED`. NPC owners skip the 48h inactivity revoke. Caretaker NPCs **do** auto-produce onto that country's `ammoMarketStock` on the game tick (same 20-minute cadence and level-1 base output as a player claim, no 8-hour session). Per-type stock is capped (`NPC_MARKET_STOCK_CAP`) so idle lots do not flood the market. Player-owned factories still produce only when the owner claims.
 - When a player **loses** a factory (48h inactivity revoke, hitlist reset, admin reset), `revokeFactoriesForPlayer` / admin unown must call `reclaimVacantFactory` immediately so an NPC takes the lot. Do not delete the factory row.
+- Admin player detail (`GET /admin/players/:playerId/overview`): `assets.ammoFactories` lists factories where `ownerId` matches, with `countryId`, level and quality. Ammo inventory rounds stay under `assets.ammo` and are not ownership.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.

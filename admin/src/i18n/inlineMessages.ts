@@ -5214,6 +5214,76 @@ export const ADMIN_INLINE_ROWS: Record<string, { nl: string; en: string; de: str
     "it": "Tempo totale in prigione",
     "pl": "Całkowity czas więzienia",
     "pt": "Tempo total de prisão"
+  },
+  "Casino & munitiefabriek\u0000Casino & ammo factory": {
+    "nl": "Casino & munitiefabriek",
+    "en": "Casino & ammo factory",
+    "de": "Casino & Munitionsfabrik",
+    "fr": "Casino & usine de munitions",
+    "es": "Casino y fábrica de munición",
+    "it": "Casinò e fabbrica di munizioni",
+    "pl": "Kasyno i fabryka amunicji",
+    "pt": "Casino e fábrica de munição"
+  },
+  "Geen casino of munitiefabriek in bezit.\u0000No casino or ammo factory owned.": {
+    "nl": "Geen casino of munitiefabriek in bezit.",
+    "en": "No casino or ammo factory owned.",
+    "de": "Kein Casino oder keine Munitionsfabrik im Besitz.",
+    "fr": "Aucun casino ou usine de munitions en possession.",
+    "es": "Sin casino ni fábrica de munición en posesión.",
+    "it": "Nessun casinò o fabbrica di munizioni in possesso.",
+    "pl": "Brak kasyna lub fabryki amunicji.",
+    "pt": "Sem casino ou fábrica de munição em posse."
+  },
+  "Munitiefabriek\u0000Ammo factory": {
+    "nl": "Munitiefabriek",
+    "en": "Ammo factory",
+    "de": "Munitionsfabrik",
+    "fr": "Usine de munitions",
+    "es": "Fábrica de munición",
+    "it": "Fabbrica di munizioni",
+    "pl": "Fabryka amunicji",
+    "pt": "Fábrica de munição"
+  },
+  "Verdieping\u0000Floor": {
+    "nl": "Verdieping",
+    "en": "Floor",
+    "de": "Etage",
+    "fr": "Étage",
+    "es": "Piso",
+    "it": "Piano",
+    "pl": "Piętro",
+    "pt": "Andar"
+  },
+  "Bankroll\u0000Bankroll": {
+    "nl": "Bankroll",
+    "en": "Bankroll",
+    "de": "Bankroll",
+    "fr": "Bankroll",
+    "es": "Bankroll",
+    "it": "Bankroll",
+    "pl": "Bankroll",
+    "pt": "Bankroll"
+  },
+  "Niveau\u0000Level": {
+    "nl": "Niveau",
+    "en": "Level",
+    "de": "Stufe",
+    "fr": "Niveau",
+    "es": "Nivel",
+    "it": "Livello",
+    "pl": "Poziom",
+    "pt": "Nível"
+  },
+  "Kwaliteit\u0000Quality": {
+    "nl": "Kwaliteit",
+    "en": "Quality",
+    "de": "Qualität",
+    "fr": "Qualité",
+    "es": "Calidad",
+    "it": "Qualità",
+    "pl": "Jakość",
+    "pt": "Qualidade"
   }
 };
 

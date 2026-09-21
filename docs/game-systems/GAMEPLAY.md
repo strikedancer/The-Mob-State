@@ -660,6 +660,7 @@ interest = 0
 - Productie wordt **server-side** getakt: claim-interval **20 minuten**, basis **3 patronen per ammo-type per tick** (level 1; schaalt met output-level). Sessievenster blijft 8 uur backlog. Zie `docs/module-protocols/ammo-factory.md` en `docs/module-protocols/balance-economy.md`.
 - De knop **Zwarte Markt** onderaan de fabriek opent **Zwarte Markt → Munitie in het contentpaneel** (zijbalk blijft staan), niet een losse fullscreen-pagina.
 - Een lege fabriek krijgt een **NPC-uitbater** die kogels op de Zwarte Markt van dat land zet (zelfde tempo als level 1, met een voorraadplafond). De fabriek blijft **te koop**. Alleen een echte speler-eigenaar blokkeert aankoop; inactiviteit geldt niet voor die NPC-bezetting. Verlies je de fabriek (48u inactief, hitlist, admin-reset), dan neemt een NPC het terrein meteen over.
+- Admin → spelerdetail → Overzicht toont onder **Casino & munitiefabriek** of de speler een fabriek bezit en in welk land (niveau + kwaliteit), los van de munitie-voorraad in inventaris.
 
 ### Prostitutie (Empire hub)
 - Eén entry **Prostitution** met tabs Workers | RLD | Events | Social. Web-zijmenu “Red Light Districts” deep-linkt naar hub-tab RLD; mobiel RLD-menu idem (niet VIP Events).

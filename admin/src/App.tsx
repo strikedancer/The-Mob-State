@@ -7618,6 +7618,83 @@ function App() {
                                 )}
                               </div>
 
+                              {/* Casino & ammo factory ownership */}
+                              <div className="card mb-3">
+                                <div className="card-header">
+                                  <h5 className="mb-0">
+                                    <i className="ph-storefront me-2" />
+                                    {l("Casino & munitiefabriek", "Casino & ammo factory")}{" "}
+                                    <span className="badge bg-secondary ms-2">
+                                      {(ov.assets.casinoOwnerships?.length ??
+                                        0) +
+                                        (ov.assets.ammoFactories?.length ?? 0)}
+                                    </span>
+                                  </h5>
+                                </div>
+                                {(ov.assets.casinoOwnerships?.length ?? 0) ===
+                                  0 &&
+                                (ov.assets.ammoFactories?.length ?? 0) === 0 ? (
+                                  <div className="card-body text-muted">
+                                    {l("Geen casino of munitiefabriek in bezit.", "No casino or ammo factory owned.")}
+                                  </div>
+                                ) : (
+                                  <div className="table-responsive">
+                                    <table className="table table-hover mb-0">
+                                      <thead>
+                                        <tr>
+                                          <th>{l("Type", "Type")}</th>
+                                          <th>{l("Land", "Country")}</th>
+                                          <th>{l("Details", "Details")}</th>
+                                          <th>{l("Prijs", "Price")}</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {(
+                                          ov.assets.casinoOwnerships ?? []
+                                        ).map((c) => (
+                                          <tr key={`casino-${c.id}`}>
+                                            <td>{l("Casino", "Casino")}</td>
+                                            <td>{c.countryId}</td>
+                                            <td>
+                                              {l("Verdieping", "Floor")}{" "}
+                                              {c.floorLevel}
+                                              {" · "}
+                                              {l("Bankroll", "Bankroll")} €
+                                              {Number(
+                                                c.bankroll || 0,
+                                              ).toLocaleString()}
+                                            </td>
+                                            <td>
+                                              €
+                                              {Number(
+                                                c.purchasePrice || 0,
+                                              ).toLocaleString()}
+                                            </td>
+                                          </tr>
+                                        ))}
+                                        {(ov.assets.ammoFactories ?? []).map(
+                                          (f) => (
+                                            <tr key={`ammo-factory-${f.id}`}>
+                                              <td>
+                                                {l("Munitiefabriek", "Ammo factory")}
+                                              </td>
+                                              <td>{f.countryId}</td>
+                                              <td>
+                                                {l("Niveau", "Level")} {f.level}
+                                                {" · "}
+                                                {l("Kwaliteit", "Quality")}{" "}
+                                                {f.qualityLevel}
+                                              </td>
+                                              <td>—</td>
+                                            </tr>
+                                          ),
+                                        )}
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                )}
+                              </div>
+
                               {/* Tools */}
                               <div className="card mb-3">
                                 <div className="card-header">

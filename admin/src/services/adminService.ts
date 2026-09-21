@@ -239,6 +239,24 @@ export interface PlayerOverview {
   };
   assets: {
     properties: any[];
+    casinoOwnerships: Array<{
+      id: number;
+      casinoId: string;
+      countryId: string;
+      purchasePrice: number;
+      bankroll: number;
+      floorLevel: number;
+      purchasedAt: string;
+    }>;
+    ammoFactories: Array<{
+      id: number;
+      countryId: string;
+      level: number;
+      qualityLevel: number;
+      lastActiveAt: string | null;
+      lastProducedAt: string | null;
+      createdAt: string;
+    }>;
     tools: any[];
     inventory: any[];
     vehicles: any[];

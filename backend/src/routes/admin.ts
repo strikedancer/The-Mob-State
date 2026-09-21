@@ -2062,6 +2062,8 @@ router.get('/players/:playerId/overview', async (req, res) => {
       jobLast7,
       totalFlights,
       properties,
+      casinoOwnerships,
+      ammoFactories,
       playerTools,
       inventory,
       vehicleInventory,
@@ -2147,6 +2149,31 @@ router.get('/players/:playerId/overview', async (req, res) => {
           purchasePrice: true,
           upgradeLevel: true,
           purchasedAt: true,
+        },
+      }),
+      prisma.casinoOwnership.findMany({
+        where: { ownerId: playerId },
+        orderBy: { purchasedAt: 'desc' },
+        select: {
+          id: true,
+          casinoId: true,
+          purchasePrice: true,
+          bankroll: true,
+          floorLevel: true,
+          purchasedAt: true,
+        },
+      }),
+      prisma.ammoFactory.findMany({
+        where: { ownerId: playerId },
+        orderBy: { updatedAt: 'desc' },
+        select: {
+          id: true,
+          countryId: true,
+          level: true,
+          qualityLevel: true,
+          lastActiveAt: true,
+          lastProducedAt: true,
+          createdAt: true,
         },
       }),
       prisma.playerTools.findMany({
@@ -2429,6 +2456,11 @@ router.get('/players/:playerId/overview', async (req, res) => {
       },
       assets: {
         properties,
+        casinoOwnerships: casinoOwnerships.map((ownership) => ({
+          ...ownership,
+          countryId: ownership.casinoId.replace(/^casino_/, ''),
+        })),
+        ammoFactories,
         tools: playerTools,
         inventory,
         vehicles: vehicleInventory,
