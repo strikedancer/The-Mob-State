@@ -329,6 +329,7 @@ export const rldPvpService = {
         data: {
           playerId,
           location: 'street',
+          country: room.redLightDistrict.countryCode,
           redLightRoomId: null,
           nightclubVenueId: null,
           nightclubAssignedAt: null,
@@ -398,6 +399,7 @@ export const rldPvpService = {
         data: {
           playerId,
           location: 'street',
+          country: player.currentCountry,
           redLightRoomId: null,
           nightclubVenueId: null,
           nightclubAssignedAt: null,

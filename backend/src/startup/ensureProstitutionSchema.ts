@@ -104,6 +104,54 @@ export async function ensureProstitutionSchema(): Promise<void> {
     'CREATE INDEX idx_prostitutes_hotUntil ON prostitutes(hotUntil)'
   );
 
+  const hadCountryColumn = await columnExists('prostitutes', 'country');
+  await ensureColumn(
+    'prostitutes',
+    'country',
+    "ALTER TABLE prostitutes ADD COLUMN country VARCHAR(50) NOT NULL DEFAULT 'netherlands' AFTER location"
+  );
+  await ensureIndex(
+    'prostitutes',
+    'idx_prostitutes_country',
+    'CREATE INDEX idx_prostitutes_country ON prostitutes(country)'
+  );
+
+  // Keep placed workers aligned with their venue country.
+  await prisma.$executeRawUnsafe(`
+    UPDATE prostitutes p
+    INNER JOIN red_light_rooms r ON r.id = p.redLightRoomId
+    INNER JOIN red_light_districts d ON d.id = r.redLightDistrictId
+    SET p.country = d.countryCode
+    WHERE p.redLightRoomId IS NOT NULL
+      AND d.countryCode IS NOT NULL
+      AND d.countryCode <> ''
+      AND p.country <> d.countryCode
+  `);
+  await prisma.$executeRawUnsafe(`
+    UPDATE prostitutes p
+    INNER JOIN nightclub_venues v ON v.id = p.nightclubVenueId
+    SET p.country = v.country
+    WHERE p.nightclubVenueId IS NOT NULL
+      AND v.country IS NOT NULL
+      AND v.country <> ''
+      AND p.country <> v.country
+  `);
+
+  // First deploy of the column: pin street workers to their owner's current country.
+  if (!hadCountryColumn) {
+    await prisma.$executeRawUnsafe(`
+      UPDATE prostitutes p
+      INNER JOIN players pl ON pl.id = p.playerId
+      SET p.country = pl.currentCountry
+      WHERE p.location = 'street'
+        AND p.redLightRoomId IS NULL
+        AND p.nightclubVenueId IS NULL
+        AND pl.currentCountry IS NOT NULL
+        AND pl.currentCountry <> ''
+    `);
+    console.log('[StartupSchema] Backfilled prostitutes.country for street workers');
+  }
+
   await ensureColumn(
     'red_light_districts',
     'expansionLevel',

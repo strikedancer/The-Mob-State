@@ -4062,7 +4062,7 @@ class NightclubService {
   async getAssignableProstitutes(playerId: number, venueId: number): Promise<any[]> {
     const venue = await prisma.nightclubVenue.findUnique({
       where: { id: venueId },
-      select: { id: true, playerId: true },
+      select: { id: true, playerId: true, country: true },
     });
 
     if (!venue || venue.playerId !== playerId) {
@@ -4074,6 +4074,7 @@ class NightclubService {
         playerId,
         isBusted: false,
         location: 'street',
+        country: venue.country,
       },
       orderBy: [{ location: 'asc' }, { level: 'desc' }, { recruitedAt: 'desc' }],
       select: {
@@ -4082,6 +4083,7 @@ class NightclubService {
         level: true,
         variant: true,
         location: true,
+        country: true,
         nightclubVenueId: true,
         nightclubAssignedAt: true,
       },
@@ -4098,7 +4100,7 @@ class NightclubService {
     const language = await this.getPlayerLanguage(playerId);
     const venue = await prisma.nightclubVenue.findUnique({
       where: { id: venueId },
-      select: { id: true, playerId: true },
+      select: { id: true, playerId: true, country: true },
     });
 
     if (!venue || venue.playerId !== playerId) {
@@ -4209,6 +4211,7 @@ class NightclubService {
         where: { id: prostituteId },
         data: {
           location: 'nightclub',
+          country: venue.country,
           redLightRoomId: null,
           nightclubVenueId: venueId,
           nightclubAssignedAt: new Date(),

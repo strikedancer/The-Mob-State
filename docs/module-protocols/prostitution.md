@@ -47,7 +47,7 @@ Deze waarden sturen housing capaciteit/risico en weekhuur in de prostitutieflow.
 - Events: 1 actief + 1 aankomend per land (slug = `player.currentCountry`); hourly `settleEventEarnings`; event verhoogt raid/steal-kans.
 
 ## Empire hub IA
-- Empire hub Tab 0 Workers: `GET /prostitutes` (`getPlayerProstitutes`) returns only workers relevant to `player.currentCountry`: RLD placements filter by district `countryCode`; nightclub placements filter by venue `country` when present; street (and any placement without a country field) stay visible.
+- Empire hub Tab 0 Workers: `GET /prostitutes` returns only workers in `player.currentCountry`. RLD/NC use venue country; street workers use stored `prostitutes.country` (set on recruit / move / steal / reclaim).
 - Tab 0 Workers: KPI strip (workers S/RLD/NC, €/h, housing, recruit CD), recruit result via **`CrimeResultOverlay`** (same pattern as jobs/crimes; success + fail), Move menu + Work primary. No Collect button / Te innen KPI.
 - Tab 1 RLD: embedded `RedLightDistrictsScreen` (mobile RLD-menu and web sidebar deep-link hierheen, niet VIP Events).
 - Tab 2 Events: street nights for everyone and VIP salon (`vipOnly`) with participate/leave. Events use country slugs matching `player.currentCountry`.
@@ -69,7 +69,7 @@ Deze waarden sturen housing capaciteit/risico en weekhuur in de prostitutieflow.
 - Verify Workers shows no Collect button and no Te innen / To collect KPI; street/RLD cash still rises via the game tick.
 - Verify mobile “Red Light Districts” opens hub tab RLD (index 1), not Events.
 - Verify Events tab lists street nights and VIP salon (country slug, not ISO-2).
-- Verify Workers list omits RLD workers in other countries and nightclub workers whose venue country differs; street workers without a country field still appear.
+- Verify Workers list shows only workers in the player's current country (street via `prostitutes.country`, RLD via district, nightclub via venue).
 - Verify reclaim panel appears for a hot stolen worker and that she cannot be placed in RLD/nightclub until cool.
 
 ## When To Update This File

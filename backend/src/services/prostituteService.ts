@@ -1074,12 +1074,13 @@ export const prostituteService = {
 
     const player = await prisma.player.findUnique({
       where: { id: playerId },
-      select: { isVip: true, vipExpiresAt: true },
+      select: { isVip: true, vipExpiresAt: true, currentCountry: true },
     });
 
     const now = new Date();
     const hasActiveVip =
       player?.isVip === true && (!player.vipExpiresAt || player.vipExpiresAt > now);
+    const recruitCountry = String(player?.currentCountry || 'netherlands').trim() || 'netherlands';
     const recruitCooldownMs = applyVipTimeoutReductionMs(
       RECRUITMENT_COOLDOWN_MINUTES * 60 * 1000,
       hasActiveVip
@@ -1183,6 +1184,7 @@ export const prostituteService = {
         playerId,
         name: randomName,
         variant: randomVariant,
+        country: recruitCountry,
         housingTier: getHousingTierForVariant(randomVariant),
         housingRentPerDay: getHousingRentPerDay(randomVariant),
         housingPaidUntil: addDays(new Date(), economyPreset.housingGraceDays),
@@ -1276,8 +1278,8 @@ export const prostituteService = {
       if (nightclubCountry) {
         return nightclubCountry === currentCountry;
       }
-      // Street (and any placement without a country field) stays visible.
-      return true;
+      const streetCountry = String(prostitute.country || '').trim();
+      return streetCountry !== '' && streetCountry === currentCountry;
     });
 
     return inCurrentCountry.map((prostitute) => {
@@ -1529,6 +1531,9 @@ export const prostituteService = {
       data: {
         location: 'redlight',
         redLightRoomId: room.id,
+        country: room.redLightDistrict.countryCode,
+        nightclubVenueId: null,
+        nightclubAssignedAt: null,
         lastEarningsAt: new Date(),
       },
     });
@@ -1551,13 +1556,19 @@ export const prostituteService = {
     playerId: number,
     prostituteId: number
   ): Promise<{ success: boolean; message: string }> {
-    const prostitute = await prisma.prostitute.findFirst({
-      where: {
-        id: prostituteId,
-        playerId,
-      },
-      include: { redLightRoom: true },
-    });
+    const [prostitute, player] = await Promise.all([
+      prisma.prostitute.findFirst({
+        where: {
+          id: prostituteId,
+          playerId,
+        },
+        include: { redLightRoom: true },
+      }),
+      prisma.player.findUnique({
+        where: { id: playerId },
+        select: { currentCountry: true },
+      }),
+    ]);
 
     if (!prostitute) {
       return { success: false, message: 'Prostituee niet gevonden' };
@@ -1578,11 +1589,16 @@ export const prostituteService = {
       });
     }
 
-    // Move to street
+    const streetCountry =
+      String(player?.currentCountry || prostitute.country || 'netherlands').trim() ||
+      'netherlands';
+
+    // Move to street in the country where the player currently is.
     await prisma.prostitute.update({
       where: { id: prostituteId },
       data: {
         location: 'street',
+        country: streetCountry,
         redLightRoomId: null,
         nightclubVenueId: null,
         nightclubAssignedAt: null,
