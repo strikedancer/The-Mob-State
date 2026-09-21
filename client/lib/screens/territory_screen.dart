@@ -437,34 +437,112 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       final nextAt = _parseApiDate(raw['viewerNextActionAt']);
       final remaining =
           (raw['viewerCooldownSecondsRemaining'] as num?)?.toInt() ?? 0;
-      if (nextAt != null && nextAt.isAfter(fetchedAt)) {
-        raw['viewerCooldownUntil'] = nextAt.toIso8601String();
-      } else if (remaining > 0) {
+      if (remaining > 0) {
+        // Prefer server-reported remaining (avoids client/server clock skew).
         raw['viewerCooldownUntil'] =
             fetchedAt.add(Duration(seconds: remaining)).toIso8601String();
+      } else if (nextAt != null && nextAt.isAfter(fetchedAt)) {
+        raw['viewerCooldownUntil'] = nextAt.toIso8601String();
       } else {
         raw.remove('viewerCooldownUntil');
       }
 
-      final project = raw['regionProject'];
-      if (project is! Map) continue;
-      final projectNextAt = _parseApiDate(project['nextContributeAt']);
-      final projectRemaining =
-          (project['contributeCooldownSecondsRemaining'] as num?)?.toInt() ?? 0;
-      final lastContributeAt = _parseApiDate(project['lastContributeAt']);
-      DateTime? contributeUntil = projectNextAt;
-      if (contributeUntil == null && projectRemaining > 0) {
-        contributeUntil = fetchedAt.add(Duration(seconds: projectRemaining));
+      final projectRaw = raw['regionProject'];
+      if (projectRaw is! Map) continue;
+      final project = Map<String, dynamic>.from(projectRaw);
+      raw['regionProject'] = project;
+      _stampProjectContributeCooldown(
+        project,
+        fetchedAt: fetchedAt,
+        fallbackCooldownSeconds: projectCooldown,
+      );
+    }
+  }
+
+  /// Stamps [projectContributeUntil] from server remaining seconds first, then
+  /// absolute timestamps, so the Bevoorraad button can show a live countdown.
+  void _stampProjectContributeCooldown(
+    Map<String, dynamic> project, {
+    required DateTime fetchedAt,
+    int? fallbackCooldownSeconds,
+    int? remainingOverride,
+  }) {
+    final cooldownSeconds = fallbackCooldownSeconds != null &&
+            fallbackCooldownSeconds > 0
+        ? fallbackCooldownSeconds
+        : _projectContributeCooldownSeconds;
+    var remaining =
+        remainingOverride ??
+        (project['contributeCooldownSecondsRemaining'] as num?)?.toInt() ??
+        0;
+    final projectNextAt = _parseApiDate(project['nextContributeAt']);
+    final lastContributeAt = _parseApiDate(project['lastContributeAt']);
+
+    DateTime? contributeUntil;
+    if (remaining > 0) {
+      contributeUntil = fetchedAt.add(Duration(seconds: remaining));
+    } else if (projectNextAt != null && projectNextAt.isAfter(fetchedAt)) {
+      contributeUntil = projectNextAt;
+      remaining = projectNextAt.difference(fetchedAt).inSeconds;
+    } else if (lastContributeAt != null && cooldownSeconds > 0) {
+      final candidate =
+          lastContributeAt.add(Duration(seconds: cooldownSeconds));
+      if (candidate.isAfter(fetchedAt)) {
+        contributeUntil = candidate;
+        remaining = candidate.difference(fetchedAt).inSeconds;
       }
-      if (contributeUntil == null && lastContributeAt != null) {
-        contributeUntil =
-            lastContributeAt.add(Duration(seconds: projectCooldown));
+    }
+
+    if (contributeUntil != null && remaining > 0) {
+      project['projectContributeUntil'] = contributeUntil.toIso8601String();
+      project['contributeCooldownSecondsRemaining'] = remaining;
+    } else {
+      project.remove('projectContributeUntil');
+      project['contributeCooldownSecondsRemaining'] = 0;
+    }
+  }
+
+  void _applyProjectContributeCooldownToOpenRegion({
+    required String regionKey,
+    Map<String, dynamic>? projectUpdate,
+    int? remainingOverride,
+  }) {
+    final now = DateTime.now();
+    final open = _regionDetailNotifier.value;
+    if (open != null && open['regionKey'] == regionKey) {
+      final patched = Map<String, dynamic>.from(open);
+      final existing =
+          (patched['regionProject'] as Map?)?.cast<String, dynamic>() ??
+          <String, dynamic>{};
+      final project = Map<String, dynamic>.from(existing);
+      if (projectUpdate != null) {
+        project.addAll(projectUpdate);
       }
-      if (contributeUntil != null && contributeUntil.isAfter(fetchedAt)) {
-        project['projectContributeUntil'] = contributeUntil.toIso8601String();
-      } else {
-        project.remove('projectContributeUntil');
+      _stampProjectContributeCooldown(
+        project,
+        fetchedAt: now,
+        remainingOverride: remainingOverride,
+      );
+      patched['regionProject'] = project;
+      _regionDetailNotifier.value = patched;
+      _selectedRegion = patched;
+    }
+
+    final mapRegion = _findRegionByKey(regionKey);
+    if (mapRegion != null) {
+      final existing =
+          (mapRegion['regionProject'] as Map?)?.cast<String, dynamic>() ??
+          <String, dynamic>{};
+      final project = Map<String, dynamic>.from(existing);
+      if (projectUpdate != null) {
+        project.addAll(projectUpdate);
       }
+      _stampProjectContributeCooldown(
+        project,
+        fetchedAt: now,
+        remainingOverride: remainingOverride,
+      );
+      mapRegion['regionProject'] = project;
     }
   }
 
@@ -2793,15 +2871,24 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         regionProject != null &&
         (projectStatus == 'building' || projectStatus == 'damaged');
     DateTime? projectContributeUntil = _parseApiDate(
-      regionProject?['projectContributeUntil'] ??
-          regionProject?['nextContributeAt'],
+      regionProject?['projectContributeUntil'],
     );
     if (projectContributeUntil == null) {
-      final lastContributeAt = _parseApiDate(regionProject?['lastContributeAt']);
-      if (lastContributeAt != null && _projectContributeCooldownSeconds > 0) {
-        projectContributeUntil = lastContributeAt.add(
-          Duration(seconds: _projectContributeCooldownSeconds),
-        );
+      final nextAt = _parseApiDate(regionProject?['nextContributeAt']);
+      if (nextAt != null && nextAt.isAfter(clock)) {
+        projectContributeUntil = nextAt;
+      } else {
+        final lastContributeAt =
+            _parseApiDate(regionProject?['lastContributeAt']);
+        if (lastContributeAt != null &&
+            _projectContributeCooldownSeconds > 0) {
+          final candidate = lastContributeAt.add(
+            Duration(seconds: _projectContributeCooldownSeconds),
+          );
+          if (candidate.isAfter(clock)) {
+            projectContributeUntil = candidate;
+          }
+        }
       }
     }
     final projectContributeRemaining = projectContributeUntil == null
@@ -3168,6 +3255,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
             onTap: projectContributeOnCooldown
                 ? null
                 : () => _contributeProject(region['regionKey'] as String),
+            forceDisabled: projectContributeOnCooldown,
           ),
         ],
         ..._buildArsenalMoveButtons(region),
@@ -3818,17 +3906,21 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     required IconData icon,
     required Color color,
     VoidCallback? onTap,
+    bool forceDisabled = false,
   }) {
+    final disabled = _isActing || onTap == null || forceDisabled;
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
         icon: Icon(icon, size: 16),
         label: Text(label),
         style: ElevatedButton.styleFrom(
-          backgroundColor: color,
+          backgroundColor: disabled ? Colors.blueGrey.shade700 : color,
           foregroundColor: Colors.white,
+          disabledBackgroundColor: Colors.blueGrey.shade700,
+          disabledForegroundColor: Colors.white70,
         ),
-        onPressed: (_isActing || onTap == null) ? null : onTap,
+        onPressed: disabled ? null : onTap,
       ),
     );
   }
@@ -4891,9 +4983,23 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     setState(() => _isActing = true);
     final result = await _service.contributeProject(regionKey);
     if (!mounted) return;
-    setState(() => _isActing = false);
 
     if (result['success'] == true) {
+      final projectPayload =
+          (result['project'] as Map?)?.cast<String, dynamic>();
+      final serverRemaining =
+          (projectPayload?['contributeCooldownSecondsRemaining'] as num?)
+              ?.toInt();
+      // Stamp cooldown immediately so the open sheet shows the timer before
+      // the map reload finishes (and while isActing is still true).
+      _applyProjectContributeCooldownToOpenRegion(
+        regionKey: regionKey,
+        projectUpdate: projectPayload,
+        remainingOverride: (serverRemaining != null && serverRemaining > 0)
+            ? serverRemaining
+            : _projectContributeCooldownSeconds,
+      );
+      if (mounted) setState(() => _isActing = false);
       showTopRightFromSnackBar(
         context,
         SnackBar(
@@ -4902,8 +5008,9 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           duration: const Duration(seconds: 3),
         ),
       );
-      await _loadData();
+      await _reloadRegionState(regionKey);
     } else {
+      if (mounted) setState(() => _isActing = false);
       final rawEvent = result['event'] ?? result['message'];
       showTopRightFromSnackBar(
         context,
