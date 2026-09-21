@@ -41,9 +41,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
   List<Prostitute> _prostitutes = [];
   List<Map<String, dynamic>> _reclaimable = [];
   ProstituteHousingSummary? _housingSummary;
-  ProstituteStats? _stats;
   bool _loadFailed = false;
-  bool _isCollecting = false;
 
   List<VipEvent> _activeEvents = [];
   List<VipEvent> _upcomingEvents = [];
@@ -160,7 +158,6 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
     if (result['success'] == true) {
       _prostitutes = result['prostitutes'] as List<Prostitute>;
       _housingSummary = result['housingSummary'] as ProstituteHousingSummary?;
-      _stats = result['stats'] as ProstituteStats?;
       _loadFailed = false;
       _reclaimable = await _service.getReclaimableWorkers();
 
@@ -220,16 +217,6 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
     if (mounted) {
       setState(() => _isLoading = false);
     }
-  }
-
-  Future<void> _refreshWorkersQuietly() async {
-    final result = await _service.getProstitutes();
-    if (!mounted || result['success'] != true) return;
-    setState(() {
-      _prostitutes = result['prostitutes'] as List<Prostitute>;
-      _housingSummary = result['housingSummary'] as ProstituteHousingSummary?;
-      _stats = result['stats'] as ProstituteStats?;
-    });
   }
 
   Future<void> _loadVipEvents() async {
@@ -705,69 +692,6 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
     });
   }
 
-  Future<void> _collectEarnings() async {
-    if (_isCollecting) return;
-    final l10n = AppLocalizations.of(context)!;
-    setState(() => _isCollecting = true);
-    try {
-      await _refreshWorkersQuietly();
-      if (!mounted) return;
-      final potential = _stats?.potentialEarnings ?? 0;
-      final confirmed = await showDialog<bool>(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          backgroundColor: Colors.grey.shade900,
-          title: Text(l10n.prostitutionCollect),
-          content: Text(
-            potential > 0
-                ? l10n.prostitutionCollectConfirm(potential.toString())
-                : l10n.prostitutionCollectEmpty,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(ctx, false),
-              child: Text(l10n.cancel),
-            ),
-            if (potential > 0)
-              FilledButton(
-                onPressed: () => Navigator.pop(ctx, true),
-                style: FilledButton.styleFrom(
-                  backgroundColor: kProstitutionGold,
-                  foregroundColor: Colors.black,
-                ),
-                child: Text(l10n.prostitutionCollect),
-              ),
-          ],
-        ),
-      );
-      if (confirmed != true || !mounted) return;
-
-      final result = await _service.settleEarnings();
-      if (!mounted) return;
-      final earnings = (result['earnings'] as num?)?.toInt() ?? 0;
-      showTopRightFromSnackBar(
-        context,
-        SnackBar(
-          content: Text(
-            result['success'] == true
-                ? (earnings > 0
-                    ? l10n.prostitutionCollectSuccess(earnings.toString())
-                    : l10n.prostitutionCollectEmpty)
-                : (result['message']?.toString() ??
-                    l10n.prostitutionCollectFailed),
-          ),
-          backgroundColor:
-              result['success'] == true ? Colors.green : Colors.red,
-        ),
-      );
-      if (result['success'] == true) {
-        await _loadData();
-      }
-    } finally {
-      if (mounted) setState(() => _isCollecting = false);
-    }
-  }
-
   Widget _buildEmpireKpiStrip(AppLocalizations l10n) {
     int street = 0;
     int rld = 0;
@@ -784,7 +708,6 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
         street++;
       }
     }
-    final potential = _stats?.potentialEarnings ?? 0;
     final slots = _housingSummary == null
         ? '—'
         : '${_housingSummary!.occupiedSlots}/${_housingSummary!.totalCapacity}';
@@ -804,12 +727,6 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
           value: '€${hourly.toStringAsFixed(0)}/h',
           icon: Icons.payments,
           accent: Colors.teal.shade300,
-        ),
-        EmpireKpiItem(
-          label: l10n.prostitutionPotentialEarnings,
-          value: '€$potential',
-          icon: Icons.savings,
-          accent: Colors.green.shade300,
         ),
         EmpireKpiItem(
           label: l10n.prostitutionHousingSlots,
@@ -1052,55 +969,8 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                             ),
                           ),
                         ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: ElevatedButton.icon(
-                            onPressed: _isCollecting ? null : _collectEarnings,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: kProstitutionGold,
-                              foregroundColor: Colors.black,
-                            ),
-                            icon: _isCollecting
-                                ? const SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                    ),
-                                  )
-                                : const Icon(Icons.savings),
-                            label: Text(l10n.prostitutionCollect),
-                          ),
-                        ),
                       ],
                     ),
-                    if (_prostitutes.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 6),
-                        child: Text(
-                          () {
-                            final pending = _prostitutes.where(
-                              (p) =>
-                                  p.location != 'nightclub' &&
-                                  !p.isCurrentlyBusted,
-                            );
-                            final stamps = (pending.isEmpty
-                                    ? _prostitutes
-                                    : pending)
-                                .map((p) => p.lastEarningsAt);
-                            final latest = stamps.reduce(
-                              (a, b) => a.isAfter(b) ? a : b,
-                            );
-                            final local = latest.toLocal();
-                            final stamp =
-                                '${local.day}/${local.month} ${local.hour.toString().padLeft(2, '0')}:${local.minute.toString().padLeft(2, '0')}';
-                            return Localizations.localeOf(context).languageCode == 'nl'
-                                ? 'Laatst verrekend: $stamp'
-                                : 'Last settled: $stamp';
-                          }(),
-                          style: const TextStyle(color: Colors.white70, fontSize: 12),
-                        ),
-                      ),
                       ],
                     ),
                   ),

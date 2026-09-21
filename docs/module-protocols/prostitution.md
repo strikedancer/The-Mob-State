@@ -23,7 +23,7 @@ Deze waarden sturen housing capaciteit/risico en weekhuur in de prostitutieflow.
 - Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell.
 - Leaderboard TabBar is scrollable; a failed leaderboard load shows retry, not “no data”.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
-- UI surfaces (Collect earnings, recruit ceremony, rivalry history labels) must not invent new gameplay rules — only present existing APIs.
+- UI surfaces (recruit ceremony, rivalry history labels) must not invent new gameplay rules — only present existing APIs.
 
 ## Check Before Editing
 - What is the player trying to achieve in this screen or loop?
@@ -32,8 +32,8 @@ Deze waarden sturen housing capaciteit/risico en weekhuur in de prostitutieflow.
 - Does this module depend on assets, videos, icons or generated media?
 
 ## Must Preserve
-- Collect-label is “Nu ophalen” / “Collect now” en toont een last-settle hint. Tick blijft automatisch verrekenen.
-- `settleEarnings` en `getEarningsStats.potentialEarnings` gebruiken dezelfde passieve som (straat/RLD, fractionele uren, occupancy/guard/sabotage). Collect mag nooit “leeg” zeggen terwijl de KPI Te innen > €0 toont. Nachtclub zit niet in die passieve som.
+- Street/RLD passive income is **auto-settled** by the game tick (`settleAllProstitutionEarnings` → `settleEarnings`). The Workers UI has **no** Collect button and **no** Te innen / To collect KPI.
+- `settleEarnings` and `getEarningsStats.potentialEarnings` still use the same passive sum (street/RLD, fractional hours, occupancy/guard/sabotage) for tick/API; nightclub is not in that passive sum.
 - Clear success and failure feedback for the player.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
@@ -48,7 +48,7 @@ Deze waarden sturen housing capaciteit/risico en weekhuur in de prostitutieflow.
 
 ## Empire hub IA
 - Empire hub Tab 0 Workers: `GET /prostitutes` (`getPlayerProstitutes`) returns only workers relevant to `player.currentCountry`: RLD placements filter by district `countryCode`; nightclub placements filter by venue `country` when present; street (and any placement without a country field) stay visible.
-- Tab 0 Workers: KPI strip (workers S/RLD/NC, €/h, collectable, housing, recruit CD), Collect → `settleEarnings`, recruit result via **`CrimeResultOverlay`** (same pattern as jobs/crimes; success + fail), Move menu + Work primary.
+- Tab 0 Workers: KPI strip (workers S/RLD/NC, €/h, housing, recruit CD), recruit result via **`CrimeResultOverlay`** (same pattern as jobs/crimes; success + fail), Move menu + Work primary. No Collect button / Te innen KPI.
 - Tab 1 RLD: embedded `RedLightDistrictsScreen` (mobile RLD-menu and web sidebar deep-link hierheen, niet VIP Events).
 - Tab 2 Events: street nights for everyone and VIP salon (`vipOnly`) with participate/leave. Events use country slugs matching `player.currentCountry`.
 - Tab 3 Social: Rivalry + Leaderboard segments (no nested chaos beyond existing period tabs).
@@ -66,7 +66,7 @@ Deze waarden sturen housing capaciteit/risico en weekhuur in de prostitutieflow.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
 - Verify prostitute cards in Workers are never bottom-clipped; card height must follow content (auto height) on web/tablet/desktop.
-- Verify Collect settles the same pending amount as the Te innen / To collect KPI (including amounts under one hour) and refreshes; empty collect only when that KPI is €0.
+- Verify Workers shows no Collect button and no Te innen / To collect KPI; street/RLD cash still rises via the game tick.
 - Verify mobile “Red Light Districts” opens hub tab RLD (index 1), not Events.
 - Verify Events tab lists street nights and VIP salon (country slug, not ISO-2).
 - Verify Workers list omits RLD workers in other countries and nightclub workers whose venue country differs; street workers without a country field still appear.
