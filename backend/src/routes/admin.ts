@@ -5920,6 +5920,7 @@ router.delete(
 
 router.post(
   '/trial/court-record-amnesty',
+  requireAdminRole(AdminRole.SUPER_ADMIN),
   auditLog({ action: 'COURT_RECORD_AMNESTY', targetType: 'WorldEvent' }),
   async (req, res) => {
     try {
@@ -5937,6 +5938,11 @@ router.post(
         playersCleared: wipe.playersCleared,
         recordsCleared: wipe.recordsCleared,
         announcementId: posted?.id ?? null,
+        promo: {
+          displayName: COURT_RECORD_AMNESTY_DISPLAY_NAME,
+          message: COURT_RECORD_AMNESTY_MESSAGE,
+          imageUrl: COURT_RECORD_AMNESTY_IMAGE,
+        },
       });
     } catch (error) {
       console.error('Admin court-record amnesty error:', error);

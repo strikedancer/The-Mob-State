@@ -39,6 +39,7 @@ import { CrewWarsAdminPanel } from "./components/CrewWarsAdminPanel";
 import { CrewMissionsAdminPanel } from "./components/CrewMissionsAdminPanel";
 import { CountryPoliceAdminPanel } from "./components/CountryPoliceAdminPanel";
 import { WorldChatAdminPanel } from "./components/WorldChatAdminPanel";
+import { CourtAdminPanel } from "./components/CourtAdminPanel";
 import { CasinoAdminPanel } from "./components/CasinoAdminPanel";
 import { DrugsAdminPanel } from "./components/DrugsAdminPanel";
 import { EmailVerificationAdminPanel } from "./components/EmailVerificationAdminPanel";
@@ -105,6 +106,7 @@ type TabType =
   | "todos"
   | "crew-wars"
   | "world-chat"
+  | "court"
   | "crew-missions"
   | "country-police"
   | "casino"
@@ -5070,6 +5072,11 @@ function App() {
       id: "world-chat",
       label: l("Wereldchat", "World chat"),
       icon: "bi-chat-dots-fill",
+    },
+    {
+      id: "court",
+      label: l("Rechtbank", "Court"),
+      icon: "bi-bank2",
     },
     {
       id: "crew-missions",
@@ -11536,6 +11543,13 @@ function App() {
                 <WorldChatAdminPanel
                   locale={language}
                   canConfigure={!staffRole}
+                />
+              )}
+
+              {activeTab === "court" && (
+                <CourtAdminPanel
+                  locale={language}
+                  isSuperAdmin={adminRole === "SUPER_ADMIN"}
                 />
               )}
 

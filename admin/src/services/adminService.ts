@@ -3391,4 +3391,31 @@ export const adminService = {
     );
     await ensureOk(response, "Failed to delete portrait");
   },
+
+  async runCourtRecordAmnesty(): Promise<{
+    ok: boolean;
+    playersCleared: number;
+    recordsCleared: number;
+    announcementId: number | null;
+    promo?: {
+      displayName: string;
+      message: string;
+      imageUrl: string;
+    };
+  }> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(
+      `${API_URL}/admin/trial/court-record-amnesty`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ confirm: "WIPE_ALL_RECORDS" }),
+      },
+    );
+    await ensureOk(response, "Failed to run court-record amnesty");
+    return response.json();
+  },
 };

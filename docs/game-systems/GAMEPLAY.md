@@ -247,6 +247,7 @@ Voorbeelden:
 - Alleen de omgekochte veroordeling verdwijnt van het strafblad; oudere veroordelingen blijven staan.
 - Een mislukte omkoping kost het geboden bedrag en laat de straf doorlopen.
 - **Aanvraag strafblad wissen:** op de rechtbank, vrij of in de cel, zolang er een strafblad is. Kosten starten op €100.000 en stijgen met €1.000 per extra veroordeling. Slagingskans hangt af van de lengte van het blad, hoe lang geleden de laatste arrestatie was, reputatie, en Don-omkoping van wethouder/commissaris/rechter in het huidige land (8–70%). Alleen in het **eerste uur** na een arrestatie geldt de zware −15% fris-straf; daarna zakt die penalty. Mislukt: alleen het geld kwijt. Gelukt: blad leeg, je komt niet vrij. Daarna 12 uur wachten. Hoe korter het blad, hoe beter de kans. De riskante crime Strafblad wissen blijft bestaan.
+- Staff kan in Admin → **Rechtbank** (super-admin) een **amnesty** starten die ieders zichtbare strafblad wist en een promo in wereldchat plaatst (met afbeelding); nieuwe veroordelingen daarna tellen weer normaal.
 
 ### Jail Escape
 - **Zelf uitbreken**: max **2 pogingen per straf**, **15 minuten** ertussen. Mislukken = +15 minuten. Daarna borg, crew/vrienden of uitzitten.
