@@ -273,7 +273,13 @@ export const globalChatService = {
   async sendSystemAnnouncement(
     displayName: string,
     message: string,
-    options?: { imageUrl?: string | null; onceImage?: boolean },
+    options?: {
+      imageUrl?: string | null;
+      /** Skip creating a duplicate if the same promo image was posted very recently (double-click guard). */
+      onceImage?: boolean;
+      /** Always create a new row + fanout/Discord even if onceImage would match. */
+      force?: boolean;
+    },
   ): Promise<GlobalChatPublicMessage | null> {
     if (!(await isGlobalChatEnabled())) {
       return null;
@@ -283,9 +289,16 @@ export const globalChatService = {
     if (!body) {
       return null;
     }
-    if (options?.onceImage && imageUrl) {
+    // onceImage only blocks near-duplicate posts (accidental double submit), not intentional re-runs hours later.
+    const onceImageWindowMs = 120_000;
+    if (options?.onceImage && !options?.force && imageUrl) {
       const existing = await prisma.globalChatMessage.findFirst({
-        where: { source: 'system', imageUrl, deletedAt: null },
+        where: {
+          source: 'system',
+          imageUrl,
+          deletedAt: null,
+          createdAt: { gte: new Date(Date.now() - onceImageWindowMs) },
+        },
         orderBy: { createdAt: 'desc' },
       });
       if (existing) {

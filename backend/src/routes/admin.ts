@@ -5935,13 +5935,22 @@ router.post(
       const posted = await globalChatService.sendSystemAnnouncement(
         COURT_RECORD_AMNESTY_DISPLAY_NAME,
         COURT_RECORD_AMNESTY_MESSAGE,
-        { imageUrl: COURT_RECORD_AMNESTY_IMAGE, onceImage: true },
+        { imageUrl: COURT_RECORD_AMNESTY_IMAGE, force: true },
       );
+      if (!posted) {
+        return res.status(500).json({
+          error: 'Records wiped but world-chat promo failed (global chat disabled or empty message)',
+          ok: true,
+          playersCleared: wipe.playersCleared,
+          recordsCleared: wipe.recordsCleared,
+          announcementId: null,
+        });
+      }
       return res.json({
         ok: true,
         playersCleared: wipe.playersCleared,
         recordsCleared: wipe.recordsCleared,
-        announcementId: posted?.id ?? null,
+        announcementId: posted.id,
         promo: {
           displayName: COURT_RECORD_AMNESTY_DISPLAY_NAME,
           message: COURT_RECORD_AMNESTY_MESSAGE,

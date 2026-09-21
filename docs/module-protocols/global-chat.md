@@ -73,7 +73,7 @@ Player OAuth stays `identify` + `email` only. The chat bot is a separate token.
 7. Without Discord env, in-game chat still works.
 8. With webhook only: game posts appear in Discord; Discord replies do not enter the game until bot+channel are set.
 9. Jail a real player by police, FBI or border police (or buy out / jailbreak another): **one** `Gevangenis` system line appears live, with sentence length (`voor 45 minuten` / `voor 1 uur en 30 minuten`). A second identical arrest line must not follow. An NPC arrest does not.
-10. A staff promo with `imageUrl` `promo/court_record_wipe.png` shows the still in the lobby and as a Discord embed, and is not silent.
+10. A staff promo with `imageUrl` `promo/court_record_wipe.png` shows the still in the lobby and as a Discord embed, and is not silent. Re-running amnesty always force-posts a new line (onceImage only blocks accidental duplicates within ~2 minutes).
 11. Linked Mod/Ops in `#wereldchat`: `!hulp` lists commands; reply `!wis` deletes; `!mute Name 15` mutes world chat. A player without staffRole cannot run those commands.
 
 ## i18n and Messaging

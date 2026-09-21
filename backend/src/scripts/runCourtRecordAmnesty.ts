@@ -7,7 +7,7 @@ async function main(): Promise<void> {
   const posted = await globalChatService.sendSystemAnnouncement(
     COURT_RECORD_AMNESTY_DISPLAY_NAME,
     COURT_RECORD_AMNESTY_MESSAGE,
-    { imageUrl: COURT_RECORD_AMNESTY_IMAGE, onceImage: true },
+    { imageUrl: COURT_RECORD_AMNESTY_IMAGE, force: true },
   );
   console.log(
     JSON.stringify({
