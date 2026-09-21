@@ -14,6 +14,12 @@ import {
   refreshInventorySlotUsage,
 } from './carriedInventory';
 import { ensureCrewPartsStorageSchema } from '../startup/ensureCrewPartsStorageSchema';
+import {
+  ammoSlotsForRounds,
+  drugSlotsForGrams,
+  tradeSlotsForLots,
+  tradeSlotsForQuantity,
+} from '../utils/propertyStash';
 
 export type CrewPartType = 'car' | 'motorcycle' | 'boat';
 
@@ -26,6 +32,64 @@ function crewPartsColumn(type: CrewPartType): 'carParts' | 'motorcycleParts' | '
   if (type === 'boat') return 'boatParts';
   if (type === 'motorcycle') return 'motorcycleParts';
   return 'carParts';
+}
+
+async function getCrewAmmoSlotsUsed(crewId: number): Promise<number> {
+  const rows = await prisma.crewAmmoInventory.findMany({
+    where: { crewId, quantity: { gt: 0 } },
+    select: { quantity: true },
+  });
+  return rows.reduce((sum, row) => sum + ammoSlotsForRounds(row.quantity), 0);
+}
+
+async function getCrewDrugSlotsUsed(crewId: number): Promise<number> {
+  const [goods, lots] = await Promise.all([
+    prisma.crewDrugInventory.findMany({
+      where: { crewId, quantity: { gt: 0 } },
+      select: { quantity: true },
+    }),
+    prisma.crewDrugLot.findMany({
+      where: { crewId, quantity: { gt: 0 } },
+      select: { quantity: true },
+    }),
+  ]);
+  return (
+    goods.reduce((sum, row) => sum + drugSlotsForGrams(row.quantity), 0) +
+    lots.reduce((sum, row) => sum + drugSlotsForGrams(row.quantity), 0)
+  );
+}
+
+async function getCrewTradeSlotsUsed(crewId: number): Promise<number> {
+  const rows = await prisma.crewTradeInventory.findMany({
+    where: { crewId, quantity: { gt: 0 } },
+    select: { goodType: true, quantity: true },
+  });
+  return tradeSlotsForLots(rows);
+}
+
+function extraAmmoSlotsForAdd(
+  currentRounds: number,
+  addRounds: number,
+): number {
+  if (addRounds <= 0) return 0;
+  return ammoSlotsForRounds(currentRounds + addRounds) - ammoSlotsForRounds(currentRounds);
+}
+
+function extraDrugSlotsForAdd(currentGrams: number, addGrams: number): number {
+  if (addGrams <= 0) return 0;
+  return drugSlotsForGrams(currentGrams + addGrams) - drugSlotsForGrams(currentGrams);
+}
+
+function extraTradeSlotsForAdd(
+  goodType: string,
+  currentQty: number,
+  addQty: number,
+): number {
+  if (addQty <= 0) return 0;
+  return (
+    tradeSlotsForQuantity(goodType, currentQty + addQty) -
+    tradeSlotsForQuantity(goodType, currentQty)
+  );
 }
 
 function playerPartsColumn(type: CrewPartType): 'car_parts' | 'motorcycle_parts' | 'boat_parts' {
@@ -445,13 +509,13 @@ export async function depositCrewAmmo(
     throw new Error('AMMO_STORAGE_NOT_OWNED');
   }
 
-  const currentTotal = await prisma.crewAmmoInventory.aggregate({
-    where: { crewId },
-    _sum: { quantity: true },
+  const existingCrewAmmo = await prisma.crewAmmoInventory.findUnique({
+    where: { crewId_ammoType: { crewId, ammoType } },
+    select: { quantity: true },
   });
-
-  const currentQuantity = currentTotal._sum.quantity ?? 0;
-  if (currentQuantity + quantity > capacity) {
+  const usedSlots = await getCrewAmmoSlotsUsed(crewId);
+  const extraSlots = extraAmmoSlotsForAdd(existingCrewAmmo?.quantity ?? 0, quantity);
+  if (usedSlots + extraSlots > capacity) {
     throw new Error('AMMO_STORAGE_FULL');
   }
 
@@ -500,11 +564,7 @@ export async function depositCrewAmmo(
 }
 
 async function getCrewDrugStorageUsed(crewId: number): Promise<number> {
-  const [goods, lots] = await Promise.all([
-    prisma.crewDrugInventory.aggregate({ where: { crewId }, _sum: { quantity: true } }),
-    prisma.crewDrugLot.aggregate({ where: { crewId }, _sum: { quantity: true } }),
-  ]);
-  return (goods._sum.quantity ?? 0) + (lots._sum.quantity ?? 0);
+  return getCrewDrugSlotsUsed(crewId);
 }
 
 export async function depositCrewDrugLots(
@@ -523,8 +583,13 @@ export async function depositCrewDrugLots(
     throw new Error('DRUG_STORAGE_NOT_OWNED');
   }
 
-  const currentQuantity = await getCrewDrugStorageUsed(crewId);
-  if (currentQuantity + quantity > capacity) {
+  const existingLot = await prisma.crewDrugLot.findUnique({
+    where: { crewId_drugType_quality: { crewId, drugType, quality } },
+    select: { quantity: true },
+  });
+  const usedSlots = await getCrewDrugSlotsUsed(crewId);
+  const extraSlots = extraDrugSlotsForAdd(existingLot?.quantity ?? 0, quantity);
+  if (usedSlots + extraSlots > capacity) {
     throw new Error('DRUG_STORAGE_FULL');
   }
 
@@ -612,8 +677,13 @@ export async function depositCrewDrugs(
     throw new Error('DRUG_STORAGE_NOT_OWNED');
   }
 
-  const currentQuantity = await getCrewDrugStorageUsed(crewId);
-  if (currentQuantity + quantity > capacity) {
+  const existingLegacy = await prisma.crewDrugInventory.findUnique({
+    where: { crewId_goodType: { crewId, goodType } },
+    select: { quantity: true },
+  });
+  const usedSlots = await getCrewDrugSlotsUsed(crewId);
+  const extraSlots = extraDrugSlotsForAdd(existingLegacy?.quantity ?? 0, quantity);
+  if (usedSlots + extraSlots > capacity) {
     throw new Error('DRUG_STORAGE_FULL');
   }
 
@@ -698,12 +768,17 @@ export async function depositCrewTradeGoods(
     throw new Error('TRADE_STORAGE_NOT_OWNED');
   }
 
-  const currentTotal = await prisma.crewTradeInventory.aggregate({
-    where: { crewId },
-    _sum: { quantity: true },
+  const existingTrade = await prisma.crewTradeInventory.findUnique({
+    where: { crewId_goodType: { crewId, goodType } },
+    select: { quantity: true },
   });
-  const currentQuantity = currentTotal._sum.quantity ?? 0;
-  if (currentQuantity + quantity > capacity) {
+  const usedSlots = await getCrewTradeSlotsUsed(crewId);
+  const extraSlots = extraTradeSlotsForAdd(
+    goodType,
+    existingTrade?.quantity ?? 0,
+    quantity,
+  );
+  if (usedSlots + extraSlots > capacity) {
     throw new Error('TRADE_STORAGE_FULL');
   }
 
@@ -882,12 +957,12 @@ export async function getCrewStorageSummary(crewId: number, viewerCountry = 'net
   ]);
 
   const weaponCount = weapons.reduce((sum, item) => sum + item.quantity, 0);
-  const ammoCount = ammo.reduce((sum, item) => sum + item.quantity, 0);
+  const ammoCount = ammo.reduce((sum, item) => sum + ammoSlotsForRounds(item.quantity), 0);
   const committed = await getCommittedTotals(crewId).catch(() => ({ weapons: 0, ammo: 0 }));
   const drugCount =
-    drugs.reduce((sum, item) => sum + item.quantity, 0) +
-    drugLots.reduce((sum, item) => sum + item.quantity, 0);
-  const tradeCount = tradeGoods.reduce((sum, item) => sum + item.quantity, 0);
+    drugs.reduce((sum, item) => sum + drugSlotsForGrams(item.quantity), 0) +
+    drugLots.reduce((sum, item) => sum + drugSlotsForGrams(item.quantity), 0);
+  const tradeCount = tradeSlotsForLots(tradeGoods);
   const carsWithType = cars.map((vehicle) => {
     const normalized = {
       ...vehicle,

@@ -66,7 +66,7 @@ Succesvolle **depot-claim** geeft **kleine XP** aan de claimende speler (per zen
 
 ## Eigen Voertuig Smokkelkanaal
 
-Naast het commerciële kanaal kunnen spelers eigen voertuigen inzetten voor smokkeloperaties.Zie aviation.md voor volledig cargo-slot systeem en risicowaarden.
+Naast het commerciële kanaal kunnen spelers eigen voertuigen inzetten voor smokkeloperaties. Zie aviation.md voor cargo-**tegels** en risicowaarden. Owned cargo capacity is tiles; trade/drug/ammo use the same packing as backpack/house (`tradeUnitsPerTile` / 100 g / 50 rounds), not 1 unit = 1 slot.
 
 **Beschikbare eigen voertuigen:**
 

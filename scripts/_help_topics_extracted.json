@@ -252,7 +252,8 @@
       "Bij mislukte heist: jail time voor alle leden, Wanted Level +5, geen beloning.",
       "De reward bij een geslaagde heist wordt gelijk verdeeld over alle deelnemende leden.",
       "Crew-chat is beschikbaar voor snelle coördinatie zonder extra apps.",
-      "Crew HQ-progressie: hoe langer en actiever de crew, hoe meer gezamenlijke upgrades en buffs vrijkomen."
+      "Crew HQ-progressie: hoe langer en actiever de crew, hoe meer gezamenlijke upgrades en buffs vrijkomen.",
+      "Gedeelde crew-opslag voor munitie, drugs en handelswaren telt in vakjes (tegels), niet in ruwe stuks: dezelfde packing als persoonlijk (bijv. 5 koffie of 10 diamanten per vakje)."
     ],
     "howEn": [
       "Creating a crew costs €10.000. The Crew HQ determines how many members your crew can hold and scales up to 150 members. The leader can invite, kick and start heists. Territory slots: +1 region every 3 HQ levels, +1 every 5 extra members, the lowest counts, never more than 10.",
@@ -285,7 +286,8 @@
       "Failed heist: jail time for everyone, Wanted Level +5, no reward.",
       "Heist reward is split equally among all participating members.",
       "Crew chat is available for fast coordination.",
-      "Crew HQ progression: the longer and more active the crew, the more shared upgrades and buffs unlock."
+      "Crew HQ progression: the longer and more active the crew, the more shared upgrades and buffs unlock.",
+      "Shared crew ammo, drug and trade storage counts in tiles, not raw units: the same packing as personal storage (e.g. 5 coffee or 10 diamonds per tile)."
     ],
     "tipsNl": [
       "Nieuwe crews kunnen direct geld storten en gedeelde opslag gebruiken; focus daarna op upgrades voor extra capaciteit in plaats van op een losse startaankoop.",
@@ -488,6 +490,7 @@
       "Het materialendepot en pandopslag tonen alleen het land waar je nu bent. Voorraad in andere landen blijft daar tot je erheen reist.",
       "Gekochte of opgehaalde materialen, drugs en handelswaren staan eerst bij niet-geplaatste voorraad. Zet ze in een huis of loods tot de prijs beter is; haal ze daar weer uit vóór je verkoopt. Handelswaren gaan niet in de rugzak.",
       "Een nieuw huis heeft 10 opslagvakjes; upgraden vergroot dat. Een appartement start op 5, een magazijn op 100.",
+      "Opslag telt overal in dezelfde vakjes: drugs 100 g per vakje, munitie 50 patronen, materialen 5, wapens/tools 1. Handelswaren verschillen per goed (bijv. 10 diamanten of 5 koffie per vakje) — zie Almanak → Handelswaren. Zelfde regels in rugzak, huis, crew en smokkelcargo.",
       "Je inventaris is verdeeld in carried items (bij je), opgeslagen items (in warehouse/crew storage) en actieve loadouts.",
       "Gewicht bepaalt je draagcapaciteit. Sommige crimes of reizen blokkeren als je te zwaar bent.",
       "Drugs worden in inventaris en opslag als gram bijgehouden en getoond; 351 betekent 351g.",
@@ -502,6 +505,7 @@
       "The materials depot and property storage show only the country you are in. Stock in other countries stays there until you travel.",
       "Bought or collected materials, drugs and trade goods first sit in unplaced stock. Place them in a house or warehouse to hold for a better price; withdraw them before you sell. Trade goods cannot go in the backpack.",
       "A new house has 10 storage slots; upgrades raise that. An apartment starts at 5, a warehouse at 100.",
+      "Storage uses the same tiles everywhere: drugs 100 g per tile, ammo 50 rounds, materials 5, weapons/tools 1. Trade goods vary by item (e.g. 10 diamonds or 5 coffee per tile) — see Almanac → Trade. Same rules apply in backpack, house, crew and smuggle cargo.",
       "Inventory is split into carried items (on you), stored items (warehouse/crew storage) and active loadouts.",
       "Weight determines your carrying capacity. Some crimes or travel block if you are overloaded.",
       "Drugs are stored and shown in inventory and storage as grams; 351 means 351g.",
@@ -542,7 +546,8 @@
       "Sommige eigendommen zijn uniek of landgebonden: je moet in het juiste land zijn om ze te kopen of beheren.",
       "Verkopen levert 70% van de aankoopprijs op. Geen cooldown op verkopen, dit is direct.",
       "Een gekochte nachtclub opent het aparte nachtclub-beheerscherm; beheer en opbrengsten daarvan lopen via die module, niet via het eigendommen-overzicht.",
-      "Ontwikkelen (Develop) betaal je van je bank: elk niveau verhoogt het passieve inkomen van dat eigendom permanent (max niveau en cooldown via server)."
+      "Ontwikkelen (Develop) betaal je van je bank: elk niveau verhoogt het passieve inkomen van dat eigendom permanent (max niveau en cooldown via server).",
+      "Opslagvakjes in huis, appartement en magazijn gebruiken dezelfde packing als je rugzak (koffie vs diamanten, drugs 100 g, ammo 50)."
     ],
     "howEn": [
       "My properties opens on the country you are in. Filter All or another country. Each owned tile shows that building's country.",
@@ -553,7 +558,8 @@
       "Some properties are unique or country locked: you must be in the correct country to buy or manage them.",
       "Selling yields 70% of purchase price. No cooldown on selling, it is instant.",
       "A purchased nightclub opens the separate nightclub management screen; that module handles management and revenue, not the properties overview.",
-      "Develop spends bank money: each level permanently raises that property's passive income (max level and cooldown are server-tuned)."
+      "Develop spends bank money: each level permanently raises that property's passive income (max level and cooldown are server-tuned).",
+      "House, apartment and warehouse tiles use the same packing as your backpack (coffee vs diamonds, drugs 100 g, ammo 50)."
     ],
     "tipsNl": [
       "Investeer vroeg in een Warehouse als je snel meer opslagruimte nodig hebt voor je andere systemen.",
@@ -666,7 +672,8 @@
       "Je kunt zelf listings plaatsen als verkoper, inclusief prijs en hoeveelheid. Andere spelers kopen dan van jou.",
       "Listings verlopen na bepaalde tijd als ze niet worden gekocht. Monitor je eigen aanbiedingen via je profiel.",
       "Tab Marktplaats: verkoop aan andere spelers met contant geld. Je ziet te koop staande voertuigen en gedragen gereedschappen in één lijst (filters op land en prijs). Gebruik Verkoop item om gereedschap te plaatsen dat je nu draagt; onder Mijn advertenties staan je actieve voertuig- en tool-advertenties. Je kunt je eigen advertentie niet kopen. P2P-verkoop van drugs, crypto of speciale event-beloningen zit hier (nog) niet in.",
-      "Zolang je in de gevangenis zit is de hele Zwarte Markt dicht. Je kunt daar niet kopen, verkopen of advertenties plaatsen tot je vrijkomt."
+      "Zolang je in de gevangenis zit is de hele Zwarte Markt dicht. Je kunt daar niet kopen, verkopen of advertenties plaatsen tot je vrijkomt.",
+      "Hoeveel er per opslagvakje past verschilt per handelsgoed (compacte goederen meer, bulky minder). In de Almanak staat bij elk goed \"Per vakje\"."
     ],
     "howEn": [
       "Trade goods tab: one continuous scroll — first the five contraband lines (pricing, caps, risk chips: spoilage, volatility, trip damage, seizure), then your inventory to sell from. Buy/sell uses the /trade API; partial load failures show a warning banner. Street prices for each good in a country stay the same for one hour, so the listed buy price is what you pay. Bought-for on your stock is your real average cost, not the live street price.",
@@ -678,7 +685,8 @@
       "You can post your own listings as a seller, including price and quantity. Other players buy from you.",
       "Listings expire after a certain time if unsold. Monitor your own offers via your profile.",
       "Marketplace tab: peer-to-peer cash trades. You’ll see other players’ vehicles for sale and carried tools in one feed (country + price filters). Tap Sell item to list a tool you are carrying; My listings shows your active vehicle and tool ads. You cannot buy your own ad. Selling drugs, crypto or special event rewards player-to-player here is not available yet.",
-      "While you are in jail the whole Black Market is closed. You cannot buy, sell or list there until you are released."
+      "While you are in jail the whole Black Market is closed. You cannot buy, sell or list there until you are released.",
+      "How many fit per storage tile depends on the trade good (compact goods more, bulky less). The Almanac lists \"Per tile\" on each good."
     ],
     "tipsNl": [
       "Handelswaren-tab: trek om te verversen als data gedeeltelijk faalt; let op risicochips en Wanted voor smokkelroutes.",
@@ -888,7 +896,8 @@
       "Bij mislukking verlies je de volledige lading. Je krijgt geen vergoeding. Lading en transportkosten zijn weg.",
       "Gebruik je eigen transport en gaat de run fout, dan kan ook het gebruikte voertuig of vliegtuig in beslag genomen worden.",
       "Actieve shipments worden live gevolgd in een overzicht. Na aankomst verschijnt de lading in een depot klaar voor ophalen.",
-      "Crew-netwerk blijft beschikbaar voor commerciële crew-zendingen, maar eigen transport werkt alleen persoonlijk."
+      "Crew-netwerk blijft beschikbaar voor commerciële crew-zendingen, maar eigen transport werkt alleen persoonlijk.",
+      "Eigen auto-, boot- of vliegtuig-cargo is in vakjes: dezelfde packing als rugzak/huis (niet 1 stuk = 1 slot). Een Cessna met Cargo 100 houdt tot 1000 diamanten of 500 koffie."
     ],
     "howEn": [
       "Choose a category, the specific item, the destination, and then decide between a commercial channel or your own transport.",
@@ -899,7 +908,8 @@
       "On failure you lose the entire shipment. No refund. Cargo and transport costs are gone.",
       "When you use owned transport and the run fails, the transport asset itself can also be confiscated.",
       "Active shipments are tracked live in an overview. After arrival the cargo appears in a depot ready for collection.",
-      "Crew network remains available for commercial crew shipments, but owned transport is personal only."
+      "Crew network remains available for commercial crew shipments, but owned transport is personal only.",
+      "Owned car, boat or aircraft cargo is in tiles: the same packing as backpack/house (not 1 unit = 1 slot). A Cessna with Cargo 100 holds up to 1000 diamonds or 500 coffee."
     ],
     "tipsNl": [
       "Stuur nooit je volledige voorraad in één shipment: verdeel over meerdere kleinere ladingen om catastrofaal verlies te beperken.",

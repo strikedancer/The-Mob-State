@@ -111,7 +111,10 @@ export async function extraSlotsForTradeAdd(
 ): Promise<number> {
   if (quantity <= 0) return 0;
   const current = await getCarriedTradeQuantity(playerId, goodType);
-  return tradeSlotsForQuantity(current + quantity) - tradeSlotsForQuantity(current);
+  return (
+    tradeSlotsForQuantity(goodType, current + quantity) -
+    tradeSlotsForQuantity(goodType, current)
+  );
 }
 
 export async function assertBackpackFits(

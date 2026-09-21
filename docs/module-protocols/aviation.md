@@ -63,24 +63,24 @@ School 5/5 alleen is **niet** genoeg. Op het Aviation-scherm moet de speler een 
 
 Deze checks draaien in backend tijdens `purchaseLicense` / `purchaseAircraft` en mogen nooit alleen client-side afgedwongen worden.
 
-## Cargo Slot Systeem
+## Cargo tegels (owned smuggle)
 
-Elk vliegtuig heeft een vast aantal cargo-slots. Items nemen een bepaald aantal slots in per stuk. Backend valideert de cargo-manifest totaal server-side.
+Elk vliegtuig/voertuig heeft een vast aantal **cargo-tegels** (hangar “Cargo”). Lading gebruikt dezelfde packing als rugzak/huis/crew (`propertyStash.ts`).
 
-| Item-type             | Slots per stuk | Past in vliegtuig? | Past in boot (smokkel)? |
-|-----------------------|----------------|--------------------|-------------------------|
-| Auto (car)            | 10             | ✅ ja              | ✅ ja                   |
-| Motor (motorcycle)    | 5              | ✅ ja (2 = 1 auto) | ✅ ja                   |
-| Boot (boat)           | ∞              | ❌ nee             | n.v.t.                  |
-| Drugspakket           | 1              | ✅ ja              | ✅ ja                   |
-| Handelswaar klein     | 1              | ✅ ja              | ✅ ja                   |
-| Handelswaar groot/zwaar | 2            | ✅ ja              | ✅ ja                   |
-| Wapen                 | 1              | ✅ ja              | ✅ ja                   |
+| Item-type | Tegels | Opmerkingen |
+|-----------|--------|-------------|
+| Auto (car) | 10 | heel voertuig |
+| Motor (motorcycle) | 5 | heel voertuig |
+| Boot (boat) | n.v.t. | past niet in vliegtuig |
+| Drugs | `ceil(g / 100)` | 100 g per tegel |
+| Ammo | `ceil(rounds / 50)` | 50 patronen per tegel |
+| Handelswaren | `ceil(qty / unitsPerTile)` | catalogus per goed (bijv. diamant 10, koffie 5) |
+| Wapen | 1 per stuk | |
 
 **Voorbeelden:**
-- Cessna 172 (100 cargo slots = hangar Cargo): e.g. 2 auto's OF 4 motoren OF 100 handelswaren-units OF mix binnen 100 slots
-- Gulfstream G200 (80 slots): 8 auto's OF 16 motoren OF 80 drugspakketten OF gemixte lading
-- Boeing 737 (200 slots): 20 auto's OF 40 motoren OF 200 drugspakketten OF combinaties
+- Cessna 172 (100 cargo **tiles** = hangar Cargo): packing equals backpack/house — e.g. up to **1000** diamonds/gold or **500** coffee, or 2 cars / 4 motorcycles / mix within 100 tiles
+- Gulfstream G200 (80 tiles): same packing rules within 80 tiles
+- Boeing 737 (200 tiles): same packing rules within 200 tiles
 
 ## Reistijdbonus (Travel Integration)
 

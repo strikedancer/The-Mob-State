@@ -27,6 +27,24 @@ function readJson(name) {
   return JSON.parse(raw);
 }
 
+function unitsPerTileFromWeight(weight) {
+  const w = Math.max(1, Math.floor(Number(weight) || 1));
+  if (w <= 1) return 10;
+  if (w === 2) return 5;
+  if (w === 3) return 3;
+  return 2;
+}
+
+function tradeUnitsPerTile(good) {
+  const explicit = Number(good?.unitsPerTile);
+  if (Number.isFinite(explicit) && explicit > 0) return Math.floor(explicit);
+  return unitsPerTileFromWeight(good?.weight);
+}
+
+function packingLabel(lang, n) {
+  return String(ui(lang, 'packingPerTile') || '{n} per storage tile').replace('{n}', String(n));
+}
+
 function write(rel, html) {
   const file = path.join(OUT, rel);
   fs.mkdirSync(path.dirname(file), { recursive: true });
@@ -323,8 +341,9 @@ function tradePages(data, lang) {
               ${stat(ui(lang, 'price'), money(g.basePrice))}
               ${stat(ui(lang, 'category'), ui(lang, g.category) || g.category)}
               ${stat('Tier', String(g.tier))}
-              ${stat(ui(lang, 'slots'), String(g.weight || 1))}
+              ${stat(ui(lang, 'perTile'), String(tradeUnitsPerTile(g)))}
             </div>
+            <p class="meta">${esc(ui(lang, 'packingSameEverywhere'))}</p>
             <p class="meta">${esc(ui(lang, 'typicalCheap'))}: ${esc(cheapest)}</p>
             <p class="meta">${esc(ui(lang, 'typicalDear'))}: ${esc(dearest)}</p>
             <p class="meta">${esc(ui(lang, 'sourceCountries'))}: ${(g.availableInCountries || [])
@@ -564,6 +583,7 @@ function restPages(data, lang) {
           ${stat(ui(lang, 'rank'), w.requiredRank)}
           ${stat(ui(lang, 'price'), money(w.price))}
           ${stat(ui(lang, 'ammoType'), w.ammoType || '—')}
+          ${stat(ui(lang, 'perTile'), packingLabel(lang, 1))}
         </div>
       </div></div>`
     );
@@ -632,6 +652,7 @@ function restPages(data, lang) {
           ${stat(ui(lang, 'price'), money(d.basePrice))}
           ${stat(ui(lang, 'rank'), d.requiredRank)}
           ${stat(ui(lang, 'yield'), `${d.yieldMin}–${d.yieldMax}`)}
+          ${stat(ui(lang, 'perTile'), packingLabel(lang, '100 g'))}
         </div>
         <p class="meta">${esc(ui(lang, 'materials'))}: ${mats}</p>
       </div></div>
@@ -657,7 +678,7 @@ function restPages(data, lang) {
       `/images/materials/${m.id}.png`,
       `<div class="detail"><div class="portrait"><img src="/images/materials/${esc(m.id)}.png" alt=""></div><div>
         <p class="lede">${esc(descOf(m, lang))}</p>
-        <div class="stats">${stat(ui(lang, 'price'), money(m.price))}${stat(ui(lang, 'category'), m.category)}</div>
+        <div class="stats">${stat(ui(lang, 'price'), money(m.price))}${stat(ui(lang, 'category'), m.category)}${stat(ui(lang, 'perTile'), packingLabel(lang, 5))}</div>
       </div></div>`
     );
   }
@@ -732,7 +753,7 @@ function restPages(data, lang) {
           ${stat(ui(lang, 'price'), money(a.price))}
           ${stat(ui(lang, 'rank'), a.minRank)}
           ${stat(ui(lang, 'range'), `${a.maxRange} km`)}
-          ${stat(ui(lang, 'cargo'), a.cargoCapacity)}
+          ${stat(ui(lang, 'cargoTiles'), a.cargoCapacity)}
         </div>
       </div></div>`
     );

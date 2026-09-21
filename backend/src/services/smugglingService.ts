@@ -7,7 +7,8 @@ import { playerService } from './playerService';
 import { gameEventService } from './gameEventService';
 import { scoreTradeSmuggleClaim } from './gameEventTradeContribution';
 import { mapTravelCountryToTerritoryCode } from './territoryService';
-import { CARRIED_TRADE_LOCATION } from '../utils/propertyStash';
+import { CARRIED_TRADE_LOCATION, ammoSlotsForRounds, drugSlotsForGrams, tradeSlotsForLots, tradeSlotsForQuantity } from '../utils/propertyStash';
+import { getCrewStorageCapacity } from './crewBuildingService';
 import {
   assertBackpackFits,
   creditCarriedTrade,
@@ -293,7 +294,8 @@ class SmugglingService {
   }
 
   private aircraftCargoSlots(aircraftType: string): number {
-    // Match hangar "Cargo" (aircraft.json cargoCapacity): 1 capacity unit = 1 smuggle slot.
+    // Match hangar "Cargo" (aircraft.json cargoCapacity): capacity is storage tiles;
+    // trade/drug/ammo cargo uses the same packing as backpack/house/crew.
     const definition = getAircraftById(aircraftType);
     if (definition?.cargoCapacity != null) {
       return Math.max(1, Math.floor(Number(definition.cargoCapacity)));
@@ -338,6 +340,7 @@ class SmugglingService {
 
   private calculateOwnedCargoSlots(
     category: SmugglingCategory,
+    itemKey: string,
     quantity: number,
     metadata: Record<string, any>
   ): number {
@@ -345,8 +348,96 @@ class SmugglingService {
       const vehicleType = String(metadata.vehicleType ?? 'car');
       return this.vehicleSlotsForType(vehicleType);
     }
+    if (category === 'trade') {
+      return tradeSlotsForQuantity(itemKey, quantity);
+    }
+    if (category === 'drug') {
+      return drugSlotsForGrams(quantity);
+    }
+    if (category === 'ammo') {
+      return ammoSlotsForRounds(quantity);
+    }
+    // Weapons and other piece goods: 1 unit = 1 tile.
+    return Math.max(0, quantity);
+  }
 
-    return quantity;
+  /** Whether claiming these crew shipments still fits bay capacity (tile packing). */
+  private async crewClaimFitsCapacity(
+    crewId: number,
+    shipments: Array<{ category: string; item_key: string; quantity: number; metadata_json?: string | null }>,
+  ): Promise<boolean> {
+    const [tradeCap, drugCap, ammoCap, weaponCap] = await Promise.all([
+      getCrewStorageCapacity(crewId, 'trade_storage'),
+      getCrewStorageCapacity(crewId, 'drug_storage'),
+      getCrewStorageCapacity(crewId, 'ammo_storage'),
+      getCrewStorageCapacity(crewId, 'weapon_storage'),
+    ]);
+    const [tradeRows, drugGoods, drugLots, ammoRows, weaponRows] = await Promise.all([
+      prisma.crewTradeInventory.findMany({
+        where: { crewId, quantity: { gt: 0 } },
+        select: { goodType: true, quantity: true },
+      }),
+      prisma.crewDrugInventory.findMany({
+        where: { crewId, quantity: { gt: 0 } },
+        select: { goodType: true, quantity: true },
+      }),
+      prisma.crewDrugLot.findMany({
+        where: { crewId, quantity: { gt: 0 } },
+        select: { drugType: true, quality: true, quantity: true },
+      }),
+      prisma.crewAmmoInventory.findMany({
+        where: { crewId, quantity: { gt: 0 } },
+        select: { ammoType: true, quantity: true },
+      }),
+      prisma.crewWeaponInventory.findMany({
+        where: { crewId, quantity: { gt: 0 } },
+        select: { weaponId: true, quantity: true },
+      }),
+    ]);
+
+    const tradeByType = new Map(tradeRows.map((r) => [r.goodType, r.quantity]));
+    const drugLotByKey = new Map(
+      drugLots.map((r) => [`${r.drugType}:${r.quality}`, r.quantity]),
+    );
+    const drugGoodByKey = new Map(drugGoods.map((r) => [r.goodType, r.quantity]));
+    const ammoByType = new Map(ammoRows.map((r) => [r.ammoType, r.quantity]));
+    const weaponById = new Map(weaponRows.map((r) => [r.weaponId, r.quantity]));
+
+    for (const shipment of shipments) {
+      const qty = shipment.quantity;
+      const key = shipment.item_key;
+      if (shipment.category === 'trade') {
+        const current = tradeByType.get(key) ?? 0;
+        tradeByType.set(key, current + qty);
+      } else if (shipment.category === 'drug') {
+        const metadata = this.parseMetadata(shipment as any);
+        const quality = String(metadata.quality ?? 'C');
+        const goodType = `drug:${key}:${quality}`;
+        const current = drugGoodByKey.get(goodType) ?? 0;
+        drugGoodByKey.set(goodType, current + qty);
+      } else if (shipment.category === 'ammo') {
+        const current = ammoByType.get(key) ?? 0;
+        ammoByType.set(key, current + qty);
+      } else if (shipment.category === 'weapon') {
+        const current = weaponById.get(key) ?? 0;
+        weaponById.set(key, current + qty);
+      }
+    }
+
+    const tradeUsed = tradeSlotsForLots(
+      [...tradeByType.entries()].map(([goodType, quantity]) => ({ goodType, quantity })),
+    );
+    const drugUsed =
+      [...drugLotByKey.values()].reduce((s, q) => s + drugSlotsForGrams(q), 0) +
+      [...drugGoodByKey.values()].reduce((s, q) => s + drugSlotsForGrams(q), 0);
+    const ammoUsed = [...ammoByType.values()].reduce((s, q) => s + ammoSlotsForRounds(q), 0);
+    const weaponUsed = [...weaponById.values()].reduce((s, q) => s + q, 0);
+
+    if (tradeUsed > tradeCap) return false;
+    if (drugUsed > drugCap) return false;
+    if (ammoUsed > ammoCap) return false;
+    if (weaponUsed > weaponCap) return false;
+    return true;
   }
 
   private async getOwnedTransportOptions(playerId: number, currentCountry: string): Promise<OwnedTransportOption[]> {
@@ -1030,7 +1121,7 @@ class SmugglingService {
         return { success: false, message: 'Auto of motor kan geen ander voertuig vervoeren' };
       }
 
-      cargoSlotsRequired = this.calculateOwnedCargoSlots(category, quantity, shipmentMetadata);
+      cargoSlotsRequired = this.calculateOwnedCargoSlots(category, itemKey, quantity, shipmentMetadata);
       if (
         ownedTransport.transportType === 'aircraft' &&
         category === 'vehicle' &&
@@ -1454,7 +1545,7 @@ class SmugglingService {
         return { success: false, message: 'Auto of motor kan geen ander voertuig vervoeren' };
       }
 
-      cargoSlotsRequired = this.calculateOwnedCargoSlots(category, quantity, quoteMetadata);
+      cargoSlotsRequired = this.calculateOwnedCargoSlots(category, itemKey, quantity, quoteMetadata);
       if (
         ownedTransport.transportType === 'aircraft' &&
         category === 'vehicle' &&
@@ -1754,6 +1845,16 @@ class SmugglingService {
 
     const wholesaleReady = ready.filter((s) => this.parseMetadata(s).wholesale === true);
     const claimable = ready.filter((s) => this.parseMetadata(s).wholesale !== true);
+
+    if (scope === 'crew' && crewId && claimable.length > 0) {
+      const capacityOk = await this.crewClaimFitsCapacity(crewId, claimable);
+      if (!capacityOk) {
+        return {
+          success: false,
+          message: 'CREW_STORAGE_FULL',
+        };
+      }
+    }
 
     if (wholesaleReady.length > 0) {
       const { completeWholesaleArrival } = await import('./drugWholesaleService');

@@ -10,7 +10,13 @@
     "weight": 1,
     "spoilageHours": 48,
     "priceVolatility": 0.05,
-    "availableInCountries": ["netherlands", "belgium", "colombia", "uk"]
+    "availableInCountries": [
+      "netherlands",
+      "belgium",
+      "colombia",
+      "uk"
+    ],
+    "unitsPerTile": 10
   },
   {
     "id": "contraband_spices",
@@ -23,7 +29,13 @@
     "weight": 1,
     "spoilageHours": 72,
     "priceVolatility": 0.04,
-    "availableInCountries": ["turkey", "colombia", "brazil", "mexico"]
+    "availableInCountries": [
+      "turkey",
+      "colombia",
+      "brazil",
+      "mexico"
+    ],
+    "unitsPerTile": 10
   },
   {
     "id": "contraband_tobacco",
@@ -37,7 +49,13 @@
     "confiscationChance": 0.06,
     "damageChancePerTrip": 0.08,
     "priceVolatility": 0.03,
-    "availableInCountries": ["turkey", "colombia", "brazil", "netherlands"]
+    "availableInCountries": [
+      "turkey",
+      "colombia",
+      "brazil",
+      "netherlands"
+    ],
+    "unitsPerTile": 5
   },
   {
     "id": "contraband_coffee",
@@ -50,7 +68,13 @@
     "weight": 2,
     "spoilageHours": 96,
     "priceVolatility": 0.05,
-    "availableInCountries": ["colombia", "brazil", "turkey", "netherlands"]
+    "availableInCountries": [
+      "colombia",
+      "brazil",
+      "turkey",
+      "netherlands"
+    ],
+    "unitsPerTile": 5
   },
   {
     "id": "contraband_electronics",
@@ -62,8 +86,14 @@
     "maxInventory": 500,
     "weight": 2,
     "damageChancePerTrip": 0.15,
-    "priceVolatility": 0.10,
-    "availableInCountries": ["germany", "japan", "china", "usa"]
+    "priceVolatility": 0.1,
+    "availableInCountries": [
+      "germany",
+      "japan",
+      "china",
+      "usa"
+    ],
+    "unitsPerTile": 5
   },
   {
     "id": "contraband_fur_leather",
@@ -74,10 +104,16 @@
     "basePrice": 650,
     "maxInventory": 400,
     "weight": 3,
-    "damageChancePerTrip": 0.10,
+    "damageChancePerTrip": 0.1,
     "confiscationChance": 0.08,
     "priceVolatility": 0.06,
-    "availableInCountries": ["russia", "turkey", "argentina", "spain"]
+    "availableInCountries": [
+      "russia",
+      "turkey",
+      "argentina",
+      "spain"
+    ],
+    "unitsPerTile": 3
   },
   {
     "id": "contraband_perfume",
@@ -90,7 +126,13 @@
     "weight": 1,
     "damageChancePerTrip": 0.08,
     "priceVolatility": 0.08,
-    "availableInCountries": ["france", "italy", "united_arab_emirates", "uk"]
+    "availableInCountries": [
+      "france",
+      "italy",
+      "united_arab_emirates",
+      "uk"
+    ],
+    "unitsPerTile": 10
   },
   {
     "id": "contraband_pharmaceuticals",
@@ -103,7 +145,14 @@
     "weight": 1,
     "confiscationChance": 0.15,
     "priceVolatility": 0.12,
-    "availableInCountries": ["france", "japan", "colombia", "australia", "netherlands"]
+    "availableInCountries": [
+      "france",
+      "japan",
+      "colombia",
+      "australia",
+      "netherlands"
+    ],
+    "unitsPerTile": 10
   },
   {
     "id": "contraband_counterfeit_cash",
@@ -116,7 +165,13 @@
     "weight": 2,
     "confiscationChance": 0.25,
     "priceVolatility": 0.07,
-    "availableInCountries": ["china", "russia", "mexico", "colombia"]
+    "availableInCountries": [
+      "china",
+      "russia",
+      "mexico",
+      "colombia"
+    ],
+    "unitsPerTile": 5
   },
   {
     "id": "contraband_spirits",
@@ -129,7 +184,14 @@
     "weight": 3,
     "confiscationChance": 0.11,
     "priceVolatility": 0.05,
-    "availableInCountries": ["france", "italy", "mexico", "uk", "argentina"]
+    "availableInCountries": [
+      "france",
+      "italy",
+      "mexico",
+      "uk",
+      "argentina"
+    ],
+    "unitsPerTile": 3
   },
   {
     "id": "contraband_weapons",
@@ -140,9 +202,16 @@
     "basePrice": 1500,
     "maxInventory": 200,
     "weight": 5,
-    "confiscationChance": 0.20,
+    "confiscationChance": 0.2,
     "priceVolatility": 0.08,
-    "availableInCountries": ["mexico", "russia", "spain", "colombia", "turkey"]
+    "availableInCountries": [
+      "mexico",
+      "russia",
+      "spain",
+      "colombia",
+      "turkey"
+    ],
+    "unitsPerTile": 2
   },
   {
     "id": "contraband_rare_wine",
@@ -155,7 +224,13 @@
     "weight": 2,
     "damageChancePerTrip": 0.18,
     "priceVolatility": 0.12,
-    "availableInCountries": ["france", "italy", "spain", "argentina"]
+    "availableInCountries": [
+      "france",
+      "italy",
+      "spain",
+      "argentina"
+    ],
+    "unitsPerTile": 5
   },
   {
     "id": "contraband_luxury_watches",
@@ -167,8 +242,14 @@
     "maxInventory": 120,
     "weight": 1,
     "damageChancePerTrip": 0.12,
-    "priceVolatility": 0.10,
-    "availableInCountries": ["switzerland", "japan", "germany", "united_arab_emirates"]
+    "priceVolatility": 0.1,
+    "availableInCountries": [
+      "switzerland",
+      "japan",
+      "germany",
+      "united_arab_emirates"
+    ],
+    "unitsPerTile": 10
   },
   {
     "id": "contraband_art",
@@ -182,7 +263,13 @@
     "damageChancePerTrip": 0.22,
     "confiscationChance": 0.09,
     "priceVolatility": 0.22,
-    "availableInCountries": ["italy", "france", "belgium", "united_arab_emirates"]
+    "availableInCountries": [
+      "italy",
+      "france",
+      "belgium",
+      "united_arab_emirates"
+    ],
+    "unitsPerTile": 2
   },
   {
     "id": "contraband_diamonds",
@@ -194,7 +281,13 @@
     "maxInventory": 100,
     "weight": 1,
     "priceVolatility": 0.25,
-    "availableInCountries": ["belgium", "south_africa", "united_arab_emirates", "switzerland"]
+    "availableInCountries": [
+      "belgium",
+      "south_africa",
+      "united_arab_emirates",
+      "switzerland"
+    ],
+    "unitsPerTile": 10
   },
   {
     "id": "contraband_gold",
@@ -207,6 +300,12 @@
     "weight": 1,
     "confiscationChance": 0.18,
     "priceVolatility": 0.06,
-    "availableInCountries": ["south_africa", "united_arab_emirates", "switzerland", "russia"]
+    "availableInCountries": [
+      "south_africa",
+      "united_arab_emirates",
+      "switzerland",
+      "russia"
+    ],
+    "unitsPerTile": 10
   }
 ]

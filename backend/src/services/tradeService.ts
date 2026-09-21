@@ -32,6 +32,8 @@ export interface TradableGood {
   basePrice: number;
   maxInventory: number;
   weight: number;
+  /** How many units fit in one storage tile (backpack / house / crew / cargo). */
+  unitsPerTile?: number;
   spoilageHours?: number;
   damageChancePerTrip?: number;
   confiscationChance?: number;

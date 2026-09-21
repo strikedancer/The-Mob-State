@@ -5,6 +5,12 @@ import {
   type CrewBuildingStyle,
   type CrewBuildingType,
 } from './crewBuildingService';
+import {
+  ammoSlotsForRounds,
+  drugSlotsForGrams,
+  tradeSlotsForLots,
+  tradeSlotsForQuantity,
+} from '../utils/propertyStash';
 
 export const RAID_LOOT_TARGETS = [
   'cash',
@@ -273,11 +279,16 @@ export async function applyWarRaidLoot(
     const take = shrink(sliceStack(stack.quantity, 0.12, 10, 80));
     if (take <= 0) throw new Error('RAID_NOTHING_TO_STEAL');
     const cap = await getCrewStorageCapacity(input.attackerCrewId, 'ammo_storage');
-    const current = await tx.crewAmmoInventory.aggregate({
-      where: { crewId: input.attackerCrewId },
-      _sum: { quantity: true },
+    const attackerAmmo = await tx.crewAmmoInventory.findMany({
+      where: { crewId: input.attackerCrewId, quantity: { gt: 0 } },
+      select: { ammoType: true, quantity: true },
     });
-    if (cap <= 0 || (current._sum.quantity ?? 0) + take > cap) {
+    const used = attackerAmmo.reduce((sum, row) => sum + ammoSlotsForRounds(row.quantity), 0);
+    const existingQty =
+      attackerAmmo.find((row) => row.ammoType === stack.ammoType)?.quantity ?? 0;
+    const extra =
+      ammoSlotsForRounds(existingQty + take) - ammoSlotsForRounds(existingQty);
+    if (cap <= 0 || used + extra > cap) {
       throw new Error('RAID_NO_CAPACITY');
     }
     if (stack.quantity === take) {
@@ -315,17 +326,24 @@ export async function applyWarRaidLoot(
     if (take <= 0) throw new Error('RAID_NOTHING_TO_STEAL');
     const cap = await getCrewStorageCapacity(input.attackerCrewId, 'drug_storage');
     const [legacy, lots] = await Promise.all([
-      tx.crewDrugInventory.aggregate({
-        where: { crewId: input.attackerCrewId },
-        _sum: { quantity: true },
+      tx.crewDrugInventory.findMany({
+        where: { crewId: input.attackerCrewId, quantity: { gt: 0 } },
+        select: { quantity: true },
       }),
-      tx.crewDrugLot.aggregate({
-        where: { crewId: input.attackerCrewId },
-        _sum: { quantity: true },
+      tx.crewDrugLot.findMany({
+        where: { crewId: input.attackerCrewId, quantity: { gt: 0 } },
+        select: { drugType: true, quality: true, quantity: true },
       }),
     ]);
-    const used = (legacy._sum.quantity ?? 0) + (lots._sum.quantity ?? 0);
-    if (cap <= 0 || used + take > cap) {
+    const used =
+      legacy.reduce((sum, row) => sum + drugSlotsForGrams(row.quantity), 0) +
+      lots.reduce((sum, row) => sum + drugSlotsForGrams(row.quantity), 0);
+    const existingQty =
+      lots.find(
+        (row) => row.drugType === lot.drugType && row.quality === lot.quality,
+      )?.quantity ?? 0;
+    const extra = drugSlotsForGrams(existingQty + take) - drugSlotsForGrams(existingQty);
+    if (cap <= 0 || used + extra > cap) {
       throw new Error('RAID_NO_CAPACITY');
     }
     if (lot.quantity === take) {
@@ -373,11 +391,17 @@ export async function applyWarRaidLoot(
   const take = shrink(sliceStack(stack.quantity, 0.12, 1, 12));
   if (take <= 0) throw new Error('RAID_NOTHING_TO_STEAL');
   const cap = await getCrewStorageCapacity(input.attackerCrewId, 'trade_storage');
-  const current = await tx.crewTradeInventory.aggregate({
-    where: { crewId: input.attackerCrewId },
-    _sum: { quantity: true },
+  const attackerTrade = await tx.crewTradeInventory.findMany({
+    where: { crewId: input.attackerCrewId, quantity: { gt: 0 } },
+    select: { goodType: true, quantity: true },
   });
-  if (cap <= 0 || (current._sum.quantity ?? 0) + take > cap) {
+  const used = tradeSlotsForLots(attackerTrade);
+  const existingQty =
+    attackerTrade.find((row) => row.goodType === stack.goodType)?.quantity ?? 0;
+  const extra =
+    tradeSlotsForQuantity(stack.goodType, existingQty + take) -
+    tradeSlotsForQuantity(stack.goodType, existingQty);
+  if (cap <= 0 || used + extra > cap) {
     throw new Error('RAID_NO_CAPACITY');
   }
   if (stack.quantity === take) {

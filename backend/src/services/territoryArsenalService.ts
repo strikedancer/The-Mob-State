@@ -4,6 +4,11 @@ import { weaponService } from './weaponService';
 import { notificationService } from './notificationService';
 import { translationService, type Language } from './translationService';
 import { directMessageService } from './directMessageService';
+import {
+  AMMO_ROUNDS_PER_SLOT,
+  ammoSlotsForRounds,
+  maxAddForSlotStack,
+} from '../utils/propertyStash';
 
 type ArsenalKind = 'weapon' | 'ammo';
 type StockSource = 'cache' | 'hq';
@@ -376,12 +381,14 @@ async function addHqWeapon(crewId: number, weaponId: string, quantity: number, c
 async function addHqAmmo(crewId: number, ammoType: string, quantity: number): Promise<number> {
   if (quantity <= 0) return 0;
   const capacity = await getCrewStorageCapacity(crewId, 'ammo_storage');
-  const current = await prisma.crewAmmoInventory.aggregate({
-    where: { crewId },
-    _sum: { quantity: true },
+  const rows = await prisma.crewAmmoInventory.findMany({
+    where: { crewId, quantity: { gt: 0 } },
+    select: { ammoType: true, quantity: true },
   });
-  const used = current._sum.quantity ?? 0;
-  const room = Math.max(0, capacity - used);
+  const usedSlots = rows.reduce((sum, row) => sum + ammoSlotsForRounds(row.quantity), 0);
+  const existingQty = rows.find((row) => row.ammoType === ammoType)?.quantity ?? 0;
+  const freeSlots = Math.max(0, capacity - usedSlots);
+  const room = maxAddForSlotStack(existingQty, AMMO_ROUNDS_PER_SLOT, freeSlots);
   const take = Math.min(room, quantity);
   if (take <= 0) return 0;
   await prisma.crewAmmoInventory.upsert({
@@ -522,10 +529,16 @@ async function computeFill(
   const matchW = matchingWeapons(weapons, actionType);
   const matchA = matchingAmmo(ammo, actionType);
   const weaponFill = weaponCap > 0 ? Math.min(1, matchW.reduce((s, row) => s + row.quantity, 0) / weaponCap) : 0;
-  const ammoFill = ammoCap > 0 ? Math.min(1, matchA.reduce((s, row) => s + row.quantity, 0) / ammoCap) : 0;
+  const ammoFill =
+    ammoCap > 0
+      ? Math.min(
+          1,
+          matchA.reduce((s, row) => s + ammoSlotsForRounds(row.quantity), 0) / ammoCap,
+        )
+      : 0;
   if (actionType === 'intel_scan' || actionType === 'supply_run') {
     const allW = weapons.reduce((s, row) => s + row.quantity, 0);
-    const allA = ammo.reduce((s, row) => s + row.quantity, 0);
+    const allA = ammo.reduce((s, row) => s + ammoSlotsForRounds(row.quantity), 0);
     const wf = weaponCap > 0 ? Math.min(1, allW / weaponCap) : 0;
     const af = ammoCap > 0 ? Math.min(1, allA / ammoCap) : 0;
     return (wf + af) / 2;
@@ -696,9 +709,11 @@ export async function commitToCache(params: {
     return { moved: taken.taken };
   }
   const cap = Math.floor((await getCrewStorageCapacity(params.crewId, 'ammo_storage')) * capMult);
-  const current = cacheToAmmoStacks(await loadCacheRows(params.regionKey, params.crewId))
-    .reduce((s, row) => s + row.quantity, 0);
-  const room = Math.max(0, cap - current);
+  const ammoStacks = cacheToAmmoStacks(await loadCacheRows(params.regionKey, params.crewId));
+  const usedSlots = ammoStacks.reduce((s, row) => s + ammoSlotsForRounds(row.quantity), 0);
+  const existingQty = ammoStacks.find((row) => row.itemKey === params.itemKey)?.quantity ?? 0;
+  const freeSlots = Math.max(0, cap - usedSlots);
+  const room = maxAddForSlotStack(existingQty, AMMO_ROUNDS_PER_SLOT, freeSlots);
   const want = Math.min(params.quantity, room);
   if (want <= 0) throw new Error('ARSENAL_CACHE_FULL');
   const taken = await takeHqAmmo(params.crewId, params.itemKey, want);

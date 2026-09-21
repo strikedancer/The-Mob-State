@@ -1,6 +1,12 @@
 import { Prisma } from '@prisma/client';
 import prisma from '../lib/prisma';
 import { getCrewStorageCapacity } from './crewBuildingService';
+import {
+  ammoSlotsForRounds,
+  drugSlotsForGrams,
+  tradeSlotsForLots,
+  tradeSlotsForQuantity,
+} from '../utils/propertyStash';
 
 const DEAL_TTL_MS = 2 * 60 * 60 * 1000;
 
@@ -344,27 +350,70 @@ async function offerFits(
     getCrewStorageCapacity(crewId, 'trade_storage'),
     getCrewStorageCapacity(crewId, 'cash_storage'),
   ]);
-  const [cars, boats, weapons, ammo, drugs, lots, trade, crew] = await Promise.all([
+  const [cars, boats, weapons, ammoRows, drugRows, lotRows, tradeRows, crew] = await Promise.all([
     db.crewCarInventory.count({ where: { crewId } }),
     db.crewBoatInventory.count({ where: { crewId } }),
     db.crewWeaponInventory.aggregate({ where: { crewId }, _sum: { quantity: true } }),
-    db.crewAmmoInventory.aggregate({ where: { crewId }, _sum: { quantity: true } }),
-    db.crewDrugInventory.aggregate({ where: { crewId }, _sum: { quantity: true } }),
-    db.crewDrugLot.aggregate({ where: { crewId }, _sum: { quantity: true } }),
-    db.crewTradeInventory.aggregate({ where: { crewId }, _sum: { quantity: true } }),
+    db.crewAmmoInventory.findMany({
+      where: { crewId, quantity: { gt: 0 } },
+      select: { ammoType: true, quantity: true },
+    }),
+    db.crewDrugInventory.findMany({
+      where: { crewId, quantity: { gt: 0 } },
+      select: { quantity: true },
+    }),
+    db.crewDrugLot.findMany({
+      where: { crewId, quantity: { gt: 0 } },
+      select: { drugType: true, quality: true, quantity: true },
+    }),
+    db.crewTradeInventory.findMany({
+      where: { crewId, quantity: { gt: 0 } },
+      select: { goodType: true, quantity: true },
+    }),
     db.crew.findUnique({ where: { id: crewId }, select: { bankBalance: true } }),
   ]);
   const weaponQty = offer.weapons.reduce((sum, row) => sum + row.quantity, 0);
-  const ammoQty = offer.ammo.reduce((sum, row) => sum + row.quantity, 0);
-  const drugQty = offer.drugs.reduce((sum, row) => sum + row.quantity, 0);
-  const tradeQty = offer.trade.reduce((sum, row) => sum + row.quantity, 0);
+
+  const ammoByType = new Map(ammoRows.map((row) => [row.ammoType, row.quantity]));
+  let ammoUsed = ammoRows.reduce((sum, row) => sum + ammoSlotsForRounds(row.quantity), 0);
+  for (const row of offer.ammo) {
+    const current = ammoByType.get(row.ammoType) ?? 0;
+    ammoUsed +=
+      ammoSlotsForRounds(current + row.quantity) - ammoSlotsForRounds(current);
+    ammoByType.set(row.ammoType, current + row.quantity);
+  }
+
+  let drugUsed =
+    drugRows.reduce((sum, row) => sum + drugSlotsForGrams(row.quantity), 0) +
+    lotRows.reduce((sum, row) => sum + drugSlotsForGrams(row.quantity), 0);
+  const lotKey = (drugType: string, quality: string) => `${drugType}:${quality}`;
+  const lotsByKey = new Map(
+    lotRows.map((row) => [lotKey(row.drugType, row.quality), row.quantity]),
+  );
+  for (const row of offer.drugs) {
+    const key = lotKey(row.drugType, row.quality);
+    const current = lotsByKey.get(key) ?? 0;
+    drugUsed += drugSlotsForGrams(current + row.quantity) - drugSlotsForGrams(current);
+    lotsByKey.set(key, current + row.quantity);
+  }
+
+  let tradeUsed = tradeSlotsForLots(tradeRows);
+  const tradeByType = new Map(tradeRows.map((row) => [row.goodType, row.quantity]));
+  for (const row of offer.trade) {
+    const current = tradeByType.get(row.goodType) ?? 0;
+    tradeUsed +=
+      tradeSlotsForQuantity(row.goodType, current + row.quantity) -
+      tradeSlotsForQuantity(row.goodType, current);
+    tradeByType.set(row.goodType, current + row.quantity);
+  }
+
   return (
     cars + offer.cars.length <= carCap &&
     boats + offer.boats.length <= boatCap &&
     (weapons._sum.quantity ?? 0) + weaponQty <= weaponCap &&
-    (ammo._sum.quantity ?? 0) + ammoQty <= ammoCap &&
-    (drugs._sum.quantity ?? 0) + (lots._sum.quantity ?? 0) + drugQty <= drugCap &&
-    (trade._sum.quantity ?? 0) + tradeQty <= tradeCap &&
+    ammoUsed <= ammoCap &&
+    drugUsed <= drugCap &&
+    tradeUsed <= tradeCap &&
     (crew?.bankBalance ?? 0) + offer.cash <= cashCap
   );
 }

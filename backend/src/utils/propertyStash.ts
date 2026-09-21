@@ -1,3 +1,5 @@
+import tradableGoods from '../../content/tradableGoods.json';
+
 export const STASH_MATERIAL_PREFIX = 'material:';
 export const STASH_DRUG_PREFIX = 'drug:';
 export const STASH_TRADE_PREFIX = 'trade:';
@@ -9,7 +11,10 @@ export const CARRIED_TRADE_LOCATION = '_carried_';
 /** Grams of one drug stack per property / backpack slot. */
 export const DRUG_GRAMS_PER_SLOT = 100;
 export const MATERIAL_UNITS_PER_SLOT = 5;
-/** Trade goods per property / backpack slot (carton). */
+/**
+ * Default trade packing for weight-1 (compact) goods.
+ * Prefer {@link tradeUnitsPerTile} for per-good volume.
+ */
 export const TRADE_UNITS_PER_SLOT = 10;
 
 export const STASH_PROPERTY_TYPES = [
@@ -20,6 +25,45 @@ export const STASH_PROPERTY_TYPES = [
   'penthouse',
   'safehouse',
 ] as const;
+
+type TradeCatalogEntry = {
+  id: string;
+  weight?: number;
+  unitsPerTile?: number;
+};
+
+const tradeCatalog = tradableGoods as TradeCatalogEntry[];
+const tradeUnitsById = new Map<string, number>();
+
+/** Map catalog `weight` → how many units fit in one storage tile. */
+export function unitsPerTileFromWeight(weight: number): number {
+  const w = Math.max(1, Math.floor(Number(weight) || 1));
+  if (w <= 1) return 10;
+  if (w === 2) return 5;
+  if (w === 3) return 3;
+  return 2;
+}
+
+function resolveTradeUnitsPerTile(entry: TradeCatalogEntry | undefined): number {
+  if (!entry) return TRADE_UNITS_PER_SLOT;
+  const explicit = Number(entry.unitsPerTile);
+  if (Number.isFinite(explicit) && explicit > 0) {
+    return Math.floor(explicit);
+  }
+  return unitsPerTileFromWeight(Number(entry.weight) || 1);
+}
+
+for (const entry of tradeCatalog) {
+  tradeUnitsById.set(entry.id, resolveTradeUnitsPerTile(entry));
+}
+
+/** How many units of this trade good fit in one tile (backpack / house / crew / cargo). */
+export function tradeUnitsPerTile(goodType: string): number {
+  const known = tradeUnitsById.get(goodType);
+  if (known != null) return known;
+  const entry = tradeCatalog.find((g) => g.id === goodType);
+  return resolveTradeUnitsPerTile(entry);
+}
 
 export function materialStashKey(materialId: string): string {
   return `${STASH_MATERIAL_PREFIX}${materialId}`;
@@ -67,9 +111,10 @@ export function drugSlotsForGrams(grams: number): number {
   return Math.ceil(grams / DRUG_GRAMS_PER_SLOT);
 }
 
-export function tradeSlotsForQuantity(quantity: number): number {
+export function tradeSlotsForQuantity(goodType: string, quantity: number): number {
   if (quantity <= 0) return 0;
-  return Math.ceil(quantity / TRADE_UNITS_PER_SLOT);
+  const perTile = tradeUnitsPerTile(goodType);
+  return Math.ceil(quantity / Math.max(1, perTile));
 }
 
 export function tradeSlotsForLots(
@@ -80,8 +125,8 @@ export function tradeSlotsForLots(
     byType.set(row.goodType, (byType.get(row.goodType) ?? 0) + row.quantity);
   }
   let sum = 0;
-  for (const qty of byType.values()) {
-    sum += tradeSlotsForQuantity(qty);
+  for (const [goodType, qty] of byType.entries()) {
+    sum += tradeSlotsForQuantity(goodType, qty);
   }
   return sum;
 }
@@ -152,7 +197,8 @@ export function stashSlotsForRow(drugType: string, quantity: number): number {
     return drugSlotsForGrams(quantity);
   }
   if (drugType.startsWith(STASH_TRADE_PREFIX)) {
-    return tradeSlotsForQuantity(quantity);
+    const goodType = parseTradeStashKey(drugType);
+    return tradeSlotsForQuantity(goodType ?? '', quantity);
   }
   return 0;
 }

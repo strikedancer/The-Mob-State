@@ -102,6 +102,28 @@ export const UI = {
   rank: pack('Rang', 'Rank', 'Rang', 'Rang', 'Rango', 'Grado', 'Ranga', 'Patente'),
   price: pack('Catalogusprijs', 'Catalog price', 'Katalogpreis', 'Prix catalogue', 'Precio de catálogo', 'Prezzo di catalogo', 'Cena katalogowa', 'Preço de catálogo'),
   slots: pack('Vakken', 'Slots', 'Slots', 'Emplacements', 'Ranuras', 'Slot', 'Sloty', 'Espaços'),
+  perTile: pack('Per vakje', 'Per tile', 'Pro Fach', 'Par case', 'Por casilla', 'Per casella', 'Na kratkę', 'Por espaço'),
+  packingSameEverywhere: pack(
+    'Past overal hetzelfde: rugzak, huis, crew en smokkelcargo.',
+    'Fits the same everywhere: backpack, house, crew and smuggle cargo.',
+    'Überall gleich: Rucksack, Haus, Crew und Schmuggel-Fracht.',
+    'Même règle partout : sac, maison, crew et cargaison de contrebande.',
+    'Igual en todas partes: mochila, casa, crew y carga de contrabando.',
+    'Uguale ovunque: zaino, casa, crew e carico di contrabbando.',
+    'Wszędzie tak samo: plecak, dom, załoga i ładunek przemytu.',
+    'Igual em todo o lado: mochila, casa, crew e carga de contrabando.'
+  ),
+  packingPerTile: pack(
+    '{n} per opslagvakje',
+    '{n} per storage tile',
+    '{n} pro Lagerfach',
+    '{n} par case de stockage',
+    '{n} por casilla de almacenamiento',
+    '{n} per casella di deposito',
+    '{n} na kratkę magazynu',
+    '{n} por espaço de armazenamento'
+  ),
+  cargoTiles: pack('Cargo (vakjes)', 'Cargo (tiles)', 'Ladung (Fächer)', 'Cargaison (cases)', 'Carga (casillas)', 'Carico (caselle)', 'Ładunek (kratki)', 'Carga (espaços)'),
   vip: pack('Alleen VIP', 'VIP only', 'Nur VIP', 'VIP uniquement', 'Solo VIP', 'Solo VIP', 'Tylko VIP', 'Apenas VIP'),
   cargo: pack('Lading', 'Cargo', 'Ladung', 'Cargaison', 'Carga', 'Carico', 'Ładunek', 'Carga'),
   speed: pack('Snelheid', 'Speed', 'Tempo', 'Vitesse', 'Velocidad', 'Velocità', 'Prędkość', 'Velocidade'),

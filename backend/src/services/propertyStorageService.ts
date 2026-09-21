@@ -23,7 +23,7 @@ import {
   DRUG_GRAMS_PER_SLOT,
   MATERIAL_UNITS_PER_SLOT,
   maxAddForSlotStack,
-  TRADE_UNITS_PER_SLOT,
+  tradeUnitsPerTile,
   drugStashKey,
   isMetaStashKey,
   materialStashKey,
@@ -975,7 +975,7 @@ class PropertyStorageService {
     const detail = await this.getPropertyStorageDetail(playerId, propertyId);
     quantity = this.clampStackDeposit(
       existing?.quantity ?? 0,
-      TRADE_UNITS_PER_SLOT,
+      tradeUnitsPerTile(goodType),
       detail.usage,
       detail.capacity,
       quantity,
