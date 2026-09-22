@@ -19,6 +19,47 @@ type DiscordProfile = {
 
 const discordClientId = () => (process.env.DISCORD_CLIENT_ID ?? '').trim();
 const discordClientSecret = () => (process.env.DISCORD_CLIENT_SECRET ?? '').trim();
+const discordGuildId = () => (process.env.DISCORD_GUILD_ID ?? '').trim();
+/** Prefer dedicated bot token; fall back to the world-chat bridge bot. */
+const discordBotToken = () =>
+  (process.env.DISCORD_BOT_TOKEN ?? process.env.GLOBAL_CHAT_DISCORD_BOT_TOKEN ?? '').trim();
+
+export const isDiscordGuildJoinConfigured = (): boolean =>
+  Boolean(discordGuildId() && discordBotToken());
+
+/**
+ * Add the authorizing Discord user to The Mob State guild.
+ * Soft-fail: never blocks login/link. Requires OAuth scope `guilds.join`,
+ * bot in guild with Create Instant Invite, and DISCORD_GUILD_ID.
+ */
+async function tryAddGuildMember(discordUserId: string, userAccessToken: string): Promise<void> {
+  const guildId = discordGuildId();
+  const botToken = discordBotToken();
+  if (!guildId || !botToken || !discordUserId || !userAccessToken) {
+    return;
+  }
+  try {
+    const response = await fetch(`${DISCORD_API}/guilds/${guildId}/members/${discordUserId}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bot ${botToken}`,
+        'Content-Type': 'application/json',
+        'User-Agent': DISCORD_USER_AGENT,
+      },
+      body: JSON.stringify({ access_token: userAccessToken }),
+    });
+    // 201 = joined, 204 = already a member
+    if (response.status === 201 || response.status === 204) {
+      return;
+    }
+    const body = await response.text().catch(() => '');
+    console.warn(
+      `[DiscordAuth] guild join failed for ${discordUserId}: HTTP ${response.status} ${body.slice(0, 240)}`
+    );
+  } catch (error) {
+    console.warn('[DiscordAuth] guild join error', error);
+  }
+}
 
 export const discordOAuthRedirectUri = (): string => {
   const explicit = (process.env.DISCORD_OAUTH_REDIRECT_URI ?? '').trim();
@@ -113,7 +154,7 @@ const authorizeUrl = (intent: 'login' | 'link' = 'login', playerId?: number): st
   url.searchParams.set('client_id', discordClientId());
   url.searchParams.set('redirect_uri', discordOAuthRedirectUri());
   url.searchParams.set('response_type', 'code');
-  url.searchParams.set('scope', 'identify email');
+  url.searchParams.set('scope', 'identify email guilds.join');
   url.searchParams.set('state', signState(intent, playerId));
   url.searchParams.set('prompt', 'consent');
   return url.toString();
@@ -268,6 +309,10 @@ export const discordAuthService = {
       if (!profile.id) {
         return this.callbackErrorRedirect(state);
       }
+
+      // Join The Mob State Discord as soon as the player authorizes (link,
+      // login, or pending registration). Soft-fail — never blocks auth.
+      await tryAddGuildMember(profile.id, accessToken);
 
       if (isLinkState(statePayload) && statePayload.playerId) {
         return linkDiscordToPlayer(statePayload.playerId, profile.id);

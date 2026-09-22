@@ -19467,7 +19467,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get legalPrivacySection07Body =>
-      'We delen gegevens met infrastructuur- en betaalpartners voor zover nodig om de dienst te draaien, met passende afspraken. Als je Facebook Login gebruikt, ontvangt Meta het OAuth-verzoek dat jij goedkeurt; we plaatsen niets op je Facebook-profiel en mailen je vrienden niet. Als je Google Sign-In gebruikt, ontvangt Google het OAuth-verzoek dat jij goedkeurt; we openen geen Gmail, Drive of andere Google-diensten. Als je Discord Sign-In gebruikt, ontvangt Discord het OAuth-verzoek dat jij goedkeurt; we sturen geen berichten en joinen geen servers namens jou. We verkopen geen persoonsgegevens. We kunnen informatie verstrekken indien de wet dat vereist of om rechten en veiligheid te beschermen.';
+      'We delen gegevens met infrastructuur- en betaalpartners voor zover nodig om de dienst te draaien, met passende afspraken. Als je Facebook Login gebruikt, ontvangt Meta het OAuth-verzoek dat jij goedkeurt; we plaatsen niets op je Facebook-profiel en mailen je vrienden niet. Als je Google Sign-In gebruikt, ontvangt Google het OAuth-verzoek dat jij goedkeurt; we openen geen Gmail, Drive of andere Google-diensten. Als je Discord Sign-In of Discord koppelen gebruikt, ontvangt Discord het OAuth-verzoek dat jij goedkeurt; met jouw toestemming kunnen we je toevoegen aan de officiële The Mob State Discord-server, en we sturen geen berichten namens jou. We verkopen geen persoonsgegevens. We kunnen informatie verstrekken indien de wet dat vereist of om rechten en veiligheid te beschermen.';
 
   @override
   String get legalPrivacySection08Title => 'Internationale doorgifte';
@@ -19509,7 +19509,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get legalPrivacySection13Body =>
-      'Als je Doorgaan met Discord kiest, sturen we je naar Discord. Als je akkoord gaat, ontvangen we je Discord-gebruikers-ID, gebruikersnaam en e-mailadres als Discord dat adres heeft geverifieerd. We gebruiken dit alleen om je The Mob State-account aan te maken of in te loggen. We sturen geen berichten en joinen geen servers namens jou. Je kunt de toegang intrekken bij geautoriseerde apps in Discord en ons vragen je gamegegevens te wissen via info@themobstate.com.';
+      'Als je Doorgaan met Discord kiest, sturen we je naar Discord. Als je akkoord gaat, ontvangen we je Discord-gebruikers-ID, gebruikersnaam en e-mailadres als Discord dat adres heeft geverifieerd. We gebruiken dit om je The Mob State-account aan te maken of in te loggen en, indien geconfigureerd, om je toe te voegen aan de officiële The Mob State Discord-server. We sturen geen berichten namens jou. Je kunt de toegang intrekken bij geautoriseerde apps in Discord, de server verlaten, en ons vragen je gamegegevens te wissen via info@themobstate.com.';
 
   @override
   String get legalDigitalGoodsTitle => 'Aankoop van digitale goederen';

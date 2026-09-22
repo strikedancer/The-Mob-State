@@ -47,6 +47,8 @@ Permanent invite (no expiry), preferably `https://discord.gg/…` landing on `#r
 - `DISCORD_CLIENT_ID`
 - `DISCORD_CLIENT_SECRET`
 - `DISCORD_OAUTH_REDIRECT_URI` — default `${API_BASE_URL}/auth/discord/callback` → `https://api.themobstate.com/auth/discord/callback`
+- `DISCORD_GUILD_ID` — snowflake of The Mob State guild (required for auto-join on link/login)
+- `DISCORD_BOT_TOKEN` — optional; falls back to `GLOBAL_CHAT_DISCORD_BOT_TOKEN` for Add Guild Member
 - `DISCORD_UPDATES_WEBHOOK_URL` — incoming webhook for `#updates` only (used by `scripts/post_discord_update.ps1`, not by the game loop)
 - World chat bridge (optional, see `global-chat.md`): `GLOBAL_CHAT_DISCORD_WEBHOOK_URL`, `GLOBAL_CHAT_DISCORD_BOT_TOKEN`, `GLOBAL_CHAT_DISCORD_CHANNEL_ID`
 
@@ -56,15 +58,18 @@ Without Client ID + Secret the login button stays hidden. Without a valid invite
 
 1. [discord.com/developers/applications](https://discord.com/developers/applications) → New Application **The Mob State**.
 2. **OAuth2 → General:** add redirect `https://api.themobstate.com/auth/discord/callback`.
-3. Scopes used by the game: `identify` and `email` only.
+3. Scopes used by the game: `identify`, `email`, and `guilds.join` (so linking/signing in can add the player to The Mob State guild).
 4. Copy Client ID + Secret into `.env.plesk` and recreate the backend container.
 5. Create a permanent invite; put it in `DISCORD_INVITE_URL`.
-6. In `#updates`, Integrations → Webhooks → copy URL to `DISCORD_UPDATES_WEBHOOK_URL` (not the Crew Wars ops webhook).
+6. Set `DISCORD_GUILD_ID` to the server snowflake (Discord → Server settings → Widget, or Developer Mode → Copy Server ID).
+7. Ensure the world-chat bot (or `DISCORD_BOT_TOKEN`) is in that guild with **Create Instant Invite**. After OAuth, the backend calls Add Guild Member (`PUT /guilds/{id}/members/{user}`) with the user access token; failures are logged and never block login/link.
+8. In `#updates`, Integrations → Webhooks → copy URL to `DISCORD_UPDATES_WEBHOOK_URL` (not the Crew Wars ops webhook).
 
 ## Change Rules
 - `GET /settings` includes `discordLinked` and `canUnlinkDiscord` (no Discord snowflake in the payload).
 - Discord-email links to an existing account only when that email is **verified** on our side and Discord reports `verified: true`. Otherwise `DISCORD_EMAIL_IN_USE`.
 - Settings **Link Discord** uses a signed OAuth `intent=link` state with `playerId`. Do not require a matching email for that explicit link. First link of an existing account pays **€5.000** once (`discordLinkBonusPaidAt`). New Discord registrations do not get that bonus.
+- After a successful Discord OAuth (link, login, or pending registration), the backend **adds the Discord user to `DISCORD_GUILD_ID`** when bot token + guild id are configured. Soft-fail only (log + continue). Already-linked players who never joined still need to re-consent (or use the invite CTA).
 - Weekly dashboard prompt until `discordId` is set, the player taps **I don't have Discord** (`discordLinkPromptDeclinedAt`), or the €5.000 bonus is already paid. Closing the dialog only snoozes for 7 days.
 - Unlink is blocked when Discord is the only login method (`DISCORD_UNLINK_BLOCKED`).
 - New Discord players still pick **username + gender + terms**. Verified Discord email becomes `emailVerified: true`.
@@ -88,7 +93,7 @@ Without Client ID + Secret the login button stays hidden. Without a valid invite
 - Hide invite CTAs if invite URL is empty or rejected
 - Username/password, Google, and Facebook login keep working
 - Terms checkbox required for new Discord accounts
-- No extra Discord **player OAuth** scopes without a new protocol. The world-chat bot token is not an OAuth scope; see `global-chat.md`.
+- No extra Discord **player OAuth** scopes without a new protocol except the documented `guilds.join` for The Mob State guild auto-join. The world-chat bot token is not an OAuth scope; see `global-chat.md`.
 
 ## QA Checklist
 1. Without env: no Discord login button, no Join Discord CTAs
@@ -96,10 +101,11 @@ Without Client ID + Secret the login button stays hidden. Without a valid invite
 3. Verified email links the existing account
 4. User denies Discord consent → error copy, no 500
 5. Invite opens Discord in a new tab from landing, Help, and Settings
-6. Logged-in player without `discordId` can Link Discord from Settings; world chat then uses the in-game name
+6. Logged-in player without `discordId` can Link Discord from Settings; world chat then uses the in-game name; with `DISCORD_GUILD_ID` + bot they also appear in the Discord member list
 7. Updates script posts intro + bullets to `#updates` (not title-only) without printing the webhook URL
 8. Unlinked web player sees the weekly Discord popup; decline hides it; close snoozes 7 days; already-linked players never see it
 9. First Settings/popup link of an existing account pays €5.000 once; new Discord registrations do not; already-linked players get no retroactive cash
+10. Guild join soft-fails (missing env / bot permission) without breaking OAuth redirects
 
 ## i18n and Messaging
 Player ARB-prefix `discord*` plus `legalPrivacySection13*` and footer `landingFooterDiscord`. Help CTA uses `discordJoin` / `discordJoinBlurb`.

@@ -1295,7 +1295,7 @@ In-game **Support**-tickets: categorie-labels komen uit ARB (`supportCategoryBug
 
 Voor vragen, bugs, of suggesties:
 - In-game **Support** (tickets)
-- Discord-community (invite via `DISCORD_INVITE_URL`; knop op landing, Help en Instellingen). Wie niet via Discord is ingelogd kan Discord later **koppelen in Instellingen** of via de wekelijkse popup; de eerste koppeling op een bestaand account geeft **€5.000**. Patch notes staan in `#updates`.
+- Discord-community (invite via `DISCORD_INVITE_URL`; knop op landing, Help en Instellingen). Wie niet via Discord is ingelogd kan Discord later **koppelen in Instellingen** of via de wekelijkse popup; de eerste koppeling op een bestaand account geeft **€5.000**. Bij koppelen/inloggen via Discord word je (als de server zo is ingesteld) automatisch lid van de officiële Discord. Patch notes staan in `#updates`.
 - Wiki / Almanak: `https://wiki.themobstate.com`
 
 **Laatst bijgewerkt**: 16 september 2026

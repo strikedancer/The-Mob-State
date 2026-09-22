@@ -33383,7 +33383,7 @@ abstract class AppLocalizations {
   /// No description provided for @legalPrivacySection07Body.
   ///
   /// In en, this message translates to:
-  /// **'We share data with infrastructure and payment processors strictly as needed to run the service, under appropriate agreements. If you use Facebook Login, Meta receives the OAuth request you approve; we do not post to your Facebook profile or contact your friends. If you use Google Sign-In, Google receives the OAuth request you approve; we do not access Gmail, Drive, or other Google services. If you use Discord Sign-In, Discord receives the OAuth request you approve; we do not join servers or send messages as you. We do not sell your personal data. We may disclose information if required by law or to protect rights and safety.'**
+  /// **'We share data with infrastructure and payment processors strictly as needed to run the service, under appropriate agreements. If you use Facebook Login, Meta receives the OAuth request you approve; we do not post to your Facebook profile or contact your friends. If you use Google Sign-In, Google receives the OAuth request you approve; we do not access Gmail, Drive, or other Google services. If you use Discord Sign-In or Link Discord, Discord receives the OAuth request you approve; with your consent we may add you to the official The Mob State Discord server, and we do not send messages as you. We do not sell your personal data. We may disclose information if required by law or to protect rights and safety.'**
   String get legalPrivacySection07Body;
 
   /// No description provided for @legalPrivacySection08Title.
@@ -33455,7 +33455,7 @@ abstract class AppLocalizations {
   /// No description provided for @legalPrivacySection13Body.
   ///
   /// In en, this message translates to:
-  /// **'When you tap Continue with Discord we send you to Discord. If you approve, we receive your Discord user ID, username, and email address when Discord has verified that email. We use this only to create or sign in to your The Mob State account. We do not send messages or join servers as you. You can revoke access in your Discord authorized-apps settings and ask us to delete your game data via info@themobstate.com.'**
+  /// **'When you tap Continue with Discord we send you to Discord. If you approve, we receive your Discord user ID, username, and email address when Discord has verified that email. We use this to create or sign in to your The Mob State account and, when configured, to add you to the official The Mob State Discord server. We do not send messages as you. You can revoke access in your Discord authorized-apps settings, leave the server, and ask us to delete your game data via info@themobstate.com.'**
   String get legalPrivacySection13Body;
 
   /// No description provided for @legalDigitalGoodsTitle.

@@ -19558,7 +19558,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get legalPrivacySection07Body =>
-      'Udostępniamy dane infrastrukturze i podmiotom przetwarzającym płatności wyłącznie w zakresie niezbędnym do realizacji usługi, na mocy odpowiednich umów. Nie sprzedajemy Twoich danych osobowych. Możemy ujawnić informacje, jeśli jest to wymagane przez prawo lub w celu ochrony praw i bezpieczeństwa.';
+      'Udostępniamy dane infrastrukturze i podmiotom przetwarzającym płatności wyłącznie w zakresie niezbędnym do realizacji usługi, na mocy odpowiednich umów. Jeśli korzystasz z logowania przez Facebooka, Meta otrzyma zaakceptowane przez Ciebie żądanie OAuth; nie zamieszczamy postów na Twoim profilu na Facebooku ani nie kontaktujemy się z Twoimi znajomymi. Jeśli korzystasz z logowania Google, Google otrzymuje zaakceptowane przez Ciebie żądanie OAuth; nie uzyskujemy dostępu do Gmaila, Dysku ani innych usług Google. Jeśli korzystasz z logowania Discord lub łączy Discord, Discord otrzyma zaakceptowane przez Ciebie żądanie OAuth; za Twoją zgodą możemy dodać Cię do oficjalnego serwera The Mob State Discord i nie będziemy wysyłać wiadomości jako Ty. Nie sprzedajemy Twoich danych osobowych. Możemy ujawnić informacje, jeśli jest to wymagane przez prawo lub w celu ochrony praw i bezpieczeństwa.';
 
   @override
   String get legalPrivacySection08Title => 'Transfery międzynarodowe';
@@ -19600,7 +19600,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get legalPrivacySection13Body =>
-      'Kiedy klikniesz Kontynuuj z Discordem, przeniesiemy Cię do Discorda. Jeśli zatwierdzisz, otrzymamy Twój identyfikator użytkownika Discord, nazwę użytkownika i adres e-mail, gdy Discord zweryfikuje ten adres e-mail. Używamy tego wyłącznie do tworzenia lub logowania się na Twoje konto The Mob State. Nie wysyłamy wiadomości ani nie dołączamy do serwerów jako Ty. Możesz cofnąć dostęp w ustawieniach autoryzowanych aplikacji Discord i poprosić nas o usunięcie danych gry, pisząc na adres info@themobstate.com.';
+      'Kiedy klikniesz Kontynuuj z Discordem, przeniesiemy Cię do Discorda. Jeśli zatwierdzisz, otrzymamy Twój identyfikator użytkownika Discord, nazwę użytkownika i adres e-mail, gdy Discord zweryfikuje ten adres e-mail. Używamy tego do utworzenia lub zalogowania się na Twoje konto The Mob State oraz, po skonfigurowaniu, dodania Cię do oficjalnego serwera The Mob State Discord. Nie wysyłamy wiadomości tak jak Ty. Możesz cofnąć dostęp w ustawieniach autoryzowanych aplikacji Discord, opuścić serwer i poprosić nas o usunięcie danych gry, pisząc na adres info@themobstate.com.';
 
   @override
   String get legalDigitalGoodsTitle => 'Zakup towarów cyfrowych';
