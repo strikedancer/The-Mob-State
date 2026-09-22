@@ -356,7 +356,7 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 - Territory blijft crew-gebonden: zonder crew kun je geen neutrale of vijandige regio's aanvallen.
 - Het aantal gebieden is wereldwijd (alle landen bij elkaar), niet per land. Slots = het laagste van HQ, leden en een harde cap van 10: elke 3 HQ-niveaus +1, elke 5 extra leden +1. Alleen HQ of alleen leden is niet genoeg. Zit je aan de cap, dan kun je geen nieuwe contest starten; verdedigen blijft mogelijk en gebieden verdwijnen niet als iemand leavet. Gelijktijdige contests blijven alleen HQ-gedreven. Vanaf 8 slots mag je één extra garnizoen plaatsen. Op Territorium zie je bij de chips hoeveel HQ en leden nu geven en wat je nodig hebt voor het volgende slot; dezelfde regel staat bij de HQ-upgrade.
 - Als de voorbereiding van een Territory-contest klaar is, krijgen aanvallende en verdedigende crewleden een push- en inboxbericht dat de strijd live is en acties ontgrendeld zijn.
-- Op mobiel ondersteunt de Territory-kaart pinch-zoom en pannen zodat kleine regio's bruikbaar blijven.
+- Op mobiel en tablet ondersteunt de Territory-kaart pinch-zoom en pannen zodat kleine regio's bruikbaar blijven. Op computer zoomt de kaart niet mee met het muiswiel; daar blijft de kaart vast terwijl je de pagina scrollt.
 - Per crew zie je Territory-statistieken (gewonnen, verdedigd, verloren, contests, totale hold-tijd) zowel all-time als voor het actieve seizoen: op de leaderboard via een all-time/seizoen-toggle, en als crew-statsblok op de kaarttab.
 - Het tabblad **Seizoen** toont de maandronde als kaart (naam, live-status, countdown) plus recente veroveringen, tijdelijke regio-events en hete contests — geen kale ISO-tekst.
 

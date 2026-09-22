@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:math' as math;
 
+import 'package:flutter/foundation.dart'
+    show TargetPlatform, defaultTargetPlatform;
 import 'package:flutter/gestures.dart'
     show
         PointerCancelEvent,
@@ -18,6 +20,7 @@ import '../providers/auth_provider.dart';
 import '../services/territory_service.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/formatters.dart';
+import '../utils/pwa_install.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/mobile_load_error.dart';
 import '../widgets/game_page_info.dart';
@@ -27,6 +30,7 @@ import '../widgets/jail_gate.dart';
 // TerritoryScreen â€” Responsive crew territory map (NL-first)
 // Layout: desktop = split (map | side panel), tablet = stacked collapsible,
 //         mobile  = map card + action bottom sheet.
+// Pinch-zoom/pan is mobile+tablet only; desktop keeps a fixed map (no wheel zoom).
 // ---------------------------------------------------------------------------
 
 class TerritoryScreen extends StatefulWidget {
@@ -153,6 +157,24 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   bool _mapPointerMoved = false;
   int _activeMapPointers = 0;
   int _maxMapPointersDuringGesture = 0;
+
+  /// Pinch-zoom/pan for phones and tablets only. Desktop mouse-wheel zoom is off.
+  bool _mapPinchZoomEnabled() {
+    if (pwaLooksLikeMobileWeb()) return true;
+    switch (defaultTargetPlatform) {
+      case TargetPlatform.android:
+      case TargetPlatform.iOS:
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  void _resetMapTransformIfNeeded({required bool allowZoom}) {
+    if (allowZoom) return;
+    if (_mapTransformController.value == Matrix4.identity()) return;
+    _mapTransformController.value = Matrix4.identity();
+  }
 
   // â”€â”€ Selection â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   Map<String, dynamic>? _selectedRegion;
@@ -2518,6 +2540,8 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                   child: LayoutBuilder(
                     builder: (context, mapConstraints) {
                       final mapWidth = mapConstraints.maxWidth;
+                      final allowMapZoom = _mapPinchZoomEnabled();
+                      _resetMapTransformIfNeeded(allowZoom: allowMapZoom);
 
                       return Stack(
                         children: [
@@ -2528,9 +2552,9 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                                 transformationController:
                                     _mapTransformController,
                                 minScale: 1,
-                                maxScale: 6,
-                                panEnabled: true,
-                                scaleEnabled: true,
+                                maxScale: allowMapZoom ? 6 : 1,
+                                panEnabled: allowMapZoom,
+                                scaleEnabled: allowMapZoom,
                                 constrained: false,
                                 boundaryMargin: EdgeInsets.symmetric(
                                   horizontal: mapWidth,
@@ -2617,17 +2641,20 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                     },
                   ),
                 );
+                final allowMapZoomHint = _mapPinchZoomEnabled();
                 final infoWidget = Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       _l10n.territoryMapHintTapPanel,
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      _l10n.territoryMapHintMobile,
-                      style: TextStyle(color: Colors.grey[700], fontSize: 12),
-                    ),
+                    if (allowMapZoomHint) ...[
+                      const SizedBox(height: 8),
+                      Text(
+                        _l10n.territoryMapHintMobile,
+                        style: TextStyle(color: Colors.grey[700], fontSize: 12),
+                      ),
+                    ],
                     const SizedBox(height: 8),
                     Text(
                       _l10n.territoryMapHintColors,

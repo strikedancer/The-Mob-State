@@ -24,7 +24,7 @@
   - `backend/src/services/territoryService.ts` + `backend/src/routes/territory.ts` — map viewing blijft cross-country toegestaan, maar contest-start, verdedigen en territory-acties zijn nu expliciet beperkt tot het land waar de speler via Travel echt aanwezig is
   - NL correctie: Nederland gebruikt nu primair `netherlandsLow.svg` (backend `svgAssetKey = netherlandsLow` + frontend NL fallback naar `netherlandsLow.svg`)
   - Interactieve map UX: de Territory SVG is vergroot, regio-paden zijn direct klikbaar via path hit-testing op `svgElementId`, tonen een tooltip met gebiedsnaam en openen nu een responsive modal-bottom-sheet met gebiedsinformatie en aanvalsacties; losse regiokaarten onder de SVG zijn verwijderd zodat de map-tab één duidelijke interactiestroom houdt
-  - Mobiele kaartnavigatie: de SVG-kaart ondersteunt nu directe pinch-zoom en pan zonder extra plus/min/reset-overlay, zodat kleine regio's op telefoons beter aantikbaar blijven en ingezoomde kaartdelen versleept kunnen worden zonder de bestaande modalflow te breken
+  - Mobiele kaartnavigatie: op **mobiel en tablet** (touch / iOS / Android) ondersteunt de SVG-kaart pinch-zoom en pan zonder plus/min/reset-overlay, zodat kleine regio's beter aantikbaar blijven. Op **desktop** blijft de kaart vast (geen muiswiel-/trackpad-zoom bij hover), zodat scrollen over de pagina niet per ongeluk de kaart inzoomt.
   - Scroll/hover verfijning: de volledige map-tab volgt nu 1 primaire verticale scrollflow, en SVG-regio's krijgen hover-darkening plus expliciete zichtbare grenslijnen (`stroke`) voor betere afbakening
   - Renderer fallback verbreed: SVG styling draait nu over alle pad-elementen van de kaart (niet alleen backend-gemapte regio's), zodat grenslijnen en hover-darkening ook zichtbaar blijven bij gedeeltelijke `svgElementId` mismatch tussen seed-data en bron-SVG
   - Zuid-Afrika toegevoegd aan de asset/country set: `za` is nu gekoppeld aan `southAfricaLow.svg` (backend seed + frontend fallback)
@@ -300,7 +300,7 @@ Admin moderation:
 - Desktop: kaart + side panel split.
 - Tablet: kaart boven, details/acties onder in collapsible panel.
 - Mobiel: map card + bottom sheet details + actieknoppen binnen één scrollflow.
-- Mobiele kaartinteractie moet zoom/pan ondersteunen zodra regio's anders te klein worden voor betrouwbare touch input; pinch-zoom of een functioneel equivalent met resetpad is verplicht voor dichtbebouwde landenkaarten.
+- Mobiele/tablet kaartinteractie moet zoom/pan ondersteunen zodra regio's anders te klein worden voor betrouwbare touch input; pinch-zoom of een functioneel equivalent is verplicht voor dichtbebouwde landenkaarten. Desktop mag geen muiswiel-zoom op de kaart hebben (paginascroll moet doorlopen).
 - Interactieve SVG-regio taps openen de primaire gebiedsdetails in een responsive modal/bottom-sheet; parallelle losse regiolijsten of duplicate actiekaarten onder de kaart gelden niet als done zodra directe kaartinteractie beschikbaar is.
 - Geen hover-only critical actions; alle hoofdacties expliciet tappable.
 - SVG load failures tonen graceful fallback met regio-lijstweergave.
