@@ -5220,8 +5220,10 @@ class _CrewScreenState extends State<CrewScreen>
     final style = _myCrew?.hqStyle;
     final level = _myCrew?.hqLevel;
     final path = _getCrewHqImagePath(style, level);
-    final caption = (style != null && level != null)
-        ? '${_localizedHqStyleLabel(l10n, style)} · ${_t(l10n, 'label.level')} $level'
+    final globalLevel =
+        (style != null && level != null) ? _getHqGlobalLevel(style, level) : null;
+    final caption = (style != null && level != null && globalLevel != null)
+        ? '${_localizedHqStyleLabel(l10n, style)} · ${_t(l10n, 'label.level')} $globalLevel'
         : _t(l10n, 'status.notOwned');
 
     return Material(
@@ -8433,10 +8435,19 @@ class _CrewScreenState extends State<CrewScreen>
         ? _getMissingSideBuildingsForHqUpgrade(requiredSideLevel, l10n)
         : <String>[];
     final hqUpgradeBlockedBySideBuildings = missingSideBuildings.isNotEmpty;
-    // Style-local level (e.g. rural 2/3), same as Overview — not HQ global (6/3).
+    // Players think in global HQ level (L0–L19). Style-local 2/3 alone looked like
+    // "HQ is level 2" when they were actually global 6 (e.g. rural 2).
+    final hqStyleLabel = isHq
+        ? _localizedHqStyleLabel(l10n, building['style'] as String? ?? hqStyle)
+        : null;
+    final hqGlobalLevel = isHq
+        ? _getHqGlobalLevel(building['style'] as String? ?? hqStyle, level)
+        : null;
     final status = level == null
         ? _t(l10n, 'status.notOwned')
-        : '${_t(l10n, 'label.level')} $level/$maxLevel';
+        : isHq && hqGlobalLevel != null && hqStyleLabel != null
+            ? '${_t(l10n, 'label.level')} $hqGlobalLevel · $hqStyleLabel $level/$maxLevel'
+            : '${_t(l10n, 'label.level')} $level/$maxLevel';
 
     VoidCallback? onAction;
     var actionLabel = status;
