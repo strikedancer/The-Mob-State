@@ -31,6 +31,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 ### API
 - `GET /drugs/my-materials` → `{ materials, depot, stored, storedElsewhere, carried, currentCountry, backpack }` — `depot` is **current country only**; `stored` is materials sitting in a house/warehouse in this country; other-country lots stay in `materials` / `storedElsewhere`.
 - `POST /drugs/materials/buy/:materialId` → backpack (`_carried_`). Non-200 responses keep the server `message` (backpack full, jailed, not enough cash). The materials shop must not replace that with a generic buy-failed string.
+- `POST /drugs/start-production`, `POST /drugs/collect/:productionId`, and `POST /drugs/productions/:productionId/speedup` use `requireNotJailed` (same as materials buy). Batches already started keep ticking via cron; VIP auto-collect is unchanged.
 - `POST /drugs/materials/transfer` `{ materialId, quantity, direction }`
 - VIP `buy-missing` credits the **current-country depot** (ready to produce, no backpack transfer)
 - `GET /drugs/productions/:productionId/speedup-quote` → credit cost to finish an in-progress batch early

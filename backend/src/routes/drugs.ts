@@ -148,7 +148,7 @@ router.post('/materials/buy-missing', authenticate, requireNotJailed, async (req
  * @desc    Start drug production
  * @access  Private
  */
-router.post('/start-production', authenticate, async (req: AuthRequest, res: Response) => {
+router.post('/start-production', authenticate, requireNotJailed, async (req: AuthRequest, res: Response) => {
   try {
     const { drugId, propertyId } = req.body;
 
@@ -193,7 +193,7 @@ router.get('/productions', authenticate, async (req: AuthRequest, res: Response)
  * @desc    Collect finished production
  * @access  Private
  */
-router.post('/collect/:productionId', authenticate, async (req: AuthRequest, res: Response) => {
+router.post('/collect/:productionId', authenticate, requireNotJailed, async (req: AuthRequest, res: Response) => {
   try {
     const { productionId } = req.params;
 
@@ -277,6 +277,7 @@ router.get(
 router.post(
   '/productions/:productionId/speedup',
   authenticate,
+  requireNotJailed,
   async (req: AuthRequest, res: Response) => {
     try {
       const productionId = parseInt(String(req.params.productionId), 10);
