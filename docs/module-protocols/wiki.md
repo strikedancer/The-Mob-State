@@ -18,6 +18,7 @@ This is a catalogue and typical-relative guide, not live Black Market quotes. St
 ## Change Rules
 - Catalog or copy changes in `backend/content/`, Help ARBs (`client/lib/l10n/app_*.arb`) and `wiki/src/` refresh the live almanac after they land on the VPS (`git pull` / standard deploy). No extra `wiki/content` copy is required.
 - Chapter-tile PNGs still need the usual copy into `runtime/client-images/wiki/hubs/` (the deploy script already does this).
+- Territory Help (`helpTopicTerritoryHow` / Tips) must mention voluntary abandon (officer, travel-gate, depot burn, cooldowns) so the in-game `i` button and Almanac handbook stay aligned with live Territory.
 - Country pages show typical trade factor plus **cars, motorcycles and boats** as separate vehicle environments (do not lump motorcycles into boats). Vehicle spawn lists must only link **travel/playable** countries; legacy tags such as Monaco/Austria are remapped (`monaco`→France, `austria`→Germany) so Almanac never advertises a country you cannot travel to.
 - Keep UI chrome translated in `wiki/src/i18n.mjs` for every SupportedLanguages code.
 - Item names fall back to catalog `name` / `name_en` / `descriptionEn`.
