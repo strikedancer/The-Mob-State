@@ -121,6 +121,7 @@ Elke **5 minuten** gebeurt er automatisch:
 - **FBI Heat Decay**: -1 punt per tick (alleen als FBI Heat < 10)
 - **Bank Interest**: Momenteel uitgeschakeld (geen passieve rente per tick)
 - **Eten & Drinken** is uit het spel: geen honger/dorst-meters, geen food-shop, geen dood door honger/dorst. De dashboard-`i` en Banen-help noemen honger en dorst niet meer.
+- Passieve prostitutie-inkomsten en Territory-crew-bank bijschrijvingen overleven gelijktijdige speler/crew-updates (MariaDB write-conflict retries); één conflict mag de tick of het Territory-leaderboard niet laten crashen.
 
 ### Drugs & prestaties (server)
 - Prestaties die op drugproductie (o.a. aantal voltooide batches, hoeveelheid per type) zijn gebaseerd, worden door de server **verwerkt wanneer productie klaar is of wanneer je ophaalt** (incl. VIP auto-ophalen), zodat je ze niet pas krijgt door later een ander scherm (zoals nachtclub) te openen. Zie `docs/module-protocols/drugs.md`.

@@ -33,6 +33,7 @@ Deze waarden sturen housing capaciteit/risico en weekhuur in de prostitutieflow.
 
 ## Must Preserve
 - Street/RLD passive income is **auto-settled** by the game tick (`settleAllProstitutionEarnings` → `settleEarnings`). The Workers UI has **no** Collect button and **no** Te innen / To collect KPI.
+- `settleEarnings` money increments (`player.update` for owner rent + worker earnings) retry MariaDB 1020 write conflicts. `settleAllProstitutionEarnings` isolates per-player failures so one conflict cannot abort the whole game tick.
 - `settleEarnings` and `getEarningsStats.potentialEarnings` still use the same passive sum (street/RLD, fractional hours, occupancy/guard/sabotage) for tick/API; nightclub is not in that passive sum.
 - Clear success and failure feedback for the player.
 - Accurate state refresh after an action completes.

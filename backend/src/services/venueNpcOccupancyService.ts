@@ -5,6 +5,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import { getXPForRank } from '../config';
 import prisma from '../lib/prisma';
+import { withPrismaWriteRetry } from '../lib/prismaRetry';
 import { getCasinoPrice } from './casinoOwnershipService';
 import { invalidateNpcPlayerIdCache } from './npcLookup';
 
@@ -207,14 +208,27 @@ async function seedVacantFactory(countryId: string): Promise<void> {
 
   const ownerId = await ensureOperatorPlayer(spec, 'factory', countryId);
   const now = new Date();
-  await prisma.ammoFactory.update({
-    where: { id: factory.id },
-    data: {
-      ownerId,
-      lastActiveAt: now,
-      lastProducedAt: now,
-    },
-  });
+  try {
+    await withPrismaWriteRetry(async () => {
+      // Only claim if still vacant — concurrent listFactories/ensure is common.
+      const claimed = await prisma.ammoFactory.updateMany({
+        where: { id: factory.id, ownerId: null },
+        data: {
+          ownerId,
+          lastActiveAt: now,
+          lastProducedAt: now,
+        },
+      });
+      if (claimed.count === 0) {
+        return;
+      }
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    if (!message.includes('1020') && !message.includes('Record has changed')) {
+      throw error;
+    }
+  }
 }
 
 async function runEnsure(): Promise<void> {

@@ -1,4 +1,5 @@
 import prisma from '../lib/prisma';
+import { withPrismaWriteRetry } from '../lib/prismaRetry';
 import { checkAndUnlockAchievements, serializeAchievementForClient } from './achievementService';
 import { checkIfJailed, increaseWantedLevel, jailPlayer } from './policeService';
 import { activityService } from './activityService';
@@ -1365,10 +1366,12 @@ export const prostituteService = {
       totalEarnings += earnings;
 
       if (rentPaid > 0 && slice.ownerId) {
-        await prisma.player.update({
-          where: { id: slice.ownerId },
-          data: { money: { increment: rentPaid } },
-        });
+        await withPrismaWriteRetry(() =>
+          prisma.player.update({
+            where: { id: slice.ownerId },
+            data: { money: { increment: rentPaid } },
+          }),
+        );
       }
 
       await prisma.prostitute.update({
@@ -1386,10 +1389,12 @@ export const prostituteService = {
 
     // Add earnings to player
     if (totalEarnings > 0) {
-      await prisma.player.update({
-        where: { id: playerId },
-        data: { money: { increment: totalEarnings } },
-      });
+      await withPrismaWriteRetry(() =>
+        prisma.player.update({
+          where: { id: playerId },
+          data: { money: { increment: totalEarnings } },
+        }),
+      );
     }
 
     return totalEarnings;
@@ -1690,10 +1695,15 @@ export const prostituteService = {
     let totalEvicted = 0;
 
     for (const player of players) {
-      const earnings = await this.settleEarnings(player.id);
-      totalEarningsSettled += earnings;
-      const housing = await this.processHousingUpkeep(player.id);
-      totalEvicted += housing.evictedCount;
+      try {
+        const earnings = await this.settleEarnings(player.id);
+        totalEarningsSettled += earnings;
+        const housing = await this.processHousingUpkeep(player.id);
+        totalEvicted += housing.evictedCount;
+      } catch (error) {
+        // MariaDB 1020 / concurrent player writes must not abort the whole tick.
+        console.error(`[ProstituteService] settleAll failed for player ${player.id}:`, error);
+      }
     }
 
     return {
