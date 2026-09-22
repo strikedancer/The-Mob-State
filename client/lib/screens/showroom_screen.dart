@@ -6,6 +6,7 @@ import '../services/showroom_service.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/jail_gate.dart';
 
 class ShowroomScreen extends StatefulWidget {
   final Property property;
@@ -150,9 +151,11 @@ class _ShowroomScreenState extends State<ShowroomScreen>
 
   @override
   Widget build(BuildContext context) {
-    return GamePageInfoHost(
-      topicId: 'properties',
-      child: _buildPageInfoChild(context),
+    return JailGate(
+      child: GamePageInfoHost(
+        topicId: 'properties',
+        child: _buildPageInfoChild(context),
+      ),
     );
   }
 

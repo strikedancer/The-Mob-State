@@ -7,6 +7,7 @@ import '../services/api_client.dart';
 import '../utils/formatters.dart';
 import '../utils/web_asset_helper.dart';
 import '../widgets/action_result_toast.dart';
+import '../widgets/jail_gate.dart';
 
 const Color _raceGold = Color(0xFFFFB347);
 const Color _raceBgStart = Color(0xFF160707);
@@ -365,7 +366,10 @@ class _RaceScreenState extends State<RaceScreen> {
         child: _buildBody(l10n),
       );
     }
-    return _shell(child: child);
+    return JailGate(
+      embedded: widget.embedded,
+      child: _shell(child: child),
+    );
   }
 
   Widget _shell({required Widget child}) {

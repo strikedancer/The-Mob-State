@@ -22,6 +22,7 @@ import '../utils/top_right_notification.dart';
 import '../widgets/mobile_load_error.dart';
 import '../widgets/game_page_info.dart';
 import '../widgets/empire_page_hero.dart';
+import '../widgets/jail_gate.dart';
 // ---------------------------------------------------------------------------
 // TerritoryScreen â€” Responsive crew territory map (NL-first)
 // Layout: desktop = split (map | side panel), tablet = stacked collapsible,
@@ -2034,10 +2035,13 @@ class _TerritoryScreenState extends State<TerritoryScreen>
 
   @override
   Widget build(BuildContext context) {
-    return GamePageInfoHost(
-      topicId: 'territory',
-      showOverlay: false,
-      child: _buildPageInfoChild(context),
+    return JailGate(
+      embedded: widget.embedded,
+      child: GamePageInfoHost(
+        topicId: 'territory',
+        showOverlay: false,
+        child: _buildPageInfoChild(context),
+      ),
     );
   }
 

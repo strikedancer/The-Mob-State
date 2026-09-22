@@ -14,6 +14,7 @@ import '../widgets/action_result_toast.dart';
 import '../widgets/cooldown_overlay.dart';
 import '../widgets/game_page_info.dart';
 import '../widgets/empire_page_hero.dart';
+import '../widgets/jail_gate.dart';
 
 class SchoolScreen extends StatefulWidget {
   const SchoolScreen({super.key, this.embedded = false});
@@ -1187,10 +1188,13 @@ class _SchoolScreenState extends State<SchoolScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GamePageInfoHost(
-      topicId: 'school',
-      showOverlay: false,
-      child: _buildPageInfoChild(context),
+    return JailGate(
+      embedded: widget.embedded,
+      child: GamePageInfoHost(
+        topicId: 'school',
+        showOverlay: false,
+        child: _buildPageInfoChild(context),
+      ),
     );
   }
 

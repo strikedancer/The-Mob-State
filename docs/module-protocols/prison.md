@@ -26,6 +26,7 @@ Jail state, prisoner list, actions while jailed and release-related flow.
 - Responsive usability without pushing critical actions off-screen.
 - While jailed, self-service actions remain available from prison UI: paying your own bail and attempting your own escape may not disappear from the primary prison flow.
 - While jailed the Black Market hub is closed (client jail overlay + server `requireNotJailed` on shop/market buy/sell/list). Training hub stays open for gym tracks (strength/speed/stamina); shooting-range train is blocked.
+- Action hubs that are unusable while jailed show the shared `JailGate` → `JailOverlay` (drugs, hitlist, smuggling, school, territory, aviation, races, casino, bank, crypto, stocks, nightclub, properties, don, ammo factory, tune shop, showroom, RLD detail). Prison list, world chat, messages, friends, help/settings, court, inventory, events, vault, premium, hospital, crew management and gym stay reachable without a full-screen jail overlay.
 - Self-escape is capped at **2 attempts per jail stay** (`SELF_ESCAPE_MAX_ATTEMPTS`) with a **15 minute** cooldown (`SELF_ESCAPE_COOLDOWN_SECONDS`). Failed attempts still add 15 minutes. After the cap, bail / crew jailbreak / serving time remain available. Jail overlay and prison list must disable the button and show remaining attempts or cooldown.
 - Na succesvolle borgbetaling moet de client opnieuw jail- en cooldown-state ophalen in plaats van alleen losse crimes-refreshes te doen.
 - Borgbedragen moeten meeschalen met resterende celstraf, niet alleen met wanted level.

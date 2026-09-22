@@ -13,6 +13,7 @@ import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/jail_gate.dart';
 import 'black_market_screen.dart';
 import 'drug_facility_screen.dart';
 import 'drug_inventory_screen.dart';
@@ -602,10 +603,13 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen>
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
-    return GamePageInfoHost(
-      topicId: 'drugs',
-      showOverlay: false,
-      child: _shell(child: _buildBody(t)),
+    return JailGate(
+      embedded: widget.embedded,
+      child: GamePageInfoHost(
+        topicId: 'drugs',
+        showOverlay: false,
+        child: _shell(child: _buildBody(t)),
+      ),
     );
   }
 }

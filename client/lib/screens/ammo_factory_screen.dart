@@ -12,6 +12,7 @@ import '../widgets/education_requirements_dialog.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/empire_page_hero.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/jail_gate.dart';
 import 'black_market_screen.dart';
 import 'school_screen.dart';
 
@@ -1028,10 +1029,13 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GamePageInfoHost(
-      topicId: 'ammo-factory',
-      showOverlay: false,
-      child: _buildPageInfoChild(context),
+    return JailGate(
+      embedded: widget.embedded,
+      child: GamePageInfoHost(
+        topicId: 'ammo-factory',
+        showOverlay: false,
+        child: _buildPageInfoChild(context),
+      ),
     );
   }
 

@@ -15,6 +15,7 @@ import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/empire_page_hero.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/jail_gate.dart';
 
 class PropertyScreen extends StatefulWidget {
   final ValueChanged<int>? onOpenInventory;
@@ -693,10 +694,13 @@ class PropertyScreenState extends State<PropertyScreen>
 
   @override
   Widget build(BuildContext context) {
-    return GamePageInfoHost(
-      topicId: 'properties',
-      showOverlay: false,
-      child: _buildPageInfoChild(context),
+    return JailGate(
+      embedded: widget.embedded,
+      child: GamePageInfoHost(
+        topicId: 'properties',
+        showOverlay: false,
+        child: _buildPageInfoChild(context),
+      ),
     );
   }
 

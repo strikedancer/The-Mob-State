@@ -8,6 +8,7 @@ import '../services/api_client.dart';
 import '../utils/formatters.dart';
 import '../utils/web_asset_helper.dart';
 import '../widgets/action_result_toast.dart';
+import '../widgets/jail_gate.dart';
 
 const Color _donGold = Color(0xFFFFB347);
 const Color _donBgStart = Color(0xFF160707);
@@ -548,6 +549,13 @@ class _DonScreenState extends State<DonScreen> with SingleTickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
+    return JailGate(
+      embedded: widget.embedded,
+      child: _buildBody(context),
+    );
+  }
+
+  Widget _buildBody(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     if (_loading && _overview == null) {
       return _shell(

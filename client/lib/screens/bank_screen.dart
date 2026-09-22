@@ -12,6 +12,7 @@ import '../utils/top_right_notification.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/game_page_info.dart';
 import '../widgets/empire_page_hero.dart';
+import '../widgets/jail_gate.dart';
 
 class BankScreen extends StatefulWidget {
   const BankScreen({super.key, this.embedded = false});
@@ -764,10 +765,13 @@ class _BankScreenState extends State<BankScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GamePageInfoHost(
-      topicId: 'bank',
-      showOverlay: false,
-      child: _buildPageInfoChild(context),
+    return JailGate(
+      embedded: widget.embedded,
+      child: GamePageInfoHost(
+        topicId: 'bank',
+        showOverlay: false,
+        child: _buildPageInfoChild(context),
+      ),
     );
   }
 

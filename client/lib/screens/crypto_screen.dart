@@ -10,6 +10,7 @@ import '../utils/achievement_notifier.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/game_page_info.dart';
 import '../widgets/empire_page_hero.dart';
+import '../widgets/jail_gate.dart';
 
 String _localizeCryptoApiMessage(AppLocalizations l10n, String? raw) {
   if (raw == null || raw.trim().isEmpty) {
@@ -589,10 +590,13 @@ class _CryptoScreenState extends State<CryptoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GamePageInfoHost(
-      topicId: 'crypto',
-      showOverlay: false,
-      child: _buildPageInfoChild(context),
+    return JailGate(
+      embedded: widget.embedded,
+      child: GamePageInfoHost(
+        topicId: 'crypto',
+        showOverlay: false,
+        child: _buildPageInfoChild(context),
+      ),
     );
   }
 

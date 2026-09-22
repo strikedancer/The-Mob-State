@@ -6,6 +6,7 @@ import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 import '../widgets/game_page_info.dart';
 import '../widgets/empire_page_hero.dart';
+import '../widgets/jail_gate.dart';
 
 class StockMarketScreen extends StatefulWidget {
   const StockMarketScreen({super.key, this.embedded = false});
@@ -127,10 +128,13 @@ class _StockMarketScreenState extends State<StockMarketScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GamePageInfoHost(
-      topicId: 'stock-market',
-      showOverlay: false,
-      child: _buildPageInfoChild(context),
+    return JailGate(
+      embedded: widget.embedded,
+      child: GamePageInfoHost(
+        topicId: 'stock-market',
+        showOverlay: false,
+        child: _buildPageInfoChild(context),
+      ),
     );
   }
 

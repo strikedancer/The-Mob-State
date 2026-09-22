@@ -10,6 +10,7 @@ import '../utils/formatters.dart';
 import '../widgets/mobile_load_error.dart';
 import '../widgets/game_page_info.dart';
 import '../widgets/empire_page_hero.dart';
+import '../widgets/jail_gate.dart';
 
 String _resolveHitErrorMessage(dynamic data, AppLocalizations l10n) {
   final map = data is Map ? data : null;
@@ -206,10 +207,13 @@ class _HitlistScreenState extends State<HitlistScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GamePageInfoHost(
-      topicId: 'hitlist',
-      showOverlay: false,
-      child: _buildPageInfoChild(context),
+    return JailGate(
+      embedded: widget.embedded,
+      child: GamePageInfoHost(
+        topicId: 'hitlist',
+        showOverlay: false,
+        child: _buildPageInfoChild(context),
+      ),
     );
   }
 

@@ -16,6 +16,7 @@ import '../widgets/education_requirements_dialog.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/game_page_info.dart';
 import '../widgets/empire_page_hero.dart';
+import '../widgets/jail_gate.dart';
 
 class CasinoScreen extends StatefulWidget {
   const CasinoScreen({super.key, this.embedded = false});
@@ -491,10 +492,13 @@ class _CasinoScreenState extends State<CasinoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GamePageInfoHost(
-      topicId: 'casino',
-      showOverlay: false,
-      child: _buildPageInfoChild(context),
+    return JailGate(
+      embedded: widget.embedded,
+      child: GamePageInfoHost(
+        topicId: 'casino',
+        showOverlay: false,
+        child: _buildPageInfoChild(context),
+      ),
     );
   }
 

@@ -14,6 +14,7 @@ import '../utils/achievement_notifier.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/empire_page_hero.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/jail_gate.dart';
 
 class NightclubScreen extends StatefulWidget {
   final Property? property;
@@ -1276,10 +1277,13 @@ class _NightclubScreenState extends State<NightclubScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GamePageInfoHost(
-      topicId: 'nightclub',
-      showOverlay: false,
-      child: _buildPageInfoChild(context),
+    return JailGate(
+      embedded: widget.embedded,
+      child: GamePageInfoHost(
+        topicId: 'nightclub',
+        showOverlay: false,
+        child: _buildPageInfoChild(context),
+      ),
     );
   }
 
