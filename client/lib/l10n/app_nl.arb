@@ -8281,6 +8281,41 @@
     }
   },
   "territorySnackGarrisonDeployed": "Garnizoen ingezet.",
+  "territoryAbandonRegion": "Gebied opgeven",
+  "territoryAbandonCountry": "Heel land opgeven",
+  "territoryAbandonDesc": "Vrijwillig verhuizen: het gebied wordt neutraal, jullie depot verbrandt volledig en de crew-bank betaalt de kosten. Zo maak je slots vrij of ruimte voor een ander stuk in hetzelfde land.",
+  "territoryAbandonRegionDialogTitle": "Dit gebied opgeven?",
+  "territoryAbandonRegionDialogBody": "Betaal {cost} uit de crew-bank. Depot en projecten verdwijnen. Typ ABANDON om te bevestigen. Cooldown per regio: 48 uur.",
+  "@territoryAbandonRegionDialogBody": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryAbandonCountryDialogTitle": "Heel dit land opgeven?",
+  "territoryAbandonCountryDialogBody": "Geef alle {count} eigen gebieden hier vrij voor {cost} uit de crew-bank. Elk depot verbrandt. Typ ABANDON om te bevestigen. Land-cooldown: 7 dagen.",
+  "@territoryAbandonCountryDialogBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryAbandonConfirmHint": "Typ ABANDON",
+  "territoryAbandonConfirmAction": "Opgeven",
+  "territorySnackAbandoned": "Gebied opgegeven. Depot verbrand.",
+  "territorySnackAbandonedCountry": "Alle gebieden in dit land opgegeven. Depots verbrand.",
+  "territoryErrorAbandonDisabled": "Territorium opgeven staat momenteel uit.",
+  "territoryErrorAbandonOfficerOnly": "Alleen de leader of co-leider kan Territorium opgeven.",
+  "territoryErrorAbandonNotOwner": "Jullie crew bezit dit gebied niet.",
+  "territoryErrorAbandonInContest": "Je kunt niet opgeven tijdens een actieve contest op dit gebied.",
+  "territoryErrorAbandonCooldown": "Opgeven staat voor jullie crew op cooldown.",
+  "territoryErrorAbandonConfirmRequired": "Typ precies ABANDON om te bevestigen.",
+  "territoryErrorAbandonNoRegions": "Jullie crew heeft geen gebieden in dit land.",
   "territoryErrorUnknown": "Onbekende territory-fout.",
   "territoryLegendUnderContest": "In strijd",
   "territoryLegendNeutral": "Neutraal",

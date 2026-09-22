@@ -4,6 +4,7 @@ import { authenticate, AuthRequest } from '../middleware/authenticate';
 import { adminAuthMiddleware, type AdminRequest } from '../middleware/adminAuth';
 import * as territoryService from '../services/territoryService';
 import * as territoryArsenalService from '../services/territoryArsenalService';
+import * as territoryAbandonService from '../services/territoryAbandonService';
 import * as crewService from '../services/crewService';
 
 const router = Router();
@@ -101,6 +102,13 @@ function mapTerritoryError(error: unknown, res: Response, next: NextFunction) {
     HOLD_NOT_OWNER:                 [403, 'territory.hold_not_owner'],
     HOLD_NOT_DUE:                   [409, 'territory.hold_not_due'],
     HOLD_CONTEST_ACTIVE:            [409, 'territory.hold_contest_active'],
+    ABANDON_DISABLED:               [403, 'territory.abandon_disabled'],
+    ABANDON_OFFICER_ONLY:           [403, 'territory.abandon_officer_only'],
+    ABANDON_NOT_OWNER:              [403, 'territory.abandon_not_owner'],
+    ABANDON_IN_CONTEST:             [409, 'territory.abandon_in_contest'],
+    ABANDON_COOLDOWN:               [429, 'territory.abandon_cooldown'],
+    ABANDON_CONFIRM_REQUIRED:       [400, 'territory.abandon_confirm_required'],
+    ABANDON_NO_REGIONS:             [400, 'territory.abandon_no_regions'],
   };
 
   const entry = map[error.message];
@@ -154,7 +162,32 @@ router.get('/map/:countryCode', authenticate, async (req: AuthRequest, res: Resp
       viewerPlayerId,
       viewerCrewId: viewerCrew?.id ?? null,
     });
-    return res.json({ event: 'territory.map', params: data });
+    const ownedTiers = data.regions
+      .filter((r) => viewerCrew?.id != null && r.ownerCrewId === viewerCrew.id)
+      .map((r) => ({
+        regionKey: r.regionKey,
+        valueTier: r.valueTier,
+        hasContest: Boolean(r.contestId && r.contestStatus && r.contestStatus !== 'resolved' && r.contestStatus !== 'cancelled'),
+      }));
+    const abandon = await territoryAbandonService.buildAbandonOffersForMap({
+      countryCode,
+      viewerCrewId: viewerCrew?.id ?? null,
+      viewerPlayerId,
+      ownedRegionTiers: ownedTiers,
+    });
+    const regions = data.regions.map((r) => ({
+      ...r,
+      abandonOffer: abandon.abandonOfferByRegion[r.regionKey] ?? null,
+    }));
+    return res.json({
+      event: 'territory.map',
+      params: {
+        ...data,
+        regions,
+        abandonCountryOffer: abandon.abandonCountryOffer,
+        viewerIsTerritoryOfficer: abandon.viewerIsOfficer,
+      },
+    });
   } catch (error) {
     return mapTerritoryError(error, res, next);
   }
@@ -314,6 +347,66 @@ router.post('/garrison/deploy', authenticate, async (req: AuthRequest, res: Resp
       req.player?.currentCountry,
     );
     return res.json({ event: 'territory.garrison_deployed', params: { garrison } });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ event: 'error.validation', params: { issues: error.issues } });
+    }
+    return mapTerritoryError(error, res, next);
+  }
+});
+
+const abandonRegionSchema = z.object({
+  regionKey: z.string().min(2).max(60),
+  confirm: z.string().min(1).max(40),
+});
+
+const abandonCountrySchema = z.object({
+  countryCode: z.string().min(2).max(40),
+  confirm: z.string().min(1).max(40),
+});
+
+/**
+ * POST /territory/abandon
+ * Officer voluntarily releases one owned region (depot burns; crew-bank cost).
+ */
+router.post('/abandon', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const crewId = await requireCrew(req, res);
+    if (!crewId) return;
+    const body = abandonRegionSchema.parse(req.body);
+    const result = await territoryAbandonService.abandonRegion(
+      req.player!.id,
+      crewId,
+      body.regionKey,
+      req.player?.currentCountry,
+      body.confirm,
+    );
+    return res.json({ event: 'territory.abandoned', params: result });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ event: 'error.validation', params: { issues: error.issues } });
+    }
+    return mapTerritoryError(error, res, next);
+  }
+});
+
+/**
+ * POST /territory/abandon-country
+ * Officer releases every owned region in the country (one cost + longer cooldown).
+ */
+router.post('/abandon-country', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const crewId = await requireCrew(req, res);
+    if (!crewId) return;
+    const body = abandonCountrySchema.parse(req.body);
+    const result = await territoryAbandonService.abandonCountry(
+      req.player!.id,
+      crewId,
+      body.countryCode,
+      req.player?.currentCountry,
+      body.confirm,
+    );
+    return res.json({ event: 'territory.abandoned_country', params: result });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return res.status(400).json({ event: 'error.validation', params: { issues: error.issues } });

@@ -28608,6 +28608,114 @@ abstract class AppLocalizations {
   /// **'Garrison deployed.'**
   String get territorySnackGarrisonDeployed;
 
+  /// No description provided for @territoryAbandonRegion.
+  ///
+  /// In en, this message translates to:
+  /// **'Abandon region'**
+  String get territoryAbandonRegion;
+
+  /// No description provided for @territoryAbandonCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Abandon all regions in this country'**
+  String get territoryAbandonCountry;
+
+  /// No description provided for @territoryAbandonDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Voluntary relocate: the region becomes neutral, your depot burns completely, and the crew bank pays the fee. Use this to free slots or leave room for another piece of the same country.'**
+  String get territoryAbandonDesc;
+
+  /// No description provided for @territoryAbandonRegionDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Abandon this region?'**
+  String get territoryAbandonRegionDialogTitle;
+
+  /// No description provided for @territoryAbandonRegionDialogBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay {cost} from the crew bank. Depot and projects are destroyed. Type ABANDON to confirm. Region cooldown: 48 hours.'**
+  String territoryAbandonRegionDialogBody(String cost);
+
+  /// No description provided for @territoryAbandonCountryDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Abandon this whole country?'**
+  String get territoryAbandonCountryDialogTitle;
+
+  /// No description provided for @territoryAbandonCountryDialogBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Release all {count} owned regions here for {cost} from the crew bank. Every depot burns. Type ABANDON to confirm. Country cooldown: 7 days.'**
+  String territoryAbandonCountryDialogBody(int count, String cost);
+
+  /// No description provided for @territoryAbandonConfirmHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Type ABANDON'**
+  String get territoryAbandonConfirmHint;
+
+  /// No description provided for @territoryAbandonConfirmAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Abandon'**
+  String get territoryAbandonConfirmAction;
+
+  /// No description provided for @territorySnackAbandoned.
+  ///
+  /// In en, this message translates to:
+  /// **'Region abandoned. Depot burned.'**
+  String get territorySnackAbandoned;
+
+  /// No description provided for @territorySnackAbandonedCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'All regions in this country abandoned. Depots burned.'**
+  String get territorySnackAbandonedCountry;
+
+  /// No description provided for @territoryErrorAbandonDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Territory abandon is currently disabled.'**
+  String get territoryErrorAbandonDisabled;
+
+  /// No description provided for @territoryErrorAbandonOfficerOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the leader or co-leader can abandon territory.'**
+  String get territoryErrorAbandonOfficerOnly;
+
+  /// No description provided for @territoryErrorAbandonNotOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'Your crew does not own this region.'**
+  String get territoryErrorAbandonNotOwner;
+
+  /// No description provided for @territoryErrorAbandonInContest.
+  ///
+  /// In en, this message translates to:
+  /// **'You cannot abandon while a contest is active on this region.'**
+  String get territoryErrorAbandonInContest;
+
+  /// No description provided for @territoryErrorAbandonCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'Abandon is on cooldown for your crew.'**
+  String get territoryErrorAbandonCooldown;
+
+  /// No description provided for @territoryErrorAbandonConfirmRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Type ABANDON exactly to confirm.'**
+  String get territoryErrorAbandonConfirmRequired;
+
+  /// No description provided for @territoryErrorAbandonNoRegions.
+  ///
+  /// In en, this message translates to:
+  /// **'Your crew owns no regions in this country.'**
+  String get territoryErrorAbandonNoRegions;
+
   /// No description provided for @territoryErrorUnknown.
   ///
   /// In en, this message translates to:

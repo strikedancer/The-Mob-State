@@ -16631,6 +16631,73 @@ class AppLocalizationsNl extends AppLocalizations {
   String get territorySnackGarrisonDeployed => 'Garnizoen ingezet.';
 
   @override
+  String get territoryAbandonRegion => 'Gebied opgeven';
+
+  @override
+  String get territoryAbandonCountry => 'Heel land opgeven';
+
+  @override
+  String get territoryAbandonDesc =>
+      'Vrijwillig verhuizen: het gebied wordt neutraal, jullie depot verbrandt volledig en de crew-bank betaalt de kosten. Zo maak je slots vrij of ruimte voor een ander stuk in hetzelfde land.';
+
+  @override
+  String get territoryAbandonRegionDialogTitle => 'Dit gebied opgeven?';
+
+  @override
+  String territoryAbandonRegionDialogBody(String cost) {
+    return 'Betaal $cost uit de crew-bank. Depot en projecten verdwijnen. Typ ABANDON om te bevestigen. Cooldown per regio: 48 uur.';
+  }
+
+  @override
+  String get territoryAbandonCountryDialogTitle => 'Heel dit land opgeven?';
+
+  @override
+  String territoryAbandonCountryDialogBody(int count, String cost) {
+    return 'Geef alle $count eigen gebieden hier vrij voor $cost uit de crew-bank. Elk depot verbrandt. Typ ABANDON om te bevestigen. Land-cooldown: 7 dagen.';
+  }
+
+  @override
+  String get territoryAbandonConfirmHint => 'Typ ABANDON';
+
+  @override
+  String get territoryAbandonConfirmAction => 'Opgeven';
+
+  @override
+  String get territorySnackAbandoned => 'Gebied opgegeven. Depot verbrand.';
+
+  @override
+  String get territorySnackAbandonedCountry =>
+      'Alle gebieden in dit land opgegeven. Depots verbrand.';
+
+  @override
+  String get territoryErrorAbandonDisabled =>
+      'Territorium opgeven staat momenteel uit.';
+
+  @override
+  String get territoryErrorAbandonOfficerOnly =>
+      'Alleen de leader of co-leider kan Territorium opgeven.';
+
+  @override
+  String get territoryErrorAbandonNotOwner =>
+      'Jullie crew bezit dit gebied niet.';
+
+  @override
+  String get territoryErrorAbandonInContest =>
+      'Je kunt niet opgeven tijdens een actieve contest op dit gebied.';
+
+  @override
+  String get territoryErrorAbandonCooldown =>
+      'Opgeven staat voor jullie crew op cooldown.';
+
+  @override
+  String get territoryErrorAbandonConfirmRequired =>
+      'Typ precies ABANDON om te bevestigen.';
+
+  @override
+  String get territoryErrorAbandonNoRegions =>
+      'Jullie crew heeft geen gebieden in dit land.';
+
+  @override
   String get territoryErrorUnknown => 'Onbekende territory-fout.';
 
   @override

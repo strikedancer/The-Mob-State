@@ -139,6 +139,13 @@ const TERRITORY_CONFIG_DEFAULTS: Record<string, string> = {
   TERRITORY_ARSENAL_AMMO_COST_DEFENSE: '30',
   TERRITORY_ARSENAL_AMMO_COST_PATROL: '15',
   TERRITORY_ARSENAL_AMMO_COST_SABOTAGE: '8',
+  TERRITORY_ABANDON_ENABLED: '1',
+  TERRITORY_ABANDON_REGION_COOLDOWN_SECONDS: '172800',
+  TERRITORY_ABANDON_COUNTRY_COOLDOWN_SECONDS: '604800',
+  TERRITORY_ABANDON_COST_FLAT: '50000',
+  TERRITORY_ABANDON_COST_DAYS_INCOME: '6',
+  TERRITORY_ABANDON_COUNTRY_FLAT: '100000',
+  TERRITORY_ABANDON_COUNTRY_COST_FACTOR_PERCENT: '75',
 };
 
 type TerritorySeedRegion = {
@@ -524,6 +531,16 @@ export async function ensureTerritorySchema(): Promise<void> {
       PRIMARY KEY (id),
       UNIQUE KEY uq_territory_crew_stats (crewId, seasonKey),
       INDEX idx_territory_crew_stats_season (seasonKey)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `);
+
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS territory_abandon_cooldowns (
+      crewId INT NOT NULL,
+      kind VARCHAR(16) NOT NULL,
+      availableAt DATETIME NOT NULL,
+      updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (crewId, kind)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
 

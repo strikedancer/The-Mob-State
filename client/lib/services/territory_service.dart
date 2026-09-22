@@ -175,6 +175,52 @@ class TerritoryService {
     }
   }
 
+  Future<Map<String, dynamic>> abandonRegion({
+    required String regionKey,
+    required String confirm,
+  }) async {
+    try {
+      final response = await _api.post('/territory/abandon', {
+        'regionKey': regionKey,
+        'confirm': confirm,
+      });
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      if (response.statusCode == 200) {
+        return {
+          'success': true,
+          ...data['params'] as Map<String, dynamic>? ?? {},
+          'event': data['event'],
+        };
+      }
+      return {'success': false, 'event': data['event'], 'message': data['message'] ?? ''};
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> abandonCountry({
+    required String countryCode,
+    required String confirm,
+  }) async {
+    try {
+      final response = await _api.post('/territory/abandon-country', {
+        'countryCode': countryCode,
+        'confirm': confirm,
+      });
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      if (response.statusCode == 200) {
+        return {
+          'success': true,
+          ...data['params'] as Map<String, dynamic>? ?? {},
+          'event': data['event'],
+        };
+      }
+      return {'success': false, 'event': data['event'], 'message': data['message'] ?? ''};
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
   Future<Map<String, dynamic>> contributeProject(String regionKey) async {
     try {
       final response = await _api.post('/territory/projects/contribute', {

@@ -1113,6 +1113,20 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         return t.territoryErrorGarrisonHq;
       case 'territory.garrison_insufficient_funds':
         return t.territoryErrorGarrisonFunds;
+      case 'territory.abandon_disabled':
+        return t.territoryErrorAbandonDisabled;
+      case 'territory.abandon_officer_only':
+        return t.territoryErrorAbandonOfficerOnly;
+      case 'territory.abandon_not_owner':
+        return t.territoryErrorAbandonNotOwner;
+      case 'territory.abandon_in_contest':
+        return t.territoryErrorAbandonInContest;
+      case 'territory.abandon_cooldown':
+        return t.territoryErrorAbandonCooldown;
+      case 'territory.abandon_confirm_required':
+        return t.territoryErrorAbandonConfirmRequired;
+      case 'territory.abandon_no_regions':
+        return t.territoryErrorAbandonNoRegions;
       case 'territory.region_encircled':
         return t.territoryErrorRegionEncircled;
       case 'territory.arsenal_officer_only':
@@ -2202,6 +2216,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         children: [
           if (viewerCaps != null) _buildViewerCapsChips(viewerCaps),
           _buildHoldDutyChip(),
+          _buildAbandonCountryButton(),
           _buildNextActionChip(),
           if (_crewTerritory != null) _buildCrewStatsCard(_crewTerritory!),
           _buildSvgMapOverview(regions),
@@ -2213,6 +2228,35 @@ class _TerritoryScreenState extends State<TerritoryScreen>
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildAbandonCountryButton() {
+    final offer =
+        (_mapData['abandonCountryOffer'] as Map?)?.cast<String, dynamic>();
+    if (_mapData['viewerIsTerritoryOfficer'] != true ||
+        offer == null ||
+        offer['enabled'] != true ||
+        !_canActInSelectedCountry()) {
+      return const SizedBox.shrink();
+    }
+    final t = _l10n;
+    final cost = (offer['cashCost'] as num?)?.toInt() ?? 0;
+    final count = (offer['regionCount'] as num?)?.toInt() ?? 0;
+    final can = offer['canAbandon'] == true;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+      child: OutlinedButton.icon(
+        onPressed: can && !_isActing ? _abandonCountry : null,
+        icon: const Icon(Icons.public_off, size: 18),
+        label: Text(
+          '${t.territoryAbandonCountry} ($count) · ${formatCurrency(cost)}',
+        ),
+        style: OutlinedButton.styleFrom(
+          foregroundColor: Colors.red[300],
+          side: BorderSide(color: Colors.red.shade800),
+        ),
       ),
     );
   }
@@ -2959,6 +3003,8 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         canActInSelectedCountry &&
         !garrisonActive &&
         !garrisonHqLocked;
+    final abandonOffer =
+        (region['abandonOffer'] as Map?)?.cast<String, dynamic>();
     final regionShape = _shapeForRegion(region);
     final regionPreview = regionShape == null
         ? null
@@ -3316,6 +3362,33 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                   cashCost: garrisonCost,
                   hours: garrisonHours,
                 ),
+        ),
+      ],
+      if (isMyCrewRegion &&
+          canActInSelectedCountry &&
+          (_mapData['viewerIsTerritoryOfficer'] == true) &&
+          abandonOffer != null &&
+          abandonOffer['enabled'] == true) ...[
+        const SizedBox(height: 12),
+        _buildInfoNotice(
+          t.territoryAbandonDesc,
+          borderColor: Colors.red.shade900,
+          backgroundColor: Colors.red.withValues(alpha: 0.06),
+          icon: Icons.logout,
+        ),
+        const SizedBox(height: 12),
+        _buildActionButton(
+          label:
+              '${t.territoryAbandonRegion} · ${formatCurrency((abandonOffer['cashCost'] as num?)?.toInt() ?? 0)}',
+          icon: Icons.flag_outlined,
+          color: Colors.red[900]!,
+          onTap: abandonOffer['canAbandon'] == true
+              ? () => _abandonRegion(
+                    region['regionKey'] as String,
+                    cashCost: (abandonOffer['cashCost'] as num?)?.toInt() ?? 0,
+                  )
+              : null,
+          forceDisabled: abandonOffer['canAbandon'] != true,
         ),
       ],
       if (contestStatus == 'preparing' &&
@@ -5005,6 +5078,157 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           content: Text(_territoryErrorMessage(rawEvent)),
           backgroundColor: Colors.red,
           duration: const Duration(seconds: 4),
+        ),
+      );
+    }
+  }
+
+  Future<String?> _promptAbandonConfirm({
+    required String title,
+    required String body,
+  }) async {
+    final controller = TextEditingController();
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        final t = AppLocalizations.of(dialogContext)!;
+        return AlertDialog(
+          title: Text(title),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(body),
+              const SizedBox(height: 12),
+              TextField(
+                controller: controller,
+                autofocus: true,
+                decoration: InputDecoration(
+                  labelText: t.territoryAbandonConfirmHint,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, false),
+              child: Text(t.cancel),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(dialogContext, true),
+              child: Text(t.territoryAbandonConfirmAction),
+            ),
+          ],
+        );
+      },
+    );
+    final typed = controller.text.trim();
+    controller.dispose();
+    if (confirmed != true) return null;
+    return typed;
+  }
+
+  Future<void> _abandonRegion(
+    String regionKey, {
+    required int cashCost,
+  }) async {
+    final t = _l10n;
+    final typed = await _promptAbandonConfirm(
+      title: t.territoryAbandonRegionDialogTitle,
+      body: t.territoryAbandonRegionDialogBody(formatCurrency(cashCost)),
+    );
+    if (typed == null) return;
+    if (typed.toUpperCase() != 'ABANDON') {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(t.territoryErrorAbandonConfirmRequired),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    setState(() => _isActing = true);
+    final result = await _service.abandonRegion(
+      regionKey: regionKey,
+      confirm: 'ABANDON',
+    );
+    if (!mounted) return;
+    setState(() => _isActing = false);
+
+    if (result['success'] == true) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(t.territorySnackAbandoned),
+          backgroundColor: Colors.blueGrey,
+        ),
+      );
+      if (Navigator.of(context).canPop()) {
+        Navigator.of(context).pop();
+      }
+      await _loadData(silent: true);
+    } else {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_territoryErrorMessage(result['event'] ?? result['message'])),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Future<void> _abandonCountry() async {
+    final t = _l10n;
+    final offer =
+        (_mapData['abandonCountryOffer'] as Map?)?.cast<String, dynamic>();
+    if (offer == null || offer['canAbandon'] != true) return;
+    final country = (_mapData['country'] as Map?)?.cast<String, dynamic>();
+    final countryCode = (country?['countryCode'] as String?) ?? _selectedCountryCode;
+    if (countryCode.isEmpty) return;
+    final cost = (offer['cashCost'] as num?)?.toInt() ?? 0;
+    final count = (offer['regionCount'] as num?)?.toInt() ?? 0;
+    final typed = await _promptAbandonConfirm(
+      title: t.territoryAbandonCountryDialogTitle,
+      body: t.territoryAbandonCountryDialogBody(count, formatCurrency(cost)),
+    );
+    if (typed == null) return;
+    if (typed.toUpperCase() != 'ABANDON') {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(t.territoryErrorAbandonConfirmRequired),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    setState(() => _isActing = true);
+    final result = await _service.abandonCountry(
+      countryCode: countryCode,
+      confirm: 'ABANDON',
+    );
+    if (!mounted) return;
+    setState(() => _isActing = false);
+
+    if (result['success'] == true) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(t.territorySnackAbandonedCountry),
+          backgroundColor: Colors.blueGrey,
+        ),
+      );
+      await _loadData(silent: true);
+    } else {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_territoryErrorMessage(result['event'] ?? result['message'])),
+          backgroundColor: Colors.red,
         ),
       );
     }

@@ -16736,6 +16736,74 @@ class AppLocalizationsEs extends AppLocalizations {
   String get territorySnackGarrisonDeployed => 'Guarnición desplegada.';
 
   @override
+  String get territoryAbandonRegion => 'Abandon region';
+
+  @override
+  String get territoryAbandonCountry => 'Abandon all regions in this country';
+
+  @override
+  String get territoryAbandonDesc =>
+      'Voluntary relocate: the region becomes neutral, your depot burns completely, and the crew bank pays the fee. Use this to free slots or leave room for another piece of the same country.';
+
+  @override
+  String get territoryAbandonRegionDialogTitle => 'Abandon this region?';
+
+  @override
+  String territoryAbandonRegionDialogBody(String cost) {
+    return 'Pay $cost from the crew bank. Depot and projects are destroyed. Type ABANDON to confirm. Region cooldown: 48 hours.';
+  }
+
+  @override
+  String get territoryAbandonCountryDialogTitle =>
+      'Abandon this whole country?';
+
+  @override
+  String territoryAbandonCountryDialogBody(int count, String cost) {
+    return 'Release all $count owned regions here for $cost from the crew bank. Every depot burns. Type ABANDON to confirm. Country cooldown: 7 days.';
+  }
+
+  @override
+  String get territoryAbandonConfirmHint => 'Type ABANDON';
+
+  @override
+  String get territoryAbandonConfirmAction => 'Abandon';
+
+  @override
+  String get territorySnackAbandoned => 'Region abandoned. Depot burned.';
+
+  @override
+  String get territorySnackAbandonedCountry =>
+      'All regions in this country abandoned. Depots burned.';
+
+  @override
+  String get territoryErrorAbandonDisabled =>
+      'Territory abandon is currently disabled.';
+
+  @override
+  String get territoryErrorAbandonOfficerOnly =>
+      'Only the leader or co-leader can abandon territory.';
+
+  @override
+  String get territoryErrorAbandonNotOwner =>
+      'Your crew does not own this region.';
+
+  @override
+  String get territoryErrorAbandonInContest =>
+      'You cannot abandon while a contest is active on this region.';
+
+  @override
+  String get territoryErrorAbandonCooldown =>
+      'Abandon is on cooldown for your crew.';
+
+  @override
+  String get territoryErrorAbandonConfirmRequired =>
+      'Type ABANDON exactly to confirm.';
+
+  @override
+  String get territoryErrorAbandonNoRegions =>
+      'Your crew owns no regions in this country.';
+
+  @override
   String get territoryErrorUnknown => 'Error de territorio desconocido.';
 
   @override

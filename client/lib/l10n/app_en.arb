@@ -10673,6 +10673,41 @@
     }
   },
   "territorySnackGarrisonDeployed": "Garrison deployed.",
+  "territoryAbandonRegion": "Abandon region",
+  "territoryAbandonCountry": "Abandon all regions in this country",
+  "territoryAbandonDesc": "Voluntary relocate: the region becomes neutral, your depot burns completely, and the crew bank pays the fee. Use this to free slots or leave room for another piece of the same country.",
+  "territoryAbandonRegionDialogTitle": "Abandon this region?",
+  "territoryAbandonRegionDialogBody": "Pay {cost} from the crew bank. Depot and projects are destroyed. Type ABANDON to confirm. Region cooldown: 48 hours.",
+  "@territoryAbandonRegionDialogBody": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryAbandonCountryDialogTitle": "Abandon this whole country?",
+  "territoryAbandonCountryDialogBody": "Release all {count} owned regions here for {cost} from the crew bank. Every depot burns. Type ABANDON to confirm. Country cooldown: 7 days.",
+  "@territoryAbandonCountryDialogBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryAbandonConfirmHint": "Type ABANDON",
+  "territoryAbandonConfirmAction": "Abandon",
+  "territorySnackAbandoned": "Region abandoned. Depot burned.",
+  "territorySnackAbandonedCountry": "All regions in this country abandoned. Depots burned.",
+  "territoryErrorAbandonDisabled": "Territory abandon is currently disabled.",
+  "territoryErrorAbandonOfficerOnly": "Only the leader or co-leader can abandon territory.",
+  "territoryErrorAbandonNotOwner": "Your crew does not own this region.",
+  "territoryErrorAbandonInContest": "You cannot abandon while a contest is active on this region.",
+  "territoryErrorAbandonCooldown": "Abandon is on cooldown for your crew.",
+  "territoryErrorAbandonConfirmRequired": "Type ABANDON exactly to confirm.",
+  "territoryErrorAbandonNoRegions": "Your crew owns no regions in this country.",
   "territoryErrorUnknown": "Unknown territory error.",
   "territoryLegendUnderContest": "Under contest",
   "territoryLegendNeutral": "Neutral",

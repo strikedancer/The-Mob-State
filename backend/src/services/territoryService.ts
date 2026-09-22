@@ -265,6 +265,13 @@ async function getTerritoryConfig() {
     arsenalAmmoCostDefense: Number(cfg['TERRITORY_ARSENAL_AMMO_COST_DEFENSE'] ?? 30),
     arsenalAmmoCostPatrol: Number(cfg['TERRITORY_ARSENAL_AMMO_COST_PATROL'] ?? 15),
     arsenalAmmoCostSabotage: Number(cfg['TERRITORY_ARSENAL_AMMO_COST_SABOTAGE'] ?? 8),
+    abandonEnabled: Number(cfg['TERRITORY_ABANDON_ENABLED'] ?? 1) === 1,
+    abandonRegionCooldownSeconds: Number(cfg['TERRITORY_ABANDON_REGION_COOLDOWN_SECONDS'] ?? 172800),
+    abandonCountryCooldownSeconds: Number(cfg['TERRITORY_ABANDON_COUNTRY_COOLDOWN_SECONDS'] ?? 604800),
+    abandonCostFlat: Number(cfg['TERRITORY_ABANDON_COST_FLAT'] ?? 50000),
+    abandonCostDaysIncome: Number(cfg['TERRITORY_ABANDON_COST_DAYS_INCOME'] ?? 6),
+    abandonCountryFlat: Number(cfg['TERRITORY_ABANDON_COUNTRY_FLAT'] ?? 100000),
+    abandonCountryCostFactorPercent: Number(cfg['TERRITORY_ABANDON_COUNTRY_COST_FACTOR_PERCENT'] ?? 75),
   };
 }
 

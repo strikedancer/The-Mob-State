@@ -285,6 +285,8 @@ Harde regel:
 - `POST /territory/projects/start`
 - `POST /territory/projects/contribute`
 - `POST /territory/garrison/deploy` (`{ regionKey }`) — crew-bank sink; errors: `territory.garrison_not_owner`, `territory.garrison_already_active`, `territory.garrison_crew_limit`, `territory.garrison_hq_level_required`, `territory.garrison_insufficient_funds`
+- `POST /territory/abandon` (`{ regionKey, confirm: "ABANDON" }`) — officer-only voluntary release of one owned region (travel-gate, no live contest). Depot burns 100%; projects/garrison cleared; crew-bank cost; region cooldown default 48h. Errors: `territory.abandon_*`.
+- `POST /territory/abandon-country` (`{ countryCode, confirm: "ABANDON" }`) — same for every owned region in that country (cost ≈ 75% of sum + flat); country cooldown default 7d (also sets region cooldown). Map payload includes `abandonOffer` / `abandonCountryOffer` for officers.
 - `GET /territory/crew/:crewId`
 - `GET /territory/leaderboard`
 - `GET /player/dashboard-stats` bevat voor crewleaders ook territory economy samenvattingen uit gecontroleerde regio's en `territory_reward_log`
@@ -363,7 +365,8 @@ Admin moderation:
 20. Owned regio: deploy garnizoen uit crew-bank; kaart toont `G`; tweede regio mag tot `TERRITORY_GARRISON_MAX_ACTIVE_PER_CREW`; vanaf `effectiveMaxRegions >= TERRITORY_GARRISON_EXTRA_AT_REGION_CAP` (default 8) is een extra garnizoen toegestaan; contest blijft startbaar; capture-drempel stijgt alleen zolang het effect loopt.
 22. Region-cap: starter-crew (HQ 1, 5 leden) ziet 5; extra slot vereist zowel HQ-stap als leden-stap; `POST /territory/contest/start` weigert `REGIONS_CAP_REACHED` bij owned >= effective; `doAction` defense blijft toegestaan. Geen cap per land.
 21. Omsloten binnengebied: als alle buren van een owned regio van dezelfde crew zijn (min. 3 buren), verdwijnt de aanvalsknop en weigert `POST /territory/contest/start` met `territory.region_encircled`; een open buur maakt het weer aanvalbaar.
-23. Hold duty: na grace één due-regio per crew; peacetime patrol in het juiste land wist due; miss snijdt alleen inkomen van díé regio; ownership blijft; push `territory_hold_due` / `territory_hold_missed`.
+24. Hold duty: na grace één due-regio per crew; peacetime patrol in het juiste land wist due; miss snijdt alleen inkomen van díé regio; ownership blijft; push `territory_hold_due` / `territory_hold_missed`.
+25. Abandon: officer in-land geeft regio of heel land op met `confirm=ABANDON`; bank debit; depot 100% burn; slots vrij; region cooldown 48u / country 7d; contest blokkeert.
 
 ## When To Update This File
 Update bij nieuwe action types, scoring model veranderingen, nieuwe admin moderation actions, season wijzigingen, anti-abuse regels, of onboardingflow voor extra landen.
