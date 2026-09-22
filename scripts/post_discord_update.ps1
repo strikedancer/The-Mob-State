@@ -285,16 +285,24 @@ if ([string]::IsNullOrWhiteSpace($hostName)) {
 
 $b64 = [Convert]::ToBase64String($utf8NoBom.GetBytes($worldMessage))
 $dirUnix = ($ProjectDir -replace "\\", "/").TrimEnd("/")
-# Pass base64 only (safe for remote shell). Do not expand PowerShell vars inside bash incorrectly.
-$remoteCmd = "cd '$dirUnix' && docker compose --env-file .env.plesk -f docker-compose.plesk.yml exec -T backend node dist/scripts/postSystemAnnouncement.js --name 'The Mob State' --b64 '$b64'"
+$remoteScript = @"
+#!/bin/bash
+set -e
+cd '$dirUnix'
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml exec -T backend node dist/scripts/postSystemAnnouncement.js --name 'The Mob State' --b64 '$b64'
+"@
 
+$tmp = [System.IO.Path]::GetTempFileName() + ".sh"
 $sshTarget = "${SshUser}@${hostName}"
 try {
-    $worldOut = & $plink -load $PuttySession -l $SshUser $sshTarget $remoteCmd 2>&1
+    [System.IO.File]::WriteAllText($tmp, $remoteScript, $utf8NoBom)
+    $worldOut = & $plink -l $SshUser -no-antispoof -load $PuttySession -m $tmp $sshTarget 2>&1
     $worldExit = $LASTEXITCODE
 } catch {
     Write-Error "Discord was posted but world-chat plink failed."
     exit 1
+} finally {
+    Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
 }
 
 if ($worldExit -ne 0) {
