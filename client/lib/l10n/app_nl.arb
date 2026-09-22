@@ -1045,7 +1045,7 @@
       }
     }
   },
-  "courtExpungeRecencyRecent": "Laatste arrestatie korter dan 24 uur: {percent}%",
+  "courtExpungeRecencyRecent": "Laatste arrestatie korter dan 1 uur: {percent}%",
   "@courtExpungeRecencyRecent": {
     "placeholders": {
       "percent": {
@@ -1053,7 +1053,7 @@
       }
     }
   },
-  "courtExpungeRecencyWarm": "Laatste arrestatie 1–3 dagen geleden: {percent}%",
+  "courtExpungeRecencyWarm": "Laatste arrestatie 1 uur–3 dagen geleden: {percent}%",
   "@courtExpungeRecencyWarm": {
     "placeholders": {
       "percent": {

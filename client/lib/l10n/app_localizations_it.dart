@@ -8715,12 +8715,12 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String courtExpungeRecencyRecent(String percent) {
-    return 'Ultimo arresto in 24 ore: $percent%';
+    return 'Ultimo arresto entro 1 ora: $percent%';
   }
 
   @override
   String courtExpungeRecencyWarm(String percent) {
-    return 'Ultimo arresto 1-3 giorni fa: $percent%';
+    return 'Ultimo arresto da 1 ora a 3 giorni fa: $percent%';
   }
 
   @override

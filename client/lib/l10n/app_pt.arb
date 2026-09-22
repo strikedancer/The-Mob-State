@@ -13109,7 +13109,7 @@
       }
     }
   },
-  "courtExpungeRecencyRecent": "Última prisão em menos de 24 horas: {percent}%",
+  "courtExpungeRecencyRecent": "Última prisão em menos de 1 hora: {percent}%",
   "@courtExpungeRecencyRecent": {
     "placeholders": {
       "percent": {
@@ -13117,7 +13117,7 @@
       }
     }
   },
-  "courtExpungeRecencyWarm": "Última prisão há 1–3 dias: {percent}%",
+  "courtExpungeRecencyWarm": "Última prisão há 1 hora–3 dias: {percent}%",
   "@courtExpungeRecencyWarm": {
     "placeholders": {
       "percent": {

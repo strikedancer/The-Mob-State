@@ -13109,7 +13109,7 @@
       }
     }
   },
-  "courtExpungeRecencyRecent": "Ultimo arresto in 24 ore: {percent}%",
+  "courtExpungeRecencyRecent": "Ultimo arresto entro 1 ora: {percent}%",
   "@courtExpungeRecencyRecent": {
     "placeholders": {
       "percent": {
@@ -13117,7 +13117,7 @@
       }
     }
   },
-  "courtExpungeRecencyWarm": "Ultimo arresto 1-3 giorni fa: {percent}%",
+  "courtExpungeRecencyWarm": "Ultimo arresto da 1 ora a 3 giorni fa: {percent}%",
   "@courtExpungeRecencyWarm": {
     "placeholders": {
       "percent": {

@@ -13109,7 +13109,7 @@
       }
     }
   },
-  "courtExpungeRecencyRecent": "Ostatnie aresztowanie w ciągu 24 godzin: {percent}%",
+  "courtExpungeRecencyRecent": "Ostatnie aresztowanie w ciągu 1 godziny: {percent}%",
   "@courtExpungeRecencyRecent": {
     "placeholders": {
       "percent": {
@@ -13117,7 +13117,7 @@
       }
     }
   },
-  "courtExpungeRecencyWarm": "Ostatnie aresztowanie 1–3 dni temu: {percent}%",
+  "courtExpungeRecencyWarm": "Ostatnie aresztowanie 1 godz.–3 dni temu: {percent}%",
   "@courtExpungeRecencyWarm": {
     "placeholders": {
       "percent": {

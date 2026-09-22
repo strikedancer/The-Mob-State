@@ -8678,12 +8678,12 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String courtExpungeRecencyRecent(String percent) {
-    return 'Laatste arrestatie korter dan 24 uur: $percent%';
+    return 'Laatste arrestatie korter dan 1 uur: $percent%';
   }
 
   @override
   String courtExpungeRecencyWarm(String percent) {
-    return 'Laatste arrestatie 1–3 dagen geleden: $percent%';
+    return 'Laatste arrestatie 1 uur–3 dagen geleden: $percent%';
   }
 
   @override

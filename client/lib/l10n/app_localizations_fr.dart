@@ -8746,12 +8746,12 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String courtExpungeRecencyRecent(String percent) {
-    return 'Dernière arrestation sous 24 heures : $percent%';
+    return 'Dernière arrestation sous 1 heure : $percent%';
   }
 
   @override
   String courtExpungeRecencyWarm(String percent) {
-    return 'Dernière arrestation il y a 1 à 3 jours : $percent %';
+    return 'Dernière arrestation il y a 1 heure à 3 jours : $percent%';
   }
 
   @override

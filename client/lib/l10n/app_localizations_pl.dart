@@ -8689,12 +8689,12 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String courtExpungeRecencyRecent(String percent) {
-    return 'Ostatnie aresztowanie w ciągu 24 godzin: $percent%';
+    return 'Ostatnie aresztowanie w ciągu 1 godziny: $percent%';
   }
 
   @override
   String courtExpungeRecencyWarm(String percent) {
-    return 'Ostatnie aresztowanie 1–3 dni temu: $percent%';
+    return 'Ostatnie aresztowanie 1 godz.–3 dni temu: $percent%';
   }
 
   @override

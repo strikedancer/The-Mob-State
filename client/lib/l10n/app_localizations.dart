@@ -15119,13 +15119,13 @@ abstract class AppLocalizations {
   /// No description provided for @courtExpungeRecencyRecent.
   ///
   /// In en, this message translates to:
-  /// **'Last arrest under 24 hours: {percent}%'**
+  /// **'Last arrest under 1 hour: {percent}%'**
   String courtExpungeRecencyRecent(String percent);
 
   /// No description provided for @courtExpungeRecencyWarm.
   ///
   /// In en, this message translates to:
-  /// **'Last arrest 1–3 days ago: {percent}%'**
+  /// **'Last arrest 1 hour–3 days ago: {percent}%'**
   String courtExpungeRecencyWarm(String percent);
 
   /// No description provided for @courtExpungeRecencyNeutral.
