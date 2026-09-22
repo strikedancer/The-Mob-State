@@ -189,10 +189,18 @@ async function seedVacantFactory(countryId: string): Promise<void> {
       select: { id: true },
     });
     if (npc) {
-      await prisma.ammoFactory.update({
-        where: { id: factory.id },
-        data: { lastActiveAt: new Date() },
-      });
+      try {
+        await prisma.ammoFactory.update({
+          where: { id: factory.id },
+          data: { lastActiveAt: new Date() },
+        });
+      } catch (error) {
+        // MySQL 1020: concurrent tick/claim changed the row — safe to ignore for caretaker touch.
+        const message = error instanceof Error ? error.message : String(error);
+        if (!message.includes('1020') && !message.includes('Record has changed')) {
+          throw error;
+        }
+      }
     }
     return;
   }

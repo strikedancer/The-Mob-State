@@ -811,6 +811,61 @@ class NightclubService {
     });
   }
 
+  /**
+   * `currentDJId` is globally unique. Expired bookings on *other* venues must be
+   * cleared before hire, otherwise Prisma throws Unique constraint `currentDJId`.
+   */
+  private async releaseStaleHoldersOfDj(
+    djId: number,
+    exceptVenueId?: number
+  ): Promise<'released' | 'busy' | 'free'> {
+    const now = new Date();
+    const holders = await prisma.nightclubVenue.findMany({
+      where: {
+        currentDJId: djId,
+        ...(exceptVenueId ? { id: { not: exceptVenueId } } : {}),
+      },
+      select: {
+        id: true,
+        djContractEndsAt: true,
+      },
+    });
+    if (holders.length === 0) {
+      return 'free';
+    }
+
+    let stillBusy = false;
+    for (const holder of holders) {
+      const contractStillValid =
+        holder.djContractEndsAt != null &&
+        holder.djContractEndsAt.getTime() >= now.getTime();
+      const liveOrUpcomingShift = await prisma.nightclubDJShift.findFirst({
+        where: {
+          venueId: holder.id,
+          shiftEndAt: { gte: now },
+        },
+        select: { id: true },
+      });
+      if (contractStillValid || liveOrUpcomingShift) {
+        stillBusy = true;
+        continue;
+      }
+      await prisma.nightclubVenue.updateMany({
+        where: { id: holder.id, currentDJId: djId },
+        data: {
+          currentDJId: null,
+          djContractStartsAt: null,
+          djContractEndsAt: null,
+        },
+      });
+    }
+
+    if (stillBusy) {
+      return 'busy';
+    }
+    return holders.length > 0 ? 'released' : 'free';
+  }
+
   private async getCurrentSecurityReduction(venueId: number): Promise<number> {
     const now = new Date();
     const activeShift = await prisma.nightclubSecurityShift.findFirst({
@@ -1504,6 +1559,17 @@ class NightclubService {
     }
 
     await this.clearExpiredDjContract(venueId);
+    const djAvailability = await this.releaseStaleHoldersOfDj(djId, venueId);
+    if (djAvailability === 'busy') {
+      return {
+        success: false,
+        message: this.localize(
+          language,
+          'Deze DJ speelt al bij een andere club. Kies een andere DJ of probeer later opnieuw.',
+          'This DJ is already booked at another club. Pick another DJ or try again later.'
+        ),
+      };
+    }
     venue = await prisma.nightclubVenue.findUnique({
       where: { id: venueId },
     });
@@ -1614,6 +1680,17 @@ class NightclubService {
     }
 
     await this.clearExpiredDjContract(venueId);
+    const djAvailability = await this.releaseStaleHoldersOfDj(djId, venueId);
+    if (djAvailability === 'busy') {
+      return {
+        success: false,
+        message: this.localize(
+          language,
+          'Deze DJ speelt al bij een andere club. Kies een andere DJ of probeer later opnieuw.',
+          'This DJ is already booked at another club. Pick another DJ or try again later.'
+        ),
+      };
+    }
     venue = await prisma.nightclubVenue.findUnique({
       where: { id: venueId },
     });
