@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 import { LANGS, ui, countryName } from './i18n.mjs';
 import { esc, money, page, card, stat } from './layout.mjs';
 import { guidePages, guideSitemapPaths, loadHelpTopics, resolveHelpPaths } from './guides.mjs';
-import { buildFacts, topVehicles } from './facts.mjs';
+import { buildFacts, topVehicles, COUNTRY_CANON } from './facts.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const args = Object.fromEntries(
@@ -88,6 +88,20 @@ function factorClass(n) {
   if (n < 0.95) return 'cheap';
   if (n > 1.1) return 'dear';
   return 'mid';
+}
+
+/** Map legacy spawn tags (monaco/austria/…) onto travel countries; drop unknowns. */
+function playableCountryIds(rawIds, playable) {
+  const seen = new Set();
+  const out = [];
+  for (const raw of rawIds || []) {
+    const id = String(raw).toLowerCase();
+    const canon = COUNTRY_CANON[id] || id;
+    if (!playable.has(canon) || seen.has(canon)) continue;
+    seen.add(canon);
+    out.push(canon);
+  }
+  return out;
 }
 
 function load() {
@@ -459,11 +473,18 @@ function vehiclePages(data, lang) {
     })
   );
   write(`${lang}/facts.json`, JSON.stringify(facts));
+  const playable = new Set((data.countries || []).map((c) => c.id));
   for (const v of items) {
-    const countries = (v.availableInCountries || [])
+    const countries = playableCountryIds(v.availableInCountries, playable)
       .map((id) => `<a href="/${lang}/countries/${id}/">${esc(countryName(lang, id))}</a>`)
       .join(' · ');
     const market = Object.entries(v.marketValue || {})
+      .flatMap(([rawId, p]) => {
+        const id = COUNTRY_CANON[String(rawId).toLowerCase()] || String(rawId).toLowerCase();
+        if (!playable.has(id)) return [];
+        return [[id, p]];
+      })
+      .sort((a, b) => String(a[0]).localeCompare(String(b[0])))
       .map(([id, p]) => `<tr><td>${esc(countryName(lang, id))}</td><td>${money(p)}</td></tr>`)
       .join('');
     write(

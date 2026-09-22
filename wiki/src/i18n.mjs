@@ -515,8 +515,6 @@ export const COUNTRY = {
   united_arab_emirates: pack('Verenigde Arabische Emiraten', 'United Arab Emirates', 'Vereinigte Arabische Emirate', 'Émirats arabes unis', 'Emiratos Árabes Unidos', 'Emirati Arabi Uniti', 'Zjednoczone Emiraty Arabskie', 'Emirados Árabes Unidos'),
   south_africa: pack('Zuid-Afrika', 'South Africa', 'Südafrika', 'Afrique du Sud', 'Sudáfrica', 'Sudafrica', 'Południowa Afryka', 'África do Sul'),
   australia: pack('Australië', 'Australia', 'Australien', 'Australie', 'Australia', 'Australia', 'Australia', 'Austrália'),
-  austria: pack('Oostenrijk', 'Austria', 'Österreich', 'Autriche', 'Austria', 'Austria', 'Austria', 'Áustria'),
-  monaco: pack('Monaco', 'Monaco', 'Monaco', 'Monaco', 'Mónaco', 'Monaco', 'Monako', 'Mónaco'),
   united_kingdom: pack('Verenigd Koninkrijk', 'United Kingdom', 'Vereinigtes Königreich', 'Royaume-Uni', 'Reino Unido', 'Regno Unito', 'Wielka Brytania', 'Reino Unido'),
 };
 

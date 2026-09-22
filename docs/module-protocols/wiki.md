@@ -18,7 +18,7 @@ This is a catalogue and typical-relative guide, not live Black Market quotes. St
 ## Change Rules
 - Catalog or copy changes in `backend/content/`, Help ARBs (`client/lib/l10n/app_*.arb`) and `wiki/src/` refresh the live almanac after they land on the VPS (`git pull` / standard deploy). No extra `wiki/content` copy is required.
 - Chapter-tile PNGs still need the usual copy into `runtime/client-images/wiki/hubs/` (the deploy script already does this).
-- Country pages show typical trade factor plus **cars, motorcycles and boats** as separate vehicle environments (do not lump motorcycles into boats).
+- Country pages show typical trade factor plus **cars, motorcycles and boats** as separate vehicle environments (do not lump motorcycles into boats). Vehicle spawn lists must only link **travel/playable** countries; legacy tags such as Monaco/Austria are remapped (`monaco`→France, `austria`→Germany) so Almanac never advertises a country you cannot travel to.
 - Keep UI chrome translated in `wiki/src/i18n.mjs` for every SupportedLanguages code.
 - Item names fall back to catalog `name` / `name_en` / `descriptionEn`.
 - Images must be the game originals on item pages (vehicles, weapons, drugs, materials, trade cards, properties, aircraft). **Chapter tiles** on the almanac home use dedicated art in `client/assets/images/wiki/hubs/<key>.png` (runtime `/images/wiki/hubs/`), generated with `backend/scripts/generate_wiki_hub_tiles_leonardo.py`. Do not reuse unrelated backgrounds for those tiles.

@@ -129,6 +129,9 @@ class CountryHelper {
         return l10n.countryGermany;
       case 'france':
         return l10n.countryFrance;
+      case 'monaco':
+        // Legacy vehicle spawn tag — not a travel country
+        return l10n.countryFrance;
       case 'spain':
         return l10n.countrySpain;
       case 'italy':
@@ -145,7 +148,8 @@ class CountryHelper {
       case 'switzerland':
         return l10n.countrySwitzerland;
       case 'austria':
-        return l10n.countryAustria;
+        // Legacy vehicle spawn tag — not a travel country
+        return l10n.countryGermany;
       case 'denmark':
         return l10n.countryDenmark;
       case 'sweden':

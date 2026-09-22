@@ -532,7 +532,14 @@
     if (!countryId) return true;
     if (vehicle.global) return true;
     const canon = facts?.countries?.[countryId]?.canon || countryId;
-    const aliases = [countryId, canon, countryId === 'uk' ? 'united_kingdom' : '', canon === 'uk' ? 'united_kingdom' : ''];
+    const aliases = [
+      countryId,
+      canon,
+      countryId === 'uk' ? 'united_kingdom' : '',
+      canon === 'uk' ? 'united_kingdom' : '',
+      countryId === 'france' || canon === 'france' ? 'monaco' : '',
+      countryId === 'germany' || canon === 'germany' ? 'austria' : '',
+    ];
     return vehicle.countries.some((id) => aliases.includes(id));
   }
 

@@ -26,6 +26,9 @@ import { assertNotExhibited, notInShowroomWhere } from './showroomCatalog';
 
 const COUNTRY_ALIASES: Record<string, string> = {
   united_kingdom: 'uk',
+  /** Legacy catalog spawn tags — not travel/territory countries. */
+  monaco: 'france',
+  austria: 'germany',
 };
 
 const EXTENDED_COUNTRIES = new Set([

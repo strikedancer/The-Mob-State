@@ -77,9 +77,9 @@
       },
       "description": "Toyota Corolla in Track uitvoering, populair in criminele circuits voor stealth-operaties.",
       "availableInCountries": [
-        "austria",
+        "germany",
         "spain",
-        "united_kingdom",
+        "uk",
         "switzerland"
       ],
       "baseValue": 19687,
@@ -87,13 +87,11 @@
         "netherlands": 19687,
         "belgium": 19687,
         "germany": 19687,
-        "france": 20868,
+        "france": 22837,
         "spain": 20081,
         "italy": 20868,
         "switzerland": 22837,
-        "austria": 18703,
-        "united_kingdom": 20868,
-        "monaco": 22837
+        "uk": 20868
       },
       "fuelCapacity": 60,
       "requiredRank": 1,
@@ -116,8 +114,8 @@
       },
       "description": "Ford Mustang GT in Sport uitvoering, populair in criminele circuits voor supercar-operaties.",
       "availableInCountries": [
-        "monaco",
-        "united_kingdom",
+        "france",
+        "uk",
         "netherlands",
         "spain",
         "belgium"
@@ -126,14 +124,12 @@
       "marketValue": {
         "netherlands": 24277,
         "belgium": 24277,
-        "germany": 24277,
+        "germany": 24763,
         "france": 25734,
         "spain": 24763,
         "italy": 25734,
         "switzerland": 28161,
-        "austria": 24763,
-        "united_kingdom": 25734,
-        "monaco": 23063
+        "uk": 25734
       },
       "fuelCapacity": 60,
       "requiredRank": 1,
@@ -156,10 +152,10 @@
       },
       "description": "Toyota Corolla in Track uitvoering, populair in criminele circuits voor standard-operaties.",
       "availableInCountries": [
-        "monaco",
-        "united_kingdom",
+        "france",
+        "uk",
         "spain",
-        "austria",
+        "germany",
         "italy",
         "netherlands"
       ],
@@ -167,14 +163,12 @@
       "marketValue": {
         "netherlands": 25385,
         "belgium": 25385,
-        "germany": 25385,
+        "germany": 25893,
         "france": 26908,
         "spain": 25893,
         "italy": 26908,
         "switzerland": 29447,
-        "austria": 25893,
-        "united_kingdom": 26908,
-        "monaco": 24116
+        "uk": 26908
       },
       "fuelCapacity": 60,
       "requiredRank": 1,
@@ -197,23 +191,20 @@
       },
       "description": "Nissan Patrol in Black Edition uitvoering, populair in criminele circuits voor speed-operaties.",
       "availableInCountries": [
-        "united_kingdom",
-        "austria",
-        "italy",
-        "germany"
+        "uk",
+        "germany",
+        "italy"
       ],
       "baseValue": 27851,
       "marketValue": {
         "netherlands": 27851,
         "belgium": 27851,
-        "germany": 27851,
-        "france": 29522,
+        "germany": 28408,
+        "france": 32307,
         "spain": 28408,
         "italy": 29522,
         "switzerland": 32307,
-        "austria": 28408,
-        "united_kingdom": 26458,
-        "monaco": 32307
+        "uk": 26458
       },
       "fuelCapacity": 60,
       "requiredRank": 1,
@@ -239,20 +230,18 @@
         "italy",
         "spain",
         "netherlands",
-        "united_kingdom"
+        "uk"
       ],
       "baseValue": 29319,
       "marketValue": {
         "netherlands": 29319,
         "belgium": 29319,
-        "germany": 29319,
-        "france": 31078,
+        "germany": 29905,
+        "france": 34010,
         "spain": 29905,
         "italy": 27853,
         "switzerland": 34010,
-        "austria": 29905,
-        "united_kingdom": 31078,
-        "monaco": 34010
+        "uk": 31078
       },
       "fuelCapacity": 60,
       "requiredRank": 1,
@@ -276,22 +265,19 @@
       "description": "Nissan 370Z in Midnight uitvoering, populair in criminele circuits voor speed-operaties.",
       "availableInCountries": [
         "italy",
-        "united_kingdom",
-        "monaco",
+        "uk",
         "france"
       ],
       "baseValue": 32446,
       "marketValue": {
         "netherlands": 32446,
         "belgium": 32446,
-        "germany": 32446,
-        "france": 34393,
+        "germany": 33095,
+        "france": 37637,
         "spain": 33095,
         "italy": 30824,
         "switzerland": 37637,
-        "austria": 33095,
-        "united_kingdom": 34393,
-        "monaco": 37637
+        "uk": 34393
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -317,20 +303,18 @@
         "italy",
         "switzerland",
         "spain",
-        "austria"
+        "germany"
       ],
       "baseValue": 34049,
       "marketValue": {
         "netherlands": 34049,
         "belgium": 34049,
-        "germany": 34049,
-        "france": 36092,
+        "germany": 34730,
+        "france": 39497,
         "spain": 34730,
         "italy": 32347,
         "switzerland": 39497,
-        "austria": 34730,
-        "united_kingdom": 36092,
-        "monaco": 39497
+        "uk": 36092
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -356,7 +340,7 @@
         "netherlands",
         "belgium",
         "germany",
-        "united_kingdom"
+        "uk"
       ],
       "baseValue": 35000,
       "marketValue": {
@@ -364,7 +348,7 @@
         "belgium": 36000,
         "germany": 33000,
         "france": 38000,
-        "united_kingdom": 40000
+        "uk": 40000
       },
       "fuelCapacity": 70,
       "requiredRank": 8,
@@ -386,7 +370,7 @@
       "description": "Dodge Durango in Black Edition uitvoering, populair in criminele circuits voor cargo-operaties.",
       "availableInCountries": [
         "germany",
-        "monaco",
+        "france",
         "belgium",
         "netherlands"
       ],
@@ -394,14 +378,12 @@
       "marketValue": {
         "netherlands": 36160,
         "belgium": 36160,
-        "germany": 34352,
-        "france": 38330,
+        "germany": 36883,
+        "france": 41946,
         "spain": 36883,
         "italy": 38330,
         "switzerland": 41946,
-        "austria": 36883,
-        "united_kingdom": 38330,
-        "monaco": 41946
+        "uk": 38330
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -432,14 +414,12 @@
       "marketValue": {
         "netherlands": 37968,
         "belgium": 37968,
-        "germany": 37968,
-        "france": 40246,
+        "germany": 38727,
+        "france": 44043,
         "spain": 38727,
         "italy": 40246,
         "switzerland": 36070,
-        "austria": 38727,
-        "united_kingdom": 40246,
-        "monaco": 44043
+        "uk": 40246
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -464,7 +444,6 @@
       "availableInCountries": [
         "france",
         "spain",
-        "monaco",
         "germany",
         "belgium"
       ],
@@ -472,14 +451,12 @@
       "marketValue": {
         "netherlands": 37985,
         "belgium": 37985,
-        "germany": 37985,
-        "france": 36086,
+        "germany": 38745,
+        "france": 44063,
         "spain": 38745,
         "italy": 40264,
         "switzerland": 44063,
-        "austria": 38745,
-        "united_kingdom": 40264,
-        "monaco": 44063
+        "uk": 40264
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -502,7 +479,6 @@
       },
       "description": "Honda NSX in Street uitvoering, populair in criminele circuits voor hypercar-operaties.",
       "availableInCountries": [
-        "monaco",
         "france",
         "germany",
         "italy"
@@ -511,14 +487,12 @@
       "marketValue": {
         "netherlands": 39630,
         "belgium": 39630,
-        "germany": 39630,
+        "germany": 40423,
         "france": 42008,
         "spain": 40423,
         "italy": 42008,
         "switzerland": 45971,
-        "austria": 40423,
-        "united_kingdom": 42008,
-        "monaco": 37648
+        "uk": 42008
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -573,24 +547,21 @@
       },
       "description": "Chevrolet Corvette C8 in S-Line uitvoering, populair in criminele circuits voor cargo-operaties.",
       "availableInCountries": [
-        "monaco",
-        "united_kingdom",
         "france",
+        "uk",
         "switzerland",
-        "austria"
+        "germany"
       ],
       "baseValue": 40539,
       "marketValue": {
         "netherlands": 40539,
         "belgium": 40539,
-        "germany": 40539,
+        "germany": 41350,
         "france": 42971,
         "spain": 41350,
         "italy": 42971,
         "switzerland": 47025,
-        "austria": 41350,
-        "united_kingdom": 42971,
-        "monaco": 38512
+        "uk": 42971
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -613,7 +584,7 @@
       },
       "description": "Toyota Supra in Track uitvoering, populair in criminele circuits voor stealth-operaties.",
       "availableInCountries": [
-        "united_kingdom",
+        "uk",
         "italy",
         "germany"
       ],
@@ -621,14 +592,12 @@
       "marketValue": {
         "netherlands": 41770,
         "belgium": 41770,
-        "germany": 41770,
-        "france": 44276,
+        "germany": 42605,
+        "france": 48453,
         "spain": 42605,
         "italy": 44276,
         "switzerland": 48453,
-        "austria": 42605,
-        "united_kingdom": 39682,
-        "monaco": 48453
+        "uk": 39682
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -653,22 +622,19 @@
       "availableInCountries": [
         "italy",
         "germany",
-        "austria",
-        "united_kingdom",
+        "uk",
         "switzerland"
       ],
       "baseValue": 42476,
       "marketValue": {
         "netherlands": 42476,
         "belgium": 42476,
-        "germany": 42476,
-        "france": 45025,
+        "germany": 43326,
+        "france": 49272,
         "spain": 43326,
         "italy": 40352,
         "switzerland": 49272,
-        "austria": 43326,
-        "united_kingdom": 45025,
-        "monaco": 49272
+        "uk": 45025
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -691,24 +657,21 @@
       },
       "description": "Dodge Ram 1500 in Midnight uitvoering, populair in criminele circuits voor supercar-operaties.",
       "availableInCountries": [
-        "united_kingdom",
-        "austria",
-        "monaco",
+        "uk",
         "germany",
+        "france",
         "belgium"
       ],
       "baseValue": 44655,
       "marketValue": {
         "netherlands": 44655,
         "belgium": 44655,
-        "germany": 44655,
-        "france": 47334,
+        "germany": 45548,
+        "france": 51800,
         "spain": 45548,
         "italy": 47334,
         "switzerland": 51800,
-        "austria": 45548,
-        "united_kingdom": 42422,
-        "monaco": 51800
+        "uk": 42422
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -731,23 +694,21 @@
       },
       "description": "Nissan Qashqai in Midnight uitvoering, populair in criminele circuits voor speed-operaties.",
       "availableInCountries": [
-        "monaco",
+        "france",
         "italy",
-        "united_kingdom",
+        "uk",
         "switzerland"
       ],
       "baseValue": 44702,
       "marketValue": {
         "netherlands": 44702,
         "belgium": 44702,
-        "germany": 44702,
+        "germany": 45596,
         "france": 47384,
         "spain": 45596,
         "italy": 47384,
         "switzerland": 51854,
-        "austria": 45596,
-        "united_kingdom": 47384,
-        "monaco": 42467
+        "uk": 47384
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -770,8 +731,8 @@
       },
       "description": "Lexus RC F in Executive uitvoering, populair in criminele circuits voor standard-operaties.",
       "availableInCountries": [
-        "united_kingdom",
-        "monaco",
+        "uk",
+        "france",
         "italy",
         "switzerland"
       ],
@@ -779,14 +740,12 @@
       "marketValue": {
         "netherlands": 44705,
         "belgium": 44705,
-        "germany": 44705,
-        "france": 47387,
+        "germany": 45599,
+        "france": 51858,
         "spain": 45599,
         "italy": 47387,
         "switzerland": 51858,
-        "austria": 45599,
-        "united_kingdom": 42470,
-        "monaco": 51858
+        "uk": 42470
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -811,7 +770,7 @@
       "availableInCountries": [
         "netherlands",
         "belgium",
-        "united_kingdom"
+        "uk"
       ],
       "baseValue": 45000,
       "marketValue": {
@@ -819,7 +778,7 @@
         "belgium": 47000,
         "germany": 50000,
         "france": 52000,
-        "united_kingdom": 48000
+        "uk": 48000
       },
       "fuelCapacity": 55,
       "requiredRank": 12,
@@ -842,21 +801,18 @@
       "availableInCountries": [
         "spain",
         "france",
-        "austria",
-        "monaco"
+        "germany"
       ],
       "baseValue": 45378,
       "marketValue": {
         "netherlands": 45378,
         "belgium": 45378,
-        "germany": 45378,
-        "france": 48101,
+        "germany": 46286,
+        "france": 52638,
         "spain": 43109,
         "italy": 48101,
         "switzerland": 52638,
-        "austria": 46286,
-        "united_kingdom": 48101,
-        "monaco": 52638
+        "uk": 48101
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -879,22 +835,19 @@
       },
       "description": "Volkswagen Polo in Carbon uitvoering, populair in criminele circuits voor armored-operaties.",
       "availableInCountries": [
-        "united_kingdom",
-        "germany",
-        "austria"
+        "uk",
+        "germany"
       ],
       "baseValue": 45410,
       "marketValue": {
         "netherlands": 45410,
         "belgium": 45410,
-        "germany": 45410,
-        "france": 48135,
+        "germany": 46318,
+        "france": 52676,
         "spain": 46318,
         "italy": 48135,
         "switzerland": 52676,
-        "austria": 46318,
-        "united_kingdom": 43140,
-        "monaco": 52676
+        "uk": 43140
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -918,23 +871,21 @@
       "description": "Ford Mustang GT in Sport uitvoering, populair in criminele circuits voor supercar-operaties.",
       "availableInCountries": [
         "france",
-        "united_kingdom",
+        "uk",
         "italy",
         "belgium",
-        "austria"
+        "germany"
       ],
       "baseValue": 45618,
       "marketValue": {
         "netherlands": 45618,
         "belgium": 45618,
-        "germany": 45618,
-        "france": 43337,
+        "germany": 46530,
+        "france": 52917,
         "spain": 46530,
         "italy": 48355,
         "switzerland": 52917,
-        "austria": 46530,
-        "united_kingdom": 48355,
-        "monaco": 52917
+        "uk": 48355
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -959,21 +910,19 @@
       "availableInCountries": [
         "italy",
         "switzerland",
-        "austria",
+        "germany",
         "netherlands"
       ],
       "baseValue": 46113,
       "marketValue": {
         "netherlands": 46113,
         "belgium": 46113,
-        "germany": 46113,
-        "france": 48880,
+        "germany": 47035,
+        "france": 53491,
         "spain": 47035,
         "italy": 43807,
         "switzerland": 53491,
-        "austria": 47035,
-        "united_kingdom": 48880,
-        "monaco": 53491
+        "uk": 48880
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -996,25 +945,21 @@
       },
       "description": "Toyota Yaris in Street uitvoering, populair in criminele circuits voor cargo-operaties.",
       "availableInCountries": [
-        "monaco",
+        "france",
         "germany",
         "switzerland",
-        "austria",
-        "spain",
-        "france"
+        "spain"
       ],
       "baseValue": 47092,
       "marketValue": {
         "netherlands": 47092,
         "belgium": 47092,
-        "germany": 47092,
+        "germany": 48034,
         "france": 49918,
         "spain": 48034,
         "italy": 49918,
         "switzerland": 54627,
-        "austria": 48034,
-        "united_kingdom": 49918,
-        "monaco": 44737
+        "uk": 49918
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -1037,9 +982,9 @@
       },
       "description": "Audi RS5 in Track uitvoering, populair in criminele circuits voor supercar-operaties.",
       "availableInCountries": [
-        "austria",
+        "germany",
         "switzerland",
-        "monaco",
+        "france",
         "netherlands"
       ],
       "baseValue": 47904,
@@ -1047,13 +992,11 @@
         "netherlands": 47904,
         "belgium": 47904,
         "germany": 47904,
-        "france": 50778,
+        "france": 55569,
         "spain": 48862,
         "italy": 50778,
         "switzerland": 55569,
-        "austria": 45509,
-        "united_kingdom": 50778,
-        "monaco": 55569
+        "uk": 50778
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -1077,7 +1020,7 @@
       "description": "Volkswagen Arteon in Sport uitvoering, populair in criminele circuits voor standard-operaties.",
       "availableInCountries": [
         "switzerland",
-        "united_kingdom",
+        "uk",
         "spain",
         "belgium",
         "germany"
@@ -1086,14 +1029,12 @@
       "marketValue": {
         "netherlands": 48042,
         "belgium": 48042,
-        "germany": 48042,
-        "france": 50925,
+        "germany": 49003,
+        "france": 55729,
         "spain": 49003,
         "italy": 50925,
         "switzerland": 45640,
-        "austria": 49003,
-        "united_kingdom": 50925,
-        "monaco": 55729
+        "uk": 50925
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -1119,21 +1060,18 @@
         "switzerland",
         "france",
         "netherlands",
-        "monaco",
-        "austria"
+        "germany"
       ],
       "baseValue": 48230,
       "marketValue": {
         "netherlands": 48230,
         "belgium": 48230,
-        "germany": 48230,
-        "france": 51124,
+        "germany": 49195,
+        "france": 55947,
         "spain": 49195,
         "italy": 51124,
         "switzerland": 45818,
-        "austria": 49195,
-        "united_kingdom": 51124,
-        "monaco": 55947
+        "uk": 51124
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -1158,21 +1096,19 @@
       "availableInCountries": [
         "spain",
         "france",
-        "austria",
+        "germany",
         "belgium"
       ],
       "baseValue": 50102,
       "marketValue": {
         "netherlands": 50102,
         "belgium": 50102,
-        "germany": 50102,
-        "france": 53108,
+        "germany": 51104,
+        "france": 58118,
         "spain": 47597,
         "italy": 53108,
         "switzerland": 58118,
-        "austria": 51104,
-        "united_kingdom": 53108,
-        "monaco": 58118
+        "uk": 53108
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -1197,20 +1133,18 @@
       "availableInCountries": [
         "switzerland",
         "belgium",
-        "monaco"
+        "france"
       ],
       "baseValue": 50278,
       "marketValue": {
         "netherlands": 50278,
         "belgium": 50278,
-        "germany": 50278,
-        "france": 53295,
+        "germany": 51284,
+        "france": 58322,
         "spain": 51284,
         "italy": 53295,
         "switzerland": 47764,
-        "austria": 51284,
-        "united_kingdom": 53295,
-        "monaco": 58322
+        "uk": 53295
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -1234,24 +1168,22 @@
       "description": "Lexus IS500 in S-Line uitvoering, populair in criminele circuits voor standard-operaties.",
       "availableInCountries": [
         "belgium",
-        "austria",
+        "germany",
         "netherlands",
-        "united_kingdom",
-        "monaco",
+        "uk",
+        "france",
         "switzerland"
       ],
       "baseValue": 52619,
       "marketValue": {
         "netherlands": 52619,
         "belgium": 49988,
-        "germany": 52619,
-        "france": 55776,
+        "germany": 53671,
+        "france": 61038,
         "spain": 53671,
         "italy": 55776,
         "switzerland": 61038,
-        "austria": 53671,
-        "united_kingdom": 55776,
-        "monaco": 61038
+        "uk": 55776
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -1275,7 +1207,7 @@
       "description": "Volkswagen Passat in Carbon uitvoering, populair in criminele circuits voor stealth-operaties.",
       "availableInCountries": [
         "netherlands",
-        "united_kingdom",
+        "uk",
         "france",
         "germany",
         "belgium"
@@ -1284,14 +1216,12 @@
       "marketValue": {
         "netherlands": 51117,
         "belgium": 53807,
-        "germany": 53807,
-        "france": 57035,
+        "germany": 54883,
+        "france": 62416,
         "spain": 54883,
         "italy": 57035,
         "switzerland": 62416,
-        "austria": 54883,
-        "united_kingdom": 57035,
-        "monaco": 62416
+        "uk": 57035
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -1325,14 +1255,12 @@
       "marketValue": {
         "netherlands": 53992,
         "belgium": 53992,
-        "germany": 51292,
-        "france": 57232,
+        "germany": 55072,
+        "france": 62631,
         "spain": 55072,
         "italy": 57232,
         "switzerland": 62631,
-        "austria": 55072,
-        "united_kingdom": 57232,
-        "monaco": 62631
+        "uk": 57232
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -1355,24 +1283,21 @@
       },
       "description": "Volkswagen Golf in Sport uitvoering, populair in criminele circuits voor cargo-operaties.",
       "availableInCountries": [
-        "monaco",
-        "italy",
         "france",
-        "austria",
+        "italy",
+        "germany",
         "spain"
       ],
       "baseValue": 55416,
       "marketValue": {
         "netherlands": 55416,
         "belgium": 55416,
-        "germany": 55416,
+        "germany": 56524,
         "france": 58741,
         "spain": 56524,
         "italy": 58741,
         "switzerland": 64283,
-        "austria": 56524,
-        "united_kingdom": 58741,
-        "monaco": 52645
+        "uk": 58741
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -1398,21 +1323,18 @@
         "germany",
         "italy",
         "spain",
-        "austria",
         "netherlands"
       ],
       "baseValue": 57099,
       "marketValue": {
         "netherlands": 57099,
         "belgium": 57099,
-        "germany": 54244,
-        "france": 60525,
+        "germany": 58241,
+        "france": 66235,
         "spain": 58241,
         "italy": 60525,
         "switzerland": 66235,
-        "austria": 58241,
-        "united_kingdom": 60525,
-        "monaco": 66235
+        "uk": 60525
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -1437,22 +1359,19 @@
       "availableInCountries": [
         "netherlands",
         "france",
-        "united_kingdom",
-        "switzerland",
-        "monaco"
+        "uk",
+        "switzerland"
       ],
       "baseValue": 57898,
       "marketValue": {
         "netherlands": 55003,
         "belgium": 57898,
-        "germany": 57898,
-        "france": 61372,
+        "germany": 59056,
+        "france": 67162,
         "spain": 59056,
         "italy": 61372,
         "switzerland": 67162,
-        "austria": 59056,
-        "united_kingdom": 61372,
-        "monaco": 67162
+        "uk": 61372
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -1478,20 +1397,18 @@
         "netherlands",
         "belgium",
         "spain",
-        "united_kingdom"
+        "uk"
       ],
       "baseValue": 58521,
       "marketValue": {
         "netherlands": 55595,
         "belgium": 58521,
-        "germany": 58521,
-        "france": 62032,
+        "germany": 59691,
+        "france": 67884,
         "spain": 59691,
         "italy": 62032,
         "switzerland": 67884,
-        "austria": 59691,
-        "united_kingdom": 62032,
-        "monaco": 67884
+        "uk": 62032
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -1514,7 +1431,7 @@
       },
       "description": "Volkswagen Arteon in Sport uitvoering, populair in criminele circuits voor armored-operaties.",
       "availableInCountries": [
-        "united_kingdom",
+        "uk",
         "belgium",
         "germany"
       ],
@@ -1522,14 +1439,12 @@
       "marketValue": {
         "netherlands": 59295,
         "belgium": 59295,
-        "germany": 59295,
-        "france": 62853,
+        "germany": 60481,
+        "france": 68782,
         "spain": 60481,
         "italy": 62853,
         "switzerland": 68782,
-        "austria": 60481,
-        "united_kingdom": 56330,
-        "monaco": 68782
+        "uk": 56330
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -1553,7 +1468,7 @@
       "description": "Nissan GT-R in Black Edition uitvoering, populair in criminele circuits voor cargo-operaties.",
       "availableInCountries": [
         "france",
-        "united_kingdom",
+        "uk",
         "belgium",
         "switzerland",
         "spain",
@@ -1563,14 +1478,12 @@
       "marketValue": {
         "netherlands": 60641,
         "belgium": 60641,
-        "germany": 60641,
-        "france": 57609,
+        "germany": 61854,
+        "france": 70344,
         "spain": 61854,
         "italy": 64279,
         "switzerland": 70344,
-        "austria": 61854,
-        "united_kingdom": 64279,
-        "monaco": 70344
+        "uk": 64279
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -1594,9 +1507,9 @@
       "description": "Chevrolet Silverado in S-Line uitvoering, populair in criminele circuits voor cargo-operaties.",
       "availableInCountries": [
         "netherlands",
-        "monaco",
+        "france",
         "belgium",
-        "united_kingdom",
+        "uk",
         "germany",
         "switzerland"
       ],
@@ -1604,14 +1517,12 @@
       "marketValue": {
         "netherlands": 59001,
         "belgium": 62106,
-        "germany": 62106,
-        "france": 65832,
+        "germany": 63348,
+        "france": 72043,
         "spain": 63348,
         "italy": 65832,
         "switzerland": 72043,
-        "austria": 63348,
-        "united_kingdom": 65832,
-        "monaco": 72043
+        "uk": 65832
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -1643,14 +1554,12 @@
       "marketValue": {
         "netherlands": 62555,
         "belgium": 59427,
-        "germany": 62555,
-        "france": 66308,
+        "germany": 63806,
+        "france": 72564,
         "spain": 63806,
         "italy": 66308,
         "switzerland": 72564,
-        "austria": 63806,
-        "united_kingdom": 66308,
-        "monaco": 72564
+        "uk": 66308
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -1675,23 +1584,21 @@
       "availableInCountries": [
         "spain",
         "france",
-        "united_kingdom",
+        "uk",
         "italy",
         "netherlands",
-        "austria"
+        "germany"
       ],
       "baseValue": 62840,
       "marketValue": {
         "netherlands": 62840,
         "belgium": 62840,
-        "germany": 62840,
-        "france": 66610,
+        "germany": 64097,
+        "france": 72894,
         "spain": 59698,
         "italy": 66610,
         "switzerland": 72894,
-        "austria": 64097,
-        "united_kingdom": 66610,
-        "monaco": 72894
+        "uk": 66610
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -1716,21 +1623,18 @@
       "availableInCountries": [
         "spain",
         "germany",
-        "austria",
-        "united_kingdom"
+        "uk"
       ],
       "baseValue": 62971,
       "marketValue": {
         "netherlands": 62971,
         "belgium": 62971,
-        "germany": 62971,
-        "france": 66749,
+        "germany": 64230,
+        "france": 73046,
         "spain": 59822,
         "italy": 66749,
         "switzerland": 73046,
-        "austria": 64230,
-        "united_kingdom": 66749,
-        "monaco": 73046
+        "uk": 66749
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -1754,21 +1658,19 @@
       "description": "Ford Explorer in Carbon uitvoering, populair in criminele circuits voor stealth-operaties.",
       "availableInCountries": [
         "spain",
-        "monaco",
+        "france",
         "belgium"
       ],
       "baseValue": 68115,
       "marketValue": {
         "netherlands": 68115,
         "belgium": 68115,
-        "germany": 68115,
-        "france": 72202,
+        "germany": 69477,
+        "france": 79013,
         "spain": 64709,
         "italy": 72202,
         "switzerland": 79013,
-        "austria": 69477,
-        "united_kingdom": 72202,
-        "monaco": 79013
+        "uk": 72202
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -1792,23 +1694,21 @@
       "description": "Volkswagen Golf in Sport uitvoering, populair in criminele circuits voor armored-operaties.",
       "availableInCountries": [
         "switzerland",
-        "united_kingdom",
+        "uk",
         "belgium",
         "netherlands",
-        "austria"
+        "germany"
       ],
       "baseValue": 71209,
       "marketValue": {
         "netherlands": 71209,
         "belgium": 71209,
-        "germany": 71209,
-        "france": 75482,
+        "germany": 72633,
+        "france": 82602,
         "spain": 72633,
         "italy": 75482,
         "switzerland": 67649,
-        "austria": 72633,
-        "united_kingdom": 75482,
-        "monaco": 82602
+        "uk": 75482
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -1842,14 +1742,12 @@
       "marketValue": {
         "netherlands": 72833,
         "belgium": 72833,
-        "germany": 72833,
-        "france": 77203,
+        "germany": 74290,
+        "france": 84486,
         "spain": 74290,
         "italy": 69191,
         "switzerland": 84486,
-        "austria": 74290,
-        "united_kingdom": 77203,
-        "monaco": 84486
+        "uk": 77203
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -1872,11 +1770,10 @@
       },
       "description": "Alfa Romeo Tonale in Track uitvoering, populair in criminele circuits voor hypercar-operaties.",
       "availableInCountries": [
-        "austria",
         "germany",
-        "monaco",
+        "france",
         "spain",
-        "united_kingdom",
+        "uk",
         "italy"
       ],
       "baseValue": 74471,
@@ -1884,13 +1781,11 @@
         "netherlands": 74471,
         "belgium": 74471,
         "germany": 74471,
-        "france": 78939,
+        "france": 86386,
         "spain": 75960,
         "italy": 78939,
         "switzerland": 86386,
-        "austria": 70747,
-        "united_kingdom": 78939,
-        "monaco": 86386
+        "uk": 78939
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -1915,23 +1810,21 @@
       "availableInCountries": [
         "spain",
         "italy",
-        "monaco",
+        "france",
         "belgium",
-        "united_kingdom",
+        "uk",
         "netherlands"
       ],
       "baseValue": 74643,
       "marketValue": {
         "netherlands": 74643,
         "belgium": 74643,
-        "germany": 74643,
-        "france": 79122,
+        "germany": 76136,
+        "france": 86586,
         "spain": 70911,
         "italy": 79122,
         "switzerland": 86586,
-        "austria": 76136,
-        "united_kingdom": 79122,
-        "monaco": 86586
+        "uk": 79122
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -1954,9 +1847,9 @@
       },
       "description": "BMW X5 in S-Line uitvoering, populair in criminele circuits voor hypercar-operaties.",
       "availableInCountries": [
-        "austria",
+        "germany",
         "netherlands",
-        "united_kingdom",
+        "uk",
         "switzerland",
         "france",
         "italy"
@@ -1966,13 +1859,11 @@
         "netherlands": 75431,
         "belgium": 75431,
         "germany": 75431,
-        "france": 79957,
+        "france": 87500,
         "spain": 76940,
         "italy": 79957,
         "switzerland": 87500,
-        "austria": 71659,
-        "united_kingdom": 79957,
-        "monaco": 87500
+        "uk": 79957
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -1999,21 +1890,19 @@
         "italy",
         "switzerland",
         "belgium",
-        "monaco",
-        "austria"
+        "france",
+        "germany"
       ],
       "baseValue": 76380,
       "marketValue": {
         "netherlands": 76380,
         "belgium": 76380,
-        "germany": 76380,
-        "france": 80963,
+        "germany": 77908,
+        "france": 88601,
         "spain": 72561,
         "italy": 80963,
         "switzerland": 88601,
-        "austria": 77908,
-        "united_kingdom": 80963,
-        "monaco": 88601
+        "uk": 80963
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -2037,23 +1926,20 @@
       "description": "Dodge Charger in Black Edition uitvoering, populair in criminele circuits voor standard-operaties.",
       "availableInCountries": [
         "netherlands",
-        "united_kingdom",
-        "monaco",
+        "uk",
         "france",
-        "austria"
+        "germany"
       ],
       "baseValue": 77125,
       "marketValue": {
         "netherlands": 73269,
         "belgium": 77125,
-        "germany": 77125,
-        "france": 81752,
+        "germany": 78668,
+        "france": 89465,
         "spain": 78668,
         "italy": 81752,
         "switzerland": 89465,
-        "austria": 78668,
-        "united_kingdom": 81752,
-        "monaco": 89465
+        "uk": 81752
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -2076,7 +1962,7 @@
       },
       "description": "Dodge Charger in Black Edition uitvoering, populair in criminele circuits voor standard-operaties.",
       "availableInCountries": [
-        "united_kingdom",
+        "uk",
         "germany",
         "belgium",
         "netherlands"
@@ -2085,14 +1971,12 @@
       "marketValue": {
         "netherlands": 78093,
         "belgium": 78093,
-        "germany": 78093,
-        "france": 82779,
+        "germany": 79655,
+        "france": 90588,
         "spain": 79655,
         "italy": 82779,
         "switzerland": 90588,
-        "austria": 79655,
-        "united_kingdom": 74188,
-        "monaco": 90588
+        "uk": 74188
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -2118,20 +2002,18 @@
         "italy",
         "netherlands",
         "spain",
-        "united_kingdom"
+        "uk"
       ],
       "baseValue": 79713,
       "marketValue": {
         "netherlands": 79713,
         "belgium": 79713,
-        "germany": 79713,
-        "france": 84496,
+        "germany": 81307,
+        "france": 92467,
         "spain": 81307,
         "italy": 75727,
         "switzerland": 92467,
-        "austria": 81307,
-        "united_kingdom": 84496,
-        "monaco": 92467
+        "uk": 84496
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -2154,7 +2036,7 @@
       },
       "description": "Porsche 911 Turbo in Sport uitvoering, populair in criminele circuits voor standard-operaties.",
       "availableInCountries": [
-        "united_kingdom",
+        "uk",
         "switzerland",
         "france",
         "netherlands"
@@ -2163,14 +2045,12 @@
       "marketValue": {
         "netherlands": 81524,
         "belgium": 81524,
-        "germany": 81524,
-        "france": 86415,
+        "germany": 83154,
+        "france": 94568,
         "spain": 83154,
         "italy": 86415,
         "switzerland": 94568,
-        "austria": 83154,
-        "united_kingdom": 77448,
-        "monaco": 94568
+        "uk": 77448
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -2195,21 +2075,18 @@
       "availableInCountries": [
         "germany",
         "italy",
-        "austria",
         "spain"
       ],
       "baseValue": 81901,
       "marketValue": {
         "netherlands": 81901,
         "belgium": 81901,
-        "germany": 77806,
-        "france": 86815,
+        "germany": 83539,
+        "france": 95005,
         "spain": 83539,
         "italy": 86815,
         "switzerland": 95005,
-        "austria": 83539,
-        "united_kingdom": 86815,
-        "monaco": 95005
+        "uk": 86815
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -2232,24 +2109,21 @@
       },
       "description": "Audi S3 in Track uitvoering, populair in criminele circuits voor cargo-operaties.",
       "availableInCountries": [
-        "monaco",
+        "france",
         "netherlands",
         "switzerland",
-        "belgium",
-        "france"
+        "belgium"
       ],
       "baseValue": 82644,
       "marketValue": {
         "netherlands": 82644,
         "belgium": 82644,
-        "germany": 82644,
+        "germany": 84297,
         "france": 87603,
         "spain": 84297,
         "italy": 87603,
         "switzerland": 95867,
-        "austria": 84297,
-        "united_kingdom": 87603,
-        "monaco": 78512
+        "uk": 87603
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -2281,14 +2155,12 @@
       "marketValue": {
         "netherlands": 84174,
         "belgium": 79965,
-        "germany": 84174,
-        "france": 89224,
+        "germany": 85857,
+        "france": 97642,
         "spain": 85857,
         "italy": 89224,
         "switzerland": 97642,
-        "austria": 85857,
-        "united_kingdom": 89224,
-        "monaco": 97642
+        "uk": 89224
       },
       "fuelCapacity": 60,
       "requiredRank": 6,
@@ -2312,17 +2184,15 @@
       "description": "Luxe sedan met goede balans tussen prestaties en comfort",
       "availableInCountries": [
         "germany",
-        "austria",
         "switzerland"
       ],
       "baseValue": 85000,
       "marketValue": {
         "netherlands": 90000,
         "belgium": 88000,
-        "germany": 85000,
+        "germany": 87000,
         "france": 92000,
-        "switzerland": 95000,
-        "austria": 87000
+        "switzerland": 95000
       },
       "fuelCapacity": 60,
       "requiredRank": 10,
@@ -2343,24 +2213,21 @@
       },
       "description": "Honda NSX in Street uitvoering, populair in criminele circuits voor hypercar-operaties.",
       "availableInCountries": [
-        "monaco",
+        "france",
         "netherlands",
         "spain",
-        "france",
-        "united_kingdom"
+        "uk"
       ],
       "baseValue": 90239,
       "marketValue": {
         "netherlands": 90239,
         "belgium": 90239,
-        "germany": 90239,
+        "germany": 92044,
         "france": 95653,
         "spain": 92044,
         "italy": 95653,
         "switzerland": 104677,
-        "austria": 92044,
-        "united_kingdom": 95653,
-        "monaco": 85727
+        "uk": 95653
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -2384,7 +2251,7 @@
       "description": "Chevrolet Camaro SS in Executive uitvoering, populair in criminele circuits voor hypercar-operaties.",
       "availableInCountries": [
         "netherlands",
-        "austria",
+        "germany",
         "france",
         "italy",
         "switzerland"
@@ -2393,14 +2260,12 @@
       "marketValue": {
         "netherlands": 86207,
         "belgium": 90744,
-        "germany": 90744,
-        "france": 96189,
+        "germany": 92559,
+        "france": 105263,
         "spain": 92559,
         "italy": 96189,
         "switzerland": 105263,
-        "austria": 92559,
-        "united_kingdom": 96189,
-        "monaco": 105263
+        "uk": 96189
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -2423,25 +2288,22 @@
       },
       "description": "Maserati Levante in Sport uitvoering, populair in criminele circuits voor speed-operaties.",
       "availableInCountries": [
-        "united_kingdom",
-        "austria",
+        "uk",
+        "germany",
         "france",
         "spain",
-        "italy",
-        "germany"
+        "italy"
       ],
       "baseValue": 94567,
       "marketValue": {
         "netherlands": 94567,
         "belgium": 94567,
-        "germany": 94567,
-        "france": 100241,
+        "germany": 96458,
+        "france": 109698,
         "spain": 96458,
         "italy": 100241,
         "switzerland": 109698,
-        "austria": 96458,
-        "united_kingdom": 89839,
-        "monaco": 109698
+        "uk": 89839
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -2465,9 +2327,9 @@
       "description": "BMW M2 in Executive uitvoering, populair in criminele circuits voor standard-operaties.",
       "availableInCountries": [
         "switzerland",
-        "monaco",
+        "france",
         "belgium",
-        "united_kingdom",
+        "uk",
         "netherlands",
         "spain"
       ],
@@ -2475,14 +2337,12 @@
       "marketValue": {
         "netherlands": 94797,
         "belgium": 94797,
-        "germany": 94797,
-        "france": 100485,
+        "germany": 96693,
+        "france": 109965,
         "spain": 96693,
         "italy": 100485,
         "switzerland": 90057,
-        "austria": 96693,
-        "united_kingdom": 100485,
-        "monaco": 109965
+        "uk": 100485
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -2506,24 +2366,21 @@
       "description": "Ford Explorer in Carbon uitvoering, populair in criminele circuits voor armored-operaties.",
       "availableInCountries": [
         "netherlands",
-        "united_kingdom",
-        "monaco",
-        "germany",
+        "uk",
         "france",
+        "germany",
         "italy"
       ],
       "baseValue": 96823,
       "marketValue": {
         "netherlands": 91982,
         "belgium": 96823,
-        "germany": 96823,
-        "france": 102632,
+        "germany": 98759,
+        "france": 112315,
         "spain": 98759,
         "italy": 102632,
         "switzerland": 112315,
-        "austria": 98759,
-        "united_kingdom": 102632,
-        "monaco": 112315
+        "uk": 102632
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -2546,23 +2403,20 @@
       },
       "description": "Ford Focus ST in Carbon uitvoering, populair in criminele circuits voor supercar-operaties.",
       "availableInCountries": [
-        "austria",
-        "monaco",
-        "spain",
-        "france"
+        "germany",
+        "france",
+        "spain"
       ],
       "baseValue": 101224,
       "marketValue": {
         "netherlands": 101224,
         "belgium": 101224,
         "germany": 101224,
-        "france": 107297,
+        "france": 117420,
         "spain": 103248,
         "italy": 107297,
         "switzerland": 117420,
-        "austria": 96163,
-        "united_kingdom": 107297,
-        "monaco": 117420
+        "uk": 107297
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -2589,21 +2443,19 @@
         "italy",
         "germany",
         "netherlands",
-        "united_kingdom",
+        "uk",
         "spain"
       ],
       "baseValue": 104115,
       "marketValue": {
         "netherlands": 104115,
         "belgium": 98909,
-        "germany": 104115,
-        "france": 110362,
+        "germany": 106197,
+        "france": 120773,
         "spain": 106197,
         "italy": 110362,
         "switzerland": 120773,
-        "austria": 106197,
-        "united_kingdom": 110362,
-        "monaco": 120773
+        "uk": 110362
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -2637,14 +2489,12 @@
       "marketValue": {
         "netherlands": 105553,
         "belgium": 105553,
-        "germany": 105553,
-        "france": 111886,
+        "germany": 107664,
+        "france": 122441,
         "spain": 107664,
         "italy": 100275,
         "switzerland": 122441,
-        "austria": 107664,
-        "united_kingdom": 111886,
-        "monaco": 122441
+        "uk": 111886
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -2668,7 +2518,6 @@
       "description": "Lexus LS500 in S-Line uitvoering, populair in criminele circuits voor stealth-operaties.",
       "availableInCountries": [
         "germany",
-        "austria",
         "spain",
         "netherlands"
       ],
@@ -2676,14 +2525,12 @@
       "marketValue": {
         "netherlands": 107892,
         "belgium": 107892,
-        "germany": 102497,
-        "france": 114366,
+        "germany": 110050,
+        "france": 125155,
         "spain": 110050,
         "italy": 114366,
         "switzerland": 125155,
-        "austria": 110050,
-        "united_kingdom": 114366,
-        "monaco": 125155
+        "uk": 114366
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -2708,21 +2555,19 @@
       "availableInCountries": [
         "netherlands",
         "switzerland",
-        "monaco",
-        "united_kingdom"
+        "france",
+        "uk"
       ],
       "baseValue": 108776,
       "marketValue": {
         "netherlands": 103337,
         "belgium": 108776,
-        "germany": 108776,
-        "france": 115303,
+        "germany": 110952,
+        "france": 126180,
         "spain": 110952,
         "italy": 115303,
         "switzerland": 126180,
-        "austria": 110952,
-        "united_kingdom": 115303,
-        "monaco": 126180
+        "uk": 115303
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -2745,7 +2590,7 @@
       },
       "description": "BMW M5 in Executive uitvoering, populair in criminele circuits voor stealth-operaties.",
       "availableInCountries": [
-        "united_kingdom",
+        "uk",
         "netherlands",
         "germany",
         "italy"
@@ -2754,14 +2599,12 @@
       "marketValue": {
         "netherlands": 110407,
         "belgium": 110407,
-        "germany": 110407,
-        "france": 117031,
+        "germany": 112615,
+        "france": 128072,
         "spain": 112615,
         "italy": 117031,
         "switzerland": 128072,
-        "austria": 112615,
-        "united_kingdom": 104887,
-        "monaco": 128072
+        "uk": 104887
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -2786,20 +2629,18 @@
       "availableInCountries": [
         "belgium",
         "switzerland",
-        "austria"
+        "germany"
       ],
       "baseValue": 110414,
       "marketValue": {
         "netherlands": 110414,
         "belgium": 104893,
-        "germany": 110414,
-        "france": 117039,
+        "germany": 112622,
+        "france": 128080,
         "spain": 112622,
         "italy": 117039,
         "switzerland": 128080,
-        "austria": 112622,
-        "united_kingdom": 117039,
-        "monaco": 128080
+        "uk": 117039
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -2830,14 +2671,12 @@
       "marketValue": {
         "netherlands": 111101,
         "belgium": 111101,
-        "germany": 111101,
-        "france": 117767,
+        "germany": 113323,
+        "france": 128877,
         "spain": 105546,
         "italy": 117767,
         "switzerland": 128877,
-        "austria": 113323,
-        "united_kingdom": 117767,
-        "monaco": 128877
+        "uk": 117767
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -2860,25 +2699,23 @@
       },
       "description": "Maserati Quattroporte in Sport uitvoering, populair in criminele circuits voor stealth-operaties.",
       "availableInCountries": [
-        "monaco",
+        "france",
         "italy",
         "switzerland",
         "netherlands",
-        "united_kingdom",
+        "uk",
         "belgium"
       ],
       "baseValue": 113520,
       "marketValue": {
         "netherlands": 113520,
         "belgium": 113520,
-        "germany": 113520,
+        "germany": 115790,
         "france": 120331,
         "spain": 115790,
         "italy": 120331,
         "switzerland": 131683,
-        "austria": 115790,
-        "united_kingdom": 120331,
-        "monaco": 107844
+        "uk": 120331
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -2902,23 +2739,21 @@
       "description": "Ford Ranger in Sport uitvoering, populair in criminele circuits voor cargo-operaties.",
       "availableInCountries": [
         "netherlands",
-        "austria",
+        "germany",
         "spain",
         "belgium",
-        "monaco"
+        "france"
       ],
       "baseValue": 116524,
       "marketValue": {
         "netherlands": 110698,
         "belgium": 116524,
-        "germany": 116524,
-        "france": 123515,
+        "germany": 118854,
+        "france": 135168,
         "spain": 118854,
         "italy": 123515,
         "switzerland": 135168,
-        "austria": 118854,
-        "united_kingdom": 123515,
-        "monaco": 135168
+        "uk": 123515
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -2943,22 +2778,20 @@
       "availableInCountries": [
         "spain",
         "belgium",
-        "austria",
-        "united_kingdom",
+        "germany",
+        "uk",
         "netherlands"
       ],
       "baseValue": 117096,
       "marketValue": {
         "netherlands": 117096,
         "belgium": 117096,
-        "germany": 117096,
-        "france": 124122,
+        "germany": 119438,
+        "france": 135831,
         "spain": 111241,
         "italy": 124122,
         "switzerland": 135831,
-        "austria": 119438,
-        "united_kingdom": 124122,
-        "monaco": 135831
+        "uk": 124122
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -2983,23 +2816,20 @@
       "availableInCountries": [
         "netherlands",
         "italy",
-        "austria",
         "germany",
         "belgium",
-        "monaco"
+        "france"
       ],
       "baseValue": 121869,
       "marketValue": {
         "netherlands": 115776,
         "belgium": 121869,
-        "germany": 121869,
-        "france": 129181,
+        "germany": 124306,
+        "france": 141368,
         "spain": 124306,
         "italy": 129181,
         "switzerland": 141368,
-        "austria": 124306,
-        "united_kingdom": 129181,
-        "monaco": 141368
+        "uk": 129181
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -3030,14 +2860,12 @@
       "marketValue": {
         "netherlands": 123729,
         "belgium": 117543,
-        "germany": 123729,
-        "france": 131153,
+        "germany": 126204,
+        "france": 143526,
         "spain": 126204,
         "italy": 131153,
         "switzerland": 143526,
-        "austria": 126204,
-        "united_kingdom": 131153,
-        "monaco": 143526
+        "uk": 131153
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -3061,8 +2889,6 @@
       "description": "Dodge Charger in Black Edition uitvoering, populair in criminele circuits voor cargo-operaties.",
       "availableInCountries": [
         "spain",
-        "monaco",
-        "austria",
         "france",
         "germany"
       ],
@@ -3070,14 +2896,12 @@
       "marketValue": {
         "netherlands": 124884,
         "belgium": 124884,
-        "germany": 124884,
-        "france": 132377,
+        "germany": 127382,
+        "france": 144865,
         "spain": 118640,
         "italy": 132377,
         "switzerland": 144865,
-        "austria": 127382,
-        "united_kingdom": 132377,
-        "monaco": 144865
+        "uk": 132377
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -3102,21 +2926,19 @@
       "availableInCountries": [
         "germany",
         "belgium",
-        "monaco",
-        "united_kingdom"
+        "france",
+        "uk"
       ],
       "baseValue": 128864,
       "marketValue": {
         "netherlands": 128864,
         "belgium": 128864,
-        "germany": 122421,
-        "france": 136596,
+        "germany": 131441,
+        "france": 149482,
         "spain": 131441,
         "italy": 136596,
         "switzerland": 149482,
-        "austria": 131441,
-        "united_kingdom": 136596,
-        "monaco": 149482
+        "uk": 136596
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -3141,23 +2963,21 @@
       "availableInCountries": [
         "spain",
         "italy",
-        "monaco",
+        "france",
         "germany",
         "netherlands",
-        "united_kingdom"
+        "uk"
       ],
       "baseValue": 130299,
       "marketValue": {
         "netherlands": 130299,
         "belgium": 130299,
-        "germany": 130299,
-        "france": 138117,
+        "germany": 132905,
+        "france": 151147,
         "spain": 123784,
         "italy": 138117,
         "switzerland": 151147,
-        "austria": 132905,
-        "united_kingdom": 138117,
-        "monaco": 151147
+        "uk": 138117
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -3181,22 +3001,20 @@
       "description": "Honda CR-V in Track uitvoering, populair in criminele circuits voor supercar-operaties.",
       "availableInCountries": [
         "switzerland",
-        "monaco",
+        "france",
         "spain",
-        "austria"
+        "germany"
       ],
       "baseValue": 134743,
       "marketValue": {
         "netherlands": 134743,
         "belgium": 134743,
-        "germany": 134743,
-        "france": 142828,
+        "germany": 137438,
+        "france": 156302,
         "spain": 137438,
         "italy": 142828,
         "switzerland": 128006,
-        "austria": 137438,
-        "united_kingdom": 142828,
-        "monaco": 156302
+        "uk": 142828
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -3220,7 +3038,7 @@
       "description": "Alfa Romeo Stelvio in Street uitvoering, populair in criminele circuits voor hypercar-operaties.",
       "availableInCountries": [
         "switzerland",
-        "united_kingdom",
+        "uk",
         "italy",
         "spain"
       ],
@@ -3228,14 +3046,12 @@
       "marketValue": {
         "netherlands": 136379,
         "belgium": 136379,
-        "germany": 136379,
-        "france": 144562,
+        "germany": 139107,
+        "france": 158200,
         "spain": 139107,
         "italy": 144562,
         "switzerland": 129560,
-        "austria": 139107,
-        "united_kingdom": 144562,
-        "monaco": 158200
+        "uk": 144562
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -3259,23 +3075,20 @@
       "description": "Lexus IS500 in S-Line uitvoering, populair in criminele circuits voor hypercar-operaties.",
       "availableInCountries": [
         "germany",
-        "monaco",
+        "france",
         "belgium",
-        "switzerland",
-        "france"
+        "switzerland"
       ],
       "baseValue": 137988,
       "marketValue": {
         "netherlands": 137988,
         "belgium": 137988,
-        "germany": 131089,
-        "france": 146267,
+        "germany": 140748,
+        "france": 160066,
         "spain": 140748,
         "italy": 146267,
         "switzerland": 160066,
-        "austria": 140748,
-        "united_kingdom": 146267,
-        "monaco": 160066
+        "uk": 146267
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -3306,14 +3119,12 @@
       "marketValue": {
         "netherlands": 141268,
         "belgium": 141268,
-        "germany": 141268,
-        "france": 149744,
+        "germany": 144093,
+        "france": 163871,
         "spain": 144093,
         "italy": 134205,
         "switzerland": 163871,
-        "austria": 144093,
-        "united_kingdom": 149744,
-        "monaco": 163871
+        "uk": 149744
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -3339,21 +3150,18 @@
         "spain",
         "germany",
         "france",
-        "monaco",
         "switzerland"
       ],
       "baseValue": 141860,
       "marketValue": {
         "netherlands": 141860,
         "belgium": 141860,
-        "germany": 141860,
-        "france": 150372,
+        "germany": 144697,
+        "france": 164558,
         "spain": 134767,
         "italy": 150372,
         "switzerland": 164558,
-        "austria": 144697,
-        "united_kingdom": 150372,
-        "monaco": 164558
+        "uk": 150372
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -3376,24 +3184,21 @@
       },
       "description": "Porsche 911 Carrera in Carbon uitvoering, populair in criminele circuits voor hypercar-operaties.",
       "availableInCountries": [
-        "united_kingdom",
-        "austria",
+        "uk",
+        "germany",
         "spain",
-        "belgium",
-        "germany"
+        "belgium"
       ],
       "baseValue": 144462,
       "marketValue": {
         "netherlands": 144462,
         "belgium": 144462,
-        "germany": 144462,
-        "france": 153130,
+        "germany": 147351,
+        "france": 167576,
         "spain": 147351,
         "italy": 153130,
         "switzerland": 167576,
-        "austria": 147351,
-        "united_kingdom": 137239,
-        "monaco": 167576
+        "uk": 137239
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -3420,20 +3225,18 @@
         "netherlands",
         "belgium",
         "germany",
-        "united_kingdom"
+        "uk"
       ],
       "baseValue": 144722,
       "marketValue": {
         "netherlands": 144722,
         "belgium": 144722,
-        "germany": 144722,
-        "france": 153405,
+        "germany": 147616,
+        "france": 167878,
         "spain": 147616,
         "italy": 153405,
         "switzerland": 137486,
-        "austria": 147616,
-        "united_kingdom": 153405,
-        "monaco": 167878
+        "uk": 153405
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -3456,7 +3259,7 @@
       },
       "description": "Mercedes GLE63 in Midnight uitvoering, populair in criminele circuits voor armored-operaties.",
       "availableInCountries": [
-        "austria",
+        "germany",
         "italy",
         "netherlands"
       ],
@@ -3465,13 +3268,11 @@
         "netherlands": 146389,
         "belgium": 146389,
         "germany": 146389,
-        "france": 155172,
+        "france": 169811,
         "spain": 149317,
         "italy": 155172,
         "switzerland": 169811,
-        "austria": 139070,
-        "united_kingdom": 155172,
-        "monaco": 169811
+        "uk": 155172
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -3496,21 +3297,19 @@
       "availableInCountries": [
         "france",
         "spain",
-        "austria",
+        "germany",
         "belgium"
       ],
       "baseValue": 149339,
       "marketValue": {
         "netherlands": 149339,
         "belgium": 149339,
-        "germany": 149339,
-        "france": 141872,
+        "germany": 152326,
+        "france": 173233,
         "spain": 152326,
         "italy": 158299,
         "switzerland": 173233,
-        "austria": 152326,
-        "united_kingdom": 158299,
-        "monaco": 173233
+        "uk": 158299
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -3536,21 +3335,18 @@
         "spain",
         "italy",
         "germany",
-        "france",
-        "austria"
+        "france"
       ],
       "baseValue": 149395,
       "marketValue": {
         "netherlands": 149395,
         "belgium": 149395,
-        "germany": 149395,
-        "france": 158359,
+        "germany": 152383,
+        "france": 173298,
         "spain": 141925,
         "italy": 158359,
         "switzerland": 173298,
-        "austria": 152383,
-        "united_kingdom": 158359,
-        "monaco": 173298
+        "uk": 158359
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -3576,21 +3372,19 @@
         "spain",
         "belgium",
         "switzerland",
-        "austria",
+        "germany",
         "netherlands"
       ],
       "baseValue": 150978,
       "marketValue": {
         "netherlands": 150978,
         "belgium": 150978,
-        "germany": 150978,
-        "france": 160037,
+        "germany": 153998,
+        "france": 175134,
         "spain": 143429,
         "italy": 160037,
         "switzerland": 175134,
-        "austria": 153998,
-        "united_kingdom": 160037,
-        "monaco": 175134
+        "uk": 160037
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -3617,20 +3411,18 @@
         "netherlands",
         "germany",
         "switzerland",
-        "monaco"
+        "france"
       ],
       "baseValue": 153954,
       "marketValue": {
         "netherlands": 153954,
         "belgium": 153954,
-        "germany": 153954,
-        "france": 163191,
+        "germany": 157033,
+        "france": 178587,
         "spain": 146256,
         "italy": 163191,
         "switzerland": 178587,
-        "austria": 157033,
-        "united_kingdom": 163191,
-        "monaco": 178587
+        "uk": 163191
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -3656,21 +3448,19 @@
         "spain",
         "italy",
         "belgium",
-        "monaco",
-        "united_kingdom"
+        "france",
+        "uk"
       ],
       "baseValue": 154532,
       "marketValue": {
         "netherlands": 154532,
         "belgium": 154532,
-        "germany": 154532,
-        "france": 163804,
+        "germany": 157623,
+        "france": 179257,
         "spain": 146805,
         "italy": 163804,
         "switzerland": 179257,
-        "austria": 157623,
-        "united_kingdom": 163804,
-        "monaco": 179257
+        "uk": 163804
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -3693,23 +3483,21 @@
       },
       "description": "Lexus RX500h in Executive uitvoering, populair in criminele circuits voor stealth-operaties.",
       "availableInCountries": [
-        "austria",
+        "germany",
         "belgium",
-        "united_kingdom",
-        "monaco"
+        "uk",
+        "france"
       ],
       "baseValue": 154560,
       "marketValue": {
         "netherlands": 154560,
         "belgium": 154560,
         "germany": 154560,
-        "france": 163834,
+        "france": 179290,
         "spain": 157651,
         "italy": 163834,
         "switzerland": 179290,
-        "austria": 146832,
-        "united_kingdom": 163834,
-        "monaco": 179290
+        "uk": 163834
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -3734,23 +3522,19 @@
       "availableInCountries": [
         "france",
         "belgium",
-        "austria",
-        "united_kingdom",
-        "monaco",
-        "germany"
+        "germany",
+        "uk"
       ],
       "baseValue": 155153,
       "marketValue": {
         "netherlands": 155153,
         "belgium": 155153,
-        "germany": 155153,
-        "france": 147395,
+        "germany": 158256,
+        "france": 179977,
         "spain": 158256,
         "italy": 164462,
         "switzerland": 179977,
-        "austria": 158256,
-        "united_kingdom": 164462,
-        "monaco": 179977
+        "uk": 164462
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -3773,7 +3557,7 @@
       },
       "description": "Lexus RX500h in Executive uitvoering, populair in criminele circuits voor standard-operaties.",
       "availableInCountries": [
-        "united_kingdom",
+        "uk",
         "france",
         "germany"
       ],
@@ -3781,14 +3565,12 @@
       "marketValue": {
         "netherlands": 155374,
         "belgium": 155374,
-        "germany": 155374,
-        "france": 164696,
+        "germany": 158481,
+        "france": 180234,
         "spain": 158481,
         "italy": 164696,
         "switzerland": 180234,
-        "austria": 158481,
-        "united_kingdom": 147605,
-        "monaco": 180234
+        "uk": 147605
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -3811,7 +3593,7 @@
       },
       "description": "Honda Civic Type R in Street uitvoering, populair in criminele circuits voor speed-operaties.",
       "availableInCountries": [
-        "monaco",
+        "france",
         "germany",
         "spain"
       ],
@@ -3819,14 +3601,12 @@
       "marketValue": {
         "netherlands": 156268,
         "belgium": 156268,
-        "germany": 156268,
+        "germany": 159393,
         "france": 165644,
         "spain": 159393,
         "italy": 165644,
         "switzerland": 181271,
-        "austria": 159393,
-        "united_kingdom": 165644,
-        "monaco": 148455
+        "uk": 165644
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -3852,22 +3632,19 @@
         "italy",
         "germany",
         "netherlands",
-        "united_kingdom",
-        "france",
-        "austria"
+        "uk",
+        "france"
       ],
       "baseValue": 157803,
       "marketValue": {
         "netherlands": 157803,
         "belgium": 157803,
-        "germany": 157803,
-        "france": 167271,
+        "germany": 160959,
+        "france": 183051,
         "spain": 160959,
         "italy": 149913,
         "switzerland": 183051,
-        "austria": 160959,
-        "united_kingdom": 167271,
-        "monaco": 183051
+        "uk": 167271
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -3891,21 +3668,18 @@
       "description": "Lexus LS500 in S-Line uitvoering, populair in criminele circuits voor hypercar-operaties.",
       "availableInCountries": [
         "france",
-        "switzerland",
-        "monaco"
+        "switzerland"
       ],
       "baseValue": 158880,
       "marketValue": {
         "netherlands": 158880,
         "belgium": 158880,
-        "germany": 158880,
-        "france": 150936,
+        "germany": 162058,
+        "france": 184301,
         "spain": 162058,
         "italy": 168413,
         "switzerland": 184301,
-        "austria": 162058,
-        "united_kingdom": 168413,
-        "monaco": 184301
+        "uk": 168413
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -3930,23 +3704,20 @@
       "availableInCountries": [
         "belgium",
         "italy",
-        "austria",
+        "germany",
         "spain",
-        "monaco",
-        "germany"
+        "france"
       ],
       "baseValue": 159884,
       "marketValue": {
         "netherlands": 159884,
         "belgium": 151890,
-        "germany": 159884,
-        "france": 169477,
+        "germany": 163082,
+        "france": 185465,
         "spain": 163082,
         "italy": 169477,
         "switzerland": 185465,
-        "austria": 163082,
-        "united_kingdom": 169477,
-        "monaco": 185465
+        "uk": 169477
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -3969,8 +3740,8 @@
       },
       "description": "Alfa Romeo 4C in Street uitvoering, populair in criminele circuits voor supercar-operaties.",
       "availableInCountries": [
-        "monaco",
-        "united_kingdom",
+        "france",
+        "uk",
         "germany",
         "italy"
       ],
@@ -3978,14 +3749,12 @@
       "marketValue": {
         "netherlands": 164637,
         "belgium": 164637,
-        "germany": 164637,
+        "germany": 167930,
         "france": 174515,
         "spain": 167930,
         "italy": 174515,
         "switzerland": 190979,
-        "austria": 167930,
-        "united_kingdom": 174515,
-        "monaco": 156405
+        "uk": 174515
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -4008,23 +3777,21 @@
       },
       "description": "Alfa Romeo Giulia QV in Track uitvoering, populair in criminele circuits voor cargo-operaties.",
       "availableInCountries": [
-        "monaco",
+        "france",
         "belgium",
         "spain",
-        "austria"
+        "germany"
       ],
       "baseValue": 166585,
       "marketValue": {
         "netherlands": 166585,
         "belgium": 166585,
-        "germany": 166585,
+        "germany": 169917,
         "france": 176580,
         "spain": 169917,
         "italy": 176580,
         "switzerland": 193239,
-        "austria": 169917,
-        "united_kingdom": 176580,
-        "monaco": 158256
+        "uk": 176580
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -4057,14 +3824,12 @@
       "marketValue": {
         "netherlands": 166673,
         "belgium": 166673,
-        "germany": 166673,
-        "france": 176673,
+        "germany": 170006,
+        "france": 193341,
         "spain": 170006,
         "italy": 176673,
         "switzerland": 158339,
-        "austria": 170006,
-        "united_kingdom": 176673,
-        "monaco": 193341
+        "uk": 176673
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -4088,21 +3853,18 @@
       "description": "Chevrolet Tahoe in Executive uitvoering, populair in criminele circuits voor hypercar-operaties.",
       "availableInCountries": [
         "germany",
-        "austria",
         "switzerland"
       ],
       "baseValue": 168196,
       "marketValue": {
         "netherlands": 168196,
         "belgium": 168196,
-        "germany": 159786,
-        "france": 178288,
+        "germany": 171560,
+        "france": 195107,
         "spain": 171560,
         "italy": 178288,
         "switzerland": 195107,
-        "austria": 171560,
-        "united_kingdom": 178288,
-        "monaco": 195107
+        "uk": 178288
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -4129,20 +3891,18 @@
         "netherlands",
         "italy",
         "belgium",
-        "united_kingdom"
+        "uk"
       ],
       "baseValue": 168838,
       "marketValue": {
         "netherlands": 168838,
         "belgium": 168838,
-        "germany": 168838,
-        "france": 160396,
+        "germany": 172215,
+        "france": 195852,
         "spain": 172215,
         "italy": 178968,
         "switzerland": 195852,
-        "austria": 172215,
-        "united_kingdom": 178968,
-        "monaco": 195852
+        "uk": 178968
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -4166,23 +3926,20 @@
       "description": "Porsche Panamera in Sport uitvoering, populair in criminele circuits voor hypercar-operaties.",
       "availableInCountries": [
         "switzerland",
-        "monaco",
+        "france",
         "spain",
-        "austria",
         "germany"
       ],
       "baseValue": 172403,
       "marketValue": {
         "netherlands": 172403,
         "belgium": 172403,
-        "germany": 172403,
-        "france": 182747,
+        "germany": 175851,
+        "france": 199987,
         "spain": 175851,
         "italy": 182747,
         "switzerland": 163783,
-        "austria": 175851,
-        "united_kingdom": 182747,
-        "monaco": 199987
+        "uk": 182747
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -4207,22 +3964,20 @@
       "availableInCountries": [
         "spain",
         "italy",
-        "austria",
-        "united_kingdom",
+        "germany",
+        "uk",
         "netherlands"
       ],
       "baseValue": 172814,
       "marketValue": {
         "netherlands": 172814,
         "belgium": 172814,
-        "germany": 172814,
-        "france": 183183,
+        "germany": 176270,
+        "france": 200464,
         "spain": 164173,
         "italy": 183183,
         "switzerland": 200464,
-        "austria": 176270,
-        "united_kingdom": 183183,
-        "monaco": 200464
+        "uk": 183183
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -4245,7 +4000,6 @@
       },
       "description": "Alfa Romeo Tonale in Track uitvoering, populair in criminele circuits voor cargo-operaties.",
       "availableInCountries": [
-        "monaco",
         "france",
         "switzerland",
         "italy",
@@ -4256,14 +4010,12 @@
       "marketValue": {
         "netherlands": 176663,
         "belgium": 176663,
-        "germany": 176663,
+        "germany": 180196,
         "france": 187263,
         "spain": 180196,
         "italy": 187263,
         "switzerland": 204929,
-        "austria": 180196,
-        "united_kingdom": 187263,
-        "monaco": 167830
+        "uk": 187263
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -4289,22 +4041,19 @@
         "france",
         "italy",
         "germany",
-        "monaco",
         "netherlands",
-        "united_kingdom"
+        "uk"
       ],
       "baseValue": 178395,
       "marketValue": {
         "netherlands": 178395,
         "belgium": 178395,
-        "germany": 178395,
-        "france": 169475,
+        "germany": 181963,
+        "france": 206938,
         "spain": 181963,
         "italy": 189099,
         "switzerland": 206938,
-        "austria": 181963,
-        "united_kingdom": 189099,
-        "monaco": 206938
+        "uk": 189099
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -4328,23 +4077,20 @@
       "description": "Porsche 911 Turbo in Sport uitvoering, populair in criminele circuits voor supercar-operaties.",
       "availableInCountries": [
         "belgium",
-        "austria",
+        "germany",
         "france",
-        "netherlands",
-        "germany"
+        "netherlands"
       ],
       "baseValue": 180018,
       "marketValue": {
         "netherlands": 180018,
         "belgium": 171017,
-        "germany": 180018,
-        "france": 190819,
+        "germany": 183618,
+        "france": 208821,
         "spain": 183618,
         "italy": 190819,
         "switzerland": 208821,
-        "austria": 183618,
-        "united_kingdom": 190819,
-        "monaco": 208821
+        "uk": 190819
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -4368,23 +4114,20 @@
       "description": "BMW M2 in Executive uitvoering, populair in criminele circuits voor cargo-operaties.",
       "availableInCountries": [
         "netherlands",
-        "monaco",
-        "switzerland",
         "france",
+        "switzerland",
         "germany"
       ],
       "baseValue": 181563,
       "marketValue": {
         "netherlands": 172485,
         "belgium": 181563,
-        "germany": 181563,
-        "france": 192457,
+        "germany": 185194,
+        "france": 210613,
         "spain": 185194,
         "italy": 192457,
         "switzerland": 210613,
-        "austria": 185194,
-        "united_kingdom": 192457,
-        "monaco": 210613
+        "uk": 192457
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -4416,14 +4159,12 @@
       "marketValue": {
         "netherlands": 179436,
         "belgium": 188880,
-        "germany": 188880,
-        "france": 200213,
+        "germany": 192658,
+        "france": 219101,
         "spain": 192658,
         "italy": 200213,
         "switzerland": 219101,
-        "austria": 192658,
-        "united_kingdom": 200213,
-        "monaco": 219101
+        "uk": 200213
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -4447,21 +4188,19 @@
       "description": "Audi S3 in Track uitvoering, populair in criminele circuits voor speed-operaties.",
       "availableInCountries": [
         "spain",
-        "monaco",
-        "austria"
+        "france",
+        "germany"
       ],
       "baseValue": 208210,
       "marketValue": {
         "netherlands": 208210,
         "belgium": 208210,
-        "germany": 208210,
-        "france": 220703,
+        "germany": 212374,
+        "france": 241524,
         "spain": 197800,
         "italy": 220703,
         "switzerland": 241524,
-        "austria": 212374,
-        "united_kingdom": 220703,
-        "monaco": 241524
+        "uk": 220703
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -4486,21 +4225,19 @@
       "availableInCountries": [
         "switzerland",
         "france",
-        "austria",
+        "germany",
         "spain"
       ],
       "baseValue": 214180,
       "marketValue": {
         "netherlands": 214180,
         "belgium": 214180,
-        "germany": 214180,
-        "france": 227031,
+        "germany": 218464,
+        "france": 248449,
         "spain": 218464,
         "italy": 227031,
         "switzerland": 203471,
-        "austria": 218464,
-        "united_kingdom": 227031,
-        "monaco": 248449
+        "uk": 227031
       },
       "fuelCapacity": 60,
       "requiredRank": 12,
@@ -4523,24 +4260,21 @@
       },
       "description": "Mercedes E63 in Black Edition uitvoering, populair in criminele circuits voor stealth-operaties.",
       "availableInCountries": [
-        "austria",
+        "germany",
         "netherlands",
         "france",
-        "united_kingdom",
-        "monaco"
+        "uk"
       ],
       "baseValue": 232658,
       "marketValue": {
         "netherlands": 232658,
         "belgium": 232658,
         "germany": 232658,
-        "france": 246617,
+        "france": 269883,
         "spain": 237311,
         "italy": 246617,
         "switzerland": 269883,
-        "austria": 221025,
-        "united_kingdom": 246617,
-        "monaco": 269883
+        "uk": 246617
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -4565,20 +4299,18 @@
       "availableInCountries": [
         "belgium",
         "spain",
-        "monaco"
+        "france"
       ],
       "baseValue": 236488,
       "marketValue": {
         "netherlands": 236488,
         "belgium": 224664,
-        "germany": 236488,
-        "france": 250677,
+        "germany": 241218,
+        "france": 274326,
         "spain": 241218,
         "italy": 250677,
         "switzerland": 274326,
-        "austria": 241218,
-        "united_kingdom": 250677,
-        "monaco": 274326
+        "uk": 250677
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -4602,7 +4334,7 @@
       "description": "McLaren 750S in Street uitvoering, populair in criminele circuits voor supercar-operaties.",
       "availableInCountries": [
         "italy",
-        "austria",
+        "germany",
         "spain",
         "switzerland",
         "france"
@@ -4611,14 +4343,12 @@
       "marketValue": {
         "netherlands": 244610,
         "belgium": 244610,
-        "germany": 244610,
-        "france": 259287,
+        "germany": 249502,
+        "france": 283748,
         "spain": 249502,
         "italy": 232380,
         "switzerland": 283748,
-        "austria": 249502,
-        "united_kingdom": 259287,
-        "monaco": 283748
+        "uk": 259287
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -4642,7 +4372,7 @@
       "description": "Audi S5 in Street uitvoering, populair in criminele circuits voor standard-operaties.",
       "availableInCountries": [
         "switzerland",
-        "monaco",
+        "france",
         "belgium",
         "netherlands",
         "germany",
@@ -4652,14 +4382,12 @@
       "marketValue": {
         "netherlands": 247942,
         "belgium": 247942,
-        "germany": 247942,
-        "france": 262819,
+        "germany": 252901,
+        "france": 287613,
         "spain": 252901,
         "italy": 262819,
         "switzerland": 235545,
-        "austria": 252901,
-        "united_kingdom": 262819,
-        "monaco": 287613
+        "uk": 262819
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -4691,14 +4419,12 @@
       "marketValue": {
         "netherlands": 248163,
         "belgium": 248163,
-        "germany": 248163,
-        "france": 263053,
+        "germany": 253126,
+        "france": 287869,
         "spain": 253126,
         "italy": 263053,
         "switzerland": 235755,
-        "austria": 253126,
-        "united_kingdom": 263053,
-        "monaco": 287869
+        "uk": 263053
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -4722,21 +4448,19 @@
       "description": "Maserati Quattroporte in Sport uitvoering, populair in criminele circuits voor cargo-operaties.",
       "availableInCountries": [
         "spain",
-        "united_kingdom",
-        "austria"
+        "uk",
+        "germany"
       ],
       "baseValue": 248362,
       "marketValue": {
         "netherlands": 248362,
         "belgium": 248362,
-        "germany": 248362,
-        "france": 263264,
+        "germany": 253329,
+        "france": 288100,
         "spain": 235944,
         "italy": 263264,
         "switzerland": 288100,
-        "austria": 253329,
-        "united_kingdom": 263264,
-        "monaco": 288100
+        "uk": 263264
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -4767,13 +4491,11 @@
       "marketValue": {
         "netherlands": 280000,
         "belgium": 275000,
-        "germany": 260000,
+        "germany": 270000,
         "france": 250000,
         "italy": 245000,
         "switzerland": 290000,
         "spain": 265000,
-        "austria": 270000,
-        "united_kingdom": 295000,
         "uk": 295000
       },
       "fuelCapacity": 40,
@@ -4798,22 +4520,18 @@
         "france",
         "switzerland",
         "italy",
-        "austria",
-        "germany",
-        "monaco"
+        "germany"
       ],
       "baseValue": 252381,
       "marketValue": {
         "netherlands": 252381,
         "belgium": 252381,
-        "germany": 252381,
-        "france": 239762,
+        "germany": 257429,
+        "france": 292762,
         "spain": 257429,
         "italy": 267524,
         "switzerland": 292762,
-        "austria": 257429,
-        "united_kingdom": 267524,
-        "monaco": 292762
+        "uk": 267524
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -4837,9 +4555,8 @@
       "description": "Maserati Ghibli in Carbon uitvoering, populair in criminele circuits voor cargo-operaties.",
       "availableInCountries": [
         "germany",
-        "monaco",
-        "switzerland",
         "france",
+        "switzerland",
         "spain",
         "italy"
       ],
@@ -4847,14 +4564,12 @@
       "marketValue": {
         "netherlands": 257786,
         "belgium": 257786,
-        "germany": 244897,
-        "france": 273253,
+        "germany": 262942,
+        "france": 299032,
         "spain": 262942,
         "italy": 273253,
         "switzerland": 299032,
-        "austria": 262942,
-        "united_kingdom": 273253,
-        "monaco": 299032
+        "uk": 273253
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -4878,24 +4593,21 @@
       "description": "Ferrari 296 GTB in Executive uitvoering, populair in criminele circuits voor stealth-operaties.",
       "availableInCountries": [
         "netherlands",
-        "austria",
-        "spain",
         "germany",
-        "monaco",
-        "united_kingdom"
+        "spain",
+        "france",
+        "uk"
       ],
       "baseValue": 259618,
       "marketValue": {
         "netherlands": 246637,
         "belgium": 259618,
-        "germany": 259618,
-        "france": 275195,
+        "germany": 264810,
+        "france": 301157,
         "spain": 264810,
         "italy": 275195,
         "switzerland": 301157,
-        "austria": 264810,
-        "united_kingdom": 275195,
-        "monaco": 301157
+        "uk": 275195
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -4920,21 +4632,19 @@
       "availableInCountries": [
         "spain",
         "germany",
-        "monaco",
+        "france",
         "italy"
       ],
       "baseValue": 268819,
       "marketValue": {
         "netherlands": 268819,
         "belgium": 268819,
-        "germany": 268819,
-        "france": 284948,
+        "germany": 274195,
+        "france": 311830,
         "spain": 255378,
         "italy": 284948,
         "switzerland": 311830,
-        "austria": 274195,
-        "united_kingdom": 284948,
-        "monaco": 311830
+        "uk": 284948
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -4958,24 +4668,21 @@
       "description": "Maserati MC20 in Carbon uitvoering, populair in criminele circuits voor speed-operaties.",
       "availableInCountries": [
         "italy",
-        "austria",
+        "germany",
         "france",
         "switzerland",
-        "netherlands",
-        "germany"
+        "netherlands"
       ],
       "baseValue": 293623,
       "marketValue": {
         "netherlands": 293623,
         "belgium": 293623,
-        "germany": 293623,
-        "france": 311240,
+        "germany": 299495,
+        "france": 340603,
         "spain": 299495,
         "italy": 278942,
         "switzerland": 340603,
-        "austria": 299495,
-        "united_kingdom": 311240,
-        "monaco": 340603
+        "uk": 311240
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -4999,24 +4706,21 @@
       "description": "Mercedes C63 in Midnight uitvoering, populair in criminele circuits voor supercar-operaties.",
       "availableInCountries": [
         "italy",
-        "united_kingdom",
+        "uk",
         "switzerland",
-        "monaco",
-        "austria",
+        "france",
         "germany"
       ],
       "baseValue": 298147,
       "marketValue": {
         "netherlands": 298147,
         "belgium": 298147,
-        "germany": 298147,
-        "france": 316036,
+        "germany": 304110,
+        "france": 345851,
         "spain": 304110,
         "italy": 283240,
         "switzerland": 345851,
-        "austria": 304110,
-        "united_kingdom": 316036,
-        "monaco": 345851
+        "uk": 316036
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -5041,21 +4745,19 @@
       "availableInCountries": [
         "switzerland",
         "spain",
-        "monaco",
-        "united_kingdom"
+        "france",
+        "uk"
       ],
       "baseValue": 302750,
       "marketValue": {
         "netherlands": 302750,
         "belgium": 302750,
-        "germany": 302750,
-        "france": 320915,
+        "germany": 308805,
+        "france": 351190,
         "spain": 308805,
         "italy": 320915,
         "switzerland": 287612,
-        "austria": 308805,
-        "united_kingdom": 320915,
-        "monaco": 351190
+        "uk": 320915
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -5080,21 +4782,18 @@
       "availableInCountries": [
         "france",
         "netherlands",
-        "monaco",
-        "austria"
+        "germany"
       ],
       "baseValue": 323288,
       "marketValue": {
         "netherlands": 323288,
         "belgium": 323288,
-        "germany": 323288,
-        "france": 307124,
+        "germany": 329754,
+        "france": 375014,
         "spain": 329754,
         "italy": 342685,
         "switzerland": 375014,
-        "austria": 329754,
-        "united_kingdom": 342685,
-        "monaco": 375014
+        "uk": 342685
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -5117,25 +4816,22 @@
       },
       "description": "McLaren 750S in Street uitvoering, populair in criminele circuits voor cargo-operaties.",
       "availableInCountries": [
-        "monaco",
+        "france",
         "belgium",
         "germany",
         "spain",
-        "switzerland",
-        "austria"
+        "switzerland"
       ],
       "baseValue": 327227,
       "marketValue": {
         "netherlands": 327227,
         "belgium": 327227,
-        "germany": 327227,
+        "germany": 333772,
         "france": 346861,
         "spain": 333772,
         "italy": 346861,
         "switzerland": 379583,
-        "austria": 333772,
-        "united_kingdom": 346861,
-        "monaco": 310866
+        "uk": 346861
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -5158,8 +4854,8 @@
       },
       "description": "Maserati Ghibli in Carbon uitvoering, populair in criminele circuits voor cargo-operaties.",
       "availableInCountries": [
-        "united_kingdom",
-        "austria",
+        "uk",
+        "germany",
         "switzerland",
         "france",
         "spain"
@@ -5168,14 +4864,12 @@
       "marketValue": {
         "netherlands": 337881,
         "belgium": 337881,
-        "germany": 337881,
-        "france": 358154,
+        "germany": 344639,
+        "france": 391942,
         "spain": 344639,
         "italy": 358154,
         "switzerland": 391942,
-        "austria": 344639,
-        "united_kingdom": 320987,
-        "monaco": 391942
+        "uk": 320987
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -5207,14 +4901,12 @@
       "marketValue": {
         "netherlands": 332500,
         "belgium": 350000,
-        "germany": 350000,
-        "france": 371000,
+        "germany": 357000,
+        "france": 406000,
         "spain": 357000,
         "italy": 371000,
         "switzerland": 406000,
-        "austria": 357000,
-        "united_kingdom": 371000,
-        "monaco": 406000
+        "uk": 371000
       },
       "fuelCapacity": 60,
       "requiredRank": 15,
@@ -5238,9 +4930,8 @@
       },
       "description": "Ferrari Purosangue in S-Line uitvoering, populair in criminele circuits voor hypercar-operaties.",
       "availableInCountries": [
-        "austria",
-        "italy",
         "germany",
+        "italy",
         "spain"
       ],
       "baseValue": 350445,
@@ -5248,13 +4939,11 @@
         "netherlands": 350445,
         "belgium": 350445,
         "germany": 350445,
-        "france": 371472,
+        "france": 406516,
         "spain": 357454,
         "italy": 371472,
         "switzerland": 406516,
-        "austria": 332923,
-        "united_kingdom": 371472,
-        "monaco": 406516
+        "uk": 371472
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -5278,8 +4967,8 @@
       "description": "Lamborghini Revuelto in Midnight uitvoering, populair in criminele circuits voor standard-operaties.",
       "availableInCountries": [
         "belgium",
-        "united_kingdom",
-        "austria",
+        "uk",
+        "germany",
         "switzerland",
         "france"
       ],
@@ -5287,14 +4976,12 @@
       "marketValue": {
         "netherlands": 350494,
         "belgium": 332969,
-        "germany": 350494,
-        "france": 371524,
+        "germany": 357504,
+        "france": 406573,
         "spain": 357504,
         "italy": 371524,
         "switzerland": 406573,
-        "austria": 357504,
-        "united_kingdom": 371524,
-        "monaco": 406573
+        "uk": 371524
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -5317,24 +5004,22 @@
       },
       "description": "Lamborghini Urus in Midnight uitvoering, populair in criminele circuits voor armored-operaties.",
       "availableInCountries": [
-        "austria",
+        "germany",
         "netherlands",
         "switzerland",
-        "united_kingdom",
-        "monaco"
+        "uk",
+        "france"
       ],
       "baseValue": 368800,
       "marketValue": {
         "netherlands": 368800,
         "belgium": 368800,
         "germany": 368800,
-        "france": 390928,
+        "france": 427808,
         "spain": 376176,
         "italy": 390928,
         "switzerland": 427808,
-        "austria": 350360,
-        "united_kingdom": 390928,
-        "monaco": 427808
+        "uk": 390928
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -5359,23 +5044,20 @@
       "availableInCountries": [
         "france",
         "spain",
-        "monaco",
         "belgium",
         "switzerland",
-        "united_kingdom"
+        "uk"
       ],
       "baseValue": 379221,
       "marketValue": {
         "netherlands": 379221,
         "belgium": 379221,
-        "germany": 379221,
-        "france": 360260,
+        "germany": 386805,
+        "france": 439896,
         "spain": 386805,
         "italy": 401974,
         "switzerland": 439896,
-        "austria": 386805,
-        "united_kingdom": 401974,
-        "monaco": 439896
+        "uk": 401974
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -5399,7 +5081,6 @@
       "description": "Duitse precisie met brullende V10 motor - dagelijks bruikbare supercar",
       "availableInCountries": [
         "germany",
-        "austria",
         "switzerland",
         "belgium"
       ],
@@ -5407,11 +5088,9 @@
       "marketValue": {
         "netherlands": 460000,
         "belgium": 450000,
-        "germany": 400000,
-        "france": 420000,
+        "germany": 410000,
+        "france": 470000,
         "switzerland": 480000,
-        "austria": 410000,
-        "monaco": 470000,
         "italy": 430000
       },
       "fuelCapacity": 75,
@@ -5434,9 +5113,8 @@
       "description": "Porsche 911 Carrera in Carbon uitvoering, populair in criminele circuits voor supercar-operaties.",
       "availableInCountries": [
         "switzerland",
-        "austria",
-        "netherlands",
         "germany",
+        "netherlands",
         "italy",
         "belgium"
       ],
@@ -5444,14 +5122,12 @@
       "marketValue": {
         "netherlands": 407326,
         "belgium": 407326,
-        "germany": 407326,
-        "france": 431766,
+        "germany": 415473,
+        "france": 472498,
         "spain": 415473,
         "italy": 431766,
         "switzerland": 386960,
-        "austria": 415473,
-        "united_kingdom": 431766,
-        "monaco": 472498
+        "uk": 431766
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -5474,10 +5150,10 @@
       },
       "description": "Bentley Flying Spur in Carbon uitvoering, populair in criminele circuits voor standard-operaties.",
       "availableInCountries": [
-        "monaco",
+        "france",
         "switzerland",
         "germany",
-        "united_kingdom",
+        "uk",
         "spain",
         "netherlands"
       ],
@@ -5485,14 +5161,12 @@
       "marketValue": {
         "netherlands": 410690,
         "belgium": 410690,
-        "germany": 410690,
+        "germany": 418904,
         "france": 435331,
         "spain": 418904,
         "italy": 435331,
         "switzerland": 476400,
-        "austria": 418904,
-        "united_kingdom": 435331,
-        "monaco": 390156
+        "uk": 435331
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -5516,23 +5190,20 @@
       "description": "Maserati Levante in Sport uitvoering, populair in criminele circuits voor supercar-operaties.",
       "availableInCountries": [
         "spain",
-        "united_kingdom",
+        "uk",
         "germany",
-        "austria",
-        "monaco"
+        "france"
       ],
       "baseValue": 418316,
       "marketValue": {
         "netherlands": 418316,
         "belgium": 418316,
-        "germany": 418316,
-        "france": 443415,
+        "germany": 426682,
+        "france": 485247,
         "spain": 397400,
         "italy": 443415,
         "switzerland": 485247,
-        "austria": 426682,
-        "united_kingdom": 443415,
-        "monaco": 485247
+        "uk": 443415
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -5565,10 +5236,9 @@
         "netherlands": 480000,
         "belgium": 470000,
         "germany": 450000,
-        "france": 440000,
+        "france": 490000,
         "italy": 420000,
         "switzerland": 500000,
-        "monaco": 490000,
         "spain": 460000
       },
       "fuelCapacity": 73,
@@ -5600,14 +5270,12 @@
       "marketValue": {
         "netherlands": 422348,
         "belgium": 422348,
-        "germany": 422348,
-        "france": 401231,
+        "germany": 430795,
+        "france": 489924,
         "spain": 430795,
         "italy": 447689,
         "switzerland": 489924,
-        "austria": 430795,
-        "united_kingdom": 447689,
-        "monaco": 489924
+        "uk": 447689
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -5632,21 +5300,18 @@
       "availableInCountries": [
         "netherlands",
         "germany",
-        "austria",
-        "monaco"
+        "france"
       ],
       "baseValue": 424558,
       "marketValue": {
         "netherlands": 403330,
         "belgium": 424558,
-        "germany": 424558,
-        "france": 450031,
+        "germany": 433049,
+        "france": 492487,
         "spain": 433049,
         "italy": 450031,
         "switzerland": 492487,
-        "austria": 433049,
-        "united_kingdom": 450031,
-        "monaco": 492487
+        "uk": 450031
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -5671,18 +5336,16 @@
       "availableInCountries": [
         "italy",
         "france",
-        "switzerland",
-        "monaco"
+        "switzerland"
       ],
       "baseValue": 430000,
       "marketValue": {
         "netherlands": 490000,
         "belgium": 480000,
         "germany": 460000,
-        "france": 450000,
+        "france": 500000,
         "italy": 430000,
         "switzerland": 510000,
-        "monaco": 500000,
         "spain": 470000
       },
       "fuelCapacity": 74,
@@ -5707,21 +5370,19 @@
         "netherlands",
         "italy",
         "spain",
-        "austria",
+        "germany",
         "france"
       ],
       "baseValue": 433994,
       "marketValue": {
         "netherlands": 412294,
         "belgium": 433994,
-        "germany": 433994,
-        "france": 460034,
+        "germany": 442674,
+        "france": 503433,
         "spain": 442674,
         "italy": 460034,
         "switzerland": 503433,
-        "austria": 442674,
-        "united_kingdom": 460034,
-        "monaco": 503433
+        "uk": 460034
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -5747,22 +5408,19 @@
         "italy",
         "germany",
         "netherlands",
-        "monaco",
-        "austria",
+        "france",
         "spain"
       ],
       "baseValue": 445837,
       "marketValue": {
         "netherlands": 445837,
         "belgium": 445837,
-        "germany": 445837,
-        "france": 472587,
+        "germany": 454754,
+        "france": 517171,
         "spain": 454754,
         "italy": 423545,
         "switzerland": 517171,
-        "austria": 454754,
-        "united_kingdom": 472587,
-        "monaco": 517171
+        "uk": 472587
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -5785,7 +5443,7 @@
       },
       "description": "Britse technologische perfectie met adembenemende acceleratie",
       "availableInCountries": [
-        "united_kingdom",
+        "uk",
         "france",
         "switzerland",
         "germany"
@@ -5795,10 +5453,9 @@
         "netherlands": 510000,
         "belgium": 500000,
         "germany": 480000,
-        "france": 470000,
-        "united_kingdom": 450000,
+        "france": 520000,
+        "uk": 450000,
         "switzerland": 530000,
-        "monaco": 520000,
         "spain": 490000
       },
       "fuelCapacity": 72,
@@ -5820,25 +5477,22 @@
       },
       "description": "Lamborghini Temerario in Black Edition uitvoering, populair in criminele circuits voor stealth-operaties.",
       "availableInCountries": [
-        "united_kingdom",
+        "uk",
         "netherlands",
         "germany",
         "switzerland",
-        "monaco",
         "france"
       ],
       "baseValue": 457855,
       "marketValue": {
         "netherlands": 457855,
         "belgium": 457855,
-        "germany": 457855,
-        "france": 485326,
+        "germany": 467012,
+        "france": 531112,
         "spain": 467012,
         "italy": 485326,
         "switzerland": 531112,
-        "austria": 467012,
-        "united_kingdom": 434962,
-        "monaco": 531112
+        "uk": 434962
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -5864,21 +5518,19 @@
         "netherlands",
         "italy",
         "switzerland",
-        "united_kingdom",
-        "monaco"
+        "uk",
+        "france"
       ],
       "baseValue": 470128,
       "marketValue": {
         "netherlands": 446622,
         "belgium": 470128,
-        "germany": 470128,
-        "france": 498336,
+        "germany": 479531,
+        "france": 545348,
         "spain": 479531,
         "italy": 498336,
         "switzerland": 545348,
-        "austria": 479531,
-        "united_kingdom": 498336,
-        "monaco": 545348
+        "uk": 498336
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -5901,7 +5553,7 @@
       },
       "description": "Maserati MC20 in Carbon uitvoering, populair in criminele circuits voor hypercar-operaties.",
       "availableInCountries": [
-        "monaco",
+        "france",
         "switzerland",
         "netherlands",
         "italy"
@@ -5910,14 +5562,12 @@
       "marketValue": {
         "netherlands": 474671,
         "belgium": 474671,
-        "germany": 474671,
+        "germany": 484164,
         "france": 503151,
         "spain": 484164,
         "italy": 503151,
         "switzerland": 550618,
-        "austria": 484164,
-        "united_kingdom": 503151,
-        "monaco": 450937
+        "uk": 503151
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -5940,7 +5590,7 @@
       },
       "description": "Rolls-Royce Spectre in S-Line uitvoering, populair in criminele circuits voor speed-operaties.",
       "availableInCountries": [
-        "united_kingdom",
+        "uk",
         "italy",
         "france",
         "belgium",
@@ -5951,14 +5601,12 @@
       "marketValue": {
         "netherlands": 478768,
         "belgium": 478768,
-        "germany": 478768,
-        "france": 507494,
+        "germany": 488343,
+        "france": 555371,
         "spain": 488343,
         "italy": 507494,
         "switzerland": 555371,
-        "austria": 488343,
-        "united_kingdom": 454830,
-        "monaco": 555371
+        "uk": 454830
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -5983,18 +5631,16 @@
       "availableInCountries": [
         "italy",
         "france",
-        "switzerland",
-        "monaco"
+        "switzerland"
       ],
       "baseValue": 480000,
       "marketValue": {
         "netherlands": 540000,
         "belgium": 530000,
         "germany": 510000,
-        "france": 490000,
+        "france": 550000,
         "italy": 480000,
         "switzerland": 560000,
-        "monaco": 550000,
         "spain": 520000
       },
       "fuelCapacity": 78,
@@ -6017,21 +5663,19 @@
       "description": "Lamborghini Urus in Midnight uitvoering, populair in criminele circuits voor standard-operaties.",
       "availableInCountries": [
         "switzerland",
-        "austria",
+        "germany",
         "netherlands"
       ],
       "baseValue": 483823,
       "marketValue": {
         "netherlands": 483823,
         "belgium": 483823,
-        "germany": 483823,
-        "france": 512852,
+        "germany": 493499,
+        "france": 561235,
         "spain": 493499,
         "italy": 512852,
         "switzerland": 459632,
-        "austria": 493499,
-        "united_kingdom": 512852,
-        "monaco": 561235
+        "uk": 512852
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -6054,20 +5698,18 @@
       },
       "description": "Extreme long-tail variant met ongekende prestaties op track en straat",
       "availableInCountries": [
-        "united_kingdom",
+        "uk",
         "france",
-        "switzerland",
-        "monaco"
+        "switzerland"
       ],
       "baseValue": 490000,
       "marketValue": {
         "netherlands": 560000,
         "belgium": 550000,
         "germany": 520000,
-        "france": 510000,
-        "united_kingdom": 490000,
+        "france": 570000,
+        "uk": 490000,
         "switzerland": 580000,
-        "monaco": 570000,
         "italy": 530000
       },
       "fuelCapacity": 71,
@@ -6090,17 +5732,15 @@
       "description": "Kogelvrij en zwaar gepantserd - ideaal voor gevaarlijke operaties",
       "availableInCountries": [
         "germany",
-        "switzerland",
-        "austria"
+        "switzerland"
       ],
       "baseValue": 500000,
       "marketValue": {
         "netherlands": 550000,
         "belgium": 540000,
-        "germany": 500000,
+        "germany": 510000,
         "france": 520000,
-        "switzerland": 580000,
-        "austria": 510000
+        "switzerland": 580000
       },
       "fuelCapacity": 60,
       "requiredRank": 20,
@@ -6121,22 +5761,19 @@
       },
       "description": "Rolls-Royce Wraith in S-Line uitvoering, populair in criminele circuits voor supercar-operaties.",
       "availableInCountries": [
-        "austria",
-        "switzerland",
-        "germany"
+        "germany",
+        "switzerland"
       ],
       "baseValue": 516954,
       "marketValue": {
         "netherlands": 516954,
         "belgium": 516954,
         "germany": 516954,
-        "france": 547971,
+        "france": 599667,
         "spain": 527293,
         "italy": 547971,
         "switzerland": 599667,
-        "austria": 491106,
-        "united_kingdom": 547971,
-        "monaco": 599667
+        "uk": 547971
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -6161,18 +5798,16 @@
       "availableInCountries": [
         "italy",
         "france",
-        "switzerland",
-        "monaco"
+        "switzerland"
       ],
       "baseValue": 520000,
       "marketValue": {
         "netherlands": 580000,
         "belgium": 570000,
         "germany": 550000,
-        "france": 530000,
+        "france": 590000,
         "italy": 520000,
         "switzerland": 600000,
-        "monaco": 590000,
         "spain": 560000
       },
       "fuelCapacity": 75,
@@ -6194,23 +5829,21 @@
       },
       "description": "Bentley Batur in Carbon uitvoering, populair in criminele circuits voor cargo-operaties.",
       "availableInCountries": [
-        "united_kingdom",
+        "uk",
         "netherlands",
-        "monaco",
+        "france",
         "germany"
       ],
       "baseValue": 523052,
       "marketValue": {
         "netherlands": 523052,
         "belgium": 523052,
-        "germany": 523052,
-        "france": 554435,
+        "germany": 533513,
+        "france": 606740,
         "spain": 533513,
         "italy": 554435,
         "switzerland": 606740,
-        "austria": 533513,
-        "united_kingdom": 496899,
-        "monaco": 606740
+        "uk": 496899
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -6234,21 +5867,19 @@
       "description": "Lamborghini Huracan Evo in Black Edition uitvoering, populair in criminele circuits voor hypercar-operaties.",
       "availableInCountries": [
         "belgium",
-        "monaco",
-        "austria"
+        "france",
+        "germany"
       ],
       "baseValue": 542661,
       "marketValue": {
         "netherlands": 542661,
         "belgium": 515528,
-        "germany": 542661,
-        "france": 575221,
+        "germany": 553514,
+        "france": 629487,
         "spain": 553514,
         "italy": 575221,
         "switzerland": 629487,
-        "austria": 553514,
-        "united_kingdom": 575221,
-        "monaco": 629487
+        "uk": 575221
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -6273,18 +5904,15 @@
       "availableInCountries": [
         "germany",
         "switzerland",
-        "monaco",
-        "austria"
+        "france"
       ],
       "baseValue": 550000,
       "marketValue": {
         "netherlands": 620000,
         "belgium": 610000,
-        "germany": 550000,
-        "france": 580000,
+        "germany": 560000,
+        "france": 630000,
         "switzerland": 640000,
-        "austria": 560000,
-        "monaco": 630000,
         "italy": 590000
       },
       "fuelCapacity": 65,
@@ -6308,7 +5936,7 @@
       "availableInCountries": [
         "switzerland",
         "belgium",
-        "united_kingdom",
+        "uk",
         "france",
         "netherlands"
       ],
@@ -6316,14 +5944,12 @@
       "marketValue": {
         "netherlands": 584272,
         "belgium": 584272,
-        "germany": 584272,
-        "france": 619328,
+        "germany": 595957,
+        "france": 677756,
         "spain": 595957,
         "italy": 619328,
         "switzerland": 555058,
-        "austria": 595957,
-        "united_kingdom": 619328,
-        "monaco": 677756
+        "uk": 619328
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -6346,23 +5972,21 @@
       },
       "description": "McLaren Artura in Street uitvoering, populair in criminele circuits voor hypercar-operaties.",
       "availableInCountries": [
-        "united_kingdom",
+        "uk",
         "spain",
         "italy",
-        "austria"
+        "germany"
       ],
       "baseValue": 592555,
       "marketValue": {
         "netherlands": 592555,
         "belgium": 592555,
-        "germany": 592555,
-        "france": 628108,
+        "germany": 604406,
+        "france": 687364,
         "spain": 604406,
         "italy": 628108,
         "switzerland": 687364,
-        "austria": 604406,
-        "united_kingdom": 562927,
-        "monaco": 687364
+        "uk": 562927
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -6385,25 +6009,22 @@
       },
       "description": "Bentley Bentayga in Sport uitvoering, populair in criminele circuits voor cargo-operaties.",
       "availableInCountries": [
-        "united_kingdom",
+        "uk",
         "italy",
         "netherlands",
-        "monaco",
-        "spain",
-        "france"
+        "france",
+        "spain"
       ],
       "baseValue": 608553,
       "marketValue": {
         "netherlands": 608553,
         "belgium": 608553,
-        "germany": 608553,
-        "france": 645066,
+        "germany": 620724,
+        "france": 705921,
         "spain": 620724,
         "italy": 645066,
         "switzerland": 705921,
-        "austria": 620724,
-        "united_kingdom": 578125,
-        "monaco": 705921
+        "uk": 578125
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -6434,14 +6055,12 @@
       "marketValue": {
         "netherlands": 646115,
         "belgium": 646115,
-        "germany": 613809,
-        "france": 684882,
+        "germany": 659037,
+        "france": 749493,
         "spain": 659037,
         "italy": 684882,
         "switzerland": 749493,
-        "austria": 659037,
-        "united_kingdom": 684882,
-        "monaco": 749493
+        "uk": 684882
       },
       "fuelCapacity": 60,
       "requiredRank": 22,
@@ -6464,8 +6083,8 @@
       },
       "description": "F1-technologie voor de straat in de meest extreme Aston Martin ooit",
       "availableInCountries": [
-        "united_kingdom",
-        "monaco",
+        "uk",
+        "france",
         "switzerland"
       ],
       "baseValue": 650000,
@@ -6473,10 +6092,9 @@
         "netherlands": 730000,
         "belgium": 720000,
         "germany": 690000,
-        "france": 680000,
-        "united_kingdom": 650000,
+        "france": 740000,
+        "uk": 650000,
         "switzerland": 750000,
-        "monaco": 740000,
         "italy": 700000
       },
       "fuelCapacity": 68,
@@ -6499,21 +6117,18 @@
       "description": "Rolls-Royce Ghost in Executive uitvoering, populair in criminele circuits voor armored-operaties.",
       "availableInCountries": [
         "france",
-        "italy",
-        "monaco"
+        "italy"
       ],
       "baseValue": 650263,
       "marketValue": {
         "netherlands": 650263,
         "belgium": 650263,
-        "germany": 650263,
-        "france": 617750,
+        "germany": 663268,
+        "france": 754305,
         "spain": 663268,
         "italy": 689279,
         "switzerland": 754305,
-        "austria": 663268,
-        "united_kingdom": 689279,
-        "monaco": 754305
+        "uk": 689279
       },
       "fuelCapacity": 60,
       "requiredRank": 35,
@@ -6538,18 +6153,15 @@
       "availableInCountries": [
         "germany",
         "switzerland",
-        "austria",
-        "monaco"
+        "france"
       ],
       "baseValue": 680000,
       "marketValue": {
         "netherlands": 760000,
         "belgium": 750000,
-        "germany": 680000,
-        "france": 710000,
+        "germany": 690000,
+        "france": 770000,
         "switzerland": 780000,
-        "austria": 690000,
-        "monaco": 770000,
         "italy": 720000
       },
       "fuelCapacity": 70,
@@ -6571,7 +6183,7 @@
       },
       "description": "Lamborghini Temerario in Black Edition uitvoering, populair in criminele circuits voor standard-operaties.",
       "availableInCountries": [
-        "austria",
+        "germany",
         "spain",
         "france",
         "netherlands"
@@ -6581,13 +6193,11 @@
         "netherlands": 717554,
         "belgium": 717554,
         "germany": 717554,
-        "france": 760607,
+        "france": 832363,
         "spain": 731905,
         "italy": 760607,
         "switzerland": 832363,
-        "austria": 681676,
-        "united_kingdom": 760607,
-        "monaco": 832363
+        "uk": 760607
       },
       "fuelCapacity": 60,
       "requiredRank": 35,
@@ -6613,20 +6223,18 @@
         "france",
         "switzerland",
         "spain",
-        "united_kingdom"
+        "uk"
       ],
       "baseValue": 760583,
       "marketValue": {
         "netherlands": 760583,
         "belgium": 760583,
-        "germany": 760583,
-        "france": 722554,
+        "germany": 775795,
+        "france": 882276,
         "spain": 775795,
         "italy": 806218,
         "switzerland": 882276,
-        "austria": 775795,
-        "united_kingdom": 806218,
-        "monaco": 882276
+        "uk": 806218
       },
       "fuelCapacity": 60,
       "requiredRank": 35,
@@ -6650,23 +6258,21 @@
       "description": "Rolls-Royce Wraith in S-Line uitvoering, populair in criminele circuits voor hypercar-operaties.",
       "availableInCountries": [
         "italy",
-        "united_kingdom",
+        "uk",
         "france",
         "switzerland",
-        "austria"
+        "germany"
       ],
       "baseValue": 761836,
       "marketValue": {
         "netherlands": 761836,
         "belgium": 761836,
-        "germany": 761836,
-        "france": 807546,
+        "germany": 777073,
+        "france": 883730,
         "spain": 777073,
         "italy": 723744,
         "switzerland": 883730,
-        "austria": 777073,
-        "united_kingdom": 807546,
-        "monaco": 883730
+        "uk": 807546
       },
       "fuelCapacity": 60,
       "requiredRank": 35,
@@ -6689,8 +6295,8 @@
       },
       "description": "Ferrari 296 GTB in Executive uitvoering, populair in criminele circuits voor hypercar-operaties.",
       "availableInCountries": [
-        "united_kingdom",
-        "austria",
+        "uk",
+        "germany",
         "france",
         "spain"
       ],
@@ -6698,14 +6304,12 @@
       "marketValue": {
         "netherlands": 775436,
         "belgium": 775436,
-        "germany": 775436,
-        "france": 821962,
+        "germany": 790945,
+        "france": 899506,
         "spain": 790945,
         "italy": 821962,
         "switzerland": 899506,
-        "austria": 790945,
-        "united_kingdom": 736664,
-        "monaco": 899506
+        "uk": 736664
       },
       "fuelCapacity": 60,
       "requiredRank": 35,
@@ -6729,24 +6333,21 @@
       "description": "Ferrari SF90 in Executive uitvoering, populair in criminele circuits voor cargo-operaties.",
       "availableInCountries": [
         "spain",
-        "united_kingdom",
-        "monaco",
-        "netherlands",
+        "uk",
         "france",
+        "netherlands",
         "germany"
       ],
       "baseValue": 785234,
       "marketValue": {
         "netherlands": 785234,
         "belgium": 785234,
-        "germany": 785234,
-        "france": 832348,
+        "germany": 800939,
+        "france": 910871,
         "spain": 745972,
         "italy": 832348,
         "switzerland": 910871,
-        "austria": 800939,
-        "united_kingdom": 832348,
-        "monaco": 910871
+        "uk": 832348
       },
       "fuelCapacity": 60,
       "requiredRank": 35,
@@ -6769,8 +6370,8 @@
       },
       "description": "Ferrari Roma in S-Line uitvoering, populair in criminele circuits voor hypercar-operaties.",
       "availableInCountries": [
-        "monaco",
-        "united_kingdom",
+        "france",
+        "uk",
         "belgium",
         "netherlands"
       ],
@@ -6778,14 +6379,12 @@
       "marketValue": {
         "netherlands": 789743,
         "belgium": 789743,
-        "germany": 789743,
+        "germany": 805538,
         "france": 837128,
         "spain": 805538,
         "italy": 837128,
         "switzerland": 916102,
-        "austria": 805538,
-        "united_kingdom": 837128,
-        "monaco": 750256
+        "uk": 837128
       },
       "fuelCapacity": 60,
       "requiredRank": 35,
@@ -6808,7 +6407,7 @@
       },
       "description": "McLaren 570S in Track uitvoering, populair in criminele circuits voor armored-operaties.",
       "availableInCountries": [
-        "austria",
+        "germany",
         "france",
         "spain",
         "italy"
@@ -6818,13 +6417,11 @@
         "netherlands": 811806,
         "belgium": 811806,
         "germany": 811806,
-        "france": 860514,
+        "france": 941695,
         "spain": 828042,
         "italy": 860514,
         "switzerland": 941695,
-        "austria": 771216,
-        "united_kingdom": 860514,
-        "monaco": 941695
+        "uk": 860514
       },
       "fuelCapacity": 60,
       "requiredRank": 35,
@@ -6848,7 +6445,7 @@
       "description": "Lamborghini Revuelto in Midnight uitvoering, populair in criminele circuits voor hypercar-operaties.",
       "availableInCountries": [
         "france",
-        "united_kingdom",
+        "uk",
         "spain",
         "belgium",
         "netherlands"
@@ -6857,14 +6454,12 @@
       "marketValue": {
         "netherlands": 830936,
         "belgium": 830936,
-        "germany": 830936,
-        "france": 789389,
+        "germany": 847555,
+        "france": 963886,
         "spain": 847555,
         "italy": 880792,
         "switzerland": 963886,
-        "austria": 847555,
-        "united_kingdom": 880792,
-        "monaco": 963886
+        "uk": 880792
       },
       "fuelCapacity": 60,
       "requiredRank": 35,
@@ -6888,23 +6483,19 @@
       "description": "McLaren GT in Track uitvoering, populair in criminele circuits voor supercar-operaties.",
       "availableInCountries": [
         "germany",
-        "monaco",
-        "spain",
-        "austria",
-        "france"
+        "france",
+        "spain"
       ],
       "baseValue": 847607,
       "marketValue": {
         "netherlands": 847607,
         "belgium": 847607,
-        "germany": 805227,
-        "france": 898463,
+        "germany": 864559,
+        "france": 983224,
         "spain": 864559,
         "italy": 898463,
         "switzerland": 983224,
-        "austria": 864559,
-        "united_kingdom": 898463,
-        "monaco": 983224
+        "uk": 898463
       },
       "fuelCapacity": 60,
       "requiredRank": 35,
@@ -6929,8 +6520,7 @@
       "availableInCountries": [
         "netherlands",
         "france",
-        "united_kingdom",
-        "austria",
+        "uk",
         "germany",
         "switzerland"
       ],
@@ -6938,14 +6528,12 @@
       "marketValue": {
         "netherlands": 827542,
         "belgium": 871097,
-        "germany": 871097,
-        "france": 923363,
+        "germany": 888519,
+        "france": 1010473,
         "spain": 888519,
         "italy": 923363,
         "switzerland": 1010473,
-        "austria": 888519,
-        "united_kingdom": 923363,
-        "monaco": 1010473
+        "uk": 923363
       },
       "fuelCapacity": 60,
       "requiredRank": 35,
@@ -6969,24 +6557,22 @@
       "description": "McLaren Artura in Street uitvoering, populair in criminele circuits voor stealth-operaties.",
       "availableInCountries": [
         "switzerland",
-        "austria",
+        "germany",
         "italy",
         "france",
-        "united_kingdom",
+        "uk",
         "belgium"
       ],
       "baseValue": 873823,
       "marketValue": {
         "netherlands": 873823,
         "belgium": 873823,
-        "germany": 873823,
-        "france": 926252,
+        "germany": 891299,
+        "france": 1013635,
         "spain": 891299,
         "italy": 926252,
         "switzerland": 830132,
-        "austria": 891299,
-        "united_kingdom": 926252,
-        "monaco": 1013635
+        "uk": 926252
       },
       "fuelCapacity": 60,
       "requiredRank": 35,
@@ -7010,21 +6596,19 @@
       "description": "Rolls-Royce Cullinan in Executive uitvoering, populair in criminele circuits voor speed-operaties.",
       "availableInCountries": [
         "switzerland",
-        "austria",
+        "germany",
         "france"
       ],
       "baseValue": 885515,
       "marketValue": {
         "netherlands": 885515,
         "belgium": 885515,
-        "germany": 885515,
-        "france": 938646,
+        "germany": 903225,
+        "france": 1027197,
         "spain": 903225,
         "italy": 938646,
         "switzerland": 841239,
-        "austria": 903225,
-        "united_kingdom": 938646,
-        "monaco": 1027197
+        "uk": 938646
       },
       "fuelCapacity": 60,
       "requiredRank": 35,
@@ -7047,8 +6631,8 @@
       },
       "description": "Ferrari SF90 in Executive uitvoering, populair in criminele circuits voor supercar-operaties.",
       "availableInCountries": [
-        "austria",
-        "united_kingdom",
+        "germany",
+        "uk",
         "belgium",
         "switzerland",
         "france",
@@ -7059,13 +6643,11 @@
         "netherlands": 890137,
         "belgium": 890137,
         "germany": 890137,
-        "france": 943545,
+        "france": 1032559,
         "spain": 907940,
         "italy": 943545,
         "switzerland": 1032559,
-        "austria": 845630,
-        "united_kingdom": 943545,
-        "monaco": 1032559
+        "uk": 943545
       },
       "fuelCapacity": 60,
       "requiredRank": 35,
@@ -7089,7 +6671,6 @@
       "description": "Rolls-Royce Cullinan in Executive uitvoering, populair in criminele circuits voor hypercar-operaties.",
       "availableInCountries": [
         "france",
-        "monaco",
         "italy",
         "belgium",
         "germany"
@@ -7098,14 +6679,12 @@
       "marketValue": {
         "netherlands": 912461,
         "belgium": 912461,
-        "germany": 912461,
-        "france": 866838,
+        "germany": 930710,
+        "france": 1058455,
         "spain": 930710,
         "italy": 967209,
         "switzerland": 1058455,
-        "austria": 930710,
-        "united_kingdom": 967209,
-        "monaco": 1058455
+        "uk": 967209
       },
       "fuelCapacity": 60,
       "requiredRank": 35,
@@ -7128,23 +6707,21 @@
       },
       "description": "Bugatti Veyron in Black Edition uitvoering, populair in criminele circuits voor speed-operaties.",
       "availableInCountries": [
-        "united_kingdom",
+        "uk",
         "netherlands",
-        "austria",
+        "germany",
         "italy"
       ],
       "baseValue": 1043706,
       "marketValue": {
         "netherlands": 1043706,
         "belgium": 1043706,
-        "germany": 1043706,
-        "france": 1106328,
+        "germany": 1064580,
+        "france": 1210699,
         "spain": 1064580,
         "italy": 1106328,
         "switzerland": 1210699,
-        "austria": 1064580,
-        "united_kingdom": 991521,
-        "monaco": 1210699
+        "uk": 991521
       },
       "fuelCapacity": 60,
       "requiredRank": 35,
@@ -7175,14 +6752,12 @@
       "marketValue": {
         "netherlands": 1057604,
         "belgium": 1057604,
-        "germany": 1057604,
-        "france": 1121060,
+        "germany": 1078756,
+        "france": 1226821,
         "spain": 1004724,
         "italy": 1121060,
         "switzerland": 1226821,
-        "austria": 1078756,
-        "united_kingdom": 1121060,
-        "monaco": 1226821
+        "uk": 1121060
       },
       "fuelCapacity": 60,
       "requiredRank": 35,
@@ -7206,23 +6781,20 @@
       "description": "Bugatti Bolide in Black Edition uitvoering, populair in criminele circuits voor standard-operaties.",
       "availableInCountries": [
         "spain",
-        "united_kingdom",
-        "austria",
-        "netherlands",
-        "germany"
+        "uk",
+        "germany",
+        "netherlands"
       ],
       "baseValue": 1074529,
       "marketValue": {
         "netherlands": 1074529,
         "belgium": 1074529,
-        "germany": 1074529,
-        "france": 1139001,
+        "germany": 1096020,
+        "france": 1246454,
         "spain": 1020803,
         "italy": 1139001,
         "switzerland": 1246454,
-        "austria": 1096020,
-        "united_kingdom": 1139001,
-        "monaco": 1246454
+        "uk": 1139001
       },
       "fuelCapacity": 60,
       "requiredRank": 35,
@@ -7253,14 +6825,12 @@
       "marketValue": {
         "netherlands": 1106221,
         "belgium": 1106221,
-        "germany": 1106221,
-        "france": 1050910,
+        "germany": 1128345,
+        "france": 1283216,
         "spain": 1128345,
         "italy": 1172594,
         "switzerland": 1283216,
-        "austria": 1128345,
-        "united_kingdom": 1172594,
-        "monaco": 1283216
+        "uk": 1172594
       },
       "fuelCapacity": 60,
       "requiredRank": 35,
@@ -7284,24 +6854,21 @@
       "description": "Bugatti Chiron Sport in Midnight uitvoering, populair in criminele circuits voor standard-operaties.",
       "availableInCountries": [
         "switzerland",
-        "monaco",
+        "france",
         "netherlands",
         "italy",
-        "germany",
-        "france"
+        "germany"
       ],
       "baseValue": 1137718,
       "marketValue": {
         "netherlands": 1137718,
         "belgium": 1137718,
-        "germany": 1137718,
-        "france": 1205981,
+        "germany": 1160472,
+        "france": 1319753,
         "spain": 1160472,
         "italy": 1205981,
         "switzerland": 1080832,
-        "austria": 1160472,
-        "united_kingdom": 1205981,
-        "monaco": 1319753
+        "uk": 1205981
       },
       "fuelCapacity": 60,
       "requiredRank": 35,
@@ -7325,7 +6892,7 @@
       "description": "Eerbetoon aan Ferruccio Lamborghini's 100e verjaardag - slechts 40 stuks",
       "availableInCountries": [
         "italy",
-        "monaco",
+        "france",
         "switzerland"
       ],
       "baseValue": 1200000,
@@ -7333,10 +6900,9 @@
         "netherlands": 1400000,
         "belgium": 1360000,
         "germany": 1280000,
-        "france": 1250000,
+        "france": 1430000,
         "italy": 1200000,
         "switzerland": 1470000,
-        "monaco": 1430000,
         "spain": 1300000
       },
       "fuelCapacity": 76,
@@ -7358,8 +6924,8 @@
       },
       "description": "De heilige graal van McLaren met hybride aandrijflijn en actieve aerodynamica",
       "availableInCountries": [
-        "united_kingdom",
-        "monaco",
+        "uk",
+        "france",
         "switzerland"
       ],
       "baseValue": 1400000,
@@ -7367,10 +6933,9 @@
         "netherlands": 1630000,
         "belgium": 1580000,
         "germany": 1500000,
-        "france": 1450000,
-        "united_kingdom": 1400000,
+        "france": 1680000,
+        "uk": 1400000,
         "switzerland": 1720000,
-        "monaco": 1680000,
         "italy": 1520000
       },
       "fuelCapacity": 80,
@@ -7393,19 +6958,17 @@
       "description": "Zweeds meesterwerk met wereldrecord topsnelheid van 447 km/u",
       "availableInCountries": [
         "switzerland",
-        "monaco",
+        "france",
         "germany"
       ],
       "baseValue": 1500000,
       "marketValue": {
         "netherlands": 1750000,
         "belgium": 1700000,
-        "germany": 1600000,
-        "france": 1550000,
+        "germany": 1650000,
+        "france": 1800000,
         "switzerland": 1850000,
-        "monaco": 1800000,
-        "austria": 1650000,
-        "united_kingdom": 1720000
+        "uk": 1720000
       },
       "fuelCapacity": 82,
       "requiredRank": 1,
@@ -7427,7 +6990,7 @@
       "description": "Italiaans kunstwerk met handgemaakte details en extreme aerodynamica",
       "availableInCountries": [
         "italy",
-        "monaco",
+        "france",
         "switzerland"
       ],
       "baseValue": 1600000,
@@ -7435,10 +6998,9 @@
         "netherlands": 1850000,
         "belgium": 1800000,
         "germany": 1700000,
-        "france": 1650000,
+        "france": 1900000,
         "italy": 1600000,
         "switzerland": 1950000,
-        "monaco": 1900000,
         "spain": 1720000
       },
       "fuelCapacity": 85,
@@ -7462,21 +7024,19 @@
       "availableInCountries": [
         "belgium",
         "france",
-        "united_kingdom",
+        "uk",
         "spain"
       ],
       "baseValue": 1690350,
       "marketValue": {
         "netherlands": 1690350,
         "belgium": 1605832,
-        "germany": 1690350,
-        "france": 1791771,
+        "germany": 1724157,
+        "france": 1960806,
         "spain": 1724157,
         "italy": 1791771,
         "switzerland": 1960806,
-        "austria": 1724157,
-        "united_kingdom": 1791771,
-        "monaco": 1960806
+        "uk": 1791771
       },
       "fuelCapacity": 60,
       "requiredRank": 35,
@@ -7500,7 +7060,7 @@
       "description": "Open versie van Ferrari's ultieme hybride hypercar - slechts 210 exemplaren",
       "availableInCountries": [
         "italy",
-        "monaco",
+        "france",
         "switzerland"
       ],
       "baseValue": 1700000,
@@ -7508,10 +7068,9 @@
         "netherlands": 1980000,
         "belgium": 1920000,
         "germany": 1800000,
-        "france": 1750000,
+        "france": 2000000,
         "italy": 1700000,
         "switzerland": 2050000,
-        "monaco": 2000000,
         "spain": 1850000
       },
       "fuelCapacity": 88,
@@ -7534,19 +7093,16 @@
       "description": "1500 PK en 420 km/u topsnelheid - de ultieme expressie van automotive excellence",
       "availableInCountries": [
         "france",
-        "monaco",
         "switzerland"
       ],
       "baseValue": 1800000,
       "marketValue": {
         "netherlands": 2100000,
         "belgium": 2050000,
-        "germany": 1950000,
-        "france": 1800000,
+        "germany": 1980000,
+        "france": 2150000,
         "switzerland": 2200000,
-        "monaco": 2150000,
-        "italy": 1900000,
-        "austria": 1980000
+        "italy": 1900000
       },
       "fuelCapacity": 100,
       "requiredRank": 1,
@@ -7568,24 +7124,20 @@
       "description": "Bugatti Veyron in Black Edition uitvoering, populair in criminele circuits voor stealth-operaties.",
       "availableInCountries": [
         "germany",
-        "austria",
-        "monaco",
         "france",
         "spain",
-        "united_kingdom"
+        "uk"
       ],
       "baseValue": 2596076,
       "marketValue": {
         "netherlands": 2596076,
         "belgium": 2596076,
-        "germany": 2466272,
-        "france": 2751841,
+        "germany": 2647998,
+        "france": 3011448,
         "spain": 2647998,
         "italy": 2751841,
         "switzerland": 3011448,
-        "austria": 2647998,
-        "united_kingdom": 2751841,
-        "monaco": 3011448
+        "uk": 2751841
       },
       "fuelCapacity": 60,
       "requiredRank": 35,
@@ -7616,14 +7168,12 @@
       "marketValue": {
         "netherlands": 3151851,
         "belgium": 3151851,
-        "germany": 2994258,
-        "france": 3340962,
+        "germany": 3214888,
+        "france": 3656147,
         "spain": 3214888,
         "italy": 3340962,
         "switzerland": 3656147,
-        "austria": 3214888,
-        "united_kingdom": 3340962,
-        "monaco": 3656147
+        "uk": 3340962
       },
       "fuelCapacity": 60,
       "requiredRank": 35,
@@ -7654,14 +7204,12 @@
       "marketValue": {
         "netherlands": 3548304,
         "belgium": 3735057,
-        "germany": 3735057,
-        "france": 3959160,
+        "germany": 3809758,
+        "france": 4332666,
         "spain": 3809758,
         "italy": 3959160,
         "switzerland": 4332666,
-        "austria": 3809758,
-        "united_kingdom": 3959160,
-        "monaco": 4332666
+        "uk": 3959160
       },
       "fuelCapacity": 60,
       "requiredRank": 35,
@@ -7685,7 +7233,7 @@
       "description": "Bugatti Bolide in Black Edition uitvoering, populair in criminele circuits voor cargo-operaties.",
       "availableInCountries": [
         "germany",
-        "united_kingdom",
+        "uk",
         "italy",
         "spain"
       ],
@@ -7693,14 +7241,12 @@
       "marketValue": {
         "netherlands": 4654858,
         "belgium": 4654858,
-        "germany": 4422115,
-        "france": 4934149,
+        "germany": 4747955,
+        "france": 5399635,
         "spain": 4747955,
         "italy": 4934149,
         "switzerland": 5399635,
-        "austria": 4747955,
-        "united_kingdom": 4934149,
-        "monaco": 5399635
+        "uk": 4934149
       },
       "fuelCapacity": 60,
       "requiredRank": 35,
@@ -7723,15 +7269,14 @@
       },
       "description": "Volledig op maat gemaakte one-off Rolls-Royce - €12 miljoen aan pure luxe",
       "availableInCountries": [
-        "monaco",
+        "france",
         "switzerland"
       ],
       "baseValue": 12000000,
       "marketValue": {
-        "monaco": 12000000,
+        "france": 13000000,
         "switzerland": 13200000,
-        "united_kingdom": 13500000,
-        "france": 13000000
+        "uk": 13500000
       },
       "fuelCapacity": 95,
       "requiredRank": 1,
@@ -7752,15 +7297,14 @@
       },
       "description": "De meest zeldzame Pagani ooit - slechts 3 exemplaren voor €15 miljoen per stuk",
       "availableInCountries": [
-        "monaco",
+        "france",
         "switzerland"
       ],
       "baseValue": 15000000,
       "marketValue": {
-        "monaco": 15000000,
+        "france": 16200000,
         "switzerland": 16500000,
-        "italy": 16000000,
-        "france": 16200000
+        "italy": 16000000
       },
       "fuelCapacity": 90,
       "requiredRank": 1,
@@ -7781,14 +7325,13 @@
       },
       "description": "De duurste nieuwe auto ooit - een uniek meesterwerk ter waarde van €16 miljoen",
       "availableInCountries": [
-        "monaco",
+        "france",
         "switzerland"
       ],
       "baseValue": 16000000,
       "marketValue": {
-        "monaco": 16000000,
-        "switzerland": 17500000,
         "france": 18000000,
+        "switzerland": 17500000,
         "italy": 17000000
       },
       "fuelCapacity": 100,
@@ -7846,14 +7389,14 @@
       "availableInCountries": [
         "netherlands",
         "belgium",
-        "united_kingdom",
+        "uk",
         "france"
       ],
       "baseValue": 55000,
       "marketValue": {
         "netherlands": 55000,
         "belgium": 57000,
-        "united_kingdom": 60000,
+        "uk": 60000,
         "france": 58000,
         "germany": 62000
       },
@@ -7979,14 +7522,12 @@
       "marketValue": {
         "netherlands": 263569,
         "belgium": 263569,
-        "germany": 263569,
-        "france": 279383,
+        "germany": 268840,
+        "france": 305740,
         "spain": 268840,
         "italy": 279383,
         "switzerland": 250391,
-        "austria": 268840,
-        "united_kingdom": 279383,
-        "monaco": 305740
+        "uk": 279383
       },
       "fuelCapacity": 140,
       "requiredRank": 22,
@@ -8011,17 +7552,15 @@
       "availableInCountries": [
         "italy",
         "france",
-        "spain",
-        "monaco"
+        "spain"
       ],
       "baseValue": 280000,
       "marketValue": {
         "netherlands": 320000,
         "belgium": 310000,
         "italy": 280000,
-        "france": 290000,
-        "spain": 275000,
-        "monaco": 340000
+        "france": 340000,
+        "spain": 275000
       },
       "fuelCapacity": 100,
       "requiredRank": 1,
@@ -8045,15 +7584,13 @@
         "france",
         "italy",
         "spain",
-        "monaco",
         "switzerland"
       ],
       "baseValue": 380000,
       "marketValue": {
-        "france": 380000,
+        "france": 420000,
         "italy": 370000,
         "spain": 360000,
-        "monaco": 420000,
         "switzerland": 410000,
         "netherlands": 400000
       },
@@ -8077,7 +7614,7 @@
       "description": "Snelle of zware boot voor maritieme smokkelroutes en risicovolle transportoperaties.",
       "availableInCountries": [
         "spain",
-        "austria",
+        "germany",
         "belgium",
         "france"
       ],
@@ -8085,14 +7622,12 @@
       "marketValue": {
         "netherlands": 387692,
         "belgium": 387692,
-        "germany": 387692,
-        "france": 410954,
+        "germany": 395446,
+        "france": 449723,
         "spain": 368307,
         "italy": 410954,
         "switzerland": 449723,
-        "austria": 395446,
-        "united_kingdom": 410954,
-        "monaco": 449723
+        "uk": 410954
       },
       "fuelCapacity": 140,
       "requiredRank": 22,
@@ -8122,14 +7657,12 @@
       "marketValue": {
         "netherlands": 426955,
         "belgium": 426955,
-        "germany": 426955,
-        "france": 452572,
+        "germany": 435494,
+        "france": 495268,
         "spain": 405607,
         "italy": 452572,
         "switzerland": 495268,
-        "austria": 435494,
-        "united_kingdom": 452572,
-        "monaco": 495268
+        "uk": 452572
       },
       "fuelCapacity": 140,
       "requiredRank": 22,
@@ -8192,14 +7725,12 @@
       "marketValue": {
         "netherlands": 522500,
         "belgium": 550000,
-        "germany": 550000,
-        "france": 583000,
+        "germany": 561000,
+        "france": 638000,
         "spain": 561000,
         "italy": 583000,
         "switzerland": 638000,
-        "austria": 561000,
-        "united_kingdom": 583000,
-        "monaco": 638000
+        "uk": 583000
       },
       "fuelCapacity": 140,
       "requiredRank": 15,
@@ -8223,23 +7754,21 @@
       },
       "description": "Snelle of zware boot voor maritieme smokkelroutes en risicovolle transportoperaties.",
       "availableInCountries": [
-        "austria",
+        "germany",
         "netherlands",
         "spain",
-        "united_kingdom"
+        "uk"
       ],
       "baseValue": 620319,
       "marketValue": {
         "netherlands": 620319,
         "belgium": 620319,
         "germany": 620319,
-        "france": 657538,
+        "france": 719570,
         "spain": 632725,
         "italy": 657538,
         "switzerland": 719570,
-        "austria": 589303,
-        "united_kingdom": 657538,
-        "monaco": 719570
+        "uk": 657538
       },
       "fuelCapacity": 140,
       "requiredRank": 22,
@@ -8264,14 +7793,12 @@
       "availableInCountries": [
         "italy",
         "france",
-        "monaco",
         "switzerland"
       ],
       "baseValue": 650000,
       "marketValue": {
         "italy": 650000,
-        "france": 670000,
-        "monaco": 720000,
+        "france": 720000,
         "switzerland": 700000,
         "spain": 640000,
         "netherlands": 680000
@@ -8296,23 +7823,20 @@
       "description": "Snelle of zware boot voor maritieme smokkelroutes en risicovolle transportoperaties.",
       "availableInCountries": [
         "switzerland",
-        "austria",
+        "germany",
         "italy",
-        "united_kingdom",
-        "germany"
+        "uk"
       ],
       "baseValue": 656809,
       "marketValue": {
         "netherlands": 656809,
         "belgium": 656809,
-        "germany": 656809,
-        "france": 696218,
+        "germany": 669945,
+        "france": 761898,
         "spain": 669945,
         "italy": 696218,
         "switzerland": 623969,
-        "austria": 669945,
-        "united_kingdom": 696218,
-        "monaco": 761898
+        "uk": 696218
       },
       "fuelCapacity": 140,
       "requiredRank": 35,
@@ -8335,23 +7859,20 @@
       },
       "description": "Snelle of zware boot voor maritieme smokkelroutes en risicovolle transportoperaties.",
       "availableInCountries": [
-        "monaco",
+        "france",
         "italy",
-        "austria",
         "germany"
       ],
       "baseValue": 751235,
       "marketValue": {
         "netherlands": 751235,
         "belgium": 751235,
-        "germany": 751235,
+        "germany": 766260,
         "france": 796309,
         "spain": 766260,
         "italy": 796309,
         "switzerland": 871433,
-        "austria": 766260,
-        "united_kingdom": 796309,
-        "monaco": 713673
+        "uk": 796309
       },
       "fuelCapacity": 140,
       "requiredRank": 35,
@@ -8377,20 +7898,18 @@
         "italy",
         "germany",
         "switzerland",
-        "united_kingdom"
+        "uk"
       ],
       "baseValue": 973371,
       "marketValue": {
         "netherlands": 973371,
         "belgium": 973371,
-        "germany": 973371,
-        "france": 1031773,
+        "germany": 992838,
+        "france": 1129110,
         "spain": 992838,
         "italy": 924702,
         "switzerland": 1129110,
-        "austria": 992838,
-        "united_kingdom": 1031773,
-        "monaco": 1129110
+        "uk": 1031773
       },
       "fuelCapacity": 140,
       "requiredRank": 35,
@@ -8413,21 +7932,18 @@
       },
       "description": "Snelle of zware boot voor maritieme smokkelroutes en risicovolle transportoperaties.",
       "availableInCountries": [
-        "france",
-        "monaco"
+        "france"
       ],
       "baseValue": 1029105,
       "marketValue": {
         "netherlands": 1029105,
         "belgium": 1029105,
-        "germany": 1029105,
-        "france": 977650,
+        "germany": 1049687,
+        "france": 1193762,
         "spain": 1049687,
         "italy": 1090851,
         "switzerland": 1193762,
-        "austria": 1049687,
-        "united_kingdom": 1090851,
-        "monaco": 1193762
+        "uk": 1090851
       },
       "fuelCapacity": 140,
       "requiredRank": 35,
@@ -8451,20 +7967,18 @@
       "description": "Snelle of zware boot voor maritieme smokkelroutes en risicovolle transportoperaties.",
       "availableInCountries": [
         "netherlands",
-        "united_kingdom"
+        "uk"
       ],
       "baseValue": 1037072,
       "marketValue": {
         "netherlands": 985218,
         "belgium": 1037072,
-        "germany": 1037072,
-        "france": 1099296,
+        "germany": 1057813,
+        "france": 1203004,
         "spain": 1057813,
         "italy": 1099296,
         "switzerland": 1203004,
-        "austria": 1057813,
-        "united_kingdom": 1099296,
-        "monaco": 1203004
+        "uk": 1099296
       },
       "fuelCapacity": 140,
       "requiredRank": 35,
@@ -8487,16 +8001,14 @@
       },
       "description": "Imposant motorjacht met meerdere dekken en luxe interieurs",
       "availableInCountries": [
-        "monaco",
-        "italy",
         "france",
+        "italy",
         "switzerland"
       ],
       "baseValue": 1200000,
       "marketValue": {
-        "monaco": 1200000,
+        "france": 1200000,
         "italy": 1150000,
-        "france": 1180000,
         "switzerland": 1250000,
         "spain": 1100000
       },
@@ -8520,20 +8032,18 @@
       "description": "Snelle of zware boot voor maritieme smokkelroutes en risicovolle transportoperaties.",
       "availableInCountries": [
         "spain",
-        "monaco"
+        "france"
       ],
       "baseValue": 1302732,
       "marketValue": {
         "netherlands": 1302732,
         "belgium": 1302732,
-        "germany": 1302732,
-        "france": 1380896,
+        "germany": 1328787,
+        "france": 1511169,
         "spain": 1237595,
         "italy": 1380896,
         "switzerland": 1511169,
-        "austria": 1328787,
-        "united_kingdom": 1380896,
-        "monaco": 1511169
+        "uk": 1380896
       },
       "fuelCapacity": 140,
       "requiredRank": 35,
@@ -8565,14 +8075,12 @@
       "marketValue": {
         "netherlands": 1527421,
         "belgium": 1527421,
-        "germany": 1527421,
-        "france": 1619066,
+        "germany": 1557969,
+        "france": 1771808,
         "spain": 1557969,
         "italy": 1451050,
         "switzerland": 1771808,
-        "austria": 1557969,
-        "united_kingdom": 1619066,
-        "monaco": 1771808
+        "uk": 1619066
       },
       "fuelCapacity": 140,
       "requiredRank": 35,
@@ -8597,21 +8105,19 @@
       "availableInCountries": [
         "italy",
         "spain",
-        "austria",
-        "monaco"
+        "germany",
+        "france"
       ],
       "baseValue": 1715992,
       "marketValue": {
         "netherlands": 1715992,
         "belgium": 1715992,
-        "germany": 1715992,
-        "france": 1818952,
+        "germany": 1750312,
+        "france": 1990551,
         "spain": 1750312,
         "italy": 1630192,
         "switzerland": 1990551,
-        "austria": 1750312,
-        "united_kingdom": 1818952,
-        "monaco": 1990551
+        "uk": 1818952
       },
       "fuelCapacity": 140,
       "requiredRank": 35,
@@ -8634,16 +8140,15 @@
       },
       "description": "Robuust oceangoing jacht met versterkte romp voor lange reizen",
       "availableInCountries": [
-        "monaco",
+        "france",
         "switzerland",
         "italy"
       ],
       "baseValue": 1800000,
       "marketValue": {
-        "monaco": 1800000,
+        "france": 1850000,
         "switzerland": 1900000,
-        "italy": 1750000,
-        "france": 1850000
+        "italy": 1750000
       },
       "fuelCapacity": 500,
       "requiredRank": 1,
@@ -8666,21 +8171,19 @@
       "availableInCountries": [
         "belgium",
         "france",
-        "united_kingdom",
+        "uk",
         "italy"
       ],
       "baseValue": 1891716,
       "marketValue": {
         "netherlands": 1891716,
         "belgium": 1797130,
-        "germany": 1891716,
-        "france": 2005219,
+        "germany": 1929550,
+        "france": 2194391,
         "spain": 1929550,
         "italy": 2005219,
         "switzerland": 2194391,
-        "austria": 1929550,
-        "united_kingdom": 2005219,
-        "monaco": 2194391
+        "uk": 2005219
       },
       "fuelCapacity": 140,
       "requiredRank": 35,
@@ -8703,9 +8206,8 @@
       },
       "description": "Snelle of zware boot voor maritieme smokkelroutes en risicovolle transportoperaties.",
       "availableInCountries": [
-        "austria",
-        "spain",
         "germany",
+        "spain",
         "belgium"
       ],
       "baseValue": 1967163,
@@ -8713,13 +8215,11 @@
         "netherlands": 1967163,
         "belgium": 1967163,
         "germany": 1967163,
-        "france": 2085193,
+        "france": 2281909,
         "spain": 2006506,
         "italy": 2085193,
         "switzerland": 2281909,
-        "austria": 1868805,
-        "united_kingdom": 2085193,
-        "monaco": 2281909
+        "uk": 2085193
       },
       "fuelCapacity": 140,
       "requiredRank": 35,
@@ -8742,24 +8242,20 @@
       },
       "description": "Snelle of zware boot voor maritieme smokkelroutes en risicovolle transportoperaties.",
       "availableInCountries": [
-        "austria",
-        "monaco",
-        "netherlands",
         "germany",
-        "france"
+        "france",
+        "netherlands"
       ],
       "baseValue": 2012236,
       "marketValue": {
         "netherlands": 2012236,
         "belgium": 2012236,
         "germany": 2012236,
-        "france": 2132970,
+        "france": 2334194,
         "spain": 2052481,
         "italy": 2132970,
         "switzerland": 2334194,
-        "austria": 1911624,
-        "united_kingdom": 2132970,
-        "monaco": 2334194
+        "uk": 2132970
       },
       "fuelCapacity": 140,
       "requiredRank": 35,
@@ -8783,7 +8279,6 @@
       "description": "Snelle of zware boot voor maritieme smokkelroutes en risicovolle transportoperaties.",
       "availableInCountries": [
         "france",
-        "austria",
         "germany",
         "switzerland"
       ],
@@ -8791,14 +8286,12 @@
       "marketValue": {
         "netherlands": 2167413,
         "belgium": 2167413,
-        "germany": 2167413,
-        "france": 2059042,
+        "germany": 2210761,
+        "france": 2514199,
         "spain": 2210761,
         "italy": 2297458,
         "switzerland": 2514199,
-        "austria": 2210761,
-        "united_kingdom": 2297458,
-        "monaco": 2514199
+        "uk": 2297458
       },
       "fuelCapacity": 140,
       "requiredRank": 35,
@@ -8821,15 +8314,14 @@
       },
       "description": "Mega yacht met helikopterplatform en zwembad - pure luxe",
       "availableInCountries": [
-        "monaco",
+        "france",
         "switzerland"
       ],
       "baseValue": 4500000,
       "marketValue": {
-        "monaco": 4500000,
+        "france": 4600000,
         "switzerland": 4800000,
-        "italy": 4300000,
-        "france": 4600000
+        "italy": 4300000
       },
       "fuelCapacity": 600,
       "requiredRank": 1,
@@ -8850,13 +8342,12 @@
       },
       "description": "Kolossale superyacht met crew quarters en ultieme luxe - drijvend paleis",
       "availableInCountries": [
-        "monaco"
+        "france"
       ],
       "baseValue": 8500000,
       "marketValue": {
-        "monaco": 8500000,
-        "switzerland": 9200000,
         "france": 8800000,
+        "switzerland": 9200000,
         "italy": 8300000
       },
       "fuelCapacity": 800,
@@ -8878,11 +8369,11 @@
       },
       "description": "Ultieme oligarch superyacht met raketdetectiesysteem - €1 miljard floating fortress",
       "availableInCountries": [
-        "monaco"
+        "france"
       ],
       "baseValue": 25000000,
       "marketValue": {
-        "monaco": 25000000,
+        "france": 25000000,
         "switzerland": 27000000
       },
       "fuelCapacity": 1000,
@@ -8908,21 +8399,18 @@
       "availableInCountries": [
         "france",
         "italy",
-        "germany",
-        "austria"
+        "germany"
       ],
       "baseValue": 9224,
       "marketValue": {
         "netherlands": 9224,
         "belgium": 9224,
-        "germany": 9224,
-        "france": 8763,
+        "germany": 9408,
+        "france": 10700,
         "spain": 9408,
         "italy": 9777,
         "switzerland": 10700,
-        "austria": 9408,
-        "united_kingdom": 9777,
-        "monaco": 10700
+        "uk": 9777
       },
       "fuelCapacity": 45,
       "requiredRank": 1,
@@ -8946,23 +8434,20 @@
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
         "netherlands",
-        "austria",
-        "monaco",
-        "switzerland",
-        "germany"
+        "germany",
+        "france",
+        "switzerland"
       ],
       "baseValue": 15817,
       "marketValue": {
         "netherlands": 15026,
         "belgium": 15817,
-        "germany": 15817,
-        "france": 16766,
+        "germany": 16133,
+        "france": 18348,
         "spain": 16133,
         "italy": 16766,
         "switzerland": 18348,
-        "austria": 16133,
-        "united_kingdom": 16766,
-        "monaco": 18348
+        "uk": 16766
       },
       "fuelCapacity": 45,
       "requiredRank": 1,
@@ -8986,23 +8471,21 @@
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
         "switzerland",
-        "united_kingdom",
+        "uk",
         "italy",
-        "monaco",
+        "france",
         "netherlands"
       ],
       "baseValue": 21908,
       "marketValue": {
         "netherlands": 21908,
         "belgium": 21908,
-        "germany": 21908,
-        "france": 23222,
+        "germany": 22346,
+        "france": 25413,
         "spain": 22346,
         "italy": 23222,
         "switzerland": 20813,
-        "austria": 22346,
-        "united_kingdom": 23222,
-        "monaco": 25413
+        "uk": 23222
       },
       "fuelCapacity": 45,
       "requiredRank": 1,
@@ -9033,14 +8516,12 @@
       "marketValue": {
         "netherlands": 29166,
         "belgium": 27708,
-        "germany": 29166,
-        "france": 30916,
+        "germany": 29749,
+        "france": 33833,
         "spain": 29749,
         "italy": 30916,
         "switzerland": 33833,
-        "austria": 29749,
-        "united_kingdom": 30916,
-        "monaco": 33833
+        "uk": 30916
       },
       "fuelCapacity": 45,
       "requiredRank": 1,
@@ -9066,20 +8547,18 @@
         "germany",
         "switzerland",
         "france",
-        "united_kingdom"
+        "uk"
       ],
       "baseValue": 30232,
       "marketValue": {
         "netherlands": 30232,
         "belgium": 30232,
-        "germany": 28720,
-        "france": 32046,
+        "germany": 30837,
+        "france": 35069,
         "spain": 30837,
         "italy": 32046,
         "switzerland": 35069,
-        "austria": 30837,
-        "united_kingdom": 32046,
-        "monaco": 35069
+        "uk": 32046
       },
       "fuelCapacity": 45,
       "requiredRank": 6,
@@ -9102,25 +8581,23 @@
       },
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
-        "united_kingdom",
+        "uk",
         "netherlands",
-        "monaco",
+        "france",
         "belgium",
-        "austria",
+        "germany",
         "spain"
       ],
       "baseValue": 36550,
       "marketValue": {
         "netherlands": 36550,
         "belgium": 36550,
-        "germany": 36550,
-        "france": 38743,
+        "germany": 37281,
+        "france": 42398,
         "spain": 37281,
         "italy": 38743,
         "switzerland": 42398,
-        "austria": 37281,
-        "united_kingdom": 34722,
-        "monaco": 42398
+        "uk": 34722
       },
       "fuelCapacity": 45,
       "requiredRank": 6,
@@ -9146,21 +8623,19 @@
         "netherlands",
         "switzerland",
         "belgium",
-        "united_kingdom",
-        "monaco"
+        "uk",
+        "france"
       ],
       "baseValue": 72202,
       "marketValue": {
         "netherlands": 68592,
         "belgium": 72202,
-        "germany": 72202,
-        "france": 76534,
+        "germany": 73646,
+        "france": 83754,
         "spain": 73646,
         "italy": 76534,
         "switzerland": 83754,
-        "austria": 73646,
-        "united_kingdom": 76534,
-        "monaco": 83754
+        "uk": 76534
       },
       "fuelCapacity": 45,
       "requiredRank": 6,
@@ -9183,10 +8658,9 @@
       },
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
-        "austria",
-        "netherlands",
-        "united_kingdom",
         "germany",
+        "netherlands",
+        "uk",
         "switzerland"
       ],
       "baseValue": 74913,
@@ -9194,13 +8668,11 @@
         "netherlands": 74913,
         "belgium": 74913,
         "germany": 74913,
-        "france": 79408,
+        "france": 86899,
         "spain": 76411,
         "italy": 79408,
         "switzerland": 86899,
-        "austria": 71167,
-        "united_kingdom": 79408,
-        "monaco": 86899
+        "uk": 79408
       },
       "fuelCapacity": 45,
       "requiredRank": 6,
@@ -9225,23 +8697,20 @@
       "availableInCountries": [
         "france",
         "switzerland",
-        "united_kingdom",
+        "uk",
         "italy",
-        "monaco",
         "belgium"
       ],
       "baseValue": 77722,
       "marketValue": {
         "netherlands": 77722,
         "belgium": 77722,
-        "germany": 77722,
-        "france": 73836,
+        "germany": 79276,
+        "france": 90158,
         "spain": 79276,
         "italy": 82385,
         "switzerland": 90158,
-        "austria": 79276,
-        "united_kingdom": 82385,
-        "monaco": 90158
+        "uk": 82385
       },
       "fuelCapacity": 45,
       "requiredRank": 6,
@@ -9264,7 +8733,7 @@
       },
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
-        "united_kingdom",
+        "uk",
         "belgium",
         "spain"
       ],
@@ -9272,14 +8741,12 @@
       "marketValue": {
         "netherlands": 80117,
         "belgium": 80117,
-        "germany": 80117,
-        "france": 84924,
+        "germany": 81719,
+        "france": 92936,
         "spain": 81719,
         "italy": 84924,
         "switzerland": 92936,
-        "austria": 81719,
-        "united_kingdom": 76111,
-        "monaco": 92936
+        "uk": 76111
       },
       "fuelCapacity": 45,
       "requiredRank": 6,
@@ -9305,20 +8772,18 @@
         "switzerland",
         "belgium",
         "netherlands",
-        "monaco"
+        "france"
       ],
       "baseValue": 86682,
       "marketValue": {
         "netherlands": 86682,
         "belgium": 86682,
-        "germany": 86682,
-        "france": 91883,
+        "germany": 88416,
+        "france": 100551,
         "spain": 88416,
         "italy": 91883,
         "switzerland": 82348,
-        "austria": 88416,
-        "united_kingdom": 91883,
-        "monaco": 100551
+        "uk": 91883
       },
       "fuelCapacity": 45,
       "requiredRank": 6,
@@ -9341,24 +8806,22 @@
       },
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
-        "monaco",
+        "france",
         "netherlands",
-        "united_kingdom",
-        "austria",
+        "uk",
+        "germany",
         "switzerland"
       ],
       "baseValue": 94679,
       "marketValue": {
         "netherlands": 94679,
         "belgium": 94679,
-        "germany": 94679,
+        "germany": 96573,
         "france": 100360,
         "spain": 96573,
         "italy": 100360,
         "switzerland": 109828,
-        "austria": 96573,
-        "united_kingdom": 100360,
-        "monaco": 89945
+        "uk": 100360
       },
       "fuelCapacity": 45,
       "requiredRank": 12,
@@ -9382,7 +8845,7 @@
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
         "belgium",
-        "united_kingdom",
+        "uk",
         "france",
         "spain",
         "germany"
@@ -9391,14 +8854,12 @@
       "marketValue": {
         "netherlands": 95107,
         "belgium": 90352,
-        "germany": 95107,
-        "france": 100813,
+        "germany": 97009,
+        "france": 110324,
         "spain": 97009,
         "italy": 100813,
         "switzerland": 110324,
-        "austria": 97009,
-        "united_kingdom": 100813,
-        "monaco": 110324
+        "uk": 100813
       },
       "fuelCapacity": 45,
       "requiredRank": 12,
@@ -9421,23 +8882,21 @@
       },
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
-        "united_kingdom",
-        "austria",
+        "uk",
+        "germany",
         "spain",
-        "monaco"
+        "france"
       ],
       "baseValue": 106102,
       "marketValue": {
         "netherlands": 106102,
         "belgium": 106102,
-        "germany": 106102,
-        "france": 112468,
+        "germany": 108224,
+        "france": 123078,
         "spain": 108224,
         "italy": 112468,
         "switzerland": 123078,
-        "austria": 108224,
-        "united_kingdom": 100797,
-        "monaco": 123078
+        "uk": 100797
       },
       "fuelCapacity": 45,
       "requiredRank": 12,
@@ -9461,21 +8920,19 @@
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
         "france",
-        "united_kingdom",
+        "uk",
         "italy"
       ],
       "baseValue": 109386,
       "marketValue": {
         "netherlands": 109386,
         "belgium": 109386,
-        "germany": 109386,
-        "france": 103917,
+        "germany": 111574,
+        "france": 126888,
         "spain": 111574,
         "italy": 115949,
         "switzerland": 126888,
-        "austria": 111574,
-        "united_kingdom": 115949,
-        "monaco": 126888
+        "uk": 115949
       },
       "fuelCapacity": 45,
       "requiredRank": 12,
@@ -9500,22 +8957,19 @@
       "availableInCountries": [
         "switzerland",
         "italy",
-        "austria",
-        "spain",
-        "germany"
+        "germany",
+        "spain"
       ],
       "baseValue": 118915,
       "marketValue": {
         "netherlands": 118915,
         "belgium": 118915,
-        "germany": 118915,
-        "france": 126050,
+        "germany": 121293,
+        "france": 137941,
         "spain": 121293,
         "italy": 126050,
         "switzerland": 112969,
-        "austria": 121293,
-        "united_kingdom": 126050,
-        "monaco": 137941
+        "uk": 126050
       },
       "fuelCapacity": 45,
       "requiredRank": 12,
@@ -9538,25 +8992,22 @@
       },
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
-        "monaco",
+        "france",
         "italy",
-        "united_kingdom",
+        "uk",
         "germany",
-        "austria",
         "spain"
       ],
       "baseValue": 125704,
       "marketValue": {
         "netherlands": 125704,
         "belgium": 125704,
-        "germany": 125704,
+        "germany": 128218,
         "france": 133246,
         "spain": 128218,
         "italy": 133246,
         "switzerland": 145817,
-        "austria": 128218,
-        "united_kingdom": 133246,
-        "monaco": 119419
+        "uk": 133246
       },
       "fuelCapacity": 45,
       "requiredRank": 12,
@@ -9582,21 +9033,18 @@
         "france",
         "germany",
         "switzerland",
-        "italy",
-        "austria"
+        "italy"
       ],
       "baseValue": 127675,
       "marketValue": {
         "netherlands": 127675,
         "belgium": 127675,
-        "germany": 127675,
-        "france": 121291,
+        "germany": 130228,
+        "france": 148103,
         "spain": 130228,
         "italy": 135336,
         "switzerland": 148103,
-        "austria": 130228,
-        "united_kingdom": 135336,
-        "monaco": 148103
+        "uk": 135336
       },
       "fuelCapacity": 45,
       "requiredRank": 12,
@@ -9621,22 +9069,20 @@
       "availableInCountries": [
         "belgium",
         "italy",
-        "austria",
-        "monaco",
-        "united_kingdom"
+        "germany",
+        "france",
+        "uk"
       ],
       "baseValue": 162828,
       "marketValue": {
         "netherlands": 162828,
         "belgium": 154687,
-        "germany": 162828,
-        "france": 172598,
+        "germany": 166085,
+        "france": 188880,
         "spain": 166085,
         "italy": 172598,
         "switzerland": 188880,
-        "austria": 166085,
-        "united_kingdom": 172598,
-        "monaco": 188880
+        "uk": 172598
       },
       "fuelCapacity": 45,
       "requiredRank": 12,
@@ -9659,9 +9105,8 @@
       },
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
-        "monaco",
+        "france",
         "germany",
-        "austria",
         "netherlands",
         "belgium",
         "italy"
@@ -9670,14 +9115,12 @@
       "marketValue": {
         "netherlands": 165076,
         "belgium": 165076,
-        "germany": 165076,
+        "germany": 168378,
         "france": 174981,
         "spain": 168378,
         "italy": 174981,
         "switzerland": 191488,
-        "austria": 168378,
-        "united_kingdom": 174981,
-        "monaco": 156822
+        "uk": 174981
       },
       "fuelCapacity": 45,
       "requiredRank": 12,
@@ -9701,24 +9144,20 @@
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
         "germany",
-        "austria",
         "belgium",
         "france",
-        "monaco",
         "italy"
       ],
       "baseValue": 166874,
       "marketValue": {
         "netherlands": 166874,
         "belgium": 166874,
-        "germany": 158530,
-        "france": 176886,
+        "germany": 170211,
+        "france": 193574,
         "spain": 170211,
         "italy": 176886,
         "switzerland": 193574,
-        "austria": 170211,
-        "united_kingdom": 176886,
-        "monaco": 193574
+        "uk": 176886
       },
       "fuelCapacity": 45,
       "requiredRank": 12,
@@ -9743,20 +9182,18 @@
       "availableInCountries": [
         "belgium",
         "germany",
-        "monaco"
+        "france"
       ],
       "baseValue": 169906,
       "marketValue": {
         "netherlands": 169906,
         "belgium": 161411,
-        "germany": 169906,
-        "france": 180100,
+        "germany": 173304,
+        "france": 197091,
         "spain": 173304,
         "italy": 180100,
         "switzerland": 197091,
-        "austria": 173304,
-        "united_kingdom": 180100,
-        "monaco": 197091
+        "uk": 180100
       },
       "fuelCapacity": 45,
       "requiredRank": 12,
@@ -9781,21 +9218,19 @@
       "availableInCountries": [
         "switzerland",
         "france",
-        "united_kingdom",
-        "austria"
+        "uk",
+        "germany"
       ],
       "baseValue": 170651,
       "marketValue": {
         "netherlands": 170651,
         "belgium": 170651,
-        "germany": 170651,
-        "france": 180890,
+        "germany": 174064,
+        "france": 197955,
         "spain": 174064,
         "italy": 180890,
         "switzerland": 162118,
-        "austria": 174064,
-        "united_kingdom": 180890,
-        "monaco": 197955
+        "uk": 180890
       },
       "fuelCapacity": 45,
       "requiredRank": 12,
@@ -9826,14 +9261,12 @@
       "marketValue": {
         "netherlands": 172511,
         "belgium": 172511,
-        "germany": 172511,
-        "france": 163885,
+        "germany": 175961,
+        "france": 200113,
         "spain": 175961,
         "italy": 182862,
         "switzerland": 200113,
-        "austria": 175961,
-        "united_kingdom": 182862,
-        "monaco": 200113
+        "uk": 182862
       },
       "fuelCapacity": 45,
       "requiredRank": 12,
@@ -9856,10 +9289,8 @@
       },
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
-        "monaco",
-        "austria",
-        "germany",
         "france",
+        "germany",
         "spain",
         "netherlands"
       ],
@@ -9867,14 +9298,12 @@
       "marketValue": {
         "netherlands": 178533,
         "belgium": 178533,
-        "germany": 178533,
+        "germany": 182104,
         "france": 189245,
         "spain": 182104,
         "italy": 189245,
         "switzerland": 207098,
-        "austria": 182104,
-        "united_kingdom": 189245,
-        "monaco": 169606
+        "uk": 189245
       },
       "fuelCapacity": 45,
       "requiredRank": 12,
@@ -9899,23 +9328,20 @@
       "availableInCountries": [
         "france",
         "spain",
-        "austria",
+        "germany",
         "belgium",
-        "monaco",
         "switzerland"
       ],
       "baseValue": 178622,
       "marketValue": {
         "netherlands": 178622,
         "belgium": 178622,
-        "germany": 178622,
-        "france": 169691,
+        "germany": 182194,
+        "france": 207202,
         "spain": 182194,
         "italy": 189339,
         "switzerland": 207202,
-        "austria": 182194,
-        "united_kingdom": 189339,
-        "monaco": 207202
+        "uk": 189339
       },
       "fuelCapacity": 45,
       "requiredRank": 12,
@@ -9947,14 +9373,12 @@
       "marketValue": {
         "netherlands": 171000,
         "belgium": 180000,
-        "germany": 180000,
-        "france": 190800,
+        "germany": 183600,
+        "france": 208800,
         "spain": 183600,
         "italy": 190800,
         "switzerland": 208800,
-        "austria": 183600,
-        "united_kingdom": 190800,
-        "monaco": 208800
+        "uk": 190800
       },
       "fuelCapacity": 45,
       "requiredRank": 15,
@@ -9979,8 +9403,8 @@
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
         "italy",
-        "united_kingdom",
-        "monaco",
+        "uk",
+        "france",
         "spain",
         "belgium",
         "switzerland"
@@ -9989,14 +9413,12 @@
       "marketValue": {
         "netherlands": 189945,
         "belgium": 189945,
-        "germany": 189945,
-        "france": 201342,
+        "germany": 193744,
+        "france": 220336,
         "spain": 193744,
         "italy": 180448,
         "switzerland": 220336,
-        "austria": 193744,
-        "united_kingdom": 201342,
-        "monaco": 220336
+        "uk": 201342
       },
       "fuelCapacity": 45,
       "requiredRank": 12,
@@ -10020,7 +9442,7 @@
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
         "belgium",
-        "united_kingdom",
+        "uk",
         "france",
         "spain"
       ],
@@ -10028,14 +9450,12 @@
       "marketValue": {
         "netherlands": 194476,
         "belgium": 184752,
-        "germany": 194476,
-        "france": 206145,
+        "germany": 198366,
+        "france": 225592,
         "spain": 198366,
         "italy": 206145,
         "switzerland": 225592,
-        "austria": 198366,
-        "united_kingdom": 206145,
-        "monaco": 225592
+        "uk": 206145
       },
       "fuelCapacity": 45,
       "requiredRank": 12,
@@ -10058,24 +9478,21 @@
       },
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
-        "austria",
+        "germany",
         "france",
         "italy",
-        "germany",
-        "united_kingdom"
+        "uk"
       ],
       "baseValue": 199966,
       "marketValue": {
         "netherlands": 199966,
         "belgium": 199966,
         "germany": 199966,
-        "france": 211964,
+        "france": 231961,
         "spain": 203965,
         "italy": 211964,
         "switzerland": 231961,
-        "austria": 189968,
-        "united_kingdom": 211964,
-        "monaco": 231961
+        "uk": 211964
       },
       "fuelCapacity": 45,
       "requiredRank": 12,
@@ -10098,24 +9515,21 @@
       },
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
-        "austria",
+        "germany",
         "france",
         "belgium",
-        "germany",
-        "united_kingdom"
+        "uk"
       ],
       "baseValue": 200466,
       "marketValue": {
         "netherlands": 200466,
         "belgium": 200466,
         "germany": 200466,
-        "france": 212494,
+        "france": 232541,
         "spain": 204475,
         "italy": 212494,
         "switzerland": 232541,
-        "austria": 190443,
-        "united_kingdom": 212494,
-        "monaco": 232541
+        "uk": 212494
       },
       "fuelCapacity": 45,
       "requiredRank": 12,
@@ -10140,21 +9554,19 @@
       "availableInCountries": [
         "netherlands",
         "italy",
-        "united_kingdom",
+        "uk",
         "switzerland"
       ],
       "baseValue": 203592,
       "marketValue": {
         "netherlands": 193412,
         "belgium": 203592,
-        "germany": 203592,
-        "france": 215808,
+        "germany": 207664,
+        "france": 236167,
         "spain": 207664,
         "italy": 215808,
         "switzerland": 236167,
-        "austria": 207664,
-        "united_kingdom": 215808,
-        "monaco": 236167
+        "uk": 215808
       },
       "fuelCapacity": 45,
       "requiredRank": 12,
@@ -10186,14 +9598,12 @@
       "marketValue": {
         "netherlands": 194537,
         "belgium": 204776,
-        "germany": 204776,
-        "france": 217063,
+        "germany": 208872,
+        "france": 237540,
         "spain": 208872,
         "italy": 217063,
         "switzerland": 237540,
-        "austria": 208872,
-        "united_kingdom": 217063,
-        "monaco": 237540
+        "uk": 217063
       },
       "fuelCapacity": 45,
       "requiredRank": 12,
@@ -10217,23 +9627,21 @@
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
         "spain",
-        "austria",
-        "monaco",
-        "united_kingdom",
+        "germany",
+        "france",
+        "uk",
         "switzerland"
       ],
       "baseValue": 207442,
       "marketValue": {
         "netherlands": 207442,
         "belgium": 207442,
-        "germany": 207442,
-        "france": 219889,
+        "germany": 211591,
+        "france": 240633,
         "spain": 197070,
         "italy": 219889,
         "switzerland": 240633,
-        "austria": 211591,
-        "united_kingdom": 219889,
-        "monaco": 240633
+        "uk": 219889
       },
       "fuelCapacity": 45,
       "requiredRank": 12,
@@ -10259,22 +9667,19 @@
         "belgium",
         "italy",
         "switzerland",
-        "monaco",
-        "austria",
-        "france"
+        "france",
+        "germany"
       ],
       "baseValue": 208442,
       "marketValue": {
         "netherlands": 208442,
         "belgium": 198020,
-        "germany": 208442,
-        "france": 220949,
+        "germany": 212611,
+        "france": 241793,
         "spain": 212611,
         "italy": 220949,
         "switzerland": 241793,
-        "austria": 212611,
-        "united_kingdom": 220949,
-        "monaco": 241793
+        "uk": 220949
       },
       "fuelCapacity": 45,
       "requiredRank": 12,
@@ -10305,14 +9710,12 @@
       "marketValue": {
         "netherlands": 210382,
         "belgium": 210382,
-        "germany": 210382,
-        "france": 223005,
+        "germany": 214590,
+        "france": 244043,
         "spain": 214590,
         "italy": 199863,
         "switzerland": 244043,
-        "austria": 214590,
-        "united_kingdom": 223005,
-        "monaco": 244043
+        "uk": 223005
       },
       "fuelCapacity": 45,
       "requiredRank": 12,
@@ -10336,22 +9739,20 @@
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
         "switzerland",
-        "monaco",
-        "united_kingdom",
+        "france",
+        "uk",
         "spain"
       ],
       "baseValue": 223554,
       "marketValue": {
         "netherlands": 223554,
         "belgium": 223554,
-        "germany": 223554,
-        "france": 236967,
+        "germany": 228025,
+        "france": 259323,
         "spain": 228025,
         "italy": 236967,
         "switzerland": 212376,
-        "austria": 228025,
-        "united_kingdom": 236967,
-        "monaco": 259323
+        "uk": 236967
       },
       "fuelCapacity": 45,
       "requiredRank": 22,
@@ -10375,23 +9776,21 @@
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
         "switzerland",
-        "austria",
+        "germany",
         "netherlands",
-        "monaco",
+        "france",
         "italy"
       ],
       "baseValue": 226994,
       "marketValue": {
         "netherlands": 226994,
         "belgium": 226994,
-        "germany": 226994,
-        "france": 240614,
+        "germany": 231534,
+        "france": 263313,
         "spain": 231534,
         "italy": 240614,
         "switzerland": 215644,
-        "austria": 231534,
-        "united_kingdom": 240614,
-        "monaco": 263313
+        "uk": 240614
       },
       "fuelCapacity": 45,
       "requiredRank": 22,
@@ -10418,21 +9817,18 @@
         "switzerland",
         "spain",
         "germany",
-        "austria",
         "italy"
       ],
       "baseValue": 237964,
       "marketValue": {
         "netherlands": 226066,
         "belgium": 237964,
-        "germany": 237964,
-        "france": 252242,
+        "germany": 242723,
+        "france": 276038,
         "spain": 242723,
         "italy": 252242,
         "switzerland": 276038,
-        "austria": 242723,
-        "united_kingdom": 252242,
-        "monaco": 276038
+        "uk": 252242
       },
       "fuelCapacity": 45,
       "requiredRank": 22,
@@ -10458,21 +9854,18 @@
         "germany",
         "france",
         "belgium",
-        "monaco",
-        "united_kingdom"
+        "uk"
       ],
       "baseValue": 251343,
       "marketValue": {
         "netherlands": 251343,
         "belgium": 251343,
-        "germany": 238776,
-        "france": 266424,
+        "germany": 256370,
+        "france": 291558,
         "spain": 256370,
         "italy": 266424,
         "switzerland": 291558,
-        "austria": 256370,
-        "united_kingdom": 266424,
-        "monaco": 291558
+        "uk": 266424
       },
       "fuelCapacity": 45,
       "requiredRank": 22,
@@ -10495,25 +9888,22 @@
       },
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
-        "united_kingdom",
-        "monaco",
+        "uk",
         "france",
         "italy",
-        "austria",
+        "germany",
         "belgium"
       ],
       "baseValue": 257878,
       "marketValue": {
         "netherlands": 257878,
         "belgium": 257878,
-        "germany": 257878,
-        "france": 273351,
+        "germany": 263036,
+        "france": 299138,
         "spain": 263036,
         "italy": 273351,
         "switzerland": 299138,
-        "austria": 263036,
-        "united_kingdom": 244984,
-        "monaco": 299138
+        "uk": 244984
       },
       "fuelCapacity": 45,
       "requiredRank": 22,
@@ -10540,20 +9930,18 @@
         "switzerland",
         "spain",
         "germany",
-        "united_kingdom"
+        "uk"
       ],
       "baseValue": 285794,
       "marketValue": {
         "netherlands": 285794,
         "belgium": 285794,
-        "germany": 285794,
-        "france": 302942,
+        "germany": 291510,
+        "france": 331521,
         "spain": 291510,
         "italy": 271504,
         "switzerland": 331521,
-        "austria": 291510,
-        "united_kingdom": 302942,
-        "monaco": 331521
+        "uk": 302942
       },
       "fuelCapacity": 45,
       "requiredRank": 22,
@@ -10577,22 +9965,20 @@
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
         "netherlands",
-        "austria",
-        "monaco",
-        "united_kingdom"
+        "germany",
+        "france",
+        "uk"
       ],
       "baseValue": 285849,
       "marketValue": {
         "netherlands": 271557,
         "belgium": 285849,
-        "germany": 285849,
-        "france": 303000,
+        "germany": 291566,
+        "france": 331585,
         "spain": 291566,
         "italy": 303000,
         "switzerland": 331585,
-        "austria": 291566,
-        "united_kingdom": 303000,
-        "monaco": 331585
+        "uk": 303000
       },
       "fuelCapacity": 45,
       "requiredRank": 22,
@@ -10615,7 +10001,7 @@
       },
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
-        "austria",
+        "germany",
         "netherlands",
         "switzerland",
         "france"
@@ -10625,13 +10011,11 @@
         "netherlands": 286217,
         "belgium": 286217,
         "germany": 286217,
-        "france": 303390,
+        "france": 332012,
         "spain": 291941,
         "italy": 303390,
         "switzerland": 332012,
-        "austria": 271906,
-        "united_kingdom": 303390,
-        "monaco": 332012
+        "uk": 303390
       },
       "fuelCapacity": 45,
       "requiredRank": 22,
@@ -10654,8 +10038,8 @@
       },
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
-        "united_kingdom",
-        "austria",
+        "uk",
+        "germany",
         "belgium",
         "italy"
       ],
@@ -10663,14 +10047,12 @@
       "marketValue": {
         "netherlands": 291034,
         "belgium": 291034,
-        "germany": 291034,
-        "france": 308496,
+        "germany": 296855,
+        "france": 337599,
         "spain": 296855,
         "italy": 308496,
         "switzerland": 337599,
-        "austria": 296855,
-        "united_kingdom": 276482,
-        "monaco": 337599
+        "uk": 276482
       },
       "fuelCapacity": 45,
       "requiredRank": 22,
@@ -10697,21 +10079,18 @@
         "belgium",
         "germany",
         "spain",
-        "austria",
         "france"
       ],
       "baseValue": 330645,
       "marketValue": {
         "netherlands": 330645,
         "belgium": 330645,
-        "germany": 330645,
-        "france": 350484,
+        "germany": 337258,
+        "france": 383548,
         "spain": 337258,
         "italy": 314113,
         "switzerland": 383548,
-        "austria": 337258,
-        "united_kingdom": 350484,
-        "monaco": 383548
+        "uk": 350484
       },
       "fuelCapacity": 45,
       "requiredRank": 22,
@@ -10735,22 +10114,18 @@
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
         "france",
-        "germany",
-        "austria",
-        "monaco"
+        "germany"
       ],
       "baseValue": 336183,
       "marketValue": {
         "netherlands": 336183,
         "belgium": 336183,
-        "germany": 336183,
-        "france": 319374,
+        "germany": 342907,
+        "france": 389972,
         "spain": 342907,
         "italy": 356354,
         "switzerland": 389972,
-        "austria": 342907,
-        "united_kingdom": 356354,
-        "monaco": 389972
+        "uk": 356354
       },
       "fuelCapacity": 45,
       "requiredRank": 22,
@@ -10784,14 +10159,12 @@
       "marketValue": {
         "netherlands": 337931,
         "belgium": 337931,
-        "germany": 337931,
-        "france": 321034,
+        "germany": 344690,
+        "france": 392000,
         "spain": 344690,
         "italy": 358207,
         "switzerland": 392000,
-        "austria": 344690,
-        "united_kingdom": 358207,
-        "monaco": 392000
+        "uk": 358207
       },
       "fuelCapacity": 45,
       "requiredRank": 22,
@@ -10814,24 +10187,22 @@
       },
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
-        "monaco",
+        "france",
         "italy",
         "switzerland",
-        "united_kingdom",
+        "uk",
         "netherlands"
       ],
       "baseValue": 344448,
       "marketValue": {
         "netherlands": 344448,
         "belgium": 344448,
-        "germany": 344448,
+        "germany": 351337,
         "france": 365115,
         "spain": 351337,
         "italy": 365115,
         "switzerland": 399560,
-        "austria": 351337,
-        "united_kingdom": 365115,
-        "monaco": 327226
+        "uk": 365115
       },
       "fuelCapacity": 45,
       "requiredRank": 22,
@@ -10862,14 +10233,12 @@
       "marketValue": {
         "netherlands": 348306,
         "belgium": 330891,
-        "germany": 348306,
-        "france": 369204,
+        "germany": 355272,
+        "france": 404035,
         "spain": 355272,
         "italy": 369204,
         "switzerland": 404035,
-        "austria": 355272,
-        "united_kingdom": 369204,
-        "monaco": 404035
+        "uk": 369204
       },
       "fuelCapacity": 45,
       "requiredRank": 22,
@@ -10893,21 +10262,19 @@
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
         "spain",
-        "monaco",
+        "france",
         "netherlands"
       ],
       "baseValue": 349373,
       "marketValue": {
         "netherlands": 349373,
         "belgium": 349373,
-        "germany": 349373,
-        "france": 370335,
+        "germany": 356360,
+        "france": 405273,
         "spain": 331904,
         "italy": 370335,
         "switzerland": 405273,
-        "austria": 356360,
-        "united_kingdom": 370335,
-        "monaco": 405273
+        "uk": 370335
       },
       "fuelCapacity": 45,
       "requiredRank": 22,
@@ -10933,22 +10300,18 @@
         "france",
         "switzerland",
         "netherlands",
-        "germany",
-        "monaco",
-        "austria"
+        "germany"
       ],
       "baseValue": 360919,
       "marketValue": {
         "netherlands": 360919,
         "belgium": 360919,
-        "germany": 360919,
-        "france": 342873,
+        "germany": 368137,
+        "france": 418666,
         "spain": 368137,
         "italy": 382574,
         "switzerland": 418666,
-        "austria": 368137,
-        "united_kingdom": 382574,
-        "monaco": 418666
+        "uk": 382574
       },
       "fuelCapacity": 45,
       "requiredRank": 22,
@@ -10974,21 +10337,18 @@
         "france",
         "spain",
         "italy",
-        "monaco",
-        "united_kingdom"
+        "uk"
       ],
       "baseValue": 364637,
       "marketValue": {
         "netherlands": 364637,
         "belgium": 364637,
-        "germany": 364637,
-        "france": 346405,
+        "germany": 371930,
+        "france": 422979,
         "spain": 371930,
         "italy": 386515,
         "switzerland": 422979,
-        "austria": 371930,
-        "united_kingdom": 386515,
-        "monaco": 422979
+        "uk": 386515
       },
       "fuelCapacity": 45,
       "requiredRank": 22,
@@ -11013,7 +10373,6 @@
       "availableInCountries": [
         "germany",
         "france",
-        "monaco",
         "switzerland",
         "netherlands",
         "spain"
@@ -11022,14 +10381,12 @@
       "marketValue": {
         "netherlands": 365719,
         "belgium": 365719,
-        "germany": 347433,
-        "france": 387662,
+        "germany": 373033,
+        "france": 424234,
         "spain": 373033,
         "italy": 387662,
         "switzerland": 424234,
-        "austria": 373033,
-        "united_kingdom": 387662,
-        "monaco": 424234
+        "uk": 387662
       },
       "fuelCapacity": 45,
       "requiredRank": 22,
@@ -11054,7 +10411,6 @@
       "availableInCountries": [
         "belgium",
         "germany",
-        "austria",
         "switzerland",
         "italy"
       ],
@@ -11062,14 +10418,12 @@
       "marketValue": {
         "netherlands": 370052,
         "belgium": 351549,
-        "germany": 370052,
-        "france": 392255,
+        "germany": 377453,
+        "france": 429260,
         "spain": 377453,
         "italy": 392255,
         "switzerland": 429260,
-        "austria": 377453,
-        "united_kingdom": 392255,
-        "monaco": 429260
+        "uk": 392255
       },
       "fuelCapacity": 45,
       "requiredRank": 22,
@@ -11101,14 +10455,12 @@
       "marketValue": {
         "netherlands": 371495,
         "belgium": 371495,
-        "germany": 371495,
-        "france": 393785,
+        "germany": 378925,
+        "france": 430934,
         "spain": 352920,
         "italy": 393785,
         "switzerland": 430934,
-        "austria": 378925,
-        "united_kingdom": 393785,
-        "monaco": 430934
+        "uk": 393785
       },
       "fuelCapacity": 45,
       "requiredRank": 22,
@@ -11140,14 +10492,12 @@
       "marketValue": {
         "netherlands": 383292,
         "belgium": 383292,
-        "germany": 364127,
-        "france": 406290,
+        "germany": 390958,
+        "france": 444619,
         "spain": 390958,
         "italy": 406290,
         "switzerland": 444619,
-        "austria": 390958,
-        "united_kingdom": 406290,
-        "monaco": 444619
+        "uk": 406290
       },
       "fuelCapacity": 45,
       "requiredRank": 22,
@@ -11174,21 +10524,18 @@
         "netherlands",
         "switzerland",
         "spain",
-        "monaco",
         "france"
       ],
       "baseValue": 390551,
       "marketValue": {
         "netherlands": 390551,
         "belgium": 371023,
-        "germany": 390551,
-        "france": 413984,
+        "germany": 398362,
+        "france": 453039,
         "spain": 398362,
         "italy": 413984,
         "switzerland": 453039,
-        "austria": 398362,
-        "united_kingdom": 413984,
-        "monaco": 453039
+        "uk": 413984
       },
       "fuelCapacity": 45,
       "requiredRank": 22,
@@ -11212,23 +10559,20 @@
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
         "italy",
-        "united_kingdom",
-        "austria",
+        "uk",
         "germany",
-        "monaco"
+        "france"
       ],
       "baseValue": 400985,
       "marketValue": {
         "netherlands": 400985,
         "belgium": 400985,
-        "germany": 400985,
-        "france": 425044,
+        "germany": 409005,
+        "france": 465143,
         "spain": 409005,
         "italy": 380936,
         "switzerland": 465143,
-        "austria": 409005,
-        "united_kingdom": 425044,
-        "monaco": 465143
+        "uk": 425044
       },
       "fuelCapacity": 45,
       "requiredRank": 22,
@@ -11255,21 +10599,18 @@
         "germany",
         "spain",
         "belgium",
-        "netherlands",
-        "austria"
+        "netherlands"
       ],
       "baseValue": 409769,
       "marketValue": {
         "netherlands": 409769,
         "belgium": 409769,
-        "germany": 409769,
-        "france": 434355,
+        "germany": 417964,
+        "france": 475332,
         "spain": 417964,
         "italy": 434355,
         "switzerland": 389281,
-        "austria": 417964,
-        "united_kingdom": 434355,
-        "monaco": 475332
+        "uk": 434355
       },
       "fuelCapacity": 45,
       "requiredRank": 22,
@@ -11293,7 +10634,7 @@
       "description": "Wendbare motorfiets voor snelle raids, discrete verplaatsingen en high-risk opdrachten in de stad.",
       "availableInCountries": [
         "spain",
-        "austria",
+        "germany",
         "belgium",
         "italy"
       ],
@@ -11301,14 +10642,12 @@
       "marketValue": {
         "netherlands": 414614,
         "belgium": 414614,
-        "germany": 414614,
-        "france": 439491,
+        "germany": 422906,
+        "france": 480952,
         "spain": 393883,
         "italy": 439491,
         "switzerland": 480952,
-        "austria": 422906,
-        "united_kingdom": 439491,
-        "monaco": 480952
+        "uk": 439491
       },
       "fuelCapacity": 45,
       "requiredRank": 22,

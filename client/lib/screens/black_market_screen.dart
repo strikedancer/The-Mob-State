@@ -2046,7 +2046,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
                       'italy',
                       'spain',
                       'switzerland',
-                      'austria',
+                      'uk',
                     ].map(
                       (c) => DropdownMenuItem(
                         value: c,

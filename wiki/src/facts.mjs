@@ -3,13 +3,15 @@ import { ui, countryName, COUNTRY } from './i18n.mjs';
 export const COUNTRY_CANON = {
   united_kingdom: 'uk',
   uk: 'uk',
+  monaco: 'france',
+  austria: 'germany',
 };
 
 const EXTRA_ALIASES = {
   netherlands: ['holland', 'nederland'],
   belgium: ['belgie'],
-  germany: ['duitsland', 'deutschland'],
-  france: ['frankrijk'],
+  germany: ['duitsland', 'deutschland', 'oostenrijk', 'austria'],
+  france: ['frankrijk', 'monaco', 'cote dazur'],
   spain: ['spanje'],
   italy: ['italie'],
   uk: ['engeland', 'britain', 'united kingdom', 'verenigd koninkrijk'],
@@ -27,8 +29,6 @@ const EXTRA_ALIASES = {
   united_arab_emirates: ['emiraten', 'dubai'],
   south_africa: ['zuid-afrika', 'zuid afrika'],
   australia: ['australie'],
-  austria: ['oostenrijk'],
-  monaco: ['monaco'],
 };
 
 const RANK_BANDS = [
@@ -94,7 +94,15 @@ function aliasesFor(id) {
 function tagVehicles(data, lang) {
   const tag = (list, kind) =>
     (list || []).map((v) => {
-      const countries = (v.availableInCountries || []).map((id) => String(id).toLowerCase());
+      const seen = new Set();
+      const countries = [];
+      for (const raw of v.availableInCountries || []) {
+        const id = String(raw).toLowerCase();
+        const canon = COUNTRY_CANON[id] || id;
+        if (seen.has(canon)) continue;
+        seen.add(canon);
+        countries.push(canon);
+      }
       return {
         id: v.id,
         kind,
@@ -227,13 +235,7 @@ export function topVehicles(vehicles, kind, limit = 5) {
 
 export function buildFacts(data, lang) {
   const playable = new Set((data.countries || []).map((c) => c.id));
-  const countryIds = new Set([
-    ...playable,
-    ...Object.keys(COUNTRY),
-    'austria',
-    'monaco',
-    'united_kingdom',
-  ]);
+  const countryIds = new Set([...playable, ...Object.keys(COUNTRY), 'united_kingdom']);
   const countries = {};
   for (const id of countryIds) {
     const canon = COUNTRY_CANON[id] || id;
