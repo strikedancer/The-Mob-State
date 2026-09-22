@@ -280,6 +280,14 @@ export interface PlayerOverview {
     weaponTotalUnits: number;
     weaponDistinctTypes: number;
   };
+  crew?: {
+    id: number;
+    name: string;
+    role: string;
+    isVip: boolean;
+    vipExpiresAt: string | null;
+    vipLifetimeDays: number;
+  } | null;
   history: {
     recentActivities: any[];
     recentCrimes: any[];
@@ -1867,6 +1875,37 @@ export const adminService = {
     );
     await ensureOk(response, "Failed to grant season pass");
     return response.json();
+  },
+
+  async grantCrewVip(
+    playerId: number,
+    payload: { reason: string; days: number },
+  ) {
+    const token = adminAuthService.getToken();
+    const response = await fetch(
+      `${API_URL}/admin/players/${playerId}/crew-vip/grant`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      },
+    );
+    await ensureOk(response, "Failed to grant Crew VIP");
+    return response.json() as Promise<{
+      success: boolean;
+      message: string;
+      crew: {
+        id: number;
+        name: string;
+        isVip: boolean;
+        vipExpiresAt: string;
+        vipLifetimeDays: number;
+      };
+      days: number;
+    }>;
   },
 
   async grantEventPass(

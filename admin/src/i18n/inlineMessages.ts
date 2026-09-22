@@ -5284,7 +5284,38 @@ export const ADMIN_INLINE_ROWS: Record<string, { nl: string; en: string; de: str
     "it": "Qualità",
     "pl": "Jakość",
     "pt": "Qualidade"
-  }
+  },
+  "Crew VIP toekennen\u0000Grant Crew VIP": {
+    "nl": "Crew VIP toekennen",
+    "en": "Grant Crew VIP",
+    "de": "Crew-VIP vergeben",
+    "fr": "Accorder le Crew VIP",
+    "es": "Conceder Crew VIP",
+    "it": "Assegna Crew VIP",
+    "pl": "Przyznaj Crew VIP",
+    "pt": "Conceder Crew VIP"
+  },
+  "Event maandpas\u0000Event month pass": {
+    "nl": "Event maandpas",
+    "en": "Event month pass",
+    "de": "Event-Monatspass",
+    "fr": "Pass mensuel d'événement",
+    "es": "Pase mensual de evento",
+    "it": "Pass mensile evento",
+    "pl": "Miesięczny pass wydarzenia",
+    "pt": "Passe mensal de evento"
+  },
+  "Speler zit in geen crew\u0000Player is not in a crew": {
+    "nl": "Speler zit in geen crew",
+    "en": "Player is not in a crew",
+    "de": "Spieler ist in keiner Crew",
+    "fr": "Le joueur n'est dans aucun crew",
+    "es": "El jugador no está en ninguna crew",
+    "it": "Il giocatore non è in nessuna crew",
+    "pl": "Gracz nie jest w żadnej załodze",
+    "pt": "O jogador não está em nenhuma crew"
+  },
+
 };
 
 export function getAdminTr(

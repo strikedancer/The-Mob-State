@@ -4000,8 +4000,8 @@ function App() {
     if (reason.length < 5) {
       const typed = window.prompt(
         l(
-          "Reden voor Event Pass premium (min. 5 tekens):",
-          "Reason for Event Pass premium grant (min. 5 characters):",
+          "Reden voor Event maandpas (min. 5 tekens):",
+          "Reason for Event month pass grant (min. 5 characters):",
         ),
         "Support season pass grant",
       );
@@ -4010,8 +4010,8 @@ function App() {
     if (reason.length < 5) {
       alert(
         l(
-          "Event Pass premium geannuleerd: reden te kort.",
-          "Season pass grant cancelled: reason too short.",
+          "Event maandpas geannuleerd: reden te kort.",
+          "Event month pass grant cancelled: reason too short.",
         ),
       );
       return;
@@ -4021,8 +4021,8 @@ function App() {
       selectedPlayerOverview?.player.username ?? String(selectedPlayerId);
     const confirmed = window.confirm(
       l(
-        `Premium-track van de maandelijkse Event Pass ontgrendelen voor ${username}?`,
-        `Unlock this month's Event Pass premium track for ${username}?`,
+        `Event maandpas (premium-track van deze maand) ontgrendelen voor ${username}?`,
+        `Unlock this month's Event month pass premium track for ${username}?`,
       ),
     );
     if (!confirmed) return;
@@ -4033,21 +4033,121 @@ function App() {
       setPlayerManageReason("");
       alert(
         l(
-          `Event Pass premium ontgrendeld voor ${username}.`,
-          `Event Pass premium unlocked for ${username}.`,
+          `Event maandpas premium ontgrendeld voor ${username}.`,
+          `Event month pass premium unlocked for ${username}.`,
         ),
       );
     } catch (err) {
       if (handleUnauthorized(err)) return;
       const message = err instanceof Error ? err.message : t.unknownError;
       alert(
-        `${l("Event Pass premium mislukt", "Failed to grant season pass")}: ${message}`,
+        `${l("Event maandpas mislukt", "Failed to grant Event month pass")}: ${message}`,
       );
     } finally {
       setIsSavingPlayerManage(false);
     }
   };
 
+  const handleGrantCrewVip = async () => {
+    if (!selectedPlayerId) return;
+    if (isSavingPlayerManage) return;
+    if (!canManagePlayers) {
+      alert(
+        l(
+          "Je hebt geen rechten om spelers te beheren.",
+          "You do not have permission to manage players.",
+        ),
+      );
+      return;
+    }
+
+    const toInt = (value: string): number | null => {
+      const parsed = Number(value);
+      return Number.isFinite(parsed) ? Math.trunc(parsed) : null;
+    };
+    const vipDays = toInt(playerManageForm.vipDays);
+    if (vipDays === null || vipDays < 1 || vipDays > 365) {
+      alert(
+        l(
+          "VIP dagen moet een heel getal tussen 1 en 365 zijn.",
+          "VIP days must be a whole number between 1 and 365.",
+        ),
+      );
+      return;
+    }
+
+    const crew = selectedPlayerOverview?.crew;
+    if (!crew) {
+      alert(
+        l(
+          "Deze speler zit in geen crew. Crew VIP kan alleen aan de huidige crew worden toegekend.",
+          "This player is not in a crew. Crew VIP can only be granted to their current crew.",
+        ),
+      );
+      return;
+    }
+
+    let reason = playerManageReason.trim();
+    if (reason.length < 5) {
+      const typed = window.prompt(
+        l(
+          "Reden voor Crew VIP (min. 5 tekens):",
+          "Reason for Crew VIP grant (min. 5 characters):",
+        ),
+        "Support Crew VIP grant",
+      );
+      reason = typed?.trim() ?? "";
+    }
+    if (reason.length < 5) {
+      alert(
+        l(
+          "Crew VIP geannuleerd: reden te kort.",
+          "Crew VIP grant cancelled: reason too short.",
+        ),
+      );
+      return;
+    }
+
+    const username =
+      selectedPlayerOverview?.player.username ?? String(selectedPlayerId);
+    const confirmed = window.confirm(
+      l(
+        `${vipDays} dagen Crew VIP toekennen aan crew "${crew.name}" (via ${username})? Bestaande Crew VIP wordt verlengd.`,
+        `Grant ${vipDays} days of Crew VIP to crew "${crew.name}" (via ${username})? Existing Crew VIP will be extended.`,
+      ),
+    );
+    if (!confirmed) return;
+
+    setIsSavingPlayerManage(true);
+    try {
+      const result = await adminService.grantCrewVip(selectedPlayerId, {
+        reason,
+        days: vipDays,
+      });
+      const refreshed = await adminService.getPlayerOverview(selectedPlayerId);
+      setSelectedPlayerOverview(refreshed);
+      setPlayerManageReason("");
+      const until = result.crew.vipExpiresAt
+        ? new Date(result.crew.vipExpiresAt).toLocaleDateString()
+        : l("onbekend", "unknown");
+      alert(
+        l(
+          `Crew VIP toegekend aan ${result.crew.name} tot ${until}.`,
+          `Crew VIP granted to ${result.crew.name} until ${until}.`,
+        ),
+      );
+    } catch (err) {
+      if (handleUnauthorized(err)) return;
+      const message = err instanceof Error ? err.message : t.unknownError;
+      alert(
+        `${l("Crew VIP toekennen mislukt", "Failed to grant Crew VIP")}: ${message}`,
+      );
+    } finally {
+      setIsSavingPlayerManage(false);
+    }
+  };
+
+  const handleGrantEventPassBoost = async () => {
   const handleGrantEventPassBoost = async () => {
     if (!selectedPlayerId) return;
     if (isSavingPlayerManage) return;
@@ -8674,8 +8774,8 @@ function App() {
                                     />
                                     <small className="text-muted">
                                       {l(
-                                        "1–365 dagen. Gebruik de knop VIP-dagen toekennen; dat verlengt bestaande VIP.",
-                                        "1–365 days. Use Grant VIP days; this extends existing VIP.",
+                                        "1–365 dagen. Voor Player VIP- én Crew VIP-knoppen hieronder.",
+                                        "1–365 days. Used by Player VIP and Crew VIP buttons below.",
                                       )}
                                     </small>
                                   </div>
@@ -8883,6 +8983,32 @@ function App() {
                                     )}
                                   </button>
                                   <button
+                                    className="btn btn-outline-warning fw-bold"
+                                    onClick={handleGrantCrewVip}
+                                    disabled={
+                                      isSavingPlayerManage ||
+                                      !canManagePlayers ||
+                                      !selectedPlayerOverview?.crew
+                                    }
+                                    title={
+                                      selectedPlayerOverview?.crew
+                                        ? l(
+                                            `Crew: ${selectedPlayerOverview.crew.name}`,
+                                            `Crew: ${selectedPlayerOverview.crew.name}`,
+                                          )
+                                        : l(
+                                            "Speler zit in geen crew",
+                                            "Player is not in a crew",
+                                          )
+                                    }
+                                  >
+                                    <i className="ph-users me-2" />
+                                    {l(
+                                      "Crew VIP toekennen",
+                                      "Grant Crew VIP",
+                                    )}
+                                  </button>
+                                  <button
                                     className="btn btn-outline-success fw-bold"
                                     onClick={handleGrantSeasonPass}
                                     disabled={
@@ -8891,8 +9017,8 @@ function App() {
                                   >
                                     <i className="ph-ticket me-2" />
                                     {l(
-                                      "Event Pass premium",
-                                      "Grant Event Pass premium",
+                                      "Event maandpas",
+                                      "Event month pass",
                                     )}
                                   </button>
                                   <button

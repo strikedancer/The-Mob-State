@@ -64,7 +64,7 @@ import {
   updateDrugRuntimeConfig,
 } from '../services/drugRuntimeConfig';
 import { deletePortrait, listPortraits } from '../services/playerPortraitService';
-import { grantPlayerVipDays } from '../services/vipBenefitsService';
+import { grantPlayerVipDays, grantCrewVipDays } from '../services/vipBenefitsService';
 import {
   applyCreditBalanceAdjustment,
   createTimedCreditEntitlement,
@@ -372,6 +372,11 @@ const optionalManageInt = (schema: z.ZodNumber) =>
 
 const grantSeasonPassSchema = z.object({
   reason: z.string().trim().min(5).max(500),
+});
+
+const grantCrewVipSchema = z.object({
+  reason: z.string().trim().min(5).max(500),
+  days: z.coerce.number().int().positive().max(365).default(30),
 });
 
 const grantEventPassSchema = z
@@ -2082,6 +2087,7 @@ router.get('/players/:playerId/overview', async (req, res) => {
       premiumFulfillments,
       weaponsContentRaw,
       ammoContentRaw,
+      crewMembership,
     ] = await Promise.all([
       prisma.player.findUnique({
         where: { id: playerId },
@@ -2315,6 +2321,21 @@ router.get('/players/:playerId/overview', async (req, res) => {
       }),
       fs.readFile(path.join(__dirname, '../../content/weapons.json'), 'utf-8'),
       fs.readFile(path.join(__dirname, '../../content/ammo.json'), 'utf-8'),
+      prisma.crewMember.findUnique({
+        where: { playerId },
+        select: {
+          role: true,
+          crew: {
+            select: {
+              id: true,
+              name: true,
+              isVip: true,
+              vipExpiresAt: true,
+              vipLifetimeDays: true,
+            },
+          },
+        },
+      }),
     ]);
 
     if (!player) {
@@ -2496,6 +2517,16 @@ router.get('/players/:playerId/overview', async (req, res) => {
         premiumTransactions,
         premiumFulfillments,
       },
+      crew: crewMembership
+        ? {
+            id: crewMembership.crew.id,
+            name: crewMembership.crew.name,
+            role: crewMembership.role,
+            isVip: crewMembership.crew.isVip,
+            vipExpiresAt: crewMembership.crew.vipExpiresAt,
+            vipLifetimeDays: crewMembership.crew.vipLifetimeDays,
+          }
+        : null,
     });
   } catch (error) {
     console.error('Admin player overview error:', error);
@@ -5120,6 +5151,90 @@ router.post(
       }
       console.error('Admin grant season pass error:', error);
       res.status(500).json({ error: 'Failed to grant season pass' });
+    }
+  }
+);
+
+/**
+ * POST /api/admin/players/:playerId/crew-vip/grant
+ * Grant or extend Crew VIP on the player's current crew.
+ */
+router.post(
+  '/players/:playerId/crew-vip/grant',
+  auditLog({ action: 'GRANT_CREW_VIP', targetType: 'Crew' }),
+  async (req: AdminRequest, res) => {
+    try {
+      const adminRole = req.admin?.role;
+      if (!adminRole || adminRole === AdminRole.VIEWER) {
+        return res
+          .status(403)
+          .json({ error: 'FORBIDDEN', message: 'Viewer role cannot grant Crew VIP' });
+      }
+
+      const playerId = Number(req.params.playerId);
+      if (!Number.isFinite(playerId) || playerId <= 0) {
+        return res.status(400).json({ error: 'Invalid player id' });
+      }
+
+      const { reason, days } = grantCrewVipSchema.parse(req.body || {});
+      const membership = await prisma.crewMember.findUnique({
+        where: { playerId },
+        select: {
+          role: true,
+          crew: {
+            select: {
+              id: true,
+              name: true,
+              isVip: true,
+              vipExpiresAt: true,
+            },
+          },
+          player: { select: { id: true, username: true } },
+        },
+      });
+      if (!membership) {
+        return res.status(400).json({
+          error: 'PLAYER_NOT_IN_CREW',
+          message: 'Player is not in a crew',
+        });
+      }
+
+      const grant = await grantCrewVipDays(membership.crew.id, days);
+
+      if (res.locals.auditLogData) {
+        res.locals.auditLogData.targetId = String(membership.crew.id);
+      }
+      res.locals.auditLogDetails = {
+        playerId,
+        username: membership.player.username,
+        crewId: membership.crew.id,
+        crewName: membership.crew.name,
+        days,
+        vipExpiresAt: grant.vipExpiresAt,
+        vipLifetimeDays: grant.vipLifetimeDays,
+        reason,
+      };
+
+      res.json({
+        success: true,
+        message: `Crew VIP granted to ${membership.crew.name} for ${days} days`,
+        playerId,
+        username: membership.player.username,
+        crew: {
+          id: membership.crew.id,
+          name: membership.crew.name,
+          isVip: true,
+          vipExpiresAt: grant.vipExpiresAt,
+          vipLifetimeDays: grant.vipLifetimeDays,
+        },
+        days,
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: 'Invalid input', details: error.errors });
+      }
+      console.error('Admin grant Crew VIP error:', error);
+      res.status(500).json({ error: 'Failed to grant Crew VIP' });
     }
   }
 );

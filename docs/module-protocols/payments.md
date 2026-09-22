@@ -33,13 +33,18 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 - **Opslaan alle wijzigingen** + vink **VIP actief** blijft de kritieke pad (reden + `CONFIRM`) voor het grote formulier.
 - Moderator mag VIP-dagen toekennen, maar niet VIP uitzetten of rank wijzigen.
 - `POST /admin/players/vip/grant` zoekt username case-insensitive.
+- Admin player Manage:
+  - **Event Pass premium / Event maandpas** → `POST /admin/players/:playerId/season-pass/grant` met reden (≥5). Roept `seasonPassService.unlockSeasonPassPremium` aan voor de huidige maand (`YYYY-MM`). Audit: `GRANT_SEASON_PASS`.
+  - **Event-boost toekennen** → `POST /admin/players/:playerId/event-pass/grant` met `days` en/of `hours` + reden. Maakt een timed `EVENT_BOOST` entitlement (zelfde family als checkout/credit redemption), default boost `eventContributionPct: 0.15`. Audit: `GRANT_EVENT_PASS`.
+  - **Crew VIP toekennen** → `POST /admin/players/:playerId/crew-vip/grant` met `days` (1–365) + reden. Lost de crew van de speler op en roept `grantCrewVipDays` aan (geen Mollie-subscription). Faalt met `PLAYER_NOT_IN_CREW` als de speler geen crew heeft. Audit: `GRANT_CREW_VIP`. Player overview levert `crew` (id/name/isVip/vipExpiresAt) mee.
 - Slaat niet meer de hele stat-formulier mee als alleen VIP wijzigt; dat voorkwam `Invalid input` (NaN/`null` money/health/country).
 - Help-topic `premium` (Help & Uitleg) dekt cancel/gift/prestige; sync via `scripts/_help_topics_extracted.json`.
 
-## Admin Event Pass / event-boost grant (UI)
-- Zelfde speler-Beheerblok, naast VIP:
-  - **Event Pass premium** → `POST /admin/players/:playerId/season-pass/grant` met reden (≥5). Roept `seasonPassService.unlockSeasonPassPremium` aan voor de huidige maand (`YYYY-MM`). Audit: `GRANT_SEASON_PASS`.
-  - **Event-boost toekennen** → `POST /admin/players/:playerId/event-pass/grant` met `days` en/of `hours` + reden. Maakt een timed `EVENT_BOOST` entitlement (zelfde family als checkout/credit redemption), default boost `eventContributionPct: 0.15`. Audit: `GRANT_EVENT_PASS`.
+## Admin Event Pass / event-boost / Crew VIP grant (UI)
+- Zelfde speler-Beheerblok, naast Player VIP:
+  - **Event maandpas** → `POST /admin/players/:playerId/season-pass/grant` (premium-track huidige maand).
+  - **Event-boost toekennen** → `POST /admin/players/:playerId/event-pass/grant` met dagen/uren.
+  - **Crew VIP toekennen** → `POST /admin/players/:playerId/crew-vip/grant` met dagen (crew van die speler).
 - Viewer mag deze grants niet; moderator/super-admin wel.
 
 ## Change Rules
