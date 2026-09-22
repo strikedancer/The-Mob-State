@@ -5931,11 +5931,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get crewUiMissionFailNoJail =>
-      'Vous n\'êtes pas envoyé en prison. La banque d\'équipage paie la pénalité d\'échec, puis le temps de recharge de la mission commence.';
+      'Vous n\'êtes pas envoyé en prison. La banque d\'équipage paie la pénalité d\'échec, la mission échouée est ajoutée à votre casier judiciaire, puis le temps de recharge de la mission commence.';
 
   @override
   String crewUiMissionFailPenalty(String amount) {
-    return 'Pénalité d\'échec : $amount de la banque d\'équipage (pas de prison).';
+    return 'Pénalité d\'échec : $amount de la banque d\'équipage (pas de prison ; noté au casier judiciaire).';
   }
 
   @override

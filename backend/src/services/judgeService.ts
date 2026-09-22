@@ -262,7 +262,13 @@ function serializeAppealOdds(odds: AppealOddsBreakdown) {
 }
 
 function getCrimeName(crimeId: string): string {
-  return crimeNameById.get(crimeId) || crimeId;
+  const known = crimeNameById.get(crimeId);
+  if (known) return known;
+  if (crimeId.startsWith('crew_mission:')) {
+    const key = crimeId.slice('crew_mission:'.length).replace(/_/g, ' ');
+    return key ? `Crew mission (${key})` : 'Crew mission';
+  }
+  return crimeId;
 }
 
 function calculateReleaseTime(createdAt: Date, jailTimeMinutes: number): Date {

@@ -5886,11 +5886,11 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get crewUiMissionFailNoJail =>
-      'Nie jesteś wysyłany do więzienia. Bank załogi płaci karę za niepowodzenie, po czym rozpoczyna się czas odnowienia misji.';
+      'Nie jesteś wysyłany do więzienia. Bank załogi płaci karę za niepowodzenie, nieudana misja trafia do twojej kartoteki, po czym rozpoczyna się czas odnowienia misji.';
 
   @override
   String crewUiMissionFailPenalty(String amount) {
-    return 'Kara za niepowodzenie: $amount z banku załogi (bez więzienia).';
+    return 'Kara za niepowodzenie: $amount z banku załogi (bez więzienia; wpis w kartotece).';
   }
 
   @override

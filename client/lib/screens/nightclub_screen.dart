@@ -455,8 +455,31 @@ class _NightclubScreenState extends State<NightclubScreen> {
         .toSet();
   }
 
-  String? _validDropdownValue(String current, Iterable<String> keys) {
+  String? _validDropdownValue(String? current, Iterable<String> keys) {
+    if (current == null || current.isEmpty) return null;
     return keys.contains(current) ? current : null;
+  }
+
+  InputDecoration _fieldDecoration(String label, {Widget? suffixIcon}) {
+    const border = OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+      borderSide: BorderSide(color: Color(0x66D4A24D)),
+    );
+    return InputDecoration(
+      labelText: label,
+      labelStyle: const TextStyle(color: Colors.white70),
+      floatingLabelStyle: const TextStyle(color: Color(0xFFFFE3A0)),
+      filled: true,
+      fillColor: const Color(0xFF1A130E),
+      suffixIcon: suffixIcon,
+      suffixIconColor: Colors.white70,
+      border: border,
+      enabledBorder: border,
+      focusedBorder: const OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        borderSide: BorderSide(color: Color(0xFFD4A24D), width: 1.4),
+      ),
+    );
   }
 
   Future<void> _ensureHospitalityPrefsLoaded() async {
@@ -1310,6 +1333,12 @@ class _NightclubScreenState extends State<NightclubScreen> {
                             onExpansionChanged: (expanded) {
                               _advancedExpanded = expanded;
                             },
+                            // Material defaults paint a large grey surface behind
+                            // expanded children (visible as a "grijs vlak" under Ops).
+                            backgroundColor: Colors.transparent,
+                            collapsedBackgroundColor: Colors.transparent,
+                            shape: const Border(),
+                            collapsedShape: const Border(),
                             title: Text(
                               Localizations.localeOf(context).languageCode ==
                                       'nl'
@@ -1419,8 +1448,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                 setState(() => _venueId = v);
                 _load(silent: true);
               },
-              decoration: InputDecoration(labelText: _t.nightclubSelectVenue),
-            ),
+              decoration: _fieldDecoration(_t.nightclubSelectVenue)),
             if (_venueId != null) ...[
               const SizedBox(height: 8),
               Text(
@@ -1734,9 +1762,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                 );
               }).toList(),
               onChanged: (v) => setState(() => _selectedProstituteId = v),
-              decoration: InputDecoration(
-                labelText: _t.nightclubSelectCrewMember,
-              ),
+              decoration: _fieldDecoration(_t.nightclubSelectCrewMember),
             ),
             const SizedBox(height: 10),
             FilledButton.icon(
@@ -1969,8 +1995,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                   )
                   .toList(),
               onChanged: (v) => setState(() => _selectedDjId = v),
-              decoration: InputDecoration(labelText: _t.nightclubChooseDj),
-            ),
+              decoration: _fieldDecoration(_t.nightclubChooseDj)),
             if (selectedDj != null) ...[
               const SizedBox(height: 8),
               Wrap(
@@ -2006,8 +2031,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                   )
                   .toList(),
               onChanged: (v) => setState(() => _djHours = v ?? 8),
-              decoration: InputDecoration(labelText: _t.nightclubShiftLength),
-            ),
+              decoration: _fieldDecoration(_t.nightclubShiftLength)),
             const SizedBox(height: 10),
             FilledButton.icon(
               onPressed: _selectedDjId == null ? null : _hireDj,
@@ -2091,9 +2115,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                   )
                   .toList(),
               onChanged: (v) => setState(() => _selectedGuardId = v),
-              decoration: InputDecoration(
-                labelText: _t.nightclubChooseSecurity,
-              ),
+              decoration: _fieldDecoration(_t.nightclubChooseSecurity),
             ),
             if (selectedGuard != null) ...[
               const SizedBox(height: 8),
@@ -2204,8 +2226,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                         }
                       });
                     },
-              decoration: InputDecoration(labelText: _t.nightclubChooseStock),
-            ),
+              decoration: _fieldDecoration(_t.nightclubChooseStock)),
             if (selected != null) ...[
               const SizedBox(height: 8),
               Wrap(
@@ -2227,7 +2248,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
             TextField(
               controller: _storeQuantityController,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: _t.nightclubAmountGrams),
+              decoration: _fieldDecoration(_t.nightclubAmountGrams),
               onChanged: (v) {
                 final parsed = int.tryParse(v);
                 if (parsed != null && parsed > 0) {
@@ -2499,9 +2520,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                   )
                   .toList(),
               onChanged: (v) => setState(() => _residentDays = v ?? 7),
-              decoration: InputDecoration(
-                labelText: _t.nightclubContractDuration,
-              ),
+              decoration: _fieldDecoration(_t.nightclubContractDuration),
             ),
             const SizedBox(height: 6),
             FilledButton.icon(
@@ -2534,7 +2553,12 @@ class _NightclubScreenState extends State<NightclubScreen> {
               ),
             if (eventTemplates.isNotEmpty)
               DropdownButtonFormField<String>(
-                value: _selectedEventType,
+                value: _validDropdownValue(
+                  _selectedEventType,
+                  eventTemplates
+                      .map((raw) => (raw as Map)['key']?.toString() ?? '')
+                      .where((k) => k.isNotEmpty),
+                ),
                 items: eventTemplates.map((raw) {
                   final map = raw as Map<String, dynamic>;
                   final key = map['key']?.toString() ?? '';
@@ -2548,9 +2572,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                   if (v == null) return;
                   setState(() => _selectedEventType = v);
                 },
-                decoration: InputDecoration(
-                  labelText: _t.nightclubEventTemplate,
-                ),
+                decoration: _fieldDecoration(_t.nightclubEventTemplate),
               ),
             const SizedBox(height: 6),
             FilledButton.icon(
@@ -2641,9 +2663,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                 if (v == null) return;
                 setState(() => _selectedUpgradeType = v);
               },
-              decoration: InputDecoration(
-                labelText: _t.nightclubChooseUpgrade,
-              ),
+              decoration: _fieldDecoration(_t.nightclubChooseUpgrade),
             ),
             const SizedBox(height: 6),
             FilledButton.icon(
@@ -2671,9 +2691,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                   .map((v) => DropdownMenuItem(value: v, child: Text('€$v')))
                   .toList(),
               onChanged: (v) => setState(() => _marketingAmount = v ?? 50000),
-              decoration: InputDecoration(
-                labelText: _t.nightclubMarketingInvestment,
-              ),
+              decoration: _fieldDecoration(_t.nightclubMarketingInvestment),
             ),
             const SizedBox(height: 6),
             FilledButton.icon(
@@ -2759,7 +2777,12 @@ class _NightclubScreenState extends State<NightclubScreen> {
             ),
             const SizedBox(height: 8),
             DropdownButtonFormField<String>(
-              value: _selectedSupplierContract,
+              value: _validDropdownValue(
+                _selectedSupplierContract,
+                ((supplierContracts['options'] as List<dynamic>?) ?? const [])
+                    .map((raw) => ((raw as Map)['key'] ?? '').toString())
+                    .where((k) => k.isNotEmpty),
+              ),
               items:
                   ((supplierContracts['options'] as List<dynamic>?) ?? const [])
                       .map((raw) {
@@ -2773,9 +2796,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                 if (v == null) return;
                 setState(() => _selectedSupplierContract = v);
               },
-              decoration: InputDecoration(
-                labelText: _t.nightclubSupplierContract,
-              ),
+              decoration: _fieldDecoration(_t.nightclubSupplierContract),
             ),
             const SizedBox(height: 6),
             FilledButton.icon(
@@ -2785,7 +2806,12 @@ class _NightclubScreenState extends State<NightclubScreen> {
             ),
             const SizedBox(height: 6),
             DropdownButtonFormField<String>(
-              value: _selectedPromoterProfile,
+              value: _validDropdownValue(
+                _selectedPromoterProfile,
+                ((promoters['options'] as List<dynamic>?) ?? const [])
+                    .map((raw) => ((raw as Map)['key'] ?? '').toString())
+                    .where((k) => k.isNotEmpty),
+              ),
               items: ((promoters['options'] as List<dynamic>?) ?? const []).map(
                 (raw) {
                   final map = raw as Map<String, dynamic>;
@@ -2798,9 +2824,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                 if (v == null) return;
                 setState(() => _selectedPromoterProfile = v);
               },
-              decoration: InputDecoration(
-                labelText: _t.nightclubPromoterProfile,
-              ),
+              decoration: _fieldDecoration(_t.nightclubPromoterProfile),
             ),
             const SizedBox(height: 6),
             FilledButton.icon(
@@ -2854,7 +2878,12 @@ class _NightclubScreenState extends State<NightclubScreen> {
             ),
             const SizedBox(height: 6),
             DropdownButtonFormField<String>(
-              value: _selectedSmugglingRoute,
+              value: _validDropdownValue(
+                _selectedSmugglingRoute,
+                ((smuggling['options'] as List<dynamic>?) ?? const [])
+                    .map((raw) => ((raw as Map)['key'] ?? '').toString())
+                    .where((k) => k.isNotEmpty),
+              ),
               items: ((smuggling['options'] as List<dynamic>?) ?? const []).map(
                 (raw) {
                   final map = raw as Map<String, dynamic>;
@@ -2867,8 +2896,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                 if (v == null) return;
                 setState(() => _selectedSmugglingRoute = v);
               },
-              decoration: InputDecoration(labelText: _t.nightclubRoute),
-            ),
+              decoration: _fieldDecoration(_t.nightclubRoute)),
             const SizedBox(height: 6),
             FilledButton.icon(
               onPressed: smugglingCooldownActive
@@ -2945,9 +2973,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                     setState(() => _selectedHospitalityPack = v);
                     _persistHospitalityPrefs(_venueId);
                   },
-                  decoration: InputDecoration(
-                    labelText: _t.nightclubDrinksFoodStock,
-                  ),
+                  decoration: _fieldDecoration(_t.nightclubDrinksFoodStock),
                 );
               },
             ),
@@ -2990,9 +3016,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                     setState(() => _selectedHospitalityPricing = v);
                     _persistHospitalityPrefs(_venueId);
                   },
-                  decoration: InputDecoration(
-                    labelText: _t.nightclubMenuPricingMode,
-                  ),
+                  decoration: _fieldDecoration(_t.nightclubMenuPricingMode),
                 );
               },
             ),
@@ -3009,8 +3033,9 @@ class _NightclubScreenState extends State<NightclubScreen> {
             ),
             TextField(
               controller: _rivalSearchController,
-              decoration: InputDecoration(
-                labelText: _t.nightclubSearchPlayerName,
+              style: const TextStyle(color: Colors.white),
+              decoration: _fieldDecoration(
+                _t.nightclubSearchPlayerName,
                 suffixIcon: IconButton(
                   onPressed: _searchRivals,
                   icon: const Icon(Icons.search),
@@ -3021,7 +3046,12 @@ class _NightclubScreenState extends State<NightclubScreen> {
             const SizedBox(height: 6),
             if (_rivalSearchResults.isNotEmpty)
               DropdownButtonFormField<String>(
-                value: _selectedRivalName,
+                value: _validDropdownValue(
+                  _selectedRivalName,
+                  _rivalSearchResults.map(
+                    (raw) => ((raw as Map)['ownerName'] ?? '').toString(),
+                  ),
+                ),
                 isExpanded: true,
                 items: _rivalSearchResults.map((raw) {
                   final map = raw as Map<String, dynamic>;
@@ -3038,9 +3068,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                   );
                 }).toList(),
                 onChanged: (v) => setState(() => _selectedRivalName = v),
-                decoration: InputDecoration(
-                  labelText: _t.nightclubTargetName,
-                ),
+                decoration: _fieldDecoration(_t.nightclubTargetName),
               ),
             const SizedBox(height: 6),
             Wrap(

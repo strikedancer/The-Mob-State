@@ -5886,11 +5886,11 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get crewUiMissionFailNoJail =>
-      'Você não foi enviado para a prisão. O banco da Crew paga a penalidade de falha e então o tempo de espera da missão começa.';
+      'Você não foi enviado para a prisão. O banco da Crew paga a penalidade de falha, a missão falhada entra no seu registro criminal e então o tempo de espera da missão começa.';
 
   @override
   String crewUiMissionFailPenalty(String amount) {
-    return 'Penalidade de falha: $amount do banco da Crew (sem prisão).';
+    return 'Penalidade de falha: $amount do banco da Crew (sem prisão; anotado no registro criminal).';
   }
 
   @override

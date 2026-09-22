@@ -10375,13 +10375,13 @@ abstract class AppLocalizations {
   /// No description provided for @crewUiMissionFailNoJail.
   ///
   /// In en, this message translates to:
-  /// **'You are not sent to jail. The crew bank pays the fail penalty, then the mission cooldown starts.'**
+  /// **'You are not sent to jail. The crew bank pays the fail penalty, the failed mission is added to your criminal record, then the mission cooldown starts.'**
   String get crewUiMissionFailNoJail;
 
   /// No description provided for @crewUiMissionFailPenalty.
   ///
   /// In en, this message translates to:
-  /// **'Fail penalty: {amount} from the crew bank (no jail).'**
+  /// **'Fail penalty: {amount} from the crew bank (no jail; noted on your criminal record).'**
   String crewUiMissionFailPenalty(String amount);
 
   /// No description provided for @crewUiTr36.

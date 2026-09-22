@@ -12961,8 +12961,8 @@
   "crewUiMissionOutcomeSuccess": "Succès",
   "crewUiMissionOutcomePartial": "Partielle",
   "crewUiMissionOutcomeFail": "Échoué",
-  "crewUiMissionFailNoJail": "Vous n'êtes pas envoyé en prison. La banque d'équipage paie la pénalité d'échec, puis le temps de recharge de la mission commence.",
-  "crewUiMissionFailPenalty": "Pénalité d'échec : {amount} de la banque d'équipage (pas de prison).",
+  "crewUiMissionFailNoJail": "Vous n'êtes pas envoyé en prison. La banque d'équipage paie la pénalité d'échec, la mission échouée est ajoutée à votre casier judiciaire, puis le temps de recharge de la mission commence.",
+  "crewUiMissionFailPenalty": "Pénalité d'échec : {amount} de la banque d'équipage (pas de prison ; noté au casier judiciaire).",
   "@crewUiMissionFailPenalty": {
     "placeholders": {
       "amount": {

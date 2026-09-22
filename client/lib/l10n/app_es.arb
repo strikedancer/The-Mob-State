@@ -12961,8 +12961,8 @@
   "crewUiMissionOutcomeSuccess": "Éxito",
   "crewUiMissionOutcomePartial": "Parcial",
   "crewUiMissionOutcomeFail": "Fallida",
-  "crewUiMissionFailNoJail": "No te envían a la cárcel. El banco de Crew paga la penalización por fallar y luego comienza el tiempo de reutilización de la misión.",
-  "crewUiMissionFailPenalty": "Penalización por fallar: {amount} del banco de Crew (sin cárcel).",
+  "crewUiMissionFailNoJail": "No te envían a la cárcel. El banco de Crew paga la penalización por fallar, la misión fallida se añade a tu historial penal y luego comienza el tiempo de reutilización de la misión.",
+  "crewUiMissionFailPenalty": "Penalización por fallar: {amount} del banco de Crew (sin cárcel; anotado en tu historial penal).",
   "@crewUiMissionFailPenalty": {
     "placeholders": {
       "amount": {

@@ -179,6 +179,7 @@ Fail/partial outcomes:
 - Partial extraction = partial rewards
 - Complete fail kan resources kosten, maar geen hard punitive death spiral
 - Fail haalt `failPenaltyPct` van de catalogus-cash van de **crew-bank** (niet onder 0) en zet niemand in de cel. De UI en de resultaat-melding zeggen dat.
+- Fail schrijft wél een `crimeAttempt` (zonder `jailRelease`) voor contributors (anders de starter), zodat de mislukte missie op het **strafblad / Rechtbank** komt — vergelijkbaar met mislukte heists, maar zonder celstraf.
 
 ## Cooldown and Pacing Framework
 

@@ -5914,11 +5914,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get crewUiMissionFailNoJail =>
-      'Sie werden nicht ins Gefängnis geschickt. Die Crew-Bank zahlt die Fehlschlagsstrafe, dann beginnt die Abklingzeit der Mission.';
+      'Sie werden nicht ins Gefängnis geschickt. Die Crew-Bank zahlt die Fehlschlagsstrafe, die gescheiterte Mission kommt auf Ihre Vorstrafenliste, dann beginnt die Abklingzeit der Mission.';
 
   @override
   String crewUiMissionFailPenalty(String amount) {
-    return 'Strafe für Fehlschlag: $amount von der Mannschaftsbank (kein Gefängnis).';
+    return 'Strafe für Fehlschlag: $amount von der Mannschaftsbank (kein Gefängnis; steht auf der Vorstrafenliste).';
   }
 
   @override

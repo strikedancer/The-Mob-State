@@ -3456,8 +3456,8 @@
   "crewUiMissionOutcomeSuccess": "Success",
   "crewUiMissionOutcomePartial": "Partial",
   "crewUiMissionOutcomeFail": "Failed",
-  "crewUiMissionFailNoJail": "You are not sent to jail. The crew bank pays the fail penalty, then the mission cooldown starts.",
-  "crewUiMissionFailPenalty": "Fail penalty: {amount} from the crew bank (no jail).",
+  "crewUiMissionFailNoJail": "You are not sent to jail. The crew bank pays the fail penalty, the failed mission is added to your criminal record, then the mission cooldown starts.",
+  "crewUiMissionFailPenalty": "Fail penalty: {amount} from the crew bank (no jail; noted on your criminal record).",
   "@crewUiMissionFailPenalty": {
     "placeholders": {
       "amount": {

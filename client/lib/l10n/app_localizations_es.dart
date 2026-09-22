@@ -5911,11 +5911,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get crewUiMissionFailNoJail =>
-      'No te envían a la cárcel. El banco de Crew paga la penalización por fallar y luego comienza el tiempo de reutilización de la misión.';
+      'No te envían a la cárcel. El banco de Crew paga la penalización por fallar, la misión fallida se añade a tu historial penal y luego comienza el tiempo de reutilización de la misión.';
 
   @override
   String crewUiMissionFailPenalty(String amount) {
-    return 'Penalización por fallar: $amount del banco de Crew (sin cárcel).';
+    return 'Penalización por fallar: $amount del banco de Crew (sin cárcel; anotado en tu historial penal).';
   }
 
   @override

@@ -1974,6 +1974,43 @@ export const crewMissionService = {
       );
     }
 
+    // Fail still never jails players (crew-bank penalty only), but write a
+    // court/criminal-record note like failed heists so Rechtbank shows it.
+    if (outcome === 'fail') {
+      const contributionRows = await prisma.$queryRawUnsafe<MissionContributionRow[]>(
+        `
+          SELECT id, runId, playerId, roleKey, contributionScore
+          FROM crew_mission_contributions
+          WHERE runId = ?
+        `,
+        run.id
+      );
+      const recordPlayerIds = [
+        ...new Set(
+          (contributionRows.length > 0
+            ? contributionRows.map((row) => toInt(row.playerId))
+            : [toInt(run.startedByPlayerId)]
+          ).filter((id) => id > 0)
+        ),
+      ];
+      const tierNum = toInt(template.tier, 1);
+      const recordMinutes = tierNum >= 3 ? 45 : tierNum >= 2 ? 30 : 15;
+      const crimeId = `crew_mission:${template.missionKey}`;
+      if (recordPlayerIds.length > 0) {
+        await prisma.crimeAttempt.createMany({
+          data: recordPlayerIds.map((recordPlayerId) => ({
+            playerId: recordPlayerId,
+            crimeId,
+            success: false,
+            reward: 0,
+            xpGained: 0,
+            jailed: false,
+            jailTime: recordMinutes,
+          })),
+        });
+      }
+    }
+
     const resolvedRun = await this.getRun(playerId, run.id);
 
     if (outcome === 'success' && template.missionKey === 'casino_ledger_raid') {

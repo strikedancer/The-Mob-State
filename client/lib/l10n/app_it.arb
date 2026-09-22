@@ -12961,8 +12961,8 @@
   "crewUiMissionOutcomeSuccess": "Successo",
   "crewUiMissionOutcomePartial": "Parziale",
   "crewUiMissionOutcomeFail": "Fallito",
-  "crewUiMissionFailNoJail": "Non sei mandato in prigione. La Crew Bank paga la penalità per il fallimento, quindi inizia il cooldown della missione.",
-  "crewUiMissionFailPenalty": "Penalità per il fallimento: {amount} dalla Crew Bank (no jail).",
+  "crewUiMissionFailNoJail": "Non sei mandato in prigione. La Crew Bank paga la penalità per il fallimento, la missione fallita viene aggiunta al casellario, quindi inizia il cooldown della missione.",
+  "crewUiMissionFailPenalty": "Penalità per il fallimento: {amount} dalla Crew Bank (niente prigione; annotata sul casellario).",
   "@crewUiMissionFailPenalty": {
     "placeholders": {
       "amount": {

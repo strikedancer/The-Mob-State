@@ -12961,8 +12961,8 @@
   "crewUiMissionOutcomeSuccess": "Sukces",
   "crewUiMissionOutcomePartial": "Częściowy",
   "crewUiMissionOutcomeFail": "Przegrany",
-  "crewUiMissionFailNoJail": "Nie jesteś wysyłany do więzienia. Bank załogi płaci karę za niepowodzenie, po czym rozpoczyna się czas odnowienia misji.",
-  "crewUiMissionFailPenalty": "Kara za niepowodzenie: {amount} z banku załogi (bez więzienia).",
+  "crewUiMissionFailNoJail": "Nie jesteś wysyłany do więzienia. Bank załogi płaci karę za niepowodzenie, nieudana misja trafia do twojej kartoteki, po czym rozpoczyna się czas odnowienia misji.",
+  "crewUiMissionFailPenalty": "Kara za niepowodzenie: {amount} z banku załogi (bez więzienia; wpis w kartotece).",
   "@crewUiMissionFailPenalty": {
     "placeholders": {
       "amount": {

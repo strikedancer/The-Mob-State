@@ -5878,11 +5878,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get crewUiMissionFailNoJail =>
-      'Je gaat niet naar de cel. De crew-bank betaalt de fail-straf; daarna geldt de missie-cooldown.';
+      'Je gaat niet naar de cel. De crew-bank betaalt de fail-straf; de mislukte missie komt wel op je strafblad. Daarna geldt de missie-cooldown.';
 
   @override
   String crewUiMissionFailPenalty(String amount) {
-    return 'Fail-straf: $amount van de crew-bank (geen gevangenis).';
+    return 'Fail-straf: $amount van de crew-bank (geen gevangenis; wel op je strafblad).';
   }
 
   @override

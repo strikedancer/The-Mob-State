@@ -10942,8 +10942,8 @@
   "crewUiMissionOutcomeSuccess": "Gelukt",
   "crewUiMissionOutcomePartial": "Gedeeltelijk",
   "crewUiMissionOutcomeFail": "Mislukt",
-  "crewUiMissionFailNoJail": "Je gaat niet naar de cel. De crew-bank betaalt de fail-straf; daarna geldt de missie-cooldown.",
-  "crewUiMissionFailPenalty": "Fail-straf: {amount} van de crew-bank (geen gevangenis).",
+  "crewUiMissionFailNoJail": "Je gaat niet naar de cel. De crew-bank betaalt de fail-straf; de mislukte missie komt wel op je strafblad. Daarna geldt de missie-cooldown.",
+  "crewUiMissionFailPenalty": "Fail-straf: {amount} van de crew-bank (geen gevangenis; wel op je strafblad).",
   "@crewUiMissionFailPenalty": {
     "placeholders": {
       "amount": {

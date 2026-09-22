@@ -5902,11 +5902,11 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get crewUiMissionFailNoJail =>
-      'Non sei mandato in prigione. La Crew Bank paga la penalità per il fallimento, quindi inizia il cooldown della missione.';
+      'Non sei mandato in prigione. La Crew Bank paga la penalità per il fallimento, la missione fallita viene aggiunta al casellario, quindi inizia il cooldown della missione.';
 
   @override
   String crewUiMissionFailPenalty(String amount) {
-    return 'Penalità per il fallimento: $amount dalla Crew Bank (no jail).';
+    return 'Penalità per il fallimento: $amount dalla Crew Bank (niente prigione; annotata sul casellario).';
   }
 
   @override

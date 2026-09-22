@@ -12961,8 +12961,8 @@
   "crewUiMissionOutcomeSuccess": "Sucesso",
   "crewUiMissionOutcomePartial": "Parcial",
   "crewUiMissionOutcomeFail": "Fracassada",
-  "crewUiMissionFailNoJail": "Você não foi enviado para a prisão. O banco da Crew paga a penalidade de falha e então o tempo de espera da missão começa.",
-  "crewUiMissionFailPenalty": "Penalidade de falha: {amount} do banco da Crew (sem prisão).",
+  "crewUiMissionFailNoJail": "Você não foi enviado para a prisão. O banco da Crew paga a penalidade de falha, a missão falhada entra no seu registro criminal e então o tempo de espera da missão começa.",
+  "crewUiMissionFailPenalty": "Penalidade de falha: {amount} do banco da Crew (sem prisão; anotado no registro criminal).",
   "@crewUiMissionFailPenalty": {
     "placeholders": {
       "amount": {
