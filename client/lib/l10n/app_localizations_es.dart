@@ -11856,6 +11856,44 @@ class AppLocalizationsEs extends AppLocalizations {
   String get jailYouAreInJail => 'Estás en prisión';
 
   @override
+  String get jailMathTitle => 'Cell arithmetic';
+
+  @override
+  String jailMathHint(String seconds) {
+    return 'Correct answer: −${seconds}s off your sentence';
+  }
+
+  @override
+  String jailMathPrompt(String prompt) {
+    return 'What is $prompt?';
+  }
+
+  @override
+  String get jailMathAnswerHint => 'Answer';
+
+  @override
+  String get jailMathSubmit => 'OK';
+
+  @override
+  String jailMathCorrect(String seconds) {
+    return 'Correct! −${seconds}s';
+  }
+
+  @override
+  String get jailMathWrong => 'Wrong — try the next one';
+
+  @override
+  String get jailMathInvalidAnswer => 'Enter a whole number';
+
+  @override
+  String jailMathCooldown(String seconds) {
+    return 'Wait ${seconds}s';
+  }
+
+  @override
+  String get jailMathReleased => 'You answered your way free!';
+
+  @override
   String get vehicleCondition => 'Condición';
 
   @override

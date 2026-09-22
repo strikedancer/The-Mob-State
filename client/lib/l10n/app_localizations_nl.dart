@@ -11806,6 +11806,44 @@ class AppLocalizationsNl extends AppLocalizations {
   String get jailYouAreInJail => 'Je zit in de cel';
 
   @override
+  String get jailMathTitle => 'Rekensommen in de cel';
+
+  @override
+  String jailMathHint(String seconds) {
+    return 'Goed antwoord: −${seconds}s van je straf';
+  }
+
+  @override
+  String jailMathPrompt(String prompt) {
+    return 'Hoeveel is $prompt?';
+  }
+
+  @override
+  String get jailMathAnswerHint => 'Antwoord';
+
+  @override
+  String get jailMathSubmit => 'OK';
+
+  @override
+  String jailMathCorrect(String seconds) {
+    return 'Goed! −${seconds}s';
+  }
+
+  @override
+  String get jailMathWrong => 'Fout — volgende som';
+
+  @override
+  String get jailMathInvalidAnswer => 'Vul een heel getal in';
+
+  @override
+  String jailMathCooldown(String seconds) {
+    return 'Wacht ${seconds}s';
+  }
+
+  @override
+  String get jailMathReleased => 'Je hebt jezelf vrijgerekend!';
+
+  @override
   String get vehicleCondition => 'Conditie';
 
   @override
@@ -19047,7 +19085,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicPrisonHow =>
-      'Na arrestatie start een timer op basis van Wanted Level. Wanted Level 1 = korte straf (minuten), Wanted Level 5+ = uren gevangenisstraf.\nBorgtocht schaalt met je resterende celstraf en valt nooit lager uit dan Wanted Level × €1.000. Lange straffen worden dus duurder om direct af te kopen.\nOntsnappen: je kunt een ontsnappingspoging wagen maar de slagingskans is laag. Mislukking verlengt je straftijd met een vast bedrag.\nIn de Gevangenis-list en de jail overlay kun je altijd jezelf vrijkopen met borg en ook zelf een uitbraakpoging doen zolang je nog vastzit.\nIedereen kan een andere speler uitkopen met eigen cash. Alleen de crew-eigenaar en co-eigenaren zien bij een vastzittend crewlid extra de knop om de borg uit de crewbank te betalen. Jij houdt je eigen cash; de pot gaat eraf.\nBetalen uit de crewbank is zwart geld. Soms pakt de politie jou dan op (ongeveer 1 op 5 keer, 30 tot 45 minuten cel). De ander is dan al vrij. Zelf in de cel kun je de crewbank niet gebruiken.\nCrewleden kunnen je bezoeken en kleine voordelen geven (stats, moreel) terwijl je vastzit.\nBij arrestatie ontvangen je vrienden en crewleden nu een pushmelding dat je bent opgepakt en op hulp wacht.\nIn de wereldchat komt ook een openbare Gevangenis-regel met je naam. Koopt of haalt een andere speler je eruit, dan staan beide namen erbij.\nWapen- en armor-bezit wordt geconfisceerd bij arrest als je er geen legale dekking voor hebt.\nRechtbank-optie: ga naar de rechtbank voor strafvermindering via advocaat (zie Rechtbank).\nTerwijl je vastzit lopen productie-timers (drugs, ammo-factory) gewoon door. Je empire werkt zonder je.\nJe kunt het ziekenhuis niet bezoeken terwijl je vastzit. HP-herstel wacht tot je vrij bent.\nZolang je vastzit is de Zwarte Markt dicht: kopen, verkopen en advertenties plaatsen kan niet. Op het Trainingscircuit mag je wel kracht, snelheid en uithouding trainen; de schietbaan blijft dicht tot je vrijkomt.';
+      'Na arrestatie start een timer op basis van Wanted Level. Wanted Level 1 = korte straf (minuten), Wanted Level 5+ = uren gevangenisstraf.\nBorgtocht schaalt met je resterende celstraf en valt nooit lager uit dan Wanted Level × €1.000. Lange straffen worden dus duurder om direct af te kopen.\nOntsnappen: je kunt een ontsnappingspoging wagen maar de slagingskans is laag. Mislukking verlengt je straftijd met een vast bedrag.\nIn de Gevangenis-list en de jail overlay kun je altijd jezelf vrijkopen met borg en ook zelf een uitbraakpoging doen zolang je nog vastzit. Op de jail overlay kun je ook plus-, min- en deelsommen maken; elk goed antwoord haalt 10 seconden van je straf af.\nIedereen kan een andere speler uitkopen met eigen cash. Alleen de crew-eigenaar en co-eigenaren zien bij een vastzittend crewlid extra de knop om de borg uit de crewbank te betalen. Jij houdt je eigen cash; de pot gaat eraf.\nBetalen uit de crewbank is zwart geld. Soms pakt de politie jou dan op (ongeveer 1 op 5 keer, 30 tot 45 minuten cel). De ander is dan al vrij. Zelf in de cel kun je de crewbank niet gebruiken.\nCrewleden kunnen je bezoeken en kleine voordelen geven (stats, moreel) terwijl je vastzit.\nBij arrestatie ontvangen je vrienden en crewleden nu een pushmelding dat je bent opgepakt en op hulp wacht.\nIn de wereldchat komt ook een openbare Gevangenis-regel met je naam. Koopt of haalt een andere speler je eruit, dan staan beide namen erbij.\nWapen- en armor-bezit wordt geconfisceerd bij arrest als je er geen legale dekking voor hebt.\nRechtbank-optie: ga naar de rechtbank voor strafvermindering via advocaat (zie Rechtbank).\nTerwijl je vastzit lopen productie-timers (drugs, ammo-factory) gewoon door. Je empire werkt zonder je.\nJe kunt het ziekenhuis niet bezoeken terwijl je vastzit. HP-herstel wacht tot je vrij bent.\nZolang je vastzit is de Zwarte Markt dicht: kopen, verkopen en advertenties plaatsen kan niet. Op het Trainingscircuit mag je wel kracht, snelheid en uithouding trainen; de schietbaan blijft dicht tot je vrijkomt.';
 
   @override
   String get helpTopicPrisonTips =>

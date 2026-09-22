@@ -20477,6 +20477,66 @@ abstract class AppLocalizations {
   /// **'You are in jail'**
   String get jailYouAreInJail;
 
+  /// No description provided for @jailMathTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cell arithmetic'**
+  String get jailMathTitle;
+
+  /// No description provided for @jailMathHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct answer: −{seconds}s off your sentence'**
+  String jailMathHint(String seconds);
+
+  /// No description provided for @jailMathPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'What is {prompt}?'**
+  String jailMathPrompt(String prompt);
+
+  /// No description provided for @jailMathAnswerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer'**
+  String get jailMathAnswerHint;
+
+  /// No description provided for @jailMathSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get jailMathSubmit;
+
+  /// No description provided for @jailMathCorrect.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct! −{seconds}s'**
+  String jailMathCorrect(String seconds);
+
+  /// No description provided for @jailMathWrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong — try the next one'**
+  String get jailMathWrong;
+
+  /// No description provided for @jailMathInvalidAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a whole number'**
+  String get jailMathInvalidAnswer;
+
+  /// No description provided for @jailMathCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'Wait {seconds}s'**
+  String jailMathCooldown(String seconds);
+
+  /// No description provided for @jailMathReleased.
+  ///
+  /// In en, this message translates to:
+  /// **'You answered your way free!'**
+  String get jailMathReleased;
+
   /// No description provided for @vehicleCondition.
   ///
   /// In en, this message translates to:
@@ -32669,7 +32729,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicPrisonHow.
   ///
   /// In en, this message translates to:
-  /// **'After arrest a timer starts based on Wanted Level. Wanted Level 1 = short sentence (minutes), Wanted Level 5+ = hours in prison.\nBail scales with your remaining sentence and never drops below Wanted Level × €1,000. Longer sentences therefore cost more to buy out immediately.\nEscape: you can attempt a prison break but success chance is low. Failure extends your sentence by a fixed amount.\nIn the Prison list and jail overlay you can always pay your own bail and also attempt your own escape while still jailed.\nAnyone can buy another player out with their own cash. Only the crew owner and co-owners see an extra button on a jailed crewmate to pay bail from the crew bank. You keep your own cash; the vault is charged.\nPaying from the crew bank is dirty money. Sometimes the police then arrest you (about 1 in 5 times, 30 to 45 minutes in jail). The other player is already free. You cannot use the crew bank while you yourself are jailed.\nCrew members can visit you and provide small benefits (stats, morale) while you are locked up.\nOn arrest your friends and crew members now receive a push notification that you were caught and are waiting for help.\nWorld chat also posts a public Prison line with your name. If another player pays your bail or breaks you out, both names appear there.\nWeapons and armor are confiscated on arrest if you have no legal cover for them.\nCourt option: go to court for a sentence reduction via a lawyer (see Court).\nWhile locked up production timers (drugs, ammo factory) keep running. Your empire works without you.\nYou cannot visit the hospital while locked up. HP recovery waits until you are free.\nWhile jailed the Black Market is closed: you cannot buy, sell or list there. On the Training hub you can still train strength, speed and stamina; the shooting range stays closed until you are released.'**
+  /// **'After arrest a timer starts based on Wanted Level. Wanted Level 1 = short sentence (minutes), Wanted Level 5+ = hours in prison.\nBail scales with your remaining sentence and never drops below Wanted Level × €1,000. Longer sentences therefore cost more to buy out immediately.\nEscape: you can attempt a prison break but success chance is low. Failure extends your sentence by a fixed amount.\nIn the Prison list and jail overlay you can always pay your own bail and also attempt your own escape while still jailed. On the jail overlay you can also solve plus, minus and divide sums; each correct answer removes 10 seconds from your sentence.\nAnyone can buy another player out with their own cash. Only the crew owner and co-owners see an extra button on a jailed crewmate to pay bail from the crew bank. You keep your own cash; the vault is charged.\nPaying from the crew bank is dirty money. Sometimes the police then arrest you (about 1 in 5 times, 30 to 45 minutes in jail). The other player is already free. You cannot use the crew bank while you yourself are jailed.\nCrew members can visit you and provide small benefits (stats, morale) while you are locked up.\nOn arrest your friends and crew members now receive a push notification that you were caught and are waiting for help.\nWorld chat also posts a public Prison line with your name. If another player pays your bail or breaks you out, both names appear there.\nWeapons and armor are confiscated on arrest if you have no legal cover for them.\nCourt option: go to court for a sentence reduction via a lawyer (see Court).\nWhile locked up production timers (drugs, ammo factory) keep running. Your empire works without you.\nYou cannot visit the hospital while locked up. HP recovery waits until you are free.\nWhile jailed the Black Market is closed: you cannot buy, sell or list there. On the Training hub you can still train strength, speed and stamina; the shooting range stays closed until you are released.'**
   String get helpTopicPrisonHow;
 
   /// No description provided for @helpTopicPrisonTips.

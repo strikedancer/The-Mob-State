@@ -43,6 +43,15 @@ class _JailOverlayState extends State<JailOverlay> {
   OverlayEntry? _notificationEntry;
   Timer? _notificationTimer;
 
+  final TextEditingController _mathAnswerController = TextEditingController();
+  final FocusNode _mathFocusNode = FocusNode();
+  String? _mathPrompt;
+  int _mathRewardSeconds = 10;
+  bool _mathLoading = false;
+  bool _mathSubmitting = false;
+  String? _mathFeedback;
+  bool _mathFeedbackOk = false;
+
   @override
   void initState() {
     super.initState();
@@ -51,6 +60,7 @@ class _JailOverlayState extends State<JailOverlay> {
     _bailAmount = _calculateFallbackBailAmount();
     _startTimer();
     _refreshJailStatus();
+    _loadMathChallenge();
   }
 
   @override
@@ -77,6 +87,8 @@ class _JailOverlayState extends State<JailOverlay> {
     _timer?.cancel();
     _notificationTimer?.cancel();
     _notificationEntry?.remove();
+    _mathAnswerController.dispose();
+    _mathFocusNode.dispose();
     super.dispose();
   }
 
@@ -202,6 +214,128 @@ class _JailOverlayState extends State<JailOverlay> {
       '$_escapeAttemptsRemaining',
       '$_maxEscapeAttempts',
     );
+  }
+
+  Future<void> _loadMathChallenge() async {
+    if (_mathLoading) return;
+    setState(() => _mathLoading = true);
+    try {
+      final response = await _apiClient.get('/player/jail-math/challenge');
+      if (!mounted) return;
+      if (response.statusCode != 200) {
+        setState(() => _mathLoading = false);
+        return;
+      }
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      setState(() {
+        _mathPrompt = data['prompt']?.toString();
+        _mathRewardSeconds =
+            (data['rewardSeconds'] as num?)?.toInt() ?? 10;
+        final remaining = (data['remainingSeconds'] as num?)?.toInt();
+        if (remaining != null && remaining >= 0) {
+          _remainingSeconds = remaining;
+        }
+        _mathLoading = false;
+      });
+    } catch (_) {
+      if (mounted) setState(() => _mathLoading = false);
+    }
+  }
+
+  Future<void> _submitMathAnswer() async {
+    if (_mathSubmitting || _mathPrompt == null) return;
+    final raw = _mathAnswerController.text.trim();
+    final answer = int.tryParse(raw);
+    if (answer == null) {
+      final l10n = AppLocalizations.of(context)!;
+      setState(() {
+        _mathFeedback = l10n.jailMathInvalidAnswer;
+        _mathFeedbackOk = false;
+      });
+      return;
+    }
+
+    setState(() {
+      _mathSubmitting = true;
+      _mathFeedback = null;
+    });
+
+    try {
+      final response = await _apiClient.post('/player/jail-math/answer', {
+        'answer': answer,
+      });
+      if (!mounted) return;
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final l10n = AppLocalizations.of(context)!;
+
+      if (response.statusCode == 429) {
+        final seconds =
+            (data['params']?['remainingSeconds'] as num?)?.toInt() ?? 2;
+        setState(() {
+          _mathFeedback = l10n.jailMathCooldown(seconds.toString());
+          _mathFeedbackOk = false;
+          _mathSubmitting = false;
+        });
+        return;
+      }
+
+      if (response.statusCode != 200) {
+        setState(() {
+          _mathFeedback = l10n.jailMathWrong;
+          _mathFeedbackOk = false;
+          _mathSubmitting = false;
+        });
+        await _loadMathChallenge();
+        return;
+      }
+
+      final params = data['params'] as Map<String, dynamic>? ?? {};
+      final correct = params['correct'] == true;
+      final released = params['released'] == true;
+      final remaining = (params['remainingSeconds'] as num?)?.toInt();
+      final reduced = (params['reducedBySeconds'] as num?)?.toInt() ?? 0;
+      final nextPrompt = params['prompt']?.toString();
+      final reward =
+          (params['rewardSeconds'] as num?)?.toInt() ?? _mathRewardSeconds;
+
+      setState(() {
+        _mathAnswerController.clear();
+        if (nextPrompt != null && nextPrompt.isNotEmpty) {
+          _mathPrompt = nextPrompt;
+        }
+        _mathRewardSeconds = reward;
+        if (remaining != null && remaining >= 0) {
+          _remainingSeconds = remaining;
+          _bailAmount = _calculateFallbackBailAmount();
+        }
+        if (correct) {
+          _mathFeedback = l10n.jailMathCorrect(reduced.toString());
+          _mathFeedbackOk = true;
+        } else {
+          _mathFeedback = l10n.jailMathWrong;
+          _mathFeedbackOk = false;
+        }
+        _mathSubmitting = false;
+      });
+
+      if (released || (remaining != null && remaining <= 0)) {
+        _timer?.cancel();
+        _showTopRightNotification(
+          l10n.jailMathReleased,
+          backgroundColor: Colors.green.shade700,
+          icon: Icons.check_circle_outline,
+        );
+        widget.onReleased?.call();
+      }
+    } catch (_) {
+      if (!mounted) return;
+      final l10n = AppLocalizations.of(context)!;
+      setState(() {
+        _mathFeedback = l10n.jailMathWrong;
+        _mathFeedbackOk = false;
+        _mathSubmitting = false;
+      });
+    }
   }
 
   String _formatTime() {
@@ -492,6 +626,125 @@ class _JailOverlayState extends State<JailOverlay> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(compact ? 12 : 14),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.72),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.amber.withOpacity(0.35)),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            l10n.jailMathTitle,
+                            style: TextStyle(
+                              color: Colors.amber.shade200,
+                              fontWeight: FontWeight.bold,
+                              fontSize: compact ? 14 : 15,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: compact ? 4 : 6),
+                          Text(
+                            l10n.jailMathHint(_mathRewardSeconds.toString()),
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: compact ? 12 : 13,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: compact ? 8 : 10),
+                          if (_mathLoading && _mathPrompt == null)
+                            const Center(
+                              child: SizedBox(
+                                width: 22,
+                                height: 22,
+                                child: CircularProgressIndicator(strokeWidth: 2),
+                              ),
+                            )
+                          else ...[
+                            Text(
+                              _mathPrompt == null
+                                  ? '…'
+                                  : l10n.jailMathPrompt(_mathPrompt!),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: compact ? 20 : 24,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'monospace',
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(height: compact ? 8 : 10),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: TextField(
+                                    controller: _mathAnswerController,
+                                    focusNode: _mathFocusNode,
+                                    keyboardType: TextInputType.number,
+                                    textInputAction: TextInputAction.done,
+                                    onSubmitted: (_) => _submitMathAnswer(),
+                                    enabled: !_mathSubmitting,
+                                    style: const TextStyle(color: Colors.white),
+                                    decoration: InputDecoration(
+                                      hintText: l10n.jailMathAnswerHint,
+                                      hintStyle: const TextStyle(color: Colors.white38),
+                                      filled: true,
+                                      fillColor: Colors.white12,
+                                      contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 12,
+                                        vertical: 12,
+                                      ),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide.none,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                ElevatedButton(
+                                  onPressed:
+                                      _mathSubmitting ? null : _submitMathAnswer,
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.amber.shade700,
+                                    foregroundColor: Colors.black,
+                                    minimumSize: const Size(72, 48),
+                                  ),
+                                  child: _mathSubmitting
+                                      ? const SizedBox(
+                                          width: 18,
+                                          height: 18,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                          ),
+                                        )
+                                      : Text(l10n.jailMathSubmit),
+                                ),
+                              ],
+                            ),
+                            if (_mathFeedback != null) ...[
+                              SizedBox(height: compact ? 6 : 8),
+                              Text(
+                                _mathFeedback!,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: _mathFeedbackOk
+                                      ? Colors.lightGreenAccent
+                                      : Colors.orangeAccent,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: compact ? 12.5 : 13.5,
+                                ),
+                              ),
+                            ],
+                          ],
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: compact ? 10 : 12),
                     Container(
                       width: double.infinity,
                       padding: EdgeInsets.all(compact ? 12 : 14),

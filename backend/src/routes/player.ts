@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
 import { playerService } from '../services/playerService';
 import * as policeService from '../services/policeService';
+import * as jailMathService from '../services/jailMathService';
 import { getRankTitle } from '../utils/rankSystem';
 import { getPlayerCooldowns } from '../services/cooldownService';
 import prisma from '../lib/prisma';
@@ -674,6 +675,63 @@ router.post('/prison/escape', authenticate, async (req: AuthRequest, res: Respon
       event: 'error.internal',
       params: {},
     });
+  }
+});
+
+router.get('/jail-math/challenge', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const challenge = await jailMathService.getJailMathChallenge(req.player!.id);
+    return res.status(200).json({
+      prompt: challenge.prompt,
+      rewardSeconds: challenge.rewardSeconds,
+      remainingSeconds: challenge.remainingSeconds,
+    });
+  } catch (error) {
+    if (error instanceof Error && (error as { code?: string }).code === 'NOT_JAILED') {
+      return res.status(400).json({ event: 'error.not_jailed', params: {} });
+    }
+    return res.status(500).json({ event: 'error.internal', params: {} });
+  }
+});
+
+router.post('/jail-math/answer', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const result = await jailMathService.submitJailMathAnswer(
+      req.player!.id,
+      req.body?.answer,
+    );
+    return res.status(200).json({
+      event: result.correct ? 'jail.math_correct' : 'jail.math_wrong',
+      params: {
+        correct: result.correct,
+        prompt: result.prompt,
+        rewardSeconds: result.rewardSeconds,
+        remainingSeconds: result.remainingSeconds,
+        reducedBySeconds: result.reducedBySeconds,
+        released: result.released,
+      },
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      const code = (error as { code?: string }).code;
+      if (code === 'NOT_JAILED') {
+        return res.status(400).json({ event: 'error.not_jailed', params: {} });
+      }
+      if (code === 'MATH_COOLDOWN') {
+        const remainingSeconds = Math.max(
+          1,
+          Number((error as { retryAfterSeconds?: number }).retryAfterSeconds || 2),
+        );
+        return res.status(429).json({
+          event: 'error.cooldown',
+          params: { remainingSeconds },
+        });
+      }
+      if (code === 'INVALID_ANSWER') {
+        return res.status(400).json({ event: 'error.invalid_answer', params: {} });
+      }
+    }
+    return res.status(500).json({ event: 'error.internal', params: {} });
   }
 });
 

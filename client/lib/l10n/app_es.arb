@@ -13347,5 +13347,43 @@
   "crewUiVehicleFuelFull": "The tank is already full.",
   "crewUiVehicleNotBroken": "This vehicle does not need repair.",
   "crewUiVehicleNotOfficer": "Only the leader or co-leader can sell a crew vehicle.",
-  "crewUiVehicleActionFailed": "That vehicle action failed."
+  "crewUiVehicleActionFailed": "That vehicle action failed.",
+  "jailMathTitle": "Cell arithmetic",
+  "jailMathHint": "Correct answer: −{seconds}s off your sentence",
+  "@jailMathHint": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "jailMathPrompt": "What is {prompt}?",
+  "@jailMathPrompt": {
+    "placeholders": {
+      "prompt": {
+        "type": "String"
+      }
+    }
+  },
+  "jailMathAnswerHint": "Answer",
+  "jailMathSubmit": "OK",
+  "jailMathCorrect": "Correct! −{seconds}s",
+  "@jailMathCorrect": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "jailMathWrong": "Wrong — try the next one",
+  "jailMathInvalidAnswer": "Enter a whole number",
+  "jailMathCooldown": "Wait {seconds}s",
+  "@jailMathCooldown": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "jailMathReleased": "You answered your way free!"
 }
