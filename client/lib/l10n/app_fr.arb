@@ -8139,7 +8139,7 @@
       }
     }
   },
-  "aviationUiCargoCapacity": "Cargaison : {amount}",
+  "aviationUiCargoCapacity": "Contrebande : {amount} tuiles",
   "@aviationUiCargoCapacity": {
     "placeholders": {
       "amount": {
@@ -11248,7 +11248,7 @@
     }
   },
   "aviationRankLocked": "Classement trop bas",
-  "travelAircraftBonusChip": "Propre avion : −{percent} % d'attente par étape",
+  "travelAircraftBonusChip": "Propre avion : −{percent}% Attente de voyage/étape",
   "@travelAircraftBonusChip": {
     "placeholders": {
       "percent": {
@@ -11319,7 +11319,7 @@
   "aviationRepairSuccess": "Avion réparé.",
   "aviationRepairFailed": "La réparation a échoué.",
   "aviationBrokenBadge": "Cassée",
-  "aviationTravelBonusChip": "−{percent}% d'attente par étape",
+  "aviationTravelBonusChip": "−{percent}% Attente de voyage/étape",
   "@aviationTravelBonusChip": {
     "placeholders": {
       "percent": {

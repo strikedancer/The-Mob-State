@@ -8139,7 +8139,7 @@
       }
     }
   },
-  "aviationUiCargoCapacity": "Carga: {amount}",
+  "aviationUiCargoCapacity": "Contrabando: {amount} fichas",
   "@aviationUiCargoCapacity": {
     "placeholders": {
       "amount": {
@@ -11248,7 +11248,7 @@
     }
   },
   "aviationRankLocked": "Clasificación demasiado baja",
-  "travelAircraftBonusChip": "Avión propio: −{percent}% de espera por tramo",
+  "travelAircraftBonusChip": "Avión propio: −{percent}% Espera de viaje/tramo",
   "@travelAircraftBonusChip": {
     "placeholders": {
       "percent": {
@@ -11319,7 +11319,7 @@
   "aviationRepairSuccess": "Aviones reparados.",
   "aviationRepairFailed": "La reparación falló.",
   "aviationBrokenBadge": "Rota",
-  "aviationTravelBonusChip": "−{percent}% espera por tramo",
+  "aviationTravelBonusChip": "−{percent}% Espera de viaje/tramo",
   "@aviationTravelBonusChip": {
     "placeholders": {
       "percent": {

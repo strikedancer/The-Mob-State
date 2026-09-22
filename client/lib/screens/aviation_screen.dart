@@ -1011,8 +1011,6 @@ class _AviationScreenState extends State<AviationScreen> {
     final description = _catalogDescription(item, l10n);
     final price = (item['price'] as num?)?.toInt() ?? 0;
     final minRank = (item['minRank'] as num?)?.toInt() ?? 0;
-    final speedMultiplier =
-        (item['speedMultiplier'] as num?)?.toDouble() ?? 1.0;
     final cargoCapacity = (item['cargoCapacity'] as num?)?.toInt() ?? 0;
     final travelBonus = (item['travelBonus'] as num?)?.toDouble() ?? 0;
     final requiredLicense = _requiredLicenseForAircraft(
@@ -1095,12 +1093,6 @@ class _AviationScreenState extends State<AviationScreen> {
               _statChip(
                 l10n.aviationUiMinRank(minRank),
                 rankOk ? Colors.white70 : const Color(0xFFE5967A),
-              ),
-              _statChip(
-                l10n.aviationUiSpeedMultiplier(
-                  speedMultiplier.toStringAsFixed(1),
-                ),
-                Colors.white70,
               ),
               _statChip(
                 l10n.aviationUiCargoCapacity(cargoCapacity),

@@ -955,7 +955,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String travelAircraftBonusChip(String percent) {
-    return 'Propre avion : −$percent % d\'attente par étape';
+    return 'Propre avion : −$percent% Attente de voyage/étape';
   }
 
   @override
@@ -5666,7 +5666,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String aviationUiCargoCapacity(int amount) {
-    return 'Cargaison : $amount';
+    return 'Contrebande : $amount tuiles';
   }
 
   @override
@@ -5798,7 +5798,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String aviationTravelBonusChip(String percent) {
-    return '−$percent% d\'attente par étape';
+    return '−$percent% Attente de voyage/étape';
   }
 
   @override

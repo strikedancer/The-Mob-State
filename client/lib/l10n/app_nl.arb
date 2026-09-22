@@ -295,7 +295,7 @@
   "travelWantedChip": "Wanted {level}",
   "travelFbiChip": "FBI {level}",
   "travelCannotAfford": "Te weinig cash",
-  "travelAircraftBonusChip": "Eigen vliegtuig: −{percent}% wacht per etappe",
+  "travelAircraftBonusChip": "Eigen vliegtuig: −{percent}% Reizen-wacht per etappe",
   "@travelAircraftBonusChip": {
     "placeholders": {
       "percent": {
@@ -11296,7 +11296,7 @@
       }
     }
   },
-  "aviationUiCargoCapacity": "Lading: {amount}",
+  "aviationUiCargoCapacity": "Smokkel: {amount} tegels",
   "@aviationUiCargoCapacity": {
     "placeholders": {
       "amount": {
@@ -11379,7 +11379,7 @@
   "aviationRepairSuccess": "Toestel gerepareerd.",
   "aviationRepairFailed": "Reparatie mislukt.",
   "aviationBrokenBadge": "Kapot",
-  "aviationTravelBonusChip": "−{percent}% wacht per etappe",
+  "aviationTravelBonusChip": "−{percent}% Reizen-wacht per etappe",
   "@aviationTravelBonusChip": {
     "placeholders": {
       "percent": {

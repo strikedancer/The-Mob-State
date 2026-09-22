@@ -781,7 +781,7 @@ In **Voertuig stelen** kies je Auto / Motor / Boot via de drie lane-cards. Catal
 ### Reistijdbonus op Reizen
 - Commerciële Travel landt per etappe meteen. Het beste bezeten vliegtuig verkort alleen de etappe-wacht (`3600s × (1 − bonus)`).
 - Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, cargo −30%. Niet cumulatief.
-- Zichtbaar op het Reizen-scherm als "Eigen vliegtuig: −X% wacht per etappe".
+- Zichtbaar op het Reizen-scherm als "Eigen vliegtuig: −X% Reizen-wacht per etappe". Hangar **Vliegen** is apart: instant landwissel; die −% geldt daar niet. Catalogus toont geen Snelheid-chip meer (die deed niets) en labelt cargo als smokkeltegels.
 - Etappes overslaan: Vliegen in de hangar (100 L), niet het Reizen-scherm.
 
 ---
@@ -790,6 +790,7 @@ In **Voertuig stelen** kies je Auto / Motor / Boot via de drie lane-cards. Catal
 
 - Casino-games openen binnen de bestaande game-content (dashboard shell) en niet als losse fullpage route buiten de hoofdlayout. **Casino beheer** (eigenaar) opent als **modal** boven het casino-hubblad (`showDialog` + `CasinoManagementScreen` met `embeddedInDialog`), geen tweede fullpage-route meer.
 - Lege-land casino's krijgen een **NPC-uitbater** zodat de zaak openblijft (spelen kan). Ze blijven **te koop** tegen de vraagprijs; een echte speler-eigenaar blokkeert aankoop wel. Verlies je het casino (failliet, hitlist, admin-reset), dan neemt een NPC het meteen over.
+- Admin → spelerdetail → Overzicht toont onder **Casino & munitiefabriek** welk casino de speler bezit (land, verdieping, bankroll), uit `casino_ownerships` — niet alleen uit eigendommen of casino-transacties.
 - Casino hub en closed state moeten mobiel/tablet/desktop een robuuste verticale scrollflow houden.
 - Casino minigames moeten mobiel/tablet/desktop in Ã©Ã©n viewport speelbaar blijven: kernactie, inzet en status zichtbaar zonder verplichte verticale scroll.
 
@@ -1088,6 +1089,7 @@ Bob: â‚¬300K counter-hit
 - Admin kan een speler **volledig resetten** (gameplay/progressie wissen). **Account, VIP-abonnement/auto-renew en restant gekochte creditpacks blijven behouden**; wekelijkse VIP-credits, event-credits en vault-prijzen tellen niet als betaald en verdwijnen. Ledger en betaalhistorie blijven staan.
 - Het adminpanel (https://admin.themobstate.com) gebruikt hetzelfde noir/goud-uiterlijk als de game. Tabs delen `AdminPageIntro`/KPI-chrome; **Ops lab** start cron-jobs en (SUPER_ADMIN) event-chips; NPC-tab kan botten pauzeren/activeren en allemaal simuleren. Sessie wordt bij laden gecontroleerd (`/admin/auth/me`, max ~8s); bij timeout of ongeldige token verschijnt het loginformulier, het dashboard start niet eerder. Admin-accounts (tab **Admins**) zijn alleen voor dit panel, niet voor het spel; gebruikersnamen zonder spatie; SUPER_ADMIN kan wachtwoorden resetten en extra accounts verwijderen (niet het eigen account, niet de laatste SUPER_ADMIN).
 - Admin → spelerdetail → **VIP-dagen toekennen** (1–365) verlengt Player VIP zonder het hele beheerformulier. Een bestaande VIP-periode wordt doorgeteld; dit is geen credit- of euro-aankoop.
+- Admin → spelerdetail → Overzicht: kaart **Casino & munitiefabriek** toont bezit + land (casino uit ownership, munitiefabriek uit `ammo_factories`), naast de bestaande eigendommen-lijst.
 - Kill-reset met actieve Player VIP: contant geld reset naar â‚¬500.000, rank wordt gehalveerd, bank/crypto/opleidingen/achievements blijven behouden; assets, inventory en drugsvoorraad worden gewist.
 - Kill-reset zonder actieve Player VIP: volledige progression reset naar baseline (incl. bank/crypto/opleidingen/achievements).
 - Op ondersteunde timeout-schermen (crime, jobs, school, voertuig-, motor- en bootdiefstal) staat een directe `versnel met credits` knop, zodat spelers een actieve cooldown contextueel kunnen resetten zonder eerst naar `Premium & Credits` te navigeren. Die overlays (plus reizen en hoger beroep) gebruiken noir/goud-stills (`/images/cooldown_*.png`).

@@ -451,7 +451,7 @@
     }
   },
   "travelCannotAfford": "Not enough cash",
-  "travelAircraftBonusChip": "Own aircraft: −{percent}% wait per leg",
+  "travelAircraftBonusChip": "Own aircraft: −{percent}% Travel wait / leg",
   "@travelAircraftBonusChip": {
     "placeholders": {
       "percent": {
@@ -3290,7 +3290,7 @@
       }
     }
   },
-  "aviationUiCargoCapacity": "Cargo: {amount}",
+  "aviationUiCargoCapacity": "Smuggle: {amount} tiles",
   "@aviationUiCargoCapacity": {
     "placeholders": {
       "amount": {
@@ -3401,7 +3401,7 @@
   "aviationRepairSuccess": "Aircraft repaired.",
   "aviationRepairFailed": "Repair failed.",
   "aviationBrokenBadge": "Broken",
-  "aviationTravelBonusChip": "−{percent}% wait per leg",
+  "aviationTravelBonusChip": "−{percent}% Travel wait / leg",
   "@aviationTravelBonusChip": {
     "placeholders": {
       "percent": {

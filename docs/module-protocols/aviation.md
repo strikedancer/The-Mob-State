@@ -9,7 +9,8 @@ Dit protocol omvat ook het **eigen-voertuig smokkelkanaal** voor alle vervoersty
 
 ## Primary Frontend Entry
 - `client/lib/screens/aviation_screen.dart` (catalogus + hangar + licenties)
-- Web dashboard Aviation hides the inner AppBar title. The hangar fills the dashboard content column on large screens (no 860px cap). It uses a noir hangar hero (school level, flight certs, paid license, owned count), compact license rows with gold actions, catalog cards with price/rank/speed/cargo/license/travel-bonus chips, and owned-plane actions: refuel, fly, sell (50%), repair. Aircraft thumbs are cutouts (`runtime/client-images/aircraft/`); no white studio plate.
+- Web dashboard Aviation hides the inner AppBar title. The hangar fills the dashboard content column on large screens (no 860px cap). It uses a noir hangar hero (school level, flight certs, paid license, owned count), compact license rows with gold actions, catalog cards with price/rank/smuggle-cargo/license/Travel-wait chips (no fake Speed chip — Hangar Fly is always instant), and owned-plane actions: refuel, fly, sell (50%), repair. Aircraft thumbs are cutouts (`runtime/client-images/aircraft/`); no white studio plate.
+- Catalog `−% Travel wait / leg` and Travel `Own aircraft: −%` apply **only** to commercial Travel post-leg cooldowns via `getBestAircraftBonus`. Hangar `Fly` ignores speed/wait and jumps in one hop (100 L). `Smuggle: N tiles` is owned-smuggle cargo capacity, not hangar payload.
 
 ## Primary Backend Entry
 - `GET  /aviation/aircraft`              — catalogus (`aircraft.json`)
@@ -89,7 +90,7 @@ Elk vliegtuig/voertuig heeft een vast aantal **cargo-tegels** (hangar “Cargo�
 - `POST /travel/:countryId` en `POST /travel/next` zetten de etappe-cooldown op `3600 × (1 − bonus)` seconden (VIP-korting blijft daarna gelden).
 - Commerciële Travel landt per etappe al meteen. De bonus verkort alleen die wacht. Voorbeeld: 4 etappes + Gulfstream (−35%) → `4 × 0.65 = 2.6 uur` wachten in plaats van 4 uur.
 - Etappes overslaan: privévluchten via `POST /aviation/fly/:id` zijn instant, 100 L, geen uur-wacht.
-- Het bonus-voordeel is zichtbaar in het Travel-scherm vóór vertrek: "Eigen vliegtuig: −X% wacht per etappe".
+- Het bonus-voordeel is zichtbaar in het Travel-scherm vóór vertrek: "Eigen vliegtuig: −X% Reizen-wacht per etappe".
 - Geen vliegtuig → geen bonus (wacht ongewijzigd, geen regressie).
 
 ## Hangar-acties

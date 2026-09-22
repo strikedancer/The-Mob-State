@@ -947,7 +947,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String travelAircraftBonusChip(String percent) {
-    return 'Eigen vliegtuig: −$percent% wacht per etappe';
+    return 'Eigen vliegtuig: −$percent% Reizen-wacht per etappe';
   }
 
   @override
@@ -5615,7 +5615,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String aviationUiCargoCapacity(int amount) {
-    return 'Lading: $amount';
+    return 'Smokkel: $amount tegels';
   }
 
   @override
@@ -5747,7 +5747,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String aviationTravelBonusChip(String percent) {
-    return '−$percent% wacht per etappe';
+    return '−$percent% Reizen-wacht per etappe';
   }
 
   @override

@@ -8139,7 +8139,7 @@
       }
     }
   },
-  "aviationUiCargoCapacity": "Fracht: {amount}",
+  "aviationUiCargoCapacity": "Schmuggeln: {amount} Spielsteine",
   "@aviationUiCargoCapacity": {
     "placeholders": {
       "amount": {
@@ -11248,7 +11248,7 @@
     }
   },
   "aviationRankLocked": "Rang zu niedrig",
-  "travelAircraftBonusChip": "Eigenes Flugzeug: −{percent} % Wartezeit pro Strecke",
+  "travelAircraftBonusChip": "Eigenes Flugzeug: −{percent}% Reisewartezeit / Etappe",
   "@travelAircraftBonusChip": {
     "placeholders": {
       "percent": {
@@ -11319,7 +11319,7 @@
   "aviationRepairSuccess": "Flugzeuge repariert.",
   "aviationRepairFailed": "Die Reparatur ist fehlgeschlagen.",
   "aviationBrokenBadge": "Gebrochen",
-  "aviationTravelBonusChip": "−{percent} % Wartezeit pro Etappe",
+  "aviationTravelBonusChip": "−{percent}% Reisewartezeit / Etappe",
   "@aviationTravelBonusChip": {
     "placeholders": {
       "percent": {

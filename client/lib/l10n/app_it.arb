@@ -8139,7 +8139,7 @@
       }
     }
   },
-  "aviationUiCargoCapacity": "Carico: {amount}",
+  "aviationUiCargoCapacity": "Contrabbando: {amount} tessere",
   "@aviationUiCargoCapacity": {
     "placeholders": {
       "amount": {
@@ -11248,7 +11248,7 @@
     }
   },
   "aviationRankLocked": "Classifica troppo bassa",
-  "travelAircraftBonusChip": "Aereo proprio: −{percent}% di attesa per tratta",
+  "travelAircraftBonusChip": "Aereo proprio: −{percent}% Attesa di viaggio/tratta",
   "@travelAircraftBonusChip": {
     "placeholders": {
       "percent": {
@@ -11319,7 +11319,7 @@
   "aviationRepairSuccess": "Aereo riparato.",
   "aviationRepairFailed": "La riparazione non è riuscita.",
   "aviationBrokenBadge": "Rotta",
-  "aviationTravelBonusChip": "−{percent}% di attesa per tratta",
+  "aviationTravelBonusChip": "−{percent}% Attesa viaggio / tratta",
   "@aviationTravelBonusChip": {
     "placeholders": {
       "percent": {

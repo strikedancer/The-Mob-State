@@ -8139,7 +8139,7 @@
       }
     }
   },
-  "aviationUiCargoCapacity": "Ładunek: {amount}",
+  "aviationUiCargoCapacity": "Przemyt: {amount} płytek",
   "@aviationUiCargoCapacity": {
     "placeholders": {
       "amount": {
@@ -11248,7 +11248,7 @@
     }
   },
   "aviationRankLocked": "Zbyt niska ranga",
-  "travelAircraftBonusChip": "Własny samolot: −{percent}% oczekiwania na etap",
+  "travelAircraftBonusChip": "Własny samolot: −{percent}% Oczekiwanie na podróż / etap",
   "@travelAircraftBonusChip": {
     "placeholders": {
       "percent": {
@@ -11319,7 +11319,7 @@
   "aviationRepairSuccess": "Samolot naprawiony.",
   "aviationRepairFailed": "Naprawa nie powiodła się.",
   "aviationBrokenBadge": "Złamany",
-  "aviationTravelBonusChip": "−{percent}% oczekiwania na nogę",
+  "aviationTravelBonusChip": "−{percent}% Oczekiwanie na podróż / etap",
   "@aviationTravelBonusChip": {
     "placeholders": {
       "percent": {

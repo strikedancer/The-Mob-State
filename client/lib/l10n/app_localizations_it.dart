@@ -945,7 +945,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String travelAircraftBonusChip(String percent) {
-    return 'Aereo proprio: −$percent% di attesa per tratta';
+    return 'Aereo proprio: −$percent% Attesa di viaggio/tratta';
   }
 
   @override
@@ -5637,7 +5637,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String aviationUiCargoCapacity(int amount) {
-    return 'Carico: $amount';
+    return 'Contrabbando: $amount tessere';
   }
 
   @override
@@ -5769,7 +5769,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String aviationTravelBonusChip(String percent) {
-    return '−$percent% di attesa per tratta';
+    return '−$percent% Attesa viaggio / tratta';
   }
 
   @override

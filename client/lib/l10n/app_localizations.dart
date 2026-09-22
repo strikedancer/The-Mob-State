@@ -1805,7 +1805,7 @@ abstract class AppLocalizations {
   /// No description provided for @travelAircraftBonusChip.
   ///
   /// In en, this message translates to:
-  /// **'Own aircraft: −{percent}% wait per leg'**
+  /// **'Own aircraft: −{percent}% Travel wait / leg'**
   String travelAircraftBonusChip(String percent);
 
   /// No description provided for @travelVia.
@@ -9913,7 +9913,7 @@ abstract class AppLocalizations {
   /// No description provided for @aviationUiCargoCapacity.
   ///
   /// In en, this message translates to:
-  /// **'Cargo: {amount}'**
+  /// **'Smuggle: {amount} tiles'**
   String aviationUiCargoCapacity(int amount);
 
   /// No description provided for @aviationUiDefaultAircraftName.
@@ -10129,7 +10129,7 @@ abstract class AppLocalizations {
   /// No description provided for @aviationTravelBonusChip.
   ///
   /// In en, this message translates to:
-  /// **'−{percent}% wait per leg'**
+  /// **'−{percent}% Travel wait / leg'**
   String aviationTravelBonusChip(String percent);
 
   /// No description provided for @crewUiTr0.
