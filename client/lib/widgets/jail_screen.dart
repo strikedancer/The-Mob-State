@@ -242,6 +242,16 @@ class _JailOverlayState extends State<JailOverlay> {
     }
   }
 
+  void _refocusMathInput() {
+    if (!mounted || _remainingSeconds <= 0) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || _remainingSeconds <= 0) return;
+      if (!_mathFocusNode.hasFocus) {
+        _mathFocusNode.requestFocus();
+      }
+    });
+  }
+
   Future<void> _submitMathAnswer() async {
     if (_mathSubmitting || _mathPrompt == null) return;
     final raw = _mathAnswerController.text.trim();
@@ -252,6 +262,7 @@ class _JailOverlayState extends State<JailOverlay> {
         _mathFeedback = l10n.jailMathInvalidAnswer;
         _mathFeedbackOk = false;
       });
+      _refocusMathInput();
       return;
     }
 
@@ -276,6 +287,7 @@ class _JailOverlayState extends State<JailOverlay> {
           _mathFeedbackOk = false;
           _mathSubmitting = false;
         });
+        _refocusMathInput();
         return;
       }
 
@@ -286,6 +298,7 @@ class _JailOverlayState extends State<JailOverlay> {
           _mathSubmitting = false;
         });
         await _loadMathChallenge();
+        _refocusMathInput();
         return;
       }
 
@@ -326,7 +339,10 @@ class _JailOverlayState extends State<JailOverlay> {
           icon: Icons.check_circle_outline,
         );
         widget.onReleased?.call();
+        return;
       }
+
+      _refocusMathInput();
     } catch (_) {
       if (!mounted) return;
       final l10n = AppLocalizations.of(context)!;
@@ -335,6 +351,7 @@ class _JailOverlayState extends State<JailOverlay> {
         _mathFeedbackOk = false;
         _mathSubmitting = false;
       });
+      _refocusMathInput();
     }
   }
 
@@ -687,7 +704,9 @@ class _JailOverlayState extends State<JailOverlay> {
                                     keyboardType: TextInputType.number,
                                     textInputAction: TextInputAction.done,
                                     onSubmitted: (_) => _submitMathAnswer(),
-                                    enabled: !_mathSubmitting,
+                                    // Keep enabled while submitting so Enter does not
+                                    // drop keyboard focus; _mathSubmitting still blocks doubles.
+                                    autofocus: false,
                                     style: const TextStyle(color: Colors.white),
                                     decoration: InputDecoration(
                                       hintText: l10n.jailMathAnswerHint,
