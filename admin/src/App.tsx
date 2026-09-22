@@ -4148,7 +4148,6 @@ function App() {
   };
 
   const handleGrantEventPassBoost = async () => {
-  const handleGrantEventPassBoost = async () => {
     if (!selectedPlayerId) return;
     if (isSavingPlayerManage) return;
     if (!canManagePlayers) {
