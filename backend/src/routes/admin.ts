@@ -6070,6 +6070,37 @@ router.delete(
 });
 
 router.post(
+  '/global-chat/announcement',
+  requireAdminRole(AdminRole.SUPER_ADMIN, AdminRole.MODERATOR),
+  auditLog({ action: 'GLOBAL_CHAT_ANNOUNCEMENT', targetType: 'GlobalChatMessage' }),
+  async (req, res) => {
+    try {
+      const message = typeof req.body?.message === 'string' ? req.body.message.trim() : '';
+      const displayName =
+        typeof req.body?.displayName === 'string' && req.body.displayName.trim()
+          ? req.body.displayName.trim()
+          : 'The Mob State';
+      if (!message) {
+        return res.status(400).json({ error: 'message is required' });
+      }
+      if (message.length > 800) {
+        return res.status(400).json({ error: 'message too long (max 800)' });
+      }
+      const posted = await globalChatService.sendSystemAnnouncement(displayName, message, {
+        force: true,
+      });
+      if (!posted) {
+        return res.status(503).json({ error: 'Global chat disabled or empty announcement' });
+      }
+      return res.json({ ok: true, announcementId: posted.id });
+    } catch (error) {
+      console.error('Admin global chat announcement error:', error);
+      return res.status(500).json({ error: 'Failed to post announcement' });
+    }
+  },
+);
+
+router.post(
   '/trial/court-record-amnesty',
   requireAdminRole(AdminRole.SUPER_ADMIN),
   auditLog({ action: 'COURT_RECORD_AMNESTY', targetType: 'WorldEvent' }),

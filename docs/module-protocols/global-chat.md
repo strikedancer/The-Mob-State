@@ -25,7 +25,7 @@ One public in-game lobby for every logged-in player, with a curated sticker pack
 - Filter on the server, never only in the client.
 - Live updates use SSE `global_chat.message` / `global_chat.message_deleted` via `eventBroadcaster.broadcast`. `global_chat.message` also sends `serverNow` so clients can correct device-clock skew on relative times. Do not write world-chat lines into the personal activity feed. No push per public message.
 - System lines (`source: system`, sender `Gevangenis`) announce when a **real player** is jailed, bought out, or jailbroken. Jail lines include sentence length (`voor 45 minuten` / `voor 1 uur en 30 minuten`). One line per arrest: `announcePlayerJailed` dedupes the same player for 60s so police clock + friend/crew push cannot double-post. Names are in the body. NPCs are skipped. Own bail / self-escape stay silent. Public payloads mark these as `silent: true`. They still appear in the in-game lobby and still mirror to Discord `#wereldchat`, but Discord copies use webhook `flags: 4096` (no notification). Player chat still notifies. They never go to `#updates`.
-- Staff/system promo lines may include `imageUrl` (`promo/<name>.png` only). Those lines render the still in the lobby and as a Discord embed. Promo stills are **not** silent, so Discord notifies. Player uploads stay blocked. System body max is 400 characters; player lines stay at 200.
+- Staff/system promo lines may include `imageUrl` (`promo/<name>.png` only). Those lines render the still in the lobby and as a Discord embed. Promo stills are **not** silent, so Discord notifies. Player uploads stay blocked. System body max is **800** characters (NL+EN update teasers); player lines stay at 200. Player-facing live updates use `scripts/post_discord_update.ps1` (full text in Discord `#updates`, short teaser here via `postSystemAnnouncement.js` / `POST /admin/global-chat/announcement`).
 - Hide the live-event rail on World chat (same as Messages / Crew) so it cannot cover send.
 - World chat stays open before rank 5.
 - Relative timestamps (`Nu` / `5m`) use UTC instants plus `serverNow` from `GET/POST /global-chat/messages` and SSE `global_chat.message`. Do not diff `DateTime.parse(...).toLocal()` against the device clock; a skewed phone clock shows “51m” on a just-sent line.
@@ -58,7 +58,7 @@ Player OAuth stays `identify` + `email` only. The chat bot is a separate token.
 - Player Profile (tap a linked in-game name)
 
 ## Must Preserve
-- Rate limit (~1 / 3s, 10 / min). Player lines max 200 characters. System promo lines max 400. Promo images are allowlisted `promo/*.png` only.
+- Rate limit (~1 / 3s, 10 / min). Player lines max 200 characters. System promo lines max 800. Promo images are allowlisted `promo/*.png` only.
 - Stickers are a fixed catalog (`globalChatStickers.ts` / `global_chat_stickers.dart`), same ids.
 - Banned accounts cannot send. Linked Discord of a banned or muted player is dropped inbound.
 - Discord-sourced lines use the linked in-game username when `discordId` matches a player; otherwise the Discord username. Game-sourced lines always use the in-game username. Players who did not sign in with Discord can link later from Settings. Guests without a linked account still appear with a Discord tag.

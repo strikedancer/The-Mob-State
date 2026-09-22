@@ -1,32 +1,44 @@
 ---
-description: After a player-facing live deploy, post a full Dutch explanation to Discord #updates — never a title-only headline.
+description: After a player-facing live deploy, post full NL+EN updates to Discord #updates and in-game world chat — never a title-only headline.
 alwaysApply: true
 ---
 
-# Discord #updates na speler-gerichte deploy
+# Discord #updates + wereldchat (NL + EN) na speler-gerichte deploy
 
-Na een **live** wijziging die spelers merken (gameplay, UI, login, Help), post een **volledige uitleg** naar Discord `#updates`. Een titel zoals "Territorium dieper" is geen update: mensen moeten na het lezen weten wat er veranderde, waarom het telt, en wat ze in het spel moeten doen.
+Na een **live** wijziging die spelers merken (gameplay, UI, login, Help), post een **volledige uitleg in het Nederlands én Engels** naar Discord `#updates`, plus een **korte NL+EN teaser** in de in-game wereldchat. Een titel zoals "Territorium dieper" is geen update: mensen moeten na het lezen weten wat er veranderde, waarom het telt, en wat ze in het spel moeten doen.
 
 ```
 .\scripts\post_discord_update.ps1 `
-  -Title "Korte kop" `
+  -Title "Korte NL-kop" `
+  -TitleEn "Short EN title" `
   -Intro "Minimaal twee tot vier zinnen in speler-Nederlands: wat is er live, wat merkt de speler, waar in het spel." `
+  -IntroEn "At least two to four player-facing English sentences: what is live, what the player notices, where in the game." `
   -Bullets @(
     "Eerste volle zin over een concreet effect.",
     "Tweede volle zin over een tweede effect.",
     "Derde volle zin over waar je het ziet of hoe je het gebruikt.",
     "Vierde volle zin over een randgeval of wat hetzelfde blijft."
-  )
+  ) `
+  -BulletsEn @(
+    "First full sentence about a concrete effect.",
+    "Second full sentence about another effect.",
+    "Third full sentence about where to find it or how to use it.",
+    "Fourth full sentence about an edge case or what stays the same."
+  ) `
+  -WorldChatNl "Korte teaser (40–280 tekens) voor de wereldchat, met verwijzing naar Discord #updates indien nuttig." `
+  -WorldChatEn "Short teaser (40–280 chars) for world chat, pointing to Discord #updates when useful."
 ```
 
-`-Intro` is verplicht (script weigert korter dan 180 tekens). Minimaal **4** bullets, elk een volle zin. Link blijft `https://themobstate.com` (default). Webhook: `DISCORD_UPDATES_WEBHOOK_URL` (environment of `.env.plesk`). Print de URL nooit.
+`-Intro` en `-IntroEn` zijn verplicht (elk 180–900 tekens). Minimaal **4** bullets per taal, elk een volle zin. `-WorldChatNl` / `-WorldChatEn` zijn verplicht tenzij `-SkipWorldChat`. Link blijft `https://themobstate.com` (default). Webhook: `DISCORD_UPDATES_WEBHOOK_URL` (environment of `.env.plesk`). Print de URL nooit.
 
-Als het script meldt dat content/embed te kort is of faalt: **niet** afronden. Eerst fixen, opnieuw posten.
+Wereldchat gaat via plink naar de VPS (`postSystemAnnouncement.js`) en spiegelt naar Discord `#wereldchat` — dat is bewust een korte teaser, niet de volledige changelog (die hoort in `#updates`).
+
+Als het script meldt dat content/embed te kort is of faalt: **niet** afronden. Eerst fixen, opnieuw posten. Als Discord lukt maar wereldchat faalt: wereldchat alsnog posten (niet negeren).
 
 ## Wel posten
 
 - Verbeteringen, bugfixes en nieuwe spelerfeatures die net gedeployed zijn
-- Nederlands, geen jargon, geen commit-hashes
+- Nederlands én Engels, geen jargon, geen commit-hashes
 - Uitleg die op zichzelf leesbaar is zonder deze chat
 
 ## Niet posten
@@ -35,3 +47,4 @@ Als het script meldt dat content/embed te kort is of faalt: **niet** afronden. E
 - Crew Wars-events (aparte ops-webhook)
 - IP-adressen, spelersmails, secrets
 - Alleen een kopregel of 1–2 vage bullets
+- Alleen NL of alleen EN

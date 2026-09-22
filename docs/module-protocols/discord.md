@@ -78,7 +78,7 @@ Without Client ID + Secret the login button stays hidden. Without a valid invite
 - Ban-check via `authService.issueSession`.
 - Crew Wars Discord transport stays in `crew-wars.md`. Public `#updates` never receives war events or world chat.
 - World chat Discord bridge is documented in `global-chat.md`. Bot token is not an extra player OAuth scope. Game posts from Mod/Ops use `[Ops]`/`[Mod]` on the webhook name. Linked staff can `!wis` / `!mute` / `!unmute` in the play channel; that needs bot Send Messages + Manage Messages + Add Reactions (`permissions=76864`).
-- `scripts/post_discord_update.ps1` runs **after a player-facing live deploy**, not for docs-only or internal commits. Required `-Intro` plus 4–8 sentence bullets in Dutch. Title-only posts are rejected. No secrets.
+- `scripts/post_discord_update.ps1` runs **after a player-facing live deploy**, not for docs-only or internal commits. Required bilingual `-Intro` / `-IntroEn` plus 4–8 sentence bullets per language (`-Bullets` / `-BulletsEn`), plus short `-WorldChatNl` / `-WorldChatEn` teasers for in-game world chat (unless `-SkipWorldChat`). Discord `#updates` gets NL+EN content and two embeds; world chat gets a compact NL+EN line via `postSystemAnnouncement.js` on the VPS (mirrors to `#wereldchat`). Title-only posts are rejected. No secrets.
 
 ## Cross-Module Dependencies
 - Auth / email verification → verified Discord mail skips the mail-gate
@@ -102,7 +102,7 @@ Without Client ID + Secret the login button stays hidden. Without a valid invite
 4. User denies Discord consent → error copy, no 500
 5. Invite opens Discord in a new tab from landing, Help, and Settings
 6. Logged-in player without `discordId` can Link Discord from Settings; world chat then uses the in-game name; with `DISCORD_GUILD_ID` + bot they also appear in the Discord member list
-7. Updates script posts intro + bullets to `#updates` (not title-only) without printing the webhook URL
+7. Updates script posts NL+EN intro + bullets to `#updates` and a short NL+EN world-chat teaser (not title-only) without printing the webhook URL
 8. Unlinked web player sees the weekly Discord popup; decline hides it; close snoozes 7 days; already-linked players never see it
 9. First Settings/popup link of an existing account pays €5.000 once; new Discord registrations do not; already-linked players get no retroactive cash
 10. Guild join soft-fails (missing env / bot permission) without breaking OAuth redirects

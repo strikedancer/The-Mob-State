@@ -7,7 +7,8 @@ import { isPlayerStaff, normalizeStaffRole, asPlayerId, type PlayerStaffRole } f
 import { readPlayerStaffRole } from '../middleware/requirePlayerStaff';
 
 const MAX_BODY = 200;
-const MAX_SYSTEM_BODY = 400;
+/** System / update promos (NL+EN teaser); player chat stays at MAX_BODY. */
+const MAX_SYSTEM_BODY = 800;
 const HISTORY_LIMIT = 100;
 const PROMO_IMAGE_RE = /^promo\/[a-z0-9][a-z0-9._/-]{0,80}\.png$/i;
 const MIN_INTERVAL_MS = 3000;
