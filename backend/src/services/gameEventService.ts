@@ -705,7 +705,7 @@ class GameEventService {
       where: { liveEventId },
       orderBy: { score: 'desc' },
     });
-    const winnerNotices = new Map<number, number>();
+    const winnerNotices = new Map<number, { rank: number; rewards: unknown[] }>();
 
     if (participants.length > 0) {
       await Promise.all(
@@ -745,16 +745,28 @@ class GameEventService {
         );
 
         for (const qualifier of qualifiers) {
-          if (qualifier.playerId == null || winnerNotices.has(qualifier.playerId)) continue;
+          if (qualifier.playerId == null) continue;
           const rank = participants.findIndex((row) => row.id === qualifier.id) + 1;
-          winnerNotices.set(qualifier.playerId, rank > 0 ? rank : 1);
+          const noticeRank = rank > 0 ? rank : 1;
+          const existing = winnerNotices.get(qualifier.playerId);
+          if (existing) {
+            existing.rewards.push(rule.rewardsJson);
+            if (noticeRank < existing.rank) {
+              existing.rank = noticeRank;
+            }
+          } else {
+            winnerNotices.set(qualifier.playerId, {
+              rank: noticeRank,
+              rewards: [rule.rewardsJson],
+            });
+          }
         }
       }
     }
 
     const first = participants[0];
     if (first?.playerId != null && !winnerNotices.has(first.playerId)) {
-      winnerNotices.set(first.playerId, 1);
+      winnerNotices.set(first.playerId, { rank: 1, rewards: [] });
     }
 
     await prisma.gameLiveEvent.update({
@@ -769,7 +781,11 @@ class GameEventService {
       include: { template: true },
     });
     if (forNotify?.template) {
-      const winners = [...winnerNotices.entries()].map(([playerId, rank]) => ({ playerId, rank }));
+      const winners = [...winnerNotices.entries()].map(([playerId, notice]) => ({
+        playerId,
+        rank: notice.rank,
+        rewards: notice.rewards,
+      }));
       setImmediate(() => {
         void (async () => {
           try {

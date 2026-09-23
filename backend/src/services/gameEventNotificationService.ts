@@ -2,6 +2,10 @@ import type { GameEventTemplate, GameLiveEvent } from '@prisma/client';
 import { normalizePlayerLanguage, type SupportedPlayerLanguage } from '../config/supportedLanguages';
 import prisma from '../lib/prisma';
 import { directMessageService } from './directMessageService';
+import {
+  formatEventRewardSummary,
+  rewardHeading,
+} from './gameEventRewardSummary';
 import { notificationService } from './notificationService';
 import { playerNotificationPreferenceService } from './playerNotificationPreferenceService';
 
@@ -10,6 +14,8 @@ type LiveWithTemplate = GameLiveEvent & { template: GameEventTemplate };
 export type GameEventWinnerNotice = {
   playerId: number;
   rank: number;
+  /** One or more rewardsJson blobs granted to this player for this live event. */
+  rewards: unknown[];
 };
 
 function eventTitle(lang: SupportedPlayerLanguage, titleNl: string, titleEn: string): string {
@@ -30,150 +36,153 @@ function ordinal(lang: SupportedPlayerLanguage, rank: number): string {
   return `${rank}th`;
 }
 
+function payoutFallback(lang: SupportedPlayerLanguage): string {
+  const map: Record<SupportedPlayerLanguage, string> = {
+    nl: 'Je beloning wordt uitbetaald.',
+    en: 'Your reward is being paid out.',
+    de: 'Deine Belohnung wird ausgezahlt.',
+    fr: 'Ta récompense est en cours de versement.',
+    es: 'Tu recompensa se está pagando.',
+    it: 'Il premio è in pagamento.',
+    pl: 'Nagroda jest wypłacana.',
+    pt: 'A recompensa está a ser paga.',
+  };
+  return map[lang];
+}
+
+function checkEventsHint(lang: SupportedPlayerLanguage): string {
+  const map: Record<SupportedPlayerLanguage, string> = {
+    nl: 'Kijk bij Events als je iets mist.',
+    en: 'Check Events if anything is missing.',
+    de: 'Prüfe Events, falls etwas fehlt.',
+    fr: 'Vérifie Événements si quelque chose manque.',
+    es: 'Revisa Eventos si falta algo.',
+    it: 'Controlla Eventi se manca qualcosa.',
+    pl: 'Sprawdź Eventy, jeśli czegoś brakuje.',
+    pt: 'Vê Eventos se faltar alguma coisa.',
+  };
+  return map[lang];
+}
+
+function withRewardOrPayout(
+  lang: SupportedPlayerLanguage,
+  lead: string,
+  rewardSummary: string,
+): string {
+  if (rewardSummary) {
+    return `${lead} ${rewardHeading(lang)}: ${rewardSummary}.`;
+  }
+  return `${lead} ${payoutFallback(lang)}`;
+}
+
 function winnerCopy(input: {
   lang: SupportedPlayerLanguage;
   title: string;
   rank: number;
   hideRank: boolean;
+  rewardSummary: string;
 }): { title: string; body: string; inbox: string } {
-  const { lang, title, rank, hideRank } = input;
+  const { lang, title, rank, hideRank, rewardSummary } = input;
+  const rewardClause = rewardSummary
+    ? `${rewardHeading(lang)}: ${rewardSummary}.`
+    : payoutFallback(lang);
+  const hint = checkEventsHint(lang);
+
   if (hideRank) {
-    const map: Record<SupportedPlayerLanguage, { title: string; body: string; inbox: string }> = {
-      nl: {
-        title: 'Eventprijs verdiend',
-        body: `Je hebt een prijs verdiend in ${title}. Je beloning wordt uitbetaald.`,
-        inbox: `Je hebt een prijs verdiend in ${title}. Je beloning wordt uitbetaald. Kijk bij Events als je iets mist.`,
-      },
-      en: {
-        title: 'Event prize earned',
-        body: `You earned a prize in ${title}. Your reward is being paid out.`,
-        inbox: `You earned a prize in ${title}. Your reward is being paid out. Check Events if anything is missing.`,
-      },
-      de: {
-        title: 'Event-Preis verdient',
-        body: `Du hast in ${title} einen Preis verdient. Deine Belohnung wird ausgezahlt.`,
-        inbox: `Du hast in ${title} einen Preis verdient. Deine Belohnung wird ausgezahlt. Prüfe Events, falls etwas fehlt.`,
-      },
-      fr: {
-        title: 'Prix d’événement gagné',
-        body: `Tu as gagné un prix dans ${title}. Ta récompense est en cours de versement.`,
-        inbox: `Tu as gagné un prix dans ${title}. Ta récompense est en cours de versement. Vérifie Événements si quelque chose manque.`,
-      },
-      es: {
-        title: 'Premio de evento',
-        body: `Has ganado un premio en ${title}. Tu recompensa se está pagando.`,
-        inbox: `Has ganado un premio en ${title}. Tu recompensa se está pagando. Revisa Eventos si falta algo.`,
-      },
-      it: {
-        title: 'Premio evento',
-        body: `Hai vinto un premio in ${title}. Il premio è in pagamento.`,
-        inbox: `Hai vinto un premio in ${title}. Il premio è in pagamento. Controlla Eventi se manca qualcosa.`,
-      },
-      pl: {
-        title: 'Nagroda za event',
-        body: `Zdobyłeś nagrodę w ${title}. Nagroda jest wypłacana.`,
-        inbox: `Zdobyłeś nagrodę w ${title}. Nagroda jest wypłacana. Sprawdź Eventy, jeśli czegoś brakuje.`,
-      },
-      pt: {
-        title: 'Prémio de evento',
-        body: `Ganhaste um prémio em ${title}. A recompensa está a ser paga.`,
-        inbox: `Ganhaste um prémio em ${title}. A recompensa está a ser paga. Vê Eventos se faltar alguma coisa.`,
-      },
+    const leadByLang: Record<SupportedPlayerLanguage, string> = {
+      nl: `Je hebt een prijs verdiend in ${title}.`,
+      en: `You earned a prize in ${title}.`,
+      de: `Du hast in ${title} einen Preis verdient.`,
+      fr: `Tu as gagné un prix dans ${title}.`,
+      es: `Has ganado un premio en ${title}.`,
+      it: `Hai vinto un premio in ${title}.`,
+      pl: `Zdobyłeś nagrodę w ${title}.`,
+      pt: `Ganhaste um prémio em ${title}.`,
     };
-    return map[lang];
+    const titles: Record<SupportedPlayerLanguage, string> = {
+      nl: 'Eventprijs verdiend',
+      en: 'Event prize earned',
+      de: 'Event-Preis verdient',
+      fr: 'Prix d’événement gagné',
+      es: 'Premio de evento',
+      it: 'Premio evento',
+      pl: 'Nagroda za event',
+      pt: 'Prémio de evento',
+    };
+    const lead = leadByLang[lang];
+    return {
+      title: titles[lang],
+      body: withRewardOrPayout(lang, lead, rewardSummary),
+      inbox: `${lead} ${rewardClause} ${hint}`,
+    };
   }
 
   const place = ordinal(lang, rank);
   const won = rank === 1;
   if (won) {
-    const map: Record<SupportedPlayerLanguage, { title: string; body: string; inbox: string }> = {
-      nl: {
-        title: 'Event gewonnen',
-        body: `Je hebt ${title} gewonnen. Je beloning wordt uitbetaald.`,
-        inbox: `Je hebt ${title} gewonnen (${place} plek). Je beloning wordt uitbetaald. Kijk bij Events als je iets mist.`,
-      },
-      en: {
-        title: 'Event won',
-        body: `You won ${title}. Your reward is being paid out.`,
-        inbox: `You won ${title} (${place} place). Your reward is being paid out. Check Events if anything is missing.`,
-      },
-      de: {
-        title: 'Event gewonnen',
-        body: `Du hast ${title} gewonnen. Deine Belohnung wird ausgezahlt.`,
-        inbox: `Du hast ${title} gewonnen (${place} Platz). Deine Belohnung wird ausgezahlt. Prüfe Events, falls etwas fehlt.`,
-      },
-      fr: {
-        title: 'Événement gagné',
-        body: `Tu as gagné ${title}. Ta récompense est en cours de versement.`,
-        inbox: `Tu as gagné ${title} (${place} place). Ta récompense est en cours de versement. Vérifie Événements si quelque chose manque.`,
-      },
-      es: {
-        title: 'Evento ganado',
-        body: `Has ganado ${title}. Tu recompensa se está pagando.`,
-        inbox: `Has ganado ${title} (${place} puesto). Tu recompensa se está pagando. Revisa Eventos si falta algo.`,
-      },
-      it: {
-        title: 'Evento vinto',
-        body: `Hai vinto ${title}. Il premio è in pagamento.`,
-        inbox: `Hai vinto ${title} (${place} posto). Il premio è in pagamento. Controlla Eventi se manca qualcosa.`,
-      },
-      pl: {
-        title: 'Event wygrany',
-        body: `Wygrałeś ${title}. Nagroda jest wypłacana.`,
-        inbox: `Wygrałeś ${title} (${place} miejsce). Nagroda jest wypłacana. Sprawdź Eventy, jeśli czegoś brakuje.`,
-      },
-      pt: {
-        title: 'Evento ganho',
-        body: `Ganhaste ${title}. A recompensa está a ser paga.`,
-        inbox: `Ganhaste ${title} (${place} lugar). A recompensa está a ser paga. Vê Eventos se faltar alguma coisa.`,
-      },
+    const leadByLang: Record<SupportedPlayerLanguage, string> = {
+      nl: `Je hebt ${title} gewonnen.`,
+      en: `You won ${title}.`,
+      de: `Du hast ${title} gewonnen.`,
+      fr: `Tu as gagné ${title}.`,
+      es: `Has ganado ${title}.`,
+      it: `Hai vinto ${title}.`,
+      pl: `Wygrałeś ${title}.`,
+      pt: `Ganhaste ${title}.`,
     };
-    return map[lang];
+    const inboxLeadByLang: Record<SupportedPlayerLanguage, string> = {
+      nl: `Je hebt ${title} gewonnen (${place} plek).`,
+      en: `You won ${title} (${place} place).`,
+      de: `Du hast ${title} gewonnen (${place} Platz).`,
+      fr: `Tu as gagné ${title} (${place} place).`,
+      es: `Has ganado ${title} (${place} puesto).`,
+      it: `Hai vinto ${title} (${place} posto).`,
+      pl: `Wygrałeś ${title} (${place} miejsce).`,
+      pt: `Ganhaste ${title} (${place} lugar).`,
+    };
+    const titles: Record<SupportedPlayerLanguage, string> = {
+      nl: 'Event gewonnen',
+      en: 'Event won',
+      de: 'Event gewonnen',
+      fr: 'Événement gagné',
+      es: 'Evento ganado',
+      it: 'Evento vinto',
+      pl: 'Event wygrany',
+      pt: 'Evento ganho',
+    };
+    return {
+      title: titles[lang],
+      body: withRewardOrPayout(lang, leadByLang[lang], rewardSummary),
+      inbox: `${inboxLeadByLang[lang]} ${rewardClause} ${hint}`,
+    };
   }
 
-  const map: Record<SupportedPlayerLanguage, { title: string; body: string; inbox: string }> = {
-    nl: {
-      title: 'Eventprijs verdiend',
-      body: `Je werd ${place} in ${title}. Je beloning wordt uitbetaald.`,
-      inbox: `Je werd ${place} in ${title}. Je beloning wordt uitbetaald. Kijk bij Events als je iets mist.`,
-    },
-    en: {
-      title: 'Event prize earned',
-      body: `You placed ${place} in ${title}. Your reward is being paid out.`,
-      inbox: `You placed ${place} in ${title}. Your reward is being paid out. Check Events if anything is missing.`,
-    },
-    de: {
-      title: 'Event-Preis verdient',
-      body: `Du wurdest ${place} in ${title}. Deine Belohnung wird ausgezahlt.`,
-      inbox: `Du wurdest ${place} in ${title}. Deine Belohnung wird ausgezahlt. Prüfe Events, falls etwas fehlt.`,
-    },
-    fr: {
-      title: 'Prix d’événement',
-      body: `Tu as terminé ${place} dans ${title}. Ta récompense est en cours de versement.`,
-      inbox: `Tu as terminé ${place} dans ${title}. Ta récompense est en cours de versement. Vérifie Événements si quelque chose manque.`,
-    },
-    es: {
-      title: 'Premio de evento',
-      body: `Quedaste ${place} en ${title}. Tu recompensa se está pagando.`,
-      inbox: `Quedaste ${place} en ${title}. Tu recompensa se está pagando. Revisa Eventos si falta algo.`,
-    },
-    it: {
-      title: 'Premio evento',
-      body: `Sei arrivato ${place} in ${title}. Il premio è in pagamento.`,
-      inbox: `Sei arrivato ${place} in ${title}. Il premio è in pagamento. Controlla Eventi se manca qualcosa.`,
-    },
-    pl: {
-      title: 'Nagroda za event',
-      body: `Zająłeś ${place} miejsce w ${title}. Nagroda jest wypłacana.`,
-      inbox: `Zająłeś ${place} miejsce w ${title}. Nagroda jest wypłacana. Sprawdź Eventy, jeśli czegoś brakuje.`,
-    },
-    pt: {
-      title: 'Prémio de evento',
-      body: `Ficaste ${place} em ${title}. A recompensa está a ser paga.`,
-      inbox: `Ficaste ${place} em ${title}. A recompensa está a ser paga. Vê Eventos se faltar alguma coisa.`,
-    },
+  const leadByLang: Record<SupportedPlayerLanguage, string> = {
+    nl: `Je werd ${place} in ${title}.`,
+    en: `You placed ${place} in ${title}.`,
+    de: `Du wurdest ${place} in ${title}.`,
+    fr: `Tu as terminé ${place} dans ${title}.`,
+    es: `Quedaste ${place} en ${title}.`,
+    it: `Sei arrivato ${place} in ${title}.`,
+    pl: `Zająłeś ${place} miejsce w ${title}.`,
+    pt: `Ficaste ${place} em ${title}.`,
   };
-  return map[lang];
+
+  const titles: Record<SupportedPlayerLanguage, string> = {
+    nl: 'Eventprijs verdiend',
+    en: 'Event prize earned',
+    de: 'Event-Preis verdient',
+    fr: 'Prix d’événement',
+    es: 'Premio de evento',
+    it: 'Premio evento',
+    pl: 'Nagroda za event',
+    pt: 'Prémio de evento',
+  };
+  return {
+    title: titles[lang],
+    body: withRewardOrPayout(lang, leadByLang[lang], rewardSummary),
+    inbox: `${leadByLang[lang]} ${rewardClause} ${hint}`,
+  };
 }
 
 /**
@@ -240,11 +249,13 @@ export const gameEventNotificationService = {
     for (const winner of winners) {
       const lang = langById.get(winner.playerId) ?? 'en';
       const title = eventTitle(lang, live.template.titleNl, live.template.titleEn);
+      const rewardSummary = formatEventRewardSummary(lang, winner.rewards ?? []);
       const copy = winnerCopy({
         lang,
         title,
         rank: winner.rank,
         hideRank,
+        rewardSummary,
       });
 
       try {
