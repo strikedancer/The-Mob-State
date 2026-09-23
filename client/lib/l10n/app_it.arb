@@ -5816,6 +5816,7 @@
   "smugglingApiVehicleUnavailableForSmuggling": "Veicolo non disponibile per il contrabbando",
   "smugglingApiInsufficientStockForShipment": "Stock insufficiente per questa spedizione",
   "smugglingApiDepotNoShipmentsReady": "Nessuna spedizione pronta presso il deposito di questo paese",
+  "smugglingApiCrewStorageFull": "Il magazzino della crew e pieno. Potenzia il magazzino o ritira meno spedizioni.",
   "smugglingApiQuantityTooHighForChannel": "Quantità troppo alta per {channel}. Massimo: {max}",
   "@smugglingApiQuantityTooHighForChannel": {
     "placeholders": {

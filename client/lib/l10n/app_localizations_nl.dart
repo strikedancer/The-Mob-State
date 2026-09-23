@@ -17422,6 +17422,10 @@ class AppLocalizationsNl extends AppLocalizations {
       'Geen zendingen klaar in dit landdepot';
 
   @override
+  String get smugglingApiCrewStorageFull =>
+      'Crew-opslag is vol. Upgrade de crew-opslag of claim minder zendingen.';
+
+  @override
   String smugglingApiQuantityTooHighForChannel(String channel, int max) {
     return 'Hoeveelheid te hoog voor $channel. Max: $max';
   }

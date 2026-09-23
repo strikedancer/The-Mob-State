@@ -17501,6 +17501,10 @@ class AppLocalizationsPl extends AppLocalizations {
       'Brak gotowych przesyłek w magazynie w tym kraju';
 
   @override
+  String get smugglingApiCrewStorageFull =>
+      'Magazyn crew jest pelny. Ulepsz magazyn lub odbierz mniej przesylek.';
+
+  @override
   String smugglingApiQuantityTooHighForChannel(String channel, int max) {
     return 'Ilość za duża dla $channel. Maks.: $max';
   }

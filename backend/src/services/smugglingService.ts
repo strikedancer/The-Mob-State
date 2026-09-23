@@ -13,6 +13,8 @@ import {
   assertBackpackFits,
   creditCarriedTrade,
   debitBackpackTrade,
+  extraSlotsForAmmoAdd,
+  extraSlotsForDrugAdd,
   extraSlotsForTradeAdd,
   getBackpackTradeQuantity,
   listBackpackTradeLots,
@@ -1885,11 +1887,75 @@ class SmugglingService {
       return { success: false, message: 'Geen zendingen klaar in dit landdepot' };
     }
 
+    // Personal claims land in the backpack — fail with a player message, not a 500.
+    if (scope === 'personal') {
+      const tradeByGood = new Map<string, number>();
+      const drugByKey = new Map<string, { drugType: string; quality: string; quantity: number }>();
+      const ammoByType = new Map<string, number>();
+      let weaponUnits = 0;
+
+      for (const shipment of claimable) {
+        const metadata = this.parseMetadata(shipment);
+        if (shipment.category === 'trade') {
+          tradeByGood.set(
+            shipment.item_key,
+            (tradeByGood.get(shipment.item_key) ?? 0) + shipment.quantity,
+          );
+        } else if (shipment.category === 'drug') {
+          const quality = String(metadata.quality ?? 'C');
+          const key = `${shipment.item_key}:${quality}`;
+          const existing = drugByKey.get(key);
+          if (existing) {
+            existing.quantity += shipment.quantity;
+          } else {
+            drugByKey.set(key, {
+              drugType: shipment.item_key,
+              quality,
+              quantity: shipment.quantity,
+            });
+          }
+        } else if (shipment.category === 'ammo') {
+          ammoByType.set(
+            shipment.item_key,
+            (ammoByType.get(shipment.item_key) ?? 0) + shipment.quantity,
+          );
+        } else if (shipment.category === 'weapon') {
+          weaponUnits += Math.max(0, shipment.quantity);
+        }
+      }
+
+      let extraSlots = weaponUnits;
+      for (const [goodType, quantity] of tradeByGood) {
+        extraSlots += await extraSlotsForTradeAdd(playerId, quantity, goodType);
+      }
+      for (const row of drugByKey.values()) {
+        extraSlots += await extraSlotsForDrugAdd(
+          playerId,
+          row.drugType,
+          row.quality,
+          row.quantity,
+        );
+      }
+      for (const [ammoType, quantity] of ammoByType) {
+        extraSlots += await extraSlotsForAmmoAdd(playerId, ammoType, quantity);
+      }
+
+      try {
+        await assertBackpackFits(playerId, extraSlots);
+      } catch (error) {
+        if (error instanceof Error && error.message === 'INVENTORY_FULL') {
+          return { success: false, message: 'INVENTORY_FULL' };
+        }
+        throw error;
+      }
+    }
+
     let claimedQty = 0;
     let claimXp = 0;
     let tradeEventPoints = 0;
 
-    await prisma.$transaction(async (tx) => {
+    try {
+      await prisma.$transaction(async (tx) => {
       for (const shipment of claimable) {
         const metadata = this.parseMetadata(shipment);
         claimXp += xpForClaimedShipment(shipment.category, shipment.quantity);
@@ -2098,6 +2164,12 @@ class SmugglingService {
         claimedQty += shipment.quantity;
       }
     });
+    } catch (error) {
+      if (error instanceof Error && error.message === 'INVENTORY_FULL') {
+        return { success: false, message: 'INVENTORY_FULL' };
+      }
+      throw error;
+    }
 
     await refreshInventorySlotUsage(playerId);
     claimXp = Math.min(60, claimXp);

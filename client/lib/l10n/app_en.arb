@@ -11200,6 +11200,7 @@
   "smugglingApiVehicleUnavailableForSmuggling": "Vehicle not available for smuggling",
   "smugglingApiInsufficientStockForShipment": "Insufficient stock for this shipment",
   "smugglingApiDepotNoShipmentsReady": "No shipments ready at this country depot",
+  "smugglingApiCrewStorageFull": "Crew storage is full. Upgrade crew storage or claim fewer shipments.",
   "smugglingApiQuantityTooHighForChannel": "Quantity too high for {channel}. Max: {max}",
   "@smugglingApiQuantityTooHighForChannel": {
     "placeholders": {

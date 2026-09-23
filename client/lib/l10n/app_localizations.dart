@@ -29923,6 +29923,12 @@ abstract class AppLocalizations {
   /// **'No shipments ready at this country depot'**
   String get smugglingApiDepotNoShipmentsReady;
 
+  /// No description provided for @smugglingApiCrewStorageFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew storage is full. Upgrade crew storage or claim fewer shipments.'**
+  String get smugglingApiCrewStorageFull;
+
   /// No description provided for @smugglingApiQuantityTooHighForChannel.
   ///
   /// In en, this message translates to:

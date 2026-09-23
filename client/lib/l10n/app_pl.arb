@@ -5816,6 +5816,7 @@
   "smugglingApiVehicleUnavailableForSmuggling": "Pojazd niedostępny do przemytu",
   "smugglingApiInsufficientStockForShipment": "Za mało towaru dla tej przesyłki",
   "smugglingApiDepotNoShipmentsReady": "Brak gotowych przesyłek w magazynie w tym kraju",
+  "smugglingApiCrewStorageFull": "Magazyn crew jest pelny. Ulepsz magazyn lub odbierz mniej przesylek.",
   "smugglingApiQuantityTooHighForChannel": "Ilość za duża dla {channel}. Maks.: {max}",
   "@smugglingApiQuantityTooHighForChannel": {
     "placeholders": {

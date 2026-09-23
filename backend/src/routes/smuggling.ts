@@ -137,6 +137,14 @@ router.post('/claim-current', authenticate, async (req: AuthRequest, res: Respon
     }
     return res.status(400).json(result);
   } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    // Expected player gates — do not pollute Admin System Logs as 500s.
+    if (message === 'INVENTORY_FULL') {
+      return res.status(400).json({ success: false, message: 'INVENTORY_FULL' });
+    }
+    if (message === 'CREW_STORAGE_FULL') {
+      return res.status(400).json({ success: false, message: 'CREW_STORAGE_FULL' });
+    }
     console.error('Error claiming depot shipments:', error);
     return res.status(500).json({ success: false, message: 'Server error' });
   }

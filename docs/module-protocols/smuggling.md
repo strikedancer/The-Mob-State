@@ -21,6 +21,8 @@ Crew-netwerk + handelswaren gebruikt `CrewTradeInventory` + `CrewTradeStorageBui
 
 Persoonlijke handelswaren: **kopen/claimen** gaat in de rugzak (`inventory.country = '_carried_'`). Catalog/send debit de rugzak (eerst `_carried_`, daarna restvoorraad in het huidige land); claim crediteert weer de rugzak. Crew-handelswaren blijven gedeeld (`CrewTradeInventory`, geen landkolom). Itemkeys `contraband_*` zijn altijd trade (niet drugs), ook als de client per ongeluk `category=drug` meestuurt.
 
+Persoonlijke depot-claim checkt eerst of de rugzak de lading aankan (trade/drugs/ammo/wapens). Bij volle rugzak: `400` + `INVENTORY_FULL` met spelertekst — **geen** System Log 500. Zelfde voor volle crew-opslag (`CREW_STORAGE_FULL`).
+
 Persoonlijke én crew-handelswaren behouden bij smokkel hun **inkoopprijs** (`purchasePrice` / `averagePurchasePrice`) en **conditie** in shipment-metadata; claim merge’t die gewogen terug in inventory zodat winst = verkoop − inkoop klopt.
 
 Succesvolle **depot-claim** geeft **kleine XP** aan de claimende speler (per zending, max 60 per actie).

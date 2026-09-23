@@ -17505,6 +17505,10 @@ class AppLocalizationsPt extends AppLocalizations {
       'Nenhuma remessa pronta neste depósito nacional';
 
   @override
+  String get smugglingApiCrewStorageFull =>
+      'O armazenamento da crew esta cheio. Melhora o armazenamento ou reivindica menos envios.';
+
+  @override
   String smugglingApiQuantityTooHighForChannel(String channel, int max) {
     return 'Quantidade muito alta para $channel. Máx.: $max';
   }

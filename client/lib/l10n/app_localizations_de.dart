@@ -17587,6 +17587,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'In diesem Länderdepot sind keine Sendungen bereit';
 
   @override
+  String get smugglingApiCrewStorageFull =>
+      'Crew-Lager ist voll. Upgrade das Crew-Lager oder hole weniger Sendungen ab.';
+
+  @override
   String smugglingApiQuantityTooHighForChannel(String channel, int max) {
     return 'Menge zu hoch für $channel. Maximal: $max';
   }

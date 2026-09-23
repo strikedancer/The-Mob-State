@@ -360,6 +360,10 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
         return l10n.smugglingApiInsufficientStockForShipment;
       case 'Geen zendingen klaar in dit landdepot':
         return l10n.smugglingApiDepotNoShipmentsReady;
+      case 'INVENTORY_FULL':
+        return l10n.tradeErrBackpackFull;
+      case 'CREW_STORAGE_FULL':
+        return l10n.smugglingApiCrewStorageFull;
       default:
         return s;
     }

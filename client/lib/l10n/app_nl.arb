@@ -8737,6 +8737,7 @@
   "smugglingApiVehicleUnavailableForSmuggling": "Voertuig niet beschikbaar voor smokkel",
   "smugglingApiInsufficientStockForShipment": "Onvoldoende voorraad voor deze zending",
   "smugglingApiDepotNoShipmentsReady": "Geen zendingen klaar in dit landdepot",
+  "smugglingApiCrewStorageFull": "Crew-opslag is vol. Upgrade de crew-opslag of claim minder zendingen.",
   "smugglingApiQuantityTooHighForChannel": "Hoeveelheid te hoog voor {channel}. Max: {max}",
   "smugglingApiShipmentStarted": "Smokkelzending ({channel}) naar {destination} gestart",
   "smugglingApiClaimedPersonal": "{count} zending(en) opgehaald in {country}",
