@@ -10,6 +10,7 @@ const kAchievementCategoryOrder = [
   'rld',
   'vehicles',
   'travel',
+  'smuggling',
   'drugs',
   'trade',
   'social',
@@ -33,6 +34,8 @@ String achievementBadgeCategoryFolder(String category) {
       return 'vehicles';
     case 'travel':
       return 'travel';
+    case 'smuggling':
+      return 'smuggling';
     case 'drugs':
       return 'drugs';
     case 'trade':
@@ -108,6 +111,8 @@ String localizedAchievementCategory(AppLocalizations t, String category) {
       return t.achievementsCategoryNameVehicles;
     case 'travel':
       return t.achievementsCategoryNameTravel;
+    case 'smuggling':
+      return t.achievementsCategoryNameSmuggling;
     case 'drugs':
       return t.achievementsCategoryNameDrugs;
     case 'trade':
@@ -235,6 +240,20 @@ String localizedAchievementTitle(
       return t.achievementTitle_sea_raider;
     case 'captain_of_smugglers':
       return t.achievementTitle_captain_of_smugglers;
+    case 'smuggle_first_drop':
+      return t.achievementTitle_smuggle_first_drop;
+    case 'smuggle_border_rat':
+      return t.achievementTitle_smuggle_border_rat;
+    case 'smuggle_route_runner':
+      return t.achievementTitle_smuggle_route_runner;
+    case 'smuggle_shadow_fleet':
+      return t.achievementTitle_smuggle_shadow_fleet;
+    case 'smuggle_kingpin':
+      return t.achievementTitle_smuggle_kingpin;
+    case 'smuggle_variety_pack':
+      return t.achievementTitle_smuggle_variety_pack;
+    case 'smuggle_five_borders':
+      return t.achievementTitle_smuggle_five_borders;
     case 'globe_trotter':
       return t.achievementTitle_globe_trotter;
     case 'jet_setter':

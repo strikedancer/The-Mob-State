@@ -12708,6 +12708,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get achievementsCategoryNameTravel => 'Reisen';
 
   @override
+  String get achievementsCategoryNameSmuggling => 'Schmuggel';
+
+  @override
   String get achievementsCategoryNameDrugs => 'Drogen';
 
   @override
@@ -13832,6 +13835,55 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get achievementDescription_captain_of_smugglers =>
       'Stehlen Sie 12 Boote';
+
+  @override
+  String get achievementTitle_smuggle_first_drop => 'Erster Drop';
+
+  @override
+  String get achievementDescription_smuggle_first_drop =>
+      'Hole deine erste Schmuggelsendung ab';
+
+  @override
+  String get achievementTitle_smuggle_border_rat => 'Grenzratte';
+
+  @override
+  String get achievementDescription_smuggle_border_rat =>
+      'Hole 10 Schmuggelsendungen ab';
+
+  @override
+  String get achievementTitle_smuggle_route_runner => 'Routenläufer';
+
+  @override
+  String get achievementDescription_smuggle_route_runner =>
+      'Hole 50 Schmuggelsendungen ab';
+
+  @override
+  String get achievementTitle_smuggle_shadow_fleet => 'Schattenflotte';
+
+  @override
+  String get achievementDescription_smuggle_shadow_fleet =>
+      'Hole 150 Schmuggelsendungen ab';
+
+  @override
+  String get achievementTitle_smuggle_kingpin => 'Schmuggel-Kingpin';
+
+  @override
+  String get achievementDescription_smuggle_kingpin =>
+      'Hole 400 Schmuggelsendungen ab';
+
+  @override
+  String get achievementTitle_smuggle_variety_pack => 'Sortenpaket';
+
+  @override
+  String get achievementDescription_smuggle_variety_pack =>
+      'Hole geschmuggelte Fracht aus 3 verschiedenen Kategorien ab';
+
+  @override
+  String get achievementTitle_smuggle_five_borders => 'Fünf Grenzen';
+
+  @override
+  String get achievementDescription_smuggle_five_borders =>
+      'Hole geschmuggelte Fracht in 5 verschiedenen Ländern ab';
 
   @override
   String get achievementTitle_globe_trotter => 'Globetrotter';

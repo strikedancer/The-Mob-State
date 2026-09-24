@@ -13421,5 +13421,20 @@
   "territoryErrorAbandonInContest": "You cannot abandon while a contest is active on this region.",
   "territoryErrorAbandonCooldown": "Abandon is on cooldown for your crew.",
   "territoryErrorAbandonConfirmRequired": "Type ABANDON exactly to confirm.",
-  "territoryErrorAbandonNoRegions": "Your crew owns no regions in this country."
+  "territoryErrorAbandonNoRegions": "Your crew owns no regions in this country.",
+  "achievementsCategoryNameSmuggling": "Przemyt",
+  "achievementTitle_smuggle_first_drop": "Pierwszy zrzut",
+  "achievementDescription_smuggle_first_drop": "Odbierz swoją pierwszą przemytniczą przesyłkę",
+  "achievementTitle_smuggle_border_rat": "Szczur Graniczny",
+  "achievementDescription_smuggle_border_rat": "Zdobądź 10 przemytniczych przesyłek",
+  "achievementTitle_smuggle_route_runner": "Biegacz tras",
+  "achievementDescription_smuggle_route_runner": "Odbierz 50 przemytniczych przesyłek",
+  "achievementTitle_smuggle_shadow_fleet": "Flota Cieni",
+  "achievementDescription_smuggle_shadow_fleet": "Odbierz 150 przemytniczych przesyłek",
+  "achievementTitle_smuggle_kingpin": "Król przemytu",
+  "achievementDescription_smuggle_kingpin": "Odbierz 400 przemytniczych przesyłek",
+  "achievementTitle_smuggle_variety_pack": "Pakiet różnorodności",
+  "achievementDescription_smuggle_variety_pack": "Zdobądź przemycony ładunek z 3 różnych kategorii",
+  "achievementTitle_smuggle_five_borders": "Pięć granic",
+  "achievementDescription_smuggle_five_borders": "Zdobądź przemycony ładunek w 5 różnych krajach"
 }

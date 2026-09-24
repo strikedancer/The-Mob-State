@@ -13421,5 +13421,20 @@
   "territoryErrorAbandonInContest": "You cannot abandon while a contest is active on this region.",
   "territoryErrorAbandonCooldown": "Abandon is on cooldown for your crew.",
   "territoryErrorAbandonConfirmRequired": "Type ABANDON exactly to confirm.",
-  "territoryErrorAbandonNoRegions": "Your crew owns no regions in this country."
+  "territoryErrorAbandonNoRegions": "Your crew owns no regions in this country.",
+  "achievementsCategoryNameSmuggling": "Contrebande",
+  "achievementTitle_smuggle_first_drop": "Première livraison",
+  "achievementDescription_smuggle_first_drop": "Réclamez votre premier envoi de contrebande",
+  "achievementTitle_smuggle_border_rat": "Rat de frontière",
+  "achievementDescription_smuggle_border_rat": "Réclamez 10 expéditions de contrebande",
+  "achievementTitle_smuggle_route_runner": "Coureur de route",
+  "achievementDescription_smuggle_route_runner": "Réclamez 50 expéditions de contrebande",
+  "achievementTitle_smuggle_shadow_fleet": "Flotte de l'Ombre",
+  "achievementDescription_smuggle_shadow_fleet": "Réclamez 150 expéditions de contrebande",
+  "achievementTitle_smuggle_kingpin": "Chef de file de la contrebande",
+  "achievementDescription_smuggle_kingpin": "Réclamez 400 expéditions de contrebande",
+  "achievementTitle_smuggle_variety_pack": "Pack Variété",
+  "achievementDescription_smuggle_variety_pack": "Réclamez des marchandises de contrebande de 3 catégories différentes",
+  "achievementTitle_smuggle_five_borders": "Cinq frontières",
+  "achievementDescription_smuggle_five_borders": "Réclamez des marchandises de contrebande dans 5 pays différents"
 }

@@ -203,6 +203,20 @@ class _AchievementsScreenState extends State<AchievementsScreen>
         return t.achievementDescription_sea_raider;
       case 'captain_of_smugglers':
         return t.achievementDescription_captain_of_smugglers;
+      case 'smuggle_first_drop':
+        return t.achievementDescription_smuggle_first_drop;
+      case 'smuggle_border_rat':
+        return t.achievementDescription_smuggle_border_rat;
+      case 'smuggle_route_runner':
+        return t.achievementDescription_smuggle_route_runner;
+      case 'smuggle_shadow_fleet':
+        return t.achievementDescription_smuggle_shadow_fleet;
+      case 'smuggle_kingpin':
+        return t.achievementDescription_smuggle_kingpin;
+      case 'smuggle_variety_pack':
+        return t.achievementDescription_smuggle_variety_pack;
+      case 'smuggle_five_borders':
+        return t.achievementDescription_smuggle_five_borders;
       case 'globe_trotter':
         return t.achievementDescription_globe_trotter;
       case 'jet_setter':

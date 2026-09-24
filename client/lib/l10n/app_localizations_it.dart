@@ -12679,6 +12679,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get achievementsCategoryNameTravel => 'Viaggi';
 
   @override
+  String get achievementsCategoryNameSmuggling => 'Contrabbando';
+
+  @override
   String get achievementsCategoryNameDrugs => 'Droga';
 
   @override
@@ -13805,6 +13808,55 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get achievementDescription_captain_of_smugglers => 'Ruba 12 barche';
+
+  @override
+  String get achievementTitle_smuggle_first_drop => 'Prima consegna';
+
+  @override
+  String get achievementDescription_smuggle_first_drop =>
+      'Richiedi la tua prima spedizione di contrabbando';
+
+  @override
+  String get achievementTitle_smuggle_border_rat => 'Ratto di confine';
+
+  @override
+  String get achievementDescription_smuggle_border_rat =>
+      'Rivendica 10 spedizioni di contrabbando';
+
+  @override
+  String get achievementTitle_smuggle_route_runner => 'Corridore del percorso';
+
+  @override
+  String get achievementDescription_smuggle_route_runner =>
+      'Richiedi 50 spedizioni di contrabbando';
+
+  @override
+  String get achievementTitle_smuggle_shadow_fleet => 'Flotta Ombra';
+
+  @override
+  String get achievementDescription_smuggle_shadow_fleet =>
+      'Richiedi 150 spedizioni di contrabbando';
+
+  @override
+  String get achievementTitle_smuggle_kingpin => 'Capo del contrabbando';
+
+  @override
+  String get achievementDescription_smuggle_kingpin =>
+      'Richiedi 400 spedizioni di contrabbando';
+
+  @override
+  String get achievementTitle_smuggle_variety_pack => 'Pacchetto di varietà';
+
+  @override
+  String get achievementDescription_smuggle_variety_pack =>
+      'Rivendica merci di contrabbando di 3 diverse categorie';
+
+  @override
+  String get achievementTitle_smuggle_five_borders => 'Cinque confini';
+
+  @override
+  String get achievementDescription_smuggle_five_borders =>
+      'Rivendica merci di contrabbando in 5 paesi diversi';
 
   @override
   String get achievementTitle_globe_trotter => 'Giramondo';

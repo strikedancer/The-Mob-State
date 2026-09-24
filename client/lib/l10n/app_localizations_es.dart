@@ -12672,6 +12672,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get achievementsCategoryNameTravel => 'Viajes';
 
   @override
+  String get achievementsCategoryNameSmuggling => 'Contrabando';
+
+  @override
   String get achievementsCategoryNameDrugs => 'Drogas';
 
   @override
@@ -13791,6 +13794,55 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get achievementDescription_captain_of_smugglers => 'Roba 12 barcos';
+
+  @override
+  String get achievementTitle_smuggle_first_drop => 'Primera entrega';
+
+  @override
+  String get achievementDescription_smuggle_first_drop =>
+      'Reclama tu primer envío de contrabando';
+
+  @override
+  String get achievementTitle_smuggle_border_rat => 'Rata fronteriza';
+
+  @override
+  String get achievementDescription_smuggle_border_rat =>
+      'Reclama 10 envíos de contrabando';
+
+  @override
+  String get achievementTitle_smuggle_route_runner => 'Corredor de ruta';
+
+  @override
+  String get achievementDescription_smuggle_route_runner =>
+      'Reclama 50 envíos de contrabando';
+
+  @override
+  String get achievementTitle_smuggle_shadow_fleet => 'Flota de las Sombras';
+
+  @override
+  String get achievementDescription_smuggle_shadow_fleet =>
+      'Reclama 150 envíos de contrabando';
+
+  @override
+  String get achievementTitle_smuggle_kingpin => 'Capo del contrabando';
+
+  @override
+  String get achievementDescription_smuggle_kingpin =>
+      'Reclama 400 envíos de contrabando';
+
+  @override
+  String get achievementTitle_smuggle_variety_pack => 'Paquete variado';
+
+  @override
+  String get achievementDescription_smuggle_variety_pack =>
+      'Reclama carga de contrabando de 3 categorías diferentes';
+
+  @override
+  String get achievementTitle_smuggle_five_borders => 'Cinco Fronteras';
+
+  @override
+  String get achievementDescription_smuggle_five_borders =>
+      'Reclama carga de contrabando en 5 países diferentes';
 
   @override
   String get achievementTitle_globe_trotter => 'Trotamundos';

@@ -2732,6 +2732,7 @@ model smuggling_shipments {
   created_at          DateTime  @default(now()) @db.DateTime(0)
   delivered_at        DateTime? @db.DateTime(0)
   claimed_at          DateTime? @db.DateTime(0)
+  claimed_by_player_id Int?
   crew_id             Int?
   channel             String    @default("package") @db.VarChar(20)
   network_scope       String    @default("personal") @db.VarChar(20)
@@ -2739,6 +2740,7 @@ model smuggling_shipments {
   @@index([player_id, category], map: "idx_smuggling_player_category")
   @@index([player_id, eta_at], map: "idx_smuggling_player_eta")
   @@index([player_id, status, destination_country], map: "idx_smuggling_player_status_country")
+  @@index([claimed_by_player_id, status], map: "idx_smuggling_claimed_by_status")
 }
 
 model vehicle_repair_jobs {

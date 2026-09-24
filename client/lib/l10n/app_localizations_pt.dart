@@ -12636,6 +12636,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get achievementsCategoryNameTravel => 'Viagens';
 
   @override
+  String get achievementsCategoryNameSmuggling => 'Contrabando';
+
+  @override
   String get achievementsCategoryNameDrugs => 'Drogas';
 
   @override
@@ -13756,6 +13759,55 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get achievementDescription_captain_of_smugglers => 'Roube 12 barcos';
+
+  @override
+  String get achievementTitle_smuggle_first_drop => 'Primeira entrega';
+
+  @override
+  String get achievementDescription_smuggle_first_drop =>
+      'Reivindique sua primeira remessa de contrabando';
+
+  @override
+  String get achievementTitle_smuggle_border_rat => 'Rato de Fronteira';
+
+  @override
+  String get achievementDescription_smuggle_border_rat =>
+      'Reivindique 10 remessas de contrabando';
+
+  @override
+  String get achievementTitle_smuggle_route_runner => 'Corredor de rota';
+
+  @override
+  String get achievementDescription_smuggle_route_runner =>
+      'Reivindique 50 remessas de contrabando';
+
+  @override
+  String get achievementTitle_smuggle_shadow_fleet => 'Frota das Sombras';
+
+  @override
+  String get achievementDescription_smuggle_shadow_fleet =>
+      'Reivindicar 150 remessas de contrabando';
+
+  @override
+  String get achievementTitle_smuggle_kingpin => 'Rei do contrabando';
+
+  @override
+  String get achievementDescription_smuggle_kingpin =>
+      'Reivindicar 400 remessas de contrabando';
+
+  @override
+  String get achievementTitle_smuggle_variety_pack => 'Pacote de variedades';
+
+  @override
+  String get achievementDescription_smuggle_variety_pack =>
+      'Reivindique carga contrabandeada de 3 categorias diferentes';
+
+  @override
+  String get achievementTitle_smuggle_five_borders => 'Cinco Fronteiras';
+
+  @override
+  String get achievementDescription_smuggle_five_borders =>
+      'Reivindique carga contrabandeada em 5 países diferentes';
 
   @override
   String get achievementTitle_globe_trotter => 'Globo Trotador';

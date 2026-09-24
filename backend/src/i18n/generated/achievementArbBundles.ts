@@ -229,6 +229,34 @@ export const ACHIEVEMENT_ARB_BY_LANG = {
       "title": "Captain of Smugglers",
       "description": "Steal 12 boats"
     },
+    "smuggle_first_drop": {
+      "title": "First Drop",
+      "description": "Claim your first smuggling shipment"
+    },
+    "smuggle_border_rat": {
+      "title": "Border Rat",
+      "description": "Claim 10 smuggling shipments"
+    },
+    "smuggle_route_runner": {
+      "title": "Route Runner",
+      "description": "Claim 50 smuggling shipments"
+    },
+    "smuggle_shadow_fleet": {
+      "title": "Shadow Fleet",
+      "description": "Claim 150 smuggling shipments"
+    },
+    "smuggle_kingpin": {
+      "title": "Smuggle Kingpin",
+      "description": "Claim 400 smuggling shipments"
+    },
+    "smuggle_variety_pack": {
+      "title": "Variety Pack",
+      "description": "Claim smuggled cargo from 3 different categories"
+    },
+    "smuggle_five_borders": {
+      "title": "Five Borders",
+      "description": "Claim smuggled cargo in 5 different countries"
+    },
     "globe_trotter": {
       "title": "Globe Trotter",
       "description": "Complete 5 journeys"
@@ -562,6 +590,34 @@ export const ACHIEVEMENT_ARB_BY_LANG = {
     "captain_of_smugglers": {
       "title": "Kapitein van Smokkelaars",
       "description": "Steel 12 boten"
+    },
+    "smuggle_first_drop": {
+      "title": "Eerste Drop",
+      "description": "Claim je eerste smokkelzending"
+    },
+    "smuggle_border_rat": {
+      "title": "Grensrat",
+      "description": "Claim 10 smokkelzendingen"
+    },
+    "smuggle_route_runner": {
+      "title": "Routeloper",
+      "description": "Claim 50 smokkelzendingen"
+    },
+    "smuggle_shadow_fleet": {
+      "title": "Schaduwvloot",
+      "description": "Claim 150 smokkelzendingen"
+    },
+    "smuggle_kingpin": {
+      "title": "Smokkelbaas",
+      "description": "Claim 400 smokkelzendingen"
+    },
+    "smuggle_variety_pack": {
+      "title": "Variatiepakket",
+      "description": "Claim gesmokkelde lading uit 3 verschillende categorieën"
+    },
+    "smuggle_five_borders": {
+      "title": "Vijf Grenzen",
+      "description": "Claim gesmokkelde lading in 5 verschillende landen"
     },
     "globe_trotter": {
       "title": "Wereldreiziger",
@@ -1004,6 +1060,34 @@ export const ACHIEVEMENT_ARB_BY_LANG = {
     "nightclub_season_champion": {
       "title": "Saisonmeister",
       "description": "Gewinnen Sie eine wöchentliche Nachtclub-Saison"
+    },
+    "smuggle_first_drop": {
+      "title": "Erster Drop",
+      "description": "Hole deine erste Schmuggelsendung ab"
+    },
+    "smuggle_border_rat": {
+      "title": "Grenzratte",
+      "description": "Hole 10 Schmuggelsendungen ab"
+    },
+    "smuggle_route_runner": {
+      "title": "Routenläufer",
+      "description": "Hole 50 Schmuggelsendungen ab"
+    },
+    "smuggle_shadow_fleet": {
+      "title": "Schattenflotte",
+      "description": "Hole 150 Schmuggelsendungen ab"
+    },
+    "smuggle_kingpin": {
+      "title": "Schmuggel-Kingpin",
+      "description": "Hole 400 Schmuggelsendungen ab"
+    },
+    "smuggle_variety_pack": {
+      "title": "Sortenpaket",
+      "description": "Hole geschmuggelte Fracht aus 3 verschiedenen Kategorien ab"
+    },
+    "smuggle_five_borders": {
+      "title": "Fünf Grenzen",
+      "description": "Hole geschmuggelte Fracht in 5 verschiedenen Ländern ab"
     }
   },
   "fr": {
@@ -1338,6 +1422,34 @@ export const ACHIEVEMENT_ARB_BY_LANG = {
     "nightclub_season_champion": {
       "title": "Champion de la saison",
       "description": "Gagnez une saison hebdomadaire en discothèque"
+    },
+    "smuggle_first_drop": {
+      "title": "Première livraison",
+      "description": "Réclamez votre premier envoi de contrebande"
+    },
+    "smuggle_border_rat": {
+      "title": "Rat de frontière",
+      "description": "Réclamez 10 expéditions de contrebande"
+    },
+    "smuggle_route_runner": {
+      "title": "Coureur de route",
+      "description": "Réclamez 50 expéditions de contrebande"
+    },
+    "smuggle_shadow_fleet": {
+      "title": "Flotte de l'Ombre",
+      "description": "Réclamez 150 expéditions de contrebande"
+    },
+    "smuggle_kingpin": {
+      "title": "Chef de file de la contrebande",
+      "description": "Réclamez 400 expéditions de contrebande"
+    },
+    "smuggle_variety_pack": {
+      "title": "Pack Variété",
+      "description": "Réclamez des marchandises de contrebande de 3 catégories différentes"
+    },
+    "smuggle_five_borders": {
+      "title": "Cinq frontières",
+      "description": "Réclamez des marchandises de contrebande dans 5 pays différents"
     }
   },
   "es": {
@@ -1655,7 +1767,7 @@ export const ACHIEVEMENT_ARB_BY_LANG = {
     },
     "nightclub_staffing_boss": {
       "title": "Jefa de personal",
-      "description": "Dirige a 3 miembros activos de la tripulación del club nocturno al mismo tiempo."
+      "description": "Dirige a 3 miembros activos de la Crew del Nightclub al mismo tiempo."
     },
     "nightclub_vip_room": {
       "title": "Sala VIP",
@@ -1672,6 +1784,34 @@ export const ACHIEVEMENT_ARB_BY_LANG = {
     "nightclub_season_champion": {
       "title": "Campeona de la temporada",
       "description": "Gana una temporada de discoteca semanal"
+    },
+    "smuggle_first_drop": {
+      "title": "Primera entrega",
+      "description": "Reclama tu primer envío de contrabando"
+    },
+    "smuggle_border_rat": {
+      "title": "Rata fronteriza",
+      "description": "Reclama 10 envíos de contrabando"
+    },
+    "smuggle_route_runner": {
+      "title": "Corredor de ruta",
+      "description": "Reclama 50 envíos de contrabando"
+    },
+    "smuggle_shadow_fleet": {
+      "title": "Flota de las Sombras",
+      "description": "Reclama 150 envíos de contrabando"
+    },
+    "smuggle_kingpin": {
+      "title": "Capo del contrabando",
+      "description": "Reclama 400 envíos de contrabando"
+    },
+    "smuggle_variety_pack": {
+      "title": "Paquete variado",
+      "description": "Reclama carga de contrabando de 3 categorías diferentes"
+    },
+    "smuggle_five_borders": {
+      "title": "Cinco Fronteras",
+      "description": "Reclama carga de contrabando en 5 países diferentes"
     }
   },
   "it": {
@@ -2006,6 +2146,34 @@ export const ACHIEVEMENT_ARB_BY_LANG = {
     "nightclub_season_champion": {
       "title": "Campione della stagione",
       "description": "Vinci una stagione settimanale di nightclub"
+    },
+    "smuggle_first_drop": {
+      "title": "Prima consegna",
+      "description": "Richiedi la tua prima spedizione di contrabbando"
+    },
+    "smuggle_border_rat": {
+      "title": "Ratto di confine",
+      "description": "Rivendica 10 spedizioni di contrabbando"
+    },
+    "smuggle_route_runner": {
+      "title": "Corridore del percorso",
+      "description": "Richiedi 50 spedizioni di contrabbando"
+    },
+    "smuggle_shadow_fleet": {
+      "title": "Flotta Ombra",
+      "description": "Richiedi 150 spedizioni di contrabbando"
+    },
+    "smuggle_kingpin": {
+      "title": "Capo del contrabbando",
+      "description": "Richiedi 400 spedizioni di contrabbando"
+    },
+    "smuggle_variety_pack": {
+      "title": "Pacchetto di varietà",
+      "description": "Rivendica merci di contrabbando di 3 diverse categorie"
+    },
+    "smuggle_five_borders": {
+      "title": "Cinque confini",
+      "description": "Rivendica merci di contrabbando in 5 paesi diversi"
     }
   },
   "pl": {
@@ -2340,6 +2508,34 @@ export const ACHIEVEMENT_ARB_BY_LANG = {
     "nightclub_season_champion": {
       "title": "Mistrz sezonu",
       "description": "Wygraj cotygodniowy sezon klubu nocnego"
+    },
+    "smuggle_first_drop": {
+      "title": "Pierwszy zrzut",
+      "description": "Odbierz swoją pierwszą przemytniczą przesyłkę"
+    },
+    "smuggle_border_rat": {
+      "title": "Szczur Graniczny",
+      "description": "Zdobądź 10 przemytniczych przesyłek"
+    },
+    "smuggle_route_runner": {
+      "title": "Biegacz tras",
+      "description": "Odbierz 50 przemytniczych przesyłek"
+    },
+    "smuggle_shadow_fleet": {
+      "title": "Flota Cieni",
+      "description": "Odbierz 150 przemytniczych przesyłek"
+    },
+    "smuggle_kingpin": {
+      "title": "Król przemytu",
+      "description": "Odbierz 400 przemytniczych przesyłek"
+    },
+    "smuggle_variety_pack": {
+      "title": "Pakiet różnorodności",
+      "description": "Zdobądź przemycony ładunek z 3 różnych kategorii"
+    },
+    "smuggle_five_borders": {
+      "title": "Pięć granic",
+      "description": "Zdobądź przemycony ładunek w 5 różnych krajach"
     }
   },
   "pt": {
@@ -2674,6 +2870,34 @@ export const ACHIEVEMENT_ARB_BY_LANG = {
     "nightclub_season_champion": {
       "title": "Campeão da temporada",
       "description": "Ganhe uma temporada semanal em casas noturnas"
+    },
+    "smuggle_first_drop": {
+      "title": "Primeira entrega",
+      "description": "Reivindique sua primeira remessa de contrabando"
+    },
+    "smuggle_border_rat": {
+      "title": "Rato de Fronteira",
+      "description": "Reivindique 10 remessas de contrabando"
+    },
+    "smuggle_route_runner": {
+      "title": "Corredor de rota",
+      "description": "Reivindique 50 remessas de contrabando"
+    },
+    "smuggle_shadow_fleet": {
+      "title": "Frota das Sombras",
+      "description": "Reivindicar 150 remessas de contrabando"
+    },
+    "smuggle_kingpin": {
+      "title": "Rei do contrabando",
+      "description": "Reivindicar 400 remessas de contrabando"
+    },
+    "smuggle_variety_pack": {
+      "title": "Pacote de variedades",
+      "description": "Reivindique carga contrabandeada de 3 categorias diferentes"
+    },
+    "smuggle_five_borders": {
+      "title": "Cinco Fronteiras",
+      "description": "Reivindique carga contrabandeada em 5 países diferentes"
     }
   }
 } as const;

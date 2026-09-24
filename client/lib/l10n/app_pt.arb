@@ -13421,5 +13421,20 @@
   "territoryErrorAbandonInContest": "You cannot abandon while a contest is active on this region.",
   "territoryErrorAbandonCooldown": "Abandon is on cooldown for your crew.",
   "territoryErrorAbandonConfirmRequired": "Type ABANDON exactly to confirm.",
-  "territoryErrorAbandonNoRegions": "Your crew owns no regions in this country."
+  "territoryErrorAbandonNoRegions": "Your crew owns no regions in this country.",
+  "achievementsCategoryNameSmuggling": "Contrabando",
+  "achievementTitle_smuggle_first_drop": "Primeira entrega",
+  "achievementDescription_smuggle_first_drop": "Reivindique sua primeira remessa de contrabando",
+  "achievementTitle_smuggle_border_rat": "Rato de Fronteira",
+  "achievementDescription_smuggle_border_rat": "Reivindique 10 remessas de contrabando",
+  "achievementTitle_smuggle_route_runner": "Corredor de rota",
+  "achievementDescription_smuggle_route_runner": "Reivindique 50 remessas de contrabando",
+  "achievementTitle_smuggle_shadow_fleet": "Frota das Sombras",
+  "achievementDescription_smuggle_shadow_fleet": "Reivindicar 150 remessas de contrabando",
+  "achievementTitle_smuggle_kingpin": "Rei do contrabando",
+  "achievementDescription_smuggle_kingpin": "Reivindicar 400 remessas de contrabando",
+  "achievementTitle_smuggle_variety_pack": "Pacote de variedades",
+  "achievementDescription_smuggle_variety_pack": "Reivindique carga contrabandeada de 3 categorias diferentes",
+  "achievementTitle_smuggle_five_borders": "Cinco Fronteiras",
+  "achievementDescription_smuggle_five_borders": "Reivindique carga contrabandeada em 5 países diferentes"
 }

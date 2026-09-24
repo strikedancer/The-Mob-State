@@ -27,6 +27,8 @@ Persoonlijke én crew-handelswaren behouden bij smokkel hun **inkoopprijs** (`pu
 
 Succesvolle **depot-claim** geeft **kleine XP** aan de claimende speler (per zending, max 60 per actie).
 
+Claim zet `claimed_by_player_id` en triggert smuggle-achievements (`smuggle_*` in category `smuggling`). Badge-PNG’s: `client/assets/images/achievements/badges/smuggling/`.
+
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.
 - Keep Dutch and English copy in sync for any user-visible change.

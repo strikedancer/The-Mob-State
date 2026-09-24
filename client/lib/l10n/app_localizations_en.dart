@@ -12560,6 +12560,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get achievementsCategoryNameTravel => 'Travel';
 
   @override
+  String get achievementsCategoryNameSmuggling => 'Smuggling';
+
+  @override
   String get achievementsCategoryNameDrugs => 'Drugs';
 
   @override
@@ -13666,6 +13669,55 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get achievementDescription_captain_of_smugglers => 'Steal 12 boats';
+
+  @override
+  String get achievementTitle_smuggle_first_drop => 'First Drop';
+
+  @override
+  String get achievementDescription_smuggle_first_drop =>
+      'Claim your first smuggling shipment';
+
+  @override
+  String get achievementTitle_smuggle_border_rat => 'Border Rat';
+
+  @override
+  String get achievementDescription_smuggle_border_rat =>
+      'Claim 10 smuggling shipments';
+
+  @override
+  String get achievementTitle_smuggle_route_runner => 'Route Runner';
+
+  @override
+  String get achievementDescription_smuggle_route_runner =>
+      'Claim 50 smuggling shipments';
+
+  @override
+  String get achievementTitle_smuggle_shadow_fleet => 'Shadow Fleet';
+
+  @override
+  String get achievementDescription_smuggle_shadow_fleet =>
+      'Claim 150 smuggling shipments';
+
+  @override
+  String get achievementTitle_smuggle_kingpin => 'Smuggle Kingpin';
+
+  @override
+  String get achievementDescription_smuggle_kingpin =>
+      'Claim 400 smuggling shipments';
+
+  @override
+  String get achievementTitle_smuggle_variety_pack => 'Variety Pack';
+
+  @override
+  String get achievementDescription_smuggle_variety_pack =>
+      'Claim smuggled cargo from 3 different categories';
+
+  @override
+  String get achievementTitle_smuggle_five_borders => 'Five Borders';
+
+  @override
+  String get achievementDescription_smuggle_five_borders =>
+      'Claim smuggled cargo in 5 different countries';
 
   @override
   String get achievementTitle_globe_trotter => 'Globe Trotter';
@@ -19342,7 +19394,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicAchievementsHow =>
-      'Achievements are grouped in categories: Crimes, Empire, PvP, Economy, Training, Social and Meta.\nEach achievement has multiple tiers (Bronze, Silver, Gold, Platinum). Each tier gives a higher reward and a more impressive badge.\nRewards per achievement include: cash, XP, special items, permanent bonuses or unique titles for your profile.\nProgress is tracked automatically. You do not need to activate anything: reach the threshold and the badge is awarded immediately.\nSome achievements are hidden until you partially complete them — they then appear with their real name and requirements.\nAll earned achievement badges are visible on your public profile, grouped by category. Locked progress stays private.\nChain achievements: some badges are linked in a chain. Gold requires Silver to be already obtained. Plan early for higher tiers.';
+      'Achievements are grouped in categories: Crimes, Jobs, School, Vehicles, Travel, Smuggling, Drugs, Trade, Social and more.\nEach achievement has multiple tiers (Bronze, Silver, Gold, Platinum). Each tier gives a higher reward and a more impressive badge.\nRewards per achievement include: cash, XP, special items, permanent bonuses or unique titles for your profile.\nProgress is tracked automatically. You do not need to activate anything: reach the threshold and the badge is awarded immediately.\nSome achievements are hidden until you partially complete them — they then appear with their real name and requirements.\nAll earned achievement badges are visible on your public profile, grouped by category. Locked progress stays private.\nChain achievements: some badges are linked in a chain. Gold requires Silver to be already obtained. Plan early for higher tiers.';
 
   @override
   String get helpTopicAchievementsTips =>

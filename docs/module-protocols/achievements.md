@@ -21,6 +21,13 @@ Badge progression, category tracking, rewards and long-term account goals.
 ## Economy
 - Crime/job/school/miljonair-payouts zijn een bonus, geen tweede inkomen. Early milestones (1–50 crimes/jobs, school level 1–5, eerste lawyer/doctor-shift) blijven in de lage duizenden, niet tonnen. Al uitbetaalde achievements worden niet herberekend.
 
+## Smuggling category
+- Category folder: `client/assets/images/achievements/badges/smuggling/`.
+- Progress hooks on successful depot claim (`smugglingService` → `checkAndUnlockAchievements`).
+- Counters use `smuggling_shipments.claimed_by_player_id` (with NULL backfill for older personal claims).
+- Tiers: `smuggle_first_drop` (1), `smuggle_border_rat` (10), `smuggle_route_runner` (50), `smuggle_shadow_fleet` (150), `smuggle_kingpin` (400), plus `smuggle_variety_pack` (3 categories) and `smuggle_five_borders` (5 countries).
+- Badge art: `backend/scripts/generate_smuggling_achievement_badges_leonardo.py`.
+
 ## Must Preserve
 - Elke unlock blijft één `sendSystemMessage` (één `direct_messages`-rij). De inbox toont die rij als **eigen item** (`friendId = -messageId`), niet als extra bubble in één gedeelde The Mob State-thread.
 - Alle unlocked achievements zijn zichtbaar op het publieke profiel (badge-PNG’s per categorie). Locked definitions, currentValue en progress blijven self-only via `GET /achievements`. `featuredAchievements` blijft de laatste 9 voor oudere clients.

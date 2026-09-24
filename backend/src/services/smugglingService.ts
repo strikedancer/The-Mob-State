@@ -627,7 +627,8 @@ class SmugglingService {
       ALTER TABLE smuggling_shipments
       ADD COLUMN IF NOT EXISTS crew_id INT NULL,
       ADD COLUMN IF NOT EXISTS channel VARCHAR(20) NOT NULL DEFAULT 'package',
-      ADD COLUMN IF NOT EXISTS network_scope VARCHAR(20) NOT NULL DEFAULT 'personal'
+      ADD COLUMN IF NOT EXISTS network_scope VARCHAR(20) NOT NULL DEFAULT 'personal',
+      ADD COLUMN IF NOT EXISTS claimed_by_player_id INT NULL
     `;
 
     this.initialized = true;
@@ -2157,7 +2158,7 @@ class SmugglingService {
 
         await tx.$executeRaw`
           UPDATE smuggling_shipments
-          SET status = 'claimed', claimed_at = NOW()
+          SET status = 'claimed', claimed_at = NOW(), claimed_by_player_id = ${playerId}
           WHERE id = ${shipment.id}
         `;
 
@@ -2187,6 +2188,13 @@ class SmugglingService {
       void gameEventService
         .recordContribution(playerId, 'trade', tradeEventPoints)
         .catch(() => {});
+    }
+
+    try {
+      const { checkAndUnlockAchievements } = await import('./achievementService');
+      await checkAndUnlockAchievements(playerId);
+    } catch (err) {
+      console.error('[SmugglingService] Failed to check achievements after claim:', err);
     }
 
     const xpSuffix = awardedXp > 0 ? ` (+${awardedXp} XP)` : '';

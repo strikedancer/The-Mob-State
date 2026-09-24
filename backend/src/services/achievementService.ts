@@ -56,7 +56,8 @@ export interface AchievementDefinition {
     | 'vehicles'
     | 'travel'
     | 'drugs'
-    | 'trade';
+    | 'trade'
+    | 'smuggling';
   requirementType: string;
   requirementValue: number;
   requirementJobId?: string;
@@ -1038,6 +1039,90 @@ export const ACHIEVEMENT_DEFINITIONS: Record<string, AchievementDefinition> = {
     icon: '⚙️',
   },
 
+  smuggle_first_drop: {
+    id: 'smuggle_first_drop',
+    title: 'First Drop',
+    description: 'Claim your first smuggling shipment',
+    category: 'smuggling',
+    requirementType: 'smuggling_packages_claimed',
+    requirementValue: 1,
+    rewardMoney: 5000,
+    rewardXp: 150,
+    icon: '📦',
+  },
+
+  smuggle_border_rat: {
+    id: 'smuggle_border_rat',
+    title: 'Border Rat',
+    description: 'Claim 10 smuggling shipments',
+    category: 'smuggling',
+    requirementType: 'smuggling_packages_claimed',
+    requirementValue: 10,
+    rewardMoney: 12000,
+    rewardXp: 350,
+    icon: '🐀',
+  },
+
+  smuggle_route_runner: {
+    id: 'smuggle_route_runner',
+    title: 'Route Runner',
+    description: 'Claim 50 smuggling shipments',
+    category: 'smuggling',
+    requirementType: 'smuggling_packages_claimed',
+    requirementValue: 50,
+    rewardMoney: 35000,
+    rewardXp: 900,
+    icon: '🛣️',
+  },
+
+  smuggle_shadow_fleet: {
+    id: 'smuggle_shadow_fleet',
+    title: 'Shadow Fleet',
+    description: 'Claim 150 smuggling shipments',
+    category: 'smuggling',
+    requirementType: 'smuggling_packages_claimed',
+    requirementValue: 150,
+    rewardMoney: 90000,
+    rewardXp: 2000,
+    icon: '🚢',
+  },
+
+  smuggle_kingpin: {
+    id: 'smuggle_kingpin',
+    title: 'Smuggle Kingpin',
+    description: 'Claim 400 smuggling shipments',
+    category: 'smuggling',
+    requirementType: 'smuggling_packages_claimed',
+    requirementValue: 400,
+    rewardMoney: 180000,
+    rewardXp: 3500,
+    icon: '👑',
+  },
+
+  smuggle_variety_pack: {
+    id: 'smuggle_variety_pack',
+    title: 'Variety Pack',
+    description: 'Claim smuggled cargo from 3 different categories',
+    category: 'smuggling',
+    requirementType: 'smuggling_categories_claimed',
+    requirementValue: 3,
+    rewardMoney: 30000,
+    rewardXp: 750,
+    icon: '🧰',
+  },
+
+  smuggle_five_borders: {
+    id: 'smuggle_five_borders',
+    title: 'Five Borders',
+    description: 'Claim smuggled cargo in 5 different countries',
+    category: 'smuggling',
+    requirementType: 'smuggling_countries_claimed',
+    requirementValue: 5,
+    rewardMoney: 45000,
+    rewardXp: 1000,
+    icon: '🌍',
+  },
+
   globe_trotter: {
     id: 'globe_trotter',
     title: 'Globe Trotter',
@@ -1967,6 +2052,9 @@ interface AchievementSnapshot {
   journeysCompletedCount: number;
   drugsProducedCount: number;
   tradesCompletedCount: number;
+  smugglingPackagesClaimed: number;
+  smugglingCategoriesClaimed: number;
+  smugglingCountriesClaimed: number;
   crimeWithVehicleCount: number;
   crimeWithWeaponCount: number;
   crimeWithVehicleWeaponToolCount: number;
@@ -2513,6 +2601,42 @@ async function getAchievementSnapshot(playerId: number): Promise<AchievementSnap
     }, 0),
   ]);
 
+  const smuggleClaimWhere = `
+    status = 'claimed'
+    AND (
+      claimed_by_player_id = ?
+      OR (claimed_by_player_id IS NULL AND player_id = ? AND network_scope = 'personal')
+    )
+  `;
+
+  const [smugglingPackagesClaimed, smugglingCategoriesClaimed, smugglingCountriesClaimed] =
+    await Promise.all([
+      safeCount('smugglingPackagesClaimed', async () => {
+        const rows = await prisma.$queryRawUnsafe<Array<{ total: bigint | number }>>(
+          `SELECT COUNT(*) AS total FROM smuggling_shipments WHERE ${smuggleClaimWhere}`,
+          playerId,
+          playerId,
+        );
+        return Number(rows[0]?.total ?? 0);
+      }),
+      safeCount('smugglingCategoriesClaimed', async () => {
+        const rows = await prisma.$queryRawUnsafe<Array<{ total: bigint | number }>>(
+          `SELECT COUNT(DISTINCT category) AS total FROM smuggling_shipments WHERE ${smuggleClaimWhere}`,
+          playerId,
+          playerId,
+        );
+        return Number(rows[0]?.total ?? 0);
+      }),
+      safeCount('smugglingCountriesClaimed', async () => {
+        const rows = await prisma.$queryRawUnsafe<Array<{ total: bigint | number }>>(
+          `SELECT COUNT(DISTINCT destination_country) AS total FROM smuggling_shipments WHERE ${smuggleClaimWhere}`,
+          playerId,
+          playerId,
+        );
+        return Number(rows[0]?.total ?? 0);
+      }),
+    ]);
+
   return {
     playerMoney: player?.money ?? 0,
     prostitutes,
@@ -2530,6 +2654,9 @@ async function getAchievementSnapshot(playerId: number): Promise<AchievementSnap
     journeysCompletedCount,
     drugsProducedCount,
     tradesCompletedCount,
+    smugglingPackagesClaimed,
+    smugglingCategoriesClaimed,
+    smugglingCountriesClaimed,
     crimeWithVehicleCount,
     crimeWithWeaponCount,
     crimeWithVehicleWeaponToolCount,
@@ -2756,6 +2883,21 @@ function evaluateAchievement(
     case 'trades_completed_count':
       currentValue = snapshot.tradesCompletedCount;
       data = { tradesCompletedCount: currentValue };
+      break;
+
+    case 'smuggling_packages_claimed':
+      currentValue = snapshot.smugglingPackagesClaimed;
+      data = { smugglingPackagesClaimed: currentValue };
+      break;
+
+    case 'smuggling_categories_claimed':
+      currentValue = snapshot.smugglingCategoriesClaimed;
+      data = { smugglingCategoriesClaimed: currentValue };
+      break;
+
+    case 'smuggling_countries_claimed':
+      currentValue = snapshot.smugglingCountriesClaimed;
+      data = { smugglingCountriesClaimed: currentValue };
       break;
 
     case 'jailbreaks_success_count':

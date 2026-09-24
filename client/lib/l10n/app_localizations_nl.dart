@@ -12614,6 +12614,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get achievementsCategoryNameTravel => 'Reizen';
 
   @override
+  String get achievementsCategoryNameSmuggling => 'Smokkelen';
+
+  @override
   String get achievementsCategoryNameDrugs => 'Geneesmiddelen';
 
   @override
@@ -13715,6 +13718,55 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get achievementDescription_captain_of_smugglers => 'Steel 12 boten';
+
+  @override
+  String get achievementTitle_smuggle_first_drop => 'Eerste Drop';
+
+  @override
+  String get achievementDescription_smuggle_first_drop =>
+      'Claim je eerste smokkelzending';
+
+  @override
+  String get achievementTitle_smuggle_border_rat => 'Grensrat';
+
+  @override
+  String get achievementDescription_smuggle_border_rat =>
+      'Claim 10 smokkelzendingen';
+
+  @override
+  String get achievementTitle_smuggle_route_runner => 'Routeloper';
+
+  @override
+  String get achievementDescription_smuggle_route_runner =>
+      'Claim 50 smokkelzendingen';
+
+  @override
+  String get achievementTitle_smuggle_shadow_fleet => 'Schaduwvloot';
+
+  @override
+  String get achievementDescription_smuggle_shadow_fleet =>
+      'Claim 150 smokkelzendingen';
+
+  @override
+  String get achievementTitle_smuggle_kingpin => 'Smokkelbaas';
+
+  @override
+  String get achievementDescription_smuggle_kingpin =>
+      'Claim 400 smokkelzendingen';
+
+  @override
+  String get achievementTitle_smuggle_variety_pack => 'Variatiepakket';
+
+  @override
+  String get achievementDescription_smuggle_variety_pack =>
+      'Claim gesmokkelde lading uit 3 verschillende categorieën';
+
+  @override
+  String get achievementTitle_smuggle_five_borders => 'Vijf Grenzen';
+
+  @override
+  String get achievementDescription_smuggle_five_borders =>
+      'Claim gesmokkelde lading in 5 verschillende landen';
 
   @override
   String get achievementTitle_globe_trotter => 'Wereldreiziger';
@@ -19390,7 +19442,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicAchievementsHow =>
-      'Achievements zijn gegroepeerd in categorieën: Crimes, Empire, PvP, Economie, Training, Sociaal en Meta.\nElke achievement heeft meerdere tiers (Brons, Zilver, Goud, Platina). Elk tier geeft een hogere beloning en een meer indrukwekkende badge.\nBeloningen per achievement zijn: cash, XP, speciale items, permanente bonussen of unieke titels voor je profiel.\nProgress wordt automatisch bijgehouden. Je hoeft niets te activeren: bereik de drempel en de badge wordt direct uitgedeeld.\nSommige achievements zijn verborgen totdat je ze deels hebt voltooid — ze verschijnen dan met hun echte naam en eisen.\nAlle behaalde achievement-badges staan op je openbare profiel, gegroepeerd per categorie. Voortgang van nog niet behaalde badges blijft privé.\nChain-achievements: sommige badges zijn gekoppeld in een keten. Goud vereist dat Zilver al behaald is. Plan vroeg voor de hogere tiers.';
+      'Achievements zijn gegroepeerd in categorieën: Misdaden, Werk, School, Voertuigen, Reizen, Smokkelen, Geneesmiddelen, Handel, Sociaal en meer.\nElke achievement heeft meerdere tiers (Brons, Zilver, Goud, Platina). Elk tier geeft een hogere beloning en een meer indrukwekkende badge.\nBeloningen per achievement zijn: cash, XP, speciale items, permanente bonussen of unieke titels voor je profiel.\nProgress wordt automatisch bijgehouden. Je hoeft niets te activeren: bereik de drempel en de badge wordt direct uitgedeeld.\nSommige achievements zijn verborgen totdat je ze deels hebt voltooid — ze verschijnen dan met hun echte naam en eisen.\nAlle behaalde achievement-badges staan op je openbare profiel, gegroepeerd per categorie. Voortgang van nog niet behaalde badges blijft privé.\nChain-achievements: sommige badges zijn gekoppeld in een keten. Goud vereist dat Zilver al behaald is. Plan vroeg voor de hogere tiers.';
 
   @override
   String get helpTopicAchievementsTips =>

@@ -12637,6 +12637,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get achievementsCategoryNameTravel => 'Podróże';
 
   @override
+  String get achievementsCategoryNameSmuggling => 'Przemyt';
+
+  @override
   String get achievementsCategoryNameDrugs => 'Narkotyki';
 
   @override
@@ -13745,6 +13748,55 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get achievementDescription_captain_of_smugglers => 'Ukradnij 12 łodzi';
+
+  @override
+  String get achievementTitle_smuggle_first_drop => 'Pierwszy zrzut';
+
+  @override
+  String get achievementDescription_smuggle_first_drop =>
+      'Odbierz swoją pierwszą przemytniczą przesyłkę';
+
+  @override
+  String get achievementTitle_smuggle_border_rat => 'Szczur Graniczny';
+
+  @override
+  String get achievementDescription_smuggle_border_rat =>
+      'Zdobądź 10 przemytniczych przesyłek';
+
+  @override
+  String get achievementTitle_smuggle_route_runner => 'Biegacz tras';
+
+  @override
+  String get achievementDescription_smuggle_route_runner =>
+      'Odbierz 50 przemytniczych przesyłek';
+
+  @override
+  String get achievementTitle_smuggle_shadow_fleet => 'Flota Cieni';
+
+  @override
+  String get achievementDescription_smuggle_shadow_fleet =>
+      'Odbierz 150 przemytniczych przesyłek';
+
+  @override
+  String get achievementTitle_smuggle_kingpin => 'Król przemytu';
+
+  @override
+  String get achievementDescription_smuggle_kingpin =>
+      'Odbierz 400 przemytniczych przesyłek';
+
+  @override
+  String get achievementTitle_smuggle_variety_pack => 'Pakiet różnorodności';
+
+  @override
+  String get achievementDescription_smuggle_variety_pack =>
+      'Zdobądź przemycony ładunek z 3 różnych kategorii';
+
+  @override
+  String get achievementTitle_smuggle_five_borders => 'Pięć granic';
+
+  @override
+  String get achievementDescription_smuggle_five_borders =>
+      'Zdobądź przemycony ładunek w 5 różnych krajach';
 
   @override
   String get achievementTitle_globe_trotter => 'Globowy Kłusak';

@@ -12713,6 +12713,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get achievementsCategoryNameTravel => 'Voyages';
 
   @override
+  String get achievementsCategoryNameSmuggling => 'Contrebande';
+
+  @override
   String get achievementsCategoryNameDrugs => 'Drogue';
 
   @override
@@ -13819,6 +13822,56 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get achievementDescription_captain_of_smugglers => 'Voler 12 bateaux';
+
+  @override
+  String get achievementTitle_smuggle_first_drop => 'Première livraison';
+
+  @override
+  String get achievementDescription_smuggle_first_drop =>
+      'Réclamez votre premier envoi de contrebande';
+
+  @override
+  String get achievementTitle_smuggle_border_rat => 'Rat de frontière';
+
+  @override
+  String get achievementDescription_smuggle_border_rat =>
+      'Réclamez 10 expéditions de contrebande';
+
+  @override
+  String get achievementTitle_smuggle_route_runner => 'Coureur de route';
+
+  @override
+  String get achievementDescription_smuggle_route_runner =>
+      'Réclamez 50 expéditions de contrebande';
+
+  @override
+  String get achievementTitle_smuggle_shadow_fleet => 'Flotte de l\'Ombre';
+
+  @override
+  String get achievementDescription_smuggle_shadow_fleet =>
+      'Réclamez 150 expéditions de contrebande';
+
+  @override
+  String get achievementTitle_smuggle_kingpin =>
+      'Chef de file de la contrebande';
+
+  @override
+  String get achievementDescription_smuggle_kingpin =>
+      'Réclamez 400 expéditions de contrebande';
+
+  @override
+  String get achievementTitle_smuggle_variety_pack => 'Pack Variété';
+
+  @override
+  String get achievementDescription_smuggle_variety_pack =>
+      'Réclamez des marchandises de contrebande de 3 catégories différentes';
+
+  @override
+  String get achievementTitle_smuggle_five_borders => 'Cinq frontières';
+
+  @override
+  String get achievementDescription_smuggle_five_borders =>
+      'Réclamez des marchandises de contrebande dans 5 pays différents';
 
   @override
   String get achievementTitle_globe_trotter => 'Globe-trotter';

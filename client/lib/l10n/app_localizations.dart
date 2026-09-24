@@ -21953,6 +21953,12 @@ abstract class AppLocalizations {
   /// **'Travel'**
   String get achievementsCategoryNameTravel;
 
+  /// No description provided for @achievementsCategoryNameSmuggling.
+  ///
+  /// In en, this message translates to:
+  /// **'Smuggling'**
+  String get achievementsCategoryNameSmuggling;
+
   /// No description provided for @achievementsCategoryNameDrugs.
   ///
   /// In en, this message translates to:
@@ -23792,6 +23798,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Steal 12 boats'**
   String get achievementDescription_captain_of_smugglers;
+
+  /// No description provided for @achievementTitle_smuggle_first_drop.
+  ///
+  /// In en, this message translates to:
+  /// **'First Drop'**
+  String get achievementTitle_smuggle_first_drop;
+
+  /// No description provided for @achievementDescription_smuggle_first_drop.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim your first smuggling shipment'**
+  String get achievementDescription_smuggle_first_drop;
+
+  /// No description provided for @achievementTitle_smuggle_border_rat.
+  ///
+  /// In en, this message translates to:
+  /// **'Border Rat'**
+  String get achievementTitle_smuggle_border_rat;
+
+  /// No description provided for @achievementDescription_smuggle_border_rat.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim 10 smuggling shipments'**
+  String get achievementDescription_smuggle_border_rat;
+
+  /// No description provided for @achievementTitle_smuggle_route_runner.
+  ///
+  /// In en, this message translates to:
+  /// **'Route Runner'**
+  String get achievementTitle_smuggle_route_runner;
+
+  /// No description provided for @achievementDescription_smuggle_route_runner.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim 50 smuggling shipments'**
+  String get achievementDescription_smuggle_route_runner;
+
+  /// No description provided for @achievementTitle_smuggle_shadow_fleet.
+  ///
+  /// In en, this message translates to:
+  /// **'Shadow Fleet'**
+  String get achievementTitle_smuggle_shadow_fleet;
+
+  /// No description provided for @achievementDescription_smuggle_shadow_fleet.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim 150 smuggling shipments'**
+  String get achievementDescription_smuggle_shadow_fleet;
+
+  /// No description provided for @achievementTitle_smuggle_kingpin.
+  ///
+  /// In en, this message translates to:
+  /// **'Smuggle Kingpin'**
+  String get achievementTitle_smuggle_kingpin;
+
+  /// No description provided for @achievementDescription_smuggle_kingpin.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim 400 smuggling shipments'**
+  String get achievementDescription_smuggle_kingpin;
+
+  /// No description provided for @achievementTitle_smuggle_variety_pack.
+  ///
+  /// In en, this message translates to:
+  /// **'Variety Pack'**
+  String get achievementTitle_smuggle_variety_pack;
+
+  /// No description provided for @achievementDescription_smuggle_variety_pack.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim smuggled cargo from 3 different categories'**
+  String get achievementDescription_smuggle_variety_pack;
+
+  /// No description provided for @achievementTitle_smuggle_five_borders.
+  ///
+  /// In en, this message translates to:
+  /// **'Five Borders'**
+  String get achievementTitle_smuggle_five_borders;
+
+  /// No description provided for @achievementDescription_smuggle_five_borders.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim smuggled cargo in 5 different countries'**
+  String get achievementDescription_smuggle_five_borders;
 
   /// No description provided for @achievementTitle_globe_trotter.
   ///
@@ -33233,7 +33323,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicAchievementsHow.
   ///
   /// In en, this message translates to:
-  /// **'Achievements are grouped in categories: Crimes, Empire, PvP, Economy, Training, Social and Meta.\nEach achievement has multiple tiers (Bronze, Silver, Gold, Platinum). Each tier gives a higher reward and a more impressive badge.\nRewards per achievement include: cash, XP, special items, permanent bonuses or unique titles for your profile.\nProgress is tracked automatically. You do not need to activate anything: reach the threshold and the badge is awarded immediately.\nSome achievements are hidden until you partially complete them — they then appear with their real name and requirements.\nAll earned achievement badges are visible on your public profile, grouped by category. Locked progress stays private.\nChain achievements: some badges are linked in a chain. Gold requires Silver to be already obtained. Plan early for higher tiers.'**
+  /// **'Achievements are grouped in categories: Crimes, Jobs, School, Vehicles, Travel, Smuggling, Drugs, Trade, Social and more.\nEach achievement has multiple tiers (Bronze, Silver, Gold, Platinum). Each tier gives a higher reward and a more impressive badge.\nRewards per achievement include: cash, XP, special items, permanent bonuses or unique titles for your profile.\nProgress is tracked automatically. You do not need to activate anything: reach the threshold and the badge is awarded immediately.\nSome achievements are hidden until you partially complete them — they then appear with their real name and requirements.\nAll earned achievement badges are visible on your public profile, grouped by category. Locked progress stays private.\nChain achievements: some badges are linked in a chain. Gold requires Silver to be already obtained. Plan early for higher tiers.'**
   String get helpTopicAchievementsHow;
 
   /// No description provided for @helpTopicAchievementsTips.
