@@ -13,8 +13,6 @@ import {
   assertBackpackFits,
   creditCarriedTrade,
   debitBackpackTrade,
-  extraSlotsForAmmoAdd,
-  extraSlotsForDrugAdd,
   extraSlotsForTradeAdd,
   getBackpackTradeQuantity,
   listBackpackTradeLots,
@@ -364,10 +362,14 @@ class SmugglingService {
   }
 
   /** Whether claiming these crew shipments still fits bay capacity (tile packing). */
-  private async crewClaimFitsCapacity(
+  /**
+   * Pick as many ready crew shipments as fit in crew storage (greedy).
+   * Does not require every package to fit at once — leftover stays ready in the depot.
+   */
+  private async selectCrewClaimsThatFit(
     crewId: number,
     shipments: Array<{ category: string; item_key: string; quantity: number; metadata_json?: string | null }>,
-  ): Promise<boolean> {
+  ): Promise<typeof shipments> {
     const [tradeCap, drugCap, ammoCap, weaponCap] = await Promise.all([
       getCrewStorageCapacity(crewId, 'trade_storage'),
       getCrewStorageCapacity(crewId, 'drug_storage'),
@@ -405,41 +407,166 @@ class SmugglingService {
     const ammoByType = new Map(ammoRows.map((r) => [r.ammoType, r.quantity]));
     const weaponById = new Map(weaponRows.map((r) => [r.weaponId, r.quantity]));
 
+    const usageOk = () => {
+      const tradeUsed = tradeSlotsForLots(
+        [...tradeByType.entries()].map(([goodType, quantity]) => ({ goodType, quantity })),
+      );
+      const drugUsed =
+        [...drugLotByKey.values()].reduce((s, q) => s + drugSlotsForGrams(q), 0) +
+        [...drugGoodByKey.values()].reduce((s, q) => s + drugSlotsForGrams(q), 0);
+      const ammoUsed = [...ammoByType.values()].reduce((s, q) => s + ammoSlotsForRounds(q), 0);
+      const weaponUsed = [...weaponById.values()].reduce((s, q) => s + q, 0);
+      return (
+        tradeUsed <= tradeCap &&
+        drugUsed <= drugCap &&
+        ammoUsed <= ammoCap &&
+        weaponUsed <= weaponCap
+      );
+    };
+
+    const selected: typeof shipments = [];
     for (const shipment of shipments) {
       const qty = shipment.quantity;
       const key = shipment.item_key;
+      const snapshot = {
+        trade: tradeByType.get(key),
+        drugGood: undefined as number | undefined,
+        drugLot: undefined as number | undefined,
+        ammo: ammoByType.get(key),
+        weapon: weaponById.get(key),
+        drugGoodKey: '',
+        drugLotKey: '',
+      };
+
       if (shipment.category === 'trade') {
-        const current = tradeByType.get(key) ?? 0;
-        tradeByType.set(key, current + qty);
+        tradeByType.set(key, (tradeByType.get(key) ?? 0) + qty);
       } else if (shipment.category === 'drug') {
         const metadata = this.parseMetadata(shipment as any);
         const quality = String(metadata.quality ?? 'C');
-        const goodType = `drug:${key}:${quality}`;
-        const current = drugGoodByKey.get(goodType) ?? 0;
-        drugGoodByKey.set(goodType, current + qty);
+        snapshot.drugGoodKey = `drug:${key}:${quality}`;
+        snapshot.drugLotKey = `${key}:${quality}`;
+        snapshot.drugGood = drugGoodByKey.get(snapshot.drugGoodKey);
+        drugGoodByKey.set(
+          snapshot.drugGoodKey,
+          (drugGoodByKey.get(snapshot.drugGoodKey) ?? 0) + qty,
+        );
       } else if (shipment.category === 'ammo') {
-        const current = ammoByType.get(key) ?? 0;
-        ammoByType.set(key, current + qty);
+        ammoByType.set(key, (ammoByType.get(key) ?? 0) + qty);
       } else if (shipment.category === 'weapon') {
-        const current = weaponById.get(key) ?? 0;
-        weaponById.set(key, current + qty);
+        weaponById.set(key, (weaponById.get(key) ?? 0) + qty);
+      } else {
+        // Vehicles etc. do not use tile bays here — always allow.
+        selected.push(shipment);
+        continue;
+      }
+
+      if (usageOk()) {
+        selected.push(shipment);
+        continue;
+      }
+
+      // Roll back simulated add so later (smaller) packages can still fit.
+      if (shipment.category === 'trade') {
+        if (snapshot.trade == null) tradeByType.delete(key);
+        else tradeByType.set(key, snapshot.trade);
+      } else if (shipment.category === 'drug') {
+        if (snapshot.drugGood == null) drugGoodByKey.delete(snapshot.drugGoodKey);
+        else drugGoodByKey.set(snapshot.drugGoodKey, snapshot.drugGood);
+      } else if (shipment.category === 'ammo') {
+        if (snapshot.ammo == null) ammoByType.delete(key);
+        else ammoByType.set(key, snapshot.ammo);
+      } else if (shipment.category === 'weapon') {
+        if (snapshot.weapon == null) weaponById.delete(key);
+        else weaponById.set(key, snapshot.weapon);
       }
     }
 
-    const tradeUsed = tradeSlotsForLots(
-      [...tradeByType.entries()].map(([goodType, quantity]) => ({ goodType, quantity })),
-    );
-    const drugUsed =
-      [...drugLotByKey.values()].reduce((s, q) => s + drugSlotsForGrams(q), 0) +
-      [...drugGoodByKey.values()].reduce((s, q) => s + drugSlotsForGrams(q), 0);
-    const ammoUsed = [...ammoByType.values()].reduce((s, q) => s + ammoSlotsForRounds(q), 0);
-    const weaponUsed = [...weaponById.values()].reduce((s, q) => s + q, 0);
+    return selected;
+  }
 
-    if (tradeUsed > tradeCap) return false;
-    if (drugUsed > drugCap) return false;
-    if (ammoUsed > ammoCap) return false;
-    if (weaponUsed > weaponCap) return false;
-    return true;
+  /**
+   * Pick as many personal depot shipments as fit in the backpack (greedy).
+   * Claiming must not require space for every ready package at once.
+   */
+  private async selectPersonalClaimsThatFit(
+    playerId: number,
+    shipments: ShipmentRow[],
+  ): Promise<ShipmentRow[]> {
+    const toolService = (await import('./toolService')).default;
+    const { getPlayerCarryingCapacity } = await import('./backpackService');
+    let used = await toolService.calculateInventoryUsage(playerId);
+    const max = await getPlayerCarryingCapacity(playerId);
+
+    const [tradeRows, drugRows, ammoRows] = await Promise.all([
+      prisma.inventory.findMany({
+        where: { playerId, country: CARRIED_TRADE_LOCATION, quantity: { gt: 0 } },
+        select: { goodType: true, quantity: true },
+      }),
+      prisma.drugInventory.findMany({
+        where: { playerId, quantity: { gt: 0 } },
+        select: { drugType: true, quality: true, quantity: true },
+      }),
+      prisma.ammoInventory.findMany({
+        where: { playerId, quantity: { gt: 0 } },
+        select: { ammoType: true, quantity: true },
+      }),
+    ]);
+
+    const tradeByType = new Map(tradeRows.map((r) => [r.goodType, r.quantity]));
+    const drugByKey = new Map(drugRows.map((r) => [`${r.drugType}:${r.quality}`, r.quantity]));
+    const ammoByType = new Map(ammoRows.map((r) => [r.ammoType, r.quantity]));
+
+    const selected: ShipmentRow[] = [];
+    for (const shipment of shipments) {
+      const qty = Math.max(0, shipment.quantity);
+      if (qty <= 0) continue;
+
+      let extra = 0;
+      if (shipment.category === 'trade') {
+        const current = tradeByType.get(shipment.item_key) ?? 0;
+        extra =
+          tradeSlotsForQuantity(shipment.item_key, current + qty) -
+          tradeSlotsForQuantity(shipment.item_key, current);
+      } else if (shipment.category === 'drug') {
+        const quality = String(this.parseMetadata(shipment).quality ?? 'C');
+        const key = `${shipment.item_key}:${quality}`;
+        const current = drugByKey.get(key) ?? 0;
+        extra = drugSlotsForGrams(current + qty) - drugSlotsForGrams(current);
+      } else if (shipment.category === 'ammo') {
+        const current = ammoByType.get(shipment.item_key) ?? 0;
+        extra = ammoSlotsForRounds(current + qty) - ammoSlotsForRounds(current);
+      } else if (shipment.category === 'weapon') {
+        extra = qty;
+      } else {
+        // Vehicles go to garage, not backpack tiles.
+        selected.push(shipment);
+        continue;
+      }
+
+      if (used + extra > max) {
+        continue;
+      }
+
+      used += extra;
+      selected.push(shipment);
+      if (shipment.category === 'trade') {
+        tradeByType.set(
+          shipment.item_key,
+          (tradeByType.get(shipment.item_key) ?? 0) + qty,
+        );
+      } else if (shipment.category === 'drug') {
+        const quality = String(this.parseMetadata(shipment).quality ?? 'C');
+        const key = `${shipment.item_key}:${quality}`;
+        drugByKey.set(key, (drugByKey.get(key) ?? 0) + qty);
+      } else if (shipment.category === 'ammo') {
+        ammoByType.set(
+          shipment.item_key,
+          (ammoByType.get(shipment.item_key) ?? 0) + qty,
+        );
+      }
+    }
+
+    return selected;
   }
 
   private async getOwnedTransportOptions(playerId: number, currentCountry: string): Promise<OwnedTransportOption[]> {
@@ -1847,11 +1974,12 @@ class SmugglingService {
     `;
 
     const wholesaleReady = ready.filter((s) => this.parseMetadata(s).wholesale === true);
-    const claimable = ready.filter((s) => this.parseMetadata(s).wholesale !== true);
+    let claimable = ready.filter((s) => this.parseMetadata(s).wholesale !== true);
+    const readyTotal = claimable.length;
 
     if (scope === 'crew' && crewId && claimable.length > 0) {
-      const capacityOk = await this.crewClaimFitsCapacity(crewId, claimable);
-      if (!capacityOk) {
+      claimable = await this.selectCrewClaimsThatFit(crewId, claimable);
+      if (claimable.length === 0) {
         return {
           success: false,
           message: 'CREW_STORAGE_FULL',
@@ -1875,7 +2003,7 @@ class SmugglingService {
       }
     }
 
-    if (claimable.length === 0) {
+    if (claimable.length === 0 && readyTotal === 0) {
       if (wholesaleReady.length > 0) {
         return {
           success: true,
@@ -1888,66 +2016,11 @@ class SmugglingService {
       return { success: false, message: 'Geen zendingen klaar in dit landdepot' };
     }
 
-    // Personal claims land in the backpack — fail with a player message, not a 500.
-    if (scope === 'personal') {
-      const tradeByGood = new Map<string, number>();
-      const drugByKey = new Map<string, { drugType: string; quality: string; quantity: number }>();
-      const ammoByType = new Map<string, number>();
-      let weaponUnits = 0;
-
-      for (const shipment of claimable) {
-        const metadata = this.parseMetadata(shipment);
-        if (shipment.category === 'trade') {
-          tradeByGood.set(
-            shipment.item_key,
-            (tradeByGood.get(shipment.item_key) ?? 0) + shipment.quantity,
-          );
-        } else if (shipment.category === 'drug') {
-          const quality = String(metadata.quality ?? 'C');
-          const key = `${shipment.item_key}:${quality}`;
-          const existing = drugByKey.get(key);
-          if (existing) {
-            existing.quantity += shipment.quantity;
-          } else {
-            drugByKey.set(key, {
-              drugType: shipment.item_key,
-              quality,
-              quantity: shipment.quantity,
-            });
-          }
-        } else if (shipment.category === 'ammo') {
-          ammoByType.set(
-            shipment.item_key,
-            (ammoByType.get(shipment.item_key) ?? 0) + shipment.quantity,
-          );
-        } else if (shipment.category === 'weapon') {
-          weaponUnits += Math.max(0, shipment.quantity);
-        }
-      }
-
-      let extraSlots = weaponUnits;
-      for (const [goodType, quantity] of tradeByGood) {
-        extraSlots += await extraSlotsForTradeAdd(playerId, quantity, goodType);
-      }
-      for (const row of drugByKey.values()) {
-        extraSlots += await extraSlotsForDrugAdd(
-          playerId,
-          row.drugType,
-          row.quality,
-          row.quantity,
-        );
-      }
-      for (const [ammoType, quantity] of ammoByType) {
-        extraSlots += await extraSlotsForAmmoAdd(playerId, ammoType, quantity);
-      }
-
-      try {
-        await assertBackpackFits(playerId, extraSlots);
-      } catch (error) {
-        if (error instanceof Error && error.message === 'INVENTORY_FULL') {
-          return { success: false, message: 'INVENTORY_FULL' };
-        }
-        throw error;
+    // Personal claims land in the backpack — take what fits; leftover stays ready.
+    if (scope === 'personal' && readyTotal > 0) {
+      claimable = await this.selectPersonalClaimsThatFit(playerId, claimable);
+      if (claimable.length === 0) {
+        return { success: false, message: 'INVENTORY_FULL' };
       }
     }
 
@@ -2197,13 +2270,19 @@ class SmugglingService {
       console.error('[SmugglingService] Failed to check achievements after claim:', err);
     }
 
+    const leftover = Math.max(0, readyTotal - claimable.length);
+    const leftoverSuffix =
+      leftover > 0
+        ? ` (${leftover} blijven in het depot — maak ruimte in je rugzak/opslag en claim opnieuw)`
+        : '';
     const xpSuffix = awardedXp > 0 ? ` (+${awardedXp} XP)` : '';
     return {
       success: true,
-      message: `${claimable.length} ${scope === 'crew' ? 'crew-' : ''}zending(en) opgehaald in ${this.countryNameById(player.currentCountry)}${xpSuffix}`,
+      message: `${claimable.length} ${scope === 'crew' ? 'crew-' : ''}zending(en) opgehaald in ${this.countryNameById(player.currentCountry)}${leftoverSuffix}${xpSuffix}`,
       claimedPackages: claimable.length,
       claimedQuantity: claimedQty,
       xpGained: awardedXp,
+      leftoverPackages: leftover,
     };
   }
 }

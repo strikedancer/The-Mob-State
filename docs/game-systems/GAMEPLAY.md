@@ -695,7 +695,7 @@ Contraband-handelsgoederen met eigen caps en risico’s (server + UI):
 - **XP bij verkoop**: klein (max 30), gebaseerd op omzet + winst — misdaden blijven de hoofd-XP-bron.
 - **Smokkel van handelswaren** bewaart inkoopprijs en conditie in de zending en zet die bij claim terug (gewogen gemiddelde bij samenvoegen); anders leek winst gelijk aan het hele verkoopbedrag.
 - **XP bij smokkel-claim**: klein per zending (max 60 per claim-actie), afhankelijk van categorie/hoeveelheid.
-- **Rugzak vol bij claim**: persoonlijke depot-claim weigert met een duidelijke melding als de rugzak de lading niet aankan (geen “Server error”). Eerst spullen stallen via Vastgoed → Open opslag, of een grotere rugzak kopen; daarna opnieuw claimen.
+- **Rugzak vol bij claim**: depot-claim haalt **zoveel zendingen als in de rugzak passen**; de rest blijft klaar in het depot. Alleen als er nul passen krijg je een duidelijke “rugzak vol”-melding (geen “Server error”). Stal tussendoor via Vastgoed → Open opslag (of koop een grotere rugzak) en claim opnieuw.
 - **Risico’s**: naast algemene smokkel/wanted-logica tonen chips de **per-goed** parameters die de API meestuurt (`spoilageHours`, `priceVolatility`, `damageChancePerTrip`, `confiscationChance` op `TradableGood`).
 
 ### Smokkel-hub (drugs-zendingen)
