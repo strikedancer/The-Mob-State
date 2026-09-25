@@ -14450,6 +14450,14 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get nightclubDjAvailable => 'Disponible';
+
+  @override
+  String nightclubDjBookedUntil(String time) {
+    return 'Ocupado hasta $time';
+  }
+
+  @override
   String get nightclubActiveSecurity => 'Seguridad activa';
 
   @override

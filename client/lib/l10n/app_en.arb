@@ -8849,6 +8849,15 @@
       }
     }
   },
+  "nightclubDjAvailable": "Available",
+  "nightclubDjBookedUntil": "Booked until {time}",
+  "@nightclubDjBookedUntil": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
   "nightclubActiveSecurity": "Active security",
   "nightclubActiveSecurityNone": "Active security: none",
   "nightclubNoDjsLoaded": "No DJs loaded. Refresh the screen.",
@@ -12323,7 +12332,7 @@
   "helpTopicNightclubTitle": "Nightclub",
   "helpTopicNightclubSummary": "Run a nightclub as part of your criminal empire. Manage staff, security and supply for passive and active income with a dedicated season leaderboard.",
   "helpTopicNightclubHow": "At the bottom you now use a Nightclub Management Command Center with zones for Crew, Drug Storage, DJ Command, Security Unit and Ops Lab; all zones run in one continuous page flow without extra inner-scroll.\nThe nightclub screen now includes one central Intelligence section combining overview, revenue trends and risk logs without tab switching.\nOps Lab now includes 11 systems: resident DJ, dynamic event calendar, upgrade tree, police heat/incident response, supplier contracts, promoter profiles, VIP clientele + staff traits, smuggling routes, bar & kitchen management (drinks/food) with pricing, rival sabotage + counter-intel, and an operations timeline.\nSmuggling routes now have a run cooldown (Harbor 60 min, Airstrip 90 min, Borderline 120 min), forcing risk/timing planning instead of infinite spam.\nThe upgrade tree is interactive: explicitly choose Sound Rig, VIP Lounge or Surveillance and buy the next level directly with visible upgrade costs.\nRevenue is generated per tick based on DJ quality, occupancy and supply availability. Missing supply directly reduces income.\nDJ contracts end automatically at the configured end time; after that you must book again for new boosts.\nIncidents (fights, theft) can occur when security is insufficient. This damages visitor score and income.\nEach season has a leaderboard. Players with the highest total nightclub revenue win season rewards.\nSynergy with drugs: own drug production can serve as supply, raising margins.\nDrug storage is gram-based: each selection shows the available grams before you move stock into nightclub inventory.\nRival actions are name-based: you search rival clubs by player name before selecting an action (no player-id required).\nSynergy with prostitution: combined venue events give extra visitors and higher revenue.\nUpgrades improve capacity, supply storage and the maximum number of DJs and guards you can deploy.",
-  "helpTopicNightclubTips": "Always keep supply stocked: one tick without supply can trigger a visitor dip that is hard to recover from.\nBook the best DJ you can afford: DJ quality has the biggest direct impact on revenue per tick.\nCheck the season leaderboard daily and scale up supply and DJs if you want to finish in the top 10.",
+  "helpTopicNightclubTips": "Always keep supply stocked: one tick without supply can trigger a visitor dip that is hard to recover from.\nThere are 20 DJs (one per country), but a DJ plays at only one club at a time: the list shows Booked until when someone is already hired.\nBook the best free DJ you can afford: DJ quality has the biggest direct impact on revenue per tick.\nCheck the season leaderboard daily and scale up supply and DJs if you want to finish in the top 10.",
   "helpTopicCryptoCategory": "Economy",
   "helpTopicCryptoTitle": "Crypto",
   "helpTopicCryptoSummary": "Trade 30 real cryptocurrencies. Buy and sell directly or automate via limit, stop-loss and take-profit orders. Prices now follow live market anchors with extra in-game regimes and news, and the coin popup uses separate fields for direct trades and open orders.",

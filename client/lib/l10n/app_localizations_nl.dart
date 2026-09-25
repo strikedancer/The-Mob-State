@@ -14361,6 +14361,14 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String get nightclubDjAvailable => 'Beschikbaar';
+
+  @override
+  String nightclubDjBookedUntil(String time) {
+    return 'Bezet tot $time';
+  }
+
+  @override
   String get nightclubActiveSecurity => 'Actieve beveiliging';
 
   @override
@@ -19078,7 +19086,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicNightclubTips =>
-      'Zorg altijd dat supply niet leeg raakt: één tick zonder supply kan een bezoekersdip veroorzaken die moeilijk te herstellen is.\nBoek de beste DJ die je je kunt veroorloven: DJ-kwaliteit heeft de grootste directe impact op revenue per tick.\nCheck het seizoensleaderboard elke dag en schaal supply en DJs op als je in top-10 wilt eindigen.';
+      'Zorg altijd dat supply niet leeg raakt: één tick zonder supply kan een bezoekersdip veroorzaken die moeilijk te herstellen is.\nEr zijn 20 DJ’s (één per land), maar een DJ speelt maar bij één club tegelijk: in de lijst zie je Bezet tot als iemand al geboekt is.\nBoek de beste vrije DJ die je je kunt veroorloven: DJ-kwaliteit heeft de grootste directe impact op revenue per tick.\nCheck het seizoensleaderboard elke dag en schaal supply en DJs op als je in top-10 wilt eindigen.';
 
   @override
   String get helpTopicCryptoCategory => 'Economie';

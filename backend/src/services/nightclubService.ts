@@ -20,6 +20,7 @@ interface DJConfig {
   vibeShift?: 'chill' | 'normal' | 'wild';
 }
 
+/** One global DJ slot per travel country (20). Names stay unique; hire is still worldwide exclusive. */
 const DEFAULT_NIGHTCLUB_DJS = [
   {
     djName: 'DJ Voltage',
@@ -56,6 +57,150 @@ const DEFAULT_NIGHTCLUB_DJS = [
     isAvailable: true,
     profileImage: null,
     specialty: 'festival',
+  },
+  {
+    djName: 'Costa Pulse',
+    skillLevel: 4,
+    baseCostPerHour: 11500,
+    reputation: 0.77,
+    isAvailable: true,
+    profileImage: null,
+    specialty: 'latin',
+  },
+  {
+    djName: 'Vesuvio Vinyl',
+    skillLevel: 4,
+    baseCostPerHour: 12500,
+    reputation: 0.81,
+    isAvailable: true,
+    profileImage: null,
+    specialty: 'house',
+  },
+  {
+    djName: 'Thames Echo',
+    skillLevel: 3,
+    baseCostPerHour: 8800,
+    reputation: 0.67,
+    isAvailable: true,
+    profileImage: null,
+    specialty: 'garage',
+  },
+  {
+    djName: 'Alpine Quiet',
+    skillLevel: 5,
+    baseCostPerHour: 17000,
+    reputation: 0.9,
+    isAvailable: true,
+    profileImage: null,
+    specialty: 'lounge',
+  },
+  {
+    djName: 'Harlem Grid',
+    skillLevel: 4,
+    baseCostPerHour: 14000,
+    reputation: 0.83,
+    isAvailable: true,
+    profileImage: null,
+    specialty: 'hiphop',
+  },
+  {
+    djName: 'Aztec Lowrider',
+    skillLevel: 3,
+    baseCostPerHour: 8000,
+    reputation: 0.64,
+    isAvailable: true,
+    profileImage: null,
+    specialty: 'cumbia',
+  },
+  {
+    djName: 'Andes Bass',
+    skillLevel: 4,
+    baseCostPerHour: 11000,
+    reputation: 0.76,
+    isAvailable: true,
+    profileImage: null,
+    specialty: 'reggaeton',
+  },
+  {
+    djName: 'Copacabana Cut',
+    skillLevel: 5,
+    baseCostPerHour: 16500,
+    reputation: 0.91,
+    isAvailable: true,
+    profileImage: null,
+    specialty: 'baile',
+  },
+  {
+    djName: 'Tango Frequency',
+    skillLevel: 3,
+    baseCostPerHour: 8200,
+    reputation: 0.65,
+    isAvailable: true,
+    profileImage: null,
+    specialty: 'tango',
+  },
+  {
+    djName: 'Shibuya Neon',
+    skillLevel: 5,
+    baseCostPerHour: 17500,
+    reputation: 0.93,
+    isAvailable: true,
+    profileImage: null,
+    specialty: 'citypop',
+  },
+  {
+    djName: 'Red Lantern Mix',
+    skillLevel: 4,
+    baseCostPerHour: 11800,
+    reputation: 0.79,
+    isAvailable: true,
+    profileImage: null,
+    specialty: 'electro',
+  },
+  {
+    djName: 'Midnight Volga',
+    skillLevel: 4,
+    baseCostPerHour: 12200,
+    reputation: 0.8,
+    isAvailable: true,
+    profileImage: null,
+    specialty: 'darkwave',
+  },
+  {
+    djName: 'Bosphorus Beat',
+    skillLevel: 3,
+    baseCostPerHour: 8700,
+    reputation: 0.69,
+    isAvailable: true,
+    profileImage: null,
+    specialty: 'oriental',
+  },
+  {
+    djName: 'Desert Frequency',
+    skillLevel: 5,
+    baseCostPerHour: 18500,
+    reputation: 0.95,
+    isAvailable: true,
+    profileImage: null,
+    specialty: 'progressive',
+  },
+  {
+    djName: 'Cape Goldmix',
+    skillLevel: 3,
+    baseCostPerHour: 7800,
+    reputation: 0.63,
+    isAvailable: true,
+    profileImage: null,
+    specialty: 'afrohouse',
+  },
+  {
+    djName: 'Outback Afterhours',
+    skillLevel: 4,
+    baseCostPerHour: 10800,
+    reputation: 0.75,
+    isAvailable: true,
+    profileImage: null,
+    specialty: 'house',
   },
 ] as const;
 
@@ -382,6 +527,15 @@ class NightclubService {
         await prisma.nightclubDJ.createMany({
           data: [...DEFAULT_NIGHTCLUB_DJS],
         });
+      } else {
+        const existing = await prisma.nightclubDJ.findMany({
+          select: { djName: true },
+        });
+        const have = new Set(existing.map((row) => row.djName));
+        const missing = DEFAULT_NIGHTCLUB_DJS.filter((dj) => !have.has(dj.djName));
+        if (missing.length > 0) {
+          await prisma.nightclubDJ.createMany({ data: [...missing] });
+        }
       }
 
       if (securityCount === 0) {
@@ -1515,25 +1669,56 @@ class NightclubService {
   async getAvailableDJs(): Promise<any[]> {
     await this.ensureStaffSeedData();
 
-    const djs = await prisma.nightclubDJ.findMany({
-      where: {
-        OR: [{ isAvailable: true }, { isAvailable: null }],
-      },
-      orderBy: { skillLevel: 'desc' },
-    });
+    const now = new Date();
+    const [djs, holders, liveShifts] = await Promise.all([
+      prisma.nightclubDJ.findMany({
+        where: {
+          OR: [{ isAvailable: true }, { isAvailable: null }],
+        },
+        orderBy: { skillLevel: 'desc' },
+      }),
+      prisma.nightclubVenue.findMany({
+        where: { currentDJId: { not: null } },
+        select: { currentDJId: true, djContractEndsAt: true },
+      }),
+      prisma.nightclubDJShift.findMany({
+        where: { shiftEndAt: { gte: now } },
+        select: { djId: true, shiftEndAt: true },
+      }),
+    ]);
 
-    return djs.map((dj) => ({
-      id: dj.id,
-      name: dj.djName,
-      skillLevel: dj.skillLevel,
-      specialty: dj.specialty,
-      costPerHour: dj.baseCostPerHour,
-      costPerDay: dj.baseCostPerHour * 8,
-      costPerWeek: dj.baseCostPerHour * 8 * 7,
-      reputation: dj.reputation,
-      crowdBoostMultiplier: 0.8 + dj.skillLevel * 0.15, // 1.0-1.75x boost
-      image: dj.profileImage,
-    }));
+    const bookedUntilByDj = new Map<number, Date>();
+    const consider = (djId: number | null | undefined, until: Date | null | undefined) => {
+      if (djId == null || until == null || until.getTime() < now.getTime()) return;
+      const current = bookedUntilByDj.get(djId);
+      if (!current || until.getTime() > current.getTime()) {
+        bookedUntilByDj.set(djId, until);
+      }
+    };
+    for (const holder of holders) {
+      consider(holder.currentDJId, holder.djContractEndsAt);
+    }
+    for (const shift of liveShifts) {
+      consider(shift.djId, shift.shiftEndAt);
+    }
+
+    return djs.map((dj) => {
+      const bookedUntil = bookedUntilByDj.get(dj.id) ?? null;
+      return {
+        id: dj.id,
+        name: dj.djName,
+        skillLevel: dj.skillLevel,
+        specialty: dj.specialty,
+        costPerHour: dj.baseCostPerHour,
+        costPerDay: (dj.baseCostPerHour ?? 0) * 8,
+        costPerWeek: (dj.baseCostPerHour ?? 0) * 8 * 7,
+        reputation: dj.reputation,
+        crowdBoostMultiplier: 0.8 + (dj.skillLevel ?? 1) * 0.15,
+        image: dj.profileImage,
+        booked: bookedUntil != null,
+        bookedUntil: bookedUntil ? bookedUntil.toISOString() : null,
+      };
+    });
   }
 
   /**

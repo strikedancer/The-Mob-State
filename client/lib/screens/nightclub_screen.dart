@@ -398,6 +398,30 @@ class _NightclubScreenState extends State<NightclubScreen> {
     return null;
   }
 
+  DateTime? _djBookedUntil(Map<String, dynamic> dj) {
+    if (dj['booked'] != true) return null;
+    return DateTime.tryParse((dj['bookedUntil'] ?? '').toString())?.toLocal();
+  }
+
+  String _formatDjUntil(DateTime until) {
+    final dd = until.day.toString().padLeft(2, '0');
+    final mm = until.month.toString().padLeft(2, '0');
+    final hh = until.hour.toString().padLeft(2, '0');
+    final min = until.minute.toString().padLeft(2, '0');
+    return '$dd/$mm $hh:$min';
+  }
+
+  String _djDropdownLabel(Map<String, dynamic> dj) {
+    final name = (dj['name'] ?? '').toString();
+    final level = dj['skillLevel'] ?? '-';
+    final cost = dj['costPerHour'] ?? '-';
+    final until = _djBookedUntil(dj);
+    if (until != null) {
+      return '$name (Lv $level) · ${_t.nightclubDjBookedUntil(_formatDjUntil(until))}';
+    }
+    return '$name (Lv $level) - €$cost/h';
+  }
+
   Map<String, dynamic>? _selectedGuard() {
     if (_selectedGuardId == null) return null;
     for (final raw in _guards) {
@@ -1936,6 +1960,9 @@ class _NightclubScreenState extends State<NightclubScreen> {
       (activeShift?['shiftEndAt'] ?? '').toString(),
     );
     final selectedDj = _selectedDj();
+    final selectedBookedUntil = selectedDj == null
+        ? null
+        : _djBookedUntil(selectedDj);
     final crowdBoost = ((selectedDj?['crowdBoostMultiplier'] as num?) ?? 1)
         .toDouble()
         .toStringAsFixed(2);
@@ -1990,9 +2017,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                             fallbackIcon: Icons.person,
                           ),
                           const SizedBox(width: 8),
-                          _dropdownItemLabel(
-                            '${d['name']} (Lv ${d['skillLevel']}) - €${d['costPerHour']}/h',
-                          ),
+                          _dropdownItemLabel(_djDropdownLabel(d)),
                         ],
                       ),
                     ),
@@ -2020,6 +2045,14 @@ class _NightclubScreenState extends State<NightclubScreen> {
                     _t.nightclubSpecialtyLabel,
                     (selectedDj['specialty'] ?? '-').toString(),
                   ),
+                  _kpiChip(
+                    _t.nightclubKpiDj,
+                    selectedBookedUntil == null
+                        ? _t.nightclubDjAvailable
+                        : _t.nightclubDjBookedUntil(
+                            _formatDjUntil(selectedBookedUntil),
+                          ),
+                  ),
                 ],
               ),
             ],
@@ -2038,7 +2071,9 @@ class _NightclubScreenState extends State<NightclubScreen> {
               decoration: _fieldDecoration(_t.nightclubShiftLength)),
             const SizedBox(height: 10),
             FilledButton.icon(
-              onPressed: _selectedDjId == null ? null : _hireDj,
+              onPressed: _selectedDjId == null || selectedBookedUntil != null
+                  ? null
+                  : _hireDj,
               icon: const Icon(Icons.music_note),
               label: Text(_t.nightclubHireDj),
             ),
@@ -2528,7 +2563,11 @@ class _NightclubScreenState extends State<NightclubScreen> {
             ),
             const SizedBox(height: 6),
             FilledButton.icon(
-              onPressed: _selectedDjId == null ? null : _hireResidentDj,
+              onPressed: _selectedDjId == null ||
+                      (_selectedDj() != null &&
+                          _djBookedUntil(_selectedDj()!) != null)
+                  ? null
+                  : _hireResidentDj,
               icon: const Icon(Icons.verified),
               label: Text(
                 _t.nightclubStartResidentContract,

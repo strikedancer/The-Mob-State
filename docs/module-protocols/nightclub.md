@@ -42,6 +42,7 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 - Nightclub management UI must keep one primary vertical page scroll on mobile; the compact photo hero (`EmpirePageHero` + `NestedScrollView`) scrolls away. Do not embed fixed-height subpanels with independent scrollbars.
 - DJ status must reflect real active shift state; expired or orphaned contracts (`djContractEndsAt` null/past with no live shift) must be cleaned up server-side so hire actions are not blocked by stale `currentDJId`. `hireDJ` / `hireResidentDJContract` must re-fetch the venue **after** `clearExpiredDjContract` before checking `currentDJId`.
 - Because `currentDJId` is **globally unique**, hire must also release stale holders of that DJ on **other** venues (`releaseStaleHoldersOfDj`). If another club still has a live contract/shift, return a clear busy message instead of a Prisma unique-constraint 500.
+- DJ catalog size matches the travel-country count (**20**). `ensureStaffSeedData` inserts missing names on existing databases (not only empty tables). `GET /nightclub/dj/available` includes `booked` + `bookedUntil`; the hire dropdown shows **Bezet tot** and disables hire/resident while that DJ is live elsewhere.
 - If Nightclub overview is rendered as a single intelligence panel (without tabs), all former Overview/Revenue/Risk essentials must remain present in that one panel with clear section headers and mobile-safe spacing.
 - Rival-targeting UX in nightclub must be name-first (search by player username), never forcing players to input or know numeric player IDs.
 - Ops/management additions (resident DJ, events, upgrades, incident response, rival actions, alerts) must expose clear per-action cost/impact in NL+EN before confirmation.
@@ -70,6 +71,7 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 - Verify image selectors render with correct fallback icon when image reference is missing or invalid.
 - Simulate one failing/sluggish nightclub endpoint and verify the screen still opens with partial data.
 - Verify a live environment with empty DJ/security tables still shows hireable staff because backend bootstrap/fallback repopulates the availability lists.
+- Verify the DJ list has 20 names after bootstrap, shows **Bezet tot** on live bookings, and hire/resident stay disabled for those rows.
 - Verify mobile drug-storage selector keeps gram counts readable (no clipped labels) and quantity shortcuts respect available stock.
 - Verify Drug Storage is visible in the main nightclub flow (above Advanced) and shows a clear empty-backpack hint when there is nothing to store.
 - Verify stored-drug cards use Wrap/intrinsic height (no clipped labels from a fixed grid extent).

@@ -3331,6 +3331,15 @@
   "nightclubActiveDj": "Actieve DJ",
   "nightclubActiveDjNone": "Actieve DJ: geen",
   "nightclubUntilTime": "tot {time}",
+  "nightclubDjAvailable": "Beschikbaar",
+  "nightclubDjBookedUntil": "Bezet tot {time}",
+  "@nightclubDjBookedUntil": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
   "nightclubActiveSecurity": "Actieve beveiliging",
   "nightclubActiveSecurityNone": "Actieve beveiliging: geen",
   "nightclubNoDjsLoaded": "Geen DJ's beschikbaar geladen. Ververs het scherm.",
@@ -11651,7 +11660,7 @@
   "helpTopicNightclubTitle": "Nachtclub",
   "helpTopicNightclubSummary": "Run een nachtclub als onderdeel van je criminele empire. Beheer personeel, beveiliging en supply voor passief en actief inkomen met een eigen seizoensleaderboard.",
   "helpTopicNightclubHow": "Onderaan gebruik je nu een Nightclub Management Command Center met zones voor Crew, Drugsopslag, DJ Command, Security Unit en Ops Lab; alle zones draaien in één doorlopende paginaflow zonder extra inner-scroll.\nIn het nightclub scherm staat nu één centrale Intelligence-sectie waarin overzicht, omzettrends en risicologs samen zichtbaar zijn zonder tab-switches.\nIn Ops Lab gebruik je nu 11 systemen: resident DJ, dynamic event kalender, upgrade-tree, police heat/incident response, supplier contracts, promoter profiles, VIP clientele + staff traits, smuggling routes, bar & kitchen management (drank/food) met pricing, rival sabotage + counter-intel en operations timeline.\nSmuggling routes hebben nu een cooldown per run (Harbor 60 min, Airstrip 90 min, Borderline 120 min) zodat je risico en timing moet plannen in plaats van oneindig spammen.\nDe upgrade-tree is interactief: kies expliciet Sound Rig, VIP Lounge of Surveillance en koop direct het volgende level met zichtbare upgrade-kosten.\nRevenue wordt gegenereerd per tick op basis van DJ-kwaliteit, bezettingsgraad en supply-beschikbaarheid. Mis je supply dan daalt je inkomst direct.\nDJ-contracten lopen automatisch af op de ingestelde eindtijd; daarna moet je opnieuw boeken voor nieuwe boosts.\nIncidenten (vechtpartijen, diefstal) kunnen optreden als je beveiliging tekortschiet. Dit schaadt bezoekers-score en inkomst.\nElk seizoen heeft een leaderboard. Spelers met de hoogste totale nachtclub-revenue winnen seizoensbeloningen.\nSynergie met drugs: eigen drugs-productie kan als supply dienen, wat margins verhoogt.\nDrugs-opslag werkt in gram: je ziet per selectie direct hoeveel gram beschikbaar is voordat je toevoegt aan je nightclub voorraad.\nRival acties werken op spelersnaam: je zoekt rival clubs op naam en kiest daarna pas je actie (geen player-id nodig).\nSynergie met prostitution: gecombineerde venue events geven extra bezoekers en hogere revenue.\nUpgrades verbeteren capaciteit, supply-opslag en het maximale aantal DJs en bewakers dat je kunt inzetten.",
-  "helpTopicNightclubTips": "Zorg altijd dat supply niet leeg raakt: één tick zonder supply kan een bezoekersdip veroorzaken die moeilijk te herstellen is.\nBoek de beste DJ die je je kunt veroorloven: DJ-kwaliteit heeft de grootste directe impact op revenue per tick.\nCheck het seizoensleaderboard elke dag en schaal supply en DJs op als je in top-10 wilt eindigen.",
+  "helpTopicNightclubTips": "Zorg altijd dat supply niet leeg raakt: één tick zonder supply kan een bezoekersdip veroorzaken die moeilijk te herstellen is.\nEr zijn 20 DJ’s (één per land), maar een DJ speelt maar bij één club tegelijk: in de lijst zie je Bezet tot als iemand al geboekt is.\nBoek de beste vrije DJ die je je kunt veroorloven: DJ-kwaliteit heeft de grootste directe impact op revenue per tick.\nCheck het seizoensleaderboard elke dag en schaal supply en DJs op als je in top-10 wilt eindigen.",
   "helpTopicCryptoCategory": "Economie",
   "helpTopicCryptoTitle": "Crypto",
   "helpTopicCryptoSummary": "Handel in 30 echte cryptocurrencies. Koop en verkoop direct, of automatiseer via limit-, stop-loss- en take-profit orders. Koersen volgen nu live marktankers met extra in-game regimes en nieuws, en de coin-popup gebruikt aparte velden voor directe trades en open orders.",

@@ -6217,6 +6217,15 @@
       }
     }
   },
+  "nightclubDjAvailable": "Dostępny",
+  "nightclubDjBookedUntil": "Zajęty do {time}",
+  "@nightclubDjBookedUntil": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
   "nightclubActiveSecurity": "Aktywne bezpieczeństwo",
   "nightclubActiveSecurityNone": "Aktywne zabezpieczenia: brak",
   "nightclubNoDjsLoaded": "Nie załadowano żadnych DJ-ów. Odśwież ekran.",

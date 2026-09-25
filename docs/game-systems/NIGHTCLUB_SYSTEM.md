@@ -117,14 +117,7 @@ chill:     weed: 0.4, alcohol: 0.5
 - **Vibe Shift:** Can improve current vibe (chill→normal, etc.)
 - **Revenue Impact:** Higher vibe = higher prices + more buyers
 
-**Available DJs (Initialized):**
-| Name | Level | Cost/h | Bonus | Specialty |
-|------|-------|--------|-------|-----------|
-| Marco Cristobal | 5 | €8000 | 1.75x | Deep House |
-| DJ Tiësto | 5 | €10000 | 1.75x | House |
-| Sasha | 4 | €6500 | 1.6x | Techno |
-| Richie Hawtin | 5 | €9500 | 1.75x | Techno |
-| Armin van Buuren | 5 | €10000 | 1.75x | Progressive |
+**Available DJs (Initialized):** 20 names (`DEFAULT_NIGHTCLUB_DJS`), one per travel country. Each DJ is still globally exclusive (`currentDJId` unique). The available-DJ payload includes `booked` / `bookedUntil` so the club UI can show **booked until** instead of a surprise hire error. Missing catalog rows are inserted on next staff bootstrap.
 
 ### 3️⃣ SECURITY SYSTEM
 

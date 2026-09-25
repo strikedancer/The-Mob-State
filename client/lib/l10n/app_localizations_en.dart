@@ -14314,6 +14314,14 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get nightclubDjAvailable => 'Available';
+
+  @override
+  String nightclubDjBookedUntil(String time) {
+    return 'Booked until $time';
+  }
+
+  @override
   String get nightclubActiveSecurity => 'Active security';
 
   @override
@@ -19030,7 +19038,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicNightclubTips =>
-      'Always keep supply stocked: one tick without supply can trigger a visitor dip that is hard to recover from.\nBook the best DJ you can afford: DJ quality has the biggest direct impact on revenue per tick.\nCheck the season leaderboard daily and scale up supply and DJs if you want to finish in the top 10.';
+      'Always keep supply stocked: one tick without supply can trigger a visitor dip that is hard to recover from.\nThere are 20 DJs (one per country), but a DJ plays at only one club at a time: the list shows Booked until when someone is already hired.\nBook the best free DJ you can afford: DJ quality has the biggest direct impact on revenue per tick.\nCheck the season leaderboard daily and scale up supply and DJs if you want to finish in the top 10.';
 
   @override
   String get helpTopicCryptoCategory => 'Economy';

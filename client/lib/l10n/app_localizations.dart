@@ -24959,6 +24959,18 @@ abstract class AppLocalizations {
   /// **'until {time}'**
   String nightclubUntilTime(String time);
 
+  /// No description provided for @nightclubDjAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get nightclubDjAvailable;
+
+  /// No description provided for @nightclubDjBookedUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Booked until {time}'**
+  String nightclubDjBookedUntil(String time);
+
   /// No description provided for @nightclubActiveSecurity.
   ///
   /// In en, this message translates to:
@@ -32711,7 +32723,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicNightclubTips.
   ///
   /// In en, this message translates to:
-  /// **'Always keep supply stocked: one tick without supply can trigger a visitor dip that is hard to recover from.\nBook the best DJ you can afford: DJ quality has the biggest direct impact on revenue per tick.\nCheck the season leaderboard daily and scale up supply and DJs if you want to finish in the top 10.'**
+  /// **'Always keep supply stocked: one tick without supply can trigger a visitor dip that is hard to recover from.\nThere are 20 DJs (one per country), but a DJ plays at only one club at a time: the list shows Booked until when someone is already hired.\nBook the best free DJ you can afford: DJ quality has the biggest direct impact on revenue per tick.\nCheck the season leaderboard daily and scale up supply and DJs if you want to finish in the top 10.'**
   String get helpTopicNightclubTips;
 
   /// No description provided for @helpTopicCryptoCategory.
