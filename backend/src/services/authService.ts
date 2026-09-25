@@ -7,6 +7,7 @@ import { emailService } from './emailService';
 import countries from '../../content/countries.json';
 import { normalizePlayerLanguage } from '../config/supportedLanguages';
 import { serializePlayerAvatarFields } from './playerPortraitService';
+import { recordPlayerLoginIp } from './playerLoginIpService';
 
 const SALT_ROUNDS = 10;
 const VERIFICATION_RESEND_COOLDOWN_MS = 90 * 1000;
@@ -37,6 +38,7 @@ interface RegisterInput {
   password: string;
   email?: string;
   preferredLanguage?: string;
+  ip?: string | null;
   /** Required on new registration; stored with default avatar by gender. */
   gender: PlayerGender;
   referralCode?: string;
@@ -45,6 +47,7 @@ interface RegisterInput {
 interface LoginInput {
   username: string;
   password: string;
+  ip?: string | null;
 }
 
 interface AuthResponse {
@@ -175,7 +178,7 @@ export const authService = {
       };
     }
 
-    return this.issueSession(player.id);
+    return this.issueSession(player.id, input.ip);
   },
 
   async login(input: LoginInput): Promise<AuthResponse> {
@@ -204,10 +207,10 @@ export const authService = {
       throw new Error('EMAIL_NOT_VERIFIED');
     }
 
-    return this.issueSession(player.id);
+    return this.issueSession(player.id, input.ip);
   },
 
-  async issueSession(playerId: number): Promise<AuthResponse> {
+  async issueSession(playerId: number, ip?: string | null): Promise<AuthResponse> {
     const player = await prisma.player.findUnique({
       where: { id: playerId },
       include: {
@@ -250,6 +253,7 @@ export const authService = {
         ...(correctedRank !== player.rank ? { rank: correctedRank } : {}),
       },
     });
+    await recordPlayerLoginIp(player.id, ip);
 
     await prisma.worldEvent.create({
       data: {

@@ -316,6 +316,9 @@ interface Player {
   avatar: string | null;
   activePortraitPath?: string | null;
   isOnline: boolean;
+  isNpc?: boolean;
+  lastLoginIp?: string | null;
+  lastLoginIpAt?: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -656,6 +659,8 @@ function App() {
   const [playersTotalPages, setPlayersTotalPages] = useState(1);
   const [playerSearch, setPlayerSearch] = useState("");
   const [playerSearchFilter, setPlayerSearchFilter] = useState("");
+  const [playersIncludeNpcs, setPlayersIncludeNpcs] = useState(false);
+  const [playersTotal, setPlayersTotal] = useState(0);
   const [selectedPlayerIds, setSelectedPlayerIds] = useState<number[]>([]);
   const [bulkActionLoading, setBulkActionLoading] = useState(false);
   const [selectedPlayerId, setSelectedPlayerId] = useState<number | null>(null);
@@ -1154,7 +1159,7 @@ function App() {
     if (isAuthenticated && activeTab === "players") {
       loadPlayers();
     }
-  }, [isAuthenticated, activeTab, playersPage, playerSearchFilter]);
+  }, [isAuthenticated, activeTab, playersPage, playerSearchFilter, playersIncludeNpcs]);
 
   useEffect(() => {
     const timeout = window.setTimeout(() => {
@@ -1642,9 +1647,11 @@ function App() {
         playersPage,
         20,
         playerSearchFilter,
+        playersIncludeNpcs,
       );
       setPlayers(data.players);
       setPlayersTotalPages(data.totalPages);
+      setPlayersTotal(data.total ?? 0);
       setSelectedPlayerIds((current) =>
         current.filter((id) => data.players.some((p: Player) => p.id === id)),
       );
@@ -6823,8 +6830,8 @@ function App() {
                   <AdminPageIntro
                     kicker={l("Spelers · accounts", "Players · accounts")}
                     description={l(
-                      "Zoek, filter en bewerk speleraccounts. Bulkacties gelden voor de huidige pagina.",
-                      "Search, filter and edit player accounts. Bulk actions apply to the current page.",
+                      "Zoek, filter en bewerk echte speleraccounts. NPCs staan standaard uit deze lijst; zet ze aan als je ze hier tóch wilt zien. Bulkacties gelden voor de huidige pagina.",
+                      "Search, filter and edit real player accounts. NPCs are hidden by default; turn them on if you need them here. Bulk actions apply to the current page.",
                     )}
                   />
                   {/* Search */}
@@ -6840,6 +6847,27 @@ function App() {
                         value={playerSearch}
                         onChange={(e) => setPlayerSearch(e.target.value)}
                       />
+                    </div>
+                    <div className="form-check mt-2">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        id="playersIncludeNpcs"
+                        checked={playersIncludeNpcs}
+                        onChange={(e) => {
+                          setPlayersIncludeNpcs(e.target.checked);
+                          setPlayersPage(1);
+                        }}
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="playersIncludeNpcs"
+                      >
+                        {l(
+                          "Toon NPCs in deze lijst",
+                          "Show NPCs in this list",
+                        )}
+                      </label>
                     </div>
                   </div>
 
@@ -6926,7 +6954,7 @@ function App() {
                     <div className="card-header d-flex align-items-center">
                       <h5 className="mb-0 flex-fill">{t.playersTitle}</h5>
                       <span className="badge bg-secondary">
-                        {filteredPlayers.length}
+                        {playersTotal}
                       </span>
                     </div>
 
@@ -6992,7 +7020,14 @@ function App() {
 
                           {/* Info */}
                           <div className="flex-fill">
-                            <div className="fw-semibold">{player.username}</div>
+                            <div className="fw-semibold">
+                              {player.username}
+                              {player.isNpc ? (
+                                <span className="badge bg-info text-dark ms-2">
+                                  NPC
+                                </span>
+                              ) : null}
+                            </div>
                             <span className="text-muted">
                               {l("Rang", "Rank")} {player.rank} &middot;{" "}
                               {player.currentCountry} &middot; $
@@ -7265,6 +7300,35 @@ function App() {
                                         {pl.email}
                                       </span>
                                     )}
+                                    <span
+                                      className="badge bg-dark"
+                                      title={
+                                        pl.lastLoginIpAt
+                                          ? new Date(
+                                              pl.lastLoginIpAt,
+                                            ).toLocaleString()
+                                          : undefined
+                                      }
+                                    >
+                                      <i className="ph-globe me-1" />
+                                      {l("IP", "IP")}:{" "}
+                                      {pl.lastLoginIp ||
+                                        l("onbekend", "unknown")}
+                                    </span>
+                                  </div>
+                                  <div className="text-muted small mt-1">
+                                    {l("Laatste IP-adres", "Last IP address")}
+                                    :{" "}
+                                    <span className="fw-semibold text-body">
+                                      {pl.lastLoginIp ||
+                                        l(
+                                          "nog niet gezien (na deze update, bij volgende login)",
+                                          "not seen yet (after this update, on next login)",
+                                        )}
+                                    </span>
+                                    {pl.lastLoginIpAt
+                                      ? ` · ${new Date(pl.lastLoginIpAt).toLocaleString()}`
+                                      : ""}
                                   </div>
                                   {/* Health bar */}
                                   <div

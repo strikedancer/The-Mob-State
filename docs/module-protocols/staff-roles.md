@@ -15,7 +15,7 @@ A player account can be given `staffRole` `NONE` (default), `MOD`, or `OPS`. Sup
 | Role | Pages |
 |------|--------|
 | **Mod** | World chat only (delete / mute / reports). No kill-switch or extra blocklist. |
-| **Ops** | World chat + Tickets + Players (search and read). No money, rank, VIP, ban, config, admins, or Ops lab. |
+| **Ops** | World chat + Tickets + Players (search and read; NPCs hidden by default). No money, rank, VIP, ban, config, admins, or Ops lab. |
 | **Super-admin** | Full admin as today. Only they assign or revoke Mod/Ops. |
 
 ## Backend

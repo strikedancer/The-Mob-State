@@ -3,6 +3,8 @@ import jwt from 'jsonwebtoken';
 import config from '../config';
 import prisma from '../lib/prisma';
 import { setCached } from '../services/redisClient';
+import { clientIpFromRequest } from '../utils/clientIp';
+import { recordPlayerLoginIp } from '../services/playerLoginIpService';
 
 export interface AuthRequest extends Request {
   player?: {
@@ -80,6 +82,7 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
         bannedUntil: true,
         banReason: true,
         lastSessionAt: true,
+        lastLoginIp: true,
       },
     });
 
@@ -143,6 +146,7 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
     // online:* = 5-minute live flag; lastseen:* = last real login/API activity.
     setCached(`online:${player.id}`, 1, 300).catch(() => {});
     setCached(`lastseen:${player.id}`, Date.now(), 60 * 60 * 24 * 400).catch(() => {});
+    void recordPlayerLoginIp(player.id, clientIpFromRequest(req), player.lastLoginIp);
 
     if (req.method !== 'GET') {
       console.log('[Auth] Authentication successful for player:', player.id, player.username);

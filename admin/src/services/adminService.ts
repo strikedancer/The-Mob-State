@@ -200,6 +200,9 @@ export interface PlayerOverview {
     fbiHeat: number;
     reputation: number;
     staffRole?: "NONE" | "MOD" | "OPS" | null;
+    lastLoginIp?: string | null;
+    lastLoginIpAt?: string | null;
+    lastSessionAt?: string | null;
     premiumCredits: number;
     killCount: number;
     hitCount: number;
@@ -1504,12 +1507,13 @@ export const adminService = {
     return response.json();
   },
 
-  async getPlayers(page = 1, limit = 20, search = "") {
+  async getPlayers(page = 1, limit = 20, search = "", includeNpcs = false) {
     const token = adminAuthService.getToken();
     const query = new URLSearchParams({
       page: String(page),
       limit: String(limit),
       search,
+      includeNpcs: includeNpcs ? "1" : "0",
     });
     const response = await fetch(
       `${API_URL}/admin/players?${query.toString()}`,

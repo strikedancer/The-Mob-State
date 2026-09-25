@@ -77,6 +77,9 @@ model Player {
   lastUsernameChange              DateTime?
   /// Latest JWT session issue time. Auth compares this to token `iat` (single-session).
   lastSessionAt                   DateTime?
+  /// Last observed client IP (login or authenticated request).
+  lastLoginIp                     String?                          @db.VarChar(45)
+  lastLoginIpAt                   DateTime?
   max_inventory_slots             Int                              @default(5)
   notifyFriendAccepted            Boolean                          @default(true)
   notifyFriendRequest             Boolean                          @default(true)

@@ -128,7 +128,7 @@ Elke **5 minuten** gebeurt er automatisch:
 - In de **cel** kun je geen nieuwe batch starten, geen oogst ophalen en geen credit-speedup doen (zelfde jail-gate als materialen kopen). Lopende batches lopen door op de server.
 - **Low-profile** (heat koelen): standaard **4 uur** geen nieuwe batches, extra heat gehalveerd, lopende batches gaan door. Daarna **8 uur** cooldown vanaf het moment dat je het aanzette. De Drugs-hub toont de resterende tijd.
 - Empire-pagina’s delen dezelfde foto-header als Don/Midnight Races/Drugs. De foto-hero **scrollt mee**; als er tabs zijn blijven die bovenaan (alleen tekst, goud). De gouden `i` zit in de hero. Dashboard-home, Help en Instellingen hebben deze kop niet.
-- **Admin-console:** elke tab gebruikt dezelfde intro (kicker + doelzin) onder de page-header; runtime-tabs (Drugs, Casino, Crew Missions, Landelijke politie) groeperen keys in kaarten met eenheden, defaults en unsaved-status. Police-pressure en Clearing House blijven op hun eigen tabs.
+- **Admin-console:** elke tab gebruikt dezelfde intro (kicker + doelzin) onder de page-header; runtime-tabs (Drugs, Casino, Crew Missions, Landelijke politie) groeperen keys in kaarten met eenheden, defaults en unsaved-status. Police-pressure en Clearing House blijven op hun eigen tabs. **Spelers** toont standaard alleen echte accounts (geen NPCs); vink **Toon NPCs** aan om ze mee te nemen. In spelerdetail staat het **laatste IP-adres** (na login of een game-request).
 
 ---
 

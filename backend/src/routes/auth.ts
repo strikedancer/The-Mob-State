@@ -6,6 +6,7 @@ import { discordAuthService } from '../services/discordAuthService';
 import { emailService } from '../services/emailService';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
 import prisma from '../lib/prisma';
+import { clientIpFromRequest } from '../utils/clientIp';
 import bcrypt from 'bcrypt';
 import { normalizePlayerLanguage } from '../config/supportedLanguages';
 
@@ -317,6 +318,7 @@ router.post('/register', async (req: Request, res: Response) => {
       preferredLanguage,
       gender,
       referralCode,
+      ip: clientIpFromRequest(req),
     });
 
     if (result.requiresEmailVerification) {
@@ -420,7 +422,11 @@ router.post('/login', async (req: Request, res: Response) => {
     const { username, password } = req.body;
     console.log('[AUTH] Login attempt for:', username);
 
-    const result = await authService.login({ username, password });
+    const result = await authService.login({
+      username,
+      password,
+      ip: clientIpFromRequest(req),
+    });
     console.log('[AUTH] Login successful for:', username);
 
     return res.status(200).json({

@@ -1987,8 +1987,11 @@ router.get('/players', async (req, res) => {
     const limit = parseInt(req.query.limit as string) || 20;
     const skip = (page - 1) * limit;
     const search = String(req.query.search || '').trim();
+    const includeNpcs =
+      String(req.query.includeNpcs || '') === '1' ||
+      String(req.query.includeNpcs || '').toLowerCase() === 'true';
 
-    const where: Prisma.PlayerWhereInput = search
+    const searchWhere: Prisma.PlayerWhereInput = search
       ? {
           OR: [
             { username: { contains: search } },
@@ -1996,6 +1999,17 @@ router.get('/players', async (req, res) => {
           ],
         }
       : {};
+
+    const npcRows = includeNpcs
+      ? []
+      : await prisma.nPCPlayer.findMany({ select: { playerId: true } });
+    const npcIds = npcRows.map((row) => row.playerId);
+    const where: Prisma.PlayerWhereInput = {
+      AND: [
+        searchWhere,
+        npcIds.length > 0 ? { id: { notIn: npcIds } } : {},
+      ],
+    };
 
     const [players, total] = await Promise.all([
       prisma.player.findMany({
@@ -2012,6 +2026,8 @@ router.get('/players', async (req, res) => {
           currentCountry: true,
           avatar: true,
           staffRole: true,
+          lastLoginIp: true,
+          lastLoginIpAt: true,
           activePortrait: { select: { imagePath: true } },
           createdAt: true,
           updatedAt: true,
@@ -2019,6 +2035,15 @@ router.get('/players', async (req, res) => {
       }),
       prisma.player.count({ where }),
     ]);
+
+    const pageNpcRows =
+      players.length === 0
+        ? []
+        : await prisma.nPCPlayer.findMany({
+            where: { playerId: { in: players.map((p) => p.id) } },
+            select: { playerId: true },
+          });
+    const pageNpcIds = new Set(pageNpcRows.map((row) => row.playerId));
 
     const onlineFlags = await Promise.all(players.map((p) => existsCached(`online:${p.id}`)));
 
@@ -2028,6 +2053,7 @@ router.get('/players', async (req, res) => {
         ...rest,
         activePortraitPath: activePortraitPathFromRow(activePortrait?.imagePath),
         isOnline: onlineFlags[i],
+        isNpc: pageNpcIds.has(p.id),
       };
     });
 
@@ -2115,6 +2141,9 @@ router.get('/players/:playerId/overview', async (req, res) => {
           inventory_slots_used: true,
           max_inventory_slots: true,
           avatar: true,
+          lastSessionAt: true,
+          lastLoginIp: true,
+          lastLoginIpAt: true,
           activePortrait: { select: { imagePath: true } },
           createdAt: true,
           updatedAt: true,
