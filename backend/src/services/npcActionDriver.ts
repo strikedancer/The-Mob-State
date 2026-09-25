@@ -96,6 +96,7 @@ async function findLocalVehicle(playerId: number, country: string) {
       currentLocation: country,
       transportStatus: null,
       marketListing: false,
+      showroomPropertyId: null,
       fuelLevel: { gt: 0 },
     },
     orderBy: { stolenAt: 'desc' },

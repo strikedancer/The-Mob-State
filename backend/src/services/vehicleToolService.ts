@@ -1,5 +1,6 @@
 import prisma from '../lib/prisma';
 import { vehicleService } from './vehicleService';
+import { assertNotExhibited, notInShowroomWhere } from './showroomCatalog';
 
 interface ResolvedCrimeVehicleSelection {
   vehicle: Awaited<ReturnType<typeof getPlayerCrimeVehicle>>;
@@ -150,6 +151,7 @@ export async function resolveSelectedCrimeVehicle(
       currentLocation: currentCountry,
       transportStatus: null,
       marketListing: false,
+      ...notInShowroomWhere,
     },
     orderBy: {
       stolenAt: 'desc',
@@ -247,6 +249,8 @@ export async function setPlayerCrimeVehicleFromInventory(
   if (vehicleInventory.transportStatus || vehicleInventory.marketListing) {
     throw new Error('VEHICLE_UNAVAILABLE');
   }
+
+  assertNotExhibited(vehicleInventory);
 
   const definition = vehicleService.getVehicleById(vehicleInventory.vehicleId);
 

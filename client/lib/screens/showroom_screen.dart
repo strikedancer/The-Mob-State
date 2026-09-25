@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../l10n/app_localizations.dart';
 import '../models/property.dart';
+import '../providers/vehicle_provider.dart';
 import '../services/showroom_service.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
@@ -121,6 +123,28 @@ class _ShowroomScreenState extends State<ShowroomScreen>
     }
   }
 
+  Future<void> _refreshVehicleStorage() async {
+    final country = _showroom?['countryId']?.toString() ??
+        widget.property.countryId;
+    if (country.isEmpty) return;
+    final provider = context.read<VehicleProvider>();
+    final category = _showroom?['category']?.toString() ??
+        (_propertyType == 'boat_harbor'
+            ? 'boat'
+            : _propertyType == 'motorcycle_showroom'
+                ? 'motorcycle'
+                : 'car');
+    await provider.fetchInventory();
+    if (category == 'boat') {
+      await provider.fetchMarinaStatus(country);
+    } else {
+      await provider.fetchGarageStatus(
+        country,
+        vehicleType: category == 'motorcycle' ? 'motorcycle' : 'car',
+      );
+    }
+  }
+
   Future<void> _place(int inventoryId) async {
     setState(() => _busyInventoryId = inventoryId);
     final result = await _service.placeVehicle(
@@ -133,6 +157,8 @@ class _ShowroomScreenState extends State<ShowroomScreen>
       setState(() {
         _showroom = Map<String, dynamic>.from(result['showroom'] as Map);
       });
+      await _refreshVehicleStorage();
+      if (!mounted) return;
       showTopRightFromSnackBar(
         context,
         SnackBar(content: Text(AppLocalizations.of(context)!.showroomPlaced)),
@@ -167,6 +193,8 @@ class _ShowroomScreenState extends State<ShowroomScreen>
       setState(() {
         _showroom = Map<String, dynamic>.from(result['showroom'] as Map);
       });
+      await _refreshVehicleStorage();
+      if (!mounted) return;
       showTopRightFromSnackBar(
         context,
         SnackBar(content: Text(AppLocalizations.of(context)!.showroomRemoved)),

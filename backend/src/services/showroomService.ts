@@ -3,6 +3,7 @@ import { timeProvider } from '../utils/timeProvider';
 import { activityService } from './activityService';
 import { propertyService } from './propertyService';
 import { computeGarageSlotTotals } from './garageService';
+import { resolveSelectedCrimeVehicle } from './vehicleToolService';
 import {
   SHOWROOM_PROPERTY_IDS,
   findShowroomVehicleDef,
@@ -316,6 +317,9 @@ class ShowroomService {
         showroomPlacedAt: timeProvider.now(),
       },
     });
+
+    // Drop crime-vehicle selection if this was the only usable copy of that model.
+    await resolveSelectedCrimeVehicle(playerId, player.currentCountry!);
 
     const def = findShowroomVehicleDef(vehicle.vehicleId);
     await activityService.logActivity(

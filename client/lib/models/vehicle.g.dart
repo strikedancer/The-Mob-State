@@ -107,6 +107,7 @@ VehicleInventoryItem _$VehicleInventoryItemFromJson(
       : DateTime.parse(json['repairCompletesAt'] as String),
   repairCost: (json['repairCost'] as num?)?.toInt(),
   repairTargetCondition: (json['repairTargetCondition'] as num?)?.toInt(),
+  showroomPropertyId: (json['showroomPropertyId'] as num?)?.toInt(),
   createdAt: json['stolenAt'] == null
       ? null
       : DateTime.parse(json['stolenAt'] as String),
@@ -137,6 +138,7 @@ Map<String, dynamic> _$VehicleInventoryItemToJson(
   'repairCompletesAt': instance.repairCompletesAt?.toIso8601String(),
   'repairCost': instance.repairCost,
   'repairTargetCondition': instance.repairTargetCondition,
+  'showroomPropertyId': instance.showroomPropertyId,
   'stolenAt': instance.createdAt?.toIso8601String(),
 };
 

@@ -114,6 +114,7 @@ class VehicleInventoryItem {
   final DateTime? repairCompletesAt;
   final int? repairCost;
   final int? repairTargetCondition;
+  final int? showroomPropertyId;
 
   @JsonKey(name: 'stolenAt')
   final DateTime? createdAt;
@@ -141,12 +142,15 @@ class VehicleInventoryItem {
     this.repairCompletesAt,
     this.repairCost,
     this.repairTargetCondition,
+    this.showroomPropertyId,
     this.createdAt,
   });
 
   factory VehicleInventoryItem.fromJson(Map<String, dynamic> json) =>
       _$VehicleInventoryItemFromJson(json);
   Map<String, dynamic> toJson() => _$VehicleInventoryItemToJson(this);
+
+  bool get isInShowroom => showroomPropertyId != null;
 
   /// Quoted cash if you sell now. Prefers the server quote so the button
   /// matches the top-right payout.

@@ -220,6 +220,7 @@ class VehicleProvider with ChangeNotifier {
         print('[VehicleProvider] Received ${inventoryData.length} vehicles');
         _inventory = inventoryData
             .map((item) => VehicleInventoryItem.fromJson(item))
+            .where((item) => !item.isInShowroom)
             .toList();
         _error = null;
       } else {

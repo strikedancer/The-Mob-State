@@ -77,6 +77,7 @@ Endpoint: `POST /properties/:id/develop`
 - Verify an arrest in that country seizes part of warehouse stock and leaves house storage intact.
 - Verify a player can own only one of each showroom worldwide, that it binds to the purchase country, and that placing requires same-country + 100% condition + unique model + slot cap.
 - Verify exhibited vehicles disappear from garage/marina counts and cannot be used, sold, scrapped or smuggled until removed.
+- After placing a vehicle in a showroom, garage/marina inventory must refresh immediately (no stale ghost cards). Crime-vehicle resolve and select must ignore `showroomPropertyId` rows; packing a showroom vehicle as smuggle cargo must fail.
 - Verify an arrest in the showroom country can seize displayed vehicles (~40%) and leaves garage vehicles intact.
 - Verify sell pays 70% cash, blocks when storage, nightclub stock or showroom collection is not empty, and frees a country slot.
 - Verify casino is unique per country and nightclub shows remaining country slots.

@@ -1497,6 +1497,7 @@ class SmugglingService {
               currentLocation: player.currentCountry,
               transportStatus: null,
               marketListing: false,
+              showroomPropertyId: null,
             },
           });
 
@@ -1798,6 +1799,7 @@ class SmugglingService {
             currentLocation: player.currentCountry,
             transportStatus: null,
             marketListing: false,
+            showroomPropertyId: null,
           },
           select: { id: true },
         });

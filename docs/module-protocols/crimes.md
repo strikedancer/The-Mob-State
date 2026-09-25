@@ -71,7 +71,7 @@ Illegal action loop with rewards, failures, jail risk, cooldowns and supporting 
 - Verify no text overflows or clipped buttons appear.
 - Verify the success result overlay is readable on mobile and desktop (gold title, white crime name, cash/XP values, gold Continue) and matches the dashboard noir/gold shell.
 - Verify weapon-required crimes pick the better of the two worn slots (for example a handgun crime uses the handgun, a rifle crime uses the rifle), treat worn SMGs (`automatic`) as `smg`, block cleanly when neither slot is suitable, and stay synced with Inventory after refresh/navigation.
-- Verify vehicle-required crimes only accept the selected crime vehicle when that vehicle is actually available in the player's current country and not in transit or market-listed.
+- Verify vehicle-required crimes only accept the selected crime vehicle when that vehicle is actually available in the player's current country and not in transit, market-listed, or on showroom display (`showroomPropertyId`).
 - Verify a crime car is assigned from Inventory (not from a garage car card) and still used by `GET /garage/crime-vehicle`.
 - Verify an arrest during a weapon-based crime confiscates the used weapon, clears the saved selection when no copy remains, and tells the player about the confiscation in the crime result feedback.
 - Opening Crimes on a slow/mobile connection must not sit on a full-page load error after one timeout; the client retries once and keeps a Retry button.

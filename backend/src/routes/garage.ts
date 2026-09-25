@@ -307,6 +307,16 @@ router.post('/crime-vehicle', authenticate, async (req: AuthRequest, res: Respon
         },
       });
     }
+
+    if (error instanceof Error && error.message === 'VEHICLE_IN_SHOWROOM') {
+      return res.status(400).json({
+        event: 'error.vehicleInShowroom',
+        params: {
+          message: 'Vehicle is on display in a showroom',
+          playerCountry: req.player!.currentCountry,
+        },
+      });
+    }
     
     return res.status(500).json({
       event: 'error.internal',
