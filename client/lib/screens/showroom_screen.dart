@@ -5,13 +5,21 @@ import '../models/property.dart';
 import '../services/showroom_service.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
+import '../widgets/empire_page_hero.dart';
 import '../widgets/game_page_info.dart';
 import '../widgets/jail_gate.dart';
 
 class ShowroomScreen extends StatefulWidget {
   final Property property;
+  final bool embedded;
+  final VoidCallback? onClose;
 
-  const ShowroomScreen({super.key, required this.property});
+  const ShowroomScreen({
+    super.key,
+    required this.property,
+    this.embedded = false,
+    this.onClose,
+  });
 
   @override
   State<ShowroomScreen> createState() => _ShowroomScreenState();
@@ -39,6 +47,30 @@ class _ShowroomScreenState extends State<ShowroomScreen>
     super.dispose();
   }
 
+  String get _propertyType => widget.property.type ?? widget.property.propertyId;
+
+  String get _heroAsset {
+    switch (_propertyType) {
+      case 'motorcycle_showroom':
+        return 'assets/images/properties/motorcycle_showroom.png';
+      case 'boat_harbor':
+        return 'assets/images/properties/boat_harbor.png';
+      default:
+        return 'assets/images/properties/car_showroom.png';
+    }
+  }
+
+  IconData get _fallbackIcon {
+    switch (_propertyType) {
+      case 'motorcycle_showroom':
+        return Icons.two_wheeler;
+      case 'boat_harbor':
+        return Icons.directions_boat;
+      default:
+        return Icons.directions_car;
+    }
+  }
+
   Future<void> _load() async {
     setState(() {
       _loading = true;
@@ -57,7 +89,9 @@ class _ShowroomScreenState extends State<ShowroomScreen>
       _loading = false;
       _error = _errorMessage(
         AppLocalizations.of(context)!,
-        result['params'] is Map ? (result['params'] as Map)['reason']?.toString() : null,
+        result['params'] is Map
+            ? (result['params'] as Map)['reason']?.toString()
+            : null,
       );
     });
   }
@@ -109,7 +143,9 @@ class _ShowroomScreenState extends State<ShowroomScreen>
         content: Text(
           _errorMessage(
             AppLocalizations.of(context)!,
-            result['params'] is Map ? (result['params'] as Map)['reason']?.toString() : null,
+            result['params'] is Map
+                ? (result['params'] as Map)['reason']?.toString()
+                : null,
           ),
         ),
         backgroundColor: Colors.red,
@@ -141,7 +177,9 @@ class _ShowroomScreenState extends State<ShowroomScreen>
         content: Text(
           _errorMessage(
             AppLocalizations.of(context)!,
-            result['params'] is Map ? (result['params'] as Map)['reason']?.toString() : null,
+            result['params'] is Map
+                ? (result['params'] as Map)['reason']?.toString()
+                : null,
           ),
         ),
         backgroundColor: Colors.red,
@@ -149,109 +187,199 @@ class _ShowroomScreenState extends State<ShowroomScreen>
     );
   }
 
+  void _handleBack() {
+    if (widget.onClose != null) {
+      widget.onClose!();
+      return;
+    }
+    if (Navigator.of(context).canPop()) {
+      Navigator.of(context).pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return JailGate(
+      embedded: widget.embedded,
       child: GamePageInfoHost(
         topicId: 'properties',
-        child: _buildPageInfoChild(context),
+        showOverlay: false,
+        child: _buildBody(context),
       ),
     );
   }
 
-  Widget _buildPageInfoChild(BuildContext context) {
+  Widget _buildBody(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.showroomTitle),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: [
-            Tab(text: l10n.showroomCollectionTab),
-            Tab(text: l10n.showroomPlaceTab),
-          ],
-        ),
-      ),
-      body: _loading
-          ? const Center(child: CircularProgressIndicator())
-          : _error != null
-          ? Center(
+    final used = '${_showroom?['slotsUsed'] ?? 0}';
+    final max = '${_showroom?['slotsMax'] ?? 0}';
+    final tabBar = TabBar(
+      controller: _tabController,
+      isScrollable: true,
+      labelColor: kEmpireGold,
+      unselectedLabelColor: Colors.white70,
+      indicatorColor: kEmpireGold,
+      dividerColor: kEmpireGold.withValues(alpha: 0.22),
+      tabs: [
+        Tab(text: l10n.showroomCollectionTab),
+        Tab(text: l10n.showroomPlaceTab),
+      ],
+    );
+
+    late final Widget hub;
+    if (_loading) {
+      hub = Column(
+        children: [
+          _buildTopBar(l10n, used, max),
+          const Expanded(child: Center(child: CircularProgressIndicator())),
+        ],
+      );
+    } else if (_error != null) {
+      hub = Column(
+        children: [
+          _buildTopBar(l10n, used, max),
+          Expanded(
+            child: Center(
               child: Padding(
                 padding: const EdgeInsets.all(24),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(_error!, textAlign: TextAlign.center),
+                    Text(
+                      _error!,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.white70),
+                    ),
                     const SizedBox(height: 16),
-                    FilledButton(onPressed: _load, child: Text(l10n.showroomRefresh)),
+                    FilledButton(
+                      onPressed: _load,
+                      child: Text(l10n.showroomRefresh),
+                    ),
                   ],
                 ),
               ),
-            )
-          : Column(
-              children: [
-                _buildHeader(l10n),
-                Expanded(
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: [
-                      _buildVehicleList(
-                        l10n,
-                        List<Map<String, dynamic>>.from(
-                          (_showroom?['exhibits'] as List?)?.whereType<Map>() ?? const [],
-                        ),
-                        empty: l10n.showroomEmptyCollection,
-                        actionLabel: l10n.showroomRemoveAction,
-                        onAction: _remove,
-                      ),
-                      _buildVehicleList(
-                        l10n,
-                        List<Map<String, dynamic>>.from(
-                          (_showroom?['eligible'] as List?)?.whereType<Map>() ?? const [],
-                        ),
-                        empty: (_showroom?['canManage'] == true)
-                            ? l10n.showroomEmptyEligible
-                            : l10n.showroomWrongCountryManage,
-                        actionLabel: l10n.showroomPlaceAction,
-                        onAction: _place,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
             ),
+          ),
+        ],
+      );
+    } else {
+      hub = NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          SliverToBoxAdapter(child: _buildTopBar(l10n, used, max)),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+              child: _buildRulesCard(l10n),
+            ),
+          ),
+          SliverPersistentHeader(
+            pinned: true,
+            delegate: PinnedTabBarDelegate(tabBar: tabBar),
+          ),
+        ],
+        body: TabBarView(
+          controller: _tabController,
+          children: [
+            _buildVehicleGrid(
+              l10n,
+              List<Map<String, dynamic>>.from(
+                (_showroom?['exhibits'] as List?)?.whereType<Map>() ??
+                    const [],
+              ),
+              empty: l10n.showroomEmptyCollection,
+              actionLabel: l10n.showroomRemoveAction,
+              onAction: _remove,
+            ),
+            _buildVehicleGrid(
+              l10n,
+              List<Map<String, dynamic>>.from(
+                (_showroom?['eligible'] as List?)?.whereType<Map>() ??
+                    const [],
+              ),
+              empty: (_showroom?['canManage'] == true)
+                  ? l10n.showroomEmptyEligible
+                  : l10n.showroomWrongCountryManage,
+              actionLabel: l10n.showroomPlaceAction,
+              onAction: _place,
+            ),
+          ],
+        ),
+      );
+    }
+
+    final painted = empireHubPainted(child: hub);
+    if (widget.embedded) return painted;
+    return Scaffold(
+      backgroundColor: kEmpireBgEnd,
+      body: painted,
     );
   }
 
-  Widget _buildHeader(AppLocalizations l10n) {
-    final used = _showroom?['slotsUsed'] ?? 0;
-    final max = _showroom?['slotsMax'] ?? 0;
-    final country = _showroom?['countryId']?.toString() ?? widget.property.countryId;
+  Widget _buildTopBar(AppLocalizations l10n, String used, String max) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(4, 8, 12, 0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          IconButton(
+            tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+            onPressed: _handleBack,
+            icon: const Icon(Icons.arrow_back, color: kEmpireGold),
+          ),
+          Expanded(
+            child: EmpirePageHero(
+              title: l10n.showroomTitle,
+              subtitle: l10n.showroomSlots(used, max),
+              imageAsset: _heroAsset,
+              topicId: 'properties',
+              onRefresh: _load,
+              fallbackIcon: _fallbackIcon,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRulesCard(AppLocalizations l10n) {
+    final country =
+        _showroom?['countryId']?.toString() ?? widget.property.countryId;
     return Card(
-      margin: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+      color: Colors.black.withValues(alpha: 0.35),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(14),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (country.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Text(
+                  country,
+                  style: const TextStyle(
+                    color: Colors.white70,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
             Text(
-              l10n.showroomSlots('$used', '$max'),
-              style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+              l10n.showroomRules,
+              style: const TextStyle(color: Colors.white70, height: 1.35),
             ),
-            const SizedBox(height: 4),
-            Text(
-              country,
-              style: TextStyle(color: Colors.grey[600]),
-            ),
-            const SizedBox(height: 10),
-            Text(l10n.showroomRules),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildVehicleList(
+  int _gridColumns(double width) {
+    if (width >= 1280) return 4;
+    if (width >= 900) return 3;
+    if (width >= 560) return 2;
+    return 1;
+  }
+
+  Widget _buildVehicleGrid(
     AppLocalizations l10n,
     List<Map<String, dynamic>> vehicles, {
     required String empty,
@@ -262,63 +390,117 @@ class _ShowroomScreenState extends State<ShowroomScreen>
       return Center(
         child: Padding(
           padding: const EdgeInsets.all(24),
-          child: Text(empty, textAlign: TextAlign.center),
+          child: Text(
+            empty,
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.white70),
+          ),
         ),
       );
     }
 
     return RefreshIndicator(
       onRefresh: _load,
-      child: ListView.separated(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
-        itemCount: vehicles.length,
-        separatorBuilder: (_, _) => const SizedBox(height: 8),
-        itemBuilder: (context, index) {
-          final vehicle = vehicles[index];
-          final inventoryId = (vehicle['inventoryId'] as num?)?.toInt();
-          final name = vehicle['name']?.toString() ?? l10n.unknown;
-          final condition = (vehicle['condition'] as num?)?.toInt() ?? 0;
-          final image = vehicle['image']?.toString();
-          final busy = inventoryId != null && _busyInventoryId == inventoryId;
-          return Card(
-            child: ListTile(
-              leading: _vehicleThumb(image),
-              title: Text(name),
-              subtitle: Text('${l10n.condition}: $condition%'),
-              trailing: inventoryId == null
-                  ? null
-                  : FilledButton(
-                      onPressed: busy || _showroom?['canManage'] != true
-                          ? null
-                          : () => onAction(inventoryId),
-                      child: busy
-                          ? const SizedBox(
-                              width: 16,
-                              height: 16,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            )
-                          : Text(actionLabel),
-                    ),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final columns = _gridColumns(constraints.maxWidth);
+          return GridView.builder(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: columns,
+              // Slightly taller than square so name + button fit under the image.
+              childAspectRatio: columns == 1 ? 0.92 : 0.78,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
             ),
+            itemCount: vehicles.length,
+            itemBuilder: (context, index) {
+              final vehicle = vehicles[index];
+              final inventoryId = (vehicle['inventoryId'] as num?)?.toInt();
+              final name = vehicle['name']?.toString() ?? l10n.unknown;
+              final condition = (vehicle['condition'] as num?)?.toInt() ?? 0;
+              final image = vehicle['image']?.toString();
+              final busy =
+                  inventoryId != null && _busyInventoryId == inventoryId;
+              final canManage = _showroom?['canManage'] == true;
+
+              return Card(
+                clipBehavior: Clip.antiAlias,
+                color: Colors.black.withValues(alpha: 0.4),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(child: _vehicleSquareImage(image)),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 8, 10, 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            name,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 13,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            '${l10n.condition}: $condition%',
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 12,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          if (inventoryId != null)
+                            FilledButton(
+                              onPressed: busy || !canManage
+                                  ? null
+                                  : () => onAction(inventoryId),
+                              child: busy
+                                  ? const SizedBox(
+                                      width: 16,
+                                      height: 16,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                      ),
+                                    )
+                                  : Text(actionLabel),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
           );
         },
       ),
     );
   }
 
-  Widget _vehicleThumb(String? image) {
+  Widget _vehicleSquareImage(String? image) {
     if (image == null || image.isEmpty) {
-      return const CircleAvatar(child: Icon(Icons.directions_car));
+      return ColoredBox(
+        color: Colors.black45,
+        child: Center(
+          child: Icon(_fallbackIcon, size: 48, color: Colors.white38),
+        ),
+      );
     }
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(8),
-      child: SizedBox(
-        width: 56,
-        height: 40,
-        child: WebAssetHelper.image(
-          'assets/images/vehicles/$image',
-          fit: BoxFit.cover,
-          errorBuilder: (_, _, _) => const Icon(Icons.directions_car),
+    return ColoredBox(
+      color: Colors.black45,
+      child: WebAssetHelper.image(
+        'assets/images/vehicles/$image',
+        fit: BoxFit.cover,
+        width: double.infinity,
+        height: double.infinity,
+        errorBuilder: (_, _, _) => Center(
+          child: Icon(_fallbackIcon, size: 48, color: Colors.white38),
         ),
       ),
     );

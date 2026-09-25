@@ -50,6 +50,7 @@ class PropertyScreenState extends State<PropertyScreen>
   String? _availableTypeFilter;
   /// `null` = current country, `*` = all countries, otherwise a country slug.
   String? _ownedCountryFilter;
+  Property? _managingShowroom;
 
   @override
   void initState() {
@@ -683,17 +684,37 @@ class PropertyScreenState extends State<PropertyScreen>
   }
 
   Future<void> _openShowroom(Property property) async {
+    if (widget.embedded) {
+      setState(() => _managingShowroom = property);
+      return;
+    }
     await Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => ShowroomScreen(property: property)),
+      MaterialPageRoute(
+        builder: (_) => ShowroomScreen(property: property),
+      ),
     );
     if (mounted) {
       _loadMyProperties();
     }
   }
 
+  void _closeShowroom() {
+    setState(() => _managingShowroom = null);
+    _loadMyProperties();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final managing = _managingShowroom;
+    if (managing != null) {
+      return ShowroomScreen(
+        property: managing,
+        embedded: widget.embedded,
+        onClose: _closeShowroom,
+      );
+    }
+
     return JailGate(
       embedded: widget.embedded,
       child: GamePageInfoHost(
