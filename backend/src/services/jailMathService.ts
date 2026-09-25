@@ -1,5 +1,9 @@
 import prisma from '../lib/prisma';
-import { checkIfJailed } from './policeService';
+import {
+  JAIL_MATH_CORRECT_EVENT,
+  checkIfJailed,
+  getSelfEscapeStatus,
+} from './policeService';
 
 export const JAIL_MATH_REWARD_SECONDS = 10;
 /** Minimum gap between answer attempts (anti-spam / bot). */
@@ -78,6 +82,9 @@ export async function getJailMathChallenge(playerId: number): Promise<{
   prompt: string;
   rewardSeconds: number;
   remainingSeconds: number;
+  mathCorrect: number;
+  escapeSuccessPercent: number;
+  mathBonusPercent: number;
 }> {
   const remainingSeconds = await checkIfJailed(playerId);
   if (remainingSeconds <= 0) {
@@ -85,12 +92,16 @@ export async function getJailMathChallenge(playerId: number): Promise<{
     throw Object.assign(new Error('NOT_JAILED'), { code: 'NOT_JAILED' });
   }
 
+  const escape = await getSelfEscapeStatus(playerId);
   const existing = pendingByPlayer.get(playerId);
   if (existing && existing.expiresAt > Date.now()) {
     return {
       prompt: existing.prompt,
       rewardSeconds: JAIL_MATH_REWARD_SECONDS,
       remainingSeconds,
+      mathCorrect: escape.mathCorrect,
+      escapeSuccessPercent: escape.escapeOdds.successPercent,
+      mathBonusPercent: escape.escapeOdds.mathBonusPercent,
     };
   }
 
@@ -99,6 +110,9 @@ export async function getJailMathChallenge(playerId: number): Promise<{
     prompt: pending.prompt,
     rewardSeconds: JAIL_MATH_REWARD_SECONDS,
     remainingSeconds,
+    mathCorrect: escape.mathCorrect,
+    escapeSuccessPercent: escape.escapeOdds.successPercent,
+    mathBonusPercent: escape.escapeOdds.mathBonusPercent,
   };
 }
 
@@ -112,6 +126,9 @@ export async function submitJailMathAnswer(
   remainingSeconds: number;
   reducedBySeconds: number;
   released: boolean;
+  mathCorrect: number;
+  escapeSuccessPercent: number;
+  mathBonusPercent: number;
 }> {
   const remainingSeconds = await checkIfJailed(playerId);
   if (remainingSeconds <= 0) {
@@ -143,6 +160,7 @@ export async function submitJailMathAnswer(
   let pending = pendingByPlayer.get(playerId);
   if (!pending || pending.expiresAt <= now) {
     pending = storeNewChallenge(playerId);
+    const escape = await getSelfEscapeStatus(playerId);
     return {
       correct: false,
       prompt: pending.prompt,
@@ -150,11 +168,15 @@ export async function submitJailMathAnswer(
       remainingSeconds,
       reducedBySeconds: 0,
       released: false,
+      mathCorrect: escape.mathCorrect,
+      escapeSuccessPercent: escape.escapeOdds.successPercent,
+      mathBonusPercent: escape.escapeOdds.mathBonusPercent,
     };
   }
 
   if (answer !== pending.answer) {
     const next = storeNewChallenge(playerId);
+    const escape = await getSelfEscapeStatus(playerId);
     return {
       correct: false,
       prompt: next.prompt,
@@ -162,6 +184,9 @@ export async function submitJailMathAnswer(
       remainingSeconds,
       reducedBySeconds: 0,
       released: false,
+      mathCorrect: escape.mathCorrect,
+      escapeSuccessPercent: escape.escapeOdds.successPercent,
+      mathBonusPercent: escape.escapeOdds.mathBonusPercent,
     };
   }
 
@@ -169,7 +194,31 @@ export async function submitJailMathAnswer(
   const nextRemaining = Math.max(0, remainingSeconds - JAIL_MATH_REWARD_SECONDS);
   await writeJailRemainingSeconds(playerId, nextRemaining);
 
+  await prisma.worldEvent.create({
+    data: {
+      eventKey: JAIL_MATH_CORRECT_EVENT,
+      playerId,
+      params: JSON.stringify({
+        reducedBySeconds,
+        remainingSeconds: nextRemaining,
+      }),
+    },
+  });
+
   const next = storeNewChallenge(playerId);
+  const escape =
+    nextRemaining > 0
+      ? await getSelfEscapeStatus(playerId)
+      : {
+          mathCorrect: 0,
+          escapeOdds: {
+            successPercent: 0,
+            mathBonusPercent: 0,
+            basePercent: 0,
+            mathCorrect: 0,
+          },
+        };
+
   return {
     correct: true,
     prompt: next.prompt,
@@ -177,5 +226,8 @@ export async function submitJailMathAnswer(
     remainingSeconds: nextRemaining,
     reducedBySeconds,
     released: nextRemaining <= 0,
+    mathCorrect: escape.mathCorrect,
+    escapeSuccessPercent: escape.escapeOdds.successPercent,
+    mathBonusPercent: escape.escapeOdds.mathBonusPercent,
   };
 }

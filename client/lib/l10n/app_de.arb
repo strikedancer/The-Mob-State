@@ -13464,5 +13464,67 @@
         "type": "String"
       }
     }
-  }
+  },
+  "crimePoliceArrestName": "Police arrest",
+  "crimeFederalArrestName": "Federal arrest",
+  "crimeArrestVehicleTheftName": "Police arrest (vehicle theft)",
+  "crimeArrestBlackMoneyName": "Police arrest (dirty money)",
+  "crimeArrestJailbreakName": "Police arrest (jailbreak)",
+  "crimeArrestRedLightName": "Police arrest (red-light district)",
+  "crimeArrestProstitutionName": "Police arrest (prostitution)",
+  "crimeTravelArrestName": "Travel arrest",
+  "courtArrestReasonWanted": "Wanted by the police",
+  "courtArrestReasonVehicleTheft": "Caught during vehicle theft",
+  "courtArrestReasonBlackMoney": "Dirty crew-bank money",
+  "courtArrestReasonJailbreak": "Jailbreak attempt",
+  "courtArrestReasonRedLight": "Red-light district",
+  "courtArrestReasonProstitution": "Prostitution",
+  "courtArrestReasonFederal": "Federal arrest",
+  "courtRecordReasonLine": "Reason: {reason}",
+  "@courtRecordReasonLine": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "courtRecordSourceCrime": "Tied to: {crime}",
+  "@courtRecordSourceCrime": {
+    "placeholders": {
+      "crime": {
+        "type": "String"
+      }
+    }
+  },
+  "courtRecordLocalNote": "This court only shows and can wipe the file for {country}. Convictions without a country stay on this file until you wipe them here.",
+  "@courtRecordLocalNote": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "courtRecordFbiTitle": "FBI file (worldwide)",
+  "courtRecordFbiIntro": "The FBI can see convictions in every country. A court wipe here only clears this country's file. Amnesty or the late-game wipe crime still clears the full FBI file.",
+  "courtRecordFbiEmpty": "The FBI has no extra convictions on file beyond this country.",
+  "courtRecordCountryLine": "Country: {country}",
+  "@courtRecordCountryLine": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeMathBonus": "Jail math (good conduct): {count} correct ({percent}%)",
+  "@courtExpungeMathBonus": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeMathNone": "Jail math: no extra bonus yet"
 }

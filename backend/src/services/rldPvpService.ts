@@ -299,7 +299,9 @@ export const rldPvpService = {
     if (Math.random() >= chance) {
       const bustChance = onEvent ? RLD_EVENT_FAIL_BUST_CHANCE : RLD_FAIL_BUST_CHANCE;
       if (Math.random() < bustChance) {
-        await jailPlayer(playerId, RLD_BUST_HOURS * 60);
+        await jailPlayer(playerId, RLD_BUST_HOURS * 60, 'Police', {
+          reason: 'red_light',
+        });
       }
       if (Math.random() < RLD_FAIL_WORKER_BUST_CHANCE) {
         await bustWorker(worker.id);

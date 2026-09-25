@@ -58,8 +58,13 @@ router.get('/record', authenticate, async (req: AuthRequest, res: Response) => {
     return res.status(200).json({
       event: 'trial.record',
       params: {
+        countryId: record.countryId,
         totalConvictions: record.totalConvictions,
         recentCrimes: record.recentCrimes.map(serializeRecordItem),
+        fbiFile: {
+          totalConvictions: record.fbiFile.totalConvictions,
+          recentCrimes: record.fbiFile.recentCrimes.map(serializeRecordItem),
+        },
       },
     });
   } catch {

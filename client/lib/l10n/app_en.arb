@@ -246,6 +246,14 @@
   "crimeBossAssassinationName": "Rival Boss Assassination",
   "crimeBossAssassinationDesc": "Eliminate the leader of a rival organization",
   "crimeCriminalRecordWipeName": "Wipe Criminal Record",
+  "crimePoliceArrestName": "Police arrest",
+  "crimeFederalArrestName": "Federal arrest",
+  "crimeArrestVehicleTheftName": "Police arrest (vehicle theft)",
+  "crimeArrestBlackMoneyName": "Police arrest (dirty money)",
+  "crimeArrestJailbreakName": "Police arrest (jailbreak)",
+  "crimeArrestRedLightName": "Police arrest (red-light district)",
+  "crimeArrestProstitutionName": "Police arrest (prostitution)",
+  "crimeTravelArrestName": "Travel arrest",
   "tooltipCrimeRequiresTools": "Tools Required",
   "tooltipCrimeRequiresVehicle": "Vehicle Required",
   "tooltipCrimeRequiresDrugs": "Drugs required",
@@ -5155,6 +5163,48 @@
   "courtNotJailedHint": "You are currently not jailed. Your criminal record remains visible below.",
   "courtActiveSentenceTitle": "Active sentence",
   "courtDelictLabel": "Crime",
+  "courtArrestReasonWanted": "Wanted by the police",
+  "courtArrestReasonVehicleTheft": "Caught during vehicle theft",
+  "courtArrestReasonBlackMoney": "Dirty crew-bank money",
+  "courtArrestReasonJailbreak": "Jailbreak attempt",
+  "courtArrestReasonRedLight": "Red-light district",
+  "courtArrestReasonProstitution": "Prostitution",
+  "courtArrestReasonFederal": "Federal arrest",
+  "courtRecordReasonLine": "Reason: {reason}",
+  "@courtRecordReasonLine": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "courtRecordSourceCrime": "Tied to: {crime}",
+  "@courtRecordSourceCrime": {
+    "placeholders": {
+      "crime": {
+        "type": "String"
+      }
+    }
+  },
+  "courtRecordLocalNote": "This court only shows and can wipe the file for {country}. Convictions without a country stay on this file until you wipe them here.",
+  "@courtRecordLocalNote": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "courtRecordFbiTitle": "FBI file (worldwide)",
+  "courtRecordFbiIntro": "The FBI can see convictions in every country. A court wipe here only clears this country's file. Amnesty or the late-game wipe crime still clears the full FBI file.",
+  "courtRecordFbiEmpty": "The FBI has no extra convictions on file beyond this country.",
+  "courtRecordCountryLine": "Country: {country}",
+  "@courtRecordCountryLine": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
   "courtTotalSentenceMinutes": "Total sentence: {minutes} minutes",
   "@courtTotalSentenceMinutes": {
     "placeholders": {
@@ -5223,7 +5273,7 @@
   "courtRecordBribeNote": "Past convictions stay visible. A successful judge bribe clears only that one active case.",
   "courtNoConvictionsYet": "No convictions recorded yet.",
   "courtHeroTitle": "The courtroom",
-  "courtHeroSubtitle": "Appeal or bribe the judge while you serve time. You can also file a costly request to wipe your full criminal record.",
+  "courtHeroSubtitle": "Appeal or bribe the judge while you serve time. You can also file a costly request to wipe this country's criminal record.",
   "courtConvictionsChip": "{count} convictions",
   "@courtConvictionsChip": {
     "placeholders": {
@@ -5327,7 +5377,7 @@
   "courtAppealUsed": "You already appealed this conviction.",
   "courtBribeHeatNote": "Wanted and FBI heat change appeal odds, not this bribe.",
   "courtExpungeTitle": "Wipe criminal record",
-  "courtExpungeIntro": "File a costly court request to wipe your full criminal record. Failure only costs the fee. Success clears the record but does not release you from jail.",
+  "courtExpungeIntro": "File a costly court request to wipe your criminal record in this country. Jail-math answers from prison count as good conduct. Failure only costs the fee. Success clears this country's file but does not release you from jail.",
   "courtExpungeCost": "Cost: {amount}",
   "@courtExpungeCost": {
     "placeholders": {
@@ -5409,6 +5459,18 @@
     }
   },
   "courtExpungeReputationNone": "Reputation: no extra bonus yet",
+  "courtExpungeMathBonus": "Jail math (good conduct): {count} correct ({percent}%)",
+  "@courtExpungeMathBonus": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeMathNone": "Jail math: no extra bonus yet",
   "courtExpungeDonJudge": "Don judge in this country: +{percent}%",
   "@courtExpungeDonJudge": {
     "placeholders": {
@@ -12350,8 +12412,8 @@
   "helpTopicToolsTips": "Buy tools in bulk when they are cheap on the black market: you save compared to the shop.\nSet a personal threshold: always replace tools when condition drops below 25% to keep success chances stable.",
   "helpTopicCourtCategory": "Risk",
   "helpTopicCourtTitle": "Court",
-  "helpTopicCourtSummary": "During your sentence you can file an appeal or try to bribe the judge to get released sooner.",
-  "helpTopicCourtHow": "When jailed, the court screen shows your active conviction with remaining time, crime and judge profile.\nAn appeal costs money based on your current sentence length. If granted, your sentence is usually reduced by about 20-40%.\nYou can appeal only once per conviction and a cooldown applies to rapid retries.\nBribery uses a player-selected amount. That amount is always deducted, even when the attempt fails.\nA higher bribe amount increases success chance. On success, you are released immediately.\nYour criminal record keeps earlier convictions with dates and court-history details even when you are no longer jailed.\nA successful judge bribe removes only that current conviction from your criminal record.\nIf you want to wipe your full criminal record, you must do it outside court through the late-game Wipe Criminal Record crime.",
+  "helpTopicCourtSummary": "During your sentence you can file an appeal or try to bribe the judge. The record shown here is this country's file; the FBI panel lists worldwide convictions.",
+  "helpTopicCourtHow": "When jailed, the court screen shows your active conviction with remaining time, a readable crime name, why you were arrested, and the judge profile.\nAn appeal costs money based on your current sentence length. If granted, your sentence is usually reduced by about 20-40%.\nYou can appeal only once per conviction and a cooldown applies to rapid retries.\nBribery uses a player-selected amount. That amount is always deducted, even when the attempt fails.\nA higher bribe amount increases success chance. On success, you are released immediately.\nYour criminal record keeps earlier convictions with dates and court-history details even when you are no longer jailed. This court only shows and can wipe the file for the country you are in now.\nA successful judge bribe removes only that current conviction from your criminal record.\nYou can file a paid request on this screen to wipe this country's record. Correct jail-math answers from prison raise that success chance as good conduct (about 1% each, up to 15%). The FBI file still lists convictions from other countries. Amnesty or the late-game Wipe Criminal Record crime still clears the worldwide file.",
   "helpTopicCourtTips": "Use appeals on long sentences first: expected time saved is highest there.\nUse bribery only with enough cash buffer, because payment is always deducted.",
   "helpTopicHitlistCategory": "Risk",
   "helpTopicHitlistTitle": "Hitlist",

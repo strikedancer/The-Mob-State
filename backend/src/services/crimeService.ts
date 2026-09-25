@@ -797,6 +797,7 @@ export const crimeService = {
           vehicleStealthBonus: crimeResult.vehicleStealthBonus ?? 1,
           toolConditionBefore: crimeResult.toolConditionBefore || null,
           toolDamageSustained: crimeResult.toolDamageSustained ?? 0,
+          countryId: player.currentCountry ?? null,
         },
       });
 
@@ -868,7 +869,10 @@ export const crimeService = {
 
         if (policeArrestResult.arrested) {
           const policeJailTime = policeArrestResult.jailTime || 30;
-          await policeService.jailPlayer(playerId, policeJailTime);
+          await policeService.jailPlayer(playerId, policeJailTime, 'Police', {
+            reason: 'wanted',
+            sourceCrimeId: crimeId,
+          });
 
           await worldEventService.createEvent('police.arrested', {
             playerId,

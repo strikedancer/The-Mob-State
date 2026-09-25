@@ -629,6 +629,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get crimeCriminalRecordWipeName => 'Wipe Criminal Record';
 
   @override
+  String get crimePoliceArrestName => 'Police arrest';
+
+  @override
+  String get crimeFederalArrestName => 'Federal arrest';
+
+  @override
+  String get crimeArrestVehicleTheftName => 'Police arrest (vehicle theft)';
+
+  @override
+  String get crimeArrestBlackMoneyName => 'Police arrest (dirty money)';
+
+  @override
+  String get crimeArrestJailbreakName => 'Police arrest (jailbreak)';
+
+  @override
+  String get crimeArrestRedLightName => 'Police arrest (red-light district)';
+
+  @override
+  String get crimeArrestProstitutionName => 'Police arrest (prostitution)';
+
+  @override
+  String get crimeTravelArrestName => 'Travel arrest';
+
+  @override
   String get tooltipCrimeRequiresTools => 'Tools Required';
 
   @override
@@ -8463,6 +8487,58 @@ class AppLocalizationsEn extends AppLocalizations {
   String get courtDelictLabel => 'Crime';
 
   @override
+  String get courtArrestReasonWanted => 'Wanted by the police';
+
+  @override
+  String get courtArrestReasonVehicleTheft => 'Caught during vehicle theft';
+
+  @override
+  String get courtArrestReasonBlackMoney => 'Dirty crew-bank money';
+
+  @override
+  String get courtArrestReasonJailbreak => 'Jailbreak attempt';
+
+  @override
+  String get courtArrestReasonRedLight => 'Red-light district';
+
+  @override
+  String get courtArrestReasonProstitution => 'Prostitution';
+
+  @override
+  String get courtArrestReasonFederal => 'Federal arrest';
+
+  @override
+  String courtRecordReasonLine(String reason) {
+    return 'Reason: $reason';
+  }
+
+  @override
+  String courtRecordSourceCrime(String crime) {
+    return 'Tied to: $crime';
+  }
+
+  @override
+  String courtRecordLocalNote(String country) {
+    return 'This court only shows and can wipe the file for $country. Convictions without a country stay on this file until you wipe them here.';
+  }
+
+  @override
+  String get courtRecordFbiTitle => 'FBI file (worldwide)';
+
+  @override
+  String get courtRecordFbiIntro =>
+      'The FBI can see convictions in every country. A court wipe here only clears this country\'s file. Amnesty or the late-game wipe crime still clears the full FBI file.';
+
+  @override
+  String get courtRecordFbiEmpty =>
+      'The FBI has no extra convictions on file beyond this country.';
+
+  @override
+  String courtRecordCountryLine(String country) {
+    return 'Country: $country';
+  }
+
+  @override
   String courtTotalSentenceMinutes(String minutes) {
     return 'Total sentence: $minutes minutes';
   }
@@ -8527,7 +8603,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get courtHeroSubtitle =>
-      'Appeal or bribe the judge while you serve time. You can also file a costly request to wipe your full criminal record.';
+      'Appeal or bribe the judge while you serve time. You can also file a costly request to wipe this country\'s criminal record.';
 
   @override
   String courtConvictionsChip(String count) {
@@ -8615,7 +8691,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get courtExpungeIntro =>
-      'File a costly court request to wipe your full criminal record. Failure only costs the fee. Success clears the record but does not release you from jail.';
+      'File a costly court request to wipe your criminal record in this country. Jail-math answers from prison count as good conduct. Failure only costs the fee. Success clears this country\'s file but does not release you from jail.';
 
   @override
   String courtExpungeCost(String amount) {
@@ -8671,6 +8747,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get courtExpungeReputationNone => 'Reputation: no extra bonus yet';
+
+  @override
+  String courtExpungeMathBonus(String count, String percent) {
+    return 'Jail math (good conduct): $count correct ($percent%)';
+  }
+
+  @override
+  String get courtExpungeMathNone => 'Jail math: no extra bonus yet';
 
   @override
   String courtExpungeDonJudge(String percent) {
@@ -19102,11 +19186,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicCourtSummary =>
-      'During your sentence you can file an appeal or try to bribe the judge to get released sooner.';
+      'During your sentence you can file an appeal or try to bribe the judge. The record shown here is this country\'s file; the FBI panel lists worldwide convictions.';
 
   @override
   String get helpTopicCourtHow =>
-      'When jailed, the court screen shows your active conviction with remaining time, crime and judge profile.\nAn appeal costs money based on your current sentence length. If granted, your sentence is usually reduced by about 20-40%.\nYou can appeal only once per conviction and a cooldown applies to rapid retries.\nBribery uses a player-selected amount. That amount is always deducted, even when the attempt fails.\nA higher bribe amount increases success chance. On success, you are released immediately.\nYour criminal record keeps earlier convictions with dates and court-history details even when you are no longer jailed.\nA successful judge bribe removes only that current conviction from your criminal record.\nIf you want to wipe your full criminal record, you must do it outside court through the late-game Wipe Criminal Record crime.';
+      'When jailed, the court screen shows your active conviction with remaining time, a readable crime name, why you were arrested, and the judge profile.\nAn appeal costs money based on your current sentence length. If granted, your sentence is usually reduced by about 20-40%.\nYou can appeal only once per conviction and a cooldown applies to rapid retries.\nBribery uses a player-selected amount. That amount is always deducted, even when the attempt fails.\nA higher bribe amount increases success chance. On success, you are released immediately.\nYour criminal record keeps earlier convictions with dates and court-history details even when you are no longer jailed. This court only shows and can wipe the file for the country you are in now.\nA successful judge bribe removes only that current conviction from your criminal record.\nYou can file a paid request on this screen to wipe this country\'s record. Correct jail-math answers from prison raise that success chance as good conduct (about 1% each, up to 15%). The FBI file still lists convictions from other countries. Amnesty or the late-game Wipe Criminal Record crime still clears the worldwide file.';
 
   @override
   String get helpTopicCourtTips =>

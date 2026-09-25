@@ -602,7 +602,9 @@ export const prostituteService = {
 
     await increaseWantedLevel(playerId, wantedIncrease);
     await increaseFBIHeat(playerId, fbiIncrease);
-    await jailPlayer(playerId, jailMinutes);
+    await jailPlayer(playerId, jailMinutes, 'Police', {
+      reason: 'prostitution',
+    });
 
     const message =
       nightclubLicensesRevoked > 0

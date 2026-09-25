@@ -389,6 +389,13 @@ export async function startHeist(
     // calls inside $transaction expire the default 5s interactive timeout and
     // 500 the whole heist (seen live as Transaction already closed).
     const jailRelease = new Date(Date.now() + heist.jailTimeOnFailure * 60 * 1000);
+    const memberRows = await prisma.player.findMany({
+      where: { id: { in: memberIds } },
+      select: { id: true, currentCountry: true },
+    });
+    const countryByPlayerId = new Map(
+      memberRows.map((row) => [row.id, row.currentCountry ?? null]),
+    );
     await prisma.crimeAttempt.createMany({
       data: memberIds.map((playerId) => ({
         playerId,
@@ -398,6 +405,7 @@ export async function startHeist(
         xpGained: 0,
         jailed: true,
         jailTime: heist.jailTimeOnFailure,
+        countryId: countryByPlayerId.get(playerId) ?? null,
       })),
     });
     await prisma.player.updateMany({

@@ -472,10 +472,12 @@ model CrimeAttempt {
   vehicleConditionUsed Float?
   vehicleSpeedBonus    Float     @default(1)
   vehicleStealthBonus  Float     @default(1)
+  countryId            String?   @db.VarChar(50)
   player               Player    @relation(fields: [playerId], references: [id], onDelete: Cascade)
 
   @@index([playerId, createdAt])
   @@index([playerId, success])
+  @@index([playerId, countryId])
   @@index([createdAt])
   @@map("crime_attempts")
 }

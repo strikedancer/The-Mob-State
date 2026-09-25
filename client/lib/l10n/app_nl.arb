@@ -937,6 +937,48 @@
   "courtNotJailedHint": "Je zit momenteel niet vast. Je strafblad blijft hieronder zichtbaar.",
   "courtActiveSentenceTitle": "Actieve veroordeling",
   "courtDelictLabel": "Delict",
+  "courtArrestReasonWanted": "Gezocht door de politie",
+  "courtArrestReasonVehicleTheft": "Gepakt bij voertuigdiefstal",
+  "courtArrestReasonBlackMoney": "Zwart geld uit de crewbank",
+  "courtArrestReasonJailbreak": "Uitbraakpoging",
+  "courtArrestReasonRedLight": "Rosse buurt",
+  "courtArrestReasonProstitution": "Prostitutie",
+  "courtArrestReasonFederal": "Federale aanhouding",
+  "courtRecordReasonLine": "Reden: {reason}",
+  "@courtRecordReasonLine": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "courtRecordSourceCrime": "Gekoppeld aan: {crime}",
+  "@courtRecordSourceCrime": {
+    "placeholders": {
+      "crime": {
+        "type": "String"
+      }
+    }
+  },
+  "courtRecordLocalNote": "Deze rechtbank toont en wist alleen het blad van {country}. Oude zaken zonder land blijven hier staan tot je ze hier wist.",
+  "@courtRecordLocalNote": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "courtRecordFbiTitle": "FBI-dossier (wereldwijd)",
+  "courtRecordFbiIntro": "De FBI ziet veroordelingen in elk land. Wissen via deze rechtbank ruimt alleen het blad van dit land op. Amnestie of de late-game crime wist nog steeds het hele FBI-dossier.",
+  "courtRecordFbiEmpty": "De FBI heeft geen extra veroordelingen buiten dit land.",
+  "courtRecordCountryLine": "Land: {country}",
+  "@courtRecordCountryLine": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
   "courtTotalSentenceMinutes": "Totale straf: {minutes} minuten",
   "@courtTotalSentenceMinutes": {
     "placeholders": {
@@ -1005,7 +1047,7 @@
   "courtRecordBribeNote": "Vorige veroordelingen blijven zichtbaar. Een geslaagde rechteromkoping wist alleen die ene actuele zaak.",
   "courtNoConvictionsYet": "Nog geen veroordelingen geregistreerd.",
   "courtHeroTitle": "De zitting",
-  "courtHeroSubtitle": "Dien hoger beroep in of omkoop de rechter tijdens je straf. Je kunt ook een dure aanvraag doen om je hele strafblad te wissen.",
+  "courtHeroSubtitle": "Dien hoger beroep in of omkoop de rechter tijdens je straf. Je kunt ook een dure aanvraag doen om het strafblad van dit land te wissen.",
   "courtConvictionsChip": "{count} veroordelingen",
   "courtActiveChip": "Zit uit",
   "courtFreeChip": "Geen actieve zaak",
@@ -1027,7 +1069,7 @@
   "courtAppealUsed": "Voor deze zaak is al hoger beroep ingediend.",
   "courtBribeHeatNote": "Wanted en FBI-heat veranderen de beroepskans, niet deze omkoping.",
   "courtExpungeTitle": "Strafblad wissen",
-  "courtExpungeIntro": "Dien een dure aanvraag in om je hele strafblad te wissen. Mislukt het, dan ben je alleen het bedrag kwijt. Lukt het, dan is het blad leeg; je komt niet vrij uit de cel.",
+  "courtExpungeIntro": "Dien een dure aanvraag in om het strafblad van dit land te wissen. Goede sommen in de cel tellen mee als goed gedrag. Mislukt het, dan ben je alleen het bedrag kwijt. Lukt het, dan is dit blad leeg; je komt niet vrij uit de cel.",
   "courtExpungeCost": "Kosten: {amount}",
   "@courtExpungeCost": {
     "placeholders": {
@@ -1109,6 +1151,18 @@
     }
   },
   "courtExpungeReputationNone": "Reputatie: nog geen extra bonus",
+  "courtExpungeMathBonus": "Celsommen (goed gedrag): {count} goed ({percent}%)",
+  "@courtExpungeMathBonus": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtExpungeMathNone": "Celsommen: nog geen extra bonus",
   "courtExpungeDonJudge": "Don-rechter in dit land: +{percent}%",
   "@courtExpungeDonJudge": {
     "placeholders": {
@@ -7661,6 +7715,14 @@
   "crimeBossAssassinationName": "Rivaliserende boss vermoorden",
   "crimeBossAssassinationDesc": "Elimineer de leider van een rivaliserende organisatie",
   "crimeCriminalRecordWipeName": "Strafblad wissen",
+  "crimePoliceArrestName": "Politie-aanhouding",
+  "crimeFederalArrestName": "Federale aanhouding",
+  "crimeArrestVehicleTheftName": "Politie-aanhouding (voertuigdiefstal)",
+  "crimeArrestBlackMoneyName": "Politie-aanhouding (zwart geld)",
+  "crimeArrestJailbreakName": "Politie-aanhouding (uitbraak)",
+  "crimeArrestRedLightName": "Politie-aanhouding (rosse buurt)",
+  "crimeArrestProstitutionName": "Politie-aanhouding (prostitutie)",
+  "crimeTravelArrestName": "Aanhouding onderweg",
   "tooltipCrimeRequiresWeapon": "Wapen vereist",
   "tooltipCrimeRequirementsHeading": "Vereist:",
   "crimeCriminalRecordWipeTooltip": "Wist je volledige strafblad bij succes. Alleen zinvol als je al veroordelingen hebt.",
@@ -11678,8 +11740,8 @@
   "helpTopicToolsTips": "Koop tools in bulk als ze laag geprijsd zijn op de zwarte markt: je bespaart t.o.v. de shop.\nStel een persoonlijke drempel in: vervang tools altijd als conditie onder 25% daalt om slagingskans stabiel te houden.",
   "helpTopicCourtCategory": "Risico",
   "helpTopicCourtTitle": "Rechtbank",
-  "helpTopicCourtSummary": "Tijdens je straf kun je hoger beroep indienen of de rechter proberen om te kopen om sneller vrij te komen.",
-  "helpTopicCourtHow": "Als je vastzit zie je in de rechtbank je actieve veroordeling met resterende tijd, delict en rechterprofiel.\nHoger beroep kost geld op basis van je huidige strafduur. Bij toekenning wordt je straf meestal met ongeveer 20-40% verlaagd.\nHoger beroep kun je maar een keer per veroordeling doen en er zit een cooldown op herhaald indienen.\nOmkoping werkt met een zelfgekozen bedrag. Dat bedrag wordt altijd afgeschreven, ook wanneer de poging mislukt.\nEen hogere omkoopsom geeft een betere slagingskans. Bij succes word je direct vrijgelaten.\nJe strafblad bewaart eerdere veroordelingen met datum en rechtbankhistorie, ook als je niet meer vastzit.\nEen geslaagde rechteromkoping verwijdert alleen die actuele veroordeling van je strafblad.\nWil je je volledige strafblad wissen, dan moet je dat buiten de rechtbank via de late-game crime Strafblad Wissen doen.",
+  "helpTopicCourtSummary": "Tijdens je straf kun je hoger beroep indienen of de rechter omkopen. Het blad hier is van dit land; het FBI-blok toont veroordelingen wereldwijd.",
+  "helpTopicCourtHow": "Als je vastzit zie je in de rechtbank je actieve veroordeling met resterende tijd, een leesbare delictnaam, waarom je bent opgepakt, en het rechterprofiel.\nHoger beroep kost geld op basis van je huidige strafduur. Bij toekenning wordt je straf meestal met ongeveer 20-40% verlaagd.\nHoger beroep kun je maar een keer per veroordeling doen en er zit een cooldown op herhaald indienen.\nOmkoping werkt met een zelfgekozen bedrag. Dat bedrag wordt altijd afgeschreven, ook wanneer de poging mislukt.\nEen hogere omkoopsom geeft een betere slagingskans. Bij succes word je direct vrijgelaten.\nJe strafblad bewaart eerdere veroordelingen met datum en rechtbankhistorie, ook als je niet meer vastzit. Deze rechtbank toont en wist alleen het blad van het land waar je nu bent.\nEen geslaagde rechteromkoping verwijdert alleen die actuele veroordeling van je strafblad.\nJe kunt op dit scherm een betaalde aanvraag doen om het blad van dit land te wissen. Goede sommen in de cel verhogen die slagingskans als goed gedrag (ongeveer 1% per som, tot 15%). Het FBI-dossier toont nog wel zaken uit andere landen. Amnestie of de late-game crime Strafblad Wissen ruimt nog steeds het wereldwijde dossier op.",
   "helpTopicCourtTips": "Gebruik hoger beroep bij lange straffen: de verwachte tijdswinst is dan het grootst.\nGebruik omkoping alleen met voldoende buffer, omdat je in alle gevallen betaalt.",
   "helpTopicHitlistCategory": "Risico",
   "helpTopicHitlistTitle": "Hitlijst",

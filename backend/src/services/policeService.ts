@@ -390,6 +390,29 @@ export async function setJailReleaseClock(
   return jailRelease;
 }
 
+export type JailArrestReason =
+  | 'wanted'
+  | 'vehicle_theft'
+  | 'black_money'
+  | 'jailbreak'
+  | 'red_light'
+  | 'prostitution'
+  | 'federal';
+
+const ARREST_CRIME_ID_BY_REASON: Record<JailArrestReason, string> = {
+  wanted: 'police_arrest',
+  vehicle_theft: 'arrest_vehicle_theft',
+  black_money: 'arrest_black_money',
+  jailbreak: 'arrest_jailbreak',
+  red_light: 'arrest_red_light',
+  prostitution: 'arrest_prostitution',
+  federal: 'federal_arrest',
+};
+
+export function arrestCrimeIdForReason(reason: JailArrestReason = 'wanted'): string {
+  return ARREST_CRIME_ID_BY_REASON[reason] ?? 'police_arrest';
+}
+
 /**
  * Jail a player (create crime attempt with jailed=true)
  */
@@ -397,22 +420,42 @@ export async function jailPlayer(
   playerId: number,
   jailTime: number,
   authority: string = 'Police',
+  options?: {
+    reason?: JailArrestReason;
+    /** Underlying gameplay crime that triggered a wanted-level sweep */
+    sourceCrimeId?: string;
+  },
 ): Promise<void> {
   const now = new Date();
   const jailRelease = new Date(now.getTime() + jailTime * 60 * 1000);
   const isBlackMoney = /black_money|zwart/i.test(authority);
+  const reason: JailArrestReason = options?.reason
+    ?? (isBlackMoney ? 'black_money' : 'wanted');
+  const crimeId = arrestCrimeIdForReason(reason);
+  const outcomeFail = JSON.stringify({
+    arrestReason: reason,
+    ...(options?.sourceCrimeId ? { sourceCrimeId: options.sourceCrimeId } : {}),
+  });
+  const playerRow = await prisma.player.findUnique({
+    where: { id: playerId },
+    select: { currentCountry: true },
+  });
+  const countryId = playerRow?.currentCountry ?? null;
 
   await withPrismaWriteRetry(() =>
     prisma.$transaction(async (tx: any) => {
       await tx.crimeAttempt.create({
         data: {
           playerId,
-          crimeId: 'police_arrest',
+          crimeId,
           success: false,
           reward: 0,
           xpGained: 0,
           jailed: true,
           jailTime,
+          outcome: 'arrest',
+          outcomeFail,
+          countryId,
         },
       });
 
@@ -432,6 +475,8 @@ export async function jailPlayer(
         : `Arrested by police for ${jailTime} minutes`,
       {
         authority: isBlackMoney ? 'black_money' : 'Police',
+        arrestReason: reason,
+        sourceCrimeId: options?.sourceCrimeId ?? null,
         jailTime,
         jailedUntil: jailRelease.toISOString(),
       },
@@ -753,7 +798,9 @@ export async function buyOutPrisoner(
   if (rollCrewBankBlackMoneyArrest()) {
     buyerArrested = true;
     buyerNewJailTime = rollBlackMoneyJailMinutes();
-    await jailPlayer(buyerId, buyerNewJailTime, 'black_money');
+    await jailPlayer(buyerId, buyerNewJailTime, 'black_money', {
+      reason: 'black_money',
+    });
     await increaseWantedLevel(buyerId, CREW_BANK_BUYOUT_WANTED);
   }
 
@@ -895,7 +942,9 @@ export async function attemptJailbreak(
     if (rescuerCaught) {
       // Rescuer gets jailed for attempting jailbreak (30-60 minutes)
       rescuerNewJailTime = Math.floor(Math.random() * 31) + 30;
-      await jailPlayer(rescuerId, rescuerNewJailTime);
+      await jailPlayer(rescuerId, rescuerNewJailTime, 'Police', {
+        reason: 'jailbreak',
+      });
 
       // Increase rescuer's wanted level
       await increaseWantedLevel(rescuerId, 10);
@@ -920,7 +969,62 @@ export async function attemptJailbreak(
 
 export const SELF_ESCAPE_MAX_ATTEMPTS = 2;
 export const SELF_ESCAPE_COOLDOWN_SECONDS = 15 * 60;
+/** Percent points added to escape chance per correct jail-math answer this stay. */
+export const SELF_ESCAPE_MATH_BONUS_PER_CORRECT = 1.5;
+/** Cap on math contribution to escape chance. */
+export const SELF_ESCAPE_MATH_BONUS_CAP = 25;
 const SELF_ESCAPE_EVENT_KEYS = ['prison.escape_failed', 'prison.escape_success'] as const;
+export const JAIL_MATH_CORRECT_EVENT = 'prison.math_correct';
+
+async function getJailStayStart(playerId: number): Promise<Date> {
+  const jailStart = await prisma.crimeAttempt.findFirst({
+    where: { playerId, jailed: true },
+    orderBy: { createdAt: 'desc' },
+    select: { createdAt: true },
+  });
+  return jailStart?.createdAt ?? new Date(Date.now() - 24 * 60 * 60 * 1000);
+}
+
+export async function countJailMathCorrectSince(
+  playerId: number,
+  since: Date,
+): Promise<number> {
+  return prisma.worldEvent.count({
+    where: {
+      playerId,
+      eventKey: JAIL_MATH_CORRECT_EVENT,
+      createdAt: { gte: since },
+    },
+  });
+}
+
+export function computeSelfEscapeOdds(input: {
+  rank: number;
+  wantedLevel: number;
+  mathCorrect: number;
+}): {
+  basePercent: number;
+  mathCorrect: number;
+  mathBonusPercent: number;
+  successPercent: number;
+} {
+  const baseRaw = 12 + input.rank * 0.6 - input.wantedLevel * 0.7;
+  const basePercent = Math.max(5, Math.min(45, baseRaw));
+  const mathBonusPercent = Math.min(
+    SELF_ESCAPE_MATH_BONUS_CAP,
+    Math.max(0, input.mathCorrect) * SELF_ESCAPE_MATH_BONUS_PER_CORRECT,
+  );
+  const successPercent = Math.max(
+    5,
+    Math.min(55, basePercent + mathBonusPercent),
+  );
+  return {
+    basePercent: Math.round(basePercent * 10) / 10,
+    mathCorrect: input.mathCorrect,
+    mathBonusPercent: Math.round(mathBonusPercent * 10) / 10,
+    successPercent: Math.round(successPercent * 10) / 10,
+  };
+}
 
 export async function getSelfEscapeStatus(playerId: number): Promise<{
   attemptsUsed: number;
@@ -928,15 +1032,17 @@ export async function getSelfEscapeStatus(playerId: number): Promise<{
   cooldownSeconds: number;
   maxAttempts: number;
   canAttempt: boolean;
+  mathCorrect: number;
+  escapeOdds: {
+    basePercent: number;
+    mathCorrect: number;
+    mathBonusPercent: number;
+    successPercent: number;
+  };
 }> {
-  const jailStart = await prisma.crimeAttempt.findFirst({
-    where: { playerId, jailed: true },
-    orderBy: { createdAt: 'desc' },
-    select: { createdAt: true },
-  });
-  const since = jailStart?.createdAt ?? new Date(Date.now() - 24 * 60 * 60 * 1000);
+  const since = await getJailStayStart(playerId);
 
-  const [attemptsUsed, lastAttempt] = await Promise.all([
+  const [attemptsUsed, lastAttempt, mathCorrect, player] = await Promise.all([
     prisma.worldEvent.count({
       where: {
         playerId,
@@ -953,6 +1059,11 @@ export async function getSelfEscapeStatus(playerId: number): Promise<{
       orderBy: { createdAt: 'desc' },
       select: { createdAt: true },
     }),
+    countJailMathCorrectSince(playerId, since),
+    prisma.player.findUnique({
+      where: { id: playerId },
+      select: { rank: true, wantedLevel: true },
+    }),
   ]);
 
   let cooldownSeconds = 0;
@@ -962,12 +1073,20 @@ export async function getSelfEscapeStatus(playerId: number): Promise<{
   }
 
   const attemptsRemaining = Math.max(0, SELF_ESCAPE_MAX_ATTEMPTS - attemptsUsed);
+  const escapeOdds = computeSelfEscapeOdds({
+    rank: player?.rank ?? 1,
+    wantedLevel: player?.wantedLevel ?? 0,
+    mathCorrect,
+  });
+
   return {
     attemptsUsed,
     attemptsRemaining,
     cooldownSeconds,
     maxAttempts: SELF_ESCAPE_MAX_ATTEMPTS,
     canAttempt: attemptsRemaining > 0 && cooldownSeconds <= 0,
+    mathCorrect,
+    escapeOdds,
   };
 }
 
@@ -982,6 +1101,9 @@ export async function attemptSelfEscape(playerId: number): Promise<{
   penaltySeconds?: number;
   attemptsRemaining?: number;
   cooldownSeconds?: number;
+  successPercent?: number;
+  mathCorrect?: number;
+  mathBonusPercent?: number;
 }> {
   const remainingSeconds = await checkIfJailed(playerId);
   if (remainingSeconds <= 0) {
@@ -1007,8 +1129,12 @@ export async function attemptSelfEscape(playerId: number): Promise<{
     throw new Error('PLAYER_NOT_FOUND');
   }
 
-  let successChance = 12 + (player.rank * 0.6) - (player.wantedLevel * 0.7);
-  successChance = Math.max(5, Math.min(45, successChance));
+  const odds = computeSelfEscapeOdds({
+    rank: player.rank,
+    wantedLevel: player.wantedLevel,
+    mathCorrect: escapeStatus.mathCorrect,
+  });
+  const successChance = odds.successPercent;
 
   const roll = Math.random() * 100;
   const success = roll < successChance;
@@ -1029,7 +1155,12 @@ export async function attemptSelfEscape(playerId: number): Promise<{
         data: {
           eventKey: 'prison.escape_success',
           playerId,
-          params: JSON.stringify({ successChance, roll }),
+          params: JSON.stringify({
+            successChance,
+            roll,
+            mathCorrect: odds.mathCorrect,
+            mathBonusPercent: odds.mathBonusPercent,
+          }),
         },
       });
     });
@@ -1040,6 +1171,9 @@ export async function attemptSelfEscape(playerId: number): Promise<{
       remainingSeconds: 0,
       attemptsRemaining: 0,
       cooldownSeconds: 0,
+      successPercent: successChance,
+      mathCorrect: odds.mathCorrect,
+      mathBonusPercent: odds.mathBonusPercent,
     };
   }
 
@@ -1065,6 +1199,8 @@ export async function attemptSelfEscape(playerId: number): Promise<{
           roll,
           penaltySeconds,
           remainingSeconds: nextRemainingSeconds,
+          mathCorrect: odds.mathCorrect,
+          mathBonusPercent: odds.mathBonusPercent,
         }),
       },
     });
@@ -1077,5 +1213,8 @@ export async function attemptSelfEscape(playerId: number): Promise<{
     penaltySeconds,
     attemptsRemaining: Math.max(0, escapeStatus.attemptsRemaining - 1),
     cooldownSeconds: SELF_ESCAPE_COOLDOWN_SECONDS,
+    successPercent: successChance,
+    mathCorrect: odds.mathCorrect,
+    mathBonusPercent: odds.mathBonusPercent,
   };
 }

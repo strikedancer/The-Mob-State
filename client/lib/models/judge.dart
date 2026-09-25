@@ -93,6 +93,9 @@ class JailSentence {
   final int crimeAttemptId;
   final String crimeId;
   final String crime;
+  final String? sourceCrimeId;
+  final String? sourceCrimeName;
+  final String? arrestReason;
   final int sentenceMinutes;
   final int remainingMinutes;
   final Judge judge;
@@ -104,6 +107,9 @@ class JailSentence {
     required this.crimeAttemptId,
     required this.crimeId,
     required this.crime,
+    this.sourceCrimeId,
+    this.sourceCrimeName,
+    this.arrestReason,
     required this.sentenceMinutes,
     required this.remainingMinutes,
     required this.judge,
@@ -117,6 +123,9 @@ class JailSentence {
       crimeAttemptId: (json['crimeAttemptId'] as num?)?.toInt() ?? 0,
       crimeId: json['crimeId'] as String? ?? '',
       crime: json['crime'] as String? ?? '',
+      sourceCrimeId: json['sourceCrimeId'] as String?,
+      sourceCrimeName: json['sourceCrimeName'] as String?,
+      arrestReason: json['arrestReason'] as String?,
       sentenceMinutes: (json['sentenceMinutes'] as num?)?.toInt() ?? 0,
       remainingMinutes: (json['remainingMinutes'] as num?)?.toInt() ?? 0,
       judge: Judge.fromJson(json['judge'] as Map<String, dynamic>? ?? {}),
@@ -145,6 +154,8 @@ class ExpungePetitionOdds {
   final bool hasCommissioner;
   final bool hasAlderman;
   final double? hoursSinceLastArrest;
+  final int mathCorrect;
+  final int mathModifierPercent;
   final int successPercent;
 
   ExpungePetitionOdds({
@@ -161,6 +172,8 @@ class ExpungePetitionOdds {
     required this.hasCommissioner,
     required this.hasAlderman,
     required this.hoursSinceLastArrest,
+    required this.mathCorrect,
+    required this.mathModifierPercent,
     required this.successPercent,
   });
 
@@ -184,6 +197,8 @@ class ExpungePetitionOdds {
       hasCommissioner: data['hasCommissioner'] as bool? ?? false,
       hasAlderman: data['hasAlderman'] as bool? ?? false,
       hoursSinceLastArrest: (data['hoursSinceLastArrest'] as num?)?.toDouble(),
+      mathCorrect: (data['mathCorrect'] as num?)?.toInt() ?? 0,
+      mathModifierPercent: (data['mathModifierPercent'] as num?)?.toInt() ?? 0,
       successPercent: (data['successPercent'] as num?)?.toInt() ?? 0,
     );
   }

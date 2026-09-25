@@ -10,6 +10,9 @@ export const EXPUNGE_PETITION_DON_COMMISSIONER_PERCENT = 6;
 export const EXPUNGE_PETITION_DON_ALDERMAN_PERCENT = 5;
 export const EXPUNGE_PETITION_COOLDOWN_SECONDS = 43_200;
 export const EXPUNGE_PETITION_FRESH_ARREST_HOURS = 1;
+/** +1% per correct jail-math answer since last matching wipe, capped. */
+export const EXPUNGE_PETITION_MATH_PERCENT_PER_CORRECT = 1;
+export const EXPUNGE_PETITION_MATH_CORRECT_CAP = 15;
 
 export interface ExpungePetitionMathConfig {
   baseCost?: number;
@@ -21,12 +24,15 @@ export interface ExpungePetitionMathConfig {
   donCommissionerPercent?: number;
   donAldermanPercent?: number;
   freshArrestHours?: number;
+  mathPercentPerCorrect?: number;
+  mathCorrectCap?: number;
 }
 
 export interface ExpungePetitionOddsInput {
   convictionCount: number;
   hoursSinceLastArrest: number | null;
   reputation: number;
+  mathCorrect: number;
   hasJudge: boolean;
   hasCommissioner: boolean;
   hasAlderman: boolean;
@@ -46,6 +52,8 @@ export interface ExpungePetitionOddsBreakdown {
   hasCommissioner: boolean;
   hasAlderman: boolean;
   hoursSinceLastArrest: number | null;
+  mathCorrect: number;
+  mathModifierPercent: number;
   successChance: number;
   successPercent: number;
 }
@@ -62,7 +70,19 @@ function resolve(cfg: ExpungePetitionMathConfig | undefined) {
       cfg?.donCommissionerPercent ?? EXPUNGE_PETITION_DON_COMMISSIONER_PERCENT,
     donAldermanPercent: cfg?.donAldermanPercent ?? EXPUNGE_PETITION_DON_ALDERMAN_PERCENT,
     freshArrestHours: cfg?.freshArrestHours ?? EXPUNGE_PETITION_FRESH_ARREST_HOURS,
+    mathPercentPerCorrect:
+      cfg?.mathPercentPerCorrect ?? EXPUNGE_PETITION_MATH_PERCENT_PER_CORRECT,
+    mathCorrectCap: cfg?.mathCorrectCap ?? EXPUNGE_PETITION_MATH_CORRECT_CAP,
   };
+}
+
+export function computeExpungeMathModifierPercent(
+  mathCorrect: number,
+  cfg?: ExpungePetitionMathConfig,
+): number {
+  const c = resolve(cfg);
+  const n = Math.max(0, Math.floor(Number(mathCorrect) || 0));
+  return Math.min(c.mathCorrectCap, n * c.mathPercentPerCorrect);
 }
 
 export function computeExpungePetitionCost(
@@ -114,6 +134,8 @@ export function computeExpungePetitionOdds(
     cfg,
   );
   const reputationModifierPercent = computeExpungeReputationModifierPercent(reputation);
+  const mathCorrect = Math.max(0, Math.floor(Number(input.mathCorrect) || 0));
+  const mathModifierPercent = computeExpungeMathModifierPercent(mathCorrect, cfg);
   const donJudgePercent = input.hasJudge ? c.donJudgePercent : 0;
   const donCommissionerPercent = input.hasCommissioner ? c.donCommissionerPercent : 0;
   const donAldermanPercent = input.hasAlderman ? c.donAldermanPercent : 0;
@@ -123,6 +145,7 @@ export function computeExpungePetitionOdds(
     recordModifierPercent +
     recencyModifierPercent +
     reputationModifierPercent +
+    mathModifierPercent +
     donJudgePercent +
     donCommissionerPercent +
     donAldermanPercent;
@@ -145,6 +168,8 @@ export function computeExpungePetitionOdds(
     hasCommissioner: !!input.hasCommissioner,
     hasAlderman: !!input.hasAlderman,
     hoursSinceLastArrest: input.hoursSinceLastArrest,
+    mathCorrect,
+    mathModifierPercent,
     successChance: successPercent / 100,
     successPercent,
   };

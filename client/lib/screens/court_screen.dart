@@ -10,6 +10,7 @@ import '../utils/top_right_notification.dart';
 import '../utils/formatters.dart';
 import '../utils/crime_localization.dart';
 import '../utils/court_localization.dart';
+import '../utils/country_helper.dart';
 import '../widgets/game_page_info.dart';
 import '../widgets/empire_page_hero.dart';
 
@@ -39,6 +40,9 @@ class _CourtScreenState extends State<CourtScreen> {
   DateTime? _sentenceSyncedAt;
   int _totalConvictions = 0;
   List<Map<String, dynamic>> _recentCrimes = [];
+  int _fbiTotalConvictions = 0;
+  List<Map<String, dynamic>> _fbiCrimes = [];
+  String? _recordCountryId;
   ExpungePetitionQuote? _expungeQuote;
   DateTime? _expungeCooldownUntil;
   String? _error;
@@ -96,6 +100,9 @@ class _CourtScreenState extends State<CourtScreen> {
     JailSentence? sentence;
     int totalConvictions = 0;
     List<Map<String, dynamic>> recentCrimes = [];
+    int fbiTotalConvictions = 0;
+    List<Map<String, dynamic>> fbiCrimes = [];
+    String? recordCountryId;
     ExpungePetitionQuote? expungeQuote;
 
     try {
@@ -121,6 +128,14 @@ class _CourtScreenState extends State<CourtScreen> {
       totalConvictions =
           (recordParams['totalConvictions'] as num?)?.toInt() ?? 0;
       recentCrimes = recentCrimesRaw.whereType<Map<String, dynamic>>().toList();
+      recordCountryId = recordParams['countryId'] as String?;
+      final fbiFile =
+          (recordParams['fbiFile'] as Map<String, dynamic>?) ?? const {};
+      fbiTotalConvictions =
+          (fbiFile['totalConvictions'] as num?)?.toInt() ?? 0;
+      fbiCrimes = ((fbiFile['recentCrimes'] as List?) ?? const [])
+          .whereType<Map<String, dynamic>>()
+          .toList();
     } catch (e) {
       _recordFailed = true;
       debugPrint('[CourtScreen] Failed loading /trial/record: $e');
@@ -143,6 +158,9 @@ class _CourtScreenState extends State<CourtScreen> {
       _sentenceSyncedAt = sentence == null ? null : DateTime.now();
       _totalConvictions = totalConvictions;
       _recentCrimes = recentCrimes;
+      _fbiTotalConvictions = fbiTotalConvictions;
+      _fbiCrimes = fbiCrimes;
+      _recordCountryId = recordCountryId;
       _expungeQuote = expungeQuote;
       final cooldownSeconds = expungeQuote?.cooldownRemainingSeconds ?? 0;
       _expungeCooldownUntil = cooldownSeconds > 0
@@ -704,6 +722,31 @@ class _CourtScreenState extends State<CourtScreen> {
     );
   }
 
+  List<Widget> _sentenceReasonWidgets(AppLocalizations l10n, JailSentence sentence) {
+    final widgets = <Widget>[];
+    final reason = CourtLocalization.arrestReason(sentence.arrestReason, l10n);
+    if (reason.isNotEmpty) {
+      widgets.add(
+        Text(
+          l10n.courtRecordReasonLine(reason),
+          style: TextStyle(color: Colors.grey[300], fontSize: 13.5),
+        ),
+      );
+    }
+    final sourceId = sentence.sourceCrimeId;
+    if (sourceId != null && sourceId.isNotEmpty) {
+      widgets.add(
+        Text(
+          l10n.courtRecordSourceCrime(
+            _localizedCrimeName(sourceId, sentence.sourceCrimeName, l10n),
+          ),
+          style: TextStyle(color: Colors.grey[400], fontSize: 13),
+        ),
+      );
+    }
+    return widgets;
+  }
+
   Widget _oddsLine(String text, Color color) {
     return Padding(
       padding: const EdgeInsets.only(top: 4),
@@ -993,6 +1036,7 @@ class _CourtScreenState extends State<CourtScreen> {
             '${l10n.courtDelictLabel}: ${_localizedCrimeName(_currentSentence!.crimeId, _currentSentence!.crime, l10n)}',
             style: TextStyle(color: Colors.grey[100]),
           ),
+          ..._sentenceReasonWidgets(l10n, _currentSentence!),
           Text(
             l10n.courtTotalSentenceMinutes(
               _currentSentence!.sentenceMinutes.toString(),
@@ -1076,7 +1120,11 @@ class _CourtScreenState extends State<CourtScreen> {
     );
   }
 
-  Widget _buildRecordItem(Map<String, dynamic> crime, AppLocalizations l10n) {
+  Widget _buildRecordItem(
+    Map<String, dynamic> crime,
+    AppLocalizations l10n, {
+    bool showCountry = false,
+  }) {
     final crimeName = _localizedCrimeName(
       crime['crimeId'] as String?,
       crime['crimeName'] as String?,
@@ -1094,6 +1142,12 @@ class _CourtScreenState extends State<CourtScreen> {
     final history = ((crime['history'] as List?) ?? const [])
         .whereType<Map<String, dynamic>>()
         .toList();
+    final reason = CourtLocalization.arrestReason(
+      crime['arrestReason'] as String?,
+      l10n,
+    );
+    final sourceId = crime['sourceCrimeId'] as String?;
+    final countryId = crime['countryId'] as String?;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
@@ -1148,6 +1202,29 @@ class _CourtScreenState extends State<CourtScreen> {
                   ),
             style: TextStyle(color: Colors.grey[200]),
           ),
+          if (reason.isNotEmpty)
+            Text(
+              l10n.courtRecordReasonLine(reason),
+              style: TextStyle(fontSize: 12.5, color: Colors.grey[300]),
+            ),
+          if (sourceId != null && sourceId.isNotEmpty)
+            Text(
+              l10n.courtRecordSourceCrime(
+                _localizedCrimeName(
+                  sourceId,
+                  crime['sourceCrimeName'] as String?,
+                  l10n,
+                ),
+              ),
+              style: TextStyle(fontSize: 12.5, color: Colors.grey[400]),
+            ),
+          if (showCountry && countryId != null && countryId.isNotEmpty)
+            Text(
+              l10n.courtRecordCountryLine(
+                CountryHelper.getLocalizedCountryName(countryId, l10n),
+              ),
+              style: TextStyle(fontSize: 12.5, color: Colors.grey[400]),
+            ),
           if (createdAt != null)
             Text(
               l10n.courtDateLabeled(_formatDateTime(createdAt)),
@@ -1284,6 +1361,17 @@ class _CourtScreenState extends State<CourtScreen> {
                 !quote.odds.hasCommissioner &&
                 !quote.odds.hasAlderman)
               _oddsLine(l10n.courtExpungeDonNone, Colors.white70),
+            _oddsLine(
+              quote.odds.mathModifierPercent > 0
+                  ? l10n.courtExpungeMathBonus(
+                      quote.odds.mathCorrect.toString(),
+                      _signedPercent(quote.odds.mathModifierPercent),
+                    )
+                  : l10n.courtExpungeMathNone,
+              quote.odds.mathModifierPercent > 0
+                  ? const Color(0xFF72C48F)
+                  : Colors.white70,
+            ),
             const SizedBox(height: 8),
             Text(
               l10n.courtExpungeChance(quote.odds.successPercent.toString()),
@@ -1358,6 +1446,17 @@ class _CourtScreenState extends State<CourtScreen> {
           ),
           const SizedBox(height: 4),
           Text(
+            l10n.courtRecordLocalNote(
+              CountryHelper.getLocalizedCountryName(
+                _recordCountryId ??
+                    context.watch<AuthProvider>().currentPlayer?.currentCountry,
+                l10n,
+              ),
+            ),
+            style: TextStyle(fontSize: 12.5, color: Colors.grey[400], height: 1.35),
+          ),
+          const SizedBox(height: 4),
+          Text(
             l10n.courtRecordBribeNote,
             style: TextStyle(fontSize: 12.5, color: Colors.grey[400]),
           ),
@@ -1369,6 +1468,44 @@ class _CourtScreenState extends State<CourtScreen> {
             )
           else
             ..._recentCrimes.map((c) => _buildRecordItem(c, l10n)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFbiFileCard(AppLocalizations l10n) {
+    return _buildPanel(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l10n.courtRecordFbiTitle,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            l10n.courtRecordFbiIntro,
+            style: TextStyle(fontSize: 12.5, color: Colors.grey[400], height: 1.35),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            l10n.courtTotalConvictions(_fbiTotalConvictions.toString()),
+            style: TextStyle(color: Colors.grey[100]),
+          ),
+          const SizedBox(height: 12),
+          if (_fbiCrimes.isEmpty)
+            Text(
+              l10n.courtRecordFbiEmpty,
+              style: TextStyle(color: Colors.grey[300]),
+            )
+          else
+            ..._fbiCrimes.map(
+              (c) => _buildRecordItem(c, l10n, showCountry: true),
+            ),
         ],
       ),
     );
@@ -1442,6 +1579,7 @@ class _CourtScreenState extends State<CourtScreen> {
               _buildLoadWarning(l10n),
               _buildCurrentSentenceCard(l10n),
               _buildRecordCard(l10n),
+              _buildFbiFileCard(l10n),
               _buildExpungePetitionCard(l10n),
             ],
           ],

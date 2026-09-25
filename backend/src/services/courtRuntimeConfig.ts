@@ -14,6 +14,9 @@ export const COURT_RUNTIME_SETTING_DEFAULTS: Record<string, string> = {
   COURT_EXPUNGE_COOLDOWN_SECONDS: '43200',
   /** Hours after last arrest that still apply the heavy fresh-arrest penalty (−15%). */
   COURT_EXPUNGE_FRESH_ARREST_HOURS: '1',
+  /** +1% per correct jail-math answer since last matching wipe, capped. */
+  COURT_EXPUNGE_MATH_PERCENT_PER_CORRECT: '1',
+  COURT_EXPUNGE_MATH_CORRECT_CAP: '15',
 
   // Appeal odds (base + law education; Don judge bonus shares DON_JUDGE key)
   COURT_APPEAL_BASE_PERCENT: '35',
@@ -46,6 +49,8 @@ export type CourtRuntimeConfig = {
   expungeDonAldermanPercent: number;
   expungeCooldownSeconds: number;
   expungeFreshArrestHours: number;
+  expungeMathPercentPerCorrect: number;
+  expungeMathCorrectCap: number;
   appealBasePercent: number;
   appealLawBonusPerLevelPercent: number;
   appealLawBonusCapPercent: number;
@@ -88,6 +93,11 @@ function build(map: Record<string, string>): CourtRuntimeConfig {
     expungeDonAldermanPercent: Math.max(0, read('COURT_EXPUNGE_DON_ALDERMAN_PERCENT', 5)),
     expungeCooldownSeconds: Math.max(60, read('COURT_EXPUNGE_COOLDOWN_SECONDS', 43_200)),
     expungeFreshArrestHours: Math.max(0, read('COURT_EXPUNGE_FRESH_ARREST_HOURS', 1)),
+    expungeMathPercentPerCorrect: Math.max(
+      0,
+      read('COURT_EXPUNGE_MATH_PERCENT_PER_CORRECT', 1),
+    ),
+    expungeMathCorrectCap: Math.max(0, read('COURT_EXPUNGE_MATH_CORRECT_CAP', 15)),
     appealBasePercent: Math.max(0, read('COURT_APPEAL_BASE_PERCENT', 35)),
     appealLawBonusPerLevelPercent: Math.max(
       0,
@@ -202,5 +212,7 @@ export function getExpungePetitionMathConfigFromCourt(court: CourtRuntimeConfig)
     donCommissionerPercent: court.expungeDonCommissionerPercent,
     donAldermanPercent: court.expungeDonAldermanPercent,
     freshArrestHours: court.expungeFreshArrestHours,
+    mathPercentPerCorrect: court.expungeMathPercentPerCorrect,
+    mathCorrectCap: court.expungeMathCorrectCap,
   };
 }

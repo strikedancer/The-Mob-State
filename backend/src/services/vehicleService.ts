@@ -3933,12 +3933,15 @@ export const vehicleService = {
         await tx.crimeAttempt.create({
           data: {
             playerId,
-            crimeId: 'police_arrest',
+            crimeId: 'arrest_vehicle_theft',
             success: false,
             reward: 0,
             xpGained: 0,
             jailed: true,
             jailTime,
+            outcome: 'arrest',
+            outcomeFail: JSON.stringify({ arrestReason: 'vehicle_theft' }),
+            countryId: player.currentCountry ?? null,
           },
         });
 

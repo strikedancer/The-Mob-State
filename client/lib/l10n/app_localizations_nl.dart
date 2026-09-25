@@ -639,6 +639,31 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crimeCriminalRecordWipeName => 'Strafblad wissen';
 
   @override
+  String get crimePoliceArrestName => 'Politie-aanhouding';
+
+  @override
+  String get crimeFederalArrestName => 'Federale aanhouding';
+
+  @override
+  String get crimeArrestVehicleTheftName =>
+      'Politie-aanhouding (voertuigdiefstal)';
+
+  @override
+  String get crimeArrestBlackMoneyName => 'Politie-aanhouding (zwart geld)';
+
+  @override
+  String get crimeArrestJailbreakName => 'Politie-aanhouding (uitbraak)';
+
+  @override
+  String get crimeArrestRedLightName => 'Politie-aanhouding (rosse buurt)';
+
+  @override
+  String get crimeArrestProstitutionName => 'Politie-aanhouding (prostitutie)';
+
+  @override
+  String get crimeTravelArrestName => 'Aanhouding onderweg';
+
+  @override
   String get tooltipCrimeRequiresTools => 'Gereedschap vereist';
 
   @override
@@ -8509,6 +8534,58 @@ class AppLocalizationsNl extends AppLocalizations {
   String get courtDelictLabel => 'Delict';
 
   @override
+  String get courtArrestReasonWanted => 'Gezocht door de politie';
+
+  @override
+  String get courtArrestReasonVehicleTheft => 'Gepakt bij voertuigdiefstal';
+
+  @override
+  String get courtArrestReasonBlackMoney => 'Zwart geld uit de crewbank';
+
+  @override
+  String get courtArrestReasonJailbreak => 'Uitbraakpoging';
+
+  @override
+  String get courtArrestReasonRedLight => 'Rosse buurt';
+
+  @override
+  String get courtArrestReasonProstitution => 'Prostitutie';
+
+  @override
+  String get courtArrestReasonFederal => 'Federale aanhouding';
+
+  @override
+  String courtRecordReasonLine(String reason) {
+    return 'Reden: $reason';
+  }
+
+  @override
+  String courtRecordSourceCrime(String crime) {
+    return 'Gekoppeld aan: $crime';
+  }
+
+  @override
+  String courtRecordLocalNote(String country) {
+    return 'Deze rechtbank toont en wist alleen het blad van $country. Oude zaken zonder land blijven hier staan tot je ze hier wist.';
+  }
+
+  @override
+  String get courtRecordFbiTitle => 'FBI-dossier (wereldwijd)';
+
+  @override
+  String get courtRecordFbiIntro =>
+      'De FBI ziet veroordelingen in elk land. Wissen via deze rechtbank ruimt alleen het blad van dit land op. Amnestie of de late-game crime wist nog steeds het hele FBI-dossier.';
+
+  @override
+  String get courtRecordFbiEmpty =>
+      'De FBI heeft geen extra veroordelingen buiten dit land.';
+
+  @override
+  String courtRecordCountryLine(String country) {
+    return 'Land: $country';
+  }
+
+  @override
   String courtTotalSentenceMinutes(String minutes) {
     return 'Totale straf: $minutes minuten';
   }
@@ -8573,7 +8650,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get courtHeroSubtitle =>
-      'Dien hoger beroep in of omkoop de rechter tijdens je straf. Je kunt ook een dure aanvraag doen om je hele strafblad te wissen.';
+      'Dien hoger beroep in of omkoop de rechter tijdens je straf. Je kunt ook een dure aanvraag doen om het strafblad van dit land te wissen.';
 
   @override
   String courtConvictionsChip(String count) {
@@ -8661,7 +8738,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get courtExpungeIntro =>
-      'Dien een dure aanvraag in om je hele strafblad te wissen. Mislukt het, dan ben je alleen het bedrag kwijt. Lukt het, dan is het blad leeg; je komt niet vrij uit de cel.';
+      'Dien een dure aanvraag in om het strafblad van dit land te wissen. Goede sommen in de cel tellen mee als goed gedrag. Mislukt het, dan ben je alleen het bedrag kwijt. Lukt het, dan is dit blad leeg; je komt niet vrij uit de cel.';
 
   @override
   String courtExpungeCost(String amount) {
@@ -8717,6 +8794,14 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get courtExpungeReputationNone => 'Reputatie: nog geen extra bonus';
+
+  @override
+  String courtExpungeMathBonus(String count, String percent) {
+    return 'Celsommen (goed gedrag): $count goed ($percent%)';
+  }
+
+  @override
+  String get courtExpungeMathNone => 'Celsommen: nog geen extra bonus';
 
   @override
   String courtExpungeDonJudge(String percent) {
@@ -19150,11 +19235,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicCourtSummary =>
-      'Tijdens je straf kun je hoger beroep indienen of de rechter proberen om te kopen om sneller vrij te komen.';
+      'Tijdens je straf kun je hoger beroep indienen of de rechter omkopen. Het blad hier is van dit land; het FBI-blok toont veroordelingen wereldwijd.';
 
   @override
   String get helpTopicCourtHow =>
-      'Als je vastzit zie je in de rechtbank je actieve veroordeling met resterende tijd, delict en rechterprofiel.\nHoger beroep kost geld op basis van je huidige strafduur. Bij toekenning wordt je straf meestal met ongeveer 20-40% verlaagd.\nHoger beroep kun je maar een keer per veroordeling doen en er zit een cooldown op herhaald indienen.\nOmkoping werkt met een zelfgekozen bedrag. Dat bedrag wordt altijd afgeschreven, ook wanneer de poging mislukt.\nEen hogere omkoopsom geeft een betere slagingskans. Bij succes word je direct vrijgelaten.\nJe strafblad bewaart eerdere veroordelingen met datum en rechtbankhistorie, ook als je niet meer vastzit.\nEen geslaagde rechteromkoping verwijdert alleen die actuele veroordeling van je strafblad.\nWil je je volledige strafblad wissen, dan moet je dat buiten de rechtbank via de late-game crime Strafblad Wissen doen.';
+      'Als je vastzit zie je in de rechtbank je actieve veroordeling met resterende tijd, een leesbare delictnaam, waarom je bent opgepakt, en het rechterprofiel.\nHoger beroep kost geld op basis van je huidige strafduur. Bij toekenning wordt je straf meestal met ongeveer 20-40% verlaagd.\nHoger beroep kun je maar een keer per veroordeling doen en er zit een cooldown op herhaald indienen.\nOmkoping werkt met een zelfgekozen bedrag. Dat bedrag wordt altijd afgeschreven, ook wanneer de poging mislukt.\nEen hogere omkoopsom geeft een betere slagingskans. Bij succes word je direct vrijgelaten.\nJe strafblad bewaart eerdere veroordelingen met datum en rechtbankhistorie, ook als je niet meer vastzit. Deze rechtbank toont en wist alleen het blad van het land waar je nu bent.\nEen geslaagde rechteromkoping verwijdert alleen die actuele veroordeling van je strafblad.\nJe kunt op dit scherm een betaalde aanvraag doen om het blad van dit land te wissen. Goede sommen in de cel verhogen die slagingskans als goed gedrag (ongeveer 1% per som, tot 15%). Het FBI-dossier toont nog wel zaken uit andere landen. Amnestie of de late-game crime Strafblad Wissen ruimt nog steeds het wereldwijde dossier op.';
 
   @override
   String get helpTopicCourtTips =>

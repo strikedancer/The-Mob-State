@@ -638,6 +638,30 @@ class AppLocalizationsPt extends AppLocalizations {
   String get crimeCriminalRecordWipeName => 'Limpar registro criminal';
 
   @override
+  String get crimePoliceArrestName => 'Police arrest';
+
+  @override
+  String get crimeFederalArrestName => 'Federal arrest';
+
+  @override
+  String get crimeArrestVehicleTheftName => 'Police arrest (vehicle theft)';
+
+  @override
+  String get crimeArrestBlackMoneyName => 'Police arrest (dirty money)';
+
+  @override
+  String get crimeArrestJailbreakName => 'Police arrest (jailbreak)';
+
+  @override
+  String get crimeArrestRedLightName => 'Police arrest (red-light district)';
+
+  @override
+  String get crimeArrestProstitutionName => 'Police arrest (prostitution)';
+
+  @override
+  String get crimeTravelArrestName => 'Travel arrest';
+
+  @override
   String get tooltipCrimeRequiresTools => 'Ferramentas necessárias';
 
   @override
@@ -8517,6 +8541,58 @@ class AppLocalizationsPt extends AppLocalizations {
   String get courtDelictLabel => 'Crime';
 
   @override
+  String get courtArrestReasonWanted => 'Wanted by the police';
+
+  @override
+  String get courtArrestReasonVehicleTheft => 'Caught during vehicle theft';
+
+  @override
+  String get courtArrestReasonBlackMoney => 'Dirty crew-bank money';
+
+  @override
+  String get courtArrestReasonJailbreak => 'Jailbreak attempt';
+
+  @override
+  String get courtArrestReasonRedLight => 'Red-light district';
+
+  @override
+  String get courtArrestReasonProstitution => 'Prostitution';
+
+  @override
+  String get courtArrestReasonFederal => 'Federal arrest';
+
+  @override
+  String courtRecordReasonLine(String reason) {
+    return 'Reason: $reason';
+  }
+
+  @override
+  String courtRecordSourceCrime(String crime) {
+    return 'Tied to: $crime';
+  }
+
+  @override
+  String courtRecordLocalNote(String country) {
+    return 'This court only shows and can wipe the file for $country. Convictions without a country stay on this file until you wipe them here.';
+  }
+
+  @override
+  String get courtRecordFbiTitle => 'FBI file (worldwide)';
+
+  @override
+  String get courtRecordFbiIntro =>
+      'The FBI can see convictions in every country. A court wipe here only clears this country\'s file. Amnesty or the late-game wipe crime still clears the full FBI file.';
+
+  @override
+  String get courtRecordFbiEmpty =>
+      'The FBI has no extra convictions on file beyond this country.';
+
+  @override
+  String courtRecordCountryLine(String country) {
+    return 'Country: $country';
+  }
+
+  @override
   String courtTotalSentenceMinutes(String minutes) {
     return 'Frase total: $minutes minutos';
   }
@@ -8726,6 +8802,14 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get courtExpungeReputationNone =>
       'Reputação: nenhum bônus extra ainda';
+
+  @override
+  String courtExpungeMathBonus(String count, String percent) {
+    return 'Jail math (good conduct): $count correct ($percent%)';
+  }
+
+  @override
+  String get courtExpungeMathNone => 'Jail math: no extra bonus yet';
 
   @override
   String courtExpungeDonJudge(String percent) {

@@ -46,4 +46,25 @@ class CourtLocalization {
         return judge.specialty.isNotEmpty ? judge.specialty : '';
     }
   }
+
+  static String arrestReason(String? reason, AppLocalizations l10n) {
+    switch (reason) {
+      case 'wanted':
+        return l10n.courtArrestReasonWanted;
+      case 'vehicle_theft':
+        return l10n.courtArrestReasonVehicleTheft;
+      case 'black_money':
+        return l10n.courtArrestReasonBlackMoney;
+      case 'jailbreak':
+        return l10n.courtArrestReasonJailbreak;
+      case 'red_light':
+        return l10n.courtArrestReasonRedLight;
+      case 'prostitution':
+        return l10n.courtArrestReasonProstitution;
+      case 'federal':
+        return l10n.courtArrestReasonFederal;
+      default:
+        return reason ?? '';
+    }
+  }
 }

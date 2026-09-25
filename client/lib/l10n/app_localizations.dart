@@ -1256,6 +1256,54 @@ abstract class AppLocalizations {
   /// **'Wipe Criminal Record'**
   String get crimeCriminalRecordWipeName;
 
+  /// No description provided for @crimePoliceArrestName.
+  ///
+  /// In en, this message translates to:
+  /// **'Police arrest'**
+  String get crimePoliceArrestName;
+
+  /// No description provided for @crimeFederalArrestName.
+  ///
+  /// In en, this message translates to:
+  /// **'Federal arrest'**
+  String get crimeFederalArrestName;
+
+  /// No description provided for @crimeArrestVehicleTheftName.
+  ///
+  /// In en, this message translates to:
+  /// **'Police arrest (vehicle theft)'**
+  String get crimeArrestVehicleTheftName;
+
+  /// No description provided for @crimeArrestBlackMoneyName.
+  ///
+  /// In en, this message translates to:
+  /// **'Police arrest (dirty money)'**
+  String get crimeArrestBlackMoneyName;
+
+  /// No description provided for @crimeArrestJailbreakName.
+  ///
+  /// In en, this message translates to:
+  /// **'Police arrest (jailbreak)'**
+  String get crimeArrestJailbreakName;
+
+  /// No description provided for @crimeArrestRedLightName.
+  ///
+  /// In en, this message translates to:
+  /// **'Police arrest (red-light district)'**
+  String get crimeArrestRedLightName;
+
+  /// No description provided for @crimeArrestProstitutionName.
+  ///
+  /// In en, this message translates to:
+  /// **'Police arrest (prostitution)'**
+  String get crimeArrestProstitutionName;
+
+  /// No description provided for @crimeTravelArrestName.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel arrest'**
+  String get crimeTravelArrestName;
+
   /// No description provided for @tooltipCrimeRequiresTools.
   ///
   /// In en, this message translates to:
@@ -14864,6 +14912,90 @@ abstract class AppLocalizations {
   /// **'Crime'**
   String get courtDelictLabel;
 
+  /// No description provided for @courtArrestReasonWanted.
+  ///
+  /// In en, this message translates to:
+  /// **'Wanted by the police'**
+  String get courtArrestReasonWanted;
+
+  /// No description provided for @courtArrestReasonVehicleTheft.
+  ///
+  /// In en, this message translates to:
+  /// **'Caught during vehicle theft'**
+  String get courtArrestReasonVehicleTheft;
+
+  /// No description provided for @courtArrestReasonBlackMoney.
+  ///
+  /// In en, this message translates to:
+  /// **'Dirty crew-bank money'**
+  String get courtArrestReasonBlackMoney;
+
+  /// No description provided for @courtArrestReasonJailbreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Jailbreak attempt'**
+  String get courtArrestReasonJailbreak;
+
+  /// No description provided for @courtArrestReasonRedLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Red-light district'**
+  String get courtArrestReasonRedLight;
+
+  /// No description provided for @courtArrestReasonProstitution.
+  ///
+  /// In en, this message translates to:
+  /// **'Prostitution'**
+  String get courtArrestReasonProstitution;
+
+  /// No description provided for @courtArrestReasonFederal.
+  ///
+  /// In en, this message translates to:
+  /// **'Federal arrest'**
+  String get courtArrestReasonFederal;
+
+  /// No description provided for @courtRecordReasonLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason: {reason}'**
+  String courtRecordReasonLine(String reason);
+
+  /// No description provided for @courtRecordSourceCrime.
+  ///
+  /// In en, this message translates to:
+  /// **'Tied to: {crime}'**
+  String courtRecordSourceCrime(String crime);
+
+  /// No description provided for @courtRecordLocalNote.
+  ///
+  /// In en, this message translates to:
+  /// **'This court only shows and can wipe the file for {country}. Convictions without a country stay on this file until you wipe them here.'**
+  String courtRecordLocalNote(String country);
+
+  /// No description provided for @courtRecordFbiTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'FBI file (worldwide)'**
+  String get courtRecordFbiTitle;
+
+  /// No description provided for @courtRecordFbiIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'The FBI can see convictions in every country. A court wipe here only clears this country\'s file. Amnesty or the late-game wipe crime still clears the full FBI file.'**
+  String get courtRecordFbiIntro;
+
+  /// No description provided for @courtRecordFbiEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'The FBI has no extra convictions on file beyond this country.'**
+  String get courtRecordFbiEmpty;
+
+  /// No description provided for @courtRecordCountryLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Country: {country}'**
+  String courtRecordCountryLine(String country);
+
   /// No description provided for @courtTotalSentenceMinutes.
   ///
   /// In en, this message translates to:
@@ -14963,7 +15095,7 @@ abstract class AppLocalizations {
   /// No description provided for @courtHeroSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Appeal or bribe the judge while you serve time. You can also file a costly request to wipe your full criminal record.'**
+  /// **'Appeal or bribe the judge while you serve time. You can also file a costly request to wipe this country\'s criminal record.'**
   String get courtHeroSubtitle;
 
   /// No description provided for @courtConvictionsChip.
@@ -15095,7 +15227,7 @@ abstract class AppLocalizations {
   /// No description provided for @courtExpungeIntro.
   ///
   /// In en, this message translates to:
-  /// **'File a costly court request to wipe your full criminal record. Failure only costs the fee. Success clears the record but does not release you from jail.'**
+  /// **'File a costly court request to wipe your criminal record in this country. Jail-math answers from prison count as good conduct. Failure only costs the fee. Success clears this country\'s file but does not release you from jail.'**
   String get courtExpungeIntro;
 
   /// No description provided for @courtExpungeCost.
@@ -15169,6 +15301,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reputation: no extra bonus yet'**
   String get courtExpungeReputationNone;
+
+  /// No description provided for @courtExpungeMathBonus.
+  ///
+  /// In en, this message translates to:
+  /// **'Jail math (good conduct): {count} correct ({percent}%)'**
+  String courtExpungeMathBonus(String count, String percent);
+
+  /// No description provided for @courtExpungeMathNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Jail math: no extra bonus yet'**
+  String get courtExpungeMathNone;
 
   /// No description provided for @courtExpungeDonJudge.
   ///
@@ -32831,13 +32975,13 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicCourtSummary.
   ///
   /// In en, this message translates to:
-  /// **'During your sentence you can file an appeal or try to bribe the judge to get released sooner.'**
+  /// **'During your sentence you can file an appeal or try to bribe the judge. The record shown here is this country\'s file; the FBI panel lists worldwide convictions.'**
   String get helpTopicCourtSummary;
 
   /// No description provided for @helpTopicCourtHow.
   ///
   /// In en, this message translates to:
-  /// **'When jailed, the court screen shows your active conviction with remaining time, crime and judge profile.\nAn appeal costs money based on your current sentence length. If granted, your sentence is usually reduced by about 20-40%.\nYou can appeal only once per conviction and a cooldown applies to rapid retries.\nBribery uses a player-selected amount. That amount is always deducted, even when the attempt fails.\nA higher bribe amount increases success chance. On success, you are released immediately.\nYour criminal record keeps earlier convictions with dates and court-history details even when you are no longer jailed.\nA successful judge bribe removes only that current conviction from your criminal record.\nIf you want to wipe your full criminal record, you must do it outside court through the late-game Wipe Criminal Record crime.'**
+  /// **'When jailed, the court screen shows your active conviction with remaining time, a readable crime name, why you were arrested, and the judge profile.\nAn appeal costs money based on your current sentence length. If granted, your sentence is usually reduced by about 20-40%.\nYou can appeal only once per conviction and a cooldown applies to rapid retries.\nBribery uses a player-selected amount. That amount is always deducted, even when the attempt fails.\nA higher bribe amount increases success chance. On success, you are released immediately.\nYour criminal record keeps earlier convictions with dates and court-history details even when you are no longer jailed. This court only shows and can wipe the file for the country you are in now.\nA successful judge bribe removes only that current conviction from your criminal record.\nYou can file a paid request on this screen to wipe this country\'s record. Correct jail-math answers from prison raise that success chance as good conduct (about 1% each, up to 15%). The FBI file still lists convictions from other countries. Amnesty or the late-game Wipe Criminal Record crime still clears the worldwide file.'**
   String get helpTopicCourtHow;
 
   /// No description provided for @helpTopicCourtTips.

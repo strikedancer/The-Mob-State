@@ -87,7 +87,28 @@ class CrimeLocalization {
         return l10n.crimeBossAssassinationName;
       case 'criminal_record_wipe':
         return l10n.crimeCriminalRecordWipeName;
+      case 'police_arrest':
+        return l10n.crimePoliceArrestName;
+      case 'federal_arrest':
+        return l10n.crimeFederalArrestName;
+      case 'arrest_vehicle_theft':
+        return l10n.crimeArrestVehicleTheftName;
+      case 'arrest_black_money':
+        return l10n.crimeArrestBlackMoneyName;
+      case 'arrest_jailbreak':
+        return l10n.crimeArrestJailbreakName;
+      case 'arrest_red_light':
+        return l10n.crimeArrestRedLightName;
+      case 'arrest_prostitution':
+        return l10n.crimeArrestProstitutionName;
+      case 'travel_leg':
+        return l10n.crimeTravelArrestName;
       default:
+        if (crimeId != null && crimeId.startsWith('crew_mission:')) {
+          return fallback != null && fallback.isNotEmpty
+              ? fallback
+              : crimeId.substring('crew_mission:'.length).replaceAll('_', ' ');
+        }
         if (fallback != null && fallback.isNotEmpty) return fallback;
         if (crimeId != null && crimeId.isNotEmpty) return crimeId;
         return l10n.courtUnknownCrime;

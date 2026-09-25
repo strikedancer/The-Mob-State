@@ -137,6 +137,22 @@ const SECTIONS: SectionDef[] = [
         helpNl: "Uren na laatste arrest waarin de zware −15% straft geldt.",
         helpEn: "Hours after last arrest when the heavy −15% penalty applies.",
       },
+      {
+        key: "COURT_EXPUNGE_MATH_PERCENT_PER_CORRECT",
+        kind: "percent",
+        labelNl: "Celsommen per goed antwoord",
+        labelEn: "Jail math per correct answer",
+        helpNl: "Extra slagingskans per goed antwoord in de cel sinds de laatste wipe in dit land.",
+        helpEn: "Extra wipe chance per correct jail-math answer since the last wipe in this country.",
+      },
+      {
+        key: "COURT_EXPUNGE_MATH_CORRECT_CAP",
+        kind: "percent",
+        labelNl: "Celsommen-plafond",
+        labelEn: "Jail math cap",
+        helpNl: "Maximum extra kans uit celsommen (standaard 15).",
+        helpEn: "Maximum extra chance from jail math (default 15).",
+      },
     ],
   },
   {

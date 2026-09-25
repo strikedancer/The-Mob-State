@@ -1997,6 +1997,13 @@ export const crewMissionService = {
       const recordMinutes = tierNum >= 3 ? 45 : tierNum >= 2 ? 30 : 15;
       const crimeId = `crew_mission:${template.missionKey}`;
       if (recordPlayerIds.length > 0) {
+        const recordPlayers = await prisma.player.findMany({
+          where: { id: { in: recordPlayerIds } },
+          select: { id: true, currentCountry: true },
+        });
+        const countryByPlayerId = new Map(
+          recordPlayers.map((row) => [row.id, row.currentCountry ?? null]),
+        );
         await prisma.crimeAttempt.createMany({
           data: recordPlayerIds.map((recordPlayerId) => ({
             playerId: recordPlayerId,
@@ -2006,6 +2013,7 @@ export const crewMissionService = {
             xpGained: 0,
             jailed: false,
             jailTime: recordMinutes,
+            countryId: countryByPlayerId.get(recordPlayerId) ?? null,
           })),
         });
       }

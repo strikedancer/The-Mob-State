@@ -57,6 +57,10 @@ interface CriminalRecordItem {
   crimeAttemptId: number;
   crimeId: string;
   crimeName: string;
+  sourceCrimeId: string | null;
+  sourceCrimeName: string | null;
+  arrestReason: string | null;
+  countryId: string | null;
   jailTime: number;
   originalJailTime: number;
   createdAt: Date;
@@ -99,6 +103,7 @@ export interface AppealResult {
 }
 
 export interface ExpungePetitionQuote {
+  countryId: string | null;
   convictionCount: number;
   cost: number;
   lastArrestAt: string | null;
@@ -264,11 +269,47 @@ function serializeAppealOdds(odds: AppealOddsBreakdown) {
 function getCrimeName(crimeId: string): string {
   const known = crimeNameById.get(crimeId);
   if (known) return known;
+  switch (crimeId) {
+    case 'police_arrest':
+      return 'Police arrest';
+    case 'federal_arrest':
+      return 'Federal arrest';
+    case 'arrest_vehicle_theft':
+      return 'Police arrest (vehicle theft)';
+    case 'arrest_black_money':
+      return 'Police arrest (dirty money)';
+    case 'arrest_jailbreak':
+      return 'Police arrest (jailbreak attempt)';
+    case 'arrest_red_light':
+      return 'Police arrest (red-light district)';
+    case 'arrest_prostitution':
+      return 'Police arrest (prostitution)';
+    case 'travel_leg':
+      return 'Travel arrest';
+    default:
+      break;
+  }
   if (crimeId.startsWith('crew_mission:')) {
     const key = crimeId.slice('crew_mission:'.length).replace(/_/g, ' ');
     return key ? `Crew mission (${key})` : 'Crew mission';
   }
   return crimeId;
+}
+
+function parseArrestMeta(outcomeFail: string | null | undefined): {
+  arrestReason: string | null;
+  sourceCrimeId: string | null;
+} {
+  if (!outcomeFail) return { arrestReason: null, sourceCrimeId: null };
+  try {
+    const parsed = JSON.parse(outcomeFail) as Record<string, unknown>;
+    return {
+      arrestReason: typeof parsed.arrestReason === 'string' ? parsed.arrestReason : null,
+      sourceCrimeId: typeof parsed.sourceCrimeId === 'string' ? parsed.sourceCrimeId : null,
+    };
+  } catch {
+    return { arrestReason: null, sourceCrimeId: null };
+  }
 }
 
 function calculateReleaseTime(createdAt: Date, jailTimeMinutes: number): Date {
@@ -361,8 +402,70 @@ async function getTrialEventsByAttempt(playerId: number, attemptIds: number[]): 
   return eventsByAttempt;
 }
 
-async function getLatestRecordExpungementAt(playerId: number): Promise<Date | null> {
-  const expungement = await prisma.worldEvent.findFirst({
+type RecordScope = 'local' | 'worldwide';
+
+interface RecordQueryOptions {
+  excludeAttemptId?: number;
+  scope?: RecordScope;
+  countryId?: string | null;
+}
+
+interface ExpungeMarker {
+  createdAt: Date;
+  source: string | null;
+  countryId: string | null;
+}
+
+function normalizeCountryId(value: string | null | undefined): string | null {
+  const trimmed = typeof value === 'string' ? value.trim() : '';
+  return trimmed.length > 0 ? trimmed : null;
+}
+
+function parseExpungeMarker(params: string, createdAt: Date): ExpungeMarker | null {
+  let parsed: unknown = {};
+  try {
+    parsed = JSON.parse(params);
+  } catch {
+    return null;
+  }
+  if (!parsed || typeof parsed !== 'object') return null;
+  const payload = parsed as Record<string, unknown>;
+  return {
+    createdAt,
+    source: typeof payload.source === 'string' ? payload.source : null,
+    countryId: normalizeCountryId(
+      typeof payload.countryId === 'string' ? payload.countryId : null,
+    ),
+  };
+}
+
+function isGlobalExpunge(marker: ExpungeMarker): boolean {
+  if (marker.source === 'amnesty' || marker.source === 'crime') return true;
+  return !marker.countryId;
+}
+
+function expungeHidesAttempt(
+  marker: ExpungeMarker,
+  attemptCreatedAt: Date,
+  attemptCountryId: string | null,
+): boolean {
+  if (marker.createdAt.getTime() <= attemptCreatedAt.getTime()) return false;
+  if (isGlobalExpunge(marker)) return true;
+  if (!attemptCountryId) return true;
+  return marker.countryId === attemptCountryId;
+}
+
+function expungeAppliesToLocalCountry(
+  marker: ExpungeMarker,
+  countryId: string | null,
+): boolean {
+  if (isGlobalExpunge(marker)) return true;
+  if (!countryId) return true;
+  return marker.countryId === countryId;
+}
+
+async function loadExpungeMarkers(playerId: number): Promise<ExpungeMarker[]> {
+  const events = await prisma.worldEvent.findMany({
     where: {
       playerId,
       eventKey: 'trial.record_expunged',
@@ -371,18 +474,36 @@ async function getLatestRecordExpungementAt(playerId: number): Promise<Date | nu
       createdAt: 'desc',
     },
     select: {
+      params: true,
       createdAt: true,
     },
+    take: 200,
   });
+  return events
+    .map((event) => parseExpungeMarker(event.params, event.createdAt))
+    .filter((marker): marker is ExpungeMarker => marker != null);
+}
 
-  return expungement?.createdAt ?? null;
+async function getLatestLocalExpungementAt(
+  playerId: number,
+  countryId: string | null,
+): Promise<Date | null> {
+  const markers = await loadExpungeMarkers(playerId);
+  const match = markers.find((marker) => expungeAppliesToLocalCountry(marker, countryId));
+  return match?.createdAt ?? null;
 }
 
 async function getVisibleConvictionAttempts(
   playerId: number,
-  excludeAttemptId?: number
+  options?: number | RecordQueryOptions,
 ) {
-  const expungedAt = await getLatestRecordExpungementAt(playerId);
+  const query: RecordQueryOptions =
+    typeof options === 'number' ? { excludeAttemptId: options } : options ?? {};
+  const scope: RecordScope = query.scope ?? 'worldwide';
+  const countryId = normalizeCountryId(query.countryId);
+  const excludeAttemptId = query.excludeAttemptId;
+  const markers = await loadExpungeMarkers(playerId);
+
   const attempts = await prisma.crimeAttempt.findMany({
     where: {
       playerId,
@@ -393,13 +514,6 @@ async function getVisibleConvictionAttempts(
         ? {
             id: {
               not: excludeAttemptId,
-            },
-          }
-        : {}),
-      ...(expungedAt
-        ? {
-            createdAt: {
-              gt: expungedAt,
             },
           }
         : {}),
@@ -414,20 +528,76 @@ async function getVisibleConvictionAttempts(
       createdAt: true,
       appealedAt: true,
       jailed: true,
+      outcomeFail: true,
+      countryId: true,
     },
   });
 
   const trialEventsByAttempt = await getTrialEventsByAttempt(
     playerId,
-    attempts.map((attempt) => attempt.id)
+    attempts.map((attempt) => attempt.id),
   );
   const clearedAttemptIds = getClearedAttemptIds(trialEventsByAttempt);
-  const visibleAttempts = attempts.filter((attempt) => !clearedAttemptIds.has(attempt.id));
+  const visibleAttempts = attempts.filter((attempt) => {
+    if (clearedAttemptIds.has(attempt.id)) return false;
+    const attemptCountryId = normalizeCountryId(attempt.countryId);
+    if (scope === 'local') {
+      if (countryId && attemptCountryId && attemptCountryId !== countryId) {
+        return false;
+      }
+    }
+    if (markers.some((marker) => expungeHidesAttempt(marker, attempt.createdAt, attemptCountryId))) {
+      return false;
+    }
+    return true;
+  });
 
   return {
     visibleAttempts,
     trialEventsByAttempt,
-    expungedAt,
+    expungedAt: markers[0]?.createdAt ?? null,
+  };
+}
+
+function toRecordItem(
+  attempt: {
+    id: number;
+    crimeId: string;
+    jailTime: number;
+    createdAt: Date;
+    appealedAt: Date | null;
+    jailed: boolean;
+    outcomeFail: string | null;
+    countryId: string | null;
+  },
+  events: TrialEventDetail[],
+): CriminalRecordItem {
+  const { history, originalJailTime } = buildHistory(
+    attempt.createdAt,
+    attempt.jailTime,
+    events,
+  );
+  const meta = parseArrestMeta(attempt.outcomeFail);
+  const sourceCrimeId = meta.sourceCrimeId;
+  const sourceCrimeName = sourceCrimeId ? getCrimeName(sourceCrimeId) : null;
+
+  return {
+    crimeAttemptId: attempt.id,
+    crimeId: attempt.crimeId,
+    crimeName: getCrimeName(attempt.crimeId),
+    sourceCrimeId,
+    sourceCrimeName,
+    arrestReason: meta.arrestReason,
+    countryId: normalizeCountryId(attempt.countryId),
+    jailTime: attempt.jailTime,
+    originalJailTime,
+    createdAt: attempt.createdAt,
+    appealed: !!attempt.appealedAt,
+    status:
+      attempt.jailed && calculateReleaseTime(attempt.createdAt, attempt.jailTime) > new Date()
+        ? 'active'
+        : 'served',
+    history,
   };
 }
 
@@ -513,6 +683,7 @@ async function getLatestJailedAttempt(playerId: number) {
       appealedAt: true,
       createdAt: true,
       jailed: true,
+      outcomeFail: true,
     },
   });
 }
@@ -528,7 +699,7 @@ export async function getCurrentSentence(playerId: number) {
     return null;
   }
 
-  const [educationProfile, player, prior, donJudgeBonusPercent, court] =
+  const [educationProfile, player, donJudgeBonusPercent, court] =
     await Promise.all([
       educationService.getPlayerEducationProfile(playerId),
       prisma.player.findUnique({
@@ -536,12 +707,17 @@ export async function getCurrentSentence(playerId: number) {
         select: {
           wantedLevel: true,
           fbiHeat: true,
+          currentCountry: true,
         },
       }),
-      getVisibleConvictionAttempts(playerId, crimeAttempt.id),
       donService.getJudgeAppealBonusPercent(playerId),
       getCourtRuntimeConfig(),
     ]);
+  const prior = await getVisibleConvictionAttempts(playerId, {
+    excludeAttemptId: crimeAttempt.id,
+    scope: 'local',
+    countryId: player?.currentCountry,
+  });
 
   const appealOdds = computeAppealOdds({
     lawLevel: educationProfile.tracks['law']?.level ?? 0,
@@ -552,11 +728,18 @@ export async function getCurrentSentence(playerId: number) {
     court,
   });
 
+  const meta = parseArrestMeta(crimeAttempt.outcomeFail);
+  const sourceCrimeId = meta.sourceCrimeId;
+  const sourceCrimeName = sourceCrimeId ? getCrimeName(sourceCrimeId) : null;
+
   return {
     sentence: {
       crimeAttemptId: crimeAttempt.id,
       crimeId: crimeAttempt.crimeId,
       crime: getCrimeName(crimeAttempt.crimeId),
+      sourceCrimeId,
+      sourceCrimeName,
+      arrestReason: meta.arrestReason,
       sentenceMinutes: crimeAttempt.jailTime,
       remainingMinutes: Math.max(1, Math.ceil(remainingSeconds / 60)),
       judge: getJudgeForAttempt(crimeAttempt.id),
@@ -568,35 +751,38 @@ export async function getCurrentSentence(playerId: number) {
 }
 
 export async function getCriminalRecord(playerId: number): Promise<{
+  countryId: string | null;
   totalConvictions: number;
   recentCrimes: CriminalRecordItem[];
+  fbiFile: {
+    totalConvictions: number;
+    recentCrimes: CriminalRecordItem[];
+  };
 }> {
-  const { visibleAttempts, trialEventsByAttempt } = await getVisibleConvictionAttempts(playerId);
+  const player = await prisma.player.findUnique({
+    where: { id: playerId },
+    select: { currentCountry: true },
+  });
+  const countryId = player?.currentCountry ?? null;
+  const [local, worldwide] = await Promise.all([
+    getVisibleConvictionAttempts(playerId, { scope: 'local', countryId }),
+    getVisibleConvictionAttempts(playerId, { scope: 'worldwide' }),
+  ]);
 
   return {
-    totalConvictions: visibleAttempts.length,
-    recentCrimes: visibleAttempts.slice(0, 20).map((attempt) => {
-      const { history, originalJailTime } = buildHistory(
-        attempt.createdAt,
-        attempt.jailTime,
-        trialEventsByAttempt.get(attempt.id) ?? []
-      );
-
-      return {
-        crimeAttemptId: attempt.id,
-        crimeId: attempt.crimeId,
-        crimeName: getCrimeName(attempt.crimeId),
-        jailTime: attempt.jailTime,
-        originalJailTime,
-        createdAt: attempt.createdAt,
-        appealed: !!attempt.appealedAt,
-        status:
-          attempt.jailed && calculateReleaseTime(attempt.createdAt, attempt.jailTime) > new Date()
-            ? 'active'
-            : 'served',
-        history,
-      };
-    }),
+    countryId,
+    totalConvictions: local.visibleAttempts.length,
+    recentCrimes: local.visibleAttempts
+      .slice(0, 20)
+      .map((attempt) => toRecordItem(attempt, local.trialEventsByAttempt.get(attempt.id) ?? [])),
+    fbiFile: {
+      totalConvictions: worldwide.visibleAttempts.length,
+      recentCrimes: worldwide.visibleAttempts
+        .slice(0, 20)
+        .map((attempt) =>
+          toRecordItem(attempt, worldwide.trialEventsByAttempt.get(attempt.id) ?? []),
+        ),
+    },
   };
 }
 
@@ -622,6 +808,7 @@ export async function appealSentence(
         money: true,
         wantedLevel: true,
         fbiHeat: true,
+        currentCountry: true,
       },
     }),
     educationService.getPlayerEducationProfile(playerId),
@@ -663,7 +850,11 @@ export async function appealSentence(
 
   const { visibleAttempts: priorConvictionAttempts } = await getVisibleConvictionAttempts(
     playerId,
-    crimeAttemptId
+    {
+      excludeAttemptId: crimeAttemptId,
+      scope: 'local',
+      countryId: player.currentCountry,
+    },
   );
   const priorConvictions = priorConvictionAttempts.length;
   const donJudgeBonusPercent = await donService.getJudgeAppealBonusPercent(playerId);
@@ -840,7 +1031,7 @@ export async function bribeJudgeForAttempt(
 }
 
 export async function getVisibleCriminalRecordCount(playerId: number): Promise<number> {
-  const { visibleAttempts } = await getVisibleConvictionAttempts(playerId);
+  const { visibleAttempts } = await getVisibleConvictionAttempts(playerId, { scope: 'worldwide' });
   return visibleAttempts.length;
 }
 
@@ -868,8 +1059,7 @@ function hoursSince(date: Date | null, now: Date): number | null {
 
 export async function getExpungePetitionQuote(playerId: number): Promise<ExpungePetitionQuote> {
   const now = timeProvider.now();
-  const [{ visibleAttempts }, player, cooldownRemainingSeconds] = await Promise.all([
-    getVisibleConvictionAttempts(playerId),
+  const [player, cooldownRemainingSeconds] = await Promise.all([
     prisma.player.findUnique({
       where: { id: playerId },
       select: {
@@ -885,6 +1075,17 @@ export async function getExpungePetitionQuote(playerId: number): Promise<Expunge
     throw new Error('PLAYER_NOT_FOUND');
   }
 
+  const countryId = player.currentCountry ?? null;
+  const { visibleAttempts } = await getVisibleConvictionAttempts(playerId, {
+    scope: 'local',
+    countryId,
+  });
+  const lastLocalWipeAt = await getLatestLocalExpungementAt(playerId, countryId);
+  const mathCorrect = await policeService.countJailMathCorrectSince(
+    playerId,
+    lastLocalWipeAt ?? new Date(0),
+  );
+
   const court = await getCourtRuntimeConfig();
   const mathConfig = getExpungePetitionMathConfigFromCourt(court);
   const convictionCount = visibleAttempts.length;
@@ -895,6 +1096,7 @@ export async function getExpungePetitionQuote(playerId: number): Promise<Expunge
       convictionCount,
       hoursSinceLastArrest: hoursSince(lastArrestAt, now),
       reputation: Number(player.reputation ?? 0),
+      mathCorrect,
       ...donFlags,
     },
     mathConfig,
@@ -910,6 +1112,7 @@ export async function getExpungePetitionQuote(playerId: number): Promise<Expunge
   }
 
   return {
+    countryId,
     convictionCount,
     cost,
     lastArrestAt: lastArrestAt ? lastArrestAt.toISOString() : null,
@@ -966,7 +1169,7 @@ export async function submitExpungePetition(playerId: number): Promise<ExpungePe
   let clearedCount = 0;
 
   if (success) {
-    clearedCount = await expungeCriminalRecord(playerId, 'petition');
+    clearedCount = await expungeCriminalRecord(playerId, 'petition', quote.countryId);
   } else {
     await worldEventService.createEvent(
       'trial.expunge_petition_failed',
@@ -993,9 +1196,16 @@ export async function submitExpungePetition(playerId: number): Promise<ExpungePe
 
 export async function expungeCriminalRecord(
   playerId: number,
-  source: 'crime' | 'petition' | 'amnesty' = 'crime'
+  source: 'crime' | 'petition' | 'amnesty' = 'crime',
+  countryId?: string | null,
 ): Promise<number> {
-  const { visibleAttempts } = await getVisibleConvictionAttempts(playerId);
+  const scopedCountryId = source === 'petition' ? normalizeCountryId(countryId) : null;
+  const { visibleAttempts } = await getVisibleConvictionAttempts(
+    playerId,
+    source === 'petition'
+      ? { scope: 'local', countryId: scopedCountryId }
+      : { scope: 'worldwide' },
+  );
   const clearedCount = visibleAttempts.length;
 
   if (clearedCount <= 0) {
@@ -1008,6 +1218,7 @@ export async function expungeCriminalRecord(
       playerId,
       clearedCount,
       source,
+      ...(scopedCountryId ? { countryId: scopedCountryId } : {}),
     },
     playerId
   );
@@ -1031,7 +1242,9 @@ export async function expungeAllCriminalRecordsAmnesty(): Promise<{
   for (const row of rows) {
     const playerId = Number(row.playerId);
     if (!Number.isFinite(playerId) || playerId <= 0) continue;
-    const { visibleAttempts } = await getVisibleConvictionAttempts(playerId);
+    const { visibleAttempts } = await getVisibleConvictionAttempts(playerId, {
+      scope: 'worldwide',
+    });
     if (visibleAttempts.length <= 0) continue;
     events.push({
       eventKey: 'trial.record_expunged',

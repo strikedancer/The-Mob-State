@@ -193,6 +193,10 @@ export async function decayFBIHeat(playerId: number): Promise<void> {
  */
 export async function jailPlayerFederal(playerId: number, jailTime: number): Promise<void> {
   const jailRelease = new Date(Date.now() + jailTime * 60 * 1000);
+  const playerRow = await prisma.player.findUnique({
+    where: { id: playerId },
+    select: { currentCountry: true },
+  });
   await withPrismaWriteRetry(() =>
     prisma.$transaction(async (tx) => {
       await tx.crimeAttempt.create({
@@ -205,6 +209,9 @@ export async function jailPlayerFederal(playerId: number, jailTime: number): Pro
           jailed: true,
           jailTime,
           createdAt: new Date(),
+          outcome: 'arrest',
+          outcomeFail: JSON.stringify({ arrestReason: 'federal' }),
+          countryId: playerRow?.currentCountry ?? null,
         },
       });
       await tx.player.update({

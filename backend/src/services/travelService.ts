@@ -414,6 +414,10 @@ export function getTravelArrestChance(wantedLevel: number, riskySlots = 0): numb
 async function sendPlayerToJail(playerId: number, jailTimeMinutes: number): Promise<void> {
   const now = new Date();
   const jailRelease = new Date(now.getTime() + jailTimeMinutes * 60 * 1000);
+  const playerRow = await prisma.player.findUnique({
+    where: { id: playerId },
+    select: { currentCountry: true },
+  });
 
   await withPrismaWriteRetry(() =>
     prisma.$transaction(async (tx) => {
@@ -426,6 +430,7 @@ async function sendPlayerToJail(playerId: number, jailTimeMinutes: number): Prom
           xpGained: 0,
           jailed: true,
           jailTime: jailTimeMinutes,
+          countryId: playerRow?.currentCountry ?? null,
         },
       });
       await tx.player.update({

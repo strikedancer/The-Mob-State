@@ -37,6 +37,7 @@ import { ensureCrewDealSchema } from './startup/ensureCrewDealSchema';
 import { ensureCasinoBlackjackSchema } from './startup/ensureCasinoBlackjackSchema';
 import { ensureStaffRoleSchema } from './startup/ensureStaffRoleSchema';
 import { ensureLastLoginIpSchema } from './startup/ensureLastLoginIpSchema';
+import { ensureCrimeAttemptCountrySchema } from './startup/ensureCrimeAttemptCountrySchema';
 import { ensureGameEventPresets } from './services/gameEventPresets';
 import path from 'path';
 import fs from 'fs';
@@ -92,6 +93,7 @@ async function startServer() {
   await ensureCasinoBlackjackSchema();
   await ensureStaffRoleSchema();
   await ensureLastLoginIpSchema();
+  await ensureCrimeAttemptCountrySchema();
   try {
     await playerStartService.ensureStarterCrew();
   } catch (error) {

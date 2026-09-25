@@ -44,6 +44,8 @@ function computeExpungePetitionOdds(input) {
   const recordModifierPercent = computeExpungeRecordModifierPercent(convictionCount);
   const recencyModifierPercent = computeExpungeRecencyModifierPercent(input.hoursSinceLastArrest);
   const reputationModifierPercent = computeExpungeReputationModifierPercent(reputation);
+  const mathCorrect = Math.max(0, Math.floor(Number(input.mathCorrect) || 0));
+  const mathModifierPercent = Math.min(15, mathCorrect);
   const donJudgePercent = input.hasJudge ? EXPUNGE_PETITION_DON_JUDGE_PERCENT : 0;
   const donCommissionerPercent = input.hasCommissioner
     ? EXPUNGE_PETITION_DON_COMMISSIONER_PERCENT
@@ -54,6 +56,7 @@ function computeExpungePetitionOdds(input) {
     recordModifierPercent +
     recencyModifierPercent +
     reputationModifierPercent +
+    mathModifierPercent +
     donJudgePercent +
     donCommissionerPercent +
     donAldermanPercent;
@@ -68,6 +71,8 @@ function computeExpungePetitionOdds(input) {
     donJudgePercent,
     donCommissionerPercent,
     donAldermanPercent,
+    mathCorrect,
+    mathModifierPercent,
     successPercent,
   };
 }
@@ -135,6 +140,29 @@ assertEqual(stacked.donJudgePercent, 8, 'judge don bonus');
 assertEqual(stacked.donCommissionerPercent, 6, 'commissioner don bonus');
 assertEqual(stacked.donAldermanPercent, 5, 'alderman don bonus');
 assertEqual(stacked.successPercent, 70, '38+15+15+19 clamps to 70');
+
+const withMath = computeExpungePetitionOdds({
+  convictionCount: 1,
+  hoursSinceLastArrest: 4,
+  reputation: 0,
+  mathCorrect: 10,
+  hasJudge: false,
+  hasCommissioner: false,
+  hasAlderman: false,
+});
+assertEqual(withMath.mathModifierPercent, 10, '10 correct jail-math answers = +10');
+assertEqual(withMath.successPercent, 40, '38 - 8 recency + 10 math');
+
+const mathCapped = computeExpungePetitionOdds({
+  convictionCount: 1,
+  hoursSinceLastArrest: 100,
+  reputation: 0,
+  mathCorrect: 40,
+  hasJudge: false,
+  hasCommissioner: false,
+  hasAlderman: false,
+});
+assertEqual(mathCapped.mathModifierPercent, 15, 'jail-math bonus caps at 15');
 
 assertEqual(failPetitionClearsRecord(false), false, 'fail path does not wipe the record');
 assertEqual(failPetitionClearsRecord(true), true, 'success path wipes the record');
