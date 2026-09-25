@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../models/property.dart';
 import '../services/showroom_service.dart';
+import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 import '../widgets/empire_page_hero.dart';
 import '../widgets/game_page_info.dart';
 import '../widgets/jail_gate.dart';
+import '../widgets/vehicle_catalog_dialog.dart';
 
 class ShowroomScreen extends StatefulWidget {
   final Property property;
@@ -213,6 +215,9 @@ class _ShowroomScreenState extends State<ShowroomScreen>
     final l10n = AppLocalizations.of(context)!;
     final used = '${_showroom?['slotsUsed'] ?? 0}';
     final max = '${_showroom?['slotsMax'] ?? 0}';
+    final catalog = '${_showroom?['catalogSize'] ?? 0}';
+    final heroSubtitle =
+        '${l10n.showroomSlots(used, max)} · ${l10n.showroomCatalogProgress(used, catalog)}';
     final tabBar = TabBar(
       controller: _tabController,
       isScrollable: true,
@@ -230,14 +235,14 @@ class _ShowroomScreenState extends State<ShowroomScreen>
     if (_loading) {
       hub = Column(
         children: [
-          _buildTopBar(l10n, used, max),
+          _buildTopBar(l10n, heroSubtitle),
           const Expanded(child: Center(child: CircularProgressIndicator())),
         ],
       );
     } else if (_error != null) {
       hub = Column(
         children: [
-          _buildTopBar(l10n, used, max),
+          _buildTopBar(l10n, heroSubtitle),
           Expanded(
             child: Center(
               child: Padding(
@@ -265,11 +270,11 @@ class _ShowroomScreenState extends State<ShowroomScreen>
     } else {
       hub = NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          SliverToBoxAdapter(child: _buildTopBar(l10n, used, max)),
+          SliverToBoxAdapter(child: _buildTopBar(l10n, heroSubtitle)),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-              child: _buildRulesCard(l10n),
+              child: _buildStatsCard(l10n),
             ),
           ),
           SliverPersistentHeader(
@@ -315,7 +320,7 @@ class _ShowroomScreenState extends State<ShowroomScreen>
     );
   }
 
-  Widget _buildTopBar(AppLocalizations l10n, String used, String max) {
+  Widget _buildTopBar(AppLocalizations l10n, String subtitle) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(4, 8, 12, 0),
       child: Row(
@@ -329,7 +334,7 @@ class _ShowroomScreenState extends State<ShowroomScreen>
           Expanded(
             child: EmpirePageHero(
               title: l10n.showroomTitle,
-              subtitle: l10n.showroomSlots(used, max),
+              subtitle: subtitle,
               imageAsset: _heroAsset,
               topicId: 'properties',
               onRefresh: _load,
@@ -341,9 +346,19 @@ class _ShowroomScreenState extends State<ShowroomScreen>
     );
   }
 
-  Widget _buildRulesCard(AppLocalizations l10n) {
+  Widget _buildStatsCard(AppLocalizations l10n) {
     final country =
         _showroom?['countryId']?.toString() ?? widget.property.countryId;
+    final totalValue = (_showroom?['totalValue'] as num?)?.toInt() ?? 0;
+    final rarityRaw = _showroom?['rarityCounts'];
+    final rarityCounts = <String, int>{};
+    if (rarityRaw is Map) {
+      for (final entry in rarityRaw.entries) {
+        rarityCounts[entry.key.toString()] = (entry.value as num?)?.toInt() ?? 0;
+      }
+    }
+    const rarityOrder = ['common', 'uncommon', 'rare', 'epic', 'legendary'];
+
     return Card(
       color: Colors.black.withValues(alpha: 0.35),
       child: Padding(
@@ -362,6 +377,47 @@ class _ShowroomScreenState extends State<ShowroomScreen>
                   ),
                 ),
               ),
+            Text(
+              l10n.showroomTotalValue(formatCurrency(totalValue)),
+              style: const TextStyle(
+                color: kEmpireGold,
+                fontWeight: FontWeight.w800,
+                fontSize: 16,
+              ),
+            ),
+            if (rarityCounts.isNotEmpty) ...[
+              const SizedBox(height: 10),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  for (final rarity in rarityOrder)
+                    if ((rarityCounts[rarity] ?? 0) > 0)
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 5,
+                        ),
+                        decoration: BoxDecoration(
+                          color: rarityColor(rarity).withValues(alpha: 0.16),
+                          borderRadius: BorderRadius.circular(999),
+                          border: Border.all(
+                            color: rarityColor(rarity).withValues(alpha: 0.55),
+                          ),
+                        ),
+                        child: Text(
+                          '${rarityLabel(l10n, rarity)} × ${rarityCounts[rarity]}',
+                          style: TextStyle(
+                            color: rarityColor(rarity),
+                            fontWeight: FontWeight.w700,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                ],
+              ),
+            ],
+            const SizedBox(height: 10),
             Text(
               l10n.showroomRules,
               style: const TextStyle(color: Colors.white70, height: 1.35),
@@ -408,8 +464,8 @@ class _ShowroomScreenState extends State<ShowroomScreen>
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: columns,
-              // Slightly taller than square so name + button fit under the image.
-              childAspectRatio: columns == 1 ? 0.92 : 0.78,
+              // Taller cards: image + rarity + value + action.
+              childAspectRatio: columns == 1 ? 0.86 : 0.68,
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
             ),
@@ -420,9 +476,15 @@ class _ShowroomScreenState extends State<ShowroomScreen>
               final name = vehicle['name']?.toString() ?? l10n.unknown;
               final condition = (vehicle['condition'] as num?)?.toInt() ?? 0;
               final image = vehicle['image']?.toString();
+              final rarity =
+                  (vehicle['rarity']?.toString() ?? 'common').toLowerCase();
+              final value = (vehicle['value'] as num?)?.toInt() ??
+                  (vehicle['baseValue'] as num?)?.toInt() ??
+                  0;
               final busy =
                   inventoryId != null && _busyInventoryId == inventoryId;
               final canManage = _showroom?['canManage'] == true;
+              final tone = rarityColor(rarity);
 
               return Card(
                 clipBehavior: Clip.antiAlias,
@@ -430,7 +492,39 @@ class _ShowroomScreenState extends State<ShowroomScreen>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Expanded(child: _vehicleSquareImage(image)),
+                    Expanded(
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          _vehicleSquareImage(image),
+                          Positioned(
+                            top: 8,
+                            left: 8,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withValues(alpha: 0.72),
+                                borderRadius: BorderRadius.circular(999),
+                                border: Border.all(
+                                  color: tone.withValues(alpha: 0.7),
+                                ),
+                              ),
+                              child: Text(
+                                rarityLabel(l10n, rarity),
+                                style: TextStyle(
+                                  color: tone,
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 11,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(10, 8, 10, 10),
                       child: Column(
@@ -452,6 +546,15 @@ class _ShowroomScreenState extends State<ShowroomScreen>
                             style: const TextStyle(
                               color: Colors.white70,
                               fontSize: 12,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            formatCurrency(value),
+                            style: const TextStyle(
+                              color: kEmpireGold,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 13,
                             ),
                           ),
                           const SizedBox(height: 8),

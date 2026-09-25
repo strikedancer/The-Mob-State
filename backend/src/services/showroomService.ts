@@ -11,7 +11,9 @@ import {
   isShowroomProperty,
   notInShowroomWhere,
   showroomSlotCapAtLevel,
+  showroomVehicleDisplayValue,
   showroomVehicleImage,
+  showroomVehicleRarity,
   type ShowroomVehicleType,
 } from './showroomCatalog';
 
@@ -31,6 +33,8 @@ function mapVehicle(item: {
   showroomPlacedAt?: Date | null;
 }) {
   const def = findShowroomVehicleDef(item.vehicleId);
+  const baseValue = def?.baseValue ?? 0;
+  const value = showroomVehicleDisplayValue(def, item.condition);
   return {
     inventoryId: item.id,
     vehicleId: item.vehicleId,
@@ -41,8 +45,19 @@ function mapVehicle(item: {
     currentLocation: item.currentLocation,
     fuelLevel: item.fuelLevel,
     placedAt: item.showroomPlacedAt ?? null,
-    baseValue: def?.baseValue ?? 0,
+    baseValue,
+    value,
+    rarity: showroomVehicleRarity(def),
   };
+}
+
+function rarityCounts(vehicles: Array<{ rarity: string }>): Record<string, number> {
+  const counts: Record<string, number> = {};
+  for (const vehicle of vehicles) {
+    const key = vehicle.rarity || 'common';
+    counts[key] = (counts[key] ?? 0) + 1;
+  }
+  return counts;
 }
 
 async function garageOrMarinaHasSpace(
@@ -133,6 +148,8 @@ class ShowroomService {
 
     const exhibitedModels = new Set(exhibits.map((item) => item.vehicleId));
     const eligible = eligibleRaw.filter((item) => !exhibitedModels.has(item.vehicleId));
+    const mappedExhibits = exhibits.map(mapVehicle);
+    const totalValue = mappedExhibits.reduce((sum, item) => sum + (item.value || 0), 0);
 
     return {
       success: true as const,
@@ -147,8 +164,10 @@ class ShowroomService {
         slotsUsed: exhibits.length,
         slotsMax,
         catalogSize: getShowroomCatalogSize(property.propertyType),
+        totalValue,
+        rarityCounts: rarityCounts(mappedExhibits),
         canManage,
-        exhibits: exhibits.map(mapVehicle),
+        exhibits: mappedExhibits,
         eligible: eligible.map(mapVehicle),
       },
     };

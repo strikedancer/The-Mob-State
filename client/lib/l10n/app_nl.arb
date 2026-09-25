@@ -454,6 +454,25 @@
       }
     }
   },
+  "showroomCatalogProgress": "{used} / {catalog} modellen verzameld",
+  "@showroomCatalogProgress": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "catalog": {
+        "type": "String"
+      }
+    }
+  },
+  "showroomTotalValue": "Collectiewaarde: {value}",
+  "@showroomTotalValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
   "showroomEmptyCollection": "Nog geen voertuigen in de vitrine.",
   "showroomEmptyEligible": "Geen voertuig klaar om te plaatsen. Het moet in dit land staan, 100% conditie hebben en dat model mag nog niet in de vitrine staan.",
   "showroomPlaceAction": "Plaats",

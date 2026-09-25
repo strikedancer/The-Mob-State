@@ -13436,5 +13436,24 @@
   "achievementTitle_smuggle_variety_pack": "Pack Variété",
   "achievementDescription_smuggle_variety_pack": "Réclamez des marchandises de contrebande de 3 catégories différentes",
   "achievementTitle_smuggle_five_borders": "Cinq frontières",
-  "achievementDescription_smuggle_five_borders": "Réclamez des marchandises de contrebande dans 5 pays différents"
+  "achievementDescription_smuggle_five_borders": "Réclamez des marchandises de contrebande dans 5 pays différents",
+  "showroomCatalogProgress": "{used} / {catalog} modèles collectés",
+  "@showroomCatalogProgress": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "catalog": {
+        "type": "String"
+      }
+    }
+  },
+  "showroomTotalValue": "Valeur de collecte : {value}",
+  "@showroomTotalValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  }
 }

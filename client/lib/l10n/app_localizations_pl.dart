@@ -6900,6 +6900,16 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
+  String showroomCatalogProgress(String used, String catalog) {
+    return 'Zebrano $used / $catalog modeli';
+  }
+
+  @override
+  String showroomTotalValue(String value) {
+    return 'Wartość kolekcji: $value';
+  }
+
+  @override
   String get showroomEmptyCollection => 'Brak pojazdów w witrynie.';
 
   @override

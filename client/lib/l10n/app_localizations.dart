@@ -12140,6 +12140,18 @@ abstract class AppLocalizations {
   /// **'{used} / {max} display slots'**
   String showroomSlots(String used, String max);
 
+  /// No description provided for @showroomCatalogProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{used} / {catalog} models collected'**
+  String showroomCatalogProgress(String used, String catalog);
+
+  /// No description provided for @showroomTotalValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Collection value: {value}'**
+  String showroomTotalValue(String value);
+
   /// No description provided for @showroomEmptyCollection.
   ///
   /// In en, this message translates to:

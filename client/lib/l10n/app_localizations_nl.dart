@@ -6889,6 +6889,16 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String showroomCatalogProgress(String used, String catalog) {
+    return '$used / $catalog modellen verzameld';
+  }
+
+  @override
+  String showroomTotalValue(String value) {
+    return 'Collectiewaarde: $value';
+  }
+
+  @override
   String get showroomEmptyCollection => 'Nog geen voertuigen in de vitrine.';
 
   @override

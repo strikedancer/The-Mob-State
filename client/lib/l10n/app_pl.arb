@@ -13436,5 +13436,24 @@
   "achievementTitle_smuggle_variety_pack": "Pakiet różnorodności",
   "achievementDescription_smuggle_variety_pack": "Zdobądź przemycony ładunek z 3 różnych kategorii",
   "achievementTitle_smuggle_five_borders": "Pięć granic",
-  "achievementDescription_smuggle_five_borders": "Zdobądź przemycony ładunek w 5 różnych krajach"
+  "achievementDescription_smuggle_five_borders": "Zdobądź przemycony ładunek w 5 różnych krajach",
+  "showroomCatalogProgress": "Zebrano {used} / {catalog} modeli",
+  "@showroomCatalogProgress": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "catalog": {
+        "type": "String"
+      }
+    }
+  },
+  "showroomTotalValue": "Wartość kolekcji: {value}",
+  "@showroomTotalValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  }
 }

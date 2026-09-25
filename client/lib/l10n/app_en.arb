@@ -4021,6 +4021,25 @@
       }
     }
   },
+  "showroomCatalogProgress": "{used} / {catalog} models collected",
+  "@showroomCatalogProgress": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "catalog": {
+        "type": "String"
+      }
+    }
+  },
+  "showroomTotalValue": "Collection value: {value}",
+  "@showroomTotalValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
   "showroomEmptyCollection": "No vehicles on display yet.",
   "showroomEmptyEligible": "No vehicle is ready to place. It must be in this country, at 100% condition, and that model cannot already be on display.",
   "showroomPlaceAction": "Place",

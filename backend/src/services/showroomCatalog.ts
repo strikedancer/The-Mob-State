@@ -28,6 +28,7 @@ interface VehicleCatalogEntry {
   imageDirty?: string;
   imageDamaged?: string;
   baseValue?: number;
+  rarity?: string;
 }
 
 interface VehiclesFile {
@@ -86,6 +87,26 @@ export function findShowroomVehicleDef(vehicleId: string): VehicleCatalogEntry |
     catalog.boat.find((item) => item.id === vehicleId) ??
     null
   );
+}
+
+/** Same fallback bands as street theft when catalog omits rarity. */
+export function showroomVehicleRarity(def: VehicleCatalogEntry | null): string {
+  if (def?.rarity) return def.rarity;
+  const value = def?.baseValue ?? 0;
+  if (value <= 15000) return 'common';
+  if (value <= 60000) return 'uncommon';
+  if (value <= 150000) return 'rare';
+  if (value <= 400000) return 'epic';
+  return 'legendary';
+}
+
+export function showroomVehicleDisplayValue(
+  def: VehicleCatalogEntry | null,
+  condition: number,
+): number {
+  const base = Math.max(0, Math.floor(Number(def?.baseValue ?? 0)));
+  const conditionPct = Math.max(0, Math.min(100, Math.floor(Number(condition) || 0)));
+  return Math.floor((base * conditionPct) / 100);
 }
 
 export function showroomVehicleImage(

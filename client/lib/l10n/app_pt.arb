@@ -13436,5 +13436,24 @@
   "achievementTitle_smuggle_variety_pack": "Pacote de variedades",
   "achievementDescription_smuggle_variety_pack": "Reivindique carga contrabandeada de 3 categorias diferentes",
   "achievementTitle_smuggle_five_borders": "Cinco Fronteiras",
-  "achievementDescription_smuggle_five_borders": "Reivindique carga contrabandeada em 5 países diferentes"
+  "achievementDescription_smuggle_five_borders": "Reivindique carga contrabandeada em 5 países diferentes",
+  "showroomCatalogProgress": "{used} / {catalog} modelos coletados",
+  "@showroomCatalogProgress": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "catalog": {
+        "type": "String"
+      }
+    }
+  },
+  "showroomTotalValue": "Valor da coleção: {value}",
+  "@showroomTotalValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  }
 }
