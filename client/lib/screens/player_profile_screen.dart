@@ -13,6 +13,7 @@ import '../screens/crew_screen.dart';
 import '../utils/achievement_display.dart';
 import '../utils/avatar_helper.dart';
 import '../utils/game_event_rewards.dart';
+import '../utils/formatters.dart';
 import '../utils/portrait_download.dart';
 import '../utils/property_display.dart';
 import '../utils/rank_display.dart';
@@ -20,6 +21,7 @@ import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 import '../widgets/avatar_picker_sheet.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/vehicle_catalog_dialog.dart';
 
 class PlayerProfileScreen extends StatefulWidget {
   final int playerId;
@@ -1142,8 +1144,10 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
     final level = (item['upgradeLevel'] as num?)?.toInt() ?? 1;
     final name = localizedPropertyName(l10n, type);
     final imagePath = propertyCatalogAssetPath(type);
+    final showroomStats = _showroomStatsFromProperty(item);
+    final isShowroom = showroomStats != null;
     return Container(
-      width: 148,
+      width: isShowroom ? 220 : 148,
       decoration: BoxDecoration(
         color: Colors.black26,
         borderRadius: BorderRadius.circular(12),
@@ -1188,11 +1192,90 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
                   l10n.propertyLevel(level.toString()),
                   style: const TextStyle(color: Colors.white70, fontSize: 11),
                 ),
+                if (showroomStats != null) ...[
+                  const SizedBox(height: 6),
+                  Text(
+                    '${l10n.showroomSlots(showroomStats.slotsUsed.toString(), showroomStats.slotsMax.toString())} · ${l10n.showroomCatalogProgress(showroomStats.slotsUsed.toString(), showroomStats.catalogSize.toString())}',
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 10,
+                      height: 1.25,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    l10n.showroomTotalValue(
+                      formatCurrency(showroomStats.totalValue),
+                    ),
+                    style: const TextStyle(
+                      color: Color(0xFFD4AF37),
+                      fontWeight: FontWeight.w700,
+                      fontSize: 11,
+                    ),
+                  ),
+                  if (showroomStats.rarityCounts.isNotEmpty) ...[
+                    const SizedBox(height: 6),
+                    Wrap(
+                      spacing: 4,
+                      runSpacing: 4,
+                      children: [
+                        for (final rarity in const [
+                          'common',
+                          'uncommon',
+                          'rare',
+                          'epic',
+                          'legendary',
+                        ])
+                          if ((showroomStats.rarityCounts[rarity] ?? 0) > 0)
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 6,
+                                vertical: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: rarityColor(rarity).withValues(alpha: 0.16),
+                                borderRadius: BorderRadius.circular(999),
+                                border: Border.all(
+                                  color: rarityColor(rarity).withValues(alpha: 0.55),
+                                ),
+                              ),
+                              child: Text(
+                                '${rarityLabel(l10n, rarity)} × ${showroomStats.rarityCounts[rarity]}',
+                                style: TextStyle(
+                                  color: rarityColor(rarity),
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 9,
+                                ),
+                              ),
+                            ),
+                      ],
+                    ),
+                  ],
+                ],
               ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  _ProfileShowroomStats? _showroomStatsFromProperty(Map<String, dynamic> item) {
+    final raw = item['showroomStats'];
+    if (raw is! Map) return null;
+    final rarityRaw = raw['rarityCounts'];
+    final rarityCounts = <String, int>{};
+    if (rarityRaw is Map) {
+      for (final entry in rarityRaw.entries) {
+        rarityCounts[entry.key.toString()] = (entry.value as num?)?.toInt() ?? 0;
+      }
+    }
+    return _ProfileShowroomStats(
+      slotsUsed: (raw['slotsUsed'] as num?)?.toInt() ?? 0,
+      slotsMax: (raw['slotsMax'] as num?)?.toInt() ?? 0,
+      catalogSize: (raw['catalogSize'] as num?)?.toInt() ?? 0,
+      totalValue: (raw['totalValue'] as num?)?.toInt() ?? 0,
+      rarityCounts: rarityCounts,
     );
   }
 
@@ -1397,4 +1480,20 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
     padding: EdgeInsets.symmetric(vertical: 8),
     child: Divider(height: 1, color: Colors.white12),
   );
+}
+
+class _ProfileShowroomStats {
+  final int slotsUsed;
+  final int slotsMax;
+  final int catalogSize;
+  final int totalValue;
+  final Map<String, int> rarityCounts;
+
+  const _ProfileShowroomStats({
+    required this.slotsUsed,
+    required this.slotsMax,
+    required this.catalogSize,
+    required this.totalValue,
+    required this.rarityCounts,
+  });
 }

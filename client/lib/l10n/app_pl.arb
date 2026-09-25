@@ -11578,7 +11578,7 @@
     }
   },
   "profilePropertiesTitle": "Nieruchomości",
-  "profilePropertiesHint": "Posiadane budynki. Country and storage stay private.",
+  "profilePropertiesHint": "Posiadane budynki. Kraj i magazyn pozostają prywatne; statystyki kolekcji showroom są publiczne.",
   "profilePropertiesEmpty": "Nie ma jeszcze żadnych właściwości",
   "schoolLessonTuition": "Czesne: {amount}",
   "@schoolLessonTuition": {

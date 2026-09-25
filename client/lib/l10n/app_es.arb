@@ -11578,7 +11578,7 @@
     }
   },
   "profilePropertiesTitle": "Propiedades",
-  "profilePropertiesHint": "Edificios propios. El campo y el almacenamiento permanecen privados.",
+  "profilePropertiesHint": "Edificios propios. El país y el almacén permanecen privados; las estadísticas de showroom son públicas.",
   "profilePropertiesEmpty": "Aún no hay propiedades",
   "schoolLessonTuition": "Matrícula: {amount}",
   "@schoolLessonTuition": {

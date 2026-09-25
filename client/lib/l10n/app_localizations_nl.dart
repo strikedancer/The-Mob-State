@@ -15426,7 +15426,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get profilePropertiesHint =>
-      'Panden in bezit. Land en opslag blijven privé.';
+      'Panden in bezit. Land en opslag blijven privé; showroom-collectiestats zijn zichtbaar.';
 
   @override
   String get profilePropertiesEmpty => 'Nog geen eigendommen';

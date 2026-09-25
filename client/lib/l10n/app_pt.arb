@@ -11578,7 +11578,7 @@
     }
   },
   "profilePropertiesTitle": "Propriedades",
-  "profilePropertiesHint": "Edifícios próprios. O país e o armazenamento permanecem privados.",
+  "profilePropertiesHint": "Edifícios próprios. País e armazenamento ficam privados; as estatísticas da coleção de showroom são públicas.",
   "profilePropertiesEmpty": "Ainda não há propriedades",
   "schoolLessonTuition": "Mensalidade: {amount}",
   "@schoolLessonTuition": {

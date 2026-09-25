@@ -11578,7 +11578,7 @@
     }
   },
   "profilePropertiesTitle": "Proprietà",
-  "profilePropertiesHint": "Edifici di proprietà. Il paese e lo spazio di archiviazione rimangono privati.",
+  "profilePropertiesHint": "Edifici di proprietà. Paese e magazzino restano privati; le statistiche della collezione showroom sono pubbliche.",
   "profilePropertiesEmpty": "Nessuna proprietà ancora",
   "schoolLessonTuition": "Retta: {amount}",
   "@schoolLessonTuition": {

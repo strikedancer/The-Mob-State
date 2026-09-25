@@ -15571,7 +15571,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get profilePropertiesHint =>
-      'Eigene Gebäude. Country and storage stay private.';
+      'Eigene Gebäude. Land und Lager bleiben privat; Showroom-Sammlungsstats sind öffentlich.';
 
   @override
   String get profilePropertiesEmpty => 'Noch keine Eigenschaften';

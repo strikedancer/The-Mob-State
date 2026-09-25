@@ -101,7 +101,75 @@ async function garageOrMarinaHasSpace(
   return current < cap;
 }
 
+export type PublicShowroomStats = {
+  slotsUsed: number;
+  slotsMax: number;
+  catalogSize: number;
+  totalValue: number;
+  rarityCounts: Record<string, number>;
+};
+
 class ShowroomService {
+  /**
+   * Prestige-only showroom summary for public profiles.
+   * No country / eligible garage intel — only collection progress + value.
+   */
+  async getPublicShowroomStatsByPropertyId(
+    playerId: number,
+  ): Promise<Map<number, PublicShowroomStats>> {
+    const showrooms = await prisma.property.findMany({
+      where: {
+        playerId,
+        propertyType: { in: [...SHOWROOM_PROPERTY_IDS] },
+      },
+      select: { id: true, propertyType: true, upgradeLevel: true },
+    });
+
+    const result = new Map<number, PublicShowroomStats>();
+    if (showrooms.length === 0) return result;
+
+    const exhibits = await prisma.vehicleInventory.findMany({
+      where: {
+        playerId,
+        showroomPropertyId: { in: showrooms.map((row) => row.id) },
+      },
+      select: {
+        showroomPropertyId: true,
+        vehicleId: true,
+        condition: true,
+      },
+    });
+
+    const byProperty = new Map<number, typeof exhibits>();
+    for (const exhibit of exhibits) {
+      const propertyId = exhibit.showroomPropertyId;
+      if (propertyId == null) continue;
+      const list = byProperty.get(propertyId) ?? [];
+      list.push(exhibit);
+      byProperty.set(propertyId, list);
+    }
+
+    for (const showroom of showrooms) {
+      const rows = byProperty.get(showroom.id) ?? [];
+      const mapped = rows.map((row) => {
+        const def = findShowroomVehicleDef(row.vehicleId);
+        return {
+          value: showroomVehicleDisplayValue(def, row.condition),
+          rarity: showroomVehicleRarity(def),
+        };
+      });
+      result.set(showroom.id, {
+        slotsUsed: rows.length,
+        slotsMax: showroomSlotCapAtLevel(showroom.propertyType, showroom.upgradeLevel),
+        catalogSize: getShowroomCatalogSize(showroom.propertyType),
+        totalValue: mapped.reduce((sum, item) => sum + (item.value || 0), 0),
+        rarityCounts: rarityCounts(mapped),
+      });
+    }
+
+    return result;
+  }
+
   async getShowroom(playerId: number, propertyDatabaseId: number) {
     const property = await prisma.property.findUnique({
       where: { id: propertyDatabaseId },

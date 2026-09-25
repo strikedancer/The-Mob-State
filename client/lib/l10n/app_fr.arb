@@ -11578,7 +11578,7 @@
     }
   },
   "profilePropertiesTitle": "Propriétés",
-  "profilePropertiesHint": "Bâtiments possédés. Le pays et le stockage restent privés.",
+  "profilePropertiesHint": "Bâtiments possédés. Le pays et le stockage restent privés ; les stats de collection de showroom sont publiques.",
   "profilePropertiesEmpty": "Aucune propriété pour l'instant",
   "schoolLessonTuition": "Frais de scolarité : {amount}",
   "@schoolLessonTuition": {

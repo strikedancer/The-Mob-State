@@ -32,6 +32,11 @@ import {
 import { getPublicEventChipShowcase } from '../services/eventItemService';
 import { crewMissionService } from '../services/crewMissionService';
 import { applyReputationAction } from '../services/reputationService';
+import {
+  isShowroomProperty,
+  showroomService,
+  type PublicShowroomStats,
+} from '../services/showroomService';
 
 function emptyCrewWarHub() {
   return {
@@ -358,6 +363,7 @@ router.get('/:playerId/profile', authenticate, async (req: AuthRequest, res: Res
     let ownedProperties: Array<{
       propertyType: string;
       upgradeLevel: number;
+      showroomStats?: PublicShowroomStats;
     }> = [];
     try {
       eventChips = await getPublicEventChipShowcase(playerId);
@@ -393,13 +399,27 @@ router.get('/:playerId/profile', authenticate, async (req: AuthRequest, res: Res
             ],
           },
         },
-        select: { propertyType: true, upgradeLevel: true },
+        select: { id: true, propertyType: true, upgradeLevel: true },
         orderBy: [{ upgradeLevel: 'desc' }, { purchasedAt: 'asc' }],
       });
-      ownedProperties = rows.map((row) => ({
-        propertyType: row.propertyType,
-        upgradeLevel: Math.max(1, row.upgradeLevel || 1),
-      }));
+      let showroomStatsById = new Map<number, PublicShowroomStats>();
+      try {
+        if (rows.some((row) => isShowroomProperty(row.propertyType))) {
+          showroomStatsById =
+            await showroomService.getPublicShowroomStatsByPropertyId(playerId);
+        }
+      } catch (showroomStatsError) {
+        console.error('⚠️ Profile showroom stats fallback:', showroomStatsError);
+      }
+      ownedProperties = rows.map((row) => {
+        const base = {
+          propertyType: row.propertyType,
+          upgradeLevel: Math.max(1, row.upgradeLevel || 1),
+        };
+        if (!isShowroomProperty(row.propertyType)) return base;
+        const showroomStats = showroomStatsById.get(row.id);
+        return showroomStats ? { ...base, showroomStats } : base;
+      });
     } catch (extraError) {
       console.error('⚠️ Profile properties fallback:', extraError);
     }

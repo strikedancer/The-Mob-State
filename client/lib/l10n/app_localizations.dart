@@ -26810,7 +26810,7 @@ abstract class AppLocalizations {
   /// No description provided for @profilePropertiesHint.
   ///
   /// In en, this message translates to:
-  /// **'Owned buildings. Country and storage stay private.'**
+  /// **'Owned buildings. Country and storage stay private; showroom collection stats are public.'**
   String get profilePropertiesHint;
 
   /// No description provided for @profilePropertiesEmpty.

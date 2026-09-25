@@ -9537,7 +9537,7 @@
     }
   },
   "profilePropertiesTitle": "Properties",
-  "profilePropertiesHint": "Owned buildings. Country and storage stay private.",
+  "profilePropertiesHint": "Owned buildings. Country and storage stay private; showroom collection stats are public.",
   "profilePropertiesEmpty": "No properties yet",
   "gameScreenUnknownPlayer": "Unknown",
   "gameScreenDash": "—",
