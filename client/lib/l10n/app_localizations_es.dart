@@ -20541,6 +20541,10 @@ class AppLocalizationsEs extends AppLocalizations {
       'No se pudo desarrollar esta propiedad.';
 
   @override
+  String get propertyDevelopBankHint =>
+      'Paid from your bank, not pocket cash. Each level permanently raises this property\'s passive income.';
+
+  @override
   String get helpTopicStockMarketCategory => 'Economía';
 
   @override

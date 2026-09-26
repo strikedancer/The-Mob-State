@@ -20324,7 +20324,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String propertyDevelopActionCost(String cost, int level) {
-    return 'Develop · €$cost → L$level';
+    return 'Develop (bank) · €$cost → L$level';
   }
 
   @override
@@ -20350,10 +20350,15 @@ class AppLocalizationsEn extends AppLocalizations {
       'Property development is disabled.';
 
   @override
-  String get propertyDevelopInsufficientBalance => 'Not enough bank balance.';
+  String get propertyDevelopInsufficientBalance =>
+      'Not enough bank balance. Cash in hand does not count — deposit at the Bank first.';
 
   @override
   String get propertyDevelopErrorUnknown => 'Could not develop this property.';
+
+  @override
+  String get propertyDevelopBankHint =>
+      'Paid from your bank, not pocket cash. Each level permanently raises this property\'s passive income.';
 
   @override
   String get helpTopicStockMarketCategory => 'Economy';

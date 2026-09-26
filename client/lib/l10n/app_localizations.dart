@@ -34876,7 +34876,7 @@ abstract class AppLocalizations {
   /// No description provided for @propertyDevelopActionCost.
   ///
   /// In en, this message translates to:
-  /// **'Develop · €{cost} → L{level}'**
+  /// **'Develop (bank) · €{cost} → L{level}'**
   String propertyDevelopActionCost(String cost, int level);
 
   /// No description provided for @propertyDevelopCooldown.
@@ -34912,7 +34912,7 @@ abstract class AppLocalizations {
   /// No description provided for @propertyDevelopInsufficientBalance.
   ///
   /// In en, this message translates to:
-  /// **'Not enough bank balance.'**
+  /// **'Not enough bank balance. Cash in hand does not count — deposit at the Bank first.'**
   String get propertyDevelopInsufficientBalance;
 
   /// No description provided for @propertyDevelopErrorUnknown.
@@ -34920,6 +34920,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not develop this property.'**
   String get propertyDevelopErrorUnknown;
+
+  /// No description provided for @propertyDevelopBankHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid from your bank, not pocket cash. Each level permanently raises this property\'s passive income.'**
+  String get propertyDevelopBankHint;
 
   /// No description provided for @helpTopicStockMarketCategory.
   ///

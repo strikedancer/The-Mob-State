@@ -20590,6 +20590,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get propertyDevelopErrorUnknown => 'Could not develop this property.';
 
   @override
+  String get propertyDevelopBankHint =>
+      'Paid from your bank, not pocket cash. Each level permanently raises this property\'s passive income.';
+
+  @override
   String get helpTopicStockMarketCategory => 'Économie';
 
   @override

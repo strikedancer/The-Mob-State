@@ -12827,7 +12827,7 @@
     }
   },
   "propertyDevelopIncomeLabel": "Passief inkomen",
-  "propertyDevelopActionCost": "Ontwikkel · €{cost} → L{level}",
+  "propertyDevelopActionCost": "Ontwikkel (bank) · €{cost} → L{level}",
   "@propertyDevelopActionCost": {
     "placeholders": {
       "cost": {
@@ -12857,7 +12857,7 @@
   "propertyDevelopErrorCooldownGeneric": "Ontwikkelen staat op cooldown.",
   "propertyDevelopErrorMaxLevel": "Dit vastgoed zit al op max ontwikkeling.",
   "propertyDevelopErrorDisabled": "Vastgoedontwikkeling is uitgeschakeld.",
-  "propertyDevelopInsufficientBalance": "Niet genoeg banksaldo.",
+  "propertyDevelopInsufficientBalance": "Niet genoeg banksaldo. Cash op zak telt niet — stort eerst bij de Bank.",
   "propertyDevelopErrorUnknown": "Vastgoed ontwikkelen mislukt.",
   "helpTopicStockMarketCategory": "Economie",
   "helpTopicStockMarketTitle": "Aandelenmarkt",
@@ -13624,5 +13624,6 @@
       }
     }
   },
-  "statsBoardHelpHow": "Wekelijkse en all-time borden voor gelukte misdaden, opgelegde celminuten, voertuigdiefstallen en misdaadbuit (niet je cash-op-zak). Celminuten zijn opgelegd; borg of uitbraak kan korter zijn."
+  "statsBoardHelpHow": "Wekelijkse en all-time borden voor gelukte misdaden, opgelegde celminuten, voertuigdiefstallen en misdaadbuit (niet je cash-op-zak). Celminuten zijn opgelegd; borg of uitbraak kan korter zijn.",
+  "propertyDevelopBankHint": "Betaal je van de bank, niet van cash op zak. Elk level verhoogt permanent het passieve inkomen van dit pand."
 }

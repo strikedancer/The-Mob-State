@@ -20597,6 +20597,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Diese Immobilie konnte nicht bebaut werden.';
 
   @override
+  String get propertyDevelopBankHint =>
+      'Paid from your bank, not pocket cash. Each level permanently raises this property\'s passive income.';
+
+  @override
   String get helpTopicStockMarketCategory => 'Wirtschaft';
 
   @override

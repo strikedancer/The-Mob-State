@@ -676,6 +676,11 @@ class PropertyCard extends StatelessWidget {
           child: OutlinedButton.icon(
             onPressed: ownedProperty!.canDevelopNow ? onDevelop : null,
             icon: const Icon(Icons.construction),
+            style: OutlinedButton.styleFrom(
+              foregroundColor: const Color(0xFFB9F6CA),
+              side: const BorderSide(color: Color(0xFF66BB6A)),
+              disabledForegroundColor: Colors.white38,
+            ),
             label: Text(
               ownedProperty!.developCooldownRemainingSeconds > 0
                   ? l10n.propertyDevelopCooldown(
@@ -691,6 +696,14 @@ class PropertyCard extends StatelessWidget {
                       ownedProperty!.developmentLevel + 1,
                     ),
             ),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          l10n.propertyDevelopBankHint,
+          style: TextStyle(
+            color: Colors.white.withValues(alpha: 0.65),
+            fontSize: 11,
           ),
         ),
       ],

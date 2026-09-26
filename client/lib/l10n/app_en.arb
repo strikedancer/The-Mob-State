@@ -12988,7 +12988,7 @@
     }
   },
   "propertyDevelopIncomeLabel": "Passive income",
-  "propertyDevelopActionCost": "Develop · €{cost} → L{level}",
+  "propertyDevelopActionCost": "Develop (bank) · €{cost} → L{level}",
   "@propertyDevelopActionCost": {
     "placeholders": {
       "cost": {
@@ -13018,8 +13018,9 @@
   "propertyDevelopErrorCooldownGeneric": "Development is on cooldown.",
   "propertyDevelopErrorMaxLevel": "This property is already at max development.",
   "propertyDevelopErrorDisabled": "Property development is disabled.",
-  "propertyDevelopInsufficientBalance": "Not enough bank balance.",
+  "propertyDevelopInsufficientBalance": "Not enough bank balance. Cash in hand does not count — deposit at the Bank first.",
   "propertyDevelopErrorUnknown": "Could not develop this property.",
+  "propertyDevelopBankHint": "Paid from your bank, not pocket cash. Each level permanently raises this property's passive income.",
   "helpTopicStockMarketCategory": "Economy",
   "helpTopicStockMarketTitle": "Stock market",
   "helpTopicStockMarketSummary": "Trade slow-moving stocks with bank money. Separate system from crypto.",

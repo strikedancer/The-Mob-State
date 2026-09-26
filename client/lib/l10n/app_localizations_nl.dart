@@ -20375,7 +20375,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String propertyDevelopActionCost(String cost, int level) {
-    return 'Ontwikkel · €$cost → L$level';
+    return 'Ontwikkel (bank) · €$cost → L$level';
   }
 
   @override
@@ -20401,10 +20401,15 @@ class AppLocalizationsNl extends AppLocalizations {
       'Vastgoedontwikkeling is uitgeschakeld.';
 
   @override
-  String get propertyDevelopInsufficientBalance => 'Niet genoeg banksaldo.';
+  String get propertyDevelopInsufficientBalance =>
+      'Niet genoeg banksaldo. Cash op zak telt niet — stort eerst bij de Bank.';
 
   @override
   String get propertyDevelopErrorUnknown => 'Vastgoed ontwikkelen mislukt.';
+
+  @override
+  String get propertyDevelopBankHint =>
+      'Betaal je van de bank, niet van cash op zak. Elk level verhoogt permanent het passieve inkomen van dit pand.';
 
   @override
   String get helpTopicStockMarketCategory => 'Economie';
