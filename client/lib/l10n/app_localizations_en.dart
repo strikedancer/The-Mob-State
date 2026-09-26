@@ -374,6 +374,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dashboardTimeoutCrewMission => 'Crew mission';
 
   @override
+  String get dashboardTimeoutLaunder => 'Money laundering';
+
+  @override
   String get dashboardInfoDrugsGrams => 'Drugs (grams)';
 
   @override
@@ -6880,6 +6883,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String showroomPublicMoreExhibits(String count) {
+    return '+$count more on display';
+  }
+
+  @override
   String get showroomEmptyCollection => 'No vehicles on display yet.';
 
   @override
@@ -11261,6 +11269,16 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String trainingHubComboChip(String pct) {
     return 'Combo active: +$pct% on crimes';
+  }
+
+  @override
+  String trainingHubTrainCost(String cost) {
+    return 'Train (€$cost)';
+  }
+
+  @override
+  String trainingHubInsufficientFunds(String cost) {
+    return 'Not enough cash for this training session (need €$cost).';
   }
 
   @override
@@ -18941,11 +18959,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicCrewHow =>
-      'Creating a crew costs €10.000. The Crew HQ determines how many members your crew can hold and scales up to 150 members. The leader can invite, kick and start heists. Crew roles (the leader assigns them on Members): Leader invites, kicks, starts heists, declares wars, sets roles, withdraws from the crew bank, sells crew vehicles, starts missions and deals, and can buy a jailed crewmate out from the vault. Co-leader shares those officer tools except withdrawing from the crew bank and changing roles; they can sell crew storage, run missions and deals, act as a territory officer, and pay crew-bank buyouts. Consigliere sees the crew Don racket list but cannot take money from the crew bank. Capo is tied to one country chosen by the leader; only in that country can they send Don tribute and contracts to the crew bank. Members can deposit, chat, join heists and use shared storage; they cannot sell crew vehicles or pay buyouts from the vault. Territory slots: +1 region every 3 HQ levels, +1 every 5 extra members, the lowest counts, never more than 10.\nCrew benefits: access to large heists, shared storage, teamwork bonus (+10% success per extra member, max +30%) and group chat.\nNew crews now start with Crew HQ level 1 and all storage buildings at level 1, including cash storage, so the crew bank and shared storage work immediately.\nCash storage level 1 holds €1.000.000. The next cash-storage upgrade always costs less than that vault, so you can pay it from the crew bank instead of getting stuck at the cap.\nCrew car storage now also accepts motorcycles, so land vehicles can be managed together from the same shared crew storage.\nShared storage is not an extra personal garage. Cars, motorcycles, boats, weapons, ammo and trade goods you deposit belong to the crew: they are used for crew smuggling, crew missions (trade goods for Port Contraband Manifest and Warehouse Luxury Offload), deals between crews, or stolen in a raid by another crew. You cannot take them back for your own crimes or to drive or sail them yourself.\nDrugs in crew storage can go to wholesale (freight and payout through the crew bank) or back to your own inventory. Territory bonuses come from the storage building level, not from how full the shelves are.\nOnly the crew owner and co-owners can buy a crewmate out of prison with crew-bank money. Bail comes from the vault. Sometimes the police then arrest you for dirty money: the other player is free, you go to jail.\nWhen a crew member gets arrested, crew members now receive a push notification that the player is locked up and waiting for help.\nThe crew screen is now grouped into Overview, HQ & Upgrades, Storage, Members, War Room, Crew Missions, Crews and Chat so management feels calmer and more professional.\nCrew Missions shows tier templates, an active run card and recent runs. Leaders/co-leaders can start and resolve; reward claiming and cooldown speedup are handled in the same tab.\nThere are extra crew missions with bank-themed operations (night deposit, skim network, armored route, subsidiary vault, reserve vault and clearing house). There is no second casino crew mission alongside Casino Ledger Raid.\nCrew mission rewards come from the server-side mission economy; other players’ bank balances are not debited for these payouts.\nWhen starting a mission you can now assign a role per crew member (Planner, Enforcer, Logistics, Tech) for team bonuses.\nActive and recent mission cards now also show per-player role contributions with score and any payout multiplier.\nCrew members now also receive push/in-app alerts for mission start, mission result, and when a mission cooldown becomes ready again.\nWhile a mission cooldown is active you cannot start a new mission. At the top of Crew Missions a large timer counts down live until you can start again; the same remaining time also appears on Home under timeouts. You can speed the wait up with credits.\nFor cooldown speedup, you first see the exact credit cost and remaining minutes before you confirm.\nCrew Wars have their own War Room tab inside the crew screen. Only leaders can declare a war and at least 3 crew members are required to participate.\nWar types: Kill War, Economy War, Territory War and Total War. Each war moves through preparation, active phase, lockdown and resolution.\nDuring an active war, participants can perform actions like kills, mugs, sabotage, intel, raids, shields, boosts and territory claims. Targeted actions now let you pick directly from a list of opponent crew members instead of typing a player ID by hand.\nSeason points are aggregated into the Crew Wars leaderboard. The War Room also shows standings, recent actions and recent wars for your crew.\nIn Territory War and Total War you now claim real Territory regions from the territory system instead of generic placeholder targets.\nThose war regions now also show their strategic value in the War Room: claim bonus, tick points and tags such as harbor, capital or logistics. That makes it immediately clear which regions are worth more than a simple ownership swap.\nCrew Wars no longer picks Territory targets on value tier alone, but also on strategic tags and adjacent pressure from attacker or defender territory. That makes Territory War and Total War feel more like a real frontline than three random claims.\nHeists: Small Bank (2 players, 40%, €10.000-€30.000, 30 min cooldown), Jewelry Store (3 players, 35%, €20.000-€50.000, 45 min), Casino Heist (4 players, 25%, €50.000-€150.000, 2 hrs), Federal Reserve (5 players, 15%, €100.000-€500.000, 6 hrs, +20 FBI Heat).\nFor a heist all members must be online at start. If someone is absent the heist fails.\nFailed heist: jail time for everyone, Wanted Level +5, no reward.\nHeist reward is split equally among all participating members.\nCrew chat is available for fast coordination.\nCrew HQ progression: the longer and more active the crew, the more shared upgrades and buffs unlock.\nShared crew ammo, drug and trade storage counts in tiles, not raw units: the same packing as personal storage (e.g. 5 coffee or 10 diamonds per tile).';
+      'Creating a crew costs €10.000. The Crew HQ determines how many members your crew can hold and scales up to 150 members. The leader can invite, kick and start heists. Crew roles (the leader assigns them on Members): Leader invites, kicks, starts heists, declares wars, sets roles, withdraws from the crew bank, sells crew vehicles, starts missions and deals, and can buy a jailed crewmate out from the vault. Co-leader shares officer tools except withdrawing from the crew bank and changing roles: they can invite and kick, start heists, sell crew storage, run missions and deals, act as a territory officer, and pay crew-bank buyouts. Consigliere sees the crew Don racket list but cannot take money from the crew bank. Capo is tied to one country chosen by the leader; only in that country can they send Don tribute and contracts to the crew bank. Members can deposit, chat, join heists and use shared storage; they cannot sell crew vehicles or pay buyouts from the vault. On Members you can optionally share income: a small cut of personal drug sales, ammo sales, vehicle sell/scrap and prostitution collection goes to the crew bank; your lifetime contribution shows next to each member. Territory slots: +1 region every 3 HQ levels, +1 every 5 extra members, the lowest counts, never more than 10.\nCrew benefits: access to large heists, shared storage, teamwork bonus (+10% success per extra member, max +30%) and group chat.\nTrust: depositing at least €10.000 into the crew bank gives +1 once per UTC day; mission success or partial success gives +tier to contributors (fail −2×tier); withdrawing from the bank costs the leader 5 trust.\nNew crews now start with Crew HQ level 1 and all storage buildings at level 1, including cash storage, so the crew bank and shared storage work immediately.\nCash storage level 1 holds €1.000.000. The next cash-storage upgrade always costs less than that vault, so you can pay it from the crew bank instead of getting stuck at the cap.\nCrew car storage now also accepts motorcycles, so land vehicles can be managed together from the same shared crew storage.\nShared storage is not an extra personal garage. Cars, motorcycles, boats, weapons, ammo and trade goods you deposit belong to the crew: they are used for crew smuggling, crew missions (trade goods for Port Contraband Manifest and Warehouse Luxury Offload), deals between crews, or stolen in a raid by another crew. You cannot take them back for your own crimes or to drive or sail them yourself.\nDrugs in crew storage can go to wholesale (freight and payout through the crew bank) or back to your own inventory. Territory bonuses come from the storage building level, not from how full the shelves are.\nOnly the crew owner and co-owners can buy a crewmate out of prison with crew-bank money. Bail comes from the vault. Sometimes the police then arrest you for dirty money: the other player is free, you go to jail.\nWhen a crew member gets arrested, crew members now receive a push notification that the player is locked up and waiting for help.\nThe crew screen is now grouped into Overview, HQ & Upgrades, Storage, Members, War Room, Crew Missions, Crews and Chat so management feels calmer and more professional.\nCrew Missions shows tier templates, an active run card and recent runs. Leaders/co-leaders can start and resolve; reward claiming and cooldown speedup are handled in the same tab.\nThere are extra crew missions with bank-themed operations (night deposit, skim network, armored route, subsidiary vault, reserve vault and clearing house). There is no second casino crew mission alongside Casino Ledger Raid.\nCrew mission rewards come from the server-side mission economy; other players’ bank balances are not debited for these payouts.\nWhen starting a mission you can now assign a role per crew member (Planner, Enforcer, Logistics, Tech) for team bonuses.\nActive and recent mission cards now also show per-player role contributions with score and any payout multiplier.\nCrew members now also receive push/in-app alerts for mission start, mission result, and when a mission cooldown becomes ready again.\nWhile a mission cooldown is active you cannot start a new mission. At the top of Crew Missions a large timer counts down live until you can start again; the same remaining time also appears on Home under timeouts. You can speed the wait up with credits.\nFor cooldown speedup, you first see the exact credit cost and remaining minutes before you confirm.\nCrew Wars have their own War Room tab inside the crew screen. Only leaders can declare a war and at least 3 crew members are required to participate.\nWar types: Kill War, Economy War, Territory War and Total War. Each war moves through preparation, active phase, lockdown and resolution.\nDuring an active war, participants can perform actions like kills, mugs, sabotage, intel, raids, shields, boosts and territory claims. Targeted actions now let you pick directly from a list of opponent crew members instead of typing a player ID by hand.\nSeason points are aggregated into the Crew Wars leaderboard. The War Room also shows standings, recent actions and recent wars for your crew.\nIn Territory War and Total War you now claim real Territory regions from the territory system instead of generic placeholder targets.\nThose war regions now also show their strategic value in the War Room: claim bonus, tick points and tags such as harbor, capital or logistics. That makes it immediately clear which regions are worth more than a simple ownership swap.\nCrew Wars no longer picks Territory targets on value tier alone, but also on strategic tags and adjacent pressure from attacker or defender territory. That makes Territory War and Total War feel more like a real frontline than three random claims.\nHeists: Small Bank (2 players, 40%, €10.000-€30.000, 30 min cooldown), Jewelry Store (3 players, 35%, €20.000-€50.000, 45 min), Casino Heist (4 players, 25%, €50.000-€150.000, 2 hrs), Federal Reserve (5 players, 15%, €100.000-€500.000, 6 hrs, +20 FBI Heat).\nFor a heist all members must be online at start. If someone is absent the heist fails.\nFailed heist: jail time for everyone, Wanted Level +5, no reward.\nHeist reward is split equally among all participating members.\nCrew chat is available for fast coordination.\nCrew HQ progression: the longer and more active the crew, the more shared upgrades and buffs unlock.\nShared crew ammo, drug and trade storage counts in tiles, not raw units: the same packing as personal storage (e.g. 5 coffee or 10 diamonds per tile).';
 
   @override
   String get helpTopicCrewTips =>
-      'Ask the leader for a role on Members if you need extra tools: co-leader, consigliere or capo (capo needs a country).\nNew crews can deposit money and use shared storage immediately; after that, focus on upgrades for more capacity instead of a separate starter purchase.\nCheck the War Room first to see whether your crew is still on cooldown before trying to declare a new war.\nCoordinate target calls in crew chat so you do not keep farming the same opponent and trip the anti-farm guard.\nCoordinate heist start times in crew chat so everyone is online and nobody is in jail.\nChoose a crew in the same timezone or activity pattern for better heist success rates.\nUse shared crew storage to separate risky goods from your personal inventory.\nOnly deposit cars, motorcycles or boats into the crew if you really want them for smuggling, missions or deals; you cannot use them yourself afterwards.\nCrew-bank buyout helps when someone\'s bail is high, but expect that you yourself can go to jail for dirty money.';
+      'Turn on Share income on Members if you want part of your drug, ammo, vehicle and prostitution cash to fund the crew bank.\nAsk the leader for a role on Members if you need extra tools: co-leader, consigliere or capo (capo needs a country).\nNew crews can deposit money and use shared storage immediately; after that, focus on upgrades for more capacity instead of a separate starter purchase.\nCheck the War Room first to see whether your crew is still on cooldown before trying to declare a new war.\nCoordinate target calls in crew chat so you do not keep farming the same opponent and trip the anti-farm guard.\nCoordinate heist start times in crew chat so everyone is online and nobody is in jail.\nChoose a crew in the same timezone or activity pattern for better heist success rates.\nUse shared crew storage to separate risky goods from your personal inventory.\nOnly deposit cars, motorcycles or boats into the crew if you really want them for smuggling, missions or deals; you cannot use them yourself afterwards.\nCrew-bank buyout helps when someone\'s bail is high, but expect that you yourself can go to jail for dirty money.';
 
   @override
   String get helpTopicFriendsCategory => 'Social';
@@ -19085,7 +19103,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicBankHow =>
-      'Free deposits are instant and have no fee, but only up to a daily cap that scales with your rank (UTC day). Withdrawals stay free and unlimited. Use Fill remaining to enter today\'s leftover quota; when the cap is used up the screen shows the countdown to 00:00 UTC.\nPassive bank interest is currently disabled.\nMoney in the bank is protected from police confiscations. Only cash on hand can be lost at arrest.\nTransaction history shows all incoming and outgoing flows with timestamp, amount, transfer counterparty and optional descriptions.\nMoney laundering: wash cash above the free daily cap into your bank with a fee and delay. Each wash has a minimum and maximum, shown on the bank screen. Higher FBI heat raises seize chance; success slightly lowers heat.\nBank Robbery crime: succeeds at 30% and steals 10-30% of a random other player\'s bank balance. High Wanted Level risk.\nTransferring money to other players is possible. You can optionally add a description, and the recipient will also see it in transactions. Double-check both amount and recipient before confirming.';
+      'Free deposits are instant and have no fee, but only up to a daily cap that scales with your rank (UTC day). Withdrawals stay free and unlimited. Use Fill remaining to enter today\'s leftover quota; when the cap is used up the screen shows the countdown to 00:00 UTC.\nPassive bank interest is currently disabled.\nMoney in the bank is protected from police confiscations. Only cash on hand can be lost at arrest.\nTransaction history shows all incoming and outgoing flows with timestamp, amount, transfer counterparty and optional descriptions.\nMoney laundering: wash cash above the free daily cap into your bank with a fee and delay. Cash leaves your pocket immediately when you start; a large countdown on Bank (and Home timeouts) shows when the wash finishes. Each wash has a minimum and maximum, shown on the bank screen. Higher FBI heat raises seize chance; success slightly lowers heat.\nBank Robbery crime: succeeds at 30% and steals 10-30% of a random other player\'s bank balance. High Wanted Level risk.\nTransferring money to other players is possible. You can optionally add a description, and the recipient will also see it in transactions. Double-check both amount and recipient before confirming.';
 
   @override
   String get helpTopicBankTips =>
@@ -20135,6 +20153,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get launderActiveJobCashGoneHint =>
+      'That cash already left your pocket. The timer above is when it lands in your bank (or is seized).';
+
+  @override
   String launderJobCountdown(String time) {
     return 'Completes in $time';
   }
@@ -20166,7 +20188,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get launderStartButton => 'Start wash';
 
   @override
-  String get launderStartedSuccess => 'Laundering started.';
+  String get launderStartedSuccess =>
+      'Laundering started. Cash left your pocket; bank payout countdown is on Bank and Home.';
+
+  @override
+  String launderStartedSuccessWithTime(String time) {
+    return 'Laundering started. Cash is gone from your pocket. Completes in $time — see Bank and Home timeouts.';
+  }
 
   @override
   String get launderErrorCooldown => 'Laundering is on cooldown.';
@@ -21075,4 +21103,37 @@ class AppLocalizationsEn extends AppLocalizations {
   String territoryHoldDashboardChip(String region, String remaining) {
     return '$region needs a patrol — $remaining left.';
   }
+
+  @override
+  String get statsBoardTitle => 'Stats boards';
+
+  @override
+  String get statsBoardMetricCrimes => 'Successful crimes';
+
+  @override
+  String get statsBoardMetricJail => 'Jail time (sentenced)';
+
+  @override
+  String get statsBoardMetricThefts => 'Vehicle thefts';
+
+  @override
+  String get statsBoardMetricCrimeIncome => 'Crime loot';
+
+  @override
+  String get statsBoardPeriodWeekly => 'This week';
+
+  @override
+  String get statsBoardPeriodAllTime => 'All-time';
+
+  @override
+  String get statsBoardEmpty => 'No scores on this board yet.';
+
+  @override
+  String statsBoardJailScore(String hours, String mins) {
+    return '${hours}h ${mins}m';
+  }
+
+  @override
+  String get statsBoardHelpHow =>
+      'Weekly and all-time boards for successful crimes, sentenced jail minutes, vehicle thefts and crime loot (not cash on hand). Jail minutes are sentenced; bail or breakout can shorten real time served.';
 }

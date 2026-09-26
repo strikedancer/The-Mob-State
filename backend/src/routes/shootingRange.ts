@@ -36,6 +36,10 @@ router.post('/train', authenticate, async (req: AuthRequest, res: Response) => {
         message = 'Training is on cooldown';
         statusCode = 429;
         break;
+      case 'INSUFFICIENT_FUNDS':
+        message = 'Insufficient funds';
+        statusCode = 400;
+        break;
       case 'JAILED':
         return res.status(403).json({
           success: false,
@@ -52,6 +56,7 @@ router.post('/train', authenticate, async (req: AuthRequest, res: Response) => {
       error: result.error,
       message,
       nextTrainAt: (result as any).nextTrainAt,
+      trainCost: (result as { trainCost?: number }).trainCost,
     });
   }
 

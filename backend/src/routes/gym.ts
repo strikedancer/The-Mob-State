@@ -44,6 +44,15 @@ router.post('/train', authenticate, async (req: AuthRequest, res) => {
         },
       });
     }
+    if (result.error === 'INSUFFICIENT_FUNDS') {
+      return res.status(400).json({
+        event: 'gym.error',
+        params: {
+          reason: 'INSUFFICIENT_FUNDS',
+          trainCost: result.trainCost,
+        },
+      });
+    }
   }
 
   void checkAndUnlockAchievements(req.player!.id).catch(() => {});

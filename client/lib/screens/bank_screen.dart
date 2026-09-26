@@ -234,10 +234,15 @@ class _BankScreenState extends State<BankScreen> {
     if (result['success'] == true) {
       setState(() => _applyLaunderStatus(result));
       _launderAmountController.clear();
+      final remaining = _launderJobRemaining();
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(l10n.launderStartedSuccess),
+          content: Text(
+            remaining != null
+                ? l10n.launderStartedSuccessWithTime(formatDuration(remaining))
+                : l10n.launderStartedSuccess,
+          ),
           backgroundColor: Colors.teal,
         ),
       );
@@ -1054,30 +1059,57 @@ class _BankScreenState extends State<BankScreen> {
                         },
                       ),
                       if (_launderStatus['activeJob'] is Map) ...[
-                        const SizedBox(height: 8),
-                        Text(
-                          l10n.launderActiveJob(
-                            ((_launderStatus['activeJob']
-                                        as Map)['amountOut'] as num?)
-                                    ?.toInt()
-                                    .toString() ??
-                                '0',
+                        const SizedBox(height: 10),
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF1A2A2A),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.teal.withValues(alpha: 0.55),
+                            ),
                           ),
-                          style: const TextStyle(color: Colors.white70),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                l10n.launderActiveJob(
+                                  ((_launderStatus['activeJob']
+                                              as Map)['amountOut'] as num?)
+                                          ?.toInt()
+                                          .toString() ??
+                                      '0',
+                                ),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              if (_launderJobRemaining() != null) ...[
+                                const SizedBox(height: 6),
+                                Text(
+                                  l10n.launderJobCountdown(
+                                    formatDuration(_launderJobRemaining()!),
+                                  ),
+                                  style: TextStyle(
+                                    color: Colors.amber.shade200,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  l10n.launderActiveJobCashGoneHint,
+                                  style: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 12.5,
+                                  ),
+                                ),
+                              ],
+                            ],
+                          ),
                         ),
-                        if (_launderJobRemaining() != null) ...[
-                          const SizedBox(height: 4),
-                          Text(
-                            l10n.launderJobCountdown(
-                              formatDuration(_launderJobRemaining()!),
-                            ),
-                            style: TextStyle(
-                              color: Colors.amber.shade200,
-                              fontSize: 12.5,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
                       ] else if (_launderCooldownSeconds > 0) ...[
                         const SizedBox(height: 8),
                         Text(

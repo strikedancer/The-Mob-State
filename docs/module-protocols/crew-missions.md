@@ -190,7 +190,7 @@ Cooldown per tier:
 
 Belangrijk:
 - Een actieve crew-missie cooldown blokkeert het starten van een nieuwe crew-missie tot cooldown-expiry of speedup.
-- Na resolve toont Crew Missies een live-aftelbanner (`cooldownUntil`) tot de crew weer mag starten; dezelfde resttijd staat op Home (`cooldowns.crew_mission` via `getCooldownRemainingSeconds`). De client tikt seconden lokaal; geen extra poll.
+- Na resolve toont Crew Missies een live-aftelbanner (`cooldownUntil`) tot de crew weer mag starten; dezelfde resttijd staat op de Start-knop van missiekaarten en op Home (`cooldowns.crew_mission` via `getCooldownRemainingSeconds`). De client tikt seconden lokaal; geen extra poll.
 - Cooldown timeouts worden geprijsd via dezelfde economy-ratio als andere action loops.
 - Geen vaste credit-prijs los van resterende tijd.
 - `credits per minuut` moet consistent zijn met crimes/jobs/vehicle/school skip-logica.

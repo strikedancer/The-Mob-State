@@ -8,6 +8,26 @@ const COOLDOWN_MS = 60 * 60 * 1000; // 1 hour
 const STRENGTH_CAP = 0.04;
 const SPEED_CAP = 0.02;
 const STAMINA_CAP = 0.02;
+const DEFAULT_TRAIN_COST = 500;
+
+async function getRuntimeConfig(keys: string[]): Promise<Record<string, string>> {
+  if (keys.length === 0) return {};
+  const placeholders = keys.map(() => '?').join(', ');
+  const rows = await prisma.$queryRawUnsafe<Array<{ configKey: string; configValue: string }>>(
+    `SELECT configKey, configValue FROM runtime_config WHERE configKey IN (${placeholders})`,
+    ...keys,
+  );
+  return rows.reduce<Record<string, string>>((acc, row) => {
+    acc[row.configKey] = row.configValue;
+    return acc;
+  }, {});
+}
+
+async function getGymTrainCost(): Promise<number> {
+  const cfg = await getRuntimeConfig(['GYM_TRAIN_COST']);
+  const raw = Number(cfg.GYM_TRAIN_COST ?? DEFAULT_TRAIN_COST);
+  return Math.max(0, Math.floor(Number.isFinite(raw) ? raw : DEFAULT_TRAIN_COST));
+}
 
 /** Max aggregate crime success bonus from all gym tracks (+8%). */
 export function computeAggregateGymBonus(
@@ -97,6 +117,8 @@ class GymService {
       (Math.min(1, staminaSessions / MAX_SESSIONS) * STAMINA_CAP).toFixed(4),
     );
 
+    const trainCost = await getGymTrainCost();
+
     return {
       sessionsCompleted: strengthSessions,
       speedSessionsCompleted: speedSessions,
@@ -118,6 +140,7 @@ class GymService {
       canTrainStamina,
       maxSessions: MAX_SESSIONS,
       cooldownMs,
+      trainCost,
       gymLastTrainedAt: latestGymTrainAt({
         lastTrainedAt,
         speedLastTrainedAt,
@@ -193,6 +216,7 @@ class GymService {
       }
     }
 
+    const trainCost = await getGymTrainCost();
     const newSessions = sessions + 1;
     const nextStrength =
       key === 'sessionsCompleted' ? newSessions : strengthSessions;
@@ -213,22 +237,46 @@ class GymService {
           ? { speedLastTrainedAt: now }
           : { staminaLastTrainedAt: now };
 
-    const updated = await prisma.gymStats.upsert({
-      where: { playerId },
-      update: { ...baseUpdate, ...stamp },
-      create: {
-        playerId,
-        sessionsCompleted: nextStrength,
-        speedSessionsCompleted: nextSpeed,
-        staminaSessionsCompleted: nextStamina,
-        strengthBonus: newBonus,
-        lastTrainedAt: lastKey === 'lastTrainedAt' ? now : null,
-        speedLastTrainedAt: lastKey === 'speedLastTrainedAt' ? now : null,
-        staminaLastTrainedAt: lastKey === 'staminaLastTrainedAt' ? now : null,
-      },
-    });
+    try {
+      const updated = await prisma.$transaction(async (tx) => {
+        if (trainCost > 0) {
+          const charged = await tx.player.updateMany({
+            where: { id: playerId, money: { gte: trainCost } },
+            data: { money: { decrement: trainCost } },
+          });
+          if (charged.count === 0) {
+            throw new Error('INSUFFICIENT_FUNDS');
+          }
+        }
 
-    return { success: true as const, stats: updated, track };
+        return tx.gymStats.upsert({
+          where: { playerId },
+          update: { ...baseUpdate, ...stamp },
+          create: {
+            playerId,
+            sessionsCompleted: nextStrength,
+            speedSessionsCompleted: nextSpeed,
+            staminaSessionsCompleted: nextStamina,
+            strengthBonus: newBonus,
+            lastTrainedAt: lastKey === 'lastTrainedAt' ? now : null,
+            speedLastTrainedAt: lastKey === 'speedLastTrainedAt' ? now : null,
+            staminaLastTrainedAt: lastKey === 'staminaLastTrainedAt' ? now : null,
+          },
+        });
+      });
+
+      return { success: true as const, stats: updated, track, trainCost };
+    } catch (err) {
+      if (err instanceof Error && err.message === 'INSUFFICIENT_FUNDS') {
+        return {
+          success: false as const,
+          error: 'INSUFFICIENT_FUNDS' as const,
+          trainCost,
+          track,
+        };
+      }
+      throw err;
+    }
   }
 }
 

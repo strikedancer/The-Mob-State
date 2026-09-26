@@ -5,6 +5,11 @@
 ## Scope
 Combat training loop, training status, payout or xp and cooldown pacing.
 
+## Train fee
+- Each successful session debits street cash via `SHOOTING_RANGE_TRAIN_COST` (`runtime_config`, default **€750**).
+- Debit happens before the session is recorded; short cash → `INSUFFICIENT_FUNDS` (no progress).
+- `GET /shooting-range/status` (and the shooting object on `GET /training/status`) includes `trainCost` for the hub button label.
+
 ## Primary Frontend Entry
 - `client/lib/screens/training_hub_screen.dart` (shooting section; API `/shooting-range`)
 

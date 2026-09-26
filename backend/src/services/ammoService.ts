@@ -242,7 +242,7 @@ class AmmoService {
     playerId: number,
     ammoType: string,
     quantity: number
-  ): Promise<{ success: boolean; error?: string; sellPrice?: number }> {
+  ): Promise<{ success: boolean; error?: string; sellPrice?: number; crewShare?: number }> {
     const ammo = this.getAmmoDefinition(ammoType);
 
     if (!ammo) {
@@ -282,15 +282,19 @@ class AmmoService {
       });
     }
 
-    // Add money
-    await prisma.player.update({
-      where: { id: playerId },
-      data: { money: { increment: sellPrice } },
-    });
+    // Add money (optional crew income share)
+    const { applyOptionalCrewIncomeShare } = await import('./crewIncomeShareService');
+    const share = await applyOptionalCrewIncomeShare(playerId, sellPrice);
+    if (share.personal > 0) {
+      await prisma.player.update({
+        where: { id: playerId },
+        data: { money: { increment: share.personal } },
+      });
+    }
 
     await refreshInventorySlotUsage(playerId);
 
-    return { success: true, sellPrice };
+    return { success: true, sellPrice: share.personal, crewShare: share.crewShare };
   }
 
   /**

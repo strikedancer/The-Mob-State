@@ -4579,6 +4579,7 @@ export const vehicleService = {
   ): Promise<{
     sellPrice: number;
     newMoney: number;
+    crewShare?: number;
   }> {
     const inventoryItem = await prisma.vehicleInventory.findUnique({
       where: { id: inventoryId },
@@ -4625,6 +4626,11 @@ export const vehicleService = {
       tuningLevels
     );
 
+    const { applyOptionalCrewIncomeShare } = await import('./crewIncomeShareService');
+    const share = await applyOptionalCrewIncomeShare(playerId, sellPrice);
+    const personalAmount = share.personal;
+    const crewShare = share.crewShare;
+
     // Use transaction
     const result = await prisma.$transaction(async (tx) => {
       // Delete vehicle from inventory
@@ -4638,18 +4644,19 @@ export const vehicleService = {
           AND vehicle_inventory_id = ${inventoryId}
       `;
 
-      // Add money to player
+      // Add money to player (personal share after optional crew cut)
       const updatedPlayer = await tx.player.update({
         where: { id: playerId },
         data: {
           money: {
-            increment: sellPrice,
+            increment: personalAmount,
           },
         },
       });
 
       return {
-        sellPrice,
+        sellPrice: personalAmount,
+        crewShare,
         newMoney: updatedPlayer.money,
       };
     });
@@ -4744,6 +4751,10 @@ export const vehicleService = {
       ? calculatePartsYield(vehicleDef, inventoryItem.condition ?? 100)
       : calculateLegacyPartsYield(vehicleType, inventoryItem.condition ?? 100, baseValue);
 
+    const { applyOptionalCrewIncomeShare } = await import('./crewIncomeShareService');
+    const share = await applyOptionalCrewIncomeShare(playerId, scrapPrice);
+    const personalAmount = share.personal;
+
     const result = await prisma.$transaction(async (tx) => {
       await tx.vehicleInventory.delete({ where: { id: inventoryId } });
       await tx.$executeRaw`
@@ -4782,13 +4793,13 @@ export const vehicleService = {
         where: { id: playerId },
         data: {
           money: {
-            increment: scrapPrice,
+            increment: personalAmount,
           },
         },
       });
 
       return {
-        scrapPrice,
+        scrapPrice: personalAmount,
         newMoney: updatedPlayer.money,
         partsGained,
         partsType: vehicleType,

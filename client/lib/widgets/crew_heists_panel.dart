@@ -12,13 +12,13 @@ class CrewHeistsPanel extends StatefulWidget {
   const CrewHeistsPanel({
     super.key,
     required this.crewId,
-    required this.isLeader,
+    required this.isOfficer,
     required this.memberCount,
     this.onHeistResolved,
   });
 
   final int crewId;
-  final bool isLeader;
+  final bool isOfficer;
   final int memberCount;
   final void Function(Map<String, dynamic> result)? onHeistResolved;
 
@@ -167,7 +167,7 @@ class _CrewHeistsPanelState extends State<CrewHeistsPanel> {
   }
 
   Future<void> _startHeist(Map<String, dynamic> heist) async {
-    if (!widget.isLeader || _starting || _heistCooldownSeconds > 0) return;
+    if (!widget.isOfficer || _starting || _heistCooldownSeconds > 0) return;
 
     final l10n = AppLocalizations.of(context)!;
     final requiresVehicle = heist['requiresVehicle'] != false;
@@ -351,7 +351,7 @@ class _CrewHeistsPanelState extends State<CrewHeistsPanel> {
                 final successRate =
                     (heist['successRate'] as num?)?.round() ?? 0;
                 final requiresVehicle = heist['requiresVehicle'] != false;
-                final canStart = widget.isLeader &&
+                final canStart = widget.isOfficer &&
                     widget.memberCount >= requiredMembers &&
                     (!_starting) &&
                     _heistCooldownSeconds <= 0 &&
@@ -403,7 +403,7 @@ class _CrewHeistsPanelState extends State<CrewHeistsPanel> {
                           ),
                         ],
                         const SizedBox(height: 10),
-                        if (!widget.isLeader)
+                        if (!widget.isOfficer)
                           Text(
                             l10n.crewHeistsLeaderOnly,
                             style: TextStyle(

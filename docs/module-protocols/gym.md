@@ -9,6 +9,7 @@ Physical stat training, gym status, training cooldown and long-term combat growt
 - **Strength / speed / stamina:** separate session counters (`sessionsCompleted`, `speedSessionsCompleted`, `staminaSessionsCompleted`), last-train timestamps and **1h** cooldowns per track (VIP reduction unchanged). Each track caps at **100** sessions.
 - **Crime bonus:** `gymService.computeAggregateGymBonus` — at full progress **+4% + 2% + 2% = +8%** success chance from gym alone; stored aggregate on `gym_stats.strengthBonus` for `crimeService`.
 - **Train:** `POST /gym/train` body `{ "track": "strength" | "speed" | "stamina" }` (omit or invalid → strength). Legacy clients that post without `track` still train strength only.
+- **Train fee:** street cash `GYM_TRAIN_COST` from `runtime_config` (default **€500**). Debited atomically before the session is recorded; insufficient cash returns `INSUFFICIENT_FUNDS`. `GET /gym/status` (and the gym object on `GET /training/status`) includes `trainCost`.
 - **Migration `20260503140000_gym_three_tracks`:** copies legacy `sessionsCompleted` into speed and stamina counters and recomputes `strengthBonus` so totals match the old single-track formula until the player diverges.
 
 ## Primary Frontend Entry

@@ -8623,6 +8623,22 @@
       }
     }
   },
+  "trainingHubTrainCost": "Train (€{cost})",
+  "@trainingHubTrainCost": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "trainingHubInsufficientFunds": "Not enough cash for this training session (need €{cost}).",
+  "@trainingHubInsufficientFunds": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
   "tradeLoadGoodsFailed": "Der Warenkatalog konnte nicht geladen werden",
   "tradeLoadPricesFailed": "Aktuelle Preise konnten nicht geladen werden",
   "tradeLoadInventoryFailed": "Ihr Handelsinventar konnte nicht geladen werden",
@@ -13570,5 +13586,43 @@
   },
   "vehicleDisposeOpsContractTitle": "Start ops contract?",
   "vehicleDisposeOpsContractBody": "You start a vehicle-ops job with its own cooldown and risk. This button does not take a vehicle from your garage. Chop contracts that do take a vehicle use Claim contract.",
-  "vehicleDisposeIrreversible": "This cannot be undone."
+  "vehicleDisposeIrreversible": "This cannot be undone.",
+  "dashboardTimeoutLaunder": "Money laundering",
+  "launderActiveJobCashGoneHint": "That cash already left your pocket. The timer above is when it lands in your bank (or is seized).",
+  "launderStartedSuccessWithTime": "Laundering started. Cash is gone from your pocket. Completes in {time} — see Bank and Home timeouts.",
+  "@launderStartedSuccessWithTime": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "showroomPublicMoreExhibits": "+{count} more on display",
+  "@showroomPublicMoreExhibits": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "statsBoardTitle": "Stats boards",
+  "statsBoardMetricCrimes": "Successful crimes",
+  "statsBoardMetricJail": "Jail time (sentenced)",
+  "statsBoardMetricThefts": "Vehicle thefts",
+  "statsBoardMetricCrimeIncome": "Crime loot",
+  "statsBoardPeriodWeekly": "This week",
+  "statsBoardPeriodAllTime": "All-time",
+  "statsBoardEmpty": "No scores on this board yet.",
+  "statsBoardJailScore": "{hours}h {mins}m",
+  "@statsBoardJailScore": {
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      },
+      "mins": {
+        "type": "String"
+      }
+    }
+  },
+  "statsBoardHelpHow": "Weekly and all-time boards for successful crimes, sentenced jail minutes, vehicle thefts and crime loot (not cash on hand). Jail minutes are sentenced; bail or breakout can shorten real time served."
 }

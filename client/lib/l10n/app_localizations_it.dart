@@ -379,6 +379,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get dashboardTimeoutCrewMission => 'Missione dell\'Crew';
 
   @override
+  String get dashboardTimeoutLaunder => 'Money laundering';
+
+  @override
   String get dashboardInfoDrugsGrams => 'Droga (grammi)';
 
   @override
@@ -6954,6 +6957,11 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String showroomPublicMoreExhibits(String count) {
+    return '+$count more on display';
+  }
+
+  @override
   String get showroomEmptyCollection => 'Nessun veicolo in vetrina.';
 
   @override
@@ -11375,6 +11383,16 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String trainingHubComboChip(String pct) {
     return 'Combo attiva: +$pct% sui crimini';
+  }
+
+  @override
+  String trainingHubTrainCost(String cost) {
+    return 'Train (€$cost)';
+  }
+
+  @override
+  String trainingHubInsufficientFunds(String cost) {
+    return 'Not enough cash for this training session (need €$cost).';
   }
 
   @override
@@ -20343,6 +20361,10 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String get launderActiveJobCashGoneHint =>
+      'That cash already left your pocket. The timer above is when it lands in your bank (or is seized).';
+
+  @override
   String launderJobCountdown(String time) {
     return 'Completes in $time';
   }
@@ -20375,6 +20397,11 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get launderStartedSuccess => 'Laundering started.';
+
+  @override
+  String launderStartedSuccessWithTime(String time) {
+    return 'Laundering started. Cash is gone from your pocket. Completes in $time — see Bank and Home timeouts.';
+  }
 
   @override
   String get launderErrorCooldown => 'Laundering is on cooldown.';
@@ -21287,4 +21314,37 @@ class AppLocalizationsIt extends AppLocalizations {
   String territoryHoldDashboardChip(String region, String remaining) {
     return '$region ha bisogno di una pattuglia — $remaining rimasto.';
   }
+
+  @override
+  String get statsBoardTitle => 'Stats boards';
+
+  @override
+  String get statsBoardMetricCrimes => 'Successful crimes';
+
+  @override
+  String get statsBoardMetricJail => 'Jail time (sentenced)';
+
+  @override
+  String get statsBoardMetricThefts => 'Vehicle thefts';
+
+  @override
+  String get statsBoardMetricCrimeIncome => 'Crime loot';
+
+  @override
+  String get statsBoardPeriodWeekly => 'This week';
+
+  @override
+  String get statsBoardPeriodAllTime => 'All-time';
+
+  @override
+  String get statsBoardEmpty => 'No scores on this board yet.';
+
+  @override
+  String statsBoardJailScore(String hours, String mins) {
+    return '${hours}h ${mins}m';
+  }
+
+  @override
+  String get statsBoardHelpHow =>
+      'Weekly and all-time boards for successful crimes, sentenced jail minutes, vehicle thefts and crime loot (not cash on hand). Jail minutes are sentenced; bail or breakout can shorten real time served.';
 }

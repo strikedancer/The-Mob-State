@@ -34,6 +34,7 @@ import { ensureCrewTradeStorageSchema } from './startup/ensureCrewTradeStorageSc
 import { ensureCrewToolStorageSchema } from './startup/ensureCrewToolStorageSchema';
 import { ensureCrewPartsStorageSchema } from './startup/ensureCrewPartsStorageSchema';
 import { ensureCrewDealSchema } from './startup/ensureCrewDealSchema';
+import { ensureCrewIncomeShareSchema } from './startup/ensureCrewIncomeShareSchema';
 import { ensureCasinoBlackjackSchema } from './startup/ensureCasinoBlackjackSchema';
 import { ensureStaffRoleSchema } from './startup/ensureStaffRoleSchema';
 import { ensureLastLoginIpSchema } from './startup/ensureLastLoginIpSchema';
@@ -90,6 +91,7 @@ async function startServer() {
   await ensureCrewToolStorageSchema();
   await ensureCrewPartsStorageSchema();
   await ensureCrewDealSchema();
+  await ensureCrewIncomeShareSchema();
   await ensureCasinoBlackjackSchema();
   await ensureStaffRoleSchema();
   await ensureLastLoginIpSchema();

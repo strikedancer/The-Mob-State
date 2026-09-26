@@ -14,6 +14,8 @@ CrewMember _$CrewMemberFromJson(Map<String, dynamic> json) => CrewMember(
   capoCountry: json['capoCountry'] as String?,
   trustScore: (json['trustScore'] as num).toInt(),
   joinedAt: json['joinedAt'] as String,
+  incomeShareEnabled: json['incomeShareEnabled'] as bool? ?? false,
+  lifetimeContribution: (json['lifetimeContribution'] as num?)?.toInt() ?? 0,
   playerInfo: json['player'] == null
       ? null
       : PlayerInfo.fromJson(json['player'] as Map<String, dynamic>),
@@ -28,6 +30,8 @@ Map<String, dynamic> _$CrewMemberToJson(CrewMember instance) =>
       'capoCountry': instance.capoCountry,
       'trustScore': instance.trustScore,
       'joinedAt': instance.joinedAt,
+      'incomeShareEnabled': instance.incomeShareEnabled,
+      'lifetimeContribution': instance.lifetimeContribution,
       'player': instance.playerInfo,
     };
 

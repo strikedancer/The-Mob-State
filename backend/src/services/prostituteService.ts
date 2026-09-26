@@ -1389,14 +1389,19 @@ export const prostituteService = {
       }
     }
 
-    // Add earnings to player
+    // Add earnings to player (optional crew income share)
     if (totalEarnings > 0) {
-      await withPrismaWriteRetry(() =>
-        prisma.player.update({
-          where: { id: playerId },
-          data: { money: { increment: totalEarnings } },
-        }),
-      );
+      const { applyOptionalCrewIncomeShare } = await import('./crewIncomeShareService');
+      const share = await applyOptionalCrewIncomeShare(playerId, totalEarnings);
+      if (share.personal > 0) {
+        await withPrismaWriteRetry(() =>
+          prisma.player.update({
+            where: { id: playerId },
+            data: { money: { increment: share.personal } },
+          }),
+        );
+      }
+      return share.personal;
     }
 
     return totalEarnings;

@@ -11,6 +11,7 @@ import {
   type MissionRequirement,
 } from './crewMissionRequirements';
 import * as casinoOwnershipService from './casinoOwnershipService';
+import { adjustTrust } from './crewService';
 
 type CrewMissionTier = 1 | 2 | 3;
 type CrewMissionOutcome = 'success' | 'partial' | 'fail';
@@ -1974,38 +1975,43 @@ export const crewMissionService = {
       );
     }
 
+    const contributionRows = await prisma.$queryRawUnsafe<MissionContributionRow[]>(
+      `
+        SELECT id, runId, playerId, roleKey, contributionScore
+        FROM crew_mission_contributions
+        WHERE runId = ?
+      `,
+      run.id
+    );
+    const trustPlayerIds = [
+      ...new Set(
+        (contributionRows.length > 0
+          ? contributionRows.map((row) => toInt(row.playerId))
+          : [toInt(run.startedByPlayerId)]
+        ).filter((id) => id > 0)
+      ),
+    ];
+    const tierNum = toInt(template.tier, 1);
+    const trustDelta = outcome === 'fail' ? -2 * tierNum : tierNum;
+    for (const trustPlayerId of trustPlayerIds) {
+      await adjustTrust(membership.crewId, trustPlayerId, trustDelta);
+    }
+
     // Fail still never jails players (crew-bank penalty only), but write a
     // court/criminal-record note like failed heists so Rechtbank shows it.
     if (outcome === 'fail') {
-      const contributionRows = await prisma.$queryRawUnsafe<MissionContributionRow[]>(
-        `
-          SELECT id, runId, playerId, roleKey, contributionScore
-          FROM crew_mission_contributions
-          WHERE runId = ?
-        `,
-        run.id
-      );
-      const recordPlayerIds = [
-        ...new Set(
-          (contributionRows.length > 0
-            ? contributionRows.map((row) => toInt(row.playerId))
-            : [toInt(run.startedByPlayerId)]
-          ).filter((id) => id > 0)
-        ),
-      ];
-      const tierNum = toInt(template.tier, 1);
       const recordMinutes = tierNum >= 3 ? 45 : tierNum >= 2 ? 30 : 15;
       const crimeId = `crew_mission:${template.missionKey}`;
-      if (recordPlayerIds.length > 0) {
+      if (trustPlayerIds.length > 0) {
         const recordPlayers = await prisma.player.findMany({
-          where: { id: { in: recordPlayerIds } },
+          where: { id: { in: trustPlayerIds } },
           select: { id: true, currentCountry: true },
         });
         const countryByPlayerId = new Map(
           recordPlayers.map((row) => [row.id, row.currentCountry ?? null]),
         );
         await prisma.crimeAttempt.createMany({
-          data: recordPlayerIds.map((recordPlayerId) => ({
+          data: trustPlayerIds.map((recordPlayerId) => ({
             playerId: recordPlayerId,
             crimeId,
             success: false,

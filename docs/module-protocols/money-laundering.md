@@ -26,7 +26,7 @@ Niet in scope:
 ## Cross-Module Dependencies
 - Money Laundering -> Bank (payout + bank account)
 - Money Laundering -> Security/FBI heat (`players.fbiHeat`)
-- Money Laundering -> Dashboard (bank-sectie / economy overview)
+- Money Laundering -> Dashboard (bank-sectie / economy overview; Home-timeout `cooldowns.launder` terwijl een job `processing` is)
 - Money Laundering -> Balance & Economy (fees, delays, risk sinks)
 - Money Laundering -> Activity log (`launder.*`)
 
@@ -35,7 +35,7 @@ Niet in scope:
 - Cooldown tussen jobs (`LAUNDER_COOLDOWN_SECONDS`).
 - Exact-once completion/seize claim op job-status (`processing` → `completed`/`seized`).
 - UI toont fee, duur, min/max per wasbeurt en geschatte seize-kans voordat de speler start.
-- Bank UI toont live countdown voor actieve job (`completesAt`) en cooldown, plus fee/payout-preview op het ingevoerde bedrag (zelfde fee-formule als backend).
+- Bank UI toont live countdown voor actieve job (`completesAt`) en cooldown, plus fee/payout-preview op het ingevoerde bedrag (zelfde fee-formule als backend). Cash verdwijnt bij start uit de pocket; de countdown maakt duidelijk wanneer bank-credit (of seize) volgt. Home toont dezelfde resttijd.
 
 ## Runtime Keys
 - `BANK_FREE_DEPOSIT_DAILY_ENABLED` / `BANK_FREE_DEPOSIT_DAILY_BASE` / `BANK_FREE_DEPOSIT_DAILY_PER_RANK`

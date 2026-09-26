@@ -157,9 +157,9 @@ router.post(
             params: {},
           });
         }
-        if (error.message === 'NOT_CREW_LEADER') {
+        if (error.message === 'NOT_CREW_LEADER' || error.message === 'NOT_CREW_OFFICER') {
           return res.status(403).json({
-            event: 'error.not_crew_leader',
+            event: 'error.not_crew_officer',
             params: {},
           });
         }

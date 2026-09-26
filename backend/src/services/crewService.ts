@@ -5,6 +5,40 @@ import {
   getCrewMemberCapForCrew,
   getCrewStorageCapacity,
 } from './crewBuildingService';
+import { activityService } from './activityService';
+
+const CREW_TRUST_DEPOSIT_MIN_AMOUNT = 10_000;
+const CREW_TRUST_DEPOSIT_ACTIVITY = 'crew.trust_deposit_day';
+
+function startOfUtcDay(date: Date): Date {
+  return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+}
+
+/**
+ * +1 trust once per UTC day for a qualifying crew-bank deposit (anti-farm).
+ */
+async function maybeAwardDepositTrust(crewId: number, playerId: number): Promise<void> {
+  const already = await prisma.playerActivity.findFirst({
+    where: {
+      playerId,
+      activityType: CREW_TRUST_DEPOSIT_ACTIVITY,
+      createdAt: { gte: startOfUtcDay(new Date()) },
+    },
+    select: { id: true },
+  });
+  if (already) {
+    return;
+  }
+
+  await adjustTrust(crewId, playerId, 1);
+  await activityService.logActivity(
+    playerId,
+    CREW_TRUST_DEPOSIT_ACTIVITY,
+    'Crew bank deposit trust award',
+    { crewId },
+    false
+  );
+}
 
 interface CreateCrewInput {
   name: string;
@@ -406,6 +440,31 @@ export async function getCrewById(crewId: number): Promise<CrewWithMembers> {
     throw new Error('CREW_NOT_FOUND');
   }
 
+  const contribRows = await prisma.$queryRawUnsafe<
+    Array<{ playerId: number; incomeShareEnabled: number; lifetimeContribution: number | string }>
+  >(
+    `SELECT playerId, incomeShareEnabled, lifetimeContribution FROM crew_members WHERE crewId = ?`,
+    crewId,
+  );
+  const contribByPlayer = new Map(
+    contribRows.map((row) => [
+      Number(row.playerId),
+      {
+        incomeShareEnabled: Boolean(Number(row.incomeShareEnabled)),
+        lifetimeContribution: Number(row.lifetimeContribution) || 0,
+      },
+    ]),
+  );
+
+  const members = crew.members.map((member) => {
+    const extra = contribByPlayer.get(member.playerId);
+    return {
+      ...member,
+      incomeShareEnabled: extra?.incomeShareEnabled ?? false,
+      lifetimeContribution: extra?.lifetimeContribution ?? 0,
+    };
+  });
+
   return {
     id: crew.id,
     name: crew.name,
@@ -418,8 +477,8 @@ export async function getCrewById(crewId: number): Promise<CrewWithMembers> {
     recruitingOpen: (crew as { recruitingOpen?: boolean }).recruitingOpen !== false,
     autoAccept: Boolean((crew as { autoAccept?: boolean }).autoAccept),
     missionLevel: (crew as { missionLevel?: number }).missionLevel ?? 1,
-    members: crew.members,
-    memberCount: crew.members.length,
+    members,
+    memberCount: members.length,
   };
 }
 
@@ -497,9 +556,9 @@ export async function updateRecruitingSettings(
   crewId: number,
   input: { recruitingOpen?: boolean; autoAccept?: boolean }
 ): Promise<{ recruitingOpen: boolean; autoAccept: boolean }> {
-  const isLeader = await isCrewLeader(playerId, crewId);
-  if (!isLeader) {
-    throw new Error('NOT_CREW_LEADER');
+  const isOfficer = await isCrewOfficer(playerId, crewId);
+  if (!isOfficer) {
+    throw new Error('NOT_CREW_OFFICER');
   }
   const updated = await prisma.crew.update({
     where: { id: crewId },
@@ -550,6 +609,18 @@ export async function isCrewLeader(playerId: number, crewId: number): Promise<bo
   return membership !== null;
 }
 
+/** Leader or co-leader — invite/kick/heists/buildings; not bank withdraw or role changes. */
+export async function isCrewOfficer(playerId: number, crewId: number): Promise<boolean> {
+  const membership = await prisma.crewMember.findFirst({
+    where: {
+      playerId,
+      crewId,
+      role: { in: ['leader', 'co_leader'] },
+    },
+  });
+  return membership !== null;
+}
+
 /**
  * Check if player is in crew
  */
@@ -565,7 +636,7 @@ export async function isCrewMember(playerId: number, crewId: number): Promise<bo
 }
 
 /**
- * Kick a member from the crew (leader only)
+ * Kick a member from the crew (leader or co-leader)
  */
 export async function kickMember(crewId: number, targetPlayerId: number): Promise<void> {
   const membership = await prisma.crewMember.findFirst({
@@ -639,7 +710,7 @@ export async function depositToCrewBank(
   const cashCapacity = await getCrewStorageCapacity(crewId, 'cash_storage');
   const bootstrapLimit = cashCapacity > 0 ? cashCapacity : getCrewBuildingCost('cash_storage', 0);
 
-  return prisma.$transaction(async (tx) => {
+  const result = await prisma.$transaction(async (tx) => {
     const [player, currentCrew] = await Promise.all([
       tx.player.findUnique({
         where: { id: playerId },
@@ -678,6 +749,12 @@ export async function depositToCrewBank(
 
     return { crewBalance: crew.bankBalance, playerMoney: player.money - amount };
   });
+
+  if (amount >= CREW_TRUST_DEPOSIT_MIN_AMOUNT) {
+    await maybeAwardDepositTrust(crewId, playerId);
+  }
+
+  return result;
 }
 
 /**
@@ -706,7 +783,7 @@ export async function withdrawFromCrewBank(
     throw new Error('CASH_STORAGE_NOT_OWNED');
   }
 
-  return prisma.$transaction(async (tx) => {
+  const result = await prisma.$transaction(async (tx) => {
     const crew = await tx.crew.findUnique({
       where: { id: crewId },
       select: { bankBalance: true },
@@ -729,6 +806,10 @@ export async function withdrawFromCrewBank(
 
     return { crewBalance: crew.bankBalance - amount, playerMoney: player.money };
   });
+
+  await adjustTrust(crewId, playerId, -5);
+
+  return result;
 }
 
 /**

@@ -16,7 +16,8 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 
 ## Documented static modifiers (school tuition)
 - **Street-cash tuition:** `SCHOOL_TUITION_BY_LEVEL = [2000, 4000, 8000, 15000, 28000]` in `educationService.ts`, keyed by current track level (0–4) when a lesson starts. Same curve on every track. Time/cooldown remains the main pace limiter; cash is a modest sink (early lessons in the low thousands, top lessons in the tens of thousands — not millions).
-- **Not charged:** already completed levels, gym / shooting-range, bank/crypto, premium credits. Aviation licenses stay a separate paid step after aviation school (no double school surcharge).
+- **Not charged:** already completed levels, bank/crypto, premium credits. Aviation licenses stay a separate paid step after aviation school (no double school surcharge).
+- **Training fees (separate sinks):** gym sessions cost street cash via `GYM_TRAIN_COST` (default **€500**); shooting-range sessions via `SHOOTING_RANGE_TRAIN_COST` (default **€750**). See [gym.md](gym.md) and [shooting-range.md](shooting-range.md).
 - **Credits:** `ACTION_COOLDOWN_RESET` for `actionType=school` skips an active school cooldown only.
 - See [school.md](school.md).
 
@@ -41,6 +42,7 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 - See [crimes.md](crimes.md) and `backend/src/utils/crimeJailScaling.ts`.
 
 ## Documented static modifiers (training → crimes)
+- **Train fees:** each gym session debits `player.money` by `GYM_TRAIN_COST` (runtime_config, default **500**); each shooting-range session by `SHOOTING_RANGE_TRAIN_COST` (default **750**). Status responses expose `trainCost`. Short cash → `INSUFFICIENT_FUNDS` (no session progress). Starter-friendly sink under school tuition bands.
 - **Combo-readiness:** when the player has **at least one gym train (any track; `gymLastTrainedAt` = latest of strength/speed/stamina `lastTrainedAt`) and one shooting-range train** on the **same UTC calendar day**, `crimeService` adds **`TRAINING_COMBO_READINESS_BONUS`** (**+0.5%** success chance as a fraction, see `backend/src/lib/trainingComboReadiness.ts`) on top of existing gym aggregate + shooting-range training bonuses. Still clamped with all other modifiers to **5–95%** final success chance. Exposed for UI as `trainingComboReadiness` on **`GET /training/status`**.
 
 ## Documented static modifiers (don hub)

@@ -380,6 +380,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get dashboardTimeoutCrewMission => 'Crewmissie';
 
   @override
+  String get dashboardTimeoutLaunder => 'Witwassen';
+
+  @override
   String get dashboardInfoDrugsGrams => 'Drugs (gram)';
 
   @override
@@ -6924,6 +6927,11 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String showroomPublicMoreExhibits(String count) {
+    return '+$count meer in de vitrine';
+  }
+
+  @override
   String get showroomEmptyCollection => 'Nog geen voertuigen in de vitrine.';
 
   @override
@@ -11313,6 +11321,16 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String trainingHubComboChip(String pct) {
     return 'Combo actief: +$pct% op crimes';
+  }
+
+  @override
+  String trainingHubTrainCost(String cost) {
+    return 'Trainen (€$cost)';
+  }
+
+  @override
+  String trainingHubInsufficientFunds(String cost) {
+    return 'Niet genoeg cash voor deze trainingssessie (je hebt €$cost nodig).';
   }
 
   @override
@@ -18990,11 +19008,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicCrewHow =>
-      'Crew aanmaken kost €10.000. De Crew HQ bepaalt hoeveel leden je crew aankan en groeit door tot maximaal 150 leden. De leader kan leden uitnodigen, kicken en heists starten. Crew-rollen (de leider zet ze op het tabblad Leden): Leider nodigt uit, kickt, start heists, declareert wars, zet rollen, neemt op van de crewbank, verkoopt crew-voertuigen, start missies en deals, en kan een crewlid uit de kluis vrijkopen. Co-leider deelt die officierstools, behalve opnemen van de crewbank en rollen wijzigen; wel crew-opslag verkopen, missies en deals, territorium als officier, en crewbank-uitkoop. Consigliere ziet het crew-Don-racketoverzicht maar mag niet van de crewbank opnemen. Capo hoort bij één land dat de leider kiest; alleen daar kan die capo Don-tribute en contracten naar de crewbank sturen. Gewone leden mogen storten, chatten, heisten en gedeelde opslag gebruiken; ze mogen geen crew-voertuigen verkopen en niet uit de kluis vrijkopen. Territory-slots: elke 3 HQ-niveaus +1 gebied, elke 5 extra leden +1, het laagste telt, nooit meer dan 10.\nCrew-voordelen: toegang tot grote heists, gedeelde opslag, teamwork-bonus (+10% slagingskans per extra lid, max +30%) en groepschat.\nNieuwe crews starten direct met Crew HQ level 1 en alle opslaggebouwen op level 1, inclusief cash opslag, zodat crew bank en gedeelde opslag meteen bruikbaar zijn.\nGeldopslag level 1 houdt €1.000.000. De volgende upgrade van de geldopslag kost altijd minder dan wat de kluis nu aankan, zodat je die uit de crewbank kunt betalen.\nAuto opslag in crew accepteert nu ook motoren, zodat landvoertuigen samen vanuit dezelfde gedeelde crew-opslag beheerd kunnen worden.\nGedeelde opslag is geen extra persoonlijke garage. Auto\'s, motoren, boten, wapens, munitie en handelswaren die je stort blijven van de crew: ze gaan op aan crew-smokkel, crew-missies (handelswaren voor Port Contraband Manifest en Warehouse Luxury Offload), deals tussen crews, of een raid van een andere crew. Je haalt ze niet terug voor eigen misdaden of om zelf te rijden of varen.\nDrugs in crew-opslag kun je groothandel (vrachtgeld en opbrengst via de crewbank) of terug naar jezelf halen. Territory-bonussen komen van het level van het opslaggebouw, niet van hoe vol de schappen staan.\nAlleen de crew-eigenaar en co-eigenaren kunnen op Gevangenis een crewlid uitkopen met geld uit de crewbank. De borg gaat van de pot. Soms pakt de politie jou dan op wegens zwart geld: de ander is vrij, jij zit vast.\nAls een crewlid wordt opgepakt krijgen crewleden nu een pushmelding dat die speler vastzit en op hulp wacht.\nHet crew-scherm is nu gegroepeerd in Overzicht, HQ & Upgrades, Opslag, Leden, War Room, Crew Missies, Crews en Chat zodat beheer rustiger en professioneler blijft.\nIn Crew Missies zie je templates per tier, een actieve run-kaart en recente runs. Leaders/co-leaders kunnen starten en resolven; rewards claimen en cooldown speedup gaan via dezelfde tab.\nEr zijn nu extra crew missies met onder andere bank-thema (night deposit, skim-netwerk, pantserroute, dochterbank, reservekluis en clearing house). Er is geen tweede casino-crew-missie naast Casino Ledger Raid.\nCrew mission-beloningen komen uit de missie-economy op de server: andere spelers hun banksaldo wordt daar niet voor aangesproken.\nBij starten van een missie kun je nu per crewlid een rol kiezen (Planner, Enforcer, Logistics, Tech) voor team-bonussen.\nActieve en recente missiekaarten tonen nu ook rolbijdragen per speler met score en eventuele payout-multiplier.\nCrewleden krijgen nu ook push/in-app meldingen bij missie-start, missie-resultaat en wanneer een missie-cooldown weer klaar is.\nTijdens een actieve missie-cooldown kun je geen nieuwe missie starten. Bovenin Crew Missies telt een grote timer live af tot je weer mag starten; dezelfde resttijd staat ook op Home bij de timeouts. Je kunt de wachttijd met credits versnellen.\nBij cooldown speedup zie je eerst exact hoeveel credits het kost en hoeveel minuten resterend zijn voordat je bevestigt.\nCrew Wars hebben een eigen War Room-tab in het crew-scherm. Alleen leaders kunnen een war declareren en er zijn minimaal 3 crewleden nodig om mee te doen.\nWar-types: Kill War, Economy War, Territory War en Total War. Iedere war doorloopt voorbereiding, actieve fase, lockdown en afronding.\nTijdens een actieve war kunnen deelnemers acties uitvoeren zoals kills, mugs, sabotage, intel, raids, shields, boosts en territory claims. Doelgerichte acties kiezen nu direct uit een lijst met spelers van de tegencrew in plaats van handmatig om een speler-ID te vragen.\nSeizoenspunten worden per war opgeteld in het Crew Wars leaderboard. Je ziet in de War Room ook standings, recente acties en recente wars van je crew.\nBij Territory War en Total War claim je nu echte Territory-regio\'s uit het territory-systeem in plaats van generieke placeholder-doelen.\nDie war-regio\'s tonen nu ook hun strategische waarde in de War Room: claimbonus, tick-punten en tags zoals haven, hoofdstad of logistiek. Daardoor zie je direct welke regio\'s niet alleen van eigenaar wisselen, maar ook meer war-punten waard zijn.\nCrew Wars kiest Territory-targets nu niet meer alleen op waarde-tier, maar ook op strategische tags en aangrenzende druk van aanvaller of verdediger. Daardoor voelen Territory War en Total War meer als een echte frontlinie dan als drie willekeurige claims.\nWint jouw crew een Territory War of Total War, dan kunnen de betrokken Territory-regio\'s tijdelijk war pressure krijgen. In de Territory-modal zie je dan welke crew de druk heeft, hoeveel effectieve stabiliteit wegvalt en wanneer die nasleep afloopt.\nHeists: Small Bank Heist (2 spelers, 40% kans, €10.000-€30.000, cooldown 30 min), Sieradenzaak (3 spelers, 35%, €20.000-€50.000, 45 min), Casino Heist (4 spelers, 25%, €50.000-€150.000, 2 uur), Federal Reserve (5 spelers, 15%, €100.000-€500.000, 6 uur, +20 FBI Heat).\nBij een heist moeten alle leden online zijn bij de start. Is iemand afwezig dan mislukt de heist.\nBij mislukte heist: jail time voor alle leden, Wanted Level +5, geen beloning.\nDe reward bij een geslaagde heist wordt gelijk verdeeld over alle deelnemende leden.\nCrew-chat is beschikbaar voor snelle coördinatie zonder extra apps.\nCrew HQ-progressie: hoe langer en actiever de crew, hoe meer gezamenlijke upgrades en buffs vrijkomen.\nGedeelde crew-opslag voor munitie, drugs en handelswaren telt in vakjes (tegels), niet in ruwe stuks: dezelfde packing als persoonlijk (bijv. 5 koffie of 10 diamanten per vakje).';
+      'Crew aanmaken kost €10.000. De Crew HQ bepaalt hoeveel leden je crew aankan en groeit door tot maximaal 150 leden. De leader kan leden uitnodigen, kicken en heists starten. Crew-rollen (de leider zet ze op het tabblad Leden): Leider nodigt uit, kickt, start heists, declareert wars, zet rollen, neemt op van de crewbank, verkoopt crew-voertuigen, start missies en deals, en kan een crewlid uit de kluis vrijkopen. Co-leider deelt officierstools behalve opnemen van de crewbank en rollen wijzigen: wel uitnodigen en kicken, heists starten, crew-opslag verkopen, missies en deals, territorium als officier, en crewbank-uitkoop. Consigliere ziet het crew-Don-racketoverzicht maar mag niet van de crewbank opnemen. Capo hoort bij één land dat de leider kiest; alleen daar kan die capo Don-tribute en contracten naar de crewbank sturen. Gewone leden mogen storten, chatten, heisten en gedeelde opslag gebruiken; ze mogen geen crew-voertuigen verkopen en niet uit de kluis vrijkopen. Op Leden kun je optioneel inkomsten delen: een klein deel van drugsverkoop, munitieverkoop, voertuigverkoop/-sloop en prostitutie-innemen gaat naar de crewbank; je bijdrage staat bij elk lid. Territory-slots: elke 3 HQ-niveaus +1 gebied, elke 5 extra leden +1, het laagste telt, nooit meer dan 10.\nCrew-voordelen: toegang tot grote heists, gedeelde opslag, teamwork-bonus (+10% slagingskans per extra lid, max +30%) en groepschat.\nTrust: een storting van minstens €10.000 op de crewbank geeft +1 (max één keer per UTC-dag); geslaagde of gedeeltelijke missies geven +tier aan bijdragers (mislukt −2×tier); opnemen van de bank kost de leider 5 trust.\nNieuwe crews starten direct met Crew HQ level 1 en alle opslaggebouwen op level 1, inclusief cash opslag, zodat crew bank en gedeelde opslag meteen bruikbaar zijn.\nGeldopslag level 1 houdt €1.000.000. De volgende upgrade van de geldopslag kost altijd minder dan wat de kluis nu aankan, zodat je die uit de crewbank kunt betalen.\nAuto opslag in crew accepteert nu ook motoren, zodat landvoertuigen samen vanuit dezelfde gedeelde crew-opslag beheerd kunnen worden.\nGedeelde opslag is geen extra persoonlijke garage. Auto\'s, motoren, boten, wapens, munitie en handelswaren die je stort blijven van de crew: ze gaan op aan crew-smokkel, crew-missies (handelswaren voor Port Contraband Manifest en Warehouse Luxury Offload), deals tussen crews, of een raid van een andere crew. Je haalt ze niet terug voor eigen misdaden of om zelf te rijden of varen.\nDrugs in crew-opslag kun je groothandel (vrachtgeld en opbrengst via de crewbank) of terug naar jezelf halen. Territory-bonussen komen van het level van het opslaggebouw, niet van hoe vol de schappen staan.\nAlleen de crew-eigenaar en co-eigenaren kunnen op Gevangenis een crewlid uitkopen met geld uit de crewbank. De borg gaat van de pot. Soms pakt de politie jou dan op wegens zwart geld: de ander is vrij, jij zit vast.\nAls een crewlid wordt opgepakt krijgen crewleden nu een pushmelding dat die speler vastzit en op hulp wacht.\nHet crew-scherm is nu gegroepeerd in Overzicht, HQ & Upgrades, Opslag, Leden, War Room, Crew Missies, Crews en Chat zodat beheer rustiger en professioneler blijft.\nIn Crew Missies zie je templates per tier, een actieve run-kaart en recente runs. Leaders/co-leaders kunnen starten en resolven; rewards claimen en cooldown speedup gaan via dezelfde tab.\nEr zijn nu extra crew missies met onder andere bank-thema (night deposit, skim-netwerk, pantserroute, dochterbank, reservekluis en clearing house). Er is geen tweede casino-crew-missie naast Casino Ledger Raid.\nCrew mission-beloningen komen uit de missie-economy op de server: andere spelers hun banksaldo wordt daar niet voor aangesproken.\nBij starten van een missie kun je nu per crewlid een rol kiezen (Planner, Enforcer, Logistics, Tech) voor team-bonussen.\nActieve en recente missiekaarten tonen nu ook rolbijdragen per speler met score en eventuele payout-multiplier.\nCrewleden krijgen nu ook push/in-app meldingen bij missie-start, missie-resultaat en wanneer een missie-cooldown weer klaar is.\nTijdens een actieve missie-cooldown kun je geen nieuwe missie starten. Bovenin Crew Missies telt een grote timer live af tot je weer mag starten; dezelfde resttijd staat ook op Home bij de timeouts. Je kunt de wachttijd met credits versnellen.\nBij cooldown speedup zie je eerst exact hoeveel credits het kost en hoeveel minuten resterend zijn voordat je bevestigt.\nCrew Wars hebben een eigen War Room-tab in het crew-scherm. Alleen leaders kunnen een war declareren en er zijn minimaal 3 crewleden nodig om mee te doen.\nWar-types: Kill War, Economy War, Territory War en Total War. Iedere war doorloopt voorbereiding, actieve fase, lockdown en afronding.\nTijdens een actieve war kunnen deelnemers acties uitvoeren zoals kills, mugs, sabotage, intel, raids, shields, boosts en territory claims. Doelgerichte acties kiezen nu direct uit een lijst met spelers van de tegencrew in plaats van handmatig om een speler-ID te vragen.\nSeizoenspunten worden per war opgeteld in het Crew Wars leaderboard. Je ziet in de War Room ook standings, recente acties en recente wars van je crew.\nBij Territory War en Total War claim je nu echte Territory-regio\'s uit het territory-systeem in plaats van generieke placeholder-doelen.\nDie war-regio\'s tonen nu ook hun strategische waarde in de War Room: claimbonus, tick-punten en tags zoals haven, hoofdstad of logistiek. Daardoor zie je direct welke regio\'s niet alleen van eigenaar wisselen, maar ook meer war-punten waard zijn.\nCrew Wars kiest Territory-targets nu niet meer alleen op waarde-tier, maar ook op strategische tags en aangrenzende druk van aanvaller of verdediger. Daardoor voelen Territory War en Total War meer als een echte frontlinie dan als drie willekeurige claims.\nWint jouw crew een Territory War of Total War, dan kunnen de betrokken Territory-regio\'s tijdelijk war pressure krijgen. In de Territory-modal zie je dan welke crew de druk heeft, hoeveel effectieve stabiliteit wegvalt en wanneer die nasleep afloopt.\nHeists: Small Bank Heist (2 spelers, 40% kans, €10.000-€30.000, cooldown 30 min), Sieradenzaak (3 spelers, 35%, €20.000-€50.000, 45 min), Casino Heist (4 spelers, 25%, €50.000-€150.000, 2 uur), Federal Reserve (5 spelers, 15%, €100.000-€500.000, 6 uur, +20 FBI Heat).\nBij een heist moeten alle leden online zijn bij de start. Is iemand afwezig dan mislukt de heist.\nBij mislukte heist: jail time voor alle leden, Wanted Level +5, geen beloning.\nDe reward bij een geslaagde heist wordt gelijk verdeeld over alle deelnemende leden.\nCrew-chat is beschikbaar voor snelle coördinatie zonder extra apps.\nCrew HQ-progressie: hoe langer en actiever de crew, hoe meer gezamenlijke upgrades en buffs vrijkomen.\nGedeelde crew-opslag voor munitie, drugs en handelswaren telt in vakjes (tegels), niet in ruwe stuks: dezelfde packing als persoonlijk (bijv. 5 koffie of 10 diamanten per vakje).';
 
   @override
   String get helpTopicCrewTips =>
-      'Vraag de leider op Leden om een rol als je extra tools nodig hebt: co-leider, consigliere of capo (capo vraagt een land).\nNieuwe crews kunnen direct geld storten en gedeelde opslag gebruiken; focus daarna op upgrades voor extra capaciteit in plaats van op een losse startaankoop.\nGebruik de War Room eerst om te zien of je crew al in cooldown zit voordat je een nieuwe oorlog probeert te declareren.\nVerdeel target calls in de crew-chat zodat je niet steeds op dezelfde tegenstander focust en door de anti-farm guard wordt geblokkeerd.\nCoördineer heist-starttijden in de crew-chat zodat iedereen online is en niemand in de cel zit.\nKies een crew die in dezelfde tijdzone of activiteitspatroon zit als jij voor betere heist-success rates.\nGebruik gedeelde crew-opslag om risicovolle goederen los te koppelen van je persoonlijke inventaris.\nStort alleen auto\'s, motoren of boten in de crew als je ze echt voor smokkel, missies of deals wilt inzetten; daarna kun je ze niet meer zelf gebruiken.\nCrewbank-uitkoop is handig als iemands borg hoog is, maar reken erop dat jij zelf de cel in kunt gaan wegens zwart geld.';
+      'Zet Inkomsten delen aan op Leden als je een deel van drugs-, munitie-, voertuig- en prostitutie-cash naar de crewbank wilt sturen.\nVraag de leider op Leden om een rol als je extra tools nodig hebt: co-leider, consigliere of capo (capo vraagt een land).\nNieuwe crews kunnen direct geld storten en gedeelde opslag gebruiken; focus daarna op upgrades voor extra capaciteit in plaats van op een losse startaankoop.\nGebruik de War Room eerst om te zien of je crew al in cooldown zit voordat je een nieuwe oorlog probeert te declareren.\nVerdeel target calls in de crew-chat zodat je niet steeds op dezelfde tegenstander focust en door de anti-farm guard wordt geblokkeerd.\nCoördineer heist-starttijden in de crew-chat zodat iedereen online is en niemand in de cel zit.\nKies een crew die in dezelfde tijdzone of activiteitspatroon zit als jij voor betere heist-success rates.\nGebruik gedeelde crew-opslag om risicovolle goederen los te koppelen van je persoonlijke inventaris.\nStort alleen auto\'s, motoren of boten in de crew als je ze echt voor smokkel, missies of deals wilt inzetten; daarna kun je ze niet meer zelf gebruiken.\nCrewbank-uitkoop is handig als iemands borg hoog is, maar reken erop dat jij zelf de cel in kunt gaan wegens zwart geld.';
 
   @override
   String get helpTopicFriendsCategory => 'Sociaal';
@@ -19134,7 +19152,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicBankHow =>
-      'Gratis storten is direct en zonder fee, maar alleen tot een daglimiet die meegroeit met je rang (UTC-dag). Opnemen blijft gratis en onbeperkt. Op het bankscherm vul je het restant van vandaag met één knop; als de limiet op is zie je de countdown tot 00:00 UTC.\nPassieve bankrente staat momenteel uit.\nGeld op de bank is beschermd tegen politie-confiscaties. Alleen contant cash kan je verliezen bij arrestatie.\nTransactiehistorie toont alle in- en uitgaande stromen met tijdstip, bedrag, tegenpartij bij overboekingen en optionele omschrijvingen.\nWitwassen: was cash boven de gratis daglimiet naar je bank met een fee en wachttijd. Elke wasbeurt heeft een minimum en maximum, zichtbaar op het bankscherm. Hogere FBI-heat verhoogt de kans op inbeslagname; bij succes daalt heat licht.\nBank Robbery crime: slaagt bij 30% kans en steelt 10-30% van het banksaldo van een willekeurig andere speler. Hoog Wanted Level risico.\nGeld overmaken naar andere spelers is mogelijk. Je kunt daarbij optioneel een omschrijving meegeven; die wordt ook zichtbaar voor de ontvanger in transacties. Check bedrag en ontvanger altijd goed voordat je verstuurt.';
+      'Gratis storten is direct en zonder fee, maar alleen tot een daglimiet die meegroeit met je rang (UTC-dag). Opnemen blijft gratis en onbeperkt. Op het bankscherm vul je het restant van vandaag met één knop; als de limiet op is zie je de countdown tot 00:00 UTC.\nPassieve bankrente staat momenteel uit.\nGeld op de bank is beschermd tegen politie-confiscaties. Alleen contant cash kan je verliezen bij arrestatie.\nTransactiehistorie toont alle in- en uitgaande stromen met tijdstip, bedrag, tegenpartij bij overboekingen en optionele omschrijvingen.\nWitwassen: was cash boven de gratis daglimiet naar je bank met een fee en wachttijd. Cash verdwijnt meteen uit je zak bij starten; op Bank (en Home-timeouts) telt een grote timer af tot de was klaar is. Elke wasbeurt heeft een minimum en maximum, zichtbaar op het bankscherm. Hogere FBI-heat verhoogt de kans op inbeslagname; bij succes daalt heat licht.\nBank Robbery crime: slaagt bij 30% kans en steelt 10-30% van het banksaldo van een willekeurig andere speler. Hoog Wanted Level risico.\nGeld overmaken naar andere spelers is mogelijk. Je kunt daarbij optioneel een omschrijving meegeven; die wordt ook zichtbaar voor de ontvanger in transacties. Check bedrag en ontvanger altijd goed voordat je verstuurt.';
 
   @override
   String get helpTopicBankTips =>
@@ -20186,6 +20204,10 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String get launderActiveJobCashGoneHint =>
+      'Die cash is al van je zak af. De timer hierboven is wanneer het op je bank staat (of in beslag is genomen).';
+
+  @override
   String launderJobCountdown(String time) {
     return 'Klaar over $time';
   }
@@ -20217,7 +20239,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get launderStartButton => 'Start witwas';
 
   @override
-  String get launderStartedSuccess => 'Witwas gestart.';
+  String get launderStartedSuccess =>
+      'Witwas gestart. Cash is van je zak af; de aftelling staat op Bank en op Home.';
+
+  @override
+  String launderStartedSuccessWithTime(String time) {
+    return 'Witwas gestart. Cash is al weg uit je zak. Klaar over $time — zie Bank en Home-timeouts.';
+  }
 
   @override
   String get launderErrorCooldown => 'Witwassen staat op cooldown.';
@@ -21127,4 +21155,37 @@ class AppLocalizationsNl extends AppLocalizations {
   String territoryHoldDashboardChip(String region, String remaining) {
     return '$region vraagt een patrouille — nog $remaining.';
   }
+
+  @override
+  String get statsBoardTitle => 'Statistieken';
+
+  @override
+  String get statsBoardMetricCrimes => 'Gelukte misdaden';
+
+  @override
+  String get statsBoardMetricJail => 'Celstraf (opgelegd)';
+
+  @override
+  String get statsBoardMetricThefts => 'Voertuigdiefstallen';
+
+  @override
+  String get statsBoardMetricCrimeIncome => 'Misdaadbuit';
+
+  @override
+  String get statsBoardPeriodWeekly => 'Deze week';
+
+  @override
+  String get statsBoardPeriodAllTime => 'All-time';
+
+  @override
+  String get statsBoardEmpty => 'Nog geen scores voor dit bord.';
+
+  @override
+  String statsBoardJailScore(String hours, String mins) {
+    return '${hours}u ${mins}m';
+  }
+
+  @override
+  String get statsBoardHelpHow =>
+      'Wekelijkse en all-time borden voor gelukte misdaden, opgelegde celminuten, voertuigdiefstallen en misdaadbuit (niet je cash-op-zak). Celminuten zijn opgelegd; borg of uitbraak kan korter zijn.';
 }

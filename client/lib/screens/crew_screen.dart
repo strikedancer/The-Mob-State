@@ -1847,7 +1847,7 @@ class _CrewScreenState extends State<CrewScreen>
           (m) => m.playerId == currentPlayerId,
           orElse: () => _myCrew!.members.first,
         );
-        if (myMembership.isLeader) {
+        if (myMembership.isOfficer) {
           futures.add(_loadJoinRequests());
         }
       }
@@ -3477,6 +3477,48 @@ class _CrewScreenState extends State<CrewScreen>
           context,
           SnackBar(
             content: Text('Er is een fout opgetreden'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _setIncomeShareEnabled(bool enabled) async {
+    if (_myCrew == null) return;
+    try {
+      final apiClient = AuthService().apiClient;
+      final response = await apiClient.post(
+        '/crews/${_myCrew!.id}/income-share',
+        {'enabled': enabled},
+      );
+      if (response.statusCode == 200) {
+        if (mounted) {
+          final locale = Localizations.localeOf(context).languageCode;
+          showTopRightFromSnackBar(
+            context,
+            SnackBar(
+              content: Text(
+                enabled
+                    ? (locale == 'nl'
+                        ? 'Inkomsten delen staat aan'
+                        : 'Income share enabled')
+                    : (locale == 'nl'
+                        ? 'Inkomsten delen staat uit'
+                        : 'Income share disabled'),
+              ),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+        await _loadData();
+      }
+    } catch (e) {
+      if (mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.donErrorGeneric),
             backgroundColor: Colors.red,
           ),
         );
@@ -5408,6 +5450,7 @@ class _CrewScreenState extends State<CrewScreen>
       (m) => m.playerId == currentPlayerId,
     );
     final isLeader = myMembership.isLeader;
+    final isOfficer = myMembership.isOfficer;
     final screenWidth = MediaQuery.of(context).size.width;
     final isCompactMobile = screenWidth < 420;
     final storageCapacities =
@@ -5637,7 +5680,7 @@ class _CrewScreenState extends State<CrewScreen>
                         const SizedBox(height: 16),
                         CrewHeistsPanel(
                           crewId: _myCrew!.id,
-                          isLeader: isLeader,
+                          isOfficer: isOfficer,
                           memberCount: _myCrew!.memberCount,
                           onHeistResolved: _onHeistResolved,
                         ),
@@ -7354,6 +7397,7 @@ class _CrewScreenState extends State<CrewScreen>
       (m) => m.playerId == currentPlayerId,
     );
     final isLeader = myMembership.isLeader;
+    final isOfficer = myMembership.isOfficer;
     final screenWidth = MediaQuery.of(context).size.width;
     final memberGridColumns = screenWidth >= 900 ? 2 : 1;
     final joinRequestGridColumns = screenWidth >= 900 ? 2 : 1;
@@ -7369,6 +7413,21 @@ class _CrewScreenState extends State<CrewScreen>
             Text(
               _t(l10n, 'tab.members'),
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Card(
+              child: SwitchListTile(
+                title: Text(
+                  locale == 'nl' ? 'Inkomsten delen' : 'Share income',
+                ),
+                subtitle: Text(
+                  locale == 'nl'
+                      ? 'Optioneel: een deel van drugsverkoop, munitieverkoop, voertuigverkoop/-sloop en prostitutie-innemen gaat naar de crewbank. Jouw bijdrage staat bij de ledenlijst.'
+                      : 'Optional: a cut of drug sales, ammo sales, vehicle sell/scrap and prostitution collection goes to the crew bank. Your contribution shows on the members list.',
+                ),
+                value: myMembership.incomeShareEnabled,
+                onChanged: (value) => _setIncomeShareEnabled(value),
+              ),
             ),
             const SizedBox(height: 8),
             GridView.count(
@@ -7414,23 +7473,24 @@ class _CrewScreenState extends State<CrewScreen>
                           ),
                         ),
                         subtitle: Text(
-                          '${locale == 'nl' ? 'Rank' : 'Rank'}: ${member.playerInfo?.rank ?? 0} | Trust: ${member.trustScore}/100',
+                          '${locale == 'nl' ? 'Rank' : 'Rank'}: ${member.playerInfo?.rank ?? 0} | Trust: ${member.trustScore}/100 | ${locale == 'nl' ? 'Bijdrage' : 'Contributed'}: €${member.lifetimeContribution}',
                         ),
-                        trailing: isLeader && !member.isLeader
+                        trailing: isOfficer && !member.isLeader
                             ? PopupMenuButton<String>(
                                 onSelected: (value) {
                                   if (value == 'kick') {
                                     _kickMember(member.playerId);
-                                  } else if (value == 'role') {
+                                  } else if (value == 'role' && isLeader) {
                                     _promptMemberRole(member.playerId, member.role);
                                   }
                                 },
                                 itemBuilder: (context) {
                                   final items = <PopupMenuEntry<String>>[
-                                    PopupMenuItem(
-                                      value: 'role',
-                                      child: Text(AppLocalizations.of(context)!.crewSetRole),
-                                    ),
+                                    if (isLeader)
+                                      PopupMenuItem(
+                                        value: 'role',
+                                        child: Text(AppLocalizations.of(context)!.crewSetRole),
+                                      ),
                                     PopupMenuItem(
                                       value: 'kick',
                                       child: Text(
@@ -7477,7 +7537,7 @@ class _CrewScreenState extends State<CrewScreen>
                   )
                   .toList(),
             ),
-            if (isLeader) ...[
+            if (isOfficer) ...[
               const SizedBox(height: 16),
               Card(
                 child: Column(
@@ -8796,6 +8856,7 @@ class _CrewScreenState extends State<CrewScreen>
     required AppLocalizations loc,
     required bool canManage,
     required bool hasActiveRun,
+    int waitSeconds = 0,
   }) {
     return Wrap(
       spacing: 12,
@@ -8809,6 +8870,7 @@ class _CrewScreenState extends State<CrewScreen>
                 loc: loc,
                 canManage: canManage,
                 hasActiveRun: hasActiveRun,
+                waitSeconds: waitSeconds,
               ),
             ),
           )
@@ -9023,6 +9085,7 @@ class _CrewScreenState extends State<CrewScreen>
                       loc: l10n,
                       canManage: canManage,
                       hasActiveRun: activeRun != null,
+                      waitSeconds: waitSeconds,
                     ),
                     const SizedBox(height: 12),
                   ],
@@ -9038,6 +9101,7 @@ class _CrewScreenState extends State<CrewScreen>
                       loc: l10n,
                       canManage: canManage,
                       hasActiveRun: activeRun != null,
+                      waitSeconds: waitSeconds,
                     ),
                     const SizedBox(height: 12),
                   ],
@@ -9053,6 +9117,7 @@ class _CrewScreenState extends State<CrewScreen>
                       loc: l10n,
                       canManage: canManage,
                       hasActiveRun: activeRun != null,
+                      waitSeconds: waitSeconds,
                     ),
                   ],
                 ],
@@ -9180,6 +9245,7 @@ class _CrewScreenState extends State<CrewScreen>
     required AppLocalizations loc,
     required bool canManage,
     required bool hasActiveRun,
+    int waitSeconds = 0,
   }) {
     final isNl = loc.localeName.startsWith('nl');
     final title = isNl
@@ -9467,7 +9533,13 @@ class _CrewScreenState extends State<CrewScreen>
                             _crewMissionActionLoading)
                         ? null
                         : () => _openCrewMissionRoleAssignDialog(missionKey),
-                    child: Text(_t(loc, 'action.startMission')),
+                    child: Text(
+                      waitSeconds > 0
+                          ? loc.crewUiNextMissionIn(
+                              _formatRemaining(waitSeconds, loc),
+                            )
+                          : _t(loc, 'action.startMission'),
+                    ),
                   ),
                 ),
               ],

@@ -204,10 +204,10 @@ export async function startHeist(
     throw new Error('HEIST_NOT_FOUND');
   }
 
-  // Verify leader
-  const isLeader = await crewService.isCrewLeader(leaderId, crewId);
-  if (!isLeader) {
-    throw new Error('NOT_CREW_LEADER');
+  // Verify leader or co-leader
+  const isOfficer = await crewService.isCrewOfficer(leaderId, crewId);
+  if (!isOfficer) {
+    throw new Error('NOT_CREW_OFFICER');
   }
 
   // Get crew with members

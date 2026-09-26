@@ -11,6 +11,10 @@ class CrewMember {
   final String? capoCountry;
   final int trustScore;
   final String joinedAt;
+  @JsonKey(defaultValue: false)
+  final bool incomeShareEnabled;
+  @JsonKey(defaultValue: 0)
+  final int lifetimeContribution;
   
   // Player info (included in API response)
   @JsonKey(name: 'player')
@@ -24,6 +28,8 @@ class CrewMember {
     this.capoCountry,
     required this.trustScore,
     required this.joinedAt,
+    this.incomeShareEnabled = false,
+    this.lifetimeContribution = 0,
     this.playerInfo,
   });
 

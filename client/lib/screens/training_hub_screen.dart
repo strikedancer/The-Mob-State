@@ -3,8 +3,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../l10n/app_localizations.dart';
+import '../providers/auth_provider.dart';
 import '../services/api_client.dart';
 import '../services/jail_service.dart';
 import '../utils/top_right_notification.dart';
@@ -228,11 +230,18 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
               content: Text(l10n?.gymTrainSuccess ?? 'Training complete'),
             ),
           );
+          unawaited(context.read<AuthProvider>().refreshPlayer());
         }
         await _loadAll(showFullPageLoader: false);
       } else if (mounted) {
         final (reason, nextAt) = _parseGymFailure(data);
-        final msg = _messageForGymFailure(l10n, reason, nextAt);
+        final cost = (data?['params'] as Map<String, dynamic>?)?['trainCost'];
+        final msg = _messageForGymFailure(
+          l10n,
+          reason,
+          nextAt,
+          trainCost: (cost as num?)?.toInt(),
+        );
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(msg)),
         );
@@ -274,6 +283,7 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
               ),
             ),
           );
+          unawaited(context.read<AuthProvider>().refreshPlayer());
         }
         await _loadAll(showFullPageLoader: false);
       } else if (mounted) {
@@ -297,8 +307,9 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
   String _messageForGymFailure(
     AppLocalizations? l10n,
     String? reason,
-    DateTime? nextAt,
-  ) {
+    DateTime? nextAt, {
+    int? trainCost,
+  }) {
     switch (reason) {
       case 'MAX_SESSIONS':
         return l10n?.gymMaxSessionsReached ?? 'Maximum sessions reached';
@@ -306,6 +317,12 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
         final label =
             nextAt != null ? DateFormat('HH:mm').format(nextAt) : '-';
         return l10n?.gymCooldown(label) ?? 'Next session at $label';
+      case 'INSUFFICIENT_FUNDS':
+        final cost = trainCost ??
+            (_gymStatus?['trainCost'] as num?)?.toInt() ??
+            500;
+        return l10n?.trainingHubInsufficientFunds(cost.toString()) ??
+            'Not enough cash for this training session (need €$cost).';
       default:
         return l10n?.unknownError ?? 'Error';
     }
@@ -328,10 +345,33 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
       case 'JAILED':
         return l10n?.trainingHubShootingJailed ??
             'The shooting range is closed while you are in jail.';
+      case 'INSUFFICIENT_FUNDS':
+        final cost = (data?['trainCost'] as num?)?.toInt() ??
+            (_shootingStatus?['trainCost'] as num?)?.toInt() ??
+            750;
+        return l10n?.trainingHubInsufficientFunds(cost.toString()) ??
+            'Not enough cash for this training session (need €$cost).';
       default:
         return data?['message']?.toString() ??
             (l10n?.unknownError ?? 'Error');
     }
+  }
+
+  String _trainButtonLabel(
+    AppLocalizations? l10n, {
+    required bool inProgress,
+    required int trainCost,
+    required String idleFallback,
+    required String busyFallback,
+  }) {
+    if (inProgress) {
+      return busyFallback;
+    }
+    if (trainCost > 0) {
+      return l10n?.trainingHubTrainCost(trainCost.toString()) ??
+          'Train (€$trainCost)';
+    }
+    return idleFallback;
   }
 
   String _formatCountdown(DateTime? nextAt, AppLocalizations? l10n) {
@@ -492,6 +532,7 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
     final status = _gymStatus ?? {};
     final aggregateBonus = ((status['strengthBonus'] as num?) ?? 0) * 100;
     final canSmartTrain = _pickSmartTrainTrack() != null;
+    final gymTrainCost = (status['trainCost'] as num?)?.toInt() ?? 500;
 
     return _sectionShell(
       context: context,
@@ -547,6 +588,7 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
               status['nextTrainAtStrength']?.toString() ??
                   status['nextTrainAt']?.toString(),
             ),
+            trainCost: gymTrainCost,
             accent: Colors.red,
             icon: Icons.fitness_center,
           ),
@@ -561,6 +603,7 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
             maxTrackBonus: 2.0,
             canTrain: status['canTrainSpeed'] == true,
             nextTrainAt: _parseAt(status['nextTrainAtSpeed']?.toString()),
+            trainCost: gymTrainCost,
             accent: Colors.orange,
             icon: Icons.directions_run,
           ),
@@ -575,6 +618,7 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
             maxTrackBonus: 2.0,
             canTrain: status['canTrainStamina'] == true,
             nextTrainAt: _parseAt(status['nextTrainAtStamina']?.toString()),
+            trainCost: gymTrainCost,
             accent: Colors.deepOrange,
             icon: Icons.favorite,
           ),
@@ -615,7 +659,13 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
                         : const Icon(Icons.auto_fix_high),
-                    label: Text(l10n?.gymSmartTrain ?? 'Smart train'),
+                    label: Text(
+                      _trainingGymTrack != null
+                          ? (l10n?.gymTrainingInProgress ?? 'Training...')
+                          : gymTrainCost > 0
+                              ? '${l10n?.gymSmartTrain ?? 'Smart train'} (€$gymTrainCost)'
+                              : (l10n?.gymSmartTrain ?? 'Smart train'),
+                    ),
                   ),
                 ),
               ],
@@ -638,6 +688,7 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
     required double maxTrackBonus,
     required bool canTrain,
     required DateTime? nextTrainAt,
+    required int trainCost,
     required Color accent,
     required IconData icon,
   }) {
@@ -723,9 +774,13 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
                     )
                   : Icon(icon, size: 18),
               label: Text(
-                isTraining
-                    ? (l10n?.gymTrainingInProgress ?? 'Training…')
-                    : (l10n?.gymTrain ?? 'Train'),
+                _trainButtonLabel(
+                  l10n,
+                  inProgress: isTraining,
+                  trainCost: trainCost,
+                  idleFallback: l10n?.gymTrain ?? 'Train',
+                  busyFallback: l10n?.gymTrainingInProgress ?? 'Training…',
+                ),
               ),
             ),
           ),
@@ -746,6 +801,7 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
     final canTrain = !jailed && status['canTrain'] == true;
     final progress = (sessions as num) / 100.0;
     const maxBonus = 10.0;
+    final rangeTrainCost = (status['trainCost'] as num?)?.toInt() ?? 750;
 
     return _sectionShell(
       context: context,
@@ -914,9 +970,14 @@ class _TrainingHubScreenState extends State<TrainingHubScreen> {
                           )
                         : const Icon(Icons.gps_fixed),
                     label: Text(
-                      _trainingShooting
-                          ? (l10n?.shootingTrainingInProgress ?? 'Training…')
-                          : (l10n?.shootingTrain ?? 'Train'),
+                      _trainButtonLabel(
+                        l10n,
+                        inProgress: _trainingShooting,
+                        trainCost: rangeTrainCost,
+                        idleFallback: l10n?.shootingTrain ?? 'Train',
+                        busyFallback:
+                            l10n?.shootingTrainingInProgress ?? 'Training…',
+                      ),
                     ),
                   ),
                 ),

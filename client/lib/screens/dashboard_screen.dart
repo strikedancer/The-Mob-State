@@ -60,6 +60,7 @@ import 'race_screen.dart';
 import 'prostitution_screen.dart';
 import 'bank_screen.dart';
 import 'achievements_screen.dart';
+import 'stats_leaderboard_screen.dart';
 import 'settings_screen.dart';
 import 'prison_screen.dart';
 import 'drug_environment_screen.dart';
@@ -121,6 +122,7 @@ enum _WebSection {
   prostitution,
   redLightDistricts,
   achievements,
+  statsLeaderboard,
   playerProfile,
 }
 
@@ -571,6 +573,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.prison:
       case _WebSection.security:
       case _WebSection.achievements:
+      case _WebSection.statsLeaderboard:
         return _NavGroup.more;
       case _WebSection.dashboard:
       case _WebSection.premium:
@@ -1704,6 +1707,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         navItem(icon: Icons.local_hospital, label: l10n.hospital, section: _WebSection.hospital),
         navItem(icon: Icons.gpp_bad, label: l10n.jail, section: _WebSection.prison),
         navItem(icon: Icons.emoji_events, label: l10n.achievements, section: _WebSection.achievements),
+        navItem(icon: Icons.leaderboard, label: l10n.statsBoardTitle, section: _WebSection.statsLeaderboard),
       ],
     };
 
@@ -2290,6 +2294,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case _WebSection.smuggling:
       case _WebSection.premium:
       case _WebSection.achievements:
+      case _WebSection.statsLeaderboard:
       case _WebSection.vault:
       case _WebSection.events:
       case _WebSection.travel:
@@ -2405,6 +2410,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return 'red-light-districts';
       case _WebSection.achievements:
         return 'achievements';
+      case _WebSection.statsLeaderboard:
+        return null;
       case _WebSection.playerProfile:
         return 'player-profile';
     }
@@ -2579,6 +2586,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return const ProstitutionScreen(initialTabIndex: 1, embedded: true);
       case _WebSection.achievements:
         return const AchievementsScreen(embedded: true);
+      case _WebSection.statsLeaderboard:
+        return const StatsLeaderboardScreen(embedded: true);
       case _WebSection.playerProfile:
         final playerId = _profilePlayerId;
         if (playerId == null) {
@@ -4568,6 +4577,10 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     _buildCooldownRow(
                       l10n.dashboardTimeoutCrewMission,
                       'crew_mission',
+                    ),
+                    _buildCooldownRow(
+                      l10n.dashboardTimeoutLaunder,
+                      'launder',
                     ),
                     _buildCooldownRow(
                       l10n.dashboardTimeoutGymStrength,

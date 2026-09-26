@@ -31,6 +31,7 @@ import {
 } from '../config/supportedLanguages';
 import { getPublicEventChipShowcase } from '../services/eventItemService';
 import { crewMissionService } from '../services/crewMissionService';
+import { getLaunderRemainingSeconds } from '../services/launderService';
 import { applyReputationAction } from '../services/reputationService';
 import {
   isShowroomProperty,
@@ -1542,6 +1543,15 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
       } catch (error) {
         console.error('[Dashboard] Crew mission cooldown failed:', { playerId, error });
       }
+    }
+
+    try {
+      const launderRemaining = await getLaunderRemainingSeconds(playerId);
+      if (launderRemaining > 0) {
+        cooldowns.launder = launderRemaining;
+      }
+    } catch (error) {
+      console.error('[Dashboard] Launder remaining failed:', { playerId, error });
     }
 
     const totalAmmo = Number(ammoInventoryAgg._sum.quantity ?? 0);

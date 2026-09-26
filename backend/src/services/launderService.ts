@@ -287,3 +287,19 @@ export async function startLaunderJob(playerId: number, amountInput: number) {
 
   return getLaunderStatus(playerId);
 }
+
+/** Seconds until active wash completes, or 0 if none. For Home timeouts. */
+export async function getLaunderRemainingSeconds(playerId: number): Promise<number> {
+  const rows = await prisma.$queryRawUnsafe<Array<{ completesAt: Date }>>(
+    `SELECT completesAt
+     FROM launder_jobs
+     WHERE playerId = ? AND status = 'processing'
+     ORDER BY completesAt ASC
+     LIMIT 1`,
+    playerId,
+  );
+  if (!rows.length) return 0;
+  const completesAt = new Date(rows[0].completesAt).getTime();
+  const remaining = Math.ceil((completesAt - Date.now()) / 1000);
+  return remaining > 0 ? remaining : 0;
+}

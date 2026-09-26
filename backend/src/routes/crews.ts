@@ -457,10 +457,10 @@ router.get(
         });
       }
 
-      const isLeader = await crewService.isCrewLeader(currentPlayerId, crewId);
-      if (!isLeader) {
+      const isOfficer = await crewService.isCrewOfficer(currentPlayerId, crewId);
+      if (!isOfficer) {
         return res.status(403).json({
-          event: 'error.not_crew_leader',
+          event: 'error.not_crew_officer',
           params: {},
         });
       }
@@ -497,10 +497,10 @@ router.post(
         });
       }
 
-      const isLeader = await crewService.isCrewLeader(currentPlayerId, crewId);
-      if (!isLeader) {
+      const isOfficer = await crewService.isCrewOfficer(currentPlayerId, crewId);
+      if (!isOfficer) {
         return res.status(403).json({
-          event: 'error.not_crew_leader',
+          event: 'error.not_crew_officer',
           params: {},
         });
       }
@@ -596,10 +596,10 @@ router.post(
         });
       }
 
-      const isLeader = await crewService.isCrewLeader(currentPlayerId, crewId);
-      if (!isLeader) {
+      const isOfficer = await crewService.isCrewOfficer(currentPlayerId, crewId);
+      if (!isOfficer) {
         return res.status(403).json({
-          event: 'error.not_crew_leader',
+          event: 'error.not_crew_officer',
           params: {},
         });
       }
@@ -678,23 +678,13 @@ router.post(
         });
       }
 
-      const isLeader = await crewService.isCrewLeader(currentPlayerId, crewId);
-      if (!isLeader) {
+      const isOfficer = await crewService.isCrewOfficer(currentPlayerId, crewId);
+      if (!isOfficer) {
         return res.status(403).json({
-          event: 'error.not_crew_leader',
+          event: 'error.not_crew_officer',
           params: {},
         });
       }
-
-      const targetMembership = await prisma.crewMember.findFirst({
-        where: { crewId, playerId: targetPlayerId },
-        include: {
-          player: { select: { id: true, username: true, email: true, preferredLanguage: true } },
-          crew: { select: { name: true } },
-        },
-      });
-
-      await crewService.kickMember(crewId, targetPlayerId);
       await applyReputationAction(targetPlayerId, 'crew_kicked', false);
 
       if (targetMembership) {
@@ -2431,6 +2421,30 @@ router.delete(
           event: 'error.not_authorized',
           params: {},
         });
+      }
+      return next(error);
+    }
+  }
+);
+
+
+/**
+ * POST /crews/:id/income-share
+ * Toggle optional personal income share to crew bank (self only).
+ */
+router.post(
+  '/:id/income-share',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const crewId = parseInt(req.params.id as string);
+      const enabled = Boolean(req.body?.enabled);
+      const { setIncomeShareEnabled } = await import('../services/crewIncomeShareService');
+      await setIncomeShareEnabled(crewId, req.player!.id, enabled);
+      return res.json({ event: 'crew.income_share_updated', params: { enabled } });
+    } catch (error: unknown) {
+      if (error instanceof Error && error.message === 'NOT_A_MEMBER') {
+        return res.status(403).json({ event: 'error.not_crew_member', params: {} });
       }
       return next(error);
     }

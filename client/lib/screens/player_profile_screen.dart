@@ -1251,6 +1251,74 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
                       ],
                     ),
                   ],
+                  if (showroomStats.exhibits.isNotEmpty) ...[
+                    const SizedBox(height: 8),
+                    ...showroomStats.exhibits.take(12).map((exhibit) {
+                      final image = exhibit.image;
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 6),
+                        child: Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(6),
+                              child: SizedBox(
+                                width: 40,
+                                height: 40,
+                                child: image != null && image.isNotEmpty
+                                    ? WebAssetHelper.image(
+                                        image.startsWith('assets/')
+                                            ? image
+                                            : 'assets/images/vehicles/$image',
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (_, __, ___) =>
+                                            ColoredBox(
+                                          color: Colors.black38,
+                                          child: Icon(
+                                            Icons.directions_car,
+                                            size: 18,
+                                            color: rarityColor(exhibit.rarity),
+                                          ),
+                                        ),
+                                      )
+                                    : ColoredBox(
+                                        color: Colors.black38,
+                                        child: Icon(
+                                          Icons.directions_car,
+                                          size: 18,
+                                          color: rarityColor(exhibit.rarity),
+                                        ),
+                                      ),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                exhibit.name,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: rarityColor(exhibit.rarity),
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.2,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
+                    if (showroomStats.exhibits.length > 12)
+                      Text(
+                        l10n.showroomPublicMoreExhibits(
+                          (showroomStats.exhibits.length - 12).toString(),
+                        ),
+                        style: const TextStyle(
+                          color: Colors.white54,
+                          fontSize: 10,
+                        ),
+                      ),
+                  ],
                 ],
               ],
             ),
@@ -1270,12 +1338,27 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
         rarityCounts[entry.key.toString()] = (entry.value as num?)?.toInt() ?? 0;
       }
     }
+    final exhibitsRaw = raw['exhibits'];
+    final exhibits = <_ProfileShowroomExhibit>[];
+    if (exhibitsRaw is List) {
+      for (final row in exhibitsRaw) {
+        if (row is! Map) continue;
+        exhibits.add(
+          _ProfileShowroomExhibit(
+            name: (row['name'] ?? row['vehicleId'] ?? '').toString(),
+            rarity: (row['rarity'] ?? 'common').toString(),
+            image: row['image']?.toString(),
+          ),
+        );
+      }
+    }
     return _ProfileShowroomStats(
       slotsUsed: (raw['slotsUsed'] as num?)?.toInt() ?? 0,
       slotsMax: (raw['slotsMax'] as num?)?.toInt() ?? 0,
       catalogSize: (raw['catalogSize'] as num?)?.toInt() ?? 0,
       totalValue: (raw['totalValue'] as num?)?.toInt() ?? 0,
       rarityCounts: rarityCounts,
+      exhibits: exhibits,
     );
   }
 
@@ -1482,12 +1565,25 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
   );
 }
 
+class _ProfileShowroomExhibit {
+  final String name;
+  final String rarity;
+  final String? image;
+
+  const _ProfileShowroomExhibit({
+    required this.name,
+    required this.rarity,
+    this.image,
+  });
+}
+
 class _ProfileShowroomStats {
   final int slotsUsed;
   final int slotsMax;
   final int catalogSize;
   final int totalValue;
   final Map<String, int> rarityCounts;
+  final List<_ProfileShowroomExhibit> exhibits;
 
   const _ProfileShowroomStats({
     required this.slotsUsed,
@@ -1495,5 +1591,6 @@ class _ProfileShowroomStats {
     required this.catalogSize,
     required this.totalValue,
     required this.rarityCounts,
+    this.exhibits = const [],
   });
 }

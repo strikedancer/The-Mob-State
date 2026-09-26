@@ -1396,11 +1396,13 @@ class DrugService {
       });
     }
 
-    // Add money to player
+    // Add money to player (optional crew income share first)
+    const { applyOptionalCrewIncomeShare } = await import('./crewIncomeShareService');
+    const share = await applyOptionalCrewIncomeShare(playerId, totalEarnings);
     await prisma.player.update({
       where: { id: playerId },
       data: {
-        money: player.money + totalEarnings,
+        money: player.money + share.personal,
       },
     });
 
@@ -1413,8 +1415,9 @@ class DrugService {
 
     return {
       success: true,
-      message: `${quantity}g ${drug.displayName} (${qualityLabel}) verkocht voor €${totalEarnings.toLocaleString()}!`,
-      earnings: totalEarnings,
+      message: `${quantity}g ${drug.displayName} (${qualityLabel}) verkocht voor €${share.personal.toLocaleString()}!${share.crewShare > 0 ? ` (€${share.crewShare.toLocaleString()} naar crewbank)` : ''}`,
+      earnings: share.personal,
+      crewShare: share.crewShare,
     };
   }
 

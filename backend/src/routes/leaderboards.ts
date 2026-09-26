@@ -1,14 +1,63 @@
 import { Router } from 'express';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
 import { leaderboardService, LeaderboardPeriod } from '../services/leaderboardService';
+import {
+  statsLeaderboardService,
+  StatsLeaderboardMetric,
+  StatsLeaderboardPeriod,
+} from '../services/statsLeaderboardService';
 
 const router = Router();
 
 const allowedPeriods: LeaderboardPeriod[] = ['weekly', 'monthly', 'all_time'];
+const allowedStatsMetrics: StatsLeaderboardMetric[] = [
+  'crimes',
+  'jail',
+  'vehicle_thefts',
+  'crime_income',
+];
+const allowedStatsPeriods: StatsLeaderboardPeriod[] = ['weekly', 'all_time'];
 
 function isValidPeriod(period: string): period is LeaderboardPeriod {
   return allowedPeriods.includes(period as LeaderboardPeriod);
 }
+
+/**
+ * GET /leaderboards/stats/:metric?period=weekly|all_time
+ * Crimes / jail minutes / vehicle thefts / crime loot (not cash-on-hand).
+ */
+router.get('/stats/:metric', authenticate, async (req: AuthRequest, res) => {
+  try {
+    const metric = req.params.metric as string;
+    if (!allowedStatsMetrics.includes(metric as StatsLeaderboardMetric)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid metric. Use crimes, jail, vehicle_thefts, or crime_income',
+      });
+    }
+    const periodRaw = String(req.query.period || 'weekly');
+    if (!allowedStatsPeriods.includes(periodRaw as StatsLeaderboardPeriod)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid period. Use weekly or all_time',
+      });
+    }
+    const limit = Math.min(Math.max(parseInt(req.query.limit as string, 10) || 50, 1), 100);
+    const board = await statsLeaderboardService.getLeaderboard(
+      metric as StatsLeaderboardMetric,
+      periodRaw as StatsLeaderboardPeriod,
+      limit,
+      req.player?.id,
+    );
+    return res.json({ success: true, ...board });
+  } catch (error) {
+    console.error('[Leaderboards] Stats board failed:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to fetch stats leaderboard',
+    });
+  }
+});
 
 /**
  * GET /leaderboards/:period

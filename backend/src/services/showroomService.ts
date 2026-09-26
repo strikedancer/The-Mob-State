@@ -102,18 +102,27 @@ async function garageOrMarinaHasSpace(
   return current < cap;
 }
 
+export type PublicShowroomExhibit = {
+  inventoryId: number;
+  vehicleId: string;
+  name: string;
+  rarity: string;
+  image: string | null;
+};
+
 export type PublicShowroomStats = {
   slotsUsed: number;
   slotsMax: number;
   catalogSize: number;
   totalValue: number;
   rarityCounts: Record<string, number>;
+  exhibits: PublicShowroomExhibit[];
 };
 
 class ShowroomService {
   /**
-   * Prestige-only showroom summary for public profiles.
-   * No country / eligible garage intel — only collection progress + value.
+   * Prestige showroom summary for public profiles.
+   * Includes exhibit name/image/rarity for showcase; no country / eligible garage intel.
    */
   async getPublicShowroomStatsByPropertyId(
     playerId: number,
@@ -135,10 +144,12 @@ class ShowroomService {
         showroomPropertyId: { in: showrooms.map((row) => row.id) },
       },
       select: {
+        id: true,
         showroomPropertyId: true,
         vehicleId: true,
         condition: true,
       },
+      orderBy: { showroomPlacedAt: 'asc' },
     });
 
     const byProperty = new Map<number, typeof exhibits>();
@@ -155,8 +166,12 @@ class ShowroomService {
       const mapped = rows.map((row) => {
         const def = findShowroomVehicleDef(row.vehicleId);
         return {
-          value: showroomVehicleDisplayValue(def, row.condition),
+          inventoryId: row.id,
+          vehicleId: row.vehicleId,
+          name: def?.name ?? row.vehicleId,
           rarity: showroomVehicleRarity(def),
+          image: showroomVehicleImage(def),
+          value: showroomVehicleDisplayValue(def, row.condition),
         };
       });
       result.set(showroom.id, {
@@ -165,6 +180,13 @@ class ShowroomService {
         catalogSize: getShowroomCatalogSize(showroom.propertyType),
         totalValue: mapped.reduce((sum, item) => sum + (item.value || 0), 0),
         rarityCounts: rarityCounts(mapped),
+        exhibits: mapped.map(({ inventoryId, vehicleId, name, rarity, image }) => ({
+          inventoryId,
+          vehicleId,
+          name,
+          rarity,
+          image,
+        })),
       });
     }
 
