@@ -13526,5 +13526,49 @@
       }
     }
   },
-  "courtExpungeMathNone": "Jail math: no extra bonus yet"
+  "courtExpungeMathNone": "Jail math: no extra bonus yet",
+  "vehicleDisposeSellTitle": "Sell this vehicle?",
+  "vehicleDisposeSellBody": "Sell {name} now for {amount}. After you confirm, it leaves your garage for good.",
+  "@vehicleDisposeSellBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleDisposeScrapTitle": "Scrap for parts?",
+  "vehicleDisposeScrapBody": "Break {name} down for salvage cash and parts. After you confirm, the vehicle is gone.",
+  "@vehicleDisposeScrapBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleDisposeChopTitle": "Claim chop contract?",
+  "vehicleDisposeChopBody": "This contract takes {name} from your garage and pays {amount}. After you confirm, that vehicle is gone.",
+  "@vehicleDisposeChopBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleDisposeChopBodyUnknown": "This contract takes one eligible vehicle from your garage and pays {amount}. After you confirm, that vehicle is gone.",
+  "@vehicleDisposeChopBodyUnknown": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleDisposeOpsContractTitle": "Start ops contract?",
+  "vehicleDisposeOpsContractBody": "You start a vehicle-ops job with its own cooldown and risk. This button does not take a vehicle from your garage. Chop contracts that do take a vehicle use Claim contract.",
+  "vehicleDisposeIrreversible": "This cannot be undone."
 }

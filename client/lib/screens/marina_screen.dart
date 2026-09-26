@@ -18,6 +18,7 @@ import '../utils/top_right_notification.dart';
 import '../utils/formatters.dart';
 import '../utils/web_asset_helper.dart';
 import '../widgets/stolen_vehicle_dialog.dart';
+import '../widgets/vehicle_dispose_confirm_dialog.dart';
 import '../widgets/game_page_info.dart';
 
 class MarinaScreen extends StatefulWidget {
@@ -493,8 +494,8 @@ class _MarinaScreenState extends State<MarinaScreen> {
                 _repairFinishCreditCost.toString(),
               )
           : AppLocalizations.of(context)!.vehicleGarageRepairInstantGeneric,
-      onSell: () => _sellVehicle(provider, boat.id),
-      onScrap: () => _scrapVehicle(provider, boat.id),
+      onSell: () => _sellVehicle(provider, boat),
+      onScrap: () => _scrapVehicle(provider, boat),
       onList: () => _showListOnMarketDialog(provider, boat),
     );
   }
@@ -983,8 +984,8 @@ class _MarinaScreenState extends State<MarinaScreen> {
               isSelectedForCrimes: _selectedVehicleId == boat.id,
               onRefuel: () => _refuelVehicle(provider, boat),
               onRepair: () => _repairVehicle(provider, boat),
-              onSell: () => _sellVehicle(provider, boat.id),
-              onScrap: () => _scrapVehicle(provider, boat.id),
+              onSell: () => _sellVehicle(provider, boat),
+              onScrap: () => _scrapVehicle(provider, boat),
               onList: () => _showListOnMarketDialog(provider, boat),
             );
           }
@@ -1213,29 +1214,20 @@ class _MarinaScreenState extends State<MarinaScreen> {
     }
   }
 
-  Future<void> _sellVehicle(VehicleProvider provider, int vehicleId) async {
-    final confirmed = await showDialog<bool>(
+  Future<void> _sellVehicle(
+    VehicleProvider provider,
+    VehicleInventoryItem vehicle,
+  ) async {
+    final confirmed = await showVehicleDisposeConfirmDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(AppLocalizations.of(context)!.confirmAction),
-        content: Text(AppLocalizations.of(context)!.confirmSellBoat),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(AppLocalizations.of(context)!.cancel),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, true),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-            child: Text(AppLocalizations.of(context)!.sell),
-          ),
-        ],
-      ),
+      kind: VehicleDisposeKind.sell,
+      vehicle: vehicle,
+      payout: formatCurrency(vehicle.getMarketValue()),
     );
 
     if (confirmed != true || !mounted) return;
 
-    final soldFor = await provider.sellVehicle(vehicleId);
+    final soldFor = await provider.sellVehicle(vehicle.id);
 
     if (!mounted) return;
 
@@ -1266,29 +1258,19 @@ class _MarinaScreenState extends State<MarinaScreen> {
     }
   }
 
-  Future<void> _scrapVehicle(VehicleProvider provider, int vehicleId) async {
-    final confirmed = await showDialog<bool>(
+  Future<void> _scrapVehicle(
+    VehicleProvider provider,
+    VehicleInventoryItem vehicle,
+  ) async {
+    final confirmed = await showVehicleDisposeConfirmDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(AppLocalizations.of(context)!.confirmAction),
-        content: Text(AppLocalizations.of(context)!.vehicleGarageScrapConfirm),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(AppLocalizations.of(context)!.cancel),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, true),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: Text(AppLocalizations.of(context)!.vehicleGarageScrapAction),
-          ),
-        ],
-      ),
+      kind: VehicleDisposeKind.scrap,
+      vehicle: vehicle,
     );
 
     if (confirmed != true || !mounted) return;
 
-    final result = await provider.scrapVehicle(vehicleId);
+    final result = await provider.scrapVehicle(vehicle.id);
 
     if (!mounted) return;
 

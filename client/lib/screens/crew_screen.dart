@@ -28,6 +28,7 @@ import '../services/drug_service.dart';
 import '../utils/drug_localizations.dart';
 import 'black_market_screen.dart';
 import '../widgets/game_page_info.dart';
+import '../widgets/vehicle_dispose_confirm_dialog.dart';
 import '../widgets/empire_page_hero.dart';
 
 enum _CrewMissionListFilter { all, available }
@@ -6504,24 +6505,12 @@ class _CrewScreenState extends State<CrewScreen>
             }) async {
               if (busy || _myCrew == null) return;
               if (confirmSell) {
-                final ok = await showDialog<bool>(
+                final ok = await showVehicleDisposeConfirmDialog(
                   context: sheetContext,
-                  builder: (context) => AlertDialog(
-                    title: Text(loc.sellVehicle),
-                    content: Text(
-                      loc.crewUiVehicleSellConfirm(_money(sellPrice)),
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, false),
-                        child: Text(loc.crewUiTr43),
-                      ),
-                      ElevatedButton(
-                        onPressed: () => Navigator.pop(context, true),
-                        child: Text(loc.sellVehicle),
-                      ),
-                    ],
-                  ),
+                  kind: VehicleDisposeKind.sell,
+                  vehicleName: _crewVehicleLabel(row, loc),
+                  payout: _money(sellPrice),
+                  imageAssetPath: _crewVehicleAssetPath(row),
                 );
                 if (ok != true) return;
               }

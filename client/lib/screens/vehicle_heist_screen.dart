@@ -17,6 +17,7 @@ import '../utils/top_right_notification.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/jail_screen.dart';
 import '../widgets/stolen_vehicle_dialog.dart';
+import '../widgets/vehicle_dispose_confirm_dialog.dart';
 import '../widgets/theft_cooldown_credit_flow.dart';
 import '../widgets/theft_cooldown_steal_control.dart';
 import '../widgets/vehicle_catalog_dialog.dart';
@@ -1405,8 +1406,32 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
 
   Future<void> _claimChopContract(VehicleProvider provider) async {
     final l10n = AppLocalizations.of(context)!;
+    final vehicleType = _opsVehicleTypeForTab(_activeTabIndex);
+    final intel = provider.vehicleOpsIntelligence;
+    final chop = (intel?['chopContract'] as Map<String, dynamic>?) ?? const {};
+    final minCondition = (chop['minCondition'] as num?)?.toInt() ?? 0;
+    final reward = formatCurrency((chop['rewardMoney'] as num?)?.toInt() ?? 0);
+    final candidate = chopContractCandidate(
+      inventory: provider.inventory,
+      vehicleType: vehicleType,
+      minCondition: minCondition,
+    );
+    if (candidate == null) {
+      _showTopMessage(l10n.vehicleHeistOpsChopNoEligibleVehicle);
+      return;
+    }
+    final confirmed = await showVehicleDisposeConfirmDialog(
+      context: context,
+      kind: VehicleDisposeKind.chop,
+      vehicle: candidate,
+      payout: reward,
+    );
+    if (confirmed != true || !mounted) return;
+
+    setState(() => _opsActionInProgress = true);
+    try {
     final result = await provider.claimVehicleChopContract(
-      vehicleType: _opsVehicleTypeForTab(_activeTabIndex),
+      vehicleType: vehicleType,
     );
     final params = (result['params'] as Map<String, dynamic>? ?? const {});
     final success = result['success'] == true;
@@ -1442,6 +1467,9 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
       );
     } else {
       _showTopMessage(l10n.vehicleHeistOpsChopContractClaimFailed);
+    }
+    } finally {
+      if (mounted) setState(() => _opsActionInProgress = false);
     }
   }
 
@@ -1532,6 +1560,11 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
 
   Future<void> _runOpsContract(VehicleProvider provider) async {
     final l10n = AppLocalizations.of(context)!;
+    final confirmed = await showVehicleDisposeConfirmDialog(
+      context: context,
+      kind: VehicleDisposeKind.opsContract,
+    );
+    if (confirmed != true || !mounted) return;
     final intel = provider.vehicleOpsIntelligence;
     final board =
         (intel?['contractsBoard'] as Map<String, dynamic>?) ?? const {};

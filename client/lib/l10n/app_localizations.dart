@@ -15482,6 +15482,66 @@ abstract class AppLocalizations {
   /// **'Are you sure you want to sell this boat?'**
   String get confirmSellBoat;
 
+  /// No description provided for @vehicleDisposeSellTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sell this vehicle?'**
+  String get vehicleDisposeSellTitle;
+
+  /// No description provided for @vehicleDisposeSellBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Sell {name} now for {amount}. After you confirm, it leaves your garage for good.'**
+  String vehicleDisposeSellBody(String name, String amount);
+
+  /// No description provided for @vehicleDisposeScrapTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Scrap for parts?'**
+  String get vehicleDisposeScrapTitle;
+
+  /// No description provided for @vehicleDisposeScrapBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Break {name} down for salvage cash and parts. After you confirm, the vehicle is gone.'**
+  String vehicleDisposeScrapBody(String name);
+
+  /// No description provided for @vehicleDisposeChopTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim chop contract?'**
+  String get vehicleDisposeChopTitle;
+
+  /// No description provided for @vehicleDisposeChopBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This contract takes {name} from your garage and pays {amount}. After you confirm, that vehicle is gone.'**
+  String vehicleDisposeChopBody(String name, String amount);
+
+  /// No description provided for @vehicleDisposeChopBodyUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'This contract takes one eligible vehicle from your garage and pays {amount}. After you confirm, that vehicle is gone.'**
+  String vehicleDisposeChopBodyUnknown(String amount);
+
+  /// No description provided for @vehicleDisposeOpsContractTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start ops contract?'**
+  String get vehicleDisposeOpsContractTitle;
+
+  /// No description provided for @vehicleDisposeOpsContractBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You start a vehicle-ops job with its own cooldown and risk. This button does not take a vehicle from your garage. Chop contracts that do take a vehicle use Claim contract.'**
+  String get vehicleDisposeOpsContractBody;
+
+  /// No description provided for @vehicleDisposeIrreversible.
+  ///
+  /// In en, this message translates to:
+  /// **'This cannot be undone.'**
+  String get vehicleDisposeIrreversible;
+
   /// No description provided for @carStolen.
   ///
   /// In en, this message translates to:
@@ -33161,7 +33221,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicGarageHow.
   ///
   /// In en, this message translates to:
-  /// **'Your garage shows cars and motorcycles with condition (0-100%), fuel, market value, rarity and world-cap status.\nCar storage and motorcycle storage are now separated: cars use garage capacity, motorcycles use motorcycle storage capacity.\nStorage upgrades only apply to the country you are in right now. Upgrading cars in France does not raise car storage in the Netherlands (or any other country); travel there first if you want to upgrade that garage.\nCar and motorcycle tracks stay separate in each country: a car upgrade never increases motorcycle slots (and vice versa). Upgrades add extra storage slots; they do not increase steal success chance. Upgrades are rank-gated; when your rank is too low you see a lock/tooltip. At level 5 the upgrade button is hidden.\nUsing the catalog button you can view all stealable cars and motorcycles, including their most common country and full spawn country list.\nTheft is per vehicle with rank requirements and cooldowns. The more expensive and rare, the lower your success chance.\nIf a model world-cap is full, you cannot steal that model temporarily. When a copy is sold or scrapped, 1 slot reopens immediately.\nFailed theft increases Wanted Level and can trigger arrest. If police catch you during the getaway, you go to jail and the just-stolen vehicle is confiscated immediately.\nRepairs are timed: you pay upfront, the vehicle enters repair and only returns after the timer finishes.\nConcurrent repairs are limited across car, motorcycle and boat together: without VIP max 1 active, with VIP max 2 active.\nScrapping is an alternative to selling: you receive salvage value (35% of base value), scaled by condition and garage upgrade bonus.\nVehicle Ops Intelligence adds 6 extra options. In short:\n1) Hotspot run: a quick action for direct cash, with its own cooldown and added risk.\n2) Parts market: live parts prices per type (car/motorcycle/boat) for tuning; prices refresh periodically.\n3) Crew op: a co-op action with your crew for extra gains/advantages (only if you are in a crew).\n4) Heat: per type (car/motorcycle/boat) an “attention” meter; higher heat makes actions riskier and lowers success chance. Heat decays slowly.\n5) Chop contract: hand in an eligible vehicle from your inventory for a fixed contract payout.\n6) Police pattern: time-of-day patterns can increase checks; this affects risk (e.g. harbor strike/lockdown for boats).\nIn Vehicle Heist, Car/Motorcycle/Boat now use one command layer: select category via the three lane cards at the top, without a second extra tab row.\nEach lane card includes direct quick actions for stealing and storage upgrades, so you do not need to scroll to separate sub-buttons first.\nAfter a successful theft, the result popup lets you sell or scrap the vehicle immediately, or keep it. The amount on Sell is exactly what you receive: country price times condition, plus tuning if the vehicle is upgraded.\nWhile a steal cooldown is running, a lightning icon appears next to the timer: tap it to spend credits and clear the cooldown. You can turn off the confirmation dialog; turn it back on in Settings under theft cooldown (credits).\nLane cards now also show capacity per type directly (used/total + upgrade level).\nStolen vehicles now render as responsive cards: mobile shows one per row, tablet/desktop show multiple cards side by side.\nNew Ops layer: PvP interception windows for hotspots, crew-role bonuses in crew ops, reputation unlocks per vehicle type, regional blacklist events, and contraband insurance contracts.\nNew Vehicle Ops expansions: Counter-Intercept missions, Crew Matchmaking with seasonal ladder, Country Modifiers (inflation/corruption/harbor strike), and a contracts board with weekly legendary contracts.\nOps now shows live cooldowns per action. Timers count down visibly and refresh automatically.\nCrew actions (Crew Op and Crew Match) are only available when you are in a crew; without a crew you get a clear unlock hint.\nSuccessful ops actions pay cash directly to your wallet. The action overview shows the expected payout type per button.\nInsurance claims now enter review first; using claim dispute lets you contest for extra payout with rejection risk.\nHigher category heat lowers theft success chances and raises hotspot risk. Heat decays gradually each hour.\nChop-Shop Contracts require an eligible vehicle from your inventory; claiming consumes that vehicle and pays out contract cash.\nVehicle transport no longer happens in Garage; use the Smuggling Hub flow.\nResale and scrapping free either car or motorcycle capacity and may reopen world-cap slots for that model.\nEvent-only vehicles such as police interceptors stay locked outside event windows.'**
+  /// **'Your garage shows cars and motorcycles with condition (0-100%), fuel, market value, rarity and world-cap status.\nCar storage and motorcycle storage are now separated: cars use garage capacity, motorcycles use motorcycle storage capacity.\nStorage upgrades only apply to the country you are in right now. Upgrading cars in France does not raise car storage in the Netherlands (or any other country); travel there first if you want to upgrade that garage.\nCar and motorcycle tracks stay separate in each country: a car upgrade never increases motorcycle slots (and vice versa). Upgrades add extra storage slots; they do not increase steal success chance. Upgrades are rank-gated; when your rank is too low you see a lock/tooltip. At level 5 the upgrade button is hidden.\nUsing the catalog button you can view all stealable cars and motorcycles, including their most common country and full spawn country list.\nTheft is per vehicle with rank requirements and cooldowns. The more expensive and rare, the lower your success chance.\nIf a model world-cap is full, you cannot steal that model temporarily. When a copy is sold or scrapped, 1 slot reopens immediately.\nFailed theft increases Wanted Level and can trigger arrest. If police catch you during the getaway, you go to jail and the just-stolen vehicle is confiscated immediately.\nRepairs are timed: you pay upfront, the vehicle enters repair and only returns after the timer finishes.\nConcurrent repairs are limited across car, motorcycle and boat together: without VIP max 1 active, with VIP max 2 active.\nScrapping is an alternative to selling: you receive salvage value (35% of base value), scaled by condition and garage upgrade bonus.\nVehicle Ops Intelligence adds 6 extra options. In short:\n1) Hotspot run: a quick action for direct cash, with its own cooldown and added risk.\n2) Parts market: live parts prices per type (car/motorcycle/boat) for tuning; prices refresh periodically.\n3) Crew op: a co-op action with your crew for extra gains/advantages (only if you are in a crew).\n4) Heat: per type (car/motorcycle/boat) an “attention” meter; higher heat makes actions riskier and lowers success chance. Heat decays slowly.\n5) Chop contract: hand in an eligible vehicle from your inventory for a fixed contract payout.\n6) Police pattern: time-of-day patterns can increase checks; this affects risk (e.g. harbor strike/lockdown for boats).\nIn Vehicle Heist, Car/Motorcycle/Boat now use one command layer: select category via the three lane cards at the top, without a second extra tab row.\nEach lane card includes direct quick actions for stealing and storage upgrades, so you do not need to scroll to separate sub-buttons first.\nAfter a successful theft, the result popup lets you sell or scrap the vehicle immediately, or keep it. The amount on Sell is exactly what you receive: country price times condition, plus tuning if the vehicle is upgraded.\nSelling, scrapping and claiming a chop contract always open a confirmation popup first. After you confirm, that vehicle is gone. The Ops Contract button starts a job with cooldown and risk; it does not take a vehicle from your garage.\nWhile a steal cooldown is running, a lightning icon appears next to the timer: tap it to spend credits and clear the cooldown. You can turn off the confirmation dialog; turn it back on in Settings under theft cooldown (credits).\nLane cards now also show capacity per type directly (used/total + upgrade level).\nStolen vehicles now render as responsive cards: mobile shows one per row, tablet/desktop show multiple cards side by side.\nNew Ops layer: PvP interception windows for hotspots, crew-role bonuses in crew ops, reputation unlocks per vehicle type, regional blacklist events, and contraband insurance contracts.\nNew Vehicle Ops expansions: Counter-Intercept missions, Crew Matchmaking with seasonal ladder, Country Modifiers (inflation/corruption/harbor strike), and a contracts board with weekly legendary contracts.\nOps now shows live cooldowns per action. Timers count down visibly and refresh automatically.\nCrew actions (Crew Op and Crew Match) are only available when you are in a crew; without a crew you get a clear unlock hint.\nSuccessful ops actions pay cash directly to your wallet. The action overview shows the expected payout type per button.\nInsurance claims now enter review first; using claim dispute lets you contest for extra payout with rejection risk.\nHigher category heat lowers theft success chances and raises hotspot risk. Heat decays gradually each hour.\nChop-Shop Contracts require an eligible vehicle from your inventory; claiming consumes that vehicle and pays out contract cash.\nVehicle transport no longer happens in Garage; use the Smuggling Hub flow.\nResale and scrapping free either car or motorcycle capacity and may reopen world-cap slots for that model.\nEvent-only vehicles such as police interceptors stay locked outside event windows.'**
   String get helpTopicGarageHow;
 
   /// No description provided for @helpTopicGarageTips.

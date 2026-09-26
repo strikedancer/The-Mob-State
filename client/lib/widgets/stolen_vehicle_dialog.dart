@@ -9,6 +9,7 @@ import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 import 'overlay_image.dart';
 import 'responsive_modal.dart';
+import 'vehicle_dispose_confirm_dialog.dart';
 
 const Color _gold = Color(0xFFD4AF37);
 const Color _panelDark = Color(0xFF1B1212);
@@ -526,32 +527,15 @@ class _StolenVehicleQuickActions extends StatefulWidget {
 class _StolenVehicleQuickActionsState extends State<_StolenVehicleQuickActions> {
   bool _busy = false;
 
-  Future<bool> _confirm({
-    required String title,
-    required String body,
-    required String confirmLabel,
-    required Color confirmColor,
-  }) async {
-    final l10n = AppLocalizations.of(context)!;
-    final confirmed = await showDialog<bool>(
+  Future<bool> _confirmDispose(VehicleDisposeKind kind) {
+    return showVehicleDisposeConfirmDialog(
       context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: Text(title),
-        content: Text(body),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(dialogContext, false),
-            child: Text(l10n.cancel),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(dialogContext, true),
-            style: ElevatedButton.styleFrom(backgroundColor: confirmColor),
-            child: Text(confirmLabel),
-          ),
-        ],
-      ),
+      kind: kind,
+      vehicle: widget.vehicle,
+      payout: kind == VehicleDisposeKind.sell
+          ? formatCurrency(widget.vehicle.getMarketValue())
+          : null,
     );
-    return confirmed == true;
   }
 
   void _finish({required String message, required bool success}) {
@@ -571,12 +555,7 @@ class _StolenVehicleQuickActionsState extends State<_StolenVehicleQuickActions> 
     if (_busy || widget.vehicle.isBusy) return;
     final l10n = AppLocalizations.of(context)!;
     final isBoat = widget.vehicle.vehicleType == 'boat';
-    final confirmed = await _confirm(
-      title: l10n.confirmAction,
-      body: isBoat ? l10n.confirmSellBoat : l10n.confirmSellVehicle,
-      confirmLabel: l10n.sell,
-      confirmColor: Colors.green,
-    );
+    final confirmed = await _confirmDispose(VehicleDisposeKind.sell);
     if (!confirmed || !mounted) return;
 
     setState(() => _busy = true);
@@ -609,12 +588,7 @@ class _StolenVehicleQuickActionsState extends State<_StolenVehicleQuickActions> 
   Future<void> _scrap() async {
     if (_busy || widget.vehicle.isBusy) return;
     final l10n = AppLocalizations.of(context)!;
-    final confirmed = await _confirm(
-      title: l10n.confirmAction,
-      body: l10n.vehicleGarageScrapConfirm,
-      confirmLabel: l10n.vehicleGarageScrapAction,
-      confirmColor: Colors.red,
-    );
+    final confirmed = await _confirmDispose(VehicleDisposeKind.scrap);
     if (!confirmed || !mounted) return;
 
     setState(() => _busy = true);

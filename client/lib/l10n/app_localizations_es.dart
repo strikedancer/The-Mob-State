@@ -8946,6 +8946,45 @@ class AppLocalizationsEs extends AppLocalizations {
       '¿Estás segura de que quieres vender este barco?';
 
   @override
+  String get vehicleDisposeSellTitle => 'Sell this vehicle?';
+
+  @override
+  String vehicleDisposeSellBody(String name, String amount) {
+    return 'Sell $name now for $amount. After you confirm, it leaves your garage for good.';
+  }
+
+  @override
+  String get vehicleDisposeScrapTitle => 'Scrap for parts?';
+
+  @override
+  String vehicleDisposeScrapBody(String name) {
+    return 'Break $name down for salvage cash and parts. After you confirm, the vehicle is gone.';
+  }
+
+  @override
+  String get vehicleDisposeChopTitle => 'Claim chop contract?';
+
+  @override
+  String vehicleDisposeChopBody(String name, String amount) {
+    return 'This contract takes $name from your garage and pays $amount. After you confirm, that vehicle is gone.';
+  }
+
+  @override
+  String vehicleDisposeChopBodyUnknown(String amount) {
+    return 'This contract takes one eligible vehicle from your garage and pays $amount. After you confirm, that vehicle is gone.';
+  }
+
+  @override
+  String get vehicleDisposeOpsContractTitle => 'Start ops contract?';
+
+  @override
+  String get vehicleDisposeOpsContractBody =>
+      'You start a vehicle-ops job with its own cooldown and risk. This button does not take a vehicle from your garage. Chop contracts that do take a vehicle use Claim contract.';
+
+  @override
+  String get vehicleDisposeIrreversible => 'This cannot be undone.';
+
+  @override
   String get carStolen => '¡Coche robado con éxito!';
 
   @override
