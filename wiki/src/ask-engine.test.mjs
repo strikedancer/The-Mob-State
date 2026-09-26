@@ -38,6 +38,15 @@ const pages = [
     answer: 'Als Don regel je rackets, leningen, officials en contracten in je land.',
     text: 'don donship gouverneur racket',
   },
+  {
+    href: '/nl/guide/crew/',
+    title: 'Crew',
+    kind: 'guide',
+    snippet: 'Heists, opslag en crew-rollen.',
+    answer:
+      'Crew-rollen (de leider zet ze op het tabblad Leden): leider, co-leider, consigliere, capo en lid. Capo hoort bij één land. Consigliere ziet Don maar mag niet van de crewbank opnemen.',
+    text: 'crew rollen co-leider consigliere capo caporegime leden crewbank',
+  },
 ];
 
 const stats = AlmanacAsk.buildIndex(pages);
@@ -47,6 +56,10 @@ assert(hoeren[0].entry.href.includes('prostitution'), `expected prostitution, go
 
 const depot = AlmanacAsk.rankPages(stats, 'wapendepot', 3);
 assert(depot[0].entry.href.includes('territory'), `expected territory, got ${depot[0]?.entry.href}`);
+
+const crewRoles = AlmanacAsk.rankPages(stats, 'crew rollen', 3);
+assert(crewRoles[0].entry.href.includes('crew'), `expected crew for rollen, got ${crewRoles[0]?.entry.href}`);
+assert(AlmanacAsk.rankPages(stats, 'consigliere', 3)[0].entry.href.includes('crew'), 'consigliere should hit crew');
 
 assert(AlmanacAsk.blockedIntent('huidige prijs cocaïne') === 'price', 'price guard');
 assert(AlmanacAsk.blockedIntent('wat is mijn wachtwoord') === 'secret', 'secret guard');

@@ -456,6 +456,7 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 #### Crew Creation
 - **Cost**: â‚¬10,000
 - **Max members**: schaalt met Crew HQ (tot 150)
+- **Crew-rollen** (leider zet ze op het tabblad Leden): **leider** nodigt uit, kickt, start heists, declareert wars, wijzigt rollen, neemt op van de crewbank, verkoopt crew-voertuigen, start missies en deals, en kan een crewlid uit de kluis vrijkopen. **Co-leider** deelt die officierstools behalve opnemen en rollen wijzigen. **Consigliere** ziet het Don-racketoverzicht van de crew, zonder bank-opname. **Capo** is gekoppeld aan één land; alleen daar gaat Don-tribute naar de crewbank. **Lid** mag storten, chatten, heisten en gedeelde opslag gebruiken, maar geen crew-voertuigen verkopen en niet uit de kluis vrijkopen. Help/Almanac Crew legt dit uit.
 - **Leader permissions**: 
   - Kick members, open/sluit werving, auto-accept aan/uit
   - Start heists

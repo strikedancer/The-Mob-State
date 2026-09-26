@@ -20,6 +20,7 @@
     ['gevangenis', 'jail', 'cel', 'prison', 'knast', 'carcel', 'cella', 'wiezienie', 'cadeia'],
     ['nachtclub', 'nightclub'],
     ['crewbank', 'storten', 'opnemen'],
+    ['crewrollen', 'crew-rollen', 'rollen', 'coleader', 'co-leader', 'co-leider', 'consigliere', 'capo', 'caporegime'],
     ['rugzak', 'backpack', 'inventaris', 'rucksack', 'sac', 'mochila'],
     ['hitlist', 'hitlijst', 'bounty'],
     ['don', 'donship', 'gouverneur'],
