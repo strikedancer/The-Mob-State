@@ -19,11 +19,13 @@ import '../widgets/jail_gate.dart';
 class NightclubScreen extends StatefulWidget {
   final Property? property;
   final bool embedded;
+  final VoidCallback? onClose;
 
   const NightclubScreen({
     super.key,
     this.property,
     this.embedded = false,
+    this.onClose,
   });
 
   @override
@@ -600,6 +602,10 @@ class _NightclubScreenState extends State<NightclubScreen> {
     super.initState();
     _storeQuantityController = TextEditingController(text: '$_storeQuantity');
     _rivalSearchController = TextEditingController();
+    // Opening from Properties → Beheer should land on management zones.
+    if (widget.property != null || widget.onClose != null) {
+      _advancedExpanded = true;
+    }
     _load();
     _startPolling();
   }
@@ -1299,6 +1305,16 @@ class _NightclubScreenState extends State<NightclubScreen> {
     await _load(silent: true);
   }
 
+  void _handleBack() {
+    if (widget.onClose != null) {
+      widget.onClose!();
+      return;
+    }
+    if (Navigator.of(context).canPop()) {
+      Navigator.of(context).pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return JailGate(
@@ -1316,19 +1332,39 @@ class _NightclubScreenState extends State<NightclubScreen> {
       builder: (context, constraints) {
         final width = constraints.maxWidth;
         final bg = _backgroundAsset(width);
+        final showBack = widget.onClose != null ||
+            (!widget.embedded && Navigator.of(context).canPop());
 
         final body = NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
-                child: EmpirePageHero(
-                  title: _t.nightclubManagementTitle,
-                  imageAsset: bg,
-                  topicId: 'nightclub',
-                  onRefresh: _loading ? null : () { _load(silent: true); },
-                  refreshEnabled: !_loading,
-                  fallbackIcon: Icons.nightlife,
+                padding: const EdgeInsets.fromLTRB(4, 8, 12, 0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (showBack)
+                      IconButton(
+                        tooltip: MaterialLocalizations.of(context)
+                            .backButtonTooltip,
+                        onPressed: _handleBack,
+                        icon: const Icon(Icons.arrow_back, color: kEmpireGold),
+                      ),
+                    Expanded(
+                      child: EmpirePageHero(
+                        title: _t.nightclubManagementTitle,
+                        imageAsset: bg,
+                        topicId: 'nightclub',
+                        onRefresh: _loading
+                            ? null
+                            : () {
+                                _load(silent: true);
+                              },
+                        refreshEnabled: !_loading,
+                        fallbackIcon: Icons.nightlife,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -1355,35 +1391,46 @@ class _NightclubScreenState extends State<NightclubScreen> {
                           // backpack → club store without opening Advanced.
                           _storeCard(),
                           const SizedBox(height: 12),
-                          ExpansionTile(
-                            key: const PageStorageKey('nightclub-advanced'),
-                            initiallyExpanded: _advancedExpanded,
-                            onExpansionChanged: (expanded) {
-                              _advancedExpanded = expanded;
-                            },
-                            // Material defaults paint a large grey surface behind
-                            // expanded children (visible as a "grijs vlak" under Ops).
-                            backgroundColor: Colors.transparent,
-                            collapsedBackgroundColor: Colors.transparent,
-                            shape: const Border(),
-                            collapsedShape: const Border(),
-                            title: Text(
-                              Localizations.localeOf(context).languageCode ==
-                                      'nl'
-                                  ? 'Geavanceerd'
-                                  : 'Advanced',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
+                          Theme(
+                            data: Theme.of(context).copyWith(
+                              dividerColor: Colors.transparent,
+                              expansionTileTheme: const ExpansionTileThemeData(
+                                backgroundColor: Colors.transparent,
+                                collapsedBackgroundColor: Colors.transparent,
+                                shape: Border(),
+                                collapsedShape: Border(),
                               ),
                             ),
-                            collapsedIconColor: Colors.white70,
-                            iconColor: const Color(0xFFD4A24D),
-                            children: [
-                              _nightclubIntelligenceCard(),
-                              const SizedBox(height: 12),
-                              _managementTabs(),
-                            ],
+                            child: ExpansionTile(
+                              key: const PageStorageKey('nightclub-advanced'),
+                              initiallyExpanded: _advancedExpanded,
+                              onExpansionChanged: (expanded) {
+                                _advancedExpanded = expanded;
+                              },
+                              // Material defaults paint a large grey surface behind
+                              // expanded children (visible as a "grijs vlak" under Ops).
+                              backgroundColor: Colors.transparent,
+                              collapsedBackgroundColor: Colors.transparent,
+                              shape: const Border(),
+                              collapsedShape: const Border(),
+                              title: Text(
+                                Localizations.localeOf(context).languageCode ==
+                                        'nl'
+                                    ? 'Geavanceerd'
+                                    : 'Advanced',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              collapsedIconColor: Colors.white70,
+                              iconColor: const Color(0xFFD4A24D),
+                              children: [
+                                _nightclubIntelligenceCard(),
+                                const SizedBox(height: 12),
+                                _managementTabs(),
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -1394,11 +1441,6 @@ class _NightclubScreenState extends State<NightclubScreen> {
         if (widget.embedded) return painted;
         return Scaffold(
           backgroundColor: kEmpireBgEnd,
-          appBar: AppBar(
-            backgroundColor: kEmpireBgStart,
-            foregroundColor: kEmpireGold,
-            title: Text(_t.nightclubManagementTitle),
-          ),
           body: painted,
         );
       },
@@ -1768,9 +1810,17 @@ class _NightclubScreenState extends State<NightclubScreen> {
             ),
             const SizedBox(height: 8),
             DropdownButtonFormField<int>(
-              value: _selectedProstituteId,
+              value: _availableProstitutes.any(
+                    (p) => (p['id'] as num?)?.toInt() == _selectedProstituteId,
+                  )
+                  ? _selectedProstituteId
+                  : null,
+              isExpanded: true,
               items: _availableProstitutes.map((p) {
-                final id = (p['id'] as num).toInt();
+                final id = (p['id'] as num?)?.toInt();
+                if (id == null) {
+                  return null;
+                }
                 final level = p['level'] ?? 1;
                 final location = (p['location'] ?? 'street').toString();
                 final vipLabel = _vipStatusLabel(p['variant']);
@@ -1788,7 +1838,7 @@ class _NightclubScreenState extends State<NightclubScreen> {
                     ],
                   ),
                 );
-              }).toList(),
+              }).whereType<DropdownMenuItem<int>>().toList(),
               onChanged: (v) => setState(() => _selectedProstituteId = v),
               decoration: _fieldDecoration(_t.nightclubSelectCrewMember),
             ),
@@ -1809,94 +1859,78 @@ class _NightclubScreenState extends State<NightclubScreen> {
             if (assignedStaff.isEmpty)
               Text(_t.nightclubNoCrewAssigned)
             else
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  final maxWidth = constraints.maxWidth;
-                  final columns = maxWidth >= 980
-                      ? 2
-                      : (maxWidth >= 520 ? 2 : 1);
-                  final extent = _isCompactLayout() ? 116.0 : 122.0;
-                  return GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    padding: EdgeInsets.zero,
-                    itemCount: assignedStaff.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: columns,
-                      mainAxisExtent: extent,
-                      crossAxisSpacing: 8,
-                      mainAxisSpacing: 8,
+              ...assignedStaff.whereType<Map>().map((raw) {
+                final map = Map<String, dynamic>.from(raw);
+                final id = (map['id'] as num?)?.toInt();
+                if (id == null) {
+                  return const SizedBox.shrink();
+                }
+                final vipLabel = _vipStatusLabel(map['variant']);
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF1A130E),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: const Color(0x66D4A24D)),
                     ),
-                    itemBuilder: (context, index) {
-                      final map = assignedStaff[index] as Map<String, dynamic>;
-                      final id = (map['id'] as num).toInt();
-                      final vipLabel = _vipStatusLabel(map['variant']);
-
-                      return Card(
-                        margin: EdgeInsets.zero,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Row(
+                    padding: const EdgeInsets.all(10),
+                    child: Row(
+                      children: [
+                        _thumbFromImageRef(
+                          fallbackAsset: _prostitutePortraitAsset(
+                            map['variant'],
+                          ),
+                          fallbackIcon: Icons.person,
+                          size: 44,
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _thumbFromImageRef(
-                                fallbackAsset: _prostitutePortraitAsset(
-                                  map['variant'],
+                              Text(
+                                '${map['name'] ?? _t.unknown}',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white,
                                 ),
-                                fallbackIcon: Icons.person,
-                                size: 44,
                               ),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '${map['name']}',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      '$vipLabel • Lv ${map['level'] ?? 1}',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(
-                                        context,
-                                      ).textTheme.bodySmall,
-                                    ),
-                                    const SizedBox(height: 6),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: OutlinedButton(
-                                        onPressed: () =>
-                                            _unassignProstitute(id),
-                                        style: OutlinedButton.styleFrom(
-                                          minimumSize: const Size(0, 30),
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 10,
-                                            vertical: 0,
-                                          ),
-                                          tapTargetSize:
-                                              MaterialTapTargetSize.shrinkWrap,
-                                        ),
-                                        child: Text(_t.nightclubRemove),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                              const SizedBox(height: 4),
+                              Text(
+                                '$vipLabel • Lv ${map['level'] ?? 1}',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(color: Colors.white70),
                               ),
                             ],
                           ),
                         ),
-                      );
-                    },
-                  );
-                },
-              ),
+                        const SizedBox(width: 8),
+                        OutlinedButton(
+                          onPressed: () => _unassignProstitute(id),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: const Color(0xFFFFE3A0),
+                            side: const BorderSide(color: Color(0x66D4A24D)),
+                            minimumSize: const Size(0, 32),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 0,
+                            ),
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
+                          child: Text(_t.nightclubRemove),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }),
             const SizedBox(height: 12),
             _intelligenceSectionTitle(
               _t.nightclubRecentCrewHistory,
@@ -1904,10 +1938,11 @@ class _NightclubScreenState extends State<NightclubScreen> {
             ),
             const SizedBox(height: 6),
             if (history.isEmpty) Text(_t.nightclubNoStaffHistory),
-            ...history.take(8).map((h) {
-              final map = h as Map<String, dynamic>;
-              final prostitute =
-                  (map['prostitute'] as Map<String, dynamic>?) ?? const {};
+            ...history.whereType<Map>().take(8).map((raw) {
+              final map = Map<String, dynamic>.from(raw);
+              final prostitute = Map<String, dynamic>.from(
+                (map['prostitute'] as Map?) ?? const {},
+              );
               final assignedAt = DateTime.tryParse(
                 map['assignedAt']?.toString() ?? '',
               );
@@ -1937,9 +1972,11 @@ class _NightclubScreenState extends State<NightclubScreen> {
                 ),
                 title: Text(
                   '${prostitute['name'] ?? _t.unknown} • $vipLabel (Lv ${prostitute['level'] ?? 1})',
+                  style: const TextStyle(color: Colors.white),
                 ),
                 subtitle: Text(
-                  '${_t.nightclubFrom}: $startText  |  ${_t.nightclubTo}: $endText\n${_t.nightclubRevenueImpact}: €$estimatedRevenue (${_t.nightclubSalesCountLabel}: $estimatedSalesCount)',
+                  '$startText → $endText · €$estimatedRevenue ($estimatedSalesCount)',
+                  style: const TextStyle(color: Colors.white70),
                 ),
               );
             }),

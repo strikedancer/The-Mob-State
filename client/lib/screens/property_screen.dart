@@ -51,6 +51,7 @@ class PropertyScreenState extends State<PropertyScreen>
   /// `null` = current country, `*` = all countries, otherwise a country slug.
   String? _ownedCountryFilter;
   Property? _managingShowroom;
+  Property? _managingNightclub;
 
   @override
   void initState() {
@@ -668,13 +669,12 @@ class PropertyScreenState extends State<PropertyScreen>
   }
 
   Future<void> _openNightclub(Property property) async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => NightclubScreen(property: property)),
-    );
-    if (mounted) {
-      _loadMyProperties();
-    }
+    setState(() => _managingNightclub = property);
+  }
+
+  void _closeNightclub() {
+    setState(() => _managingNightclub = null);
+    _loadMyProperties();
   }
 
   bool _isShowroom(String? propertyType) {
@@ -706,6 +706,15 @@ class PropertyScreenState extends State<PropertyScreen>
 
   @override
   Widget build(BuildContext context) {
+    final managingNightclub = _managingNightclub;
+    if (managingNightclub != null) {
+      return NightclubScreen(
+        property: managingNightclub,
+        embedded: widget.embedded,
+        onClose: _closeNightclub,
+      );
+    }
+
     final managing = _managingShowroom;
     if (managing != null) {
       return ShowroomScreen(

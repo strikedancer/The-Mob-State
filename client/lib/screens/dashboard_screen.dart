@@ -3093,12 +3093,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   context,
                                   icon: Icons.nightlife,
                                   label: l10n.nightclub,
-                                  onTap: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => const NightclubScreen(),
-                                    ),
-                                  ),
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                    _selectWebSection(_WebSection.nightclub);
+                                  },
                                 ),
                                 _buildMenuTile(
                                   context,
