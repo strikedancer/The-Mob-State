@@ -12547,6 +12547,21 @@ class AppLocalizationsFr extends AppLocalizations {
   String get prostitutionWorkersLayoutGrid7 => '7 à travers';
 
   @override
+  String get prostitutionWorkersTableName => 'Nom';
+
+  @override
+  String get prostitutionWorkersTablePlace => 'Lieu';
+
+  @override
+  String get prostitutionWorkersTableIncome => '€/heure';
+
+  @override
+  String get prostitutionWorkersTableStatus => 'Statut';
+
+  @override
+  String get prostitutionWorkersTableActions => 'Actes';
+
+  @override
   String get prostitutionRecruitCeremonyTitle => 'Nouvelle recrue';
 
   @override

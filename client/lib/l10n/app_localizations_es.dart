@@ -12505,6 +12505,21 @@ class AppLocalizationsEs extends AppLocalizations {
   String get prostitutionWorkersLayoutGrid7 => '7 de ancho';
 
   @override
+  String get prostitutionWorkersTableName => 'Nombre';
+
+  @override
+  String get prostitutionWorkersTablePlace => 'Lugar';
+
+  @override
+  String get prostitutionWorkersTableIncome => '€/h';
+
+  @override
+  String get prostitutionWorkersTableStatus => 'Estado';
+
+  @override
+  String get prostitutionWorkersTableActions => 'Comportamiento';
+
+  @override
   String get prostitutionRecruitCeremonyTitle => 'Nuevo recluta';
 
   @override

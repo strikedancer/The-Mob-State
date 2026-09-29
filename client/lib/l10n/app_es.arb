@@ -13629,5 +13629,10 @@
   "prostitutionWorkersLayoutLabel": "Vista",
   "prostitutionWorkersLayoutList": "Lista",
   "prostitutionWorkersLayoutGrid4": "4 de ancho",
-  "prostitutionWorkersLayoutGrid7": "7 de ancho"
+  "prostitutionWorkersLayoutGrid7": "7 de ancho",
+  "prostitutionWorkersTableName": "Nombre",
+  "prostitutionWorkersTablePlace": "Lugar",
+  "prostitutionWorkersTableIncome": "€/h",
+  "prostitutionWorkersTableStatus": "Estado",
+  "prostitutionWorkersTableActions": "Comportamiento"
 }

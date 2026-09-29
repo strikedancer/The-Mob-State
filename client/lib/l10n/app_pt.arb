@@ -13629,5 +13629,10 @@
   "prostitutionWorkersLayoutLabel": "Visualizar",
   "prostitutionWorkersLayoutList": "Lista",
   "prostitutionWorkersLayoutGrid4": "4 de largura",
-  "prostitutionWorkersLayoutGrid7": "7 de diâmetro"
+  "prostitutionWorkersLayoutGrid7": "7 de diâmetro",
+  "prostitutionWorkersTableName": "Nome",
+  "prostitutionWorkersTablePlace": "Lugar",
+  "prostitutionWorkersTableIncome": "€/hora",
+  "prostitutionWorkersTableStatus": "Status",
+  "prostitutionWorkersTableActions": "Ações"
 }

@@ -12469,6 +12469,21 @@ class AppLocalizationsPt extends AppLocalizations {
   String get prostitutionWorkersLayoutGrid7 => '7 de diâmetro';
 
   @override
+  String get prostitutionWorkersTableName => 'Nome';
+
+  @override
+  String get prostitutionWorkersTablePlace => 'Lugar';
+
+  @override
+  String get prostitutionWorkersTableIncome => '€/hora';
+
+  @override
+  String get prostitutionWorkersTableStatus => 'Status';
+
+  @override
+  String get prostitutionWorkersTableActions => 'Ações';
+
+  @override
   String get prostitutionRecruitCeremonyTitle => 'Novo recruta';
 
   @override

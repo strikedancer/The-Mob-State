@@ -13629,5 +13629,10 @@
   "prostitutionWorkersLayoutLabel": "Pogląd",
   "prostitutionWorkersLayoutList": "Lista",
   "prostitutionWorkersLayoutGrid4": "4 w poprzek",
-  "prostitutionWorkersLayoutGrid7": "7 w poprzek"
+  "prostitutionWorkersLayoutGrid7": "7 w poprzek",
+  "prostitutionWorkersTableName": "Nazwa",
+  "prostitutionWorkersTablePlace": "Miejsce",
+  "prostitutionWorkersTableIncome": "€/godz",
+  "prostitutionWorkersTableStatus": "Status",
+  "prostitutionWorkersTableActions": "Działania"
 }

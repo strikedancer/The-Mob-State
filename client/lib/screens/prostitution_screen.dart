@@ -1102,21 +1102,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
       child: LayoutBuilder(
         builder: (context, constraints) {
           const spacing = 10.0;
-          const minCardWidth = 140.0;
-          final preferredColumns = _workersLayout.preferredColumns;
-          final maxFitColumns = ((constraints.maxWidth + spacing) /
-                  (minCardWidth + spacing))
-              .floor()
-              .clamp(1, 8);
-          final useListLayout = preferredColumns == null ||
-              constraints.maxWidth < 520 ||
-              maxFitColumns <= 1;
-          final columns = useListLayout
-              ? 1
-              : preferredColumns!.clamp(1, maxFitColumns);
-          final cardWidth = useListLayout
-              ? constraints.maxWidth
-              : (constraints.maxWidth - (columns - 1) * spacing) / columns;
+          const minGridCardWidth = 88.0;
 
           Widget layoutToolbar() {
             return Padding(
@@ -1188,23 +1174,50 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
             );
           }
 
-          if (useListLayout) {
-            return ListView.separated(
+          if (_workersLayout == ProstitutionWorkersLayout.list) {
+            return ListView(
               physics: const AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.all(16),
-              itemCount:
-                  _prostitutes.length + 1 + (_reclaimable.isEmpty ? 0 : 1),
-              separatorBuilder: (context, index) => const SizedBox(height: 12),
-              itemBuilder: (context, index) {
-                if (index == 0) return layoutToolbar();
-                final afterToolbar = index - 1;
-                if (_reclaimable.isNotEmpty && afterToolbar == 0) {
-                  return _buildReclaimPanel();
-                }
-                final pIndex =
-                    _reclaimable.isEmpty ? afterToolbar : afterToolbar - 1;
-                return _buildProstituteCard(_prostitutes[pIndex]);
-              },
+              children: [
+                layoutToolbar(),
+                if (_reclaimable.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: _buildReclaimPanel(),
+                  ),
+                _buildWorkersTable(l10n, constraints.maxWidth),
+              ],
+            );
+          }
+
+          final columns = _workersLayout.preferredColumns!;
+          var cardWidth =
+              (constraints.maxWidth - (columns - 1) * spacing) / columns;
+          var gridRowWidth = constraints.maxWidth;
+          if (cardWidth < minGridCardWidth) {
+            cardWidth = minGridCardWidth;
+            gridRowWidth = columns * cardWidth + (columns - 1) * spacing;
+          }
+
+          Widget grid = Wrap(
+            spacing: spacing,
+            runSpacing: spacing,
+            children: _prostitutes
+                .map(
+                  (prostitute) => SizedBox(
+                    width: cardWidth,
+                    child: _buildProstituteCard(prostitute),
+                  ),
+                )
+                .toList(),
+          );
+          if (gridRowWidth > constraints.maxWidth + 0.5) {
+            grid = SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: SizedBox(
+                width: gridRowWidth,
+                child: grid,
+              ),
             );
           }
 
@@ -1218,23 +1231,273 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                   padding: const EdgeInsets.only(bottom: 12),
                   child: _buildReclaimPanel(),
                 ),
-              Wrap(
-                spacing: spacing,
-                runSpacing: spacing,
-                children: _prostitutes
-                    .map(
-                      (prostitute) => SizedBox(
-                        width: cardWidth,
-                        child: _buildProstituteCard(prostitute),
-                      ),
-                    )
-                    .toList(),
-              ),
+              grid,
             ],
           );
         },
       ),
     );
+  }
+
+  String _prostituteLocationLabel(AppLocalizations l10n, Prostitute prostitute) {
+    if (_isNightclubProstitute(prostitute)) {
+      return l10n.prostitutionNightclubShort;
+    }
+    if (prostitute.isInRedLight) return l10n.prostitutionRedLight;
+    return l10n.prostitutionStreet;
+  }
+
+  double _prostituteHourlyEarnings(Prostitute prostitute) {
+    final isVip = prostitute.isVipProstitute;
+    final base = prostitute.isInRedLight
+        ? (prostitute.redLightRoom != null
+              ? _getTierGrossEarnings(prostitute.redLightRoom!.tier)
+              : 40.0)
+        : 40.0;
+    final levelBonus = base * (prostitute.level - 1) * 0.05;
+    final vipBonus = isVip ? base * 0.5 : 0;
+    return (base + levelBonus + vipBonus) * prostitute.happinessEarningsMultiplier;
+  }
+
+  List<PopupMenuEntry<String>> _prostituteMoveMenuEntries(
+    AppLocalizations l10n,
+    Prostitute prostitute,
+  ) {
+    final items = <PopupMenuEntry<String>>[];
+    if (prostitute.isInRedLight || _isNightclubProstitute(prostitute)) {
+      items.add(
+        PopupMenuItem(
+          value: 'street',
+          child: Text(l10n.prostitutionMoveToStreetButton),
+        ),
+      );
+    }
+    if (!prostitute.isInRedLight && !_isNightclubProstitute(prostitute)) {
+      items.add(
+        PopupMenuItem(
+          value: 'rld',
+          child: Text(l10n.prostitutionMoveToRldShort),
+        ),
+      );
+    }
+    if (!_isNightclubProstitute(prostitute)) {
+      items.add(
+        PopupMenuItem(
+          value: 'nightclub',
+          child: Text(l10n.prostitutionMoveToNightclubButton),
+        ),
+      );
+    }
+    return items;
+  }
+
+  void _onProstituteMoveSelected(Prostitute prostitute, String value) {
+    switch (value) {
+      case 'street':
+        _moveProstituteToStreet(prostitute);
+        break;
+      case 'rld':
+        _moveProstituteToCurrentCountryRld(prostitute);
+        break;
+      case 'nightclub':
+        _assignProstituteToNightclub(prostitute);
+        break;
+    }
+  }
+
+  Widget _buildWorkersTable(AppLocalizations l10n, double viewportWidth) {
+    const border = Color(0x33FFFFFF);
+    final headerStyle = TextStyle(
+      color: kProstitutionGold,
+      fontWeight: FontWeight.w700,
+      fontSize: 12,
+    );
+    final cellStyle = const TextStyle(color: Colors.white, fontSize: 12);
+
+    Widget headerCell(String text, {TextAlign align = TextAlign.start}) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        child: Text(text, style: headerStyle, textAlign: align),
+      );
+    }
+
+    Widget dataCell(Widget child, {TextAlign align = TextAlign.start}) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        child: Align(alignment: _tableAlign(align), child: child),
+      );
+    }
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.grey.shade900,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: kProstitutionGold.withValues(alpha: 0.28)),
+      ),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minWidth: viewportWidth),
+          child: Table(
+            columnWidths: const {
+              0: FlexColumnWidth(2.2),
+              1: FixedColumnWidth(52),
+              2: FlexColumnWidth(1.4),
+              3: FixedColumnWidth(72),
+              4: FlexColumnWidth(2),
+              5: FixedColumnWidth(140),
+            },
+            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+            border: TableBorder(
+              horizontalInside: BorderSide(color: border),
+              verticalInside: BorderSide(color: border),
+              top: BorderSide(color: border),
+              bottom: BorderSide(color: border),
+            ),
+            children: [
+              TableRow(
+                decoration: BoxDecoration(
+                  color: Colors.black.withValues(alpha: 0.35),
+                ),
+                children: [
+                  headerCell(l10n.prostitutionWorkersTableName),
+                  headerCell(l10n.prostitutionLevel, align: TextAlign.center),
+                  headerCell(l10n.prostitutionWorkersTablePlace),
+                  headerCell(
+                    l10n.prostitutionWorkersTableIncome,
+                    align: TextAlign.end,
+                  ),
+                  headerCell(l10n.prostitutionWorkersTableStatus),
+                  headerCell(
+                    l10n.prostitutionWorkersTableActions,
+                    align: TextAlign.center,
+                  ),
+                ],
+              ),
+              ..._prostitutes.map((prostitute) {
+                final isBusted = prostitute.isCurrentlyBusted;
+                final shiftRemaining = _getWorkShiftRemaining(prostitute);
+                final canWorkNow = !isBusted && shiftRemaining == null;
+                final status = isBusted
+                    ? l10n.prostitutionBusted
+                    : shiftRemaining == null
+                    ? l10n.prostitutionRecruitReady
+                    : l10n.prostitutionRestFor(
+                        _formatDurationHoursMinutes(l10n, shiftRemaining),
+                      );
+                final statusColor = isBusted
+                    ? Colors.redAccent
+                    : shiftRemaining == null
+                    ? Colors.lightGreenAccent
+                    : Colors.orangeAccent;
+
+                return TableRow(
+                  children: [
+                    dataCell(
+                      Text(
+                        prostitute.name,
+                        style: cellStyle.copyWith(fontWeight: FontWeight.w600),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    dataCell(
+                      Text(
+                        '${prostitute.level}',
+                        style: cellStyle,
+                        textAlign: TextAlign.center,
+                      ),
+                      align: TextAlign.center,
+                    ),
+                    dataCell(
+                      Text(
+                        _prostituteLocationLabel(l10n, prostitute),
+                        style: cellStyle,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    dataCell(
+                      Text(
+                        l10n.prostitutionEuroPerHour(
+                          _prostituteHourlyEarnings(prostitute).toStringAsFixed(0),
+                        ),
+                        style: cellStyle.copyWith(
+                          color: Colors.greenAccent,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        textAlign: TextAlign.end,
+                      ),
+                      align: TextAlign.end,
+                    ),
+                    dataCell(
+                      Text(
+                        status,
+                        style: cellStyle.copyWith(color: statusColor),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    dataCell(
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (!isBusted)
+                            IconButton(
+                              tooltip: l10n.prostitutionWork8h,
+                              visualDensity: VisualDensity.compact,
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(
+                                minWidth: 36,
+                                minHeight: 36,
+                              ),
+                              onPressed: canWorkNow
+                                  ? () => _executeWorkShift(prostitute)
+                                  : null,
+                              icon: Icon(
+                                Icons.work,
+                                size: 20,
+                                color: canWorkNow
+                                    ? kProstitutionGold
+                                    : Colors.white38,
+                              ),
+                            ),
+                          if (!isBusted &&
+                              _prostituteMoveMenuEntries(l10n, prostitute)
+                                  .isNotEmpty)
+                            PopupMenuButton<String>(
+                              tooltip: l10n.prostitutionMove,
+                              padding: EdgeInsets.zero,
+                              icon: const Icon(
+                                Icons.more_vert,
+                                size: 20,
+                                color: Colors.white70,
+                              ),
+                              onSelected: (value) =>
+                                  _onProstituteMoveSelected(prostitute, value),
+                              itemBuilder: (context) =>
+                                  _prostituteMoveMenuEntries(l10n, prostitute),
+                            ),
+                        ],
+                      ),
+                      align: TextAlign.center,
+                    ),
+                  ],
+                );
+              }),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Alignment _tableAlign(TextAlign align) {
+    switch (align) {
+      case TextAlign.center:
+        return Alignment.center;
+      case TextAlign.end:
+        return Alignment.centerRight;
+      default:
+        return Alignment.centerLeft;
+    }
   }
 
   Widget _buildReclaimPanel() {

@@ -21635,6 +21635,36 @@ abstract class AppLocalizations {
   /// **'7 across'**
   String get prostitutionWorkersLayoutGrid7;
 
+  /// No description provided for @prostitutionWorkersTableName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get prostitutionWorkersTableName;
+
+  /// No description provided for @prostitutionWorkersTablePlace.
+  ///
+  /// In en, this message translates to:
+  /// **'Place'**
+  String get prostitutionWorkersTablePlace;
+
+  /// No description provided for @prostitutionWorkersTableIncome.
+  ///
+  /// In en, this message translates to:
+  /// **'€/hr'**
+  String get prostitutionWorkersTableIncome;
+
+  /// No description provided for @prostitutionWorkersTableStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get prostitutionWorkersTableStatus;
+
+  /// No description provided for @prostitutionWorkersTableActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Actions'**
+  String get prostitutionWorkersTableActions;
+
   /// No description provided for @prostitutionRecruitCeremonyTitle.
   ///
   /// In en, this message translates to:

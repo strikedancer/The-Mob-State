@@ -2516,6 +2516,11 @@
   "prostitutionWorkersLayoutList": "Lijst",
   "prostitutionWorkersLayoutGrid4": "4 naast elkaar",
   "prostitutionWorkersLayoutGrid7": "7 naast elkaar",
+  "prostitutionWorkersTableName": "Naam",
+  "prostitutionWorkersTablePlace": "Plaats",
+  "prostitutionWorkersTableIncome": "€/u",
+  "prostitutionWorkersTableStatus": "Status",
+  "prostitutionWorkersTableActions": "Acties",
   "prostitutionRecruitCeremonyTitle": "Nieuwe recruit",
   "prostitutionCollectConfirm": "€{amount} aan openstaande inkomsten innen?",
   "@prostitutionCollectConfirm": {

@@ -7774,6 +7774,11 @@
   "prostitutionWorkersLayoutList": "List",
   "prostitutionWorkersLayoutGrid4": "4 across",
   "prostitutionWorkersLayoutGrid7": "7 across",
+  "prostitutionWorkersTableName": "Name",
+  "prostitutionWorkersTablePlace": "Place",
+  "prostitutionWorkersTableIncome": "€/hr",
+  "prostitutionWorkersTableStatus": "Status",
+  "prostitutionWorkersTableActions": "Actions",
   "prostitutionRecruitCeremonyTitle": "New recruit",
   "prostitutionCollectConfirm": "Collect €{amount} in pending earnings?",
   "@prostitutionCollectConfirm": {

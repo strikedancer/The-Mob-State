@@ -671,7 +671,7 @@ interest = 0
 - Admin → spelerdetail → Overzicht toont onder **Casino & munitiefabriek** of de speler een fabriek bezit en in welk land (niveau + kwaliteit), los van de munitie-voorraad in inventaris.
 
 ### Prostitutie (Empire hub)
-- **Workers-lijst** toont alleen workers in je huidige land (straat via `country`, RLD via district, nachtclub via venue). Op de Workers-tab kies je **Weergave**: lijst, **4** of **7** naast elkaar; die keuze blijft bewaard op dit apparaat. Op heel smalle schermen valt het terug naar één kolom zonder de voorkeur te vergeten.
+- **Workers-lijst** toont alleen workers in je huidige land (straat via `country`, RLD via district, nachtclub via venue). Op de Workers-tab kies je **Weergave**: **Lijst** (tabel met naam, level, plaats, €/u, status en acties), **4** of **7** kaarten naast elkaar; die keuze blijft bewaard op dit apparaat. Bij **4**/**7** blijven het altijd vier of zeven kolommen; op een smalle PC-breedte scroll je horizontaal i.p.v. minder kolommen.
 - Eén entry **Prostitution** met tabs Workers | RLD | Events | Social. Web-zijmenu “Red Light Districts” deep-linkt naar hub-tab RLD; mobiel RLD-menu idem (niet VIP Events).
 - Straat- en RLD-inkomsten landen automatisch op je cash via de game-tick. Nachtclub en 8u-shifts keren apart uit. Er is geen handmatige Collect-knop of Te innen-KPI meer.
 - **Werven** vereist een huis of appartement **in het huidige land**. Plekken uit woningen in andere landen tellen niet om hier te werven. Totale netwerk-capaciteit blijft wereldwijd (slots/huur).
