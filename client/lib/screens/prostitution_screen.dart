@@ -1103,6 +1103,8 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
         builder: (context, constraints) {
           const spacing = 10.0;
           const minGridCardWidth = 88.0;
+          // ListView uses EdgeInsets.all(16); grid width must match that inset.
+          const listHorizontalPadding = 32.0;
 
           Widget layoutToolbar() {
             return Padding(
@@ -1191,31 +1193,26 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
           }
 
           final columns = _workersLayout.preferredColumns!;
+          final contentWidth = (constraints.maxWidth - listHorizontalPadding)
+              .clamp(0.0, double.infinity);
           var cardWidth =
-              (constraints.maxWidth - (columns - 1) * spacing) / columns;
-          var gridRowWidth = constraints.maxWidth;
+              (contentWidth - (columns - 1) * spacing) / columns;
+          var gridWidth = contentWidth;
           if (cardWidth < minGridCardWidth) {
             cardWidth = minGridCardWidth;
-            gridRowWidth = columns * cardWidth + (columns - 1) * spacing;
+            gridWidth = columns * cardWidth + (columns - 1) * spacing;
           }
 
-          Widget grid = Wrap(
+          Widget grid = _buildWorkersFixedColumnGrid(
+            columns: columns,
+            cardWidth: cardWidth,
             spacing: spacing,
-            runSpacing: spacing,
-            children: _prostitutes
-                .map(
-                  (prostitute) => SizedBox(
-                    width: cardWidth,
-                    child: _buildProstituteCard(prostitute),
-                  ),
-                )
-                .toList(),
           );
-          if (gridRowWidth > constraints.maxWidth + 0.5) {
+          if (gridWidth > contentWidth + 0.5) {
             grid = SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: SizedBox(
-                width: gridRowWidth,
+                width: gridWidth,
                 child: grid,
               ),
             );
@@ -1236,6 +1233,38 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
           );
         },
       ),
+    );
+  }
+
+  /// Exactly [columns] slots per row (Wrap would drop a column when padding shrinks content width).
+  Widget _buildWorkersFixedColumnGrid({
+    required int columns,
+    required double cardWidth,
+    required double spacing,
+  }) {
+    final rows = <Widget>[];
+    for (var start = 0; start < _prostitutes.length; start += columns) {
+      final rowItems = _prostitutes.skip(start).take(columns).toList();
+      final cells = <Widget>[];
+      for (var col = 0; col < columns; col++) {
+        if (col > 0) cells.add(SizedBox(width: spacing));
+        cells.add(
+          SizedBox(
+            width: cardWidth,
+            child: col < rowItems.length
+                ? _buildProstituteCard(rowItems[col])
+                : const SizedBox.shrink(),
+          ),
+        );
+      }
+      rows.add(Row(crossAxisAlignment: CrossAxisAlignment.start, children: cells));
+      if (start + columns < _prostitutes.length) {
+        rows.add(SizedBox(height: spacing));
+      }
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: rows,
     );
   }
 
