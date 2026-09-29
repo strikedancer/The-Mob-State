@@ -1334,6 +1334,39 @@ async function resetTerritoryHoldOnOwnershipChange(regionKey: string, now: Date 
   );
 }
 
+/** Territory country codes where at least one crew member currently is (travel location). */
+async function loadCrewPresenceTerritoryCodes(crewIds: number[]): Promise<Map<number, Set<string>>> {
+  const out = new Map<number, Set<string>>();
+  const unique = [...new Set(crewIds.map((id) => toNumeric(id)).filter((id) => id > 0))];
+  if (unique.length === 0) return out;
+
+  const placeholders = unique.map(() => '?').join(',');
+  const rows = await prisma.$queryRawUnsafe<Array<{ crewId: number; currentCountry: string | null }>>(
+    `SELECT cm.crewId, p.currentCountry
+     FROM crew_members cm
+     JOIN players p ON p.id = cm.playerId
+     WHERE cm.crewId IN (${placeholders})`,
+    ...unique,
+  );
+  for (const row of rows) {
+    const crewId = toNumeric(row.crewId);
+    const code = mapTravelCountryToTerritoryCode(row.currentCountry);
+    if (!code) continue;
+    let set = out.get(crewId);
+    if (!set) {
+      set = new Set<string>();
+      out.set(crewId, set);
+    }
+    set.add(code);
+  }
+  return out;
+}
+
+/**
+ * After a miss, free the duty slot (do not keep extending the same region forever) so the crew
+ * can rotate to another stale region. Income penalty stays on the missed region via holdMissStreak.
+ * Prefer assigning the next due region in a country where a crew member currently is.
+ */
 async function processTerritoryHoldDuties(
   now: Date,
   cfg: Awaited<ReturnType<typeof getTerritoryConfig>>,
@@ -1363,17 +1396,16 @@ async function processTerritoryHoldDuties(
   for (const row of expired) {
     const ownerCrewId = toNumeric(row.ownerCrewId);
     const nextStreak = toNumeric(row.holdMissStreak) + 1;
+    // Clear due so another region can take the single duty slot; bump lastDecayAt for fair rotation.
     const updated = await prisma.$executeRawUnsafe(
       `UPDATE territory_control
        SET holdMissStreak = ?,
            lastDecayAt = ?,
-           holdDueAt = TIMESTAMPADD(HOUR, ?, ?),
+           holdDueAt = NULL,
            stability = GREATEST(0, stability - ?),
            updatedAt = NOW()
        WHERE regionKey = ? AND ownerCrewId = ? AND holdDueAt IS NOT NULL AND holdDueAt <= ?`,
       nextStreak,
-      now,
-      windowHours,
       now,
       hold.decayPerHour,
       row.regionKey,
@@ -1399,10 +1431,14 @@ async function processTerritoryHoldDuties(
   const candidates = await prisma.$queryRawUnsafe<Array<{
     regionKey: string;
     ownerCrewId: number;
+    countryCode: string;
     nameNl: string;
     nameEn: string;
+    staleAt: Date;
+    controlId: number;
   }>>(
-    `SELECT tc.regionKey, tc.ownerCrewId, tr.nameNl, tr.nameEn
+    `SELECT tc.regionKey, tc.ownerCrewId, tr.countryCode, tr.nameNl, tr.nameEn, tc.id AS controlId,
+            COALESCE(tc.lastDecayAt, tc.lastHoldAt, tc.ownedSince, tc.lastIncomeAt, tc.updatedAt) AS staleAt
      FROM territory_control tc
      JOIN territory_regions tr ON tr.regionKey = tc.regionKey
      WHERE tc.ownerCrewId IS NOT NULL
@@ -1412,11 +1448,29 @@ async function processTerritoryHoldDuties(
          MINUTE,
          COALESCE(tc.lastHoldAt, tc.ownedSince, tc.lastIncomeAt, tc.updatedAt),
          ?
-       ) >= ?
-     ORDER BY COALESCE(tc.lastHoldAt, tc.ownedSince, tc.lastIncomeAt, tc.updatedAt) ASC, tc.id ASC`,
+       ) >= ?`,
     now,
     graceMinutes,
   );
+
+  const presenceByCrew = await loadCrewPresenceTerritoryCodes(
+    candidates.map((c) => toNumeric(c.ownerCrewId)),
+  );
+
+  candidates.sort((a, b) => {
+    const crewA = toNumeric(a.ownerCrewId);
+    const crewB = toNumeric(b.ownerCrewId);
+    if (crewA !== crewB) return crewA - crewB;
+    const presenceA = presenceByCrew.get(crewA);
+    const presenceB = presenceByCrew.get(crewB);
+    const localA = presenceA?.has(String(a.countryCode || '').toLowerCase()) ? 0 : 1;
+    const localB = presenceB?.has(String(b.countryCode || '').toLowerCase()) ? 0 : 1;
+    if (localA !== localB) return localA - localB;
+    const staleA = a.staleAt ? new Date(a.staleAt).getTime() : 0;
+    const staleB = b.staleAt ? new Date(b.staleAt).getTime() : 0;
+    if (staleA !== staleB) return staleA - staleB;
+    return toNumeric(a.controlId) - toNumeric(b.controlId);
+  });
 
   for (const candidate of candidates) {
     const ownerCrewId = toNumeric(candidate.ownerCrewId);
@@ -4108,8 +4162,10 @@ async function _notifyCrewHoldMissed(
 }
 
 async function _getCrewPlayers(crewId: number): Promise<Array<{ id: number }>> {
+  // No LIMIT: hold-due / capture alerts must reach every member (large crews included).
   return prisma.$queryRawUnsafe<Array<{ id: number }>>(
-    'SELECT playerId AS id FROM crew_members WHERE crewId = ? LIMIT 50',
+    `SELECT playerId AS id FROM crew_members WHERE crewId = ?
+     ORDER BY FIELD(role, 'leader', 'co_leader', 'consigliere', 'capo', 'officer', 'member'), playerId ASC`,
     crewId,
   );
 }
