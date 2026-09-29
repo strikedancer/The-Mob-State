@@ -21611,6 +21611,30 @@ abstract class AppLocalizations {
   /// **'Social'**
   String get prostitutionTabSocial;
 
+  /// No description provided for @prostitutionWorkersLayoutLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get prostitutionWorkersLayoutLabel;
+
+  /// No description provided for @prostitutionWorkersLayoutList.
+  ///
+  /// In en, this message translates to:
+  /// **'List'**
+  String get prostitutionWorkersLayoutList;
+
+  /// No description provided for @prostitutionWorkersLayoutGrid4.
+  ///
+  /// In en, this message translates to:
+  /// **'4 across'**
+  String get prostitutionWorkersLayoutGrid4;
+
+  /// No description provided for @prostitutionWorkersLayoutGrid7.
+  ///
+  /// In en, this message translates to:
+  /// **'7 across'**
+  String get prostitutionWorkersLayoutGrid7;
+
   /// No description provided for @prostitutionRecruitCeremonyTitle.
   ///
   /// In en, this message translates to:

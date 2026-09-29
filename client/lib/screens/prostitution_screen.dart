@@ -17,6 +17,7 @@ import '../widgets/prostitution/prostitution_social_tab.dart';
 import 'red_light_districts_screen.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/country_helper.dart';
+import '../utils/prostitution_workers_layout_prefs.dart';
 import '../widgets/empire_page_hero.dart';
 import '../widgets/game_page_info.dart';
 
@@ -61,6 +62,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
   String _currentCountry = 'NL';
   Timer? _cooldownTimer;
   late TabController _tabController;
+  ProstitutionWorkersLayout _workersLayout = ProstitutionWorkersLayout.grid4;
 
   int get _availableWorkCount => _prostitutes.where(_canStartWorkShift).length;
 
@@ -124,8 +126,21 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
     _tabController.addListener(() {
       if (mounted && !_tabController.indexIsChanging) setState(() {});
     });
+    _loadWorkersLayoutPref();
     _loadData();
     _checkRecruitmentStatus();
+  }
+
+  Future<void> _loadWorkersLayoutPref() async {
+    final layout = await ProstitutionWorkersLayoutPrefs.load();
+    if (!mounted) return;
+    setState(() => _workersLayout = layout);
+  }
+
+  Future<void> _setWorkersLayout(ProstitutionWorkersLayout layout) async {
+    if (_workersLayout == layout) return;
+    setState(() => _workersLayout = layout);
+    await ProstitutionWorkersLayoutPrefs.save(layout);
   }
 
   @override
@@ -1086,43 +1101,118 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
       onRefresh: _loadData,
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final useListLayout = constraints.maxWidth < 720;
+          const spacing = 10.0;
+          const minCardWidth = 140.0;
+          final preferredColumns = _workersLayout.preferredColumns;
+          final maxFitColumns = ((constraints.maxWidth + spacing) /
+                  (minCardWidth + spacing))
+              .floor()
+              .clamp(1, 8);
+          final useListLayout = preferredColumns == null ||
+              constraints.maxWidth < 520 ||
+              maxFitColumns <= 1;
+          final columns = useListLayout
+              ? 1
+              : preferredColumns!.clamp(1, maxFitColumns);
+          final cardWidth = useListLayout
+              ? constraints.maxWidth
+              : (constraints.maxWidth - (columns - 1) * spacing) / columns;
+
+          Widget layoutToolbar() {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: Row(
+                children: [
+                  Text(
+                    l10n.prostitutionWorkersLayoutLabel,
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 13,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: SegmentedButton<ProstitutionWorkersLayout>(
+                        style: ButtonStyle(
+                          visualDensity: VisualDensity.compact,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          backgroundColor: WidgetStateProperty.resolveWith(
+                            (states) => states.contains(WidgetState.selected)
+                                ? kProstitutionGold.withValues(alpha: 0.22)
+                                : Colors.white10,
+                          ),
+                          foregroundColor: WidgetStateProperty.resolveWith(
+                            (states) => states.contains(WidgetState.selected)
+                                ? kProstitutionGold
+                                : Colors.white70,
+                          ),
+                          side: WidgetStatePropertyAll(
+                            BorderSide(
+                              color: kProstitutionGold.withValues(alpha: 0.35),
+                            ),
+                          ),
+                        ),
+                        segments: [
+                          ButtonSegment(
+                            value: ProstitutionWorkersLayout.list,
+                            icon: const Icon(Icons.view_agenda, size: 18),
+                            label: Text(l10n.prostitutionWorkersLayoutList),
+                            tooltip: l10n.prostitutionWorkersLayoutList,
+                          ),
+                          ButtonSegment(
+                            value: ProstitutionWorkersLayout.grid4,
+                            icon: const Icon(Icons.grid_view, size: 18),
+                            label: Text(l10n.prostitutionWorkersLayoutGrid4),
+                            tooltip: l10n.prostitutionWorkersLayoutGrid4,
+                          ),
+                          ButtonSegment(
+                            value: ProstitutionWorkersLayout.grid7,
+                            icon: const Icon(Icons.apps, size: 18),
+                            label: Text(l10n.prostitutionWorkersLayoutGrid7),
+                            tooltip: l10n.prostitutionWorkersLayoutGrid7,
+                          ),
+                        ],
+                        selected: {_workersLayout},
+                        onSelectionChanged: (selected) {
+                          if (selected.isEmpty) return;
+                          _setWorkersLayout(selected.first);
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
 
           if (useListLayout) {
             return ListView.separated(
               physics: const AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.all(16),
-              itemCount: _prostitutes.length + (_reclaimable.isEmpty ? 0 : 1),
+              itemCount:
+                  _prostitutes.length + 1 + (_reclaimable.isEmpty ? 0 : 1),
               separatorBuilder: (context, index) => const SizedBox(height: 12),
               itemBuilder: (context, index) {
-                if (_reclaimable.isNotEmpty && index == 0) {
+                if (index == 0) return layoutToolbar();
+                final afterToolbar = index - 1;
+                if (_reclaimable.isNotEmpty && afterToolbar == 0) {
                   return _buildReclaimPanel();
                 }
-                final pIndex = _reclaimable.isEmpty ? index : index - 1;
+                final pIndex =
+                    _reclaimable.isEmpty ? afterToolbar : afterToolbar - 1;
                 return _buildProstituteCard(_prostitutes[pIndex]);
               },
             );
           }
 
-          const spacing = 10.0;
-          // Desktop: denser grid (≈6–8 cards) so portraits stay readable but less empty.
-          final targetCardWidth = constraints.maxWidth >= 1500
-              ? 150.0
-              : constraints.maxWidth >= 1200
-                  ? 165.0
-                  : 190.0;
-          final estimatedColumns =
-              ((constraints.maxWidth + spacing) / (targetCardWidth + spacing))
-                  .floor()
-                  .clamp(1, 8);
-          final cardWidth =
-              (constraints.maxWidth - (estimatedColumns - 1) * spacing) /
-              estimatedColumns;
-
           return ListView(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.all(16),
             children: [
+              layoutToolbar(),
               if (_reclaimable.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12),

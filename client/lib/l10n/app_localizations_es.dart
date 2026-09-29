@@ -12493,6 +12493,18 @@ class AppLocalizationsEs extends AppLocalizations {
   String get prostitutionTabSocial => 'Social';
 
   @override
+  String get prostitutionWorkersLayoutLabel => 'Vista';
+
+  @override
+  String get prostitutionWorkersLayoutList => 'Lista';
+
+  @override
+  String get prostitutionWorkersLayoutGrid4 => '4 de ancho';
+
+  @override
+  String get prostitutionWorkersLayoutGrid7 => '7 de ancho';
+
+  @override
   String get prostitutionRecruitCeremonyTitle => 'Nuevo recluta';
 
   @override

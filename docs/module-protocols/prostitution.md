@@ -67,7 +67,7 @@ Deze waarden sturen housing capaciteit/risico en weekhuur in de prostitutieflow.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
 - Verify prostitute cards in Workers are never bottom-clipped; card height must follow content (auto height) on web/tablet/desktop.
-- Desktop Workers wrap: target ~150–190px cards so wide PC layouts show about **6–8** portraits per row (cap 8); below 720px stays a single-column list.
+- Workers layout control: List / 4-across / 7-across via `SegmentedButton`; preference in SharedPreferences (`prostitution_workers_layout_v1`). Narrow widths clamp columns (min ~140px) or force list under ~520px without clearing the saved choice.
 - Verify Workers shows no Collect button and no Te innen / To collect KPI; street/RLD cash still rises via the game tick.
 - Verify mobile “Red Light Districts” opens hub tab RLD (index 1), not Events.
 - Verify Events tab lists street nights and VIP salon (country slug, not ISO-2).

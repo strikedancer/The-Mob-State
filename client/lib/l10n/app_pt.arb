@@ -13625,5 +13625,9 @@
     }
   },
   "statsBoardHelpHow": "Weekly and all-time boards for successful crimes, sentenced jail minutes, vehicle thefts and crime loot (not cash on hand). Jail minutes are sentenced; bail or breakout can shorten real time served.",
-  "propertyDevelopBankHint": "Paid from your bank, not pocket cash. Each level permanently raises this property's passive income."
+  "propertyDevelopBankHint": "Paid from your bank, not pocket cash. Each level permanently raises this property's passive income.",
+  "prostitutionWorkersLayoutLabel": "Visualizar",
+  "prostitutionWorkersLayoutList": "Lista",
+  "prostitutionWorkersLayoutGrid4": "4 de largura",
+  "prostitutionWorkersLayoutGrid7": "7 de diâmetro"
 }

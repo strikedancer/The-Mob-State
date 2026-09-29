@@ -7770,6 +7770,10 @@
   "prostitutionTabRld": "RLD",
   "prostitutionTabEvents": "Events",
   "prostitutionTabSocial": "Social",
+  "prostitutionWorkersLayoutLabel": "View",
+  "prostitutionWorkersLayoutList": "List",
+  "prostitutionWorkersLayoutGrid4": "4 across",
+  "prostitutionWorkersLayoutGrid7": "7 across",
   "prostitutionRecruitCeremonyTitle": "New recruit",
   "prostitutionCollectConfirm": "Collect €{amount} in pending earnings?",
   "@prostitutionCollectConfirm": {

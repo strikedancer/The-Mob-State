@@ -12535,6 +12535,18 @@ class AppLocalizationsFr extends AppLocalizations {
   String get prostitutionTabSocial => 'Sociale';
 
   @override
+  String get prostitutionWorkersLayoutLabel => 'Voir';
+
+  @override
+  String get prostitutionWorkersLayoutList => 'Liste';
+
+  @override
+  String get prostitutionWorkersLayoutGrid4 => '4 à travers';
+
+  @override
+  String get prostitutionWorkersLayoutGrid7 => '7 à travers';
+
+  @override
   String get prostitutionRecruitCeremonyTitle => 'Nouvelle recrue';
 
   @override
