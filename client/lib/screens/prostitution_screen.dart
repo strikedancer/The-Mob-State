@@ -1104,12 +1104,17 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
             );
           }
 
-          const spacing = 12.0;
-          final targetCardWidth = constraints.maxWidth >= 1200 ? 280.0 : 320.0;
+          const spacing = 10.0;
+          // Desktop: denser grid (≈6–8 cards) so portraits stay readable but less empty.
+          final targetCardWidth = constraints.maxWidth >= 1500
+              ? 150.0
+              : constraints.maxWidth >= 1200
+                  ? 165.0
+                  : 190.0;
           final estimatedColumns =
               ((constraints.maxWidth + spacing) / (targetCardWidth + spacing))
                   .floor()
-                  .clamp(1, 6);
+                  .clamp(1, 8);
           final cardWidth =
               (constraints.maxWidth - (estimatedColumns - 1) * spacing) /
               estimatedColumns;
