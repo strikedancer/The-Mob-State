@@ -5,9 +5,11 @@ import '../l10n/app_localizations.dart';
 import '../models/property.dart';
 import '../providers/vehicle_provider.dart';
 import '../services/showroom_service.dart';
+import '../utils/collection_view_layout_prefs.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
+import '../widgets/collection_view_layout_toolbar.dart';
 import '../widgets/empire_page_hero.dart';
 import '../widgets/game_page_info.dart';
 import '../widgets/jail_gate.dart';
@@ -31,18 +33,33 @@ class ShowroomScreen extends StatefulWidget {
 
 class _ShowroomScreenState extends State<ShowroomScreen>
     with SingleTickerProviderStateMixin {
+  static const _layoutStorageKey = 'showroom_collection_view_layout_v1';
+
   final ShowroomService _service = ShowroomService();
   late final TabController _tabController;
   Map<String, dynamic>? _showroom;
   bool _loading = true;
   String? _error;
   int? _busyInventoryId;
+  CollectionViewLayout _viewLayout = CollectionViewLayout.grid4;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    _loadViewLayoutPref();
     _load();
+  }
+
+  Future<void> _loadViewLayoutPref() async {
+    final layout = await CollectionViewLayoutPrefs.load(_layoutStorageKey);
+    if (!mounted) return;
+    setState(() => _viewLayout = layout);
+  }
+
+  Future<void> _setViewLayout(CollectionViewLayout layout) async {
+    setState(() => _viewLayout = layout);
+    await CollectionViewLayoutPrefs.save(_layoutStorageKey, layout);
   }
 
   @override
@@ -456,11 +473,16 @@ class _ShowroomScreenState extends State<ShowroomScreen>
     );
   }
 
-  int _gridColumns(double width) {
-    if (width >= 1280) return 4;
-    if (width >= 900) return 3;
-    if (width >= 560) return 2;
-    return 1;
+  Widget _buildViewLayoutToolbar(AppLocalizations l10n) {
+    return CollectionViewLayoutToolbar(
+      selected: _viewLayout,
+      onChanged: _setViewLayout,
+      label: l10n.prostitutionWorkersLayoutLabel,
+      listTooltip: l10n.prostitutionWorkersLayoutList,
+      grid4Tooltip: l10n.prostitutionWorkersLayoutGrid4,
+      grid7Tooltip: l10n.prostitutionWorkersLayoutGrid7,
+      accent: kEmpireGold,
+    );
   }
 
   Widget _buildVehicleGrid(
@@ -470,146 +492,342 @@ class _ShowroomScreenState extends State<ShowroomScreen>
     required String actionLabel,
     required Future<void> Function(int inventoryId) onAction,
   }) {
-    if (vehicles.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Text(
-            empty,
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.white70),
-          ),
-        ),
-      );
-    }
-
     return RefreshIndicator(
       onRefresh: _load,
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final columns = _gridColumns(constraints.maxWidth);
-          return GridView.builder(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: columns,
-              // Taller cards: image + rarity + value + action.
-              childAspectRatio: columns == 1 ? 0.86 : 0.68,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
-            ),
-            itemCount: vehicles.length,
-            itemBuilder: (context, index) {
-              final vehicle = vehicles[index];
-              final inventoryId = (vehicle['inventoryId'] as num?)?.toInt();
-              final name = vehicle['name']?.toString() ?? l10n.unknown;
-              final condition = (vehicle['condition'] as num?)?.toInt() ?? 0;
-              final image = vehicle['image']?.toString();
-              final rarity =
-                  (vehicle['rarity']?.toString() ?? 'common').toLowerCase();
-              final value = (vehicle['value'] as num?)?.toInt() ??
-                  (vehicle['baseValue'] as num?)?.toInt() ??
-                  0;
-              final busy =
-                  inventoryId != null && _busyInventoryId == inventoryId;
-              final canManage = _showroom?['canManage'] == true;
-              final tone = rarityColor(rarity);
+          const spacing = 12.0;
+          const minGridCardWidth = 120.0;
+          const listHorizontalPadding = 32.0;
 
-              return Card(
-                clipBehavior: Clip.antiAlias,
-                color: Colors.black.withValues(alpha: 0.4),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      child: Stack(
-                        fit: StackFit.expand,
-                        children: [
-                          _vehicleSquareImage(image),
-                          Positioned(
-                            top: 8,
-                            left: 8,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 4,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.black.withValues(alpha: 0.72),
-                                borderRadius: BorderRadius.circular(999),
-                                border: Border.all(
-                                  color: tone.withValues(alpha: 0.7),
-                                ),
-                              ),
-                              child: Text(
-                                rarityLabel(l10n, rarity),
-                                style: TextStyle(
-                                  color: tone,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 11,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 8, 10, 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            name,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 13,
-                            ),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            '${l10n.condition}: $condition%',
-                            style: const TextStyle(
-                              color: Colors.white70,
-                              fontSize: 12,
-                            ),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            formatCurrency(value),
-                            style: const TextStyle(
-                              color: kEmpireGold,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 13,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          if (inventoryId != null)
-                            FilledButton(
-                              onPressed: busy || !canManage
-                                  ? null
-                                  : () => onAction(inventoryId),
-                              child: busy
-                                  ? const SizedBox(
-                                      width: 16,
-                                      height: 16,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                      ),
-                                    )
-                                  : Text(actionLabel),
-                            ),
-                        ],
-                      ),
-                    ),
-                  ],
+          if (vehicles.isEmpty) {
+            return ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+              children: [
+                _buildViewLayoutToolbar(l10n),
+                Padding(
+                  padding: const EdgeInsets.only(top: 24),
+                  child: Text(
+                    empty,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: Colors.white70),
+                  ),
                 ),
-              );
-            },
+              ],
+            );
+          }
+
+          final toolbar = _buildViewLayoutToolbar(l10n);
+
+          if (_viewLayout == CollectionViewLayout.list) {
+            return ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+              children: [
+                toolbar,
+                ...vehicles.map(
+                  (vehicle) => Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: _buildVehicleListRow(
+                      l10n,
+                      vehicle,
+                      actionLabel: actionLabel,
+                      onAction: onAction,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+
+          final columns = _viewLayout.preferredColumns!;
+          final contentWidth = (constraints.maxWidth - listHorizontalPadding)
+              .clamp(0.0, double.infinity);
+          var cardWidth =
+              (contentWidth - (columns - 1) * spacing) / columns;
+          var gridWidth = contentWidth;
+          if (cardWidth < minGridCardWidth) {
+            cardWidth = minGridCardWidth;
+            gridWidth = columns * cardWidth + (columns - 1) * spacing;
+          }
+
+          Widget grid = _buildFixedColumnCards(
+            vehicles: vehicles,
+            columns: columns,
+            cardWidth: cardWidth,
+            spacing: spacing,
+            l10n: l10n,
+            actionLabel: actionLabel,
+            onAction: onAction,
+          );
+          if (gridWidth > contentWidth + 0.5) {
+            grid = SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: SizedBox(width: gridWidth, child: grid),
+            );
+          }
+
+          return ListView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+            children: [
+              toolbar,
+              grid,
+            ],
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildFixedColumnCards({
+    required List<Map<String, dynamic>> vehicles,
+    required int columns,
+    required double cardWidth,
+    required double spacing,
+    required AppLocalizations l10n,
+    required String actionLabel,
+    required Future<void> Function(int inventoryId) onAction,
+  }) {
+    final rows = <Widget>[];
+    for (var start = 0; start < vehicles.length; start += columns) {
+      final rowItems = vehicles.skip(start).take(columns).toList();
+      final cells = <Widget>[];
+      for (var col = 0; col < columns; col++) {
+        if (col > 0) cells.add(SizedBox(width: spacing));
+        cells.add(
+          SizedBox(
+            width: cardWidth,
+            child: col < rowItems.length
+                ? _buildVehicleCard(
+                    l10n,
+                    rowItems[col],
+                    actionLabel: actionLabel,
+                    onAction: onAction,
+                    compact: columns >= 7,
+                  )
+                : const SizedBox.shrink(),
+          ),
+        );
+      }
+      rows.add(Row(crossAxisAlignment: CrossAxisAlignment.start, children: cells));
+      if (start + columns < vehicles.length) {
+        rows.add(SizedBox(height: spacing));
+      }
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: rows,
+    );
+  }
+
+  Widget _buildVehicleListRow(
+    AppLocalizations l10n,
+    Map<String, dynamic> vehicle, {
+    required String actionLabel,
+    required Future<void> Function(int inventoryId) onAction,
+  }) {
+    final inventoryId = (vehicle['inventoryId'] as num?)?.toInt();
+    final name = vehicle['name']?.toString() ?? l10n.unknown;
+    final condition = (vehicle['condition'] as num?)?.toInt() ?? 0;
+    final image = vehicle['image']?.toString();
+    final rarity = (vehicle['rarity']?.toString() ?? 'common').toLowerCase();
+    final value = (vehicle['value'] as num?)?.toInt() ??
+        (vehicle['baseValue'] as num?)?.toInt() ??
+        0;
+    final busy = inventoryId != null && _busyInventoryId == inventoryId;
+    final canManage = _showroom?['canManage'] == true;
+    final tone = rarityColor(rarity);
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.black.withValues(alpha: 0.4),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: kEmpireGold.withValues(alpha: 0.28)),
+      ),
+      padding: const EdgeInsets.all(10),
+      child: Row(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: SizedBox(
+              width: 72,
+              height: 72,
+              child: _vehicleSquareImage(image),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  rarityLabel(l10n, rarity),
+                  style: TextStyle(
+                    color: tone,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 12,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  '${l10n.condition}: $condition% · ${formatCurrency(value)}',
+                  style: const TextStyle(color: Colors.white70, fontSize: 12),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 10),
+          if (inventoryId != null)
+            FilledButton(
+              onPressed: busy || !canManage ? null : () => onAction(inventoryId),
+              child: busy
+                  ? const SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : Text(actionLabel),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildVehicleCard(
+    AppLocalizations l10n,
+    Map<String, dynamic> vehicle, {
+    required String actionLabel,
+    required Future<void> Function(int inventoryId) onAction,
+    bool compact = false,
+  }) {
+    final inventoryId = (vehicle['inventoryId'] as num?)?.toInt();
+    final name = vehicle['name']?.toString() ?? l10n.unknown;
+    final condition = (vehicle['condition'] as num?)?.toInt() ?? 0;
+    final image = vehicle['image']?.toString();
+    final rarity = (vehicle['rarity']?.toString() ?? 'common').toLowerCase();
+    final value = (vehicle['value'] as num?)?.toInt() ??
+        (vehicle['baseValue'] as num?)?.toInt() ??
+        0;
+    final busy = inventoryId != null && _busyInventoryId == inventoryId;
+    final canManage = _showroom?['canManage'] == true;
+    final tone = rarityColor(rarity);
+
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      color: Colors.black.withValues(alpha: 0.4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          AspectRatio(
+            aspectRatio: 1,
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                _vehicleSquareImage(image),
+                Positioned(
+                  top: 8,
+                  left: 8,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withValues(alpha: 0.72),
+                      borderRadius: BorderRadius.circular(999),
+                      border: Border.all(color: tone.withValues(alpha: 0.7)),
+                    ),
+                    child: Text(
+                      rarityLabel(l10n, rarity),
+                      style: TextStyle(
+                        color: tone,
+                        fontWeight: FontWeight.w800,
+                        fontSize: compact ? 10 : 11,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+              compact ? 8 : 10,
+              compact ? 6 : 8,
+              compact ? 8 : 10,
+              compact ? 8 : 10,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  name,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    fontSize: compact ? 12 : 13,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  '${l10n.condition}: $condition%',
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: compact ? 11 : 12,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  formatCurrency(value),
+                  style: TextStyle(
+                    color: kEmpireGold,
+                    fontWeight: FontWeight.w700,
+                    fontSize: compact ? 12 : 13,
+                  ),
+                ),
+                SizedBox(height: compact ? 6 : 8),
+                if (inventoryId != null)
+                  FilledButton(
+                    style: compact
+                        ? FilledButton.styleFrom(
+                            visualDensity: VisualDensity.compact,
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                          )
+                        : null,
+                    onPressed: busy || !canManage
+                        ? null
+                        : () => onAction(inventoryId),
+                    child: busy
+                        ? const SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : Text(
+                            actionLabel,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                  ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
