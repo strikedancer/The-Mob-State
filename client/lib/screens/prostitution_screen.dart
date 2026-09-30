@@ -1125,10 +1125,10 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                       alignment: Alignment.centerLeft,
                       child: DecoratedBox(
                         decoration: BoxDecoration(
-                          color: Colors.white10,
+                          color: const Color(0xFF2A2A2A),
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
-                            color: kProstitutionGold.withValues(alpha: 0.35),
+                            color: kProstitutionGold.withValues(alpha: 0.55),
                           ),
                         ),
                         child: Row(
@@ -1136,17 +1136,17 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                           children: [
                             _buildWorkersLayoutIconButton(
                               layout: ProstitutionWorkersLayout.list,
-                              icon: Icons.view_list,
+                              glyph: _WorkersLayoutGlyph.list,
                               tooltip: l10n.prostitutionWorkersLayoutList,
                             ),
                             _buildWorkersLayoutIconButton(
                               layout: ProstitutionWorkersLayout.grid4,
-                              icon: Icons.grid_view,
+                              glyph: _WorkersLayoutGlyph.grid4,
                               tooltip: l10n.prostitutionWorkersLayoutGrid4,
                             ),
                             _buildWorkersLayoutIconButton(
                               layout: ProstitutionWorkersLayout.grid7,
-                              icon: Icons.apps,
+                              glyph: _WorkersLayoutGlyph.grid9,
                               tooltip: l10n.prostitutionWorkersLayoutGrid7,
                             ),
                           ],
@@ -1221,29 +1221,26 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
 
   Widget _buildWorkersLayoutIconButton({
     required ProstitutionWorkersLayout layout,
-    required IconData icon,
+    required _WorkersLayoutGlyph glyph,
     required String tooltip,
   }) {
     final selected = _workersLayout == layout;
+    final color = selected ? kProstitutionGold : Colors.white;
     return Tooltip(
       message: tooltip,
       child: Material(
         color: selected
-            ? kProstitutionGold.withValues(alpha: 0.22)
+            ? kProstitutionGold.withValues(alpha: 0.28)
             : Colors.transparent,
         borderRadius: BorderRadius.circular(7),
         child: InkWell(
           borderRadius: BorderRadius.circular(7),
           onTap: () => _setWorkersLayout(layout),
           child: SizedBox(
-            width: 44,
-            height: 36,
+            width: 48,
+            height: 40,
             child: Center(
-              child: Icon(
-                icon,
-                size: 22,
-                color: selected ? kProstitutionGold : Colors.white70,
-              ),
+              child: _WorkersLayoutGlyphIcon(glyph: glyph, color: color),
             ),
           ),
         ),
@@ -2596,5 +2593,74 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
       default:
         return actionType;
     }
+  }
+}
+
+enum _WorkersLayoutGlyph { list, grid4, grid9 }
+
+/// Drawn icons (no Material font) so web always shows list / 4 / 9 glyphs.
+class _WorkersLayoutGlyphIcon extends StatelessWidget {
+  final _WorkersLayoutGlyph glyph;
+  final Color color;
+
+  const _WorkersLayoutGlyphIcon({required this.glyph, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    switch (glyph) {
+      case _WorkersLayoutGlyph.list:
+        return SizedBox(
+          width: 20,
+          height: 16,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: List.generate(
+              3,
+              (_) => Container(
+                height: 3,
+                decoration: BoxDecoration(
+                  color: color,
+                  borderRadius: BorderRadius.circular(1),
+                ),
+              ),
+            ),
+          ),
+        );
+      case _WorkersLayoutGlyph.grid4:
+        return _buildSquareGrid(cols: 2, rows: 2, gap: 2, cell: 8);
+      case _WorkersLayoutGlyph.grid9:
+        return _buildSquareGrid(cols: 3, rows: 3, gap: 1.5, cell: 5);
+    }
+  }
+
+  Widget _buildSquareGrid({
+    required int cols,
+    required int rows,
+    required double gap,
+    required double cell,
+  }) {
+    return SizedBox(
+      width: cols * cell + (cols - 1) * gap,
+      height: rows * cell + (rows - 1) * gap,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: List.generate(rows, (_) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: List.generate(
+              cols,
+              (_) => Container(
+                width: cell,
+                height: cell,
+                decoration: BoxDecoration(
+                  color: color,
+                  borderRadius: BorderRadius.circular(1),
+                ),
+              ),
+            ),
+          );
+        }),
+      ),
+    );
   }
 }
