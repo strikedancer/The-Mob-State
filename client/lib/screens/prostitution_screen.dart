@@ -1121,51 +1121,36 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                   ),
                   const SizedBox(width: 10),
                   Expanded(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: SegmentedButton<ProstitutionWorkersLayout>(
-                        style: ButtonStyle(
-                          visualDensity: VisualDensity.compact,
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          backgroundColor: WidgetStateProperty.resolveWith(
-                            (states) => states.contains(WidgetState.selected)
-                                ? kProstitutionGold.withValues(alpha: 0.22)
-                                : Colors.white10,
-                          ),
-                          foregroundColor: WidgetStateProperty.resolveWith(
-                            (states) => states.contains(WidgetState.selected)
-                                ? kProstitutionGold
-                                : Colors.white70,
-                          ),
-                          side: WidgetStatePropertyAll(
-                            BorderSide(
-                              color: kProstitutionGold.withValues(alpha: 0.35),
-                            ),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: Colors.white10,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: kProstitutionGold.withValues(alpha: 0.35),
                           ),
                         ),
-                        showSelectedIcon: false,
-                        segments: [
-                          ButtonSegment(
-                            value: ProstitutionWorkersLayout.list,
-                            icon: const Icon(Icons.view_list, size: 20),
-                            tooltip: l10n.prostitutionWorkersLayoutList,
-                          ),
-                          ButtonSegment(
-                            value: ProstitutionWorkersLayout.grid4,
-                            icon: const Icon(Icons.grid_view, size: 20),
-                            tooltip: l10n.prostitutionWorkersLayoutGrid4,
-                          ),
-                          ButtonSegment(
-                            value: ProstitutionWorkersLayout.grid7,
-                            icon: const Icon(Icons.apps, size: 20),
-                            tooltip: l10n.prostitutionWorkersLayoutGrid7,
-                          ),
-                        ],
-                        selected: {_workersLayout},
-                        onSelectionChanged: (selected) {
-                          if (selected.isEmpty) return;
-                          _setWorkersLayout(selected.first);
-                        },
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            _buildWorkersLayoutIconButton(
+                              layout: ProstitutionWorkersLayout.list,
+                              icon: Icons.view_list,
+                              tooltip: l10n.prostitutionWorkersLayoutList,
+                            ),
+                            _buildWorkersLayoutIconButton(
+                              layout: ProstitutionWorkersLayout.grid4,
+                              icon: Icons.grid_view,
+                              tooltip: l10n.prostitutionWorkersLayoutGrid4,
+                            ),
+                            _buildWorkersLayoutIconButton(
+                              layout: ProstitutionWorkersLayout.grid7,
+                              icon: Icons.apps,
+                              tooltip: l10n.prostitutionWorkersLayoutGrid7,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -1230,6 +1215,38 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
             ],
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildWorkersLayoutIconButton({
+    required ProstitutionWorkersLayout layout,
+    required IconData icon,
+    required String tooltip,
+  }) {
+    final selected = _workersLayout == layout;
+    return Tooltip(
+      message: tooltip,
+      child: Material(
+        color: selected
+            ? kProstitutionGold.withValues(alpha: 0.22)
+            : Colors.transparent,
+        borderRadius: BorderRadius.circular(7),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(7),
+          onTap: () => _setWorkersLayout(layout),
+          child: SizedBox(
+            width: 44,
+            height: 36,
+            child: Center(
+              child: Icon(
+                icon,
+                size: 22,
+                color: selected ? kProstitutionGold : Colors.white70,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
