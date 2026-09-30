@@ -1143,23 +1143,21 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                             ),
                           ),
                         ),
+                        showSelectedIcon: false,
                         segments: [
                           ButtonSegment(
                             value: ProstitutionWorkersLayout.list,
-                            icon: const Icon(Icons.view_agenda, size: 18),
-                            label: Text(l10n.prostitutionWorkersLayoutList),
+                            icon: const Icon(Icons.view_list, size: 20),
                             tooltip: l10n.prostitutionWorkersLayoutList,
                           ),
                           ButtonSegment(
                             value: ProstitutionWorkersLayout.grid4,
-                            icon: const Icon(Icons.grid_view, size: 18),
-                            label: Text(l10n.prostitutionWorkersLayoutGrid4),
+                            icon: const Icon(Icons.grid_view, size: 20),
                             tooltip: l10n.prostitutionWorkersLayoutGrid4,
                           ),
                           ButtonSegment(
                             value: ProstitutionWorkersLayout.grid7,
-                            icon: const Icon(Icons.apps, size: 18),
-                            label: Text(l10n.prostitutionWorkersLayoutGrid7),
+                            icon: const Icon(Icons.apps, size: 20),
                             tooltip: l10n.prostitutionWorkersLayoutGrid7,
                           ),
                         ],
@@ -1334,6 +1332,41 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
     }
   }
 
+  Widget _buildWorkersTablePortrait(Prostitute prostitute) {
+    const size = 52.0;
+    final isBusted = prostitute.isCurrentlyBusted;
+    return SizedBox(
+      width: size,
+      height: size,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            ColoredBox(color: Colors.grey.shade800),
+            Image.asset(
+              _getPortraitPath(prostitute.variant),
+              fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
+              errorBuilder: (context, error, stackTrace) {
+                return Icon(
+                  Icons.person,
+                  size: 28,
+                  color: Colors.grey.shade500,
+                );
+              },
+            ),
+            if (isBusted)
+              ColoredBox(
+                color: Colors.black.withValues(alpha: 0.55),
+                child: const Icon(Icons.block, size: 22, color: Colors.redAccent),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildWorkersTable(AppLocalizations l10n, double viewportWidth) {
     const border = Color(0x33FFFFFF);
     final headerStyle = TextStyle(
@@ -1341,7 +1374,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
       fontWeight: FontWeight.w700,
       fontSize: 12,
     );
-    final cellStyle = const TextStyle(color: Colors.white, fontSize: 12);
+    final cellStyle = const TextStyle(color: Colors.white, fontSize: 13);
 
     Widget headerCell(String text, {TextAlign align = TextAlign.start}) {
       return Padding(
@@ -1352,7 +1385,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
 
     Widget dataCell(Widget child, {TextAlign align = TextAlign.start}) {
       return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Align(alignment: _tableAlign(align), child: child),
       );
     }
@@ -1369,10 +1402,10 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
           constraints: BoxConstraints(minWidth: viewportWidth),
           child: Table(
             columnWidths: const {
-              0: FlexColumnWidth(2.2),
-              1: FixedColumnWidth(52),
+              0: FlexColumnWidth(2.8),
+              1: FixedColumnWidth(56),
               2: FlexColumnWidth(1.4),
-              3: FixedColumnWidth(72),
+              3: FixedColumnWidth(80),
               4: FlexColumnWidth(2),
               5: FixedColumnWidth(140),
             },
@@ -1423,10 +1456,22 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                 return TableRow(
                   children: [
                     dataCell(
-                      Text(
-                        prostitute.name,
-                        style: cellStyle.copyWith(fontWeight: FontWeight.w600),
-                        overflow: TextOverflow.ellipsis,
+                      Row(
+                        children: [
+                          _buildWorkersTablePortrait(prostitute),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              prostitute.name,
+                              style: cellStyle.copyWith(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     dataCell(
@@ -1441,6 +1486,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                       Text(
                         _prostituteLocationLabel(l10n, prostitute),
                         style: cellStyle,
+                        maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -1461,6 +1507,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                       Text(
                         status,
                         style: cellStyle.copyWith(color: statusColor),
+                        maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -1474,15 +1521,15 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                               visualDensity: VisualDensity.compact,
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(
-                                minWidth: 36,
-                                minHeight: 36,
+                                minWidth: 40,
+                                minHeight: 40,
                               ),
                               onPressed: canWorkNow
                                   ? () => _executeWorkShift(prostitute)
                                   : null,
                               icon: Icon(
                                 Icons.work,
-                                size: 20,
+                                size: 22,
                                 color: canWorkNow
                                     ? kProstitutionGold
                                     : Colors.white38,
@@ -1496,7 +1543,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                               padding: EdgeInsets.zero,
                               icon: const Icon(
                                 Icons.more_vert,
-                                size: 20,
+                                size: 22,
                                 color: Colors.white70,
                               ),
                               onSelected: (value) =>
