@@ -12155,19 +12155,19 @@ abstract class AppLocalizations {
   /// No description provided for @propertyInfoCarShowroom.
   ///
   /// In en, this message translates to:
-  /// **'One car showroom per account. Buy it in any country; it stays bound to that country. Only cars that are in that country, at 100% condition, and not already on display. Upgrades grow the vitrine in steps until every car model fits. This is a collection, not extra garage space: displayed cars do not use garage slots and cannot be used, sold or smuggled. An arrest in that country searches the vitrine (~40% chance per uncatted car). Cat papers with cash so police/FBI treat that car as legitimate while it stays on display. Sell only after the collection is empty.'**
+  /// **'One car showroom per account. Buy it in any country; it stays bound to that country. Only cars that are in that country, at 100% condition, and not already on display. Upgrades grow the vitrine in steps until every car model fits. This is a collection, not extra garage space: displayed cars do not use garage slots and cannot be used, sold or smuggled. An arrest in that country searches the vitrine (~40% chance per uncatted car); arrests elsewhere leave it alone. Cat papers with cash so police/FBI treat that car as legitimate while it stays on display. Sell only after the collection is empty.'**
   String get propertyInfoCarShowroom;
 
   /// No description provided for @propertyInfoMotorcycleShowroom.
   ///
   /// In en, this message translates to:
-  /// **'One motorcycle shop per account, bound to the purchase country. Only motorcycles in that country at 100% condition, one per model. Upgrades grow the vitrine up to every motorcycle type. Displayed bikes are locked and do not use garage slots. An arrest there has ~40% chance per uncatted bike to seize it. Cat papers with cash while on display to look legitimate.'**
+  /// **'One motorcycle shop per account, bound to the purchase country. Only motorcycles in that country at 100% condition, one per model. Upgrades grow the vitrine up to every motorcycle type. Displayed bikes are locked and do not use garage slots. An arrest there has ~40% chance per uncatted bike to seize it; arrests in other countries do not. Cat papers with cash while on display to look legitimate.'**
   String get propertyInfoMotorcycleShowroom;
 
   /// No description provided for @propertyInfoBoatHarbor.
   ///
   /// In en, this message translates to:
-  /// **'One boat harbor per account, bound to the purchase country. Only boats in that country at 100% condition, one per model. Upgrades grow the vitrine up to every boat type. Displayed boats are locked and do not use marina slots. An arrest there has ~40% chance per uncatted boat to seize it. Cat papers with cash while on display to look legitimate.'**
+  /// **'One boat harbor per account, bound to the purchase country. Only boats in that country at 100% condition, one per model. Upgrades grow the vitrine up to every boat type. Displayed boats are locked and do not use marina slots. An arrest there has ~40% chance per uncatted boat to seize it; arrests in other countries do not. Cat papers with cash while on display to look legitimate.'**
   String get propertyInfoBoatHarbor;
 
   /// No description provided for @showroomTitle.
@@ -12329,7 +12329,7 @@ abstract class AppLocalizations {
   /// No description provided for @showroomRules.
   ///
   /// In en, this message translates to:
-  /// **'Collection, not extra garage space. 100% condition, same country, one per model. Police can seize uncatted vehicles on arrest here (~40% each). Cat papers (cash) so displayed cars look legitimate until you take them out.'**
+  /// **'Collection, not extra garage space. 100% condition, same country, one per model. Police can seize uncatted vehicles on arrest here (~40% each). Arrests in other countries do not touch this collection. Cat papers (cash) so displayed cars look legitimate until you take them out.'**
   String get showroomRules;
 
   /// No description provided for @showroomWrongCountryManage.
@@ -32825,13 +32825,13 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicPropertiesHow.
   ///
   /// In en, this message translates to:
-  /// **'My properties opens on the country you are in. Filter All or another country. Each owned tile shows that building\'s country.\nEach property has its own role: storage space, housing capacity or access to a follow-up module such as the nightclub.\nWarehouse upgrades increase your storage capacity for items and other stock.\nHouses store weapons, ammo, vests, cash, materials, drugs and trade goods and are safer on arrest. Warehouses store the same plus tools.\nHouses and apartments increase housing capacity; VIP players receive extra slots on top of that.\nSome properties are unique or country locked: you must be in the correct country to buy or manage them.\nSelling yields 70% of purchase price. No cooldown on selling, it is instant.\nA purchased nightclub opens the separate nightclub management screen; that module handles management and revenue, not the properties overview.\nDevelop spends bank money: each level permanently raises that property\'s passive income (max level and cooldown are server-tuned).\nHouse, apartment and warehouse tiles use the same packing as your backpack (coffee vs diamonds, drugs 100 g, ammo 50).\nCar showroom, motorcycle shop and boat harbor are unique collections (one each per account), not extra garage space. Place vehicles in the same country at 100% condition, one model at a time. On arrest in that country police/FBI can seize about 40% of uncatted display vehicles. On the Display tab, buy Cat papers with cash so that vehicle looks legitimate until you take it out; placing again requires a new cat.'**
+  /// **'My properties opens on the country you are in. Filter All or another country. Each owned tile shows that building\'s country.\nEach property has its own role: storage space, housing capacity or access to a follow-up module such as the nightclub.\nWarehouse upgrades increase your storage capacity for items and other stock.\nHouses store weapons, ammo, vests, cash, materials, drugs and trade goods and are safer on arrest. Warehouses store the same plus tools.\nHouses and apartments increase housing capacity; VIP players receive extra slots on top of that.\nSome properties are unique or country locked: you must be in the correct country to buy or manage them.\nSelling yields 70% of purchase price. No cooldown on selling, it is instant.\nA purchased nightclub opens the separate nightclub management screen; that module handles management and revenue, not the properties overview.\nDevelop spends bank money: each level permanently raises that property\'s passive income (max level and cooldown are server-tuned).\nHouse, apartment and warehouse tiles use the same packing as your backpack (coffee vs diamonds, drugs 100 g, ammo 50).\nCar showroom, motorcycle shop and boat harbor are unique collections (one each per account), not extra garage space. Place vehicles in the same country at 100% condition, one model at a time. On arrest in that country police/FBI can seize about 40% of uncatted display vehicles; an arrest in another country does not search this showroom. On the Display tab, buy Cat papers with cash so that vehicle looks legitimate until you take it out; placing again requires a new cat.'**
   String get helpTopicPropertiesHow;
 
   /// No description provided for @helpTopicPropertiesTips.
   ///
   /// In en, this message translates to:
-  /// **'Invest in a Warehouse early if you need more storage space for your other systems.\nChoose houses and apartments when you want to build more housing capacity for related gameplay systems.\nDo not sell too quickly: 70% represents a serious markdown from purchase price.\nCat expensive showroom vehicles right after placing them — legendaries cost more cash but are safer on arrest.\nDevelop high base-income properties first — the percentage boost matters more there.'**
+  /// **'Invest in a Warehouse early if you need more storage space for your other systems.\nChoose houses and apartments when you want to build more housing capacity for related gameplay systems.\nDo not sell too quickly: 70% represents a serious markdown from purchase price.\nCat expensive showroom vehicles right after placing them — legendaries cost more cash but are safer on arrest in the showroom country (other countries do not search that vitrine).\nDevelop high base-income properties first — the percentage boost matters more there.'**
   String get helpTopicPropertiesTips;
 
   /// No description provided for @helpTopicDonCategory.
