@@ -25,6 +25,12 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 - **Street target weights:** `streetTheftRarityWeights(rank)` in `vehicleService.ts`. Risk is always a street (common/uncommon) attempt; rare/epic/legendary are post-success upgrades. Unlocks: rare 7, epic 13, legendary 22. Rank 7 ≈ 70/28/2; rank 13–21 ≈ 48/30/16/6; rank 22+ ≈ 42/28/18/9/3. Catalog count is not the drop rate. See `garage.md` / `steel_voertuig.md`.
 - **Theft garage pressure (2026-10-01):** garage/marina upgrade euro costs raised (~1.75× cars/motos, ~1.5× marina) so slot expansion is a real sink. Fail catch chance ~20–55% (was ~18–50%); high-value fail wanted bumps +11/+13; jail minutes up to 50 on top bands. Legendary weight unchanged at 3%.
 
+## Documented static modifiers (empire stack → casino / RLD)
+- **Casino L1 passive (2026-10-01):** `baseIncome` **4000** / 60m (~€4k/h, ~**52 dagen** ROI on €5M). Upgrade bonuses halved vs prior 8k curve. Unique per country — still prestige, less multi-country printer.
+- **Nightclub L1:** `baseIncome` **2400** / 100m (was 3000); upgrade bonuses ×0.8.
+- **RLD soft income scale:** `rldSoftIncomeScale(occupied)` — full rate ≤40 occupied rooms, 0.78 to 80, 0.58 to 150, 0.42 above. Full-occupancy FBI heat **5** (was 3); raid bonuses slightly higher. Hard room cap 1000 unchanged (grandfathered empires keep rooms but earn less per seat).
+- See [properties.md](properties.md), [red-light-districts.md](red-light-districts.md).
+
 ## Documented static modifiers (drugs → batch ladder)
 - **2026-10-01 ladder retune:** hard/chem batches that were retail-negative at shop material prices (LSD/fentanyl precursor burn, XTC floor prices, thin heroin/meth yields) were adjusted so max-country €/h generally rises with unlock rank. Weed/mushroom curves kept. Heat/raid/cash-cool unchanged.
 - Material defaults: `lsd_precursor` €400, `fentanyl_precursor` €900, `lab_filter` €400, `hash_press` €350.

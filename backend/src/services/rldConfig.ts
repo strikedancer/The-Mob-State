@@ -57,10 +57,20 @@ export const RLD_COUNTRY_SLUGS = [
 export const RLD_OCCUPANCY_BUSY = 70;
 export const RLD_OCCUPANCY_FULL = 100;
 export const RLD_OCCUPANCY_BUSY_RENT_MULT = 1.15;
-export const RLD_OCCUPANCY_FULL_HEAT = 3;
-export const RLD_OCCUPANCY_BUSY_RAID_BONUS = 0.05;
-export const RLD_OCCUPANCY_FULL_RAID_BONUS = 0.08;
+/** FBI heat tick when a district hits 100% occupancy (owner). */
+export const RLD_OCCUPANCY_FULL_HEAT = 5;
+export const RLD_OCCUPANCY_BUSY_RAID_BONUS = 0.07;
+export const RLD_OCCUPANCY_FULL_RAID_BONUS = 0.12;
 export const RLD_EVENT_RAID_BONUS = 0.04;
+
+/** Soft income scale by occupied rooms in the district (anti mega-farm). */
+export function rldSoftIncomeScale(occupiedRooms: number): number {
+  const n = Math.max(0, Math.floor(occupiedRooms));
+  if (n <= 40) return 1;
+  if (n <= 80) return 0.78;
+  if (n <= 150) return 0.58;
+  return 0.42;
+}
 
 export const RLD_GUARD_HOURS = 8;
 export const RLD_GUARD_HOURS_VIP = 12;

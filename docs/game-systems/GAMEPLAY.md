@@ -441,7 +441,7 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 - **Income**: Passief inkomen per catalogus-`incomeInterval` (minuten), niet een vaste 5‑minuten tick voor alle panden.
 - **Ownership**: Magazijn max. één per speler per land; casino uniek per land; showrooms uniek per speler.
 - **Investment**: Passief inkomen + opslag/utility; bank-**Ontwikkel** boost apart.
-- **ROI**: Magazijn L1 ~**3 weken** 24/7 op aankoopprijs (`baseIncome` 450 / 90m); winkel-catalogus vergelijkbaar. Showroom/casino/nachtclub blijven duurdere empire-pilaren.
+- **ROI**: Magazijn L1 ~**3 weken** 24/7 op aankoopprijs (`baseIncome` 450 / 90m); winkel-catalogus vergelijkbaar. Casino L1 ~€4k/uur (was €8k); nachtclub mild lager. RLD-inkomen schaalt soft af boven ~40 bezette kamers. Showrooms blijven duurdere empire-pilaren.
 
 ### Property Liquidation
 - **Sell price**: 70% van aankoopprijs, contant, via `POST /properties/:id/sell`

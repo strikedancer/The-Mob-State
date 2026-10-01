@@ -24,6 +24,7 @@ District ownership, country-level expansion and prostitution territory progressi
 ## Must Preserve
 - Politieraids lopen via de tick (`checkAndExecuteRaid`) bij FBI-heat ≥ 50, beïnvloed door bezetting en events.
 - Nieuwe aankoop start met 4 lege kamers. Plaatsen van recruits groeit automatisch extra kamers tot **1000 per land** (één district per land). Eigenaar-expansion is optioneel (extra lege kamers op het bord), niet meer de plaatsingspoort. Bestaande kamers niet uitzetten.
+- **Soft income scale (2026-10-01):** per-room RLD earnings × `rldSoftIncomeScale(occupied)` — 1.0 ≤40, 0.78 ≤80, 0.58 ≤150, else 0.42. Full occupancy FBI heat **5**; busy/full raid bonuses 0.07 / 0.12.
 - Occupancy on Current RLD is `occupied / 1000` (landelijk maximum), never a hardcoded millions placeholder. Busy/full raid-heat gebruikt datzelfde maximum.
 - PvP: recruit stelen (straat, 12u terughalen) en zeldzame 1v1 district-contest. Geen Territory-kaart.
 - Client-copy in alle allowlist-talen; Help topics `prostitution` en `red-light-districts` voeden de Almanak-handleiding.

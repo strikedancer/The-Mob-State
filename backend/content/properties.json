@@ -29,18 +29,18 @@
       "type": "limited_per_country",
       "maxOwners": 3,
       "basePrice": 3000000,
-      "baseIncome": 3000,
+      "baseIncome": 2400,
       "incomeInterval": 100,
       "minLevel": 15,
       "storageCapacity": [0, 0, 0, 0, 0, 0],
       "maxLevel": 6,
       "features": ["events", "reputation"],
       "upgradeOptions": [
-        { "level": 2, "cost": 60000, "incomeBonus": 1200 },
-        { "level": 3, "cost": 120000, "incomeBonus": 1800 },
-        { "level": 4, "cost": 240000, "incomeBonus": 3000 },
-        { "level": 5, "cost": 420000, "incomeBonus": 4200 },
-        { "level": 6, "cost": 700000, "incomeBonus": 5500 }
+        { "level": 2, "cost": 60000, "incomeBonus": 960 },
+        { "level": 3, "cost": 120000, "incomeBonus": 1440 },
+        { "level": 4, "cost": 240000, "incomeBonus": 2400 },
+        { "level": 5, "cost": 420000, "incomeBonus": 3360 },
+        { "level": 6, "cost": 700000, "incomeBonus": 4400 }
       ]
     },
     {
@@ -92,18 +92,18 @@
       "image": "casino.png",
       "type": "unique_per_country",
       "basePrice": 5000000,
-      "baseIncome": 8000,
+      "baseIncome": 4000,
       "incomeInterval": 60,
       "minLevel": 20,
       "storageCapacity": [0, 0, 0, 0, 0, 0],
       "maxLevel": 6,
       "features": ["passive_income", "unique"],
       "upgradeOptions": [
-        { "level": 2, "cost": 400000, "incomeBonus": 2500 },
-        { "level": 3, "cost": 800000, "incomeBonus": 4000 },
-        { "level": 4, "cost": 1500000, "incomeBonus": 6000 },
-        { "level": 5, "cost": 2600000, "incomeBonus": 8500 },
-        { "level": 6, "cost": 4200000, "incomeBonus": 11000 }
+        { "level": 2, "cost": 400000, "incomeBonus": 1250 },
+        { "level": 3, "cost": 800000, "incomeBonus": 2000 },
+        { "level": 4, "cost": 1500000, "incomeBonus": 3000 },
+        { "level": 5, "cost": 2600000, "incomeBonus": 4250 },
+        { "level": 6, "cost": 4200000, "incomeBonus": 5500 }
       ]
     },
     {

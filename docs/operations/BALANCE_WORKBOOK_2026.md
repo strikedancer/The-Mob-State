@@ -179,9 +179,9 @@ Job CD = `calculateJobCooldown(maxEarnings)`. Success aangenomen 90%.
 |----------|-------|------------|-----------------|
 | warehouse | 150 000 | ~300 (450/90m) | **~21** (was ~5; retuned 2026-10-01) |
 | shop | 120 000 | ~240 (320/80m) | **~21** (was ~6; retuned 2026-10-01) |
-| casino | 5 000 000 | 8 000 | ~26 |
+| casino | 5 000 000 | ~4 000 (4000/60m) | **~52** (was ~26; retuned 2026-10-01) |
 | car_showroom | 2 500 000 | 2 133 | ~49 |
-| nightclub | 3 000 000 | 1 800 | ~69 |
+| nightclub | 3 000 000 | ~1 440 (2400/100m) | **~87** (was ~69; mild trim 2026-10-01) |
 
 Warehouse/shop zijn midgame sinks + storage utility; showroom/casino blijven prestige (aparte empire-stack pass).
 
@@ -311,8 +311,8 @@ Criteria: **te snel / te traag / te veilig / te zwak sink** t.o.v. year-long ret
 | 16 | Epic unlock @13 | **Groen** | Midgame carrot |
 | 17 | Showroom seize + Cat papers | **Groen** | Country-scope + €200k legendary floor = juiste prestige sink |
 | 18 | Early crime jail mercy | **Groen** | Week 1–2 vriendelijk zonder midgame te safe te maken |
-| 19 | Casino passive €8k/h | **Oranje** | Sterk t.o.v. active loops; check multi-property stacking |
-| 20 | RLD scale to 1000 rooms | **Oranje** | Cap hoog; security/FBI moeten meeschalen (monitor occupancy heat) |
+| 19 | Casino passive €8k/h | **Groen** (fixed 2026-10-01) | Now ~€4k/h L1; upgrades scaled |
+| 20 | RLD scale to 1000 rooms | **Oranje→verbeterd** | Soft income scale past 40/80/150 occupied + higher full heat/raid |
 | 21 | Travel CD 60m + cost | **Groen** | Friction op arbitrage |
 | 22 | Territory / crew late goals | **Groen** | Juiste late pillars als XP/cash farm soft is |
 | 23 | Credit→cash vs cashpacks | **Groen** | Protocol: credits niet cash-arbitrage |
@@ -340,8 +340,8 @@ Prioriteit op rood/oranje met grootste impact op “nog 1 jaar willen spelen”:
 5. **Job/crime XP parity mid (oranje)**  
    - Lichte XP-bump op 15m/30m crimes of job XP trim — behoud risk fantasy.
 
-6. **Casino / RLD stacking (oranje)**  
-   - Cap of diminish op multi-property passive; bevestig FBI tick bij 100% occupancy.
+6. **~~Casino / RLD stacking~~ (done 2026-10-01)**  
+   - Casino/nightclub passive trimmed; RLD soft income scale + higher full-occupancy heat/raid.
 
 7. **ECON defaults vs live documenteren**  
    - Geen blinde sync; kies één source of truth in Admin na 72h telemetry.

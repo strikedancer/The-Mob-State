@@ -16,6 +16,7 @@ import {
   occupancyRate,
   occupancyRentMultiplier,
   rldOccupancyCapacity,
+  rldSoftIncomeScale,
 } from './rldConfig';
 import { ensureAssignableRldRoom } from './redLightDistrictService';
 
@@ -314,12 +315,13 @@ function computePassiveEarningsSlice(args: {
       room.redLightDistrict.rooms.length || room.redLightDistrict.roomCount || 0
     );
     const rentMult = occupancyRentMultiplier(occupancyRate(occupied, totalRooms));
+    const softScale = rldSoftIncomeScale(occupied);
     const guardMult = room.guardUntil && room.guardUntil > args.now ? 0.5 : 1;
     const grossEarnings = Math.floor(
-      tierConfig.gross * hoursElapsed * levelBonus * rentMult * guardMult
+      tierConfig.gross * hoursElapsed * levelBonus * rentMult * guardMult * softScale
     );
     const rentPaid = Math.floor(
-      tierConfig.rent * hoursElapsed * rentMult * guardMult
+      tierConfig.rent * hoursElapsed * rentMult * guardMult * softScale
     );
     const earnings = Math.max(
       0,
