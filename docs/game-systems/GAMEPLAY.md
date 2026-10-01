@@ -1,6 +1,6 @@
-# Mafia Game - Gameplay Handleiding
+﻿# Mafia Game - Gameplay Handleiding
 
-## ðŸ“‹ Inhoudsopgave
+## Ã°Å¸â€œâ€¹ Inhoudsopgave
 - [Basis Mechanics](#basis-mechanics)
 - [Crime Systeem](#crime-systeem)
 - [Wanted Level & Politie](#wanted-level--politie)
@@ -30,43 +30,43 @@
 
 - **Winkel** staat onder Dashboard in het zijmenu (zelfde uitlijning als Dashboard), niet onder Economie. VIP en Credits zijn tabs op die ene pagina. Compacte kooprijen (geen grote fototegels). Wachttijden verkorten blijft op het actiescherm.
 - Linksonder (tegenover de event-avatars rechts) staat een rond portret om The Mob State te steunen: zelf een eurobedrag invullen, daarna een eenmalige betaalpagina. Geen credits, cash of VIP als tegenprestatie.
-- Je kunt in-game cash kopen met euro's (cashpakketten). Credits omwisselen naar cash kan ook, maar levert minder geld per euro op (25 credits = €2.000). Credits blijven vooral voor skips en bescherming.
-- Bij een creditbundel kies je na aanklikken hoeveel pakketten je in één betaling wilt (1–20). Prijs en credits schalen mee. Event Pass blijft één aankoop.
+- Je kunt in-game cash kopen met euro's (cashpakketten). Credits omwisselen naar cash kan ook, maar levert minder geld per euro op (25 credits = â‚¬2.000). Credits blijven vooral voor skips en bescherming.
+- Bij een creditbundel kies je na aanklikken hoeveel pakketten je in Ã©Ã©n betaling wilt (1â€“20). Prijs en credits schalen mee. Event Pass blijft Ã©Ã©n aankoop.
 - Legacy aanbiedingen met oude prijsstelling (zoals 1000 credits voor EUR 1.99) horen niet meer zichtbaar of afrekenbaar te zijn.
 
 ---
 
 ## Dashboard
 
-- Het dashboard gebruikt een noir/gold operations-console: gecentreerd logo in de topbar (op desktop het oorspronkelijke formaat; op mobiel kleiner zodat geld/rang/HP leesbaar blijven), platte zijbalk, HUD-statusrij (cash, rang, HP, gezocht, FBI, land, credits, VIP) en panelen met sectietitels. VIP in de balk toont of je Player VIP hebt en hoe lang die nog loopt; tikken opent Winkel op de VIP-tab. Credits in de balk opent Winkel op de Credits-tab. Winkel staat onder Dashboard. Op Home staat een crewmissie-timeout als je crew na een missie moet wachten. Ongelezen berichten zitten op de avatar-badge. **Gezocht** en **FBI** in de balk zijn allebei 0–100 en staan als `%` (niet `9/5` of `9/100`). Op smalle schermen staat de HUD in twee rijen (geen FittedBox, zodat de pagina op mobiel web niet blijft laden). Cash/credits/gezocht/FBI in de balk worden na een actie meteen bijgewerkt uit het antwoord, zonder de hele pagina opnieuw te laden. Zijbalk en hamburger-menu zijn gegroepeerd en doorzoekbaar. **Timers lopen in de browser** (events, jail, cooldowns, footer-stippen). Home telt die seconden af zonder het hele overzicht elke seconde opnieuw te bouwen. De **Misdaad cooldown**-overlay telt lokaal door; HUD/events-rebuilds mogen de resterende tijd niet terugzetten naar het startcijfer. De server-tick houdt de wereld bij (inkomen, heat, nightclub-sales); die is geen UI-klok. Sync met de server gebeurt bij **eerste load, pagina-wissel of na een actie** — geen 10/30-seconden-polls alleen om resterende tijd te zetten. Home-statistieken komen uit één parallelle `dashboard-stats`-ronde. In **Statistieken** staan **auto’s / motoren / boten in bezit** (huidige `vehicle_inventory`-tellingen), met motoren tussen auto’s en boten. Event-badges tonen seconden onder 24 uur. Trage `dashboard-stats`-antwoorden mogen een lokaal aftellende timer niet terugzetten.
+- Het dashboard gebruikt een noir/gold operations-console: gecentreerd logo in de topbar (op desktop het oorspronkelijke formaat; op mobiel kleiner zodat geld/rang/HP leesbaar blijven), platte zijbalk, HUD-statusrij (cash, rang, HP, gezocht, FBI, land, credits, VIP) en panelen met sectietitels. VIP in de balk toont of je Player VIP hebt en hoe lang die nog loopt; tikken opent Winkel op de VIP-tab. Credits in de balk opent Winkel op de Credits-tab. Winkel staat onder Dashboard. Op Home staat een crewmissie-timeout als je crew na een missie moet wachten. Ongelezen berichten zitten op de avatar-badge. **Gezocht** en **FBI** in de balk zijn allebei 0â€“100 en staan als `%` (niet `9/5` of `9/100`). Op smalle schermen staat de HUD in twee rijen (geen FittedBox, zodat de pagina op mobiel web niet blijft laden). Cash/credits/gezocht/FBI in de balk worden na een actie meteen bijgewerkt uit het antwoord, zonder de hele pagina opnieuw te laden. Zijbalk en hamburger-menu zijn gegroepeerd en doorzoekbaar. **Timers lopen in de browser** (events, jail, cooldowns, footer-stippen). Home telt die seconden af zonder het hele overzicht elke seconde opnieuw te bouwen. De **Misdaad cooldown**-overlay telt lokaal door; HUD/events-rebuilds mogen de resterende tijd niet terugzetten naar het startcijfer. De server-tick houdt de wereld bij (inkomen, heat, nightclub-sales); die is geen UI-klok. Sync met de server gebeurt bij **eerste load, pagina-wissel of na een actie** â€” geen 10/30-seconden-polls alleen om resterende tijd te zetten. Home-statistieken komen uit Ã©Ã©n parallelle `dashboard-stats`-ronde. In **Statistieken** staan **autoâ€™s / motoren / boten in bezit** (huidige `vehicle_inventory`-tellingen), met motoren tussen autoâ€™s en boten. Event-badges tonen seconden onder 24 uur. Trage `dashboard-stats`-antwoorden mogen een lokaal aftellende timer niet terugzetten.
 - **Doneer-avatar** uiterst linksonder aan de schermrand (zelfde ronde stijl als de event-avatars rechts, niet tegen het menu): tikken opent een modal om een eenmalig eurobedrag te geven voor servers en ontwikkeling. Niet op Berichten/Wereldchat. Op mobiel staat die avatar **boven** de sticky footer zodat die de snelle navigatie niet blokkeert; op desktop/sidebar blijft het een klein hoek-inset.
-- **Te veel verzoeken:** de API-limiet is per account (niet per huis-IP). Normaal spelen met meerdere mensen tegelijk hoort geen `rate_limit`-fout te geven; als het tóch gebeurt, wacht even en probeer opnieuw.
-- **Eén sessie per account:** een nieuwe login maakt de vorige JWT ongeldig (`SESSION_REPLACED`). Op het dashboard zie je dat als uitloggen, niet als een vastgelopen scherm.
+- **Te veel verzoeken:** de API-limiet is per account (niet per huis-IP). Normaal spelen met meerdere mensen tegelijk hoort geen `rate_limit`-fout te geven; als het tÃ³ch gebeurt, wacht even en probeer opnieuw.
+- **EÃ©n sessie per account:** een nieuwe login maakt de vorige JWT ongeldig (`SESSION_REPLACED`). Op het dashboard zie je dat als uitloggen, niet als een vastgelopen scherm.
 - Op mobiel staat onderin een sticky footer met Misdaden, Voertuig stelen, Werken, Bank en Crew; een gouden stip betekent dat die cooldown klaar is. Overige onderdelen blijven in het gegroepeerde, doorzoekbare hamburger-menu.
-- Elke spelerspagina heeft dezelfde gouden `i` als Don/Races; die opent de uitgebreide uitleg van die pagina (dezelfde teksten als Help & Uitleg). Op Misdaden en Banen staat de `i` naast de paginatitel (niet in de hoek boven de chips). Overige web-pagina’s hebben de `i` in de statusbalk. In **Hoe het werkt** en **Tips** staan de regels als losse bullets met ruimte ertussen. Don en Midnight Races houden hun eigen foto-gids.
+- Elke spelerspagina heeft dezelfde gouden `i` als Don/Races; die opent de uitgebreide uitleg van die pagina (dezelfde teksten als Help & Uitleg). Op Misdaden en Banen staat de `i` naast de paginatitel (niet in de hoek boven de chips). Overige web-paginaâ€™s hebben de `i` in de statusbalk. In **Hoe het werkt** en **Tips** staan de regels als losse bullets met ruimte ertussen. Don en Midnight Races houden hun eigen foto-gids.
 - Visual polish mag nooit ten koste gaan van leesbaarheid: statistieken, timers en actieknoppen moeten op mobiel/tablet/desktop direct scanbaar blijven.
-- Op web-Misdaden blijft de statusbalk (rang/HP/beveiliging, geld, gezocht/FBI) **apart** boven de content staan, zoals op de andere pagina’s. In de contentkaart zitten straatmisdaden, landelijke politie, trainingsbonus en gedragen wapens in **één** header. Filter/sorteer blijft een dunne balk boven het grid. **Op jouw rang** (standaard) toont eerst **Klaar om te plegen**, daaronder **Nog spullen nodig** (wapen, drugs, gereedschap of auto). **Alle misdaden** voegt misdaden toe die nog een hogere rang vragen.
+- Op web-Misdaden blijft de statusbalk (rang/HP/beveiliging, geld, gezocht/FBI) **apart** boven de content staan, zoals op de andere paginaâ€™s. In de contentkaart zitten straatmisdaden, landelijke politie, trainingsbonus en gedragen wapens in **Ã©Ã©n** header. Filter/sorteer blijft een dunne balk boven het grid. **Op jouw rang** (standaard) toont eerst **Klaar om te plegen**, daaronder **Nog spullen nodig** (wapen, drugs, gereedschap of auto). **Alle misdaden** voegt misdaden toe die nog een hogere rang vragen.
 - Dashboard-baseline bevat economy-overzicht (cash/bank/crypto/assets/net worth), 24u cashflowtrend, 7d activiteit, operations-timers en notificatie/risico-indicatoren.
-- In **Instellingen** kun je de **spelertaal** wijzigen (o.a. NL, EN en extra Europese UI-talen); zie `docs/l10n-migration.md` voor uitbreiding en vertaalfallbacks. **Avatar wijzigen:** op web laadt de kies-grid portretten **via HTTP** naar `/images/avatars/…` (nginx, externe image-mount), niet via ingebouwde `Image.asset`, zodat dezelfde bestanden als op de server zichtbaar zijn zonder dubbel `assets/`-pad in de console.
-- De **profiel-/avatar-knop** in de header (popup: mijn profiel, berichten, Almanak, instellingen, uitloggen) toont een tooltip uit ARB-key **`userAccountMenuTooltip`** — bewust niet het generieke woord *account*, zodat NL geen “Rekening” (bank) als label krijgt. **Mijn profiel** opent het publieke profiel van de ingelogde speler. **Almanak** opent de wiki in een nieuw tabblad; de oude in-game Help-pagina blijft alleen voor de gouden `i`.
-- Rangtitels (Soldaat, Peetvader, Don, …) zijn hetzelfde op dashboard en publiek profiel. In de bovenbalk zie je **titel, rangnummer en voortgangs-%** (bijv. Cadet (21) 39%). **Peetvader** is pas vanaf rang 60; rond rang 25 is de titel **Soldaat**.
-- **Web-zijmenu (ARB):** NL gebruikt gangster-/game-jargon in `app_nl.arb` (o.a. **Support**, **Crew**, **Handelswaren**, **Drugs**, **Red Light Districts**). Andere locales: waar een vertaling kennelijk fout is (bijv. ES **Multitud** i.p.v. crew, PT **Apoiar** als infinitief voor support), hoort dezelfde key in `app_es.arb` / `app_pt.arb` e.d. bewust te worden rechtgezet — niet alleen NL.
-- **Trainingscircuit (sportschool + schietschool):** zijbalk **Acties** → `TrainingHubScreen` (niet als balk op Home). **Sportschool:** drie lijnen — **kracht**, **snelheid**, **uithouding** — elk met eigen **1 uur**-cooldown en **100-sessie**-plafond (`POST /gym/train` met `track`: `strength` | `speed` | `stamina`). Elke sessie kost straatcash (`GYM_TRAIN_COST`, default **€500**); te weinig geld → `INSUFFICIENT_FUNDS`. De misdaadbonus is server-side **max +8%** totaal: per lijn loopt een term lineair mee tot 100 sessies (**+4%**, **+2%**, **+2%**); bestaande spelers kregen bij migratie de oude `sessionsCompleted`-waarde in alle drie de tellers gekopieerd zodat de som gelijk bleef. **Schietschool:** ongewijzigd aparte cooldown en cap (`/shooting-range`), sessiekosten via `SHOOTING_RANGE_TRAIN_COST` (default **€750**); **in de cel** is schieten geblokkeerd, sportschool blijft wel toegankelijk. Status voor hub + misdaadscherm laadt via **`GET /training/status`** (combineert beide status-objecten plus `jailTimeRemaining` en `trainCost` per module; combo-readiness gebruikt de **laatste** sportschool-training over alle lijnen). Op het **Misdaden**-scherm staat een korte regel met je actieve sportschool- en precisiebonus (zelfde waarden als de server in de slagingskans gebruikt). In **Help & Uitleg** staat dezelfde transparantie in topic **`crimes`** (`helpTopicCrimesHow` in alle actieve `app_*.arb`-talen, afgestemd op `trainingHub*`-terminologie). **Combo-readiness:** train je **dezelfde UTC-dag** in sportschool én schietbaan, dan geeft de server **+0,5%** extra slagingskans op crimes (constant `TRAINING_COMBO_READINESS_BONUS`; zichtbaar op het Misdaden-scherm wanneer actief). Op de **hub** zie je bij actieve combo een **chip**, kun je **status verversen** (liefst zonder volledige paginaloader), **Meer info** uitklappen (combo, aparte timers, hitlist-koppeling schietbaan) en op **web-dashboard** direct naar **Misdaden** springen om bonussen daar te zien. Voor het hub-scherm: help-topic-id **`training-hub`** (`docs/module-protocols/training-hub.md`). **Flutter web:** dashboard- en hub-iconen gebruiken core Material-glyphs zodat ze niet als leeg vierkant renderen; de hub-badge toont sportschool + schietschool met `fitness_center` en `gps_fixed` (niet `adjust` — die glyph ontbreekt vaak in het standaard webfont en lijkt dan “leeg”).
-- **Custom portretten (selfie→gangster)** in dezelfde avatar-kieslijst (Instellingen én eigen profiel → **Avatar wijzigen**): tijdens generatie toont de client een **wachtdialoog** (niet weg te tikken); per tegel: **download** (links, PNG opslaan via ingelogde API) en **verwijderen** (rechts) met **vectorgetekende** pictogrammen (geen icon-font, zodat web/modal ze wél toont) en **tooltips** in de spelertaal (ARB). Op je eigen profiel kun je het **huidige** selfie-portret later opnieuw downloaden. Je kiest een **stijl** (o.a. noir, casual, pak, avondglamour); de server gebruikt je **accountgeslacht** (registratie) in de AI-prompt en stuurt Leonardo zo aan dat het **gezicht dichter bij je selfie** blijft (sterke Character Reference, geen PhotoReal-smooth). Staff kan overtredende portretten in het adminpanel wissen (zie `docs/module-protocols/player-portraits.md`).
-- Nieuwe accounts starten met **€2.000** (`PLAYER_STARTER_CASH`). Een invite-code (`?ref=`) stapelt daar nog de recruit-bonus bovenop.
-- Nieuwe spelers zien bovenaan een **Start-kaart** met één volgende stap: eerste misdaad → dagdoel of 1 job → **The Rookies** of een andere open crew. Rang 3+ of afgeronde onboarding ziet geen verplichte tutorial.
+- In **Instellingen** kun je de **spelertaal** wijzigen (o.a. NL, EN en extra Europese UI-talen); zie `docs/l10n-migration.md` voor uitbreiding en vertaalfallbacks. **Avatar wijzigen:** op web laadt de kies-grid portretten **via HTTP** naar `/images/avatars/â€¦` (nginx, externe image-mount), niet via ingebouwde `Image.asset`, zodat dezelfde bestanden als op de server zichtbaar zijn zonder dubbel `assets/`-pad in de console.
+- De **profiel-/avatar-knop** in de header (popup: mijn profiel, berichten, Almanak, instellingen, uitloggen) toont een tooltip uit ARB-key **`userAccountMenuTooltip`** â€” bewust niet het generieke woord *account*, zodat NL geen â€œRekeningâ€ (bank) als label krijgt. **Mijn profiel** opent het publieke profiel van de ingelogde speler. **Almanak** opent de wiki in een nieuw tabblad; de oude in-game Help-pagina blijft alleen voor de gouden `i`.
+- Rangtitels (Soldaat, Peetvader, Don, â€¦) zijn hetzelfde op dashboard en publiek profiel. In de bovenbalk zie je **titel, rangnummer en voortgangs-%** (bijv. Cadet (21) 39%). **Peetvader** is pas vanaf rang 60; rond rang 25 is de titel **Soldaat**.
+- **Web-zijmenu (ARB):** NL gebruikt gangster-/game-jargon in `app_nl.arb` (o.a. **Support**, **Crew**, **Handelswaren**, **Drugs**, **Red Light Districts**). Andere locales: waar een vertaling kennelijk fout is (bijv. ES **Multitud** i.p.v. crew, PT **Apoiar** als infinitief voor support), hoort dezelfde key in `app_es.arb` / `app_pt.arb` e.d. bewust te worden rechtgezet â€” niet alleen NL.
+- **Trainingscircuit (sportschool + schietschool):** zijbalk **Acties** â†’ `TrainingHubScreen` (niet als balk op Home). **Sportschool:** drie lijnen â€” **kracht**, **snelheid**, **uithouding** â€” elk met eigen **1 uur**-cooldown en **100-sessie**-plafond (`POST /gym/train` met `track`: `strength` | `speed` | `stamina`). Elke sessie kost straatcash (`GYM_TRAIN_COST`, default **â‚¬500**); te weinig geld â†’ `INSUFFICIENT_FUNDS`. De misdaadbonus is server-side **max +8%** totaal: per lijn loopt een term lineair mee tot 100 sessies (**+4%**, **+2%**, **+2%**); bestaande spelers kregen bij migratie de oude `sessionsCompleted`-waarde in alle drie de tellers gekopieerd zodat de som gelijk bleef. **Schietschool:** ongewijzigd aparte cooldown en cap (`/shooting-range`), sessiekosten via `SHOOTING_RANGE_TRAIN_COST` (default **â‚¬750**); **in de cel** is schieten geblokkeerd, sportschool blijft wel toegankelijk. Status voor hub + misdaadscherm laadt via **`GET /training/status`** (combineert beide status-objecten plus `jailTimeRemaining` en `trainCost` per module; combo-readiness gebruikt de **laatste** sportschool-training over alle lijnen). Op het **Misdaden**-scherm staat een korte regel met je actieve sportschool- en precisiebonus (zelfde waarden als de server in de slagingskans gebruikt). In **Help & Uitleg** staat dezelfde transparantie in topic **`crimes`** (`helpTopicCrimesHow` in alle actieve `app_*.arb`-talen, afgestemd op `trainingHub*`-terminologie). **Combo-readiness:** train je **dezelfde UTC-dag** in sportschool Ã©n schietbaan, dan geeft de server **+0,5%** extra slagingskans op crimes (constant `TRAINING_COMBO_READINESS_BONUS`; zichtbaar op het Misdaden-scherm wanneer actief). Op de **hub** zie je bij actieve combo een **chip**, kun je **status verversen** (liefst zonder volledige paginaloader), **Meer info** uitklappen (combo, aparte timers, hitlist-koppeling schietbaan) en op **web-dashboard** direct naar **Misdaden** springen om bonussen daar te zien. Voor het hub-scherm: help-topic-id **`training-hub`** (`docs/module-protocols/training-hub.md`). **Flutter web:** dashboard- en hub-iconen gebruiken core Material-glyphs zodat ze niet als leeg vierkant renderen; de hub-badge toont sportschool + schietschool met `fitness_center` en `gps_fixed` (niet `adjust` â€” die glyph ontbreekt vaak in het standaard webfont en lijkt dan â€œleegâ€).
+- **Custom portretten (selfieâ†’gangster)** in dezelfde avatar-kieslijst (Instellingen Ã©n eigen profiel â†’ **Avatar wijzigen**): tijdens generatie toont de client een **wachtdialoog** (niet weg te tikken); per tegel: **download** (links, PNG opslaan via ingelogde API) en **verwijderen** (rechts) met **vectorgetekende** pictogrammen (geen icon-font, zodat web/modal ze wÃ©l toont) en **tooltips** in de spelertaal (ARB). Op je eigen profiel kun je het **huidige** selfie-portret later opnieuw downloaden. Je kiest een **stijl** (o.a. noir, casual, pak, avondglamour); de server gebruikt je **accountgeslacht** (registratie) in de AI-prompt en stuurt Leonardo zo aan dat het **gezicht dichter bij je selfie** blijft (sterke Character Reference, geen PhotoReal-smooth). Staff kan overtredende portretten in het adminpanel wissen (zie `docs/module-protocols/player-portraits.md`).
+- Nieuwe accounts starten met **â‚¬2.000** (`PLAYER_STARTER_CASH`). Een invite-code (`?ref=`) stapelt daar nog de recruit-bonus bovenop.
+- Nieuwe spelers zien bovenaan een **Start-kaart** met Ã©Ã©n volgende stap: eerste misdaad â†’ dagdoel of 1 job â†’ **The Rookies** of een andere open crew. Rang 3+ of afgeronde onboarding ziet geen verplichte tutorial.
 - Tot **rang 5** zet het zijmenu late systemen grijs (vault, hitlist, aviation, territorium, casino, markten, empire). Misdaden, jobs, voertuigheist, crew, bank, zwarte markt, Almanak, Support en dagdoelen blijven open.
 - Het **zijmenu** zet **Winkel**, **Almanak** en **Support** als losse items onder Dashboard (niet in Meer of Sociaal). Almanak opent de wiki; Help staat niet meer in Meer.
 - Home zet de Start-kaart en Markt-tegel **onder** de profiel/statistiekkaarten, niet als twee balken bovenin.
-- Het dashboard toont **Dagdoelen** één keer in de gestylede paneelkaart (progress + cash/XP + streak), op web bij het economie-blok, **standaard ingeklapt** zoals weekdoelen; tik opent de lijst. Na claim zie je rechtsboven cash + XP. Featured daily pusht autodiefstal niet onder rang 5.
+- Het dashboard toont **Dagdoelen** Ã©Ã©n keer in de gestylede paneelkaart (progress + cash/XP + streak), op web bij het economie-blok, **standaard ingeklapt** zoals weekdoelen; tik opent de lijst. Na claim zie je rechtsboven cash + XP. Featured daily pusht autodiefstal niet onder rang 5.
 - Het dashboard kan ook een compacte **Weekdoelen** voortgang tonen als extra mid-term motivatie; op desktop staat de volledige weeklijst onderaan de linker kolom. In een crew zie je daarnaast een missable **crew-weekdoel**.
-- Weekdoelen kun je openen via de Weekdoelen-kaart; als een weekdoel “Klaar” is kun je de beloning claimen.
+- Weekdoelen kun je openen via de Weekdoelen-kaart; als een weekdoel â€œKlaarâ€ is kun je de beloning claimen.
 - Het dashboard heeft een **Sessie-overzicht** (link rechtsboven op Home; op native in de AppBar) met de laatste eigen acties. Web en native openen dezelfde lijst. Er staat geen aparte **Mijn activiteit**-lijst meer op het dashboard zelf.
-- Als claimen ooit mislukt, is dat een fout (niet “pech”): claims horen snel te committen en eventuele activity/recap logging gebeurt best-effort ná de claim. **Event Pass**-prijzen staan **bovenaan** (klaar-om-te-claimen), niet alleen verspreid over de 56 doelrijen. De 56 maanddoelen staan **standaard ingeklapt**; tik om de lijst te openen. Op mobiel blijven Claim-tegels onder het doel tappable.
-- **Misdaden** laadt de lijst in één server-batch. Als het scherm “kon niet laden / probeer opnieuw” toont, is dat een timeout of verbinding — Retry (en één automatische retry) hoort daarna de lijst te geven. Kaarten, wiki-catalogus en de Misdaden-hub delen dezelfde noir/goud-stills (`/images/crimes/?v=…`, hub `wiki/hubs/crimes.png`, achtergrond `crime_background.png`). De lijst op jouw rang splitst klaar-om-te-plegen en nog-spullen-nodig; kaarten verdwijnen niet alleen omdat je het wapen of de auto nog moet kopen. Op elke gewapende misdaadkaart staat welk wapentype je nodig hebt (pistool, jachtgeweer, geweer, SMG, sluipschutter). Een pistool of machinegeweer op slot 1 of 2 in Inventaris telt voor misdaden die dat type vragen (machinegeweer = SMG). Alleen in de rugzak of in huis is niet genoeg. De auto voor voertuig-crimes kies je op dezelfde uitrusting (misdaad-auto), niet op de autokaart in de garage. Zwaardere jobs zoals huurmoord vragen nog een geweer of sluipschutter. Zonder passende munitie in je tas zie je munitie nodig, geen “wapen nodig”.
-- **Berichten / postvak:** een badge of push “nieuw bericht” hoort bij bestaande threads. Spelerchats blijven gegroepeerd. Elke The Mob State-melding (badge, uitbetaling, order) is een **eigen inbox-regel**, geen lange gedeelde systeemthread. De inbox mag niet leeg lijken terwijl die berichten er wél zijn; bij een laadfout zie je retry, niet “Nog geen berichten”. In chat verstuurt **Enter** het bericht en maakt **Shift+Enter** een nieuwe regel. **Alles gelezen** zet de hele inbox in één keer op gelezen. **Selecteren** toont meteen een gouden kadervakje bij elk bericht; aangevinkt wordt dat vak gevuld met een streep en de rij krijgt een gouden rand, daarna kun je meerdere berichten tegelijk uit je inbox halen. **Alles wissen** haalt ze allemaal weg. Swipe of prullenbak blijft één gesprek wissen. De andere speler houdt de chat.
-- **Wereldchat:** onder Sociaal. Eén open lobby voor alle ingelogde spelers (ook in de cel), met stickers en een scheldwoordenfilter. Staff kan een eenmalige promo-regel met plaatje plaatsen (geen uploads door spelers). Die promo gaat naar Discord `#wereldchat`, niet naar `#updates`. Na een live spelerupdate verschijnt hier ook een **korte NL+EN teaser** (volledige uitleg staat in Discord `#updates`, eveneens Nederlands én Engels). Losse woorden zoals `kut` en `hoer` (en vergelijkbare scheldwoorden in de andere speltalen) worden vervangen door `****`, zonder het hele bericht te weigeren. **Hoe lang geleden** een regel is (`Nu`, `5m`) volgt de **servertijd**, niet de klok van je telefoon of browser. **Houd een bericht van iemand anders ingedrukt** om het te **melden** — er is geen aparte knop. Eigen bericht lang indrukken wist het tot ongeveer 10 minuten. Mods en Ops herken je aan een badge naast hun naam, ook op hun eigen berichten; zij houden andermans bericht ingedrukt om te wissen of te muten. In de Almanak staat **Mod en Ops** als handleiding. Privéberichten en crew-chat blijven apart. Geen push per publiek bericht. Optioneel spiegelen naar Discord zodat je ook buiten de game kunt meepraten; Discord → game werkt pas als de chat-bot in de server staat en `#wereldchat` kan lezen. Wie in Discord typt en een gekoppeld spelaccount heeft, staat onder de in-game naam; zonder account onder de Discord-gebruikersnaam. Typen in het spel gebruikt altijd de in-game naam. Discord koppelen kan later in Instellingen of via de wekelijkse popup (€5.000 eenmalig). Systeemregels van **Gevangenis** blijven in de in-game chat staan wanneer een echte speler is opgepakt door de politie, FBI of grenspolitie (met hoe lang de straf duurt), of wanneer een andere speler diegene uitkoopt of uitbreekt (met namen). Die gevangenisregels gaan wél naar Discord `#wereldchat`, maar **zonder melding**; gewone chatregels blijven gewoon pingen. Eigen borg/ontsnapping en NPCs blijven stil.
-- **Mobiel:** als een scherm (territory, smokkel, RLD, hitlist, vrienden, chat, shops, Event Pass) niet laadt, hoor je **Opnieuw** te zien — geen eindeloze spinner en geen valse “leeg”-tekst. Hit-kaarten stapelen naam en bounty/Hit onder ~420px zodat de knop tappable blijft.
+- Als claimen ooit mislukt, is dat een fout (niet â€œpechâ€): claims horen snel te committen en eventuele activity/recap logging gebeurt best-effort nÃ¡ de claim. **Event Pass**-prijzen staan **bovenaan** (klaar-om-te-claimen), niet alleen verspreid over de 56 doelrijen. De 56 maanddoelen staan **standaard ingeklapt**; tik om de lijst te openen. Op mobiel blijven Claim-tegels onder het doel tappable.
+- **Misdaden** laadt de lijst in Ã©Ã©n server-batch. Als het scherm â€œkon niet laden / probeer opnieuwâ€ toont, is dat een timeout of verbinding â€” Retry (en Ã©Ã©n automatische retry) hoort daarna de lijst te geven. Kaarten, wiki-catalogus en de Misdaden-hub delen dezelfde noir/goud-stills (`/images/crimes/?v=â€¦`, hub `wiki/hubs/crimes.png`, achtergrond `crime_background.png`). De lijst op jouw rang splitst klaar-om-te-plegen en nog-spullen-nodig; kaarten verdwijnen niet alleen omdat je het wapen of de auto nog moet kopen. Op elke gewapende misdaadkaart staat welk wapentype je nodig hebt (pistool, jachtgeweer, geweer, SMG, sluipschutter). Een pistool of machinegeweer op slot 1 of 2 in Inventaris telt voor misdaden die dat type vragen (machinegeweer = SMG). Alleen in de rugzak of in huis is niet genoeg. De auto voor voertuig-crimes kies je op dezelfde uitrusting (misdaad-auto), niet op de autokaart in de garage. Zwaardere jobs zoals huurmoord vragen nog een geweer of sluipschutter. Zonder passende munitie in je tas zie je munitie nodig, geen â€œwapen nodigâ€.
+- **Berichten / postvak:** een badge of push â€œnieuw berichtâ€ hoort bij bestaande threads. Spelerchats blijven gegroepeerd. Elke The Mob State-melding (badge, uitbetaling, order) is een **eigen inbox-regel**, geen lange gedeelde systeemthread. De inbox mag niet leeg lijken terwijl die berichten er wÃ©l zijn; bij een laadfout zie je retry, niet â€œNog geen berichtenâ€. In chat verstuurt **Enter** het bericht en maakt **Shift+Enter** een nieuwe regel. **Alles gelezen** zet de hele inbox in Ã©Ã©n keer op gelezen. **Selecteren** toont meteen een gouden kadervakje bij elk bericht; aangevinkt wordt dat vak gevuld met een streep en de rij krijgt een gouden rand, daarna kun je meerdere berichten tegelijk uit je inbox halen. **Alles wissen** haalt ze allemaal weg. Swipe of prullenbak blijft Ã©Ã©n gesprek wissen. De andere speler houdt de chat.
+- **Wereldchat:** onder Sociaal. EÃ©n open lobby voor alle ingelogde spelers (ook in de cel), met stickers en een scheldwoordenfilter. Staff kan een eenmalige promo-regel met plaatje plaatsen (geen uploads door spelers). Die promo gaat naar Discord `#wereldchat`, niet naar `#updates`. Na een live spelerupdate verschijnt hier ook een **korte NL+EN teaser** (volledige uitleg staat in Discord `#updates`, eveneens Nederlands Ã©n Engels). Losse woorden zoals `kut` en `hoer` (en vergelijkbare scheldwoorden in de andere speltalen) worden vervangen door `****`, zonder het hele bericht te weigeren. **Hoe lang geleden** een regel is (`Nu`, `5m`) volgt de **servertijd**, niet de klok van je telefoon of browser. **Houd een bericht van iemand anders ingedrukt** om het te **melden** â€” er is geen aparte knop. Eigen bericht lang indrukken wist het tot ongeveer 10 minuten. Mods en Ops herken je aan een badge naast hun naam, ook op hun eigen berichten; zij houden andermans bericht ingedrukt om te wissen of te muten. In de Almanak staat **Mod en Ops** als handleiding. PrivÃ©berichten en crew-chat blijven apart. Geen push per publiek bericht. Optioneel spiegelen naar Discord zodat je ook buiten de game kunt meepraten; Discord â†’ game werkt pas als de chat-bot in de server staat en `#wereldchat` kan lezen. Wie in Discord typt en een gekoppeld spelaccount heeft, staat onder de in-game naam; zonder account onder de Discord-gebruikersnaam. Typen in het spel gebruikt altijd de in-game naam. Discord koppelen kan later in Instellingen of via de wekelijkse popup (â‚¬5.000 eenmalig). Systeemregels van **Gevangenis** blijven in de in-game chat staan wanneer een echte speler is opgepakt door de politie, FBI of grenspolitie (met hoe lang de straf duurt), of wanneer een andere speler diegene uitkoopt of uitbreekt (met namen). Die gevangenisregels gaan wÃ©l naar Discord `#wereldchat`, maar **zonder melding**; gewone chatregels blijven gewoon pingen. Eigen borg/ontsnapping en NPCs blijven stil.
+- **Mobiel:** als een scherm (territory, smokkel, RLD, hitlist, vrienden, chat, shops, Event Pass) niet laadt, hoor je **Opnieuw** te zien â€” geen eindeloze spinner en geen valse â€œleegâ€-tekst. Hit-kaarten stapelen naam en bounty/Hit onder ~420px zodat de knop tappable blijft.
 - Nieuwe gameplaymodules of uitbreidingen met timers/rewards/notificaties moeten dashboard-coverage en helptekst in dezelfde wijziging meenemen.
 
 ### Live spelerevents
@@ -75,16 +75,16 @@
 - **Contraband Rush** (`trade`): verkoop handelswaren met winst en claim gesmokkelde trade-zendingen scoren punten (kopen telt niet; drug/tool-smokkel blijft onder Smuggling Surge).
 - Tijdens een lopend event toont de detail-leaderboard de **top 10 op score** (niet alleen jouw eigen rij); vaste ranks worden pas bij afloop vastgelegd.
 - Op het dashboard staan events **rechtsonder** als een **ingeklapte chip** (tik om de foto-avatars te openen, pijl om ze weer weg te klappen) inclusief het maandelijkse Empire Showdown, ook als die ronde nog niet live is. Opengeklapt toont elke avatar een resterende-tijd-badge. Ze blijven **verborgen op Berichten, Crew, Wereldchat en Evenementen** zodat tekst en de verzendknop vrij blijven. Tikken op een avatar opent dezelfde detailpopup als op Evenementen. **Maandevent:** dezelfde Event Pass-doellijst als op Evenementen (te claimen prijzen bovenaan, geen 1e/2e/3e-plek). Een rood cijfer op die maand-avatar betekent Event Pass-prijzen klaar om te claimen. **Weekevent-avatars hebben geen claim-cijfer.** Dag- en weekdoelen op het dashboard zijn een apart systeem; die claims staan alleen op de doelkaarten.
-- In **Instellingen** kun je onder **Spelerevents** pushmeldingen bij start/einde van een ronde **per speler** aan- of uitzetten (standaard aan). Wie wint of een prijs pakt krijgt altijd een inboxbericht (met plek én beloningssamenvatting: cash, XP, credits, chips, enz.); de bijbehorende push volgt dezelfde voorkeur. In **Premium** bestaat optioneel **Event Pass (7 dagen)** (echt geld) voor +event-score en bonus credits, zonder directe combat pay-to-win.
+- In **Instellingen** kun je onder **Spelerevents** pushmeldingen bij start/einde van een ronde **per speler** aan- of uitzetten (standaard aan). Wie wint of een prijs pakt krijgt altijd een inboxbericht (met plek Ã©n beloningssamenvatting: cash, XP, credits, chips, enz.); de bijbehorende push volgt dezelfde voorkeur. In **Premium** bestaat optioneel **Event Pass (7 dagen)** (echt geld) voor +event-score en bonus credits, zonder directe combat pay-to-win.
 - Volledig operator-/deploy-pad: `docs/module-protocols/PROTOCOL_MASTER.md` (verwijst naar `events.md`). Event Pass-statkolommen (`stat_crime` t/m `stat_prostitution`) worden bij backend-start alleen toegevoegd als ze nog ontbreken, zodat een bestaande database geen duplicate-column fout in de log krijgt.
-- Technische afspraak server↔DB voor live events (JSON in tekstkolommen): `docs/module-protocols/events.md` (sectie *Backend (Prisma) invariant*).
+- Technische afspraak serverâ†”DB voor live events (JSON in tekstkolommen): `docs/module-protocols/events.md` (sectie *Backend (Prisma) invariant*).
 
 ---
 
 ## School
 
 - Op mobiel worden School-tracks en unlock-kaarten in auto-hoogte weergegeven zodat volledige kaartinhoud altijd zichtbaar blijft (geen afgekapt onderste deel).
-- Elke les kost **contant geld**. Lesgeld stijgt met je huidige track-level (€2.000 → €4.000 → €8.000 → €15.000 → €28.000). Al behaalde levels worden niet nagefactureerd. De gedeelde school-cooldown blijft de hoofdrem; credits skippen alleen die cooldown, ze betalen geen lesgeld. Aviation-licenties blijven een aparte betaalde stap na de aviation-track.
+- Elke les kost **contant geld**. Lesgeld stijgt met je huidige track-level (â‚¬2.000 â†’ â‚¬4.000 â†’ â‚¬8.000 â†’ â‚¬15.000 â†’ â‚¬28.000). Al behaalde levels worden niet nagefactureerd. De gedeelde school-cooldown blijft de hoofdrem; credits skippen alleen die cooldown, ze betalen geen lesgeld. Aviation-licenties blijven een aparte betaalde stap na de aviation-track.
 - School koppelt nu breed aan midgame: hard gates voor warehouse, high-tier trade, witwassen, garage/marina L4+, high-tier wapens; soft bonuses voor hospital (Medicine), races/scrap (Automotive), street-prostitutie/launder-seize/trade-smuggle (Finance), aviation travel/customs, en engineering weapon-smuggle risk.
 
 ---
@@ -122,15 +122,15 @@ Elke **5 minuten** gebeurt er automatisch:
 - **FBI Heat Decay**: -1 punt per tick (alleen als FBI Heat < 10)
 - **Bank Interest**: Momenteel uitgeschakeld (geen passieve rente per tick)
 - **Eten & Drinken** is uit het spel: geen honger/dorst-meters, geen food-shop, geen dood door honger/dorst. De dashboard-`i` en Banen-help noemen honger en dorst niet meer.
-- Passieve prostitutie-inkomsten en Territory-crew-bank bijschrijvingen overleven gelijktijdige speler/crew-updates (MariaDB write-conflict retries); één conflict mag de tick of het Territory-leaderboard niet laten crashen.
+- Passieve prostitutie-inkomsten en Territory-crew-bank bijschrijvingen overleven gelijktijdige speler/crew-updates (MariaDB write-conflict retries); Ã©Ã©n conflict mag de tick of het Territory-leaderboard niet laten crashen.
 
 ### Drugs & prestaties (server)
 - Prestaties die op drugproductie (o.a. aantal voltooide batches, hoeveelheid per type) zijn gebaseerd, worden door de server **verwerkt wanneer productie klaar is of wanneer je ophaalt** (incl. VIP auto-ophalen), zodat je ze niet pas krijgt door later een ander scherm (zoals nachtclub) te openen. Zie `docs/module-protocols/drugs.md`.
 - School-prestaties Mastermind/Doctorate tellen **som van alle track-levels** (15 / 30). Extra badges voor Automotive, Narcotics, Finance, Aviation, Medicine, plus chop/tune, warehouse, witwassen, garage/marina, Midnight Race, aandelenkoop en eerste hitlist-contract. Zie `docs/module-protocols/achievements.md`.
 - In de **cel** kun je geen nieuwe batch starten, geen oogst ophalen en geen credit-speedup doen (zelfde jail-gate als materialen kopen). Lopende batches lopen door op de server.
 - **Low-profile** (heat koelen): standaard **4 uur** geen nieuwe batches, extra heat gehalveerd, lopende batches gaan door. Daarna **8 uur** cooldown vanaf het moment dat je het aanzette. De Drugs-hub toont de resterende tijd.
-- **Batch-ladder:** late chems (cocaïne → fentanyl) zijn weer lonend bij verkoop in dure landen na materiaalkosten; goedkope landen blijven dunner zodat export/smokkel telt. Wiet/paddo's bleven grotendeels gelijk. Heat/raid-regels ongewijzigd.
-- Empire-pagina’s delen dezelfde foto-header als Don/Midnight Races/Drugs. De foto-hero **scrollt mee**; als er tabs zijn blijven die bovenaan (alleen tekst, goud). De gouden `i` zit in de hero. Dashboard-home, Help en Instellingen hebben deze kop niet.
+- **Batch-ladder:** late chems (cocaÃ¯ne â†’ fentanyl) zijn weer lonend bij verkoop in dure landen na materiaalkosten; goedkope landen blijven dunner zodat export/smokkel telt. Wiet/paddo's bleven grotendeels gelijk. Heat/raid-regels ongewijzigd.
+- Empire-paginaâ€™s delen dezelfde foto-header als Don/Midnight Races/Drugs. De foto-hero **scrollt mee**; als er tabs zijn blijven die bovenaan (alleen tekst, goud). De gouden `i` zit in de hero. Dashboard-home, Help en Instellingen hebben deze kop niet.
 - **Admin-console:** elke tab gebruikt dezelfde intro (kicker + doelzin) onder de page-header; runtime-tabs (Drugs, Casino, Crew Missions, Landelijke politie) groeperen keys in kaarten met eenheden, defaults en unsaved-status. Police-pressure en Clearing House blijven op hun eigen tabs. **Spelers** toont standaard alleen echte accounts (geen NPCs); vink **Toon NPCs** aan om ze mee te nemen. In spelerdetail staat het **laatste IP-adres** (na login of een game-request).
 
 ---
@@ -153,8 +153,8 @@ Elke **5 minuten** gebeurt er automatisch:
    - Geen reward
    - Wel XP (verminderd), behalve bij vluchten zonder buit
    - **Health damage**: 5-15 HP
-   - Wanted level stijgt met 2-4 punten (rank 1–5: max +1)
-   - Rank 1–5 + straatcrime (`minLevel` 1): meestal `FLED_NO_LOOT` in plaats van cel
+   - Wanted level stijgt met 2-4 punten (rank 1â€“5: max +1)
+   - Rank 1â€“5 + straatcrime (`minLevel` 1): meestal `FLED_NO_LOOT` in plaats van cel
 5. Na elke crime: arrest check door politie/FBI (niet nog eens extra jail na een flee)
 
 ### Crime Cooldowns
@@ -182,11 +182,11 @@ Elke **5 minuten** gebeurt er automatisch:
 
 ### Crime Categories
 
-#### Beginner Crimes (Level 1–4)
-- **Zakkenrollen** (Pickpocket): ~70% kans, €50–€200, **25 XP** — fail is meestal vluchten, geen cel
-- **Winkeldiefstal** (Shoplift): ~65% kans, €100–€300, **35 XP**
+#### Beginner Crimes (Level 1â€“4)
+- **Zakkenrollen** (Pickpocket): ~70% kans, â‚¬50â€“â‚¬200, **25 XP** â€” fail is meestal vluchten, geen cel
+- **Winkeldiefstal** (Shoplift): ~65% kans, â‚¬100â€“â‚¬300, **35 XP**
 - **Vandalisme / Graffiti**: geen spuitbus nodig, ~75% / ~80% kans, **18 / 12 XP**
-- **Fiets stelen**: ~60% kans, €80–€150, **28 XP** (boutensnijder)
+- **Fiets stelen**: ~60% kans, â‚¬80â€“â‚¬150, **28 XP** (boutensnijder)
 - **Beroving** (rank 2+): **40 XP**; **Auto-diefstal** (rank 3+): **65 XP**; **Kleine drugsdeal** (rank 3+): **50 XP**; **Autoonderdelen** (rank 4+): **55 XP**
 
 Vroege XP is expres wat hoger zodat spelers sneller richting rang 5 (meer content) komen. Smokkel-claim en handelswaar-verkoop geven **kleine** XP (niet de hoofdbron).
@@ -200,8 +200,8 @@ Vroege XP is expres wat hoger zodat spelers sneller richting rang 5 (meer conten
 
 ### Country police pressure (live)
 - Gedeelde politiedruk per land (wereld-state), los van persoonlijke wanted/FBI.
-- Beïnvloedt zacht crime-slagingskans en arrestkans; UI op misdaden/travel; disrupt-acties (Phase 3).
-- **Live** via `runtime_config` `COUNTRY_POLICE_PRESSURE_ENABLED=1` (Admin → Landelijke politie). Code-default blijft `0`. Ontwerp: `docs/game-systems/COUNTRY_POLICE_PRESENCE_DESIGN_2026-08-29.md`, protocol: `docs/module-protocols/country-police.md`.
+- BeÃ¯nvloedt zacht crime-slagingskans en arrestkans; UI op misdaden/travel; disrupt-acties (Phase 3).
+- **Live** via `runtime_config` `COUNTRY_POLICE_PRESSURE_ENABLED=1` (Admin â†’ Landelijke politie). Code-default blijft `0`. Ontwerp: `docs/game-systems/COUNTRY_POLICE_PRESENCE_DESIGN_2026-08-29.md`, protocol: `docs/module-protocols/country-police.md`.
 
 ### Arrest Mechanics
 
@@ -226,19 +226,19 @@ Voorbeelden:
 - Wanted level 10: 100 minuten
 ```
 
-De gevangenislijst toont wie nu vastzit (`jailRelease` in de toekomst). Op mobiel kun je bij een laadfout opnieuw proberen of naar beneden trekken om te verversen. De **in-de-cel overlay** deelt dezelfde noir/goud-still als de gevangenis-help (`/images/cooldown_jail.png`) en verschijnt op alle actiepagina’s waar je in de cel niets kunt doen (misdaden, jobs, reizen, voertuig-heist, zwarte markt, drugs, hitlist, smokkel, school, territorium, luchtvaart, races, casino, bank, crypto, beurs, nachtclub, vastgoed, don, munitiefabriek, tuneshop, enz.). Op die overlay kun je **rekensommen** maken (plus, min, deel): elk goed antwoord haalt **10 seconden** van je celstraf af (server-side, met een korte pauze tussen pogingen); na Enter blijft het invoerveld actief zodat je meteen de volgende som typt. **Open blijven:** gevangenislijst, wereldchat, berichten, vrienden, help/instellingen, rechtbank, inventaris, evenementen, vault, premium, ziekenhuis, crew-beheer en het trainingscircuit (sportschool; schietbaan blijft dicht). Arrestatie van een echte speler (en een geslaagde borg-uitkoop of jailbreak door een andere speler) verschijnt als **één** systeemregel in de wereldchat, met hoe lang de straf duurt. **Eigenaar en co-eigenaar** kunnen een crewlid uitkopen met de **crewbank**; dat is zwart geld en kan de betaler zelf de cel in jagen. **Zolang je vastzit is de Zwarte Markt dicht** (kopen, verkopen en advertenties). Het **Trainingscircuit** blijft open voor **kracht, snelheid en uithouding**; de **schietbaan** is dicht tot je vrijkomt.
+De gevangenislijst toont wie nu vastzit (`jailRelease` in de toekomst). Op mobiel kun je bij een laadfout opnieuw proberen of naar beneden trekken om te verversen. De **in-de-cel overlay** deelt dezelfde noir/goud-still als de gevangenis-help (`/images/cooldown_jail.png`) en verschijnt op alle actiepaginaâ€™s waar je in de cel niets kunt doen (misdaden, jobs, reizen, voertuig-heist, zwarte markt, drugs, hitlist, smokkel, school, territorium, luchtvaart, races, casino, bank, crypto, beurs, nachtclub, vastgoed, don, munitiefabriek, tuneshop, enz.). Op die overlay kun je **rekensommen** maken (plus, min, deel): elk goed antwoord haalt **10 seconden** van je celstraf af (server-side, met een korte pauze tussen pogingen); na Enter blijft het invoerveld actief zodat je meteen de volgende som typt. **Open blijven:** gevangenislijst, wereldchat, berichten, vrienden, help/instellingen, rechtbank, inventaris, evenementen, vault, premium, ziekenhuis, crew-beheer en het trainingscircuit (sportschool; schietbaan blijft dicht). Arrestatie van een echte speler (en een geslaagde borg-uitkoop of jailbreak door een andere speler) verschijnt als **Ã©Ã©n** systeemregel in de wereldchat, met hoe lang de straf duurt. **Eigenaar en co-eigenaar** kunnen een crewlid uitkopen met de **crewbank**; dat is zwart geld en kan de betaler zelf de cel in jagen. **Zolang je vastzit is de Zwarte Markt dicht** (kopen, verkopen en advertenties). Het **Trainingscircuit** blijft open voor **kracht, snelheid en uithouding**; de **schietbaan** is dicht tot je vrijkomt.
 
 #### Bail Amount
 ```
-bail = wantedLevel * â‚¬1,000
+bail = wantedLevel * Ã¢â€šÂ¬1,000
 
 Voorbeelden:
-- Wanted level 5: â‚¬5,000 bail
-- Wanted level 10: â‚¬10,000 bail
+- Wanted level 5: Ã¢â€šÂ¬5,000 bail
+- Wanted level 10: Ã¢â€šÂ¬10,000 bail
 ```
 
 ### Politie Bribe
-- **Cost**: â‚¬500-â‚¬2,000 (afhankelijk van wanted level)
+- **Cost**: Ã¢â€šÂ¬500-Ã¢â€šÂ¬2,000 (afhankelijk van wanted level)
 - **Success chance**: 40-60%
 - **Bij succes**: 
   - Wanted level -1 tot -5
@@ -251,8 +251,8 @@ Voorbeelden:
 - Bij succes: directe vrijlating (`jailRelease` leeg + alle actieve `jailed`-rijen uit), hetzelfde als borg/ontsnapping.
 - Alleen de omgekochte veroordeling verdwijnt van het strafblad; oudere veroordelingen blijven staan.
 - Een mislukte omkoping kost het geboden bedrag en laat de straf doorlopen.
-- **Aanvraag strafblad wissen:** op de rechtbank, vrij of in de cel, zolang er een **lokaal** strafblad is. Kosten starten op €100.000 en stijgen met €1.000 per extra veroordeling. Slagingskans hangt af van de lengte van het blad, hoe lang geleden de laatste arrestatie was, reputatie, goede sommen in de cel (+1% per goed antwoord, max +15% sinds de laatste wipe in dit land), en Don-omkoping van wethouder/commissaris/rechter in het huidige land (8–70%). Alleen in het **eerste uur** na een arrestatie geldt de zware −15% fris-straf (UI: “Laatste arrestatie korter dan 1 uur”); daarna zakt die penalty. Mislukt: alleen het geld kwijt. Gelukt: **alleen het blad van dit land** is leeg; het FBI-dossier (andere landen) blijft staan. Je komt niet vrij. Daarna 12 uur wachten. Hoe korter het blad, hoe beter de kans. Amnestie of de late-game crime **Strafblad wissen** wist nog wereldwijd; die misdaad deelt de gewone misdaad-cooldown en wacht **1 uur** tussen pogingen (geen snelle XP-farm).
-- Staff kan in Admin → **Rechtbank** live de petitie- en beroepskansen/-kosten bijsturen (runtime), en als super-admin een **amnesty** starten die ieders zichtbare strafblad wist en elke keer opnieuw een promo in wereldchat (en Discord) plaatst (met afbeelding); nieuwe veroordelingen daarna tellen weer normaal.
+- **Aanvraag strafblad wissen:** op de rechtbank, vrij of in de cel, zolang er een **lokaal** strafblad is. Kosten starten op â‚¬100.000 en stijgen met â‚¬1.000 per extra veroordeling. Slagingskans hangt af van de lengte van het blad, hoe lang geleden de laatste arrestatie was, reputatie, goede sommen in de cel (+1% per goed antwoord, max +15% sinds de laatste wipe in dit land), en Don-omkoping van wethouder/commissaris/rechter in het huidige land (8â€“70%). Alleen in het **eerste uur** na een arrestatie geldt de zware âˆ’15% fris-straf (UI: â€œLaatste arrestatie korter dan 1 uurâ€); daarna zakt die penalty. Mislukt: alleen het geld kwijt. Gelukt: **alleen het blad van dit land** is leeg; het FBI-dossier (andere landen) blijft staan. Je komt niet vrij. Daarna 12 uur wachten. Hoe korter het blad, hoe beter de kans. Amnestie of de late-game crime **Strafblad wissen** wist nog wereldwijd; die misdaad deelt de gewone misdaad-cooldown en wacht **1 uur** tussen pogingen (geen snelle XP-farm).
+- Staff kan in Admin â†’ **Rechtbank** live de petitie- en beroepskansen/-kosten bijsturen (runtime), en als super-admin een **amnesty** starten die ieders zichtbare strafblad wist en elke keer opnieuw een promo in wereldchat (en Discord) plaatst (met afbeelding); nieuwe veroordelingen daarna tellen weer normaal.
 
 ### Jail Escape
 - **Zelf uitbreken**: max **2 pogingen per straf**, **15 minuten** ertussen. Mislukken = +15 minuten. Daarna borg, crew/vrienden of uitzitten.
@@ -277,11 +277,11 @@ Voorbeelden:
 ### Federal Arrest
 - **Arrest chance**: min((fbiHeat / 30) * 100, 95%)
 - **Federal jail time**: fbiHeat * 15 minuten
-- **Federal bail**: fbiHeat * â‚¬5,000
+- **Federal bail**: fbiHeat * Ã¢â€šÂ¬5,000
 
 ### Witness Protection (FBI Deal)
 - **Beschikbaar bij**: FBI Heat > 20
-- **Kosten**: â‚¬10,000-â‚¬50,000
+- **Kosten**: Ã¢â€šÂ¬10,000-Ã¢â€šÂ¬50,000
 - **Effect**: 
   - FBI Heat volledig gereset
   - Wanted level -50%
@@ -295,16 +295,16 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 
 ### Health Mechanics
 - **Maximum HP**: 100
-- **Health damage**: 5–15 HP per crime (vest + lijfwachten minderen tot ~55%); hits kosten ook HP
-- **Wounded penalty** (zit al in het % op de misdaadkaart): ≥70 geen straf; <70 −4%; <40 −8%; <20 −12%
+- **Health damage**: 5â€“15 HP per crime (vest + lijfwachten minderen tot ~55%); hits kosten ook HP
+- **Wounded penalty** (zit al in het % op de misdaadkaart): â‰¥70 geen straf; <70 âˆ’4%; <40 âˆ’8%; <20 âˆ’12%
 - **Passive healing**: +5 HP per **gametick** (niet per 5 minuten), alleen als HP > 0
-- **Death**: bij 0 HP → Intensive Care (ICU)
+- **Death**: bij 0 HP â†’ Intensive Care (ICU)
 
 ### Hospital Behandeling
 
 #### Standaard / Intensief
-- **Standaard**: €10.000, tot +30 HP
-- **Intensief**: €20.000, tot +75 HP
+- **Standaard**: â‚¬10.000, tot +30 HP
+- **Intensief**: â‚¬20.000, tot +75 HP
 - **Cooldown**: 60 minuten (VIP 10% korter), gedeeld
 - **Doel**: de wounded-straf eraf krijgen zodat je weer kunt grinden
 
@@ -321,11 +321,11 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 - **Recovery**: daarna kun je EHBO of een betaalde behandeling gebruiken
 
 ### Health Management Tips
-1. Genees vóór een misdaadreeks als je onder 70 HP zit
-2. EHBO alleen als laatste stop vóór de IC
+1. Genees vÃ³Ã³r een misdaadreeks als je onder 70 HP zit
+2. EHBO alleen als laatste stop vÃ³Ã³r de IC
 3. Vest + lijfwachten minderen HP-verlies, dus minder ziekenhuisbezoek
 4. Passief wachten is gratis maar je houdt de slagingskans-straf
-5. ICU is 3 uur lockout — vermijd 0 HP
+5. ICU is 3 uur lockout â€” vermijd 0 HP
 
 ---
 
@@ -335,41 +335,41 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 - Je kunt alle ondersteunde Territory-landen bekijken via de interactieve kaart, niet alleen Nederland.
 - Als je Territorium opent, start de kaart op **het land waar je nu bent** (via Reizen). Andere landen blijven zichtbaar via de landkiezer; aanvallen kan alleen in je huidige land.
 - Elke regio toont ownership, stability, control en contestinformatie zodra je de regio opent.
-- Nederlandse Territory-regio's hebben nu ook strategische rollen zoals haven, hoofdstad, industrie, grensregio of logistiek knooppunt. Die rol beÃ¯nvloedt welke contest-actions in dat gebied extra punten opleveren.
+- Nederlandse Territory-regio's hebben nu ook strategische rollen zoals haven, hoofdstad, industrie, grensregio of logistiek knooppunt. Die rol beÃƒÂ¯nvloedt welke contest-actions in dat gebied extra punten opleveren.
 - Als jouw crew al aangrenzende regio's bezit, krijg je in contests extra buursteun. Daardoor zijn aangesloten gebieden makkelijker te verdedigen en waardevoller als samenhangend blok dan als losse eilanden.
 - De regio-modal toont nu niet alleen payout en status, maar ook de strategische rol, het aantal aangrenzende eigen regio's en welke actiebonussen daar actief zijn.
-- `Actiebonussen` in de Territory-modal gelden alleen voor contestpunten per actie (bijv. raid/patrol/defense) en niet voor de passieve â‚¬-uitbetaling van het gebied.
+- `Actiebonussen` in de Territory-modal gelden alleen voor contestpunten per actie (bijv. raid/patrol/defense) en niet voor de passieve Ã¢â€šÂ¬-uitbetaling van het gebied.
 - De Territory-modal toont per actie ook de formule `basis + bonus = totaal contestpunten`, zodat de impact van actiebonussen direct zichtbaar is zonder verwarring met cash payout.
 - Naast regio- en war-pressure bonussen kunnen Territory-actiebonussen nu ook komen uit crew progression: HQ global level, crew mission level en bijgebouwen. Wapen- en munitiebonus schalen met **voorraad in het frontlijn-depot of HQ**, begrensd door het gebouwniveau. Hoarden boven de cap geeft geen extra punten.
 - Contest-limieten voor tegelijk actieve aanvallen en max. gebieden per crew kunnen nu beperkt opschalen met HQ global level (server-authoritative runtime tuning).
 - Geavanceerde Territory-acties kunnen per actietype een minimaal HQ-level vereisen; in de regio-modal zie je dit direct als `vereist HQ level X` voordat je klikt.
 - Territory heeft standaard geen harde dagcap meer op acties (`TERRITORY_ACTION_DAILY_CAP = 0`); pacing blijft onder controle via cooldown + anti-farm.
 - Territory-passive income kan nooit meer in de crew-bank storten dan de huidige cashopslag-capaciteit. Is de crew-bank vol, dan stopt Territory met bijschrijven tot er weer ruimte is.
-- Veroverde gebieden blijven van de crew, maar zijn geen melkkoe: per crew staat telkens **één gebied op de rol**. Na een grace (standaard 24 uur na capture of laatste patrouille) vraagt dat gebied een aanwezigheidspatrouille. Iemand moet **in dat land** zijn en Patrouille of Bevoorrading tikken (zelfde travel-gate als contests, geen volle contest).
+- Veroverde gebieden blijven van de crew, maar zijn geen melkkoe: per crew staat telkens **Ã©Ã©n gebied op de rol**. Na een grace (standaard 24 uur na capture of laatste patrouille) vraagt dat gebied een aanwezigheidspatrouille. Iemand moet **in dat land** zijn en Patrouille of Bevoorrading tikken (zelfde travel-gate als contests, geen volle contest).
 - **Vrijwillig opgeven:** leader/co-leider kan een eigen gebied of **heel het huidige land** vrijgeven (travel-gate, geen actieve contest, typ `ABANDON`). Kosten uit de crew-bank; depot verbrandt 100%; project/garnizoen weg; telt als regionsLost. Cooldown 48u per regio-opgave, 7 dagen na heel land. Zo kun je slots vrijmaken of in hetzelfde land een ander stuk claimen als je aan de cap zit. Dezelfde uitleg staat bij de gouden **i** op Territorium en in de Almanak-handleiding (`helpTopicTerritoryHow` / Tips).
-- Wie de timer (standaard 12 uur) laat liggen, verdient op **díé regio** minder: eerst 50%, daarna 0%, met onrust zodat een rivaal makkelijker kan innemen. Ownership verdwijnt niet. Extra misses blijven op 0% tot iemand patrouilleert; herstel gaat stapsgewijs, niet in één klap terug naar 100%. Na een miss komt een **ander** stale gebied op de rol (niet eindeloos hetzelfde verre land), bij voorkeur in een land waar een crewlid nu is.
+- Wie de timer (standaard 12 uur) laat liggen, verdient op **dÃ­Ã© regio** minder: eerst 50%, daarna 0%, met onrust zodat een rivaal makkelijker kan innemen. Ownership verdwijnt niet. Extra misses blijven op 0% tot iemand patrouilleert; herstel gaat stapsgewijs, niet in Ã©Ã©n klap terug naar 100%. Na een miss komt een **ander** stale gebied op de rol (niet eindeloos hetzelfde verre land), bij voorkeur in een land waar een crewlid nu is.
 - Grote crews moeten roteren welke regio ze deze cyclus onderhouden. Dashboard, Territory-kaart (badge P/Onrust) en push/inbox (`territory_hold_due` / `territory_hold_missed`) tonen welk gebied aan de beurt is.
 - Na een gewonnen **Territory War** of **Total War** kunnen doelregio's tijdelijk **war pressure** krijgen. In de Territory-modal zie je dan extra oorlogsdruk, effectieve stabiliteit en hoe lang die tijdelijke nasleep nog actief blijft.
 - Een crew die een gebied houdt kan uit de crew-bank een tijdelijk **garnizoen / luchtafweer** kopen (tanks en afweer voor een paar uur). Het gebied blijft aanvalbaar: verdedigingsacties scoren extra punten en aanvallers hebben een grotere puntenvoorsprong nodig om het te veroveren. Er kunnen maar een paar garnizoenen tegelijk actief zijn; dit is geen nachtslot.
-- Als een crew in één land een blok gebieden houdt, is een **binnengebied** dat volledig omsloten is door eigen buren niet aanvalbaar. Aanvallers moeten eerst een gebied aan de buitenring veroveren; kust- of frontregio's met een open buur blijven wel te pakken.
+- Als een crew in Ã©Ã©n land een blok gebieden houdt, is een **binnengebied** dat volledig omsloten is door eigen buren niet aanvalbaar. Aanvallers moeten eerst een gebied aan de buitenring veroveren; kust- of frontregio's met een open buur blijven wel te pakken.
 - **Arsenaal:** crew-wapens en kogels in de **HQ-stelling** zijn de reserve. Officers sturen die in vredestijd naar een regio met een **wapendepot**. Tijdens een contest vult **bevoorrading** het betwiste depot (of een aangrenzend eigen depot). Persoonlijke inventaris telt niet mee.
 - Elke raid, verdediging of patrouille **verbruikt kogels** van het passende type en **slijt wapens**. Zonder matchend wapen of munitie mag de actie nog, maar die bonus valt weg. Droogschieten slijt harder. Geen depot = lange aanvoer vanuit HQ met boete en extra munitietaks.
 - Verlies je de regio, dan gaat het depot **niet** terug naar HQ: de winnaar pakt een deel, de rest verbrandt. Sabotage dumpt extra voorraad. Garnizoen op een lege stelling is duur theater; actief garnizoen lekt langzaam ammo. Crew Wars-raids stelen nog steeds de HQ-stelling, waardoor Territory de week erna zwakker is.
-- Timers in de regio-modal (jouw cooldown, wanneer je weer mag aanvallen, contest-fasen, garnizoen) lopen live af. Na **Bevoorraad project** wordt die knop meteen grijs en toont de resterende 15 minuten (of de server-cooldown) tot je weer mag bevoorraden — ook als de kaart nog even herlaadt; als de tijd op is, wordt de knop vanzelf weer actief. Hetzelfde geldt op de kaart zelf: een chip toont de volgende ontgrendeling en als de wachttijd of prep-fase voorbij is, komen de aanvalsknoppen terug zonder de pagina te herladen. Een push/inbox dat de contest actief is, opent Territorium.
+- Timers in de regio-modal (jouw cooldown, wanneer je weer mag aanvallen, contest-fasen, garnizoen) lopen live af. Na **Bevoorraad project** wordt die knop meteen grijs en toont de resterende 15 minuten (of de server-cooldown) tot je weer mag bevoorraden â€” ook als de kaart nog even herlaadt; als de tijd op is, wordt de knop vanzelf weer actief. Hetzelfde geldt op de kaart zelf: een chip toont de volgende ontgrendeling en als de wachttijd of prep-fase voorbij is, komen de aanvalsknoppen terug zonder de pagina te herladen. Een push/inbox dat de contest actief is, opent Territorium.
 - **Belangrijke regel**: bekijken mag in elk land, maar aanvallen, verdedigen en andere Territory-contestacties werken alleen in het land waar je speler zich op dat moment echt bevindt.
-- Voorbeeld: zit je in Nederland en open je de kaart van BelgiÃ«, dan kun je Belgische regio's wel inspecteren maar niet aanvallen of aan een Belgische contest meedoen totdat je eerst naar BelgiÃ« reist.
+- Voorbeeld: zit je in Nederland en open je de kaart van BelgiÃƒÂ«, dan kun je Belgische regio's wel inspecteren maar niet aanvallen of aan een Belgische contest meedoen totdat je eerst naar BelgiÃƒÂ« reist.
 - Territory blijft crew-gebonden: zonder crew kun je geen neutrale of vijandige regio's aanvallen.
-- Het aantal gebieden is wereldwijd (alle landen bij elkaar), niet per land. Slots = het laagste van HQ, leden en een harde cap van 10: elke 3 HQ-niveaus +1, elke 5 extra leden +1. Alleen HQ of alleen leden is niet genoeg. Zit je aan de cap, dan kun je geen nieuwe contest starten; verdedigen blijft mogelijk en gebieden verdwijnen niet als iemand leavet. Gelijktijdige contests blijven alleen HQ-gedreven. Vanaf 8 slots mag je één extra garnizoen plaatsen. Op Territorium zie je bij de chips hoeveel HQ en leden nu geven en wat je nodig hebt voor het volgende slot; dezelfde regel staat bij de HQ-upgrade.
+- Het aantal gebieden is wereldwijd (alle landen bij elkaar), niet per land. Slots = het laagste van HQ, leden en een harde cap van 10: elke 3 HQ-niveaus +1, elke 5 extra leden +1. Alleen HQ of alleen leden is niet genoeg. Zit je aan de cap, dan kun je geen nieuwe contest starten; verdedigen blijft mogelijk en gebieden verdwijnen niet als iemand leavet. Gelijktijdige contests blijven alleen HQ-gedreven. Vanaf 8 slots mag je Ã©Ã©n extra garnizoen plaatsen. Op Territorium zie je bij de chips hoeveel HQ en leden nu geven en wat je nodig hebt voor het volgende slot; dezelfde regel staat bij de HQ-upgrade.
 - Als de voorbereiding van een Territory-contest klaar is, krijgen aanvallende en verdedigende crewleden een push- en inboxbericht dat de strijd live is en acties ontgrendeld zijn.
 - Op mobiel en tablet ondersteunt de Territory-kaart pinch-zoom en pannen zodat kleine regio's bruikbaar blijven. Op computer zoomt de kaart niet mee met het muiswiel; daar blijft de kaart vast terwijl je de pagina scrollt.
 - Per crew zie je Territory-statistieken (gewonnen, verdedigd, verloren, contests, totale hold-tijd) zowel all-time als voor het actieve seizoen: op de leaderboard via een all-time/seizoen-toggle, en als crew-statsblok op de kaarttab.
-- Het tabblad **Seizoen** toont de maandronde als kaart (naam, live-status, countdown) plus recente veroveringen, tijdelijke regio-events en hete contests — geen kale ISO-tekst.
+- Het tabblad **Seizoen** toont de maandronde als kaart (naam, live-status, countdown) plus recente veroveringen, tijdelijke regio-events en hete contests â€” geen kale ISO-tekst.
 
 ---
 
 ## Jobs Systeem
 
-- Op web-Banen staat geen extra paginatitel “Banen” in de contentkaart; het zijmenu toont de sectie al. De statusbalk erboven blijft. Kaarten, wiki-catalogus en de Banen-hub delen dezelfde noir/goud-stills (`/images/jobs/?v=…`, hub `wiki/hubs/jobs.png`, achtergrond `jobs_background.png`).
+- Op web-Banen staat geen extra paginatitel â€œBanenâ€ in de contentkaart; het zijmenu toont de sectie al. De statusbalk erboven blijft. Kaarten, wiki-catalogus en de Banen-hub delen dezelfde noir/goud-stills (`/images/jobs/?v=â€¦`, hub `wiki/hubs/jobs.png`, achtergrond `jobs_background.png`).
 
 ### Jobs Balans (Sessie)
 - Er geldt geen harde dagcap op jobs.
@@ -377,11 +377,11 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 - Hogere payout-jobs houden langere cooldowns dan lagere payout-jobs.
 
 ### Job Types
-- **Warehouse Worker**: â‚¬100-â‚¬300/shift, XP: 5
-- **Delivery Driver**: â‚¬200-â‚¬500/shift, XP: 10
-- **Security Guard**: â‚¬300-â‚¬700/shift, XP: 15
-- **Accountant**: â‚¬500-â‚¬1,200/shift, XP: 25
-- **Manager**: â‚¬800-â‚¬2,000/shift, XP: 40
+- **Warehouse Worker**: Ã¢â€šÂ¬100-Ã¢â€šÂ¬300/shift, XP: 5
+- **Delivery Driver**: Ã¢â€šÂ¬200-Ã¢â€šÂ¬500/shift, XP: 10
+- **Security Guard**: Ã¢â€šÂ¬300-Ã¢â€šÂ¬700/shift, XP: 15
+- **Accountant**: Ã¢â€šÂ¬500-Ã¢â€šÂ¬1,200/shift, XP: 25
+- **Manager**: Ã¢â€šÂ¬800-Ã¢â€šÂ¬2,000/shift, XP: 40
 
 ### Job Requirements
 - **Health**: Minimum 10 HP
@@ -400,16 +400,16 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 
 ## Don
 
-- Eén Empire-hub (rank 7+): rackets, woeker, omgekochte ambten en stadscontracten in het land waar je bent.
-- Don-UI is noir/goud met foto-kaarten in een raster (tot 3–4 per rij op desktop; 2 op tablet, 1 op smal). De gouden `i` opent een uitgebreide handleiding met foto’s per onderdeel.
+- EÃ©n Empire-hub (rank 7+): rackets, woeker, omgekochte ambten en stadscontracten in het land waar je bent.
+- Don-UI is noir/goud met foto-kaarten in een raster (tot 3â€“4 per rij op desktop; 2 op tablet, 1 op smal). De gouden `i` opent een uitgebreide handleiding met fotoâ€™s per onderdeel.
 - Claim van een zaak is altijd persoonlijk. Innen gaat naar cash, tenzij je `leader` / `co_leader` / `capo` (in het capo-land) tribute naar de crew-bank stuurt.
 - Straatmisdaad `protection_racket` blijft een eenmalige shake; de hub is het persistente rijk (geen dubbel inkomen).
 - Handmatig innen met cooldown; de Don-hub toont live resterende tijd en de Innen-knop blijft uit tot de timer klaar is. Te lang niet innen (~72u) maakt de zaak weer vrij. Squeeze: hogere tribute, extra wanted, kans dat de zaak afhaakt. Rivalen kunnen een korte contest starten.
 - Woeker: jij bent de shark (NPC + P2P escrow). NPC-leningen lopen een paar dagen; de meeste NPC's betalen vanzelf terug. **Innen** is alleen bij default (deel van de schuld + wanted), geen full wipe. Caps tegen alt-farm.
 - Per land drie NPC-ambten (rechter, commissaris, wethouder): cash-overbieding, tijdelijk, verloopt. Rechter geeft een begrensde hoger-beroepbonus (stapel niet onbeperkt met law-school). Commissaris verlaagt wanted bij mislukte crimes licht. Wethouder ontgrendelt/versterkt grote contracten. Per-zaak court-omkoping blijft los.
 - Stadscontracten: bod (cash of crew-bank), looptijd, legale payout. Off-books bonus alleen met rackets in dat land; greedy = extra heat. Grotere klussen kunnen engineering-school + wethouder vereisen.
-- Crew-rollen `consigliere` (overzicht, geen bank-opname) en `capo` (tribute naar crew-bank in één land). Tribute blijft onder jobs/drugs/nightclub.
-- Elke Don-actie toont een duidelijke melding rechtsboven. Contest, overname, vervallen zaak, lening, overbieding, contractpayout en “klaar om te innen” komen ook in je inbox, met push als je niet op het scherm zit. Als meerdere zaken binnen tien minuten klaar zijn om te innen, wacht het systeem tot die tijd en stuurt daarna **één** inboxregel plus **één** push met alle klaarstaande zaken. Innen zelf geeft alleen de melding op de Don-hub, geen extra inboxbericht.
+- Crew-rollen `consigliere` (overzicht, geen bank-opname) en `capo` (tribute naar crew-bank in Ã©Ã©n land). Tribute blijft onder jobs/drugs/nightclub.
+- Elke Don-actie toont een duidelijke melding rechtsboven. Contest, overname, vervallen zaak, lening, overbieding, contractpayout en â€œklaar om te innenâ€ komen ook in je inbox, met push als je niet op het scherm zit. Als meerdere zaken binnen tien minuten klaar zijn om te innen, wacht het systeem tot die tijd en stuurt daarna **Ã©Ã©n** inboxregel plus **Ã©Ã©n** push met alle klaarstaande zaken. Innen zelf geeft alleen de melding op de Don-hub, geen extra inboxbericht.
 
 ---
 
@@ -417,33 +417,33 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 
 - Eigendommen-kaarten (te koop en in bezit) gebruiken dezelfde catalogusfoto per type. Het oude landgoed-composiet zit niet meer in dit scherm.
 - Cosmetisch **gouden hek** is een credit-sink zonder combat-power (`estate_gold_fence`).
-- Player-UI (Eigendommen): tabs zijn alleen tekst (**Beschikbaar** / **Mijn eigendommen**), hetzelfde gouden tabblad als Drugs, zonder iconen. Opent op **Mijn eigendommen**. **Mijn eigendommen** toont eerst het huidige land; chips filteren Alles of per land. Elke tegel in bezit toont het land van dat pand. Lege staat heeft een knop naar Beschikbaar. Op tablet/desktop staan kaarten naast elkaar (2–3 kolommen). Elke kaart heeft een info-knop met uitleg over dat gebouw. Kopen en upgraden vragen bevestiging met geformatteerd bedrag; kopen/upgraden is uit als rang of cash tekort is. Upgrade toont wat je krijgt (plekken/wonen/inkomen). Ontwikkelen alleen bij panden met inkomen en gaat van je bank (niet cash op zak); knop toont Ontwikkel (bank). Verkopen = 70% van aankoop, opslag moet leeg. Casino is uniek per land; nachtclub toont vrije landslots. Huis/appartement slaat hetzelfde op als een magazijn (ook gereedschap). Magazijn is één per speler per land, heeft meer plekken, en wordt bij aanhouding in dat land doorzocht (~40%). Auto-showroom, motorzaak en boothaven zijn wereldwijd uniek (één per account), gebonden aan het aankoop-land: collectie, geen extra garage. Vitrine-upgrades 8→20→40→80→alle types; plaatsen vereist zelfde land + 100% conditie + één per model. Op Vitrine/Plaatsen kies je Weergave (lijst / 4 / 7), opgeslagen op dit apparaat. In de **i**-help en Almanak (Eigendommen) staat het ook uitgelegd. Op Vitrine kun je per voertuig **Cat papieren** kopen (cash): politie/FBI zien het dan als legaal zolang het in de vitrine blijft; vergeet je het, blijft ~40% inbeslagname-kans bij aanhouding in dat land; Aanhouding elders raakt die vitrine niet. Getoonde voertuigen verdwijnen meteen uit garage/haven-opslag, zijn vergrendeld (geen misdaad/smokkel/verkoop) en tellen niet in garage/haven-capaciteit. Aanhouding in dat land doorzoekt de vitrine (~40% per voertuig). Collectiebeheer opent in de content (geen fullscreen) met een grid van grote vierkante voertuigfoto’s (1–4 kolommen), plus vitrineplekken, catalogusvoortgang, totale collectiewaarde en zeldzaamheid (gewoon → epic → legendary). Opslag, nachtclubbeheer of collectiebeheer staat als eerste actie. Beschikbaar heeft type-chips. Fouten blijven per tab.
-- Rugzak-upgrades (Zwarte Markt): klein +5, middel +10, groot +20, militair +35, VIP tactisch +50 (VIP, rang 25), **reiskoffer +70** (VIP, rang 30, 75 vakken totaal). Eén tas tegelijk; koffer is de huidige top. Hogere treden blijven in de shop zichtbaar (Kopen op slot tot rang/VIP). VIP-tassen checken of je VIP **nu** actief is (`isVip` + vervaldatum).
-- Inventory-menu = paper-doll + rugzak. Op de uitrusting kies je naast wapens en vest ook de **misdaad-auto** (geen Selecteer-knop meer op autokaarten in de garage). Stallen kan alleen via **Open opslag** op dat huis/appartement/loods in het huidige land. Gekochte of opgehaalde materialen, drugs en handelswaren gaan in de rugzak. Oogst gaat altijd naar de rugzak, niet automatisch naar de nachtclub. Zet drugs in de club via **Alles uit rugzak** of MAX, anders blijft restvoorraad plekken innemen. Spullen in andere landen blijven daar tot je reist. Een nieuw **huis** heeft **10** opslagvakjes (upgrade vergroot dat); een appartement 5; een magazijn 100. Het raster toont altijd die capaciteit. Stapels worden per vak gesplitst in **huis én rugzak** (drugs **100g/vak**, materiaal 5/vak, munitie 50/vak, handelswaren **per goed** via `unitsPerTile` — bijv. diamanten/goud **10**/vak, koffie/tabak **5**/vak, bont/drank **3**/vak, kunst/wapens-contraband **2**/vak; Almanak toont “Per vakje”); 19 parfum is 10 + 9, 145g drugs is 100 + 45. Bij verplaatsen gaat extra van **dezelfde kwaliteit** eerst in dat restvak (45+55=100); een andere kwaliteit blijft op eigen vakjes. Elk drugvak toont de kwaliteitsletter. Huis is veiliger bij aanhouding; een magazijn in het arrestatieland wordt doorzocht (~40%), ook voor materialen/drugs/handelswaren. Meegenomen rugzakwaar kan bij reizen, vliegen en aanhouding in beslag. Rugzakplekken tellen alleen wat je **draagt** (inclusief munitie); oude handelswaar die nog in dit land ligt blokkeert nieuwe aankopen niet. Past niet alles in het huis, dan blijft de rest in de rugzak en zegt het spel hoeveel dat is.
+- Player-UI (Eigendommen): tabs zijn alleen tekst (**Beschikbaar** / **Mijn eigendommen**), hetzelfde gouden tabblad als Drugs, zonder iconen. Opent op **Mijn eigendommen**. **Mijn eigendommen** toont eerst het huidige land; chips filteren Alles of per land. Elke tegel in bezit toont het land van dat pand. Lege staat heeft een knop naar Beschikbaar. Op tablet/desktop staan kaarten naast elkaar (2â€“3 kolommen). Elke kaart heeft een info-knop met uitleg over dat gebouw. Kopen en upgraden vragen bevestiging met geformatteerd bedrag; kopen/upgraden is uit als rang of cash tekort is. Upgrade toont wat je krijgt (plekken/wonen/inkomen). Ontwikkelen alleen bij panden met inkomen en gaat van je bank (niet cash op zak); knop toont Ontwikkel (bank). Verkopen = 70% van aankoop, opslag moet leeg. Casino is uniek per land; nachtclub toont vrije landslots. Huis/appartement slaat hetzelfde op als een magazijn (ook gereedschap). Magazijn is Ã©Ã©n per speler per land, heeft meer plekken, en wordt bij aanhouding in dat land doorzocht (~40%). Auto-showroom, motorzaak en boothaven zijn wereldwijd uniek (Ã©Ã©n per account), gebonden aan het aankoop-land: collectie, geen extra garage. Vitrine-upgrades 8â†’20â†’40â†’80â†’alle types; plaatsen vereist zelfde land + 100% conditie + Ã©Ã©n per model. Op Vitrine/Plaatsen kies je Weergave (lijst / 4 / 7), opgeslagen op dit apparaat. In de **i**-help en Almanak (Eigendommen) staat het ook uitgelegd. Op Vitrine kun je per voertuig **Cat papieren** kopen (cash, **15 min cooldown** tussen cats): politie/FBI zien het dan als legaal zolang het in de vitrine blijft; vergeet je het, blijft ~40% inbeslagname-kans bij aanhouding in dat land; Aanhouding elders raakt die vitrine niet. Getoonde voertuigen verdwijnen meteen uit garage/haven-opslag, zijn vergrendeld (geen misdaad/smokkel/verkoop) en tellen niet in garage/haven-capaciteit. Aanhouding in dat land doorzoekt de vitrine (~40% per voertuig). Collectiebeheer opent in de content (geen fullscreen) met een grid van grote vierkante voertuigfotoâ€™s (1â€“4 kolommen), plus vitrineplekken, catalogusvoortgang, totale collectiewaarde en zeldzaamheid (gewoon â†’ epic â†’ legendary). Opslag, nachtclubbeheer of collectiebeheer staat als eerste actie. Beschikbaar heeft type-chips. Fouten blijven per tab.
+- Rugzak-upgrades (Zwarte Markt): klein +5, middel +10, groot +20, militair +35, VIP tactisch +50 (VIP, rang 25), **reiskoffer +70** (VIP, rang 30, 75 vakken totaal). EÃ©n tas tegelijk; koffer is de huidige top. Hogere treden blijven in de shop zichtbaar (Kopen op slot tot rang/VIP). VIP-tassen checken of je VIP **nu** actief is (`isVip` + vervaldatum).
+- Inventory-menu = paper-doll + rugzak. Op de uitrusting kies je naast wapens en vest ook de **misdaad-auto** (geen Selecteer-knop meer op autokaarten in de garage). Stallen kan alleen via **Open opslag** op dat huis/appartement/loods in het huidige land. Gekochte of opgehaalde materialen, drugs en handelswaren gaan in de rugzak. Oogst gaat altijd naar de rugzak, niet automatisch naar de nachtclub. Zet drugs in de club via **Alles uit rugzak** of MAX, anders blijft restvoorraad plekken innemen. Spullen in andere landen blijven daar tot je reist. Een nieuw **huis** heeft **10** opslagvakjes (upgrade vergroot dat); een appartement 5; een magazijn 100. Het raster toont altijd die capaciteit. Stapels worden per vak gesplitst in **huis Ã©n rugzak** (drugs **100g/vak**, materiaal 5/vak, munitie 50/vak, handelswaren **per goed** via `unitsPerTile` â€” bijv. diamanten/goud **10**/vak, koffie/tabak **5**/vak, bont/drank **3**/vak, kunst/wapens-contraband **2**/vak; Almanak toont â€œPer vakjeâ€); 19 parfum is 10 + 9, 145g drugs is 100 + 45. Bij verplaatsen gaat extra van **dezelfde kwaliteit** eerst in dat restvak (45+55=100); een andere kwaliteit blijft op eigen vakjes. Elk drugvak toont de kwaliteitsletter. Huis is veiliger bij aanhouding; een magazijn in het arrestatieland wordt doorzocht (~40%), ook voor materialen/drugs/handelswaren. Meegenomen rugzakwaar kan bij reizen, vliegen en aanhouding in beslag. Rugzakplekken tellen alleen wat je **draagt** (inclusief munitie); oude handelswaar die nog in dit land ligt blokkeert nieuwe aankopen niet. Past niet alles in het huis, dan blijft de rest in de rugzak en zegt het spel hoeveel dat is.
 
 ### Property Types
 
 #### Low-End Properties
-- **Garage**: â‚¬50,000 - Income: â‚¬100/tick
-- **Small Apartment**: â‚¬75,000 - Income: â‚¬150/tick
-- **Store**: â‚¬100,000 - Income: â‚¬200/tick
+- **Garage**: Ã¢â€šÂ¬50,000 - Income: Ã¢â€šÂ¬100/tick
+- **Small Apartment**: Ã¢â€šÂ¬75,000 - Income: Ã¢â€šÂ¬150/tick
+- **Store**: Ã¢â€šÂ¬100,000 - Income: Ã¢â€šÂ¬200/tick
 
 #### Mid-Range Properties
-- **Large Apartment**: â‚¬250,000 - Income: â‚¬500/tick
-- **Restaurant**: â‚¬400,000 - Income: â‚¬800/tick
-- **Warehouse**: â‚¬600,000 - Income: â‚¬1,200/tick
+- **Large Apartment**: Ã¢â€šÂ¬250,000 - Income: Ã¢â€šÂ¬500/tick
+- **Restaurant**: Ã¢â€šÂ¬400,000 - Income: Ã¢â€šÂ¬800/tick
+- **Warehouse**: Ã¢â€šÂ¬600,000 - Income: Ã¢â€šÂ¬1,200/tick
 
 #### High-End Properties
-- **Office Building**: â‚¬1,000,000 - Income: â‚¬2,500/tick
-- **Nightclub**: â‚¬1,500,000 - Income: â‚¬4,000/tick
-- **Casino**: â‚¬3,000,000 - Income: â‚¬8,000/tick
-- **Mansion**: â‚¬5,000,000 - Income: â‚¬15,000/tick
+- **Office Building**: Ã¢â€šÂ¬1,000,000 - Income: Ã¢â€šÂ¬2,500/tick
+- **Nightclub**: Ã¢â€šÂ¬1,500,000 - Income: Ã¢â€šÂ¬4,000/tick
+- **Casino**: Ã¢â€šÂ¬3,000,000 - Income: Ã¢â€šÂ¬8,000/tick
+- **Mansion**: Ã¢â€šÂ¬5,000,000 - Income: Ã¢â€šÂ¬15,000/tick
 
 ### Property Mechanics
-- **Income**: Passief inkomen per catalogus-`incomeInterval` (minuten), niet een vaste 5‑minuten tick voor alle panden.
-- **Ownership**: Magazijn max. één per speler per land; casino uniek per land; showrooms uniek per speler.
+- **Income**: Passief inkomen per catalogus-`incomeInterval` (minuten), niet een vaste 5â€‘minuten tick voor alle panden.
+- **Ownership**: Magazijn max. Ã©Ã©n per speler per land; casino uniek per land; showrooms uniek per speler.
 - **Investment**: Passief inkomen + opslag/utility; bank-**Ontwikkel** boost apart.
-- **ROI**: Magazijn L1 ~**3 weken** 24/7 op aankoopprijs (`baseIncome` 450 / 90m); winkel-catalogus vergelijkbaar. Casino L1 ~€4k/uur (was €8k); nachtclub mild lager. RLD-inkomen schaalt soft af boven ~40 bezette kamers. Showrooms blijven duurdere empire-pilaren.
+- **ROI**: Magazijn L1 ~**3 weken** 24/7 op aankoopprijs (`baseIncome` 450 / 90m); winkel-catalogus vergelijkbaar. Casino L1 ~â‚¬4k/uur (was â‚¬8k); nachtclub mild lager. RLD-inkomen schaalt soft af boven ~40 bezette kamers. Showrooms blijven duurdere empire-pilaren.
 
 ### Property Liquidation
 - **Sell price**: 70% van aankoopprijs, contant, via `POST /properties/:id/sell`
@@ -457,35 +457,35 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 ### Crew System
 
 #### Crew Creation
-- **Cost**: â‚¬10,000
+- **Cost**: Ã¢â€šÂ¬10,000
 - **Max members**: schaalt met Crew HQ (tot 150)
-- **Crew-rollen** (leider zet ze op het tabblad Leden): **leider** nodigt uit, kickt, start heists, declareert wars, wijzigt rollen, neemt op van de crewbank, verkoopt crew-voertuigen, start missies en deals, en kan een crewlid uit de kluis vrijkopen. **Co-leider** deelt officierstools behalve opnemen en rollen wijzigen (wél uitnodigen/kicken/heists, werving, join-verzoeken). **Consigliere** ziet het Don-racketoverzicht van de crew, zonder bank-opname. **Capo** is gekoppeld aan één land; alleen daar gaat Don-tribute naar de crewbank. **Lid** mag storten, chatten, heisten en gedeelde opslag gebruiken, maar geen crew-voertuigen verkopen en niet uit de kluis vrijkopen. Op Leden kun je optioneel **inkomsten delen** (runtime %, default 5): drugs-, munitie-, voertuigverkoop/-sloop en prostitutie-cash naar de crewbank met bijdrageteller. Help/Almanac Crew legt dit uit.
+- **Crew-rollen** (leider zet ze op het tabblad Leden): **leider** nodigt uit, kickt, start heists, declareert wars, wijzigt rollen, neemt op van de crewbank, verkoopt crew-voertuigen, start missies en deals, en kan een crewlid uit de kluis vrijkopen. **Co-leider** deelt officierstools behalve opnemen en rollen wijzigen (wÃ©l uitnodigen/kicken/heists, werving, join-verzoeken). **Consigliere** ziet het Don-racketoverzicht van de crew, zonder bank-opname. **Capo** is gekoppeld aan Ã©Ã©n land; alleen daar gaat Don-tribute naar de crewbank. **Lid** mag storten, chatten, heisten en gedeelde opslag gebruiken, maar geen crew-voertuigen verkopen en niet uit de kluis vrijkopen. Op Leden kun je optioneel **inkomsten delen** (runtime %, default 5): drugs-, munitie-, voertuigverkoop/-sloop en prostitutie-cash naar de crewbank met bijdrageteller. Help/Almanac Crew legt dit uit.
 - **Optionele inkomensbijdrage:** leden kunnen een percentage van drugsverkoop en prostitutie-innen naar de crewbank sturen; de bijdrage staat op de ledenlijst.
 - **Leader permissions**: 
   - Kick members, open/sluit werving, auto-accept aan/uit
   - Start heists
   - Disband crew
-- **Joinen**: open + auto-accept is één klik (groene badge **Open — meteen lid** + **Join nu**); open zonder auto-accept blijft een verzoek (oranje **Aanmelding vereist** + **Aanmelden**). Gesloten crews staan niet in de wervingslijst. Er is geen invite-link. Als er nog geen open auto-accept crew is, maakt de server **The Rookies** (leader `StreetBureau`). Het lege Overzicht zet **Bekijk open crews** eerst; zelf aanmaken blijft de tweede knop. De Crews-lijst heeft geen extra zwevende Open-crews-knop.
+- **Joinen**: open + auto-accept is Ã©Ã©n klik (groene badge **Open â€” meteen lid** + **Join nu**); open zonder auto-accept blijft een verzoek (oranje **Aanmelding vereist** + **Aanmelden**). Gesloten crews staan niet in de wervingslijst. Er is geen invite-link. Als er nog geen open auto-accept crew is, maakt de server **The Rookies** (leader `StreetBureau`). Het lege Overzicht zet **Bekijk open crews** eerst; zelf aanmaken blijft de tweede knop. De Crews-lijst heeft geen extra zwevende Open-crews-knop.
 - **Startergebouwen:** een nieuwe crew krijgt HQ + alle opslag op level 1. Twee leden die tegelijk crew/storage openen mogen geen unieke-constraintfout geven; bootstrap is upsert op `crewId`.
-- **Crewbank / geldopslag:** de kluis bepaalt hoeveel cash de crewbank aankan. Level 1 houdt €1.000.000. Upgrades van de geldopslag worden uit die bank betaald en kosten daarom altijd minder dan de huidige kluis (naar level 2: €450.000), zodat je niet vastloopt omdat de upgrade duurder is dan wat erin past. Op Overzicht storten en opnemen leden met **Storten** en **Opnemen** (geen borg of terugtrekken). Alleen de leader kan opnemen.
-- **Crew trust:** storting van minstens €10.000 op de crewbank geeft +1 trust (max één keer per UTC-dag). Opnemen kost de leader −5. Crew-missies: success/partial +tier trust voor bijdragers (of starter), fail −2×tier. Geslaagde heists blijven +5.
-- **Welkomstbericht:** inbox legt startcash, dagdoelen, The Rookies en “morgen weer” uit. VIP koopt geen winst. Crew krijgt een ping als je vastzit.
-- **Weekdoel**: één ISO-week doel per crew (meestal 1 crew-missie). Claim = crew-bank cash + kleine persoonlijke XP. Niet geclaimd = gemist.
-- **Overzicht (mobiel):** het HQ is een foto van de huidige stijl/level (tikken opent HQ & Upgrades). Lid-telling is `1 lid` en pas bij meer `leden`. Het crewbank-saldo naast **Bemanningsbank** gebruikt dezelfde euro-formatter als de rest van het spel (`€8.479.900`), geen kapot teken voor het bedrag.
+- **Crewbank / geldopslag:** de kluis bepaalt hoeveel cash de crewbank aankan. Level 1 houdt â‚¬1.000.000. Upgrades van de geldopslag worden uit die bank betaald en kosten daarom altijd minder dan de huidige kluis (naar level 2: â‚¬450.000), zodat je niet vastloopt omdat de upgrade duurder is dan wat erin past. Op Overzicht storten en opnemen leden met **Storten** en **Opnemen** (geen borg of terugtrekken). Alleen de leader kan opnemen.
+- **Crew trust:** storting van minstens â‚¬10.000 op de crewbank geeft +1 trust (max Ã©Ã©n keer per UTC-dag). Opnemen kost de leader âˆ’5. Crew-missies: success/partial +tier trust voor bijdragers (of starter), fail âˆ’2Ã—tier. Geslaagde heists blijven +5.
+- **Welkomstbericht:** inbox legt startcash, dagdoelen, The Rookies en â€œmorgen weerâ€ uit. VIP koopt geen winst. Crew krijgt een ping als je vastzit.
+- **Weekdoel**: Ã©Ã©n ISO-week doel per crew (meestal 1 crew-missie). Claim = crew-bank cash + kleine persoonlijke XP. Niet geclaimd = gemist.
+- **Overzicht (mobiel):** het HQ is een foto van de huidige stijl/level (tikken opent HQ & Upgrades). Lid-telling is `1 lid` en pas bij meer `leden`. Het crewbank-saldo naast **Bemanningsbank** gebruikt dezelfde euro-formatter als de rest van het spel (`â‚¬8.479.900`), geen kapot teken voor het bedrag.
 
 #### Crew Benefits
 - **Heists**: Toegang tot grote heists
 - **Shared rewards**: Verdeeld tussen crew members
 - **Teamwork bonus**: +10% success chance per extra member (max +30%)
-- **Gedeelde opslag**: auto’s, motoren, boten, wapens, munitie, drugs en handelswaren. Dit is crew-voorraad, geen extra persoonlijke garage. Auto’s/motoren/boten/wapens/munitie/handelswaren kun je niet terughalen voor eigen misdaden; ze gaan op aan crew-smokkel, missies, deals of raids. Tik in Opslag op een geparkeerd voertuig om het te repareren, tanken of tunen; het geld gaat van de crewbank, tunen vraagt nog jouw eigen onderdelen. Alleen leader/co-leader mag verkopen en dat geld gaat naar de crewbank. Drugs stort je vanaf Crew-opslag of Drugsvoorraad via quality-lots (`POST /drugs/crew-storage/deposit`); handelswaren blijven een apart pad. Drugs kun je wel terugpakken of groothandel. Wapens en kogels voeden ook Territory (HQ-reserve en frontlijn-depot); het gebouwniveau blijft het plafond. Crew Wars-raids stelen dezelfde HQ-stelling.
+- **Gedeelde opslag**: autoâ€™s, motoren, boten, wapens, munitie, drugs en handelswaren. Dit is crew-voorraad, geen extra persoonlijke garage. Autoâ€™s/motoren/boten/wapens/munitie/handelswaren kun je niet terughalen voor eigen misdaden; ze gaan op aan crew-smokkel, missies, deals of raids. Tik in Opslag op een geparkeerd voertuig om het te repareren, tanken of tunen; het geld gaat van de crewbank, tunen vraagt nog jouw eigen onderdelen. Alleen leader/co-leader mag verkopen en dat geld gaat naar de crewbank. Drugs stort je vanaf Crew-opslag of Drugsvoorraad via quality-lots (`POST /drugs/crew-storage/deposit`); handelswaren blijven een apart pad. Drugs kun je wel terugpakken of groothandel. Wapens en kogels voeden ook Territory (HQ-reserve en frontlijn-depot); het gebouwniveau blijft het plafond. Crew Wars-raids stelen dezelfde HQ-stelling.
 - **Crewbank-uitkoop**: alleen eigenaar en co-eigenaren kunnen op Gevangenis een crewlid vrijkopen uit de crewbank. Soms word je zelf opgepakt wegens zwart geld (de ander is dan al vrij).
 - **HQ progression**: HQ-levels lopen door als globale reeks (L0 t/m L19) met oplopende upgradekosten zonder reset per stijltier. Als een stijltier op max staat en bijgebouwen voldoen aan de vereiste levels, gaat de volgende upgrade direct naar het volgende globale level.
-- **HQ & Upgrades visuals**: bijgebouw-afbeeldingen volgen altijd de level-tier van het bijgebouw zelf (niet de actuele HQ-stijl), zodat visuals en levelstatus consistent blijven. De upgradehub toont compacte rijen (kleine foto + level/kosten + knop), geen enorme portretkaarten. HQ-status toont het **globale** HQ-niveau (L0–L19; bijv. rural stijl-level 2 = globaal **6**), met style-voortgang als tweede deel (`landelijk 2/3`) — niet alleen `2/3` alsof het HQ op level 2 zou staan.
-- **Heist-start:** alleen de leader start. Na een poging geldt een persoonlijke cooldown van 6 uur (VIP −10%). Die resterende tijd staat **op de Start-knop**; de knop blijft uit tot de timer klaar is.
+- **HQ & Upgrades visuals**: bijgebouw-afbeeldingen volgen altijd de level-tier van het bijgebouw zelf (niet de actuele HQ-stijl), zodat visuals en levelstatus consistent blijven. De upgradehub toont compacte rijen (kleine foto + level/kosten + knop), geen enorme portretkaarten. HQ-status toont het **globale** HQ-niveau (L0â€“L19; bijv. rural stijl-level 2 = globaal **6**), met style-voortgang als tweede deel (`landelijk 2/3`) â€” niet alleen `2/3` alsof het HQ op level 2 zou staan.
+- **Heist-start:** alleen de leader start. Na een poging geldt een persoonlijke cooldown van 6 uur (VIP âˆ’10%). Die resterende tijd staat **op de Start-knop**; de knop blijft uit tot de timer klaar is.
 
 ### Crew Wars
-- Crew Wars lopen via de **War Room** in het crew-scherm. Alleen leaders kunnen een war declareren. Het leden-minimum is runtime (`CREW_WAR_MIN_MEMBERS`, code-default **1** voor de startpopulatie; later via Admin → Crew Wars op 3 of hoger). Sabotage van een vijandelijk bijgebouw mag de actie niet laten crashen. **Doden** mag niet “boerderijblok” tonen: als je dezelfde tegenstander te vaak met die actie raakt, zegt het spel in gewone taal dat je iemand anders moet kiezen of even moet wachten. Eén eerdere mug of raid blokkeert Doden niet. **Schild** werkt met actieve Player VIP of Crew VIP; Intel en Boost blijven Player VIP.
-- Na een afgelopen war geldt een cooldown (code-default 8 uur, `CREW_WAR_COOLDOWN_HOURS` in Admin → Crew Wars). De War Room zegt dan waarom je niet kunt declareren (geen leider, te weinig leden, al in een war, of cooldown) en grijst doelcrews die nog in cooldown zitten.
+- Crew Wars lopen via de **War Room** in het crew-scherm. Alleen leaders kunnen een war declareren. Het leden-minimum is runtime (`CREW_WAR_MIN_MEMBERS`, code-default **1** voor de startpopulatie; later via Admin â†’ Crew Wars op 3 of hoger). Sabotage van een vijandelijk bijgebouw mag de actie niet laten crashen. **Doden** mag niet â€œboerderijblokâ€ tonen: als je dezelfde tegenstander te vaak met die actie raakt, zegt het spel in gewone taal dat je iemand anders moet kiezen of even moet wachten. EÃ©n eerdere mug of raid blokkeert Doden niet. **Schild** werkt met actieve Player VIP of Crew VIP; Intel en Boost blijven Player VIP.
+- Na een afgelopen war geldt een cooldown (code-default 8 uur, `CREW_WAR_COOLDOWN_HOURS` in Admin â†’ Crew Wars). De War Room zegt dan waarom je niet kunt declareren (geen leider, te weinig leden, al in een war, of cooldown) en grijst doelcrews die nog in cooldown zitten.
 - Fases: **preparing** (join, aanvallen starten na `CREW_WAR_PREPARATION_MINUTES`, default 15), **active** (aanvallen, default 24 uur), **lockdown** (geen nieuwe aanvallen, default 30 min). Territory-claim staat alleen bij Territory War en Total War.
 - Discord `#crew-wars` meldt verklaring, start, lockdown en einde met **crew-namen**, war-type, en bij afloop de **winnaar plus stand**. Geen ruwe IDs.
 - **Territory War** en **Total War** gebruiken echte Territory-regio's als claimdoelen. Die war-doelen hebben nu ook strategische waarde: claimbonus, tick-punten en tags zoals haven, hoofdstad, industrie of logistiek.
@@ -494,7 +494,7 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 - In de War Room zie je per war-regio nu direct wie het gebied houdt en hoeveel claim-/tick-waarde het doel heeft, zodat crews hun calls beter kunnen plannen.
 - Wint een crew zo'n war, dan laat dat tijdelijk sporen na in echte Territory-regio's rond het front. Daardoor kan de winnaar kort druk doorzetten op die regio's zonder dat de onderliggende Territory-stabiliteit permanent kapot blijft.
 - **Raid** in een actieve war steelt uit de **crew-opslag** van de andere crew (cash, voertuigen, wapens, munitie, drugs of handelswaren), niet uit iemands persoonlijke inventory. De buit moet in jullie eigen opslag passen. Een verse crew-shield maakt de buit kleiner.
-- **Sabotage** haalt één bijgebouw (niet HQ) één level omlaag, maximaal één keer per gebouw per oorlog, nooit onder level 1. Te veel spul blijft liggen; extra storten kan pas na een upgrade.
+- **Sabotage** haalt Ã©Ã©n bijgebouw (niet HQ) Ã©Ã©n level omlaag, maximaal Ã©Ã©n keer per gebouw per oorlog, nooit onder level 1. Te veel spul blijft liggen; extra storten kan pas na een upgrade.
 - **Crew-deals** (vredestijd, leader/co-leider): spul gaat meteen in escrow. De andere crew zet hun kant erin, beide bevestigen, daarna wisselt het. Annuleren, timeout (~2 uur) of te weinig plek draait alles terug.
 
 ### Heists
@@ -502,28 +502,28 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 #### Small Bank Heist
 - **Required crew size**: 2 spelers
 - **Base success**: 40%
-- **Potential reward**: â‚¬10,000-â‚¬30,000
+- **Potential reward**: Ã¢â€šÂ¬10,000-Ã¢â€šÂ¬30,000
 - **XP**: 100 per speler
 - **Cooldown**: 30 minuten
 
 #### Jewelry Store Heist
 - **Required crew size**: 3 spelers
 - **Base success**: 35%
-- **Potential reward**: â‚¬20,000-â‚¬50,000
+- **Potential reward**: Ã¢â€šÂ¬20,000-Ã¢â€šÂ¬50,000
 - **XP**: 150 per speler
 - **Cooldown**: 45 minuten
 
 #### Casino Heist
 - **Required crew size**: 4 spelers
 - **Base success**: 25%
-- **Potential reward**: â‚¬50,000-â‚¬150,000
+- **Potential reward**: Ã¢â€šÂ¬50,000-Ã¢â€šÂ¬150,000
 - **XP**: 300 per speler
 - **Cooldown**: 2 uur
 
 #### Federal Reserve Heist
 - **Required crew size**: 5 spelers
 - **Base success**: 15%
-- **Potential reward**: â‚¬100,000-â‚¬500,000
+- **Potential reward**: Ã¢â€šÂ¬100,000-Ã¢â€šÂ¬500,000
 - **XP**: 500 per speler
 - **Cooldown**: 6 uur
 - **FBI Heat**: +20 bij poging
@@ -546,8 +546,8 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 - Crew Missions zijn co-op operations voor crews met role-based teamwork.
 - Er zijn 3 tiers (quick, coordinated, high-stakes) en geen harde dagcap.
 - Progression blijft non-pay-to-win: credits kunnen alleen tijd versnellen, niet power of reward multipliers toevoegen.
-- Fail zet niemand in de cel. De crew-bank betaalt de catalogus-failstraf (`failPenaltyPct`); daarna geldt de missie-cooldown. De uitslag-melding zegt dat expliciet. Wel komt de mislukte missie op het **strafblad** (Rechtbank), net als bij mislukte heists — zonder dat je vastzit.
-- Trust bij resolve: bijdragers (of de starter als er geen contributions zijn) krijgen +tier bij success/partial en −2×tier bij fail.
+- Fail zet niemand in de cel. De crew-bank betaalt de catalogus-failstraf (`failPenaltyPct`); daarna geldt de missie-cooldown. De uitslag-melding zegt dat expliciet. Wel komt de mislukte missie op het **strafblad** (Rechtbank), net als bij mislukte heists â€” zonder dat je vastzit.
+- Trust bij resolve: bijdragers (of de starter als er geen contributions zijn) krijgen +tier bij success/partial en âˆ’2Ã—tier bij fail.
 
 ### Phase 1
 - Phase 1 bevat 6 missies met exacte timers, rewards, fail-risico en cooldown skip-pricing.
@@ -556,11 +556,11 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 ### Uitbreiding (bank-lijn + clearing house)
 - Zes extra crew missions (geen tweede casino-missie naast **Casino Ledger Raid**): night deposit, skim-netwerk, pantserroute, dochterbank-kluis, reservekluis en clearing house settlement-run.
 - **Trade cargo (T2)**: **Port Contraband Manifest** en **Warehouse Luxury Offload** vereisen handelswaren uit **crew trade storage** (tabak/koffie resp. parfum/luxe horloges); verbruikt bij start, niet bij claim.
-- **Opslagmissies (20 extra)**: starten alleen als de **crew-opslag** de eisen haalt (geen privé-inventaris). Munitie en drugs gaan op; wapens, gereedschap en voertuigen komen terug met slijtage en minder brandstof. Drugkwaliteit, conditie, brandstof en catalogus-stats (speed/armor/cargo/stealth) sturen de getoonde slagingskans (clamp 20–95%). Nieuwe crews hebben **Gereedschapopslag** en **Onderdelenopslag** op level 1. Tunen van geparkeerde crewvoertuigen haalt onderdelen uit die onderdelenopslag, niet uit je persoonlijke voorraad.
+- **Opslagmissies (20 extra)**: starten alleen als de **crew-opslag** de eisen haalt (geen privÃ©-inventaris). Munitie en drugs gaan op; wapens, gereedschap en voertuigen komen terug met slijtage en minder brandstof. Drugkwaliteit, conditie, brandstof en catalogus-stats (speed/armor/cargo/stealth) sturen de getoonde slagingskans (clamp 20â€“95%). Nieuwe crews hebben **Gereedschapopslag** en **Onderdelenopslag** op level 1. Tunen van geparkeerde crewvoertuigen haalt onderdelen uit die onderdelenopslag, niet uit je persoonlijke voorraad.
 - De Crew Missions-tab filtert zoals Misdaden: **Alle missies** of **Vrij voor je crew**, met groepen klaar om te starten, nog opslag nodig, en locked. Sorteren kan op beloning, tier of slagingskans.
-- In **Opslag** zie je per bay wat er écht in ligt (niet alleen 3/20), met kleine catalogusplaatjes per auto, wapen, tool, munitie, drugs of handelswaar. Elk voertuig heeft drie eigen foto’s: 100%, vies en kapot — dezelfde als in de garage. Op HQ tik je een opslaggebouw aan voor dezelfde inhoud.
+- In **Opslag** zie je per bay wat er Ã©cht in ligt (niet alleen 3/20), met kleine catalogusplaatjes per auto, wapen, tool, munitie, drugs of handelswaar. Elk voertuig heeft drie eigen fotoâ€™s: 100%, vies en kapot â€” dezelfde als in de garage. Op HQ tik je een opslaggebouw aan voor dezelfde inhoud.
 - Beloningen blijven uit de crew-mission economy (server); er wordt geen geld rechtstreeks uit andere spelers hun banksaldo gehaald.
-- Catalogus en getallen: [CREW_MISSIONS_EXPANSION_2026-04-26.md](CREW_MISSIONS_EXPANSION_2026-04-26.md). Afbeeldingen: `backend/scripts/generate_crew_missions_images_leonardo.py` (Leonardo API); gecommit runtime-PNG’s staan onder `runtime/client-images/crew_missions/cards/` en `.../scenes/` (zelfde mount als `CLIENT_EXTERNAL_IMAGES_PATH` op de server).
+- Catalogus en getallen: [CREW_MISSIONS_EXPANSION_2026-04-26.md](CREW_MISSIONS_EXPANSION_2026-04-26.md). Afbeeldingen: `backend/scripts/generate_crew_missions_images_leonardo.py` (Leonardo API); gecommit runtime-PNGâ€™s staan onder `runtime/client-images/crew_missions/cards/` en `.../scenes/` (zelfde mount als `CLIENT_EXTERNAL_IMAGES_PATH` op de server).
 - **Clearing House Vault Run** is live als T3-missie. Phase-2-gate staat **aan**: crew `missionLevel >= 3` naast HQ 9 + 3 leden (`CREW_MISSION_CLEARING_HOUSE_MIN_MISSION_LEVEL=3` in runtime; code-default blijft `0`).
 
 ### Crew Mission XP & Level
@@ -576,7 +576,7 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 
 ## Midnight Races
 - Empire-hub: gepland venster per land, eigen auto in dat land, cash-inzet, server-roll met garage/tune als lichte modifier, nightclub-host krijgt rake, optioneel sjoemelen = wanted.
-- Midnight Races-UI is noir/goud met een hero-strip en foto-kaarten in een raster (tot 3–4 per rij): kies je auto, het startveld en de uitslag. Veld/uitslag tonen de echte garage-foto van die auto (nieuw/vuil/beschadigd). De gouden `i` opent een uitgebreide handleiding met foto’s.
+- Midnight Races-UI is noir/goud met een hero-strip en foto-kaarten in een raster (tot 3â€“4 per rij): kies je auto, het startveld en de uitslag. Veld/uitslag tonen de echte garage-foto van die auto (nieuw/vuil/beschadigd). De gouden `i` opent een uitgebreide handleiding met fotoâ€™s.
 - Protocol: `docs/module-protocols/races.md`. Caps via `RACE_*` zodat dit geen tweede casino wordt.
 - Na afrekenen of annuleren krijgt elke betrokken rijder, wedder en clubhost een inboxbericht plus push met de uitslag.
 
@@ -586,24 +586,24 @@ Het ziekenhuis is de **snelle, betaalde reset**. Wachten is gratis maar traag, e
 - **Opening**: Gratis, automatisch beschikbaar
 - **Maximum balance**: Onbeperkt
 - **Interest rate**: Uitgeschakeld (was historisch 0.5% per tick; `applyInterest` retourneert 0)
-- **Compounding**: Geen — bank is veilige opslag tegen confiscatie, geen rentefarm
+- **Compounding**: Geen â€” bank is veilige opslag tegen confiscatie, geen rentefarm
 
 ### Transacties
 
 #### Deposit (Storten)
-- **Minimum**: €1
-- **Daily free cap**: `BANK_FREE_DEPOSIT_DAILY_BASE` + `BANK_FREE_DEPOSIT_DAILY_PER_RANK` × rank (default €10.000 + €5.000 × rank, UTC-dag)
+- **Minimum**: â‚¬1
+- **Daily free cap**: `BANK_FREE_DEPOSIT_DAILY_BASE` + `BANK_FREE_DEPOSIT_DAILY_PER_RANK` Ã— rank (default â‚¬10.000 + â‚¬5.000 Ã— rank, UTC-dag)
 - **Fee**: Geen kosten binnen de cap; daarboven via witwassen
 - **Instant**: Direct verwerkt (alleen binnen de cap)
 
 #### Withdraw (Opnemen)
-- **Minimum**: â‚¬1
+- **Minimum**: Ã¢â€šÂ¬1
 - **Maximum**: Je bank balance
 - **Fee**: Geen kosten
 - **Instant**: Direct verwerkt
 
 #### Money Laundering (Witwassen)
-- **Min / max per wasbeurt**: `LAUNDER_MIN_AMOUNT` / `LAUNDER_MAX_AMOUNT` (default €10.000 – €5.000.000), zichtbaar op het bankscherm
+- **Min / max per wasbeurt**: `LAUNDER_MIN_AMOUNT` / `LAUNDER_MAX_AMOUNT` (default â‚¬10.000 â€“ â‚¬5.000.000), zichtbaar op het bankscherm
 - **Fee / delay / seize**: runtime `LAUNDER_*`; output gaat naar de bank
 - **UX**: cash verdwijnt bij starten uit je pocket; Bank toont een grote countdown en Home heeft timeout `launder` tot de was klaar is (of in beslag)
 
@@ -614,7 +614,7 @@ interest = 0
 ```
 
 ### Bank Robbery (Crime)
-- **Target**: Random andere speler met > â‚¬10,000
+- **Target**: Random andere speler met > Ã¢â€šÂ¬10,000
 - **Success chance**: 30%
 - **Steal amount**: 10-30% van target balance
 - **Consequences**: High wanted level increase
@@ -639,9 +639,9 @@ interest = 0
 - **Brazil**
 
 ### Travel Costs
-- **Neighboring countries**: â‚¬500-â‚¬2,000
-- **Europe â†’ Americas**: â‚¬5,000-â‚¬10,000
-- **Long distance**: â‚¬10,000-â‚¬20,000
+- **Neighboring countries**: Ã¢â€šÂ¬500-Ã¢â€šÂ¬2,000
+- **Europe Ã¢â€ â€™ Americas**: Ã¢â€šÂ¬5,000-Ã¢â€šÂ¬10,000
+- **Long distance**: Ã¢â€šÂ¬10,000-Ã¢â€šÂ¬20,000
 
 ### Travel Requirements
 - **Not in jail**: Kan niet reizen vanuit jail
@@ -658,71 +658,71 @@ interest = 0
 
 ## Trade Market
 
-- **Almanak** (`https://wiki.themobstate.com`): publieke **handleiding** (alle Help-onderwerpen, inclusief **Don**, Midnight Races, profiel, avatar wisselen en selfie→portret) plus catalogus in alle speler-talen, met originele game-beelden. In het zijmenu staat **Almanak** als los item onder Dashboard (naast Winkel en Support); die knop opent de wiki zonder je uit het spel te gooien. Zoeken bovenaan zoekt door de hele almanak, niet alleen de kaarten op de pagina waar je staat. Rechtsonder beantwoordt **Vraag de Almanak** in alle acht speltalen uit diezelfde handleiding en catalogus: het zoekt met synoniemen, combineert passages uit meerdere hoofdstukken, noemt bronnen, wijst waar de beste auto/boot/motor in de catalogus kan verschijnen (je kiest het model niet zelf op straat), noemt het sterkste cataloguswapen of een wapen bij naam, misdaden en banen op jouw rang, waar een drug in de catalogus doorgaans lager of hoger staat (geen live straatprijs), hoe je naar een land reist, en weigert live straatprijzen. Eigen geld, rank, VIP-tijd, cel en land noemt hij alleen als je de Almanak **vanuit het spel** opent terwijl je daar ingelogd bent; opnieuw inloggen op de Almanak zelf gooit je uit het spel. Wachtwoorden niet. Pagina’s worden gegenereerd uit `backend/content` en Help-ARB’s en vernieuwen automatisch als die bestanden op de VPS wijzigen. Hoofdstuktegels op het overzicht hebben eigen passende foto’s (`wiki/hubs`). Toont bronlanden en de vaste landfactor van handelswaren (niet de live straatprijs). De landingsfooter opent het overzicht.
+- **Almanak** (`https://wiki.themobstate.com`): publieke **handleiding** (alle Help-onderwerpen, inclusief **Don**, Midnight Races, profiel, avatar wisselen en selfieâ†’portret) plus catalogus in alle speler-talen, met originele game-beelden. In het zijmenu staat **Almanak** als los item onder Dashboard (naast Winkel en Support); die knop opent de wiki zonder je uit het spel te gooien. Zoeken bovenaan zoekt door de hele almanak, niet alleen de kaarten op de pagina waar je staat. Rechtsonder beantwoordt **Vraag de Almanak** in alle acht speltalen uit diezelfde handleiding en catalogus: het zoekt met synoniemen, combineert passages uit meerdere hoofdstukken, noemt bronnen, wijst waar de beste auto/boot/motor in de catalogus kan verschijnen (je kiest het model niet zelf op straat), noemt het sterkste cataloguswapen of een wapen bij naam, misdaden en banen op jouw rang, waar een drug in de catalogus doorgaans lager of hoger staat (geen live straatprijs), hoe je naar een land reist, en weigert live straatprijzen. Eigen geld, rank, VIP-tijd, cel en land noemt hij alleen als je de Almanak **vanuit het spel** opent terwijl je daar ingelogd bent; opnieuw inloggen op de Almanak zelf gooit je uit het spel. Wachtwoorden niet. Paginaâ€™s worden gegenereerd uit `backend/content` en Help-ARBâ€™s en vernieuwen automatisch als die bestanden op de VPS wijzigen. Hoofdstuktegels op het overzicht hebben eigen passende fotoâ€™s (`wiki/hubs`). Toont bronlanden en de vaste landfactor van handelswaren (niet de live straatprijs). De landingsfooter opent het overzicht.
 
 ### Client / talen
 - **Zwarte markt** (incl. eerste tab handelswaren/contraband), rugzak-shop en munitiefabriek volgen de **door de speler gekozen UI-taal** (ARB / `AppLocalizations`), zodat NL/EN en overige ingestelde talen consistent blijven. Het voertuigenaanbod-tabblad gebruikt de ARB-key **`marketplace`** (NL: *Marktplaats*), hetzelfde label als vroeger op het aparte handels-scherm.
 - **Marktplaats (P2P)**: naast **voertuigen** (inclusief motoren en boten als voertuig-inventory) kunnen spelers **gedragen gereedschap**, **drugs-lots**, **crypto-lots**, **handelswaren-stacks** en **event items** (transferable chips) aan elkaar verkopen op dezelfde tab; **`GET /market/unified`** combineert voertuigen met `itemListings`. Verkopen start met **Verkoop item** op Marktplaats (ook als de lijst leeg is). De Drugs-rij in dat menu gebruikt hetzelfde apotheek-icoon als het Drugs-menu (geen leeg vlak op web). Contant geld + escrow; eigen advertentie kopen is geblokkeerd. Bound event badges zijn niet listbaar.
-- **Help & Uitleg** (zwarte markt): de `helpTopicBlackMarket*`-strings in de ARB’s; wanneer de **Engelse** helptekst wijzigt, worden o.a. **de, fr, es, it, pl, pt** opnieuw ingevuld met `node scripts/translate_arb_english_fallback.mjs --langs=de,fr,es,it,pl,pt --prefix=helpTopicBlackMarket --force` (NL blijft handmatig/apply-flow). Zie `docs/module-protocols/PROTOCOL_MASTER.md` (i18n-paragraaf).
-- Op **telefoon en tablet** (niet als de site al als PWA openstaat) toont de landing en het dashboard een banner **Zet op beginscherm**, ook in landscape op een grote tablet. Android Chrome opent het install-venster; iPhone/iPad toont Delen → Zet op beginscherm. **Niet nu** verbergt de banner 24 uur (niet voor altijd). Na een geslaagde install komt de banner in een gewone Chrome-tab weer terug als het icoon later wordt verwijderd. In de beginscherm-app zelf blijft de banner weg. Ook via Instellingen. De beginscherm-app mag **draaien**. Zie Help → Instellingen.
-- Login en registratie delen dezelfde **onderste juridische footer** (privacy, algemene voorwaarden, digitale goederen, Almanak, Discord, taal, copyright) als de publieke landingspagina. Die footer staat **niet** in de ingelogde game. Registratie staat op desktop **rechts** uitgelijnd t.o.v. de achtergrondillustratie en vereist **akkoord met de voorwaarden** vóór verzenden. Taalkeuze op het registratieformulier werkt via **dezelfde gast-locale** als de footer: het hele scherm (labels, knoppen, foutteksten) schakelt meteen mee. Publieke `/privacy` en `/terms` zijn **statische HTML** (Meta-crawlers zien de tekst, inclusief Facebook Login, verwijdering via `info@themobstate.com`); in-game footer-modals blijven ARB. Op telefoon/tablet (niet als PWA) tonen landing en dashboard een banner om de site op het beginscherm te zetten; Android opent het install-venster, iOS toont Delen → Zet op beginscherm (opnieuw via Instellingen). Na inloggen vraagt een eenmalige popup om pushmeldingen; Later slaat dat over, Instellingen kan het later alsnog.
+- **Help & Uitleg** (zwarte markt): de `helpTopicBlackMarket*`-strings in de ARBâ€™s; wanneer de **Engelse** helptekst wijzigt, worden o.a. **de, fr, es, it, pl, pt** opnieuw ingevuld met `node scripts/translate_arb_english_fallback.mjs --langs=de,fr,es,it,pl,pt --prefix=helpTopicBlackMarket --force` (NL blijft handmatig/apply-flow). Zie `docs/module-protocols/PROTOCOL_MASTER.md` (i18n-paragraaf).
+- Op **telefoon en tablet** (niet als de site al als PWA openstaat) toont de landing en het dashboard een banner **Zet op beginscherm**, ook in landscape op een grote tablet. Android Chrome opent het install-venster; iPhone/iPad toont Delen â†’ Zet op beginscherm. **Niet nu** verbergt de banner 24 uur (niet voor altijd). Na een geslaagde install komt de banner in een gewone Chrome-tab weer terug als het icoon later wordt verwijderd. In de beginscherm-app zelf blijft de banner weg. Ook via Instellingen. De beginscherm-app mag **draaien**. Zie Help â†’ Instellingen.
+- Login en registratie delen dezelfde **onderste juridische footer** (privacy, algemene voorwaarden, digitale goederen, Almanak, Discord, taal, copyright) als de publieke landingspagina. Die footer staat **niet** in de ingelogde game. Registratie staat op desktop **rechts** uitgelijnd t.o.v. de achtergrondillustratie en vereist **akkoord met de voorwaarden** vÃ³Ã³r verzenden. Taalkeuze op het registratieformulier werkt via **dezelfde gast-locale** als de footer: het hele scherm (labels, knoppen, foutteksten) schakelt meteen mee. Publieke `/privacy` en `/terms` zijn **statische HTML** (Meta-crawlers zien de tekst, inclusief Facebook Login, verwijdering via `info@themobstate.com`); in-game footer-modals blijven ARB. Op telefoon/tablet (niet als PWA) tonen landing en dashboard een banner om de site op het beginscherm te zetten; Android opent het install-venster, iOS toont Delen â†’ Zet op beginscherm (opnieuw via Instellingen). Na inloggen vraagt een eenmalige popup om pushmeldingen; Later slaat dat over, Instellingen kan het later alsnog.
 
 ### Munitiefabriek (ammo)
 - Productie wordt **server-side** getakt: claim-interval **20 minuten**, basis **3 patronen per ammo-type per tick** (level 1; schaalt met output-level). Sessievenster blijft 8 uur backlog. Zie `docs/module-protocols/ammo-factory.md` en `docs/module-protocols/balance-economy.md`.
-- De knop **Zwarte Markt** onderaan de fabriek opent **Zwarte Markt → Munitie in het contentpaneel** (zijbalk blijft staan), niet een losse fullscreen-pagina.
+- De knop **Zwarte Markt** onderaan de fabriek opent **Zwarte Markt â†’ Munitie in het contentpaneel** (zijbalk blijft staan), niet een losse fullscreen-pagina.
 - Een lege fabriek krijgt een **NPC-uitbater** die kogels op de Zwarte Markt van dat land zet (zelfde tempo als level 1, met een voorraadplafond). De fabriek blijft **te koop**. Alleen een echte speler-eigenaar blokkeert aankoop; inactiviteit geldt niet voor die NPC-bezetting. Verlies je de fabriek (48u inactief, hitlist, admin-reset), dan neemt een NPC het terrein meteen over.
-- Admin → spelerdetail → Overzicht toont onder **Casino & munitiefabriek** of de speler een fabriek bezit en in welk land (niveau + kwaliteit), los van de munitie-voorraad in inventaris.
+- Admin â†’ spelerdetail â†’ Overzicht toont onder **Casino & munitiefabriek** of de speler een fabriek bezit en in welk land (niveau + kwaliteit), los van de munitie-voorraad in inventaris.
 
 ### Prostitutie (Empire hub)
-- **Workers-lijst** toont alleen workers in je huidige land (straat via `country`, RLD via district, nachtclub via venue). Op de Workers-tab kies je **Weergave** met getekende iconen (lijststrepen / 4-vlak / 9-vlak voor 7 kolommen); die keuze blijft bewaard op dit apparaat. **Lijst** is een tabel met portretfoto, naam, level, plaats, €/u, status en acties; rijen zijn ongeveer twee regels hoog. Bij **4**/**7** staan er per rij altijd precies vier of zeven kaarten; op een smalle PC-breedte scroll je horizontaal i.p.v. minder kolommen.
-- Eén entry **Prostitution** met tabs Workers | RLD | Events | Social. Web-zijmenu “Red Light Districts” deep-linkt naar hub-tab RLD; mobiel RLD-menu idem (niet VIP Events).
+- **Workers-lijst** toont alleen workers in je huidige land (straat via `country`, RLD via district, nachtclub via venue). Op de Workers-tab kies je **Weergave** met getekende iconen (lijststrepen / 4-vlak / 9-vlak voor 7 kolommen); die keuze blijft bewaard op dit apparaat. **Lijst** is een tabel met portretfoto, naam, level, plaats, â‚¬/u, status en acties; rijen zijn ongeveer twee regels hoog. Bij **4**/**7** staan er per rij altijd precies vier of zeven kaarten; op een smalle PC-breedte scroll je horizontaal i.p.v. minder kolommen.
+- EÃ©n entry **Prostitution** met tabs Workers | RLD | Events | Social. Web-zijmenu â€œRed Light Districtsâ€ deep-linkt naar hub-tab RLD; mobiel RLD-menu idem (niet VIP Events).
 - Straat- en RLD-inkomsten landen automatisch op je cash via de game-tick. Nachtclub en 8u-shifts keren apart uit. Er is geen handmatige Collect-knop of Te innen-KPI meer.
 - **Werven** vereist een huis of appartement **in het huidige land**. Plekken uit woningen in andere landen tellen niet om hier te werven. Totale netwerk-capaciteit blijft wereldwijd (slots/huur).
 - Events-tab: straatavonden voor iedereen, VIP-salon alleen met actieve Player VIP. Events gebruiken land-slugs (`netherlands`), niet ISO-2. Scheduler houdt per land 1 actief + 1 aankomend event; `settleEventEarnings` elk uur.
-- RLD-detail: kamer-upgrade, inkomsten-tier (tot Penthouse/VIP) en beveiliging 0–5. Nieuwe koop start met 4 lege kamers; plaatsen maakt extra kamers tot 1000 per land (er is maar één RLD per land). Op de RLD-lijst zie je bezette kamers over dat landelijk maximum, geen miljoenen-placeholder.
+- RLD-detail: kamer-upgrade, inkomsten-tier (tot Penthouse/VIP) en beveiliging 0â€“5. Nieuwe koop start met 4 lege kamers; plaatsen maakt extra kamers tot 1000 per land (er is maar Ã©Ã©n RLD per land). Op de RLD-lijst zie je bezette kamers over dat landelijk maximum, geen miljoenen-placeholder.
 - Rivaliteit starten: vul **spelersnaam** in (numeriek ID blijft ook werken). Server: `POST /rivalries/start` met `rivalUsername` en/of `rivalPlayerId`. Zie `docs/module-protocols/prostitution.md`.
-- RLD PvP: stelen van een recruit (12u op straat, terughalen) en zeldzame district-contest (voorbereiding → gevecht → wissel van eigenaar). Huurders en kamers blijven bij het pand.
+- RLD PvP: stelen van een recruit (12u op straat, terughalen) en zeldzame district-contest (voorbereiding â†’ gevecht â†’ wissel van eigenaar). Huurders en kamers blijven bij het pand.
 
 ### Tradable Goods (huidige build)
-Contraband-handelsgoederen met eigen caps en risico’s (server + UI):
+Contraband-handelsgoederen met eigen caps en risicoâ€™s (server + UI):
 - **Flowers**, **electronics**, **diamonds**, **weapons**, **pharmaceuticals**
 - Landen hebben **tradeBonuses** (multipliers) per goed; koop/verkoop loopt via de **handelswaren-tab** op de zwarte markt en gekoppelde inventory.
-- **16 contraband-lijnen** in vier categorieën (**starter**, **bulk**, **luxe**, **gevaarlijk**), elk met eigen risico's en **bronlanden** (`availableInCountries`). **Kopen** zet stuks in de **rugzak**; **verkopen** en **smokkel-send** gaan vanuit de rugzak. Stallen in een huis/loods in hetzelfde land maakt rugzakplekken weer vrij. Oude voorraad die nog in dit land ligt (niet in de rugzak) kun je hier verkopen; die telt niet mee voor rugzakplekken. Smokkel-claim komt terug in de rugzak. Filters en tier-sortering op de handelswaren-tab.
+- **16 contraband-lijnen** in vier categorieÃ«n (**starter**, **bulk**, **luxe**, **gevaarlijk**), elk met eigen risico's en **bronlanden** (`availableInCountries`). **Kopen** zet stuks in de **rugzak**; **verkopen** en **smokkel-send** gaan vanuit de rugzak. Stallen in een huis/loods in hetzelfde land maakt rugzakplekken weer vrij. Oude voorraad die nog in dit land ligt (niet in de rugzak) kun je hier verkopen; die telt niet mee voor rugzakplekken. Smokkel-claim komt terug in de rugzak. Filters en tier-sortering op de handelswaren-tab.
 - Tijdens **Contraband Rush** tellen winstgevende verkopen en het ophalen van gesmokkelde trade-lading mee voor het live event (category `trade`).
 
-### Client UX (zwarte markt → handelswaren-tab)
+### Client UX (zwarte markt â†’ handelswaren-tab)
 - Op **mobiel/smalle breedte** is de afdelingenkeuze een **enkele horizontale chip-rij** (geen vaste groeptitels/subtitle). In de dashboard-shell heeft de zwarte markt geen tweede AppBar, zodat de productlijst het scherm vult.
 - **Te verkopen hier** staat bovenaan; stacks in andere landen staan daaronder (geen verkoopknop). Daarna risico-uitleg, filters en de koopcatalogus.
 - **Risico-uitleg** (inklapbaar): leesbare tekst op donkere kaarten via theme-kleuren (`onSurface`).
-- Marktdata wordt in **drie segmenten** geladen (`/trade/goods`, `/trade/prices`, `/trade/inventory`). Faalt één segment, dan volgt een **banner** en blijft de rest bruikbaar; alleen als **alles** faalt, zie je de fatale leegtoestand.
-- Per goed tonen **chips** server-gestuurde risico’s waar aanwezig: bederfvenster (bloemen), prijsvolatiliteit (diamonds), tripschade (electronics), inbeslagnemingskans (wapens/farmaceutica). Het paneel “Travel and market risks” vat het gedrag tekstueel samen.
-- **Optionele kaart-thumbnails**: `assets/images/trade_goods/cards/<good_id>.png` (externe mount `/images/…` op web) met **gradient+emoji fallback** als het bestand ontbreekt. Genereren: `backend/scripts/generate_trade_goods_card_images_leonardo.py` (zie `docs/module-protocols/trade.md` en PROTOCOL_MASTER).
+- Marktdata wordt in **drie segmenten** geladen (`/trade/goods`, `/trade/prices`, `/trade/inventory`). Faalt Ã©Ã©n segment, dan volgt een **banner** en blijft de rest bruikbaar; alleen als **alles** faalt, zie je de fatale leegtoestand.
+- Per goed tonen **chips** server-gestuurde risicoâ€™s waar aanwezig: bederfvenster (bloemen), prijsvolatiliteit (diamonds), tripschade (electronics), inbeslagnemingskans (wapens/farmaceutica). Het paneel â€œTravel and market risksâ€ vat het gedrag tekstueel samen.
+- **Optionele kaart-thumbnails**: `assets/images/trade_goods/cards/<good_id>.png` (externe mount `/images/â€¦` op web) met **gradient+emoji fallback** als het bestand ontbreekt. Genereren: `backend/scripts/generate_trade_goods_card_images_leonardo.py` (zie `docs/module-protocols/trade.md` en PROTOCOL_MASTER).
 
 ### Trade Mechanics (samenvatting)
-- **Kopen/verkopen**: live prijzen en **rugzakvoorraad**; elektronica-verkoop hangt af van **conditie**. De straatprijs per goed per land blijft **één UTC-uur** gelijk, zodat de getoonde koopprijs de prijs is die je betaalt. Winst = verkoopprijs − inkoopprijs (`purchasePrice` op inventory). Hoeveelheid typen of **Max** tikken (lang −/+ = 10). Extra kopen bij een bestaande stapel voegt bij de rugzak. Is de rugzak vol, dan eerst stallen via Vastgoed → Open opslag. Gewone reizen en hangar-vluchten kunnen rugzak-handelswaren confisqueren.
-- **XP bij verkoop**: klein (max 30), gebaseerd op omzet + winst — misdaden blijven de hoofd-XP-bron.
+- **Kopen/verkopen**: live prijzen en **rugzakvoorraad**; elektronica-verkoop hangt af van **conditie**. De straatprijs per goed per land blijft **Ã©Ã©n UTC-uur** gelijk, zodat de getoonde koopprijs de prijs is die je betaalt. Winst = verkoopprijs âˆ’ inkoopprijs (`purchasePrice` op inventory). Hoeveelheid typen of **Max** tikken (lang âˆ’/+ = 10). Extra kopen bij een bestaande stapel voegt bij de rugzak. Is de rugzak vol, dan eerst stallen via Vastgoed â†’ Open opslag. Gewone reizen en hangar-vluchten kunnen rugzak-handelswaren confisqueren.
+- **XP bij verkoop**: klein (max 30), gebaseerd op omzet + winst â€” misdaden blijven de hoofd-XP-bron.
 - **Smokkel van handelswaren** bewaart inkoopprijs en conditie in de zending en zet die bij claim terug (gewogen gemiddelde bij samenvoegen); anders leek winst gelijk aan het hele verkoopbedrag.
 - **XP bij smokkel-claim**: klein per zending (max 60 per claim-actie), afhankelijk van categorie/hoeveelheid.
-- **Rugzak vol bij claim**: depot-claim haalt **zoveel zendingen als in de rugzak passen**; de rest blijft klaar in het depot. Alleen als er nul passen krijg je een duidelijke “rugzak vol”-melding (geen “Server error”). Stal tussendoor via Vastgoed → Open opslag (of koop een grotere rugzak) en claim opnieuw.
-- **Risico’s**: naast algemene smokkel/wanted-logica tonen chips de **per-goed** parameters die de API meestuurt (`spoilageHours`, `priceVolatility`, `damageChancePerTrip`, `confiscationChance` op `TradableGood`).
+- **Rugzak vol bij claim**: depot-claim haalt **zoveel zendingen als in de rugzak passen**; de rest blijft klaar in het depot. Alleen als er nul passen krijg je een duidelijke â€œrugzak volâ€-melding (geen â€œServer errorâ€). Stal tussendoor via Vastgoed â†’ Open opslag (of koop een grotere rugzak) en claim opnieuw.
+- **Risicoâ€™s**: naast algemene smokkel/wanted-logica tonen chips de **per-goed** parameters die de API meestuurt (`spoilageHours`, `priceVolatility`, `damageChancePerTrip`, `confiscationChance` op `TradableGood`).
 
 ### Smokkel-hub (drugs-zendingen)
-- Hub-UX: noir/gold panels, 4-staps send (vracht → route → transport → bevestigen), ETA-countdown en result-overlay bij succesvolle send/claim. Start smokkel blijft uit tot de quote slaagt; `contraband_*` telt altijd als handelswaar. Auto’s, motoren en boten in de itemlijst tonen de cataloognaam (geen interne `moto_…` codes).
-- Persoonlijke drugsinventaris is **niet per land** in `DrugInventory` (unique: `playerId` + `drugType` + `quality`). Quote/send mag geen oude country-compound Prisma-key gebruiken — dat gaf 500 Server error. Op **Drugsvoorraad** groeien de kaarten met hun inhoud zodat **Naar crew-opslag** niet onder de volgende kaart verdwijnt; die knop opent een **stort-dialoog** (kwaliteit + grammen, geen verkoopprijs). Vanaf de **Crew-opslag** stort je drugs via dezelfde quality-lots API (`POST /drugs/crew-storage/deposit`), niet via handelswaren. Het land staat alleen in de bovenbalk, niet nog eens als grote locatiebalk op Voorraad.
-- **Productiematerialen** liggen per land in `production_materials.country` (legacy depot), in een huis/loods (`material:` in `property_drug_storage`) of in de rugzak (`country = _carried_`). **Kopen** → rugzak; plaatsen in een pand via Open opslag. Productie in land X gebruikt depot, dan pandvoorraad in X, dan rugzak. Travel/vliegen kan rugzak-materiaal, drugs en handelswaren afpakken; landdepots en huisvoorraad blijven veilig, magazijnvoorraad niet bij aanhouding in dat land. Details: `docs/module-protocols/drugs.md`.
+- Hub-UX: noir/gold panels, 4-staps send (vracht â†’ route â†’ transport â†’ bevestigen), ETA-countdown en result-overlay bij succesvolle send/claim. Start smokkel blijft uit tot de quote slaagt; `contraband_*` telt altijd als handelswaar. Autoâ€™s, motoren en boten in de itemlijst tonen de cataloognaam (geen interne `moto_â€¦` codes).
+- Persoonlijke drugsinventaris is **niet per land** in `DrugInventory` (unique: `playerId` + `drugType` + `quality`). Quote/send mag geen oude country-compound Prisma-key gebruiken â€” dat gaf 500 Server error. Op **Drugsvoorraad** groeien de kaarten met hun inhoud zodat **Naar crew-opslag** niet onder de volgende kaart verdwijnt; die knop opent een **stort-dialoog** (kwaliteit + grammen, geen verkoopprijs). Vanaf de **Crew-opslag** stort je drugs via dezelfde quality-lots API (`POST /drugs/crew-storage/deposit`), niet via handelswaren. Het land staat alleen in de bovenbalk, niet nog eens als grote locatiebalk op Voorraad.
+- **Productiematerialen** liggen per land in `production_materials.country` (legacy depot), in een huis/loods (`material:` in `property_drug_storage`) of in de rugzak (`country = _carried_`). **Kopen** â†’ rugzak; plaatsen in een pand via Open opslag. Productie in land X gebruikt depot, dan pandvoorraad in X, dan rugzak. Travel/vliegen kan rugzak-materiaal, drugs en handelswaren afpakken; landdepots en huisvoorraad blijven veilig, magazijnvoorraad niet bij aanhouding in dat land. Details: `docs/module-protocols/drugs.md`.
 - Crew-smokkel van **handelswaren** gebruikt gedeelde `CrewTradeInventory`. Stort eerst via crew-opslag; daarna catalog/send/claim op het crew-netwerk.
-- Het dashboard toont een **Markt**-tegel met het aantal actieve advertenties en de categorie (bijv. gereedschap), niet interne codes zoals `player_tool`. Tik op Markt opent **Zwarte Markt → Marktplaats in het contentpaneel** (zijbalk blijft staan), niet een losse fullscreen-pagina. Recente eigen acties staan in **Sessie-overzicht** (`GET /events` + SSE van alleen jouw speler), niet als vaste lijst op Home. Privéberichten (`direct_message.*`) komen niet in dat overzicht (wel live voor chat/badge). Aankomstregels tonen het land (niet een streepje).
-- Nightclub opent met een **Tonight**-kaart (crowd, stock, Restock, Boost crowd); daaronder staat **Drug Storage** in de hoofdflow (rugzak → club, MAX / Alles uit rugzak). Crew, DJ, security en Ops Lab zitten onder **Geavanceerd** (zonder grijs Material-vlak; formuliervelden in noir-stijl; actieve crew-shifts als compacte donkere tegels). Vanuit Eigendommen → Beheer blijft beheer **in de Empire-content** (geen fullscreen route). Restock onthoudt de laatste voorraadset en menuprijzen van die club (Tonight Restock koopt dezelfde set). Omzet blijft via de tick. Clubbaas kan **Koop van spelers** aanzetten; producenten in hetzelfde land verkopen via Inventaris **Aan club** tegen groothandelsprijs. De **wekelijkse nightclub-ranking** telt alleen clubs met echte weekomzet; €0 omzet wint niet en levert geen prijs. Was er die week nergens omzet, dan is er geen winnaar. Een DJ die nog op een **andere** club vastzit met een verlopen contract wordt bij inhuren vrijgegeven; speelt die DJ elders nog echt, dan zie je **Bezet tot** (datum/tijd) in de DJ-lijst en kun je die naam niet huren tot het contract afloopt. De pool telt **20 DJ’s** (één per land); een DJ speelt nog steeds maar bij één club tegelijk.
+- Het dashboard toont een **Markt**-tegel met het aantal actieve advertenties en de categorie (bijv. gereedschap), niet interne codes zoals `player_tool`. Tik op Markt opent **Zwarte Markt â†’ Marktplaats in het contentpaneel** (zijbalk blijft staan), niet een losse fullscreen-pagina. Recente eigen acties staan in **Sessie-overzicht** (`GET /events` + SSE van alleen jouw speler), niet als vaste lijst op Home. PrivÃ©berichten (`direct_message.*`) komen niet in dat overzicht (wel live voor chat/badge). Aankomstregels tonen het land (niet een streepje).
+- Nightclub opent met een **Tonight**-kaart (crowd, stock, Restock, Boost crowd); daaronder staat **Drug Storage** in de hoofdflow (rugzak â†’ club, MAX / Alles uit rugzak). Crew, DJ, security en Ops Lab zitten onder **Geavanceerd** (zonder grijs Material-vlak; formuliervelden in noir-stijl; actieve crew-shifts als compacte donkere tegels). Vanuit Eigendommen â†’ Beheer blijft beheer **in de Empire-content** (geen fullscreen route). Restock onthoudt de laatste voorraadset en menuprijzen van die club (Tonight Restock koopt dezelfde set). Omzet blijft via de tick. Clubbaas kan **Koop van spelers** aanzetten; producenten in hetzelfde land verkopen via Inventaris **Aan club** tegen groothandelsprijs. De **wekelijkse nightclub-ranking** telt alleen clubs met echte weekomzet; â‚¬0 omzet wint niet en levert geen prijs. Was er die week nergens omzet, dan is er geen winnaar. Een DJ die nog op een **andere** club vastzit met een verlopen contract wordt bij inhuren vrijgegeven; speelt die DJ elders nog echt, dan zie je **Bezet tot** (datum/tijd) in de DJ-lijst en kun je die naam niet huren tot het contract afloopt. De pool telt **20 DJâ€™s** (Ã©Ã©n per land); een DJ speelt nog steeds maar bij Ã©Ã©n club tegelijk.
 - RLD-raids draaien op de tick bij hoge FBI-heat; een volle zaak en een actief event verhogen de kans. Straat/RLD-inkomsten worden automatisch verrekend. Een zeldzame contest kan de eigenaar van een district wisselen.
-- Publieke profielen openen **in de dashboard-content** (niet fullscreen over de hele app). Ze tonen **behaalde badges** (alle unlocked, gegroepeerd per categorie; geen locked voortgang), **event chips** (goud/zilver/brons, ook 0), een tappable crew-naam en **eigendommen** (catalogusfoto + niveau, geen land of opslag). Bij auto-showroom, motorzaak en botenhaven zie je ook de collectiestats: vitrineplekken, hoeveel modellen je hebt, totale waarde en rarity-tellingen — zonder wélke voertuigen er staan. Het oude landgoed-composiet staat niet meer op het profiel. Chips zijn prestige en te koop op Marktplaats, geen extra power. **Online** betekent dat die speler de laatste 5 minuten een echte sessie had; een world-tick of het openen van het profiel telt niet als inloggen.
+- Publieke profielen openen **in de dashboard-content** (niet fullscreen over de hele app). Ze tonen **behaalde badges** (alle unlocked, gegroepeerd per categorie; geen locked voortgang), **event chips** (goud/zilver/brons, ook 0), een tappable crew-naam en **eigendommen** (catalogusfoto + niveau, geen land of opslag). Bij auto-showroom, motorzaak en botenhaven zie je ook de collectiestats: vitrineplekken, hoeveel modellen je hebt, totale waarde en rarity-tellingen â€” zonder wÃ©lke voertuigen er staan. Het oude landgoed-composiet staat niet meer op het profiel. Chips zijn prestige en te koop op Marktplaats, geen extra power. **Online** betekent dat die speler de laatste 5 minuten een echte sessie had; een world-tick of het openen van het profiel telt niet als inloggen.
 
 ### Trade Risk Factors (legacy / algemeen)
-Onderstaande bullets beschrijven reis- en heat-risico’s voor **smokkelzendingen** en **de rugzak** (materialen, drugs, handelswaren). Huisvoorraad reist niet mee. Details per goed staan op de **handelswaren-tab** (zwarte markt) en in `docs/module-protocols/trade.md`.
+Onderstaande bullets beschrijven reis- en heat-risicoâ€™s voor **smokkelzendingen** en **de rugzak** (materialen, drugs, handelswaren). Huisvoorraad reist niet mee. Details per goed staan op de **handelswaren-tab** (zwarte markt) en in `docs/module-protocols/trade.md`.
 
 #### Police Seizure
 - **Chance**: Based on wanted level
 - **Formula**: `min(wantedLevel * 2, 80)%`
-- **Loss**: Kan (gedeeltelijke) confiscatie van lading betekenen — zie ook trade-chips voor wapens/farmaceutica.
+- **Loss**: Kan (gedeeltelijke) confiscatie van lading betekenen â€” zie ook trade-chips voor wapens/farmaceutica.
 
 #### FBI Raid (International Trade)
 - **Chance**: Based on FBI heat + goods value
@@ -732,7 +732,7 @@ Onderstaande bullets beschrijven reis- en heat-risico’s voor **smokkelzendinge
 
 #### Customs Inspection
 - **Chance**: 10% base
-- **Bribe option**: â‚¬1,000-â‚¬5,000
+- **Bribe option**: Ã¢â€šÂ¬1,000-Ã¢â€šÂ¬5,000
 - **If caught**: 50% goods loss
 
 - Houd altijd 2-3 productieronden aan output in reserve als buffer zodat je nooit zonder ammo valt tijdens PvP.
@@ -743,12 +743,12 @@ Onderstaande bullets beschrijven reis- en heat-risico’s voor **smokkelzendinge
 
 Er zijn **drie landvoertuig-omgevingen** plus vliegtuigen:
 
-- **Auto (Garage):** stelen, opslag, reparatie, verkoop/sloop. Eigen capaciteitslijn per land. De misdaad-auto kies je in Inventaris op de uitrusting, niet met Selecteer op de autokaart. Het bedrag op Verkopen is wat je krijgt (landprijs × conditie, plus tuning). Verkopen, slopen en een chop-contract claimen vragen eerst een gouden bevestigingspopup met foto; na OK is het voertuig weg. **Ops-contract** vraagt ook bevestiging maar pakt geen voertuig; dat doet **Claim contract**.
+- **Auto (Garage):** stelen, opslag, reparatie, verkoop/sloop. Eigen capaciteitslijn per land. De misdaad-auto kies je in Inventaris op de uitrusting, niet met Selecteer op de autokaart. Het bedrag op Verkopen is wat je krijgt (landprijs Ã— conditie, plus tuning). Verkopen, slopen en een chop-contract claimen vragen eerst een gouden bevestigingspopup met foto; na OK is het voertuig weg. **Ops-contract** vraagt ook bevestiging maar pakt geen voertuig; dat doet **Claim contract**.
 - **Motor (Motorstalling):** dezelfde loop als auto, maar een **aparte** catalogus, cooldown, heat/reputatie en opslaglijn. Niet hetzelfde als garage-auto's. Verkoopbedrag werkt hetzelfde als bij auto's.
 - **Boot (Marina):** havenopslag, eigen steelkans en world-cap. Verkoopbedrag werkt hetzelfde als bij auto's.
-- **Vliegtuig (Hangar):** reizen/smokkel, catalogus in `aircraft.json`. Smokkel-**vakjes** van een eigen vliegtuig zijn gelijk aan het **Cargo**-getal in de hangar (Cessna 100 → 100 tegels; met packing tot ~1000 diamanten/goud of ~500 koffie).
+- **Vliegtuig (Hangar):** reizen/smokkel, catalogus in `aircraft.json`. Smokkel-**vakjes** van een eigen vliegtuig zijn gelijk aan het **Cargo**-getal in de hangar (Cessna 100 â†’ 100 tegels; met packing tot ~1000 diamanten/goud of ~500 koffie).
 
-In **Voertuig stelen** kies je Auto / Motor / Boot via de drie lane-cards. Catalogus en diefstal-popup tonen de unieke foto per model (100%, vies of kapot), niet de gedeelde placeholder. Help & Uitleg (gouden `i`) en de Almanak-handleiding hebben voor elk van die omgevingen een eigen hoofdstuk. Admin → Voertuigen toont dezelfde vier catalogi (auto's, motoren, boten, vliegtuigen); nieuw/vies/defect als klikbare thumbs, geen bestandsnamen.
+In **Voertuig stelen** kies je Auto / Motor / Boot via de drie lane-cards. Catalogus en diefstal-popup tonen de unieke foto per model (100%, vies of kapot), niet de gedeelde placeholder. Help & Uitleg (gouden `i`) en de Almanak-handleiding hebben voor elk van die omgevingen een eigen hoofdstuk. Admin â†’ Voertuigen toont dezelfde vier catalogi (auto's, motoren, boten, vliegtuigen); nieuw/vies/defect als klikbare thumbs, geen bestandsnamen.
 
 - Bij beschadigde voertuigen in Garage / Motorstalling / Marina staat op de voertuigkaart een contextuele credits-knop voor instant repair; als reparatie nog niet loopt wordt die eerst gestart en meteen daarna afgerond. Een reparatiejob waarvan de auto al weg is (verkocht, gesloopt of in beslag) mag de garage-inventaris niet laten crashen. Hetzelfde geldt als een voertuig in transport intussen is verdwenen: de garage-lijst blijft laden.
 - Voertuigkaarten in Garage / Motorstalling / Marina tonen linksboven op de voertuigfoto een korte **zeldzaamheid-badge** (Gewoon/Ongewoon/Zeldzaam/Episch/Legendarisch).
@@ -758,42 +758,42 @@ In **Voertuig stelen** kies je Auto / Motor / Boot via de drie lane-cards. Catal
 ## Aviation
 
 ### Gates (school + licentie)
-- **School:** Aviation-track level 5 + alle certificaten (`flight_basic`, `flight_commercial`) is verplicht vóór licentie- of vliegtuigkoop.
-- **Licentie:** aparte betaalde aankoop op het Aviation-scherm (`basic` €100k / `commercial` €500k / `cargo` €1M). Zonder licentie kun je geen vliegtuig kopen, ook niet met school 5/5.
-- Web dashboard Luchtvaart toont schoolniveau, brevetten en licentie in de hangar-hero; catalogusknoppen tonen waarom een toestel nog geblokkeerd is. Op grote schermen vult de hangar de contentkolom. Citation X en Antonov gebruiken cutout-URL’s (`citation_x_cut` / `antonov_cut`) zodat oude witte studioplaten niet in de browsercache blijven.
+- **School:** Aviation-track level 5 + alle certificaten (`flight_basic`, `flight_commercial`) is verplicht vÃ³Ã³r licentie- of vliegtuigkoop.
+- **Licentie:** aparte betaalde aankoop op het Aviation-scherm (`basic` â‚¬100k / `commercial` â‚¬500k / `cargo` â‚¬1M). Zonder licentie kun je geen vliegtuig kopen, ook niet met school 5/5.
+- Web dashboard Luchtvaart toont schoolniveau, brevetten en licentie in de hangar-hero; catalogusknoppen tonen waarom een toestel nog geblokkeerd is. Op grote schermen vult de hangar de contentkolom. Citation X en Antonov gebruiken cutout-URLâ€™s (`citation_x_cut` / `antonov_cut`) zodat oude witte studioplaten niet in de browsercache blijven.
 - Hogere licentie-tier ontgrendelt zwaardere `aircraft.type`-groepen; upgrade is mogelijk.
 
 ### Aircraft Types
 
 #### Small Plane
-- **Cost**: €100,000
+- **Cost**: â‚¬100,000
 - **Capacity**: 2 passengers
 - **Range**: 1,000 km
 - **Speed**: Fast travel (instant)
 
 #### Private Jet
-- **Cost**: €500,000
+- **Cost**: â‚¬500,000
 - **Capacity**: 8 passengers
 - **Range**: 5,000 km
 - **Speed**: Very fast (instant)
 - **Luxury bonus**: +10% trade profits
 
 #### Cargo Plane
-- **Cost**: €1,000,000
+- **Cost**: â‚¬1,000,000
 - **Capacity**: 50 passengers
 - **Range**: 10,000 km
 - **Trade bonus**: 2x inventory capacity
 
 ### Hangar
-- **Tanken:** €50/L vanaf het Aviation-scherm tot `maxFuel`.
-- **Privévlucht:** 100 L, instant landwissel, dagelijkse globale vluchtcap.
+- **Tanken:** â‚¬50/L vanaf het Aviation-scherm tot `maxFuel`.
+- **PrivÃ©vlucht:** 100 L, instant landwissel, dagelijkse globale vluchtcap.
 - **Verkoop:** 50% van de aankoopprijs.
 - **Reparatie:** `repairCost` uit de catalogus als `isBroken` true is.
 
 ### Reistijdbonus op Reizen
-- Commerciële Travel landt per etappe meteen. Het beste bezeten vliegtuig verkort alleen de etappe-wacht (`3600s × (1 − bonus)`).
-- Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, cargo −30%. Niet cumulatief.
-- Zichtbaar op het Reizen-scherm als "Eigen vliegtuig: −X% Reizen-wacht per etappe". Hangar **Vliegen** is apart: instant landwissel; die −% geldt daar niet. Catalogus toont geen Snelheid-chip meer (die deed niets) en labelt cargo als smokkeltegels.
+- CommerciÃ«le Travel landt per etappe meteen. Het beste bezeten vliegtuig verkort alleen de etappe-wacht (`3600s Ã— (1 âˆ’ bonus)`).
+- Cessna âˆ’15%, King Air âˆ’25%, Citation âˆ’30%, Gulfstream âˆ’35%, cargo âˆ’30%. Niet cumulatief.
+- Zichtbaar op het Reizen-scherm als "Eigen vliegtuig: âˆ’X% Reizen-wacht per etappe". Hangar **Vliegen** is apart: instant landwissel; die âˆ’% geldt daar niet. Catalogus toont geen Snelheid-chip meer (die deed niets) en labelt cargo als smokkeltegels.
 - Etappes overslaan: Vliegen in de hangar (100 L), niet het Reizen-scherm.
 
 ---
@@ -802,28 +802,28 @@ In **Voertuig stelen** kies je Auto / Motor / Boot via de drie lane-cards. Catal
 
 - Casino-games openen binnen de bestaande game-content (dashboard shell) en niet als losse fullpage route buiten de hoofdlayout. **Casino beheer** (eigenaar) opent als **modal** boven het casino-hubblad (`showDialog` + `CasinoManagementScreen` met `embeddedInDialog`), geen tweede fullpage-route meer.
 - Lege-land casino's krijgen een **NPC-uitbater** zodat de zaak openblijft (spelen kan). Ze blijven **te koop** tegen de vraagprijs; een echte speler-eigenaar blokkeert aankoop wel. Verlies je het casino (failliet, hitlist, admin-reset), dan neemt een NPC het meteen over.
-- Admin → spelerdetail → Overzicht toont onder **Casino & munitiefabriek** welk casino de speler bezit (land, verdieping, bankroll), uit `casino_ownerships` — niet alleen uit eigendommen of casino-transacties.
+- Admin â†’ spelerdetail â†’ Overzicht toont onder **Casino & munitiefabriek** welk casino de speler bezit (land, verdieping, bankroll), uit `casino_ownerships` â€” niet alleen uit eigendommen of casino-transacties.
 - Casino hub en closed state moeten mobiel/tablet/desktop een robuuste verticale scrollflow houden.
-- Casino minigames moeten mobiel/tablet/desktop in Ã©Ã©n viewport speelbaar blijven: kernactie, inzet en status zichtbaar zonder verplichte verticale scroll.
+- Casino minigames moeten mobiel/tablet/desktop in ÃƒÂ©ÃƒÂ©n viewport speelbaar blijven: kernactie, inzet en status zichtbaar zonder verplichte verticale scroll.
 
 ### Games Available
 
 #### Blackjack
-- **Bet range**: â‚¬100-â‚¬10,000
+- **Bet range**: Ã¢â€šÂ¬100-Ã¢â€šÂ¬10,000
 - **House edge**: ~1% (with perfect play)
-- **Rules**: Standard blackjack — Hit or Stand after the deal
+- **Rules**: Standard blackjack â€” Hit or Stand after the deal
 - **Cards**: Large, sharp table cards so rank and suit stay readable; extra hits overlap instead of shrinking
 - **Dealer**: 1 card up, 1 card down until you stand; then stands on 17 (including soft 17)
-- **Payout**: 2× bet on win, stake back on push
+- **Payout**: 2Ã— bet on win, stake back on push
 
 #### Slots
-- **Bet range**: â‚¬10-â‚¬1,000
-- **Jackpot**: Progressive (starts â‚¬10,000)
+- **Bet range**: Ã¢â€šÂ¬10-Ã¢â€šÂ¬1,000
+- **Jackpot**: Progressive (starts Ã¢â€šÂ¬10,000)
 - **Payout**: 75-95% RTP
 - **Bonuses**: Free spins mogelijk
 
 #### Roulette
-- **Bet range**: â‚¬50-â‚¬5,000
+- **Bet range**: Ã¢â€šÂ¬50-Ã¢â€šÂ¬5,000
 - **Bet types**: 
   - Single number (35:1)
   - Red/Black (1:1)
@@ -831,7 +831,7 @@ In **Voertuig stelen** kies je Auto / Motor / Boot via de drie lane-cards. Catal
   - Column (2:1)
 
 ### Casino Limits
-- **Maximum win per session**: â‚¬100,000
+- **Maximum win per session**: Ã¢â€šÂ¬100,000
 - **Maximum loss per session**: Je totale geld
 - **Cooldown**: Geen cooldown
 - **Cheating detection**: Banned bij verdachte patronen
@@ -843,27 +843,27 @@ In **Voertuig stelen** kies je Auto / Motor / Boot via de drie lane-cards. Catal
 ### Weapon Types
 
 #### Pistol
-- **Cost**: â‚¬500
+- **Cost**: Ã¢â€šÂ¬500
 - **Ammo capacity**: 15 rounds
 - **Damage**: Low
 - **Crime bonus**: +5% armed robbery success
 
 #### Shotgun
-- **Cost**: â‚¬1,500
+- **Cost**: Ã¢â€šÂ¬1,500
 - **Ammo capacity**: 8 rounds
 - **Damage**: High
 - **Crime bonus**: +10% bank robbery success
 
 #### Rifle
-- **Cost**: â‚¬3,000
+- **Cost**: Ã¢â€šÂ¬3,000
 - **Ammo capacity**: 30 rounds
 - **Damage**: Very high
 - **Crime bonus**: +15% heist success
 
 ### Ammo System
-- **Pistol ammo**: â‚¬10 per round
-- **Shotgun ammo**: â‚¬25 per round
-- **Rifle ammo**: â‚¬50 per round
+- **Pistol ammo**: Ã¢â€šÂ¬10 per round
+- **Shotgun ammo**: Ã¢â€šÂ¬25 per round
+- **Rifle ammo**: Ã¢â€šÂ¬50 per round
 - **Auto-consume**: Gebruikt tijdens gewapende crimes
 - **Restock**: Kopen bij weapon shop
 
@@ -871,42 +871,42 @@ In **Voertuig stelen** kies je Auto / Motor / Boot via de drie lane-cards. Catal
 
 ## Hitlist & Moordslooptochten
 
-- Op web-Moordlijst blijft de statusbalk apart boven de content. In de kaart staan open contracten in een noir-header (aantal, minimale bounty, beveiliging) met donkere contractkaarten; geen extra paginatitel “Moordlijst”. Elke rij: grotere avatar (zelfde rijhoogte), naam, bounty, tijd, Moord, daarna de dropdown voor details.
+- Op web-Moordlijst blijft de statusbalk apart boven de content. In de kaart staan open contracten in een noir-header (aantal, minimale bounty, beveiliging) met donkere contractkaarten; geen extra paginatitel â€œMoordlijstâ€. Elke rij: grotere avatar (zelfde rijhoogte), naam, bounty, tijd, Moord, daarna de dropdown voor details.
 
 ### Basismechanica
 
 **Hit Plaatsen:**
-- Betaal bounty (â‚¬50K - â‚¬50M)
+- Betaal bounty (Ã¢â€šÂ¬50K - Ã¢â€šÂ¬50M)
 - Geld wordt onmiddellijk afgetrokken
 - Target is voortaan "HUNTED"
 - Hit verschijnt op globale lijst
 
 **Detective Inhuren:**
-- Kosten: â‚¬25K (24h), â‚¬50K (6h), â‚¬100K (1h)
+- Kosten: Ã¢â€šÂ¬25K (24h), Ã¢â€šÂ¬50K (6h), Ã¢â€šÂ¬100K (1h)
 - Je leert target's land + regio
 - Geldig 3 uur lang
 - Kan niet twee tegelijk op zelfde target
 
 **Murder Attempt:**
 - Beide spelers moeten in hetzelfde land zijn
-- Combat-based (weapon + ammo â†’ damage)
+- Combat-based (weapon + ammo Ã¢â€ â€™ damage)
 - Attacker Power vs Target Defense
 - Winner krijgt bounty, loser krijgt -5 reputation
 
 ### Counter-Bounty System
 
 Target kan **hoger bedrag** plaatsen:
-- Minimaal: Original +â‚¬10K
+- Minimaal: Original +Ã¢â€šÂ¬10K
 - Effect: **Attacker en defender verwisselen rollen!**
 - Originele plaatser is NU het doelwit
-- Kan chain-escalate (bijv. â‚¬100K â†’ â‚¬200K â†’ â‚¬300K)
+- Kan chain-escalate (bijv. Ã¢â€šÂ¬100K Ã¢â€ â€™ Ã¢â€šÂ¬200K Ã¢â€ â€™ Ã¢â€šÂ¬300K)
 
 **Voorbeeld:**
 ```
-Alice: â‚¬200K hit op Bob
-Bob: â‚¬300K counter-hit
+Alice: Ã¢â€šÂ¬200K hit op Bob
+Bob: Ã¢â€šÂ¬300K counter-hit
 
-â†’ NU is Alice het doelwit (â‚¬300K bounty)
+Ã¢â€ â€™ NU is Alice het doelwit (Ã¢â€šÂ¬300K bounty)
 ```
 
 ### Bounty Escalation
@@ -924,10 +924,10 @@ Bob: â‚¬300K counter-hit
 - Dagloon per type; bij non-payment lopen ze allemaal weg
 
 **Armor Types**
-- Steekvest, kogelvrij, premium, AP-plaatvest (Zwarte Markt → Beveiliging)
+- Steekvest, kogelvrij, premium, AP-plaatvest (Zwarte Markt â†’ Beveiliging)
 - Slijtage na aanvallen; repareren of inruilen bij upgrade
 
-**Premium Protection (Betaalde Dienst - â‚¬4.99 voor 24 uur)**
+**Premium Protection (Betaalde Dienst - Ã¢â€šÂ¬4.99 voor 24 uur)**
 - ENKEL MET ECHT GELD (niet in-game geld!)
 - Volledige immuniteit tegen aanvallen
 - Toon "PREMIUM PROTECTED" indicator in profiel
@@ -935,12 +935,12 @@ Bob: â‚¬300K counter-hit
 - 7-dag cooldown tussen purchases
 - 100% refund als niet gebruikt
 
-**Hit Insurance (â‚¬200K/maand)**
+**Hit Insurance (Ã¢â€šÂ¬200K/maand)**
 - Auto-payout van bounty (jij sterft niet)
 - Insurance betaalt attacker (ik overleef)
 - Max 3 maanden vooruitbetaald
 
-**Witness Protection (â‚¬300K voor 48h)**
+**Witness Protection (Ã¢â€šÂ¬300K voor 48h)**
 - Verdwijn voor 48 uur
 - Niet aanvalbaar
 - Kan stilletjes geld verdienen
@@ -949,7 +949,7 @@ Bob: â‚¬300K counter-hit
 ### Crew Hits
 
 **Hoe werkt:**
-- Crew A zet hit op Crew B (â‚¬500K - â‚¬50M)
+- Crew A zet hit op Crew B (Ã¢â€šÂ¬500K - Ã¢â€šÂ¬50M)
 - Target: Heel crew (alle members)
 - Completion: 3+ members dood OF leader dood
 - Bounty: Verdeeld onder killers
@@ -957,7 +957,7 @@ Bob: â‚¬300K counter-hit
 ### Aanval Mislukking Penalties
 
 **Attacker loses:**
-- â‚¬25K herstelskosten
+- Ã¢â€šÂ¬25K herstelskosten
 - -5 reputatie
 - Target krijgt notification wie aanviel
 
@@ -977,35 +977,35 @@ Bob: â‚¬300K counter-hit
 
 ### Bodyguard System
 - **Limiet**: 10 lijfwachten in totaal (bestaande teams boven de limiet blijven, maar je kunt niet bijhuren tot je eronder zit)
-- **Straatwacht**: €6.000 aanschaf, +8 defense, €4.000/dag
-- **Standaard**: €10.000 aanschaf, +10 defense, €10.000/dag
-- **Elite**: €35.000 aanschaf, +22 defense, €18.000/dag
+- **Straatwacht**: â‚¬6.000 aanschaf, +8 defense, â‚¬4.000/dag
+- **Standaard**: â‚¬10.000 aanschaf, +10 defense, â‚¬10.000/dag
+- **Elite**: â‚¬35.000 aanschaf, +22 defense, â‚¬18.000/dag
 - **Ontslaan**: per type, altijd mogelijk
 - **Maintenance**: gezamenlijk dagloon elke 24 uur; bij non-payment lopen alle lijfwachten weg
 
 ### Armor
-- Eén gedragen vest. Extra vesten liggen in huisopslag.
-- Shop: steekvest (€7.500, +22, alleen steek), kogelvrij (€50.000, +100), premium (€125.000, +155), AP-plaatvest (€280.000, +145, steek + kogels + AP).
+- EÃ©n gedragen vest. Extra vesten liggen in huisopslag.
+- Shop: steekvest (â‚¬7.500, +22, alleen steek), kogelvrij (â‚¬50.000, +100), premium (â‚¬125.000, +155), AP-plaatvest (â‚¬280.000, +145, steek + kogels + AP).
 - Conditie daalt na aanvallen; op 0% verdwijnt het vest.
-- **Repareren**: 50% van de vestprijs × ontbrekende conditie.
-- **Inruil**: bij aankoop van een ander vest 40% van de oude prijs × huidige conditie, geen cash-terugbetaling.
+- **Repareren**: 50% van de vestprijs Ã— ontbrekende conditie.
+- **Inruil**: bij aankoop van een ander vest 40% van de oude prijs Ã— huidige conditie, geen cash-terugbetaling.
 
 ### Waar vest en lijfwachten meetellen
-- **Moordlijst**: type-match vest + lijfwacht-defense in de win-kans. Een mislukte aanslag annuleert het contract niet: beide kanten verliezen lijfwachten (elite eerst, ongeveer een kwart tot de helft) en HP (12–50, floor 1); vesten slijten. De aanvaller krijgt minstens 40% return-vuur. Bij een kill loopt de aanvaller lichter af. Na 10 minuten kan iedereen opnieuw proberen.
+- **Moordlijst**: type-match vest + lijfwacht-defense in de win-kans. Een mislukte aanslag annuleert het contract niet: beide kanten verliezen lijfwachten (elite eerst, ongeveer een kwart tot de helft) en HP (12â€“50, floor 1); vesten slijten. De aanvaller krijgt minstens 40% return-vuur. Bij een kill loopt de aanvaller lichter af. Na 10 minuten kan iedereen opnieuw proberen.
 - **Detective-onderzoek**: lijfwachten vertroebelen of blokkeren het rapport (Snel is zwak). Langzaam lekt altijd het land, ook bij een vol elite-team. Wie 48 uur niet speelt, verliest een afschermingsstap; na 7 dagen is het rapport volledig. Na een moord verlagen lijfwachten van de dader de kans dat de moordzaak hen noemt (minimum 20%), tot ze lang offline zijn.
-- **Crimes**: elke poging doet 5–15 HP; vest en lijfwachten kappen dat tot max ~55% minder. Geen extra slagingskans.
-- **Niet**: territorium, crew-oorlog, nightclub of rosse buurt — die hebben eigen beveiliging.
+- **Crimes**: elke poging doet 5â€“15 HP; vest en lijfwachten kappen dat tot max ~55% minder. Geen extra slagingskans.
+- **Niet**: territorium, crew-oorlog, nightclub of rosse buurt â€” die hebben eigen beveiliging.
 
 ### Protection Modes
 
 #### Safe House
-- **Cost**: Gratis 1h, â‚¬10K/h daarna
+- **Cost**: Gratis 1h, Ã¢â€šÂ¬10K/h daarna
 - **Effect**: Veilig (niet aanvalbaar), maar can't do crimes
 - **Max**: 6h per dag
 - **Use case**: Hide when hunted + pasief geld verdienen
 
 #### Premium Protection (Betaalde Dienst)
-- **Cost**: â‚¬4.99 (ECHT GELD - betaalde dienst, niet in-game geld!)
+- **Cost**: Ã¢â€šÂ¬4.99 (ECHT GELD - betaalde dienst, niet in-game geld!)
 - **Effect**: IMMUNE tegen ALLE aanvallen
 - **Duration**: 24 uur
 - **Cooldown**: 7 dagen tussen purchases
@@ -1013,14 +1013,14 @@ Bob: â‚¬300K counter-hit
 - **Use case**: Emergency escape bij critical hits
 
 #### Hit Insurance
-- **Cost**: â‚¬200,000/maand
+- **Cost**: Ã¢â€šÂ¬200,000/maand
 - **Auto-payout**: Insurance betaalt bounty
 - **Benefit**: Jij sterft niet, speler bevonden betaald
 - **Claim**: Unlimited per maand
 - **Use case**: Passive protection zonder timing
 
 #### Witness Protection
-- **Cost**: â‚¬300,000 voor 48h
+- **Cost**: Ã¢â€šÂ¬300,000 voor 48h
 - **Effect**: Verdwijn uit game (offline mode)
 - **Activity**: Stillete money earn (jobs, properties)
 - **Visibility**: Naam hidden, kunnen niet aangevallen
@@ -1029,19 +1029,19 @@ Bob: â‚¬300K counter-hit
 ### Recommended Strategy
 
 **Casual Player (Low Bounty Risk):**
-- Bodyguards: 2-3 (â‚¬20K-â‚¬30K)
+- Bodyguards: 2-3 (Ã¢â€šÂ¬20K-Ã¢â€šÂ¬30K)
 - Kevlar Armor: 1
 - Safe House: When hunted
 
 **Mid-Tier Player (Medium Bounty Risk):**
-- Bodyguards: 5-10 (â‚¬50K-â‚¬100K)
-- Combat Armor (â‚¬50K)
-- Hit Insurance: â‚¬200K/month
+- Bodyguards: 5-10 (Ã¢â€šÂ¬50K-Ã¢â€šÂ¬100K)
+- Combat Armor (Ã¢â€šÂ¬50K)
+- Hit Insurance: Ã¢â€šÂ¬200K/month
 - Premium Protection: When needed
 
 **High-Stakes Player (Mega Bounty Risk):**
-- Bodyguards: 20+ (â‚¬200K+)
-- Tactical Armor (â‚¬100K)
+- Bodyguards: 20+ (Ã¢â€šÂ¬200K+)
+- Tactical Armor (Ã¢â€šÂ¬100K)
 - Hit Insurance + Witness Protection
 - Premium Protection on standby
 
@@ -1052,7 +1052,7 @@ Bob: â‚¬300K counter-hit
 ### Beginner Strategy
 1. **Eerste misdaad**: volg de Start-kaart; cash en XP komen meteen
 2. **Claim je dagdoel** of doe 1 job; houd je UTC-streak vast
-3. **Join of maak een crew** via de open wervingslijst (auto-accept = één klik)
+3. **Join of maak een crew** via de open wervingslijst (auto-accept = Ã©Ã©n klik)
 4. **Monitor health**: onder 70 HP daalt je misdaad-slagingskans; ziekenhuis is de snelle reset. Emergency room alleen bij < 10 HP (zelf indrukken). Bij 0 HP lig je 3 uur op de IC.
 5. **Avoid jail**: Laag wanted level houden
 6. **Property/auto** pas vanaf rang 5; niet het eerste-uur pad
@@ -1072,11 +1072,11 @@ Bob: â‚¬300K counter-hit
 5. **Risk management**: Balance crimes vs jail time
 
 ### Avoid Deze Fouten
-1. âŒ **Alle geld cash houden**: Contant cash is kwetsbaar bij arrestatie; gebruik de bank als veilige opslag
-2. âŒ **Health negeren**: ICU kost 3 uur lockout
-3. âŒ **Te hoog wanted level**: 90% arrest chance bij 18+
-4. âŒ **Geen cooldowns checken**: Verspilde clicks
-5. âŒ **Solo high-level heists**: Crew needed voor succes
+1. Ã¢ÂÅ’ **Alle geld cash houden**: Contant cash is kwetsbaar bij arrestatie; gebruik de bank als veilige opslag
+2. Ã¢ÂÅ’ **Health negeren**: ICU kost 3 uur lockout
+3. Ã¢ÂÅ’ **Te hoog wanted level**: 90% arrest chance bij 18+
+4. Ã¢ÂÅ’ **Geen cooldowns checken**: Verspilde clicks
+5. Ã¢ÂÅ’ **Solo high-level heists**: Crew needed voor succes
 
 ---
 
@@ -1086,12 +1086,12 @@ Bob: â‚¬300K counter-hit
 
 - Spelers hebben **Winkel** direct onder Dashboard in het zijmenu; web/PWA checkouts landen daarna terug in die ingesloten game-sectie.
 - VIP-tab: Player VIP, Crew VIP, Event Pass, status. Credits-tab: creditbundels en in-game cashpakketten. Tegels om wachttijden te verkorten staan hier niet; die blijven op het scherm waar je wacht.
-- Player VIP is persoonlijk. Crew VIP werkt alleen als je in een crew zit: VIP-HQ, bijgebouwen boven 10, +10% oorlogspunten en Schild voor de hele crew. Ieder lid kan euro's in de Crew VIP-pot doneren op de **Crew**-pagina tot een maand vol is, of één lid neemt het maandabonnement in Winkel. In-game crew-bank koopt geen Crew VIP.
+- Player VIP is persoonlijk. Crew VIP werkt alleen als je in een crew zit: VIP-HQ, bijgebouwen boven 10, +10% oorlogspunten en Schild voor de hele crew. Ieder lid kan euro's in de Crew VIP-pot doneren op de **Crew**-pagina tot een maand vol is, of Ã©Ã©n lid neemt het maandabonnement in Winkel. In-game crew-bank koopt geen Crew VIP.
 - Cosmetische credit-items (zoals het gouden landgoedhek) geven geen combat-power.
 - VIP- en credit-checkouts openen de betaalpagina en keren daarna terug naar **Winkel** in de game-shell, zodat de speler direct de uitkomst, vernieuwde VIP-status en bijgewerkte credits ziet.
-- Creditbundels openen eerst een aantalkeuze (1–20 pakketten). Je betaalt het totaal in één checkout; Event Pass en VIP blijven één stuk.
+- Creditbundels openen eerst een aantalkeuze (1â€“20 pakketten). Je betaalt het totaal in Ã©Ã©n checkout; Event Pass en VIP blijven Ã©Ã©n stuk.
 - Credit-items gebruiken wallet-credits in plaats van euro's. Admin beheert live welke items actief zijn, wat ze kosten en welk effecttype ze gebruiken.
-- Mogelijke credit-effecten zijn onder meer cash wissel (25 credits → €2.000), hit protection, cooldown resets, event boosts en context-gebonden voertuigacties. Euro-cashpakketten blijven de betere cash-per-euro.
+- Mogelijke credit-effecten zijn onder meer cash wissel (25 credits â†’ â‚¬2.000), hit protection, cooldown resets, event boosts en context-gebonden voertuigacties. Euro-cashpakketten blijven de betere cash-per-euro.
 - VIP-prijzen en credit-kosten zijn runtime-config/admin-gestuurd en dus niet langer vaste clientwaarden.
 - Cooldown reset-items gebruiken een dynamische prijs (`effectiveCreditCost`): hoe waardevoller de actie en hoe meer resterende cooldown, hoe hoger de credit-kost.
 - Die dynamische prijs moet wel in balans blijven: korte cooldowns krijgen een lagere, niet-straffende credit-kost en langere/high-value acties schalen geleidelijk op.
@@ -1100,10 +1100,10 @@ Bob: â‚¬300K counter-hit
 - Player VIP krijgt wekelijks 100 premium credits (ledger-traceerbaar via credit-transacties).
 - Admin kan een speler **volledig resetten** (gameplay/progressie wissen). **Account, VIP-abonnement/auto-renew en restant gekochte creditpacks blijven behouden**; wekelijkse VIP-credits, event-credits en vault-prijzen tellen niet als betaald en verdwijnen. Ledger en betaalhistorie blijven staan.
 - Het adminpanel (https://admin.themobstate.com) gebruikt hetzelfde noir/goud-uiterlijk als de game. Tabs delen `AdminPageIntro`/KPI-chrome; **Ops lab** start cron-jobs en (SUPER_ADMIN) event-chips; NPC-tab kan botten pauzeren/activeren en allemaal simuleren. Sessie wordt bij laden gecontroleerd (`/admin/auth/me`, max ~8s); bij timeout of ongeldige token verschijnt het loginformulier, het dashboard start niet eerder. Admin-accounts (tab **Admins**) zijn alleen voor dit panel, niet voor het spel; gebruikersnamen zonder spatie; SUPER_ADMIN kan wachtwoorden resetten en extra accounts verwijderen (niet het eigen account, niet de laatste SUPER_ADMIN).
-- Admin → spelerdetail → **VIP-dagen toekennen** (1–365) verlengt Player VIP zonder het hele beheerformulier. Een bestaande VIP-periode wordt doorgeteld; dit is geen credit- of euro-aankoop.
-- Admin → spelerdetail → Beheer: **Crew VIP toekennen** (zelfde dagenveld) verlengt VIP van de huidige crew van die speler; **Event maandpas** ontgrendelt de premium Event Pass-track van de lopende maand.
-- Admin → spelerdetail → Overzicht: kaart **Casino & munitiefabriek** toont bezit + land (casino uit ownership, munitiefabriek uit `ammo_factories`), naast de bestaande eigendommen-lijst.
-- Kill-reset met actieve Player VIP: contant geld reset naar â‚¬500.000, rank wordt gehalveerd, bank/crypto/opleidingen/achievements blijven behouden; assets, inventory en drugsvoorraad worden gewist.
+- Admin â†’ spelerdetail â†’ **VIP-dagen toekennen** (1â€“365) verlengt Player VIP zonder het hele beheerformulier. Een bestaande VIP-periode wordt doorgeteld; dit is geen credit- of euro-aankoop.
+- Admin â†’ spelerdetail â†’ Beheer: **Crew VIP toekennen** (zelfde dagenveld) verlengt VIP van de huidige crew van die speler; **Event maandpas** ontgrendelt de premium Event Pass-track van de lopende maand.
+- Admin â†’ spelerdetail â†’ Overzicht: kaart **Casino & munitiefabriek** toont bezit + land (casino uit ownership, munitiefabriek uit `ammo_factories`), naast de bestaande eigendommen-lijst.
+- Kill-reset met actieve Player VIP: contant geld reset naar Ã¢â€šÂ¬500.000, rank wordt gehalveerd, bank/crypto/opleidingen/achievements blijven behouden; assets, inventory en drugsvoorraad worden gewist.
 - Kill-reset zonder actieve Player VIP: volledige progression reset naar baseline (incl. bank/crypto/opleidingen/achievements).
 - Op ondersteunde timeout-schermen (crime, jobs, school, voertuig-, motor- en bootdiefstal) staat een directe `versnel met credits` knop, zodat spelers een actieve cooldown contextueel kunnen resetten zonder eerst naar `Premium & Credits` te navigeren. Die overlays (plus reizen en hoger beroep) gebruiken noir/goud-stills (`/images/cooldown_*.png`).
 - Voor school geldt: een credit-speedup reset alleen de cooldowntimer; XP wordt verdiend bij de trainingsactie zelf. Na reset start je direct een nieuwe training voor extra XP.
@@ -1116,7 +1116,7 @@ Bob: â‚¬300K counter-hit
 - Vehicle Ops bevat nu naast hotspot/crew/chop ook:
   - Counter-Intercept missies (retaliatie op recente intercepts)
   - Crew Matchmaking met seizoensladder per voertuigtype
-  - Country modifiers (inflatie/corruptie/havenstaking) die payout en risico dynamisch beïnvloeden
+  - Country modifiers (inflatie/corruptie/havenstaking) die payout en risico dynamisch beÃ¯nvloeden
   - Contracts board met standard/high-risk contracts en weekly legendary contracts
   - Insurance claim review + dispute flow (contest met bonus of afwijzingsrisico)
 - Alle flows blijven soft-capped via cooldown + risk loops (geen hard daily cap).
@@ -1125,16 +1125,16 @@ Bob: â‚¬300K counter-hit
 - Ops-paneel toont live cooldown countdowns per actie en ververst deze automatisch.
 - Op mobiel staat het Ops-paneel standaard ingeklapt zodat je sneller bij je voertuigen komt; je kunt het openklappen via de pijl rechtsboven in het blok.
 - Vehicle Ops (bij Voertuig Stelen) bestaat uit 6 extra opties: Hotspot run, Parts market, Crew op, Heat, Chop contract en Politiepatroon. Deze zijn bedoeld als side-loops naast stelen, met duidelijke feedback als iets niet kan (cooldown, crew vereist, regionale lock). **Claim contract** en **Koop onderdelen** schrijven echt cash/onderdelen weg; een interne serverfout mag die knoppen niet meer als generieke mislukking tonen. **Claim contract** toont eerst welk voertuig verdwijnt; **Ops-contract** bevestigt de klus zonder een voertuig in te nemen.
-- **Straatdoel:** één Steel-knop per type. Je faalt of slaagt eerst op een **straatauto** (common/uncommon). Rare kan vanaf rank 7 als klein lot, epic vanaf 13, legendary pas vanaf 22. Een duurdere auto verschijnt alleen ná een geslaagde straatdiefstal plus een tweede moeilijke worp.
-- **Boot stelen:** boten hebben in de content hogere euro-`baseValue`-banden dan veel startersauto's, waardoor dezelfde stal-successcurve ze zonder correctie structureel **strenger** raakt. De server past daarom een beperkte boot-ease toe na heat/politiepatroon (`vehicleService.stealVehicle`; details in `docs/module-protocols/balance-economy.md` en `steel_voertuig.md`). **Arrest** na een mislukte poging: eigen catch-worp (~20–55% afhankelijk van moeilijkheid/heat, 10–50 min) óf `checkArrest` op bestaand wanted (`POLICE_RATIO`). Wanted bij stelen is 0–100 (niet meer vastgezet op 5). “Gefaald” is dus niet automatisch cel, maar herhaald stelen moet wél naar de gevangenis kunnen.
+- **Straatdoel:** Ã©Ã©n Steel-knop per type. Je faalt of slaagt eerst op een **straatauto** (common/uncommon). Rare kan vanaf rank 7 als klein lot, epic vanaf 13, legendary pas vanaf 22. Een duurdere auto verschijnt alleen nÃ¡ een geslaagde straatdiefstal plus een tweede moeilijke worp.
+- **Boot stelen:** boten hebben in de content hogere euro-`baseValue`-banden dan veel startersauto's, waardoor dezelfde stal-successcurve ze zonder correctie structureel **strenger** raakt. De server past daarom een beperkte boot-ease toe na heat/politiepatroon (`vehicleService.stealVehicle`; details in `docs/module-protocols/balance-economy.md` en `steel_voertuig.md`). **Arrest** na een mislukte poging: eigen catch-worp (~20â€“55% afhankelijk van moeilijkheid/heat, 10â€“50 min) Ã³f `checkArrest` op bestaand wanted (`POLICE_RATIO`). Wanted bij stelen is 0â€“100 (niet meer vastgezet op 5). â€œGefaaldâ€ is dus niet automatisch cel, maar herhaald stelen moet wÃ©l naar de gevangenis kunnen.
 - Cooldowns worden in Vehicle Ops enkel in de actiekaarten als primaire bron getoond om dubbele info en visuele ruis te vermijden.
-- De gecombineerde Vehicle Heist-pagina gebruikt één primaire categorie-selector (Auto/Motor/Boot lane cards) en toont geen tweede redundante tab-rij of chips met dezelfde categorieën onder de foto-hero.
-- **Garage auto vs motor**: opslag-upgrades gelden **alleen voor het land waar je nu bent** (Frankrijk-upgrade verhoogt Nederland niet) en zijn daarbinnen **onafhankelijke lijnen** (`garageTrack`: auto of motor); een autoupgrade verhoogt niet de motorcapaciteit. Upgrades geven extra **slots**, geen hogere steelkans. Slot-upgrades kosten meer cash dan vroeger (auto/motor tot €1,4M op topniveau; marina tot €1,8M) zodat stelen + verkopen niet oneindig schaalt zonder investering. Help (`helpTopicGarageHow` / `helpTopicMotorHow` / marina How / gouden `i` op Voertuig stelen) moet dit zo uitleggen. Motor-startcapaciteit is een eigen basis (met eigen upgrade-teller); bestaande spelers krijgen bij deploy een **motor-track** die de oude afgeleide capaciteit minimaal behoudt. Upgrades zijn daarnaast **rank-gated**: als je rank te laag is zie je een lock/tooltip en kan de upgrade niet. Bij **upgrade niveau 5** verdwijnt de upgrade-knop (garage/motorstalling/marina en Vehicle Heist-lanes). Server-start voegt zo nodig de DB-kolom `track` toe en vult motor-tracks eenmalig bij (idempotent).
-- Per categoriekaart zijn quick actions voor stelen en opslag-upgrade direct beschikbaar; bij een actieve **theft-cooldown** toont de stelen-knop een **live resttijd** (geen statische "Steel …"-tekst) en zit het **bliksem-icoon om met credits te versnellen in dezelfde omlijnde control** naast die timer (geen losse knop ernaast; web-hit-testing blijft betrouwbaar). De bevestigingsmodal toont **werkelijke creditkosten en saldo**; als versnellen niet mag of te duur is, blijft de modal zichtbaar met uitleg en een uitgeschakelde bevestiging (“niet meer tonen” en weer aanzetten via Instellingen). Geen full-screen cooldown-overlay meer voor deze flow. Tijdens een lopende stel-actie is de knop kort onbereikbaar. De server levert daarvoor per type `laneTheftCooldowns` via `GET /vehicles/ops/intelligence` (embedded garage/marina volgen hetzelfde label-gedrag op de stelen-knop). Wanneer de server na een stelpoging een theft-cooldown zet, stuurt `POST /vehicles/steal/:id` in `params` altijd `cooldownRemainingSeconds` mee, zodat de client de resttijd direct toont. Na een credit-reset van die theft-cooldown wist de client meteen de lokale last-attempt timer en gecachte laneTheftCooldowns (clearLiveTheftCooldown), anders blijft stelen in de UI geblokkeerd terwijl de server al vrij is. Voertuig-Heist toasts in dit flow gebruiken rechtsboven, niet onderaan het scherm. De client bewaart de server-fouttekst **direct na** de steal-call vóór `fetchInventory` / ops-intel verversing, omdat die calls `provider.error` wissen en anders alleen een generieke "stelen mislukt"-tekst zichtbaar is.
-- Beschikbaarheid van het voertuig-catalogus per land wordt genormaliseerd op lowercase landcodes; boten zonder expliciete `availableInCountries` lijst gelden als “globaal beschikbaar” (behalve tijdens regionale havenblokkade/blacklist events). Spawn-tags die geen reis-/Territory-land zijn (`monaco` → Frankrijk, `austria` → Duitsland, `united_kingdom` → `uk`) worden naar een echt speelbaar land gemapt zodat Almanak en stelen geen spooklanden tonen.
-- Tijdens regionale blacklist events (zoals **Haven Lockdown**) kan een segment tijdelijk geen targets hebben; de UI toont dan de **reden + resterende tijd** in plaats van “geen voertuigen beschikbaar”.
+- De gecombineerde Vehicle Heist-pagina gebruikt Ã©Ã©n primaire categorie-selector (Auto/Motor/Boot lane cards) en toont geen tweede redundante tab-rij of chips met dezelfde categorieÃ«n onder de foto-hero.
+- **Garage auto vs motor**: opslag-upgrades gelden **alleen voor het land waar je nu bent** (Frankrijk-upgrade verhoogt Nederland niet) en zijn daarbinnen **onafhankelijke lijnen** (`garageTrack`: auto of motor); een autoupgrade verhoogt niet de motorcapaciteit. Upgrades geven extra **slots**, geen hogere steelkans. Slot-upgrades kosten meer cash dan vroeger (auto/motor tot â‚¬1,4M op topniveau; marina tot â‚¬1,8M) zodat stelen + verkopen niet oneindig schaalt zonder investering. Help (`helpTopicGarageHow` / `helpTopicMotorHow` / marina How / gouden `i` op Voertuig stelen) moet dit zo uitleggen. Motor-startcapaciteit is een eigen basis (met eigen upgrade-teller); bestaande spelers krijgen bij deploy een **motor-track** die de oude afgeleide capaciteit minimaal behoudt. Upgrades zijn daarnaast **rank-gated**: als je rank te laag is zie je een lock/tooltip en kan de upgrade niet. Bij **upgrade niveau 5** verdwijnt de upgrade-knop (garage/motorstalling/marina en Vehicle Heist-lanes). Server-start voegt zo nodig de DB-kolom `track` toe en vult motor-tracks eenmalig bij (idempotent).
+- Per categoriekaart zijn quick actions voor stelen en opslag-upgrade direct beschikbaar; bij een actieve **theft-cooldown** toont de stelen-knop een **live resttijd** (geen statische "Steel â€¦"-tekst) en zit het **bliksem-icoon om met credits te versnellen in dezelfde omlijnde control** naast die timer (geen losse knop ernaast; web-hit-testing blijft betrouwbaar). De bevestigingsmodal toont **werkelijke creditkosten en saldo**; als versnellen niet mag of te duur is, blijft de modal zichtbaar met uitleg en een uitgeschakelde bevestiging (â€œniet meer tonenâ€ en weer aanzetten via Instellingen). Geen full-screen cooldown-overlay meer voor deze flow. Tijdens een lopende stel-actie is de knop kort onbereikbaar. De server levert daarvoor per type `laneTheftCooldowns` via `GET /vehicles/ops/intelligence` (embedded garage/marina volgen hetzelfde label-gedrag op de stelen-knop). Wanneer de server na een stelpoging een theft-cooldown zet, stuurt `POST /vehicles/steal/:id` in `params` altijd `cooldownRemainingSeconds` mee, zodat de client de resttijd direct toont. Na een credit-reset van die theft-cooldown wist de client meteen de lokale last-attempt timer en gecachte laneTheftCooldowns (clearLiveTheftCooldown), anders blijft stelen in de UI geblokkeerd terwijl de server al vrij is. Voertuig-Heist toasts in dit flow gebruiken rechtsboven, niet onderaan het scherm. De client bewaart de server-fouttekst **direct na** de steal-call vÃ³Ã³r `fetchInventory` / ops-intel verversing, omdat die calls `provider.error` wissen en anders alleen een generieke "stelen mislukt"-tekst zichtbaar is.
+- Beschikbaarheid van het voertuig-catalogus per land wordt genormaliseerd op lowercase landcodes; boten zonder expliciete `availableInCountries` lijst gelden als â€œglobaal beschikbaarâ€ (behalve tijdens regionale havenblokkade/blacklist events). Spawn-tags die geen reis-/Territory-land zijn (`monaco` â†’ Frankrijk, `austria` â†’ Duitsland, `united_kingdom` â†’ `uk`) worden naar een echt speelbaar land gemapt zodat Almanak en stelen geen spooklanden tonen.
+- Tijdens regionale blacklist events (zoals **Haven Lockdown**) kan een segment tijdelijk geen targets hebben; de UI toont dan de **reden + resterende tijd** in plaats van â€œgeen voertuigen beschikbaarâ€.
 - Per categoriekaart staat nu ook capaciteit per type (gebruikt/totaal + upgrade level) als primaire informatiebron.
-- In embedded garage/marina **zonder** de gecombineerde Vehicle Heist-scroll is de **JailOverlay** bovenin de zichtbare tabcontent verankerd. Op de **dashboard Vehicle Heist**-route rendert de cel-UI op **`VehicleHeistScreen`-niveau** boven de `NestedScrollView` (niet in de tab-body), zodat de kaart niet onder het Voertuig Ops-headerblok eindigt; embedded tabs gebruiken `suppressJailOverlay` en ouders tonen de overlay. De kaart gebruikt de werkelijke tabhoogte (`LayoutBuilder` + `Positioned.fill`), geen volledig-schermcentrering in een smalle tab. Na **stelen via de lane/ops-kaart** ververst de client meteen `GET /player/jail-status` (en vult desnoods seconden vanuit de steal-response) zodat de overlay **onmiddellijk** opent na arrest; alleen op de periodieke poll wachten geeft te lange “blinde” celstraf in de UI. Bij **succesvolle** diefstal opent dezelfde gestolen-voertuig-popup als in garage/marina (`showStolenVehicleDialog` / `VehicleTheftResultOverlay`), niet alleen een top-right toast. In die popup kun je het voertuig meteen **verkopen** of **slopen**, of **houden**. Op smalle breedte staan Verkopen en het bedrag onder elkaar zodat het bedrag niet wegvalt.
+- In embedded garage/marina **zonder** de gecombineerde Vehicle Heist-scroll is de **JailOverlay** bovenin de zichtbare tabcontent verankerd. Op de **dashboard Vehicle Heist**-route rendert de cel-UI op **`VehicleHeistScreen`-niveau** boven de `NestedScrollView` (niet in de tab-body), zodat de kaart niet onder het Voertuig Ops-headerblok eindigt; embedded tabs gebruiken `suppressJailOverlay` en ouders tonen de overlay. De kaart gebruikt de werkelijke tabhoogte (`LayoutBuilder` + `Positioned.fill`), geen volledig-schermcentrering in een smalle tab. Na **stelen via de lane/ops-kaart** ververst de client meteen `GET /player/jail-status` (en vult desnoods seconden vanuit de steal-response) zodat de overlay **onmiddellijk** opent na arrest; alleen op de periodieke poll wachten geeft te lange â€œblindeâ€ celstraf in de UI. Bij **succesvolle** diefstal opent dezelfde gestolen-voertuig-popup als in garage/marina (`showStolenVehicleDialog` / `VehicleTheftResultOverlay`), niet alleen een top-right toast. In die popup kun je het voertuig meteen **verkopen** of **slopen**, of **houden**. Op smalle breedte staan Verkopen en het bedrag onder elkaar zodat het bedrag niet wegvalt.
 - Gestolen voertuigen in embedded Garage / Motorstalling / Marina renderen responsief als card-grid (mobiel 1 kolom, tablet/desktop meerdere kolommen).
 - Embedded voertuigkaarten gebruiken natuurlijke hoogte (geen onnodige lege onderruimte door geforceerde hoge gridcellen).
 - Op brede schermen schaalt het embedded overzicht door naar maximaal 4 kaarten naast elkaar.
@@ -1175,10 +1175,10 @@ jailTime = fbiHeat * 15 minuten
 ### Bail Costs
 ```javascript
 // Police bail
-bail = wantedLevel * â‚¬1,000
+bail = wantedLevel * Ã¢â€šÂ¬1,000
 
 // FBI bail
-bail = fbiHeat * â‚¬5,000
+bail = fbiHeat * Ã¢â€šÂ¬5,000
 ```
 
 ### Bank Interest
@@ -1189,9 +1189,9 @@ interest = 0
 
 ### Crime Success
 ```javascript
-// Lijst én roll: computePlayerSuccessChanceFromContext (5–95%)
+// Lijst Ã©n roll: computePlayerSuccessChanceFromContext (5â€“95%)
 baseChance = crime.baseSuccessChance  // geen 0.385-scaler
-// + rank/mastery/weapon/tool/vehicle/training/combo − police − low HP
+// + rank/mastery/weapon/tool/vehicle/training/combo âˆ’ police âˆ’ low HP
 ```
 
 ### Health Damage
@@ -1205,7 +1205,7 @@ damage = random(5, 15) HP  // vest + bodyguards can cut up to ~55%
 // Passive healing per game tick
 healing = 5 HP (if health > 0 && health < 100)
 
-// Hospital: €10k / +30 HP or €20k / +75 HP, 60 min cooldown
+// Hospital: â‚¬10k / +30 HP or â‚¬20k / +75 HP, 60 min cooldown
 // Emergency Help: player button, only <10 HP, free +20
 // ICU at 0 HP: 180 minutes, then 10 HP
 ```
@@ -1215,13 +1215,13 @@ healing = 5 HP (if health > 0 && health < 100)
 ## Game Balance
 
 ### Income Sources (per uur)
-- **Jobs**: â‚¬1,200-â‚¬6,000/uur (safe)
-- **Low crimes**: â‚¬3,000-â‚¬10,000/uur (medium risk)
-- **High crimes**: â‚¬20,000-â‚¬100,000/uur (high risk)
-- **Properties**: â‚¬500-â‚¬50,000/uur (passive)
+- **Jobs**: Ã¢â€šÂ¬1,200-Ã¢â€šÂ¬6,000/uur (safe)
+- **Low crimes**: Ã¢â€šÂ¬3,000-Ã¢â€šÂ¬10,000/uur (medium risk)
+- **High crimes**: Ã¢â€šÂ¬20,000-Ã¢â€šÂ¬100,000/uur (high risk)
+- **Properties**: Ã¢â€šÂ¬500-Ã¢â€šÂ¬50,000/uur (passive)
 - **Bank interest**: Uitgeschakeld (0)
-- **Heists**: â‚¬50,000-â‚¬500,000 (high risk, cooldown)
-- **Trade**: â‚¬10,000-â‚¬200,000 (moderate risk)
+- **Heists**: Ã¢â€šÂ¬50,000-Ã¢â€šÂ¬500,000 (high risk, cooldown)
+- **Trade**: Ã¢â€šÂ¬10,000-Ã¢â€šÂ¬200,000 (moderate risk)
 
 ### Time Sinks
 - **Jail time**: 5-180 minuten
@@ -1241,36 +1241,36 @@ healing = 5 HP (if health > 0 && health < 100)
 ## Changelog & Updates
 
 ### Current Version Features
-- âœ… Crime system with health damage
-- âœ… Wanted level & police arrests
-- âœ… FBI heat system
-- âœ… Health mechanics (eten & drinken / honger / dorst zijn verwijderd)
-- âœ… Hospital with emergency room
-- âœ… Intensive Care (ICU) system
-- âœ… Jobs system
-- âœ… Properties & passive income
-- âœ… Crews & heists
-- âœ… Bank accounts (safe storage with a daily free-deposit cap; larger cash via laundering; interest currently disabled)
-- âœ… International travel
-- âœ… Trade market with risks
-- âœ… Aviation system
-- âœ… Casino (blackjack, slots, roulette)
-- âœ… Weapons & ammo system
-- âœ… VIP quick-buy in Drug Production (full-width buy-missing button into the current-country depot with cost confirmation modal; no separate header lightning icon)
-- âœ… Drug facilities, slots and production gates are per country (a greenhouse in France is not owned/usable in Italy)
-- ✅ Court & Judge (appeal / bribe, criminal record, visible law/wanted/FBI appeal odds, localized crime and judge names; web panels fill the content column)
-- âœ… Crew Wars (War Room, seasons, territory targets)
-- âœ… Drug production facilities
-- ✅ Territory Fase C (HQ caps als chips, regioproject safehouse_network met progress/HP-balken, sabotage/supply op project-HP, passief-inkomenbonus) — see `TERRITORY_VISION.md` / `territory.md`
-- ✅ Territory Fase D (season awards, region event rotation, drama widgets) — see TERRITORY_VISION.md / territory.md
-- ✅ Territory crew-stats (all-time + seizoen W/D/L/hold op leaderboard + crew-kaart) — see `territory.md`
-- ✅ Territory garnizoen / luchtafweer (crew-bank, tijdelijk defense + hogere capture-drempel, geen nachtslot) — see `territory.md`
-- ✅ Territory dual-key region-cap (HQ + leden, hard cap 10, extra garnizoen vanaf 8 slots) — see `territory.md`
-- ✅ Money laundering (cash→bank wash above the free daily deposit cap: fee, delay, FBI-heat seize risk) — see `money-laundering.md` / `bank.md`
-- ✅ Stock market (bank-funded slow tickers, separate from crypto; UI has load/empty states + portfolio summary) — see `stock-market.md`
-- ✅ Real estate development (bank-funded permanent income levels; confirm/cooldown/error UX) — see `properties.md`
+- Ã¢Å“â€¦ Crime system with health damage
+- Ã¢Å“â€¦ Wanted level & police arrests
+- Ã¢Å“â€¦ FBI heat system
+- Ã¢Å“â€¦ Health mechanics (eten & drinken / honger / dorst zijn verwijderd)
+- Ã¢Å“â€¦ Hospital with emergency room
+- Ã¢Å“â€¦ Intensive Care (ICU) system
+- Ã¢Å“â€¦ Jobs system
+- Ã¢Å“â€¦ Properties & passive income
+- Ã¢Å“â€¦ Crews & heists
+- Ã¢Å“â€¦ Bank accounts (safe storage with a daily free-deposit cap; larger cash via laundering; interest currently disabled)
+- Ã¢Å“â€¦ International travel
+- Ã¢Å“â€¦ Trade market with risks
+- Ã¢Å“â€¦ Aviation system
+- Ã¢Å“â€¦ Casino (blackjack, slots, roulette)
+- Ã¢Å“â€¦ Weapons & ammo system
+- Ã¢Å“â€¦ VIP quick-buy in Drug Production (full-width buy-missing button into the current-country depot with cost confirmation modal; no separate header lightning icon)
+- Ã¢Å“â€¦ Drug facilities, slots and production gates are per country (a greenhouse in France is not owned/usable in Italy)
+- âœ… Court & Judge (appeal / bribe, criminal record, visible law/wanted/FBI appeal odds, localized crime and judge names; web panels fill the content column)
+- Ã¢Å“â€¦ Crew Wars (War Room, seasons, territory targets)
+- Ã¢Å“â€¦ Drug production facilities
+- âœ… Territory Fase C (HQ caps als chips, regioproject safehouse_network met progress/HP-balken, sabotage/supply op project-HP, passief-inkomenbonus) â€” see `TERRITORY_VISION.md` / `territory.md`
+- âœ… Territory Fase D (season awards, region event rotation, drama widgets) â€” see TERRITORY_VISION.md / territory.md
+- âœ… Territory crew-stats (all-time + seizoen W/D/L/hold op leaderboard + crew-kaart) â€” see `territory.md`
+- âœ… Territory garnizoen / luchtafweer (crew-bank, tijdelijk defense + hogere capture-drempel, geen nachtslot) â€” see `territory.md`
+- âœ… Territory dual-key region-cap (HQ + leden, hard cap 10, extra garnizoen vanaf 8 slots) â€” see `territory.md`
+- âœ… Money laundering (cashâ†’bank wash above the free daily deposit cap: fee, delay, FBI-heat seize risk) â€” see `money-laundering.md` / `bank.md`
+- âœ… Stock market (bank-funded slow tickers, separate from crypto; UI has load/empty states + portfolio summary) â€” see `stock-market.md`
+- âœ… Real estate development (bank-funded permanent income levels; confirm/cooldown/error UX) â€” see `properties.md`
 
-- ✅ VIP polish: cancel auto-renew, gift Player/Crew VIP (price in dialog), display-only prestige path to next tier — see `payments.md` / `VIP_LEVELS_SYSTEM.md` (Help topic `premium`)
+- âœ… VIP polish: cancel auto-renew, gift Player/Crew VIP (price in dialog), display-only prestige path to next tier â€” see `payments.md` / `VIP_LEVELS_SYSTEM.md` (Help topic `premium`)
 
 ### Planned Features
 - (none in current backlog)
@@ -1279,19 +1279,19 @@ healing = 5 HP (if health > 0 && health < 100)
 
 ## Web entry (marketing)
 
-- De landing-hook is first-hour (misdaad → dagdoel → crew). Onder de ondertitel staat dat **VIP wachttijden verkort, geen winst koopt**. De pre-init UI-taal is Engels tot browser/opgeslagen gasttaal laadt.
+- De landing-hook is first-hour (misdaad â†’ dagdoel â†’ crew). Onder de ondertitel staat dat **VIP wachttijden verkort, geen winst koopt**. De pre-init UI-taal is Engels tot browser/opgeslagen gasttaal laadt.
 - Spelers **zonder sessie** zien op `/` een marketing-landing (Flutter web) met pitch, call-to-actions naar inloggen/registreren (openen een **modal** met hetzelfde formulier als `/login` en `/register`; na succes sluit die modal **automatisch**, ook op mobiel), en een beperkte **publieke** toplijst (spelers + crews via read-only `GET /public/home`, geen auth).
 - **Inloggen (`/login` of modal):** de inlogknop wacht alleen op het versturen van het formulier, niet op de sessie-check bij het openen van de pagina. Daardoor blijft het scherm na het invullen van gebruikersnaam/wachtwoord bruikbaar (knop niet permanent op spinner).
 - **Registreren (`/register` of modal):** kies **mannelijk of vrouwelijk** via twee portretkaarten; je moet **akkoord gaan met de algemene voorwaarden** (verplicht vinkje + link naar `/terms`; zonder vinkje wordt niet geregistreerd). Er is **geen** knop om tijdens registratie terug te schakelen naar inloggen; gebruik `/login`, een andere ingang of sluit de modal op de landing. De server slaat `gender` op en zet de start-avatar op `default_1` (man) of `default_2` (vrouw). Bestaande accounts kunnen `gender` nog leeg hebben. Custom portretkunst: `backend/scripts/generate_default_avatars_leonardo.py` (Leonardo API). Met e-mailverificatie aan volgt een mail; die komt soms in spam. Op login kun je de mail opnieuw laten sturen.
-- **Facebook Login (web):** op login/register verschijnt **Doorgaan met Facebook** zodra App ID + Secret op de server staan. Nieuwe Facebook-spelers kiezen daarna nog username, personage en voorwaarden. Een geverifieerd Facebook-e-mailadres koppelt aan het bestaande account. Native apps gebruiken deze web-OAuth niet. Zie `docs/module-protocols/facebook.md`. Admin-posten: **Config → Toegang**.
-- **Deel-link (Vrienden):** elke speler heeft een persoonlijke URL (`/register?ref=`). Iedereen start met **€2.000**; wie zich met een code aanmeldt krijgt daar **€2.000** recruit-bonus bovenop en staat meteen als vriend. De uitnodiger krijgt **€5.000** na de eerste geslaagde misdaad of baan van die nieuweling (max 5 uitbetalingen per UTC-dag). Delen via kopiëren, het deelmenu of Facebook; geen import van de Facebook-vriendenlijst. Zie `docs/module-protocols/referrals.md`. Op **Vrienden → Zoeken** én op de **geaccepteerde vriendenlijst** zie je **geen** land van andere spelers (alleen rang, gezondheid, vrienden sinds).
+- **Facebook Login (web):** op login/register verschijnt **Doorgaan met Facebook** zodra App ID + Secret op de server staan. Nieuwe Facebook-spelers kiezen daarna nog username, personage en voorwaarden. Een geverifieerd Facebook-e-mailadres koppelt aan het bestaande account. Native apps gebruiken deze web-OAuth niet. Zie `docs/module-protocols/facebook.md`. Admin-posten: **Config â†’ Toegang**.
+- **Deel-link (Vrienden):** elke speler heeft een persoonlijke URL (`/register?ref=`). Iedereen start met **â‚¬2.000**; wie zich met een code aanmeldt krijgt daar **â‚¬2.000** recruit-bonus bovenop en staat meteen als vriend. De uitnodiger krijgt **â‚¬5.000** na de eerste geslaagde misdaad of baan van die nieuweling (max 5 uitbetalingen per UTC-dag). Delen via kopiÃ«ren, het deelmenu of Facebook; geen import van de Facebook-vriendenlijst. Zie `docs/module-protocols/referrals.md`. Op **Vrienden â†’ Zoeken** Ã©n op de **geaccepteerde vriendenlijst** zie je **geen** land van andere spelers (alleen rang, gezondheid, vrienden sinds).
 - **Google Sign-In (web):** zelfde flow met **Doorgaan met Google** zodra Client ID + Secret op de server staan. Alleen `openid email profile`. Nieuwe Google-spelers kiezen username, personage en voorwaarden. Een geverifieerd Google-e-mailadres koppelt aan het bestaande account. Na terugkomst van Google/Facebook leest de client de query (`g`/`fb`, token of pending) en vervangt de adresbalk naar `/login` of `/` zodat de sessie-JWT niet zichtbaar blijft. Zie `docs/module-protocols/google.md`.
-- Juridische pagina’s: `/privacy`, `/terms` en `/digital-goods` (teksten volledig uit de client-ARB’s; ook bereikbaar als **modal** vanuit de sticky footer op landing/login i.p.v. alleen full-page). Gast-taal volgt browser/voorkeur tot login; daarna gelden account-taalinstellingen zoals elders.
+- Juridische paginaâ€™s: `/privacy`, `/terms` en `/digital-goods` (teksten volledig uit de client-ARBâ€™s; ook bereikbaar als **modal** vanuit de sticky footer op landing/login i.p.v. alleen full-page). Gast-taal volgt browser/voorkeur tot login; daarna gelden account-taalinstellingen zoals elders.
 - **SEO-landings:** `/{lang}/text-based-mafia-game` (NL: `/text-based-mafia-game`) noemen **The Mob State** + text-based mafia game in alle UI-talen. Almanak-homes idem. Search Console: `docs/seo.md`.
 - Layout: hero-titel + pitch in een leesbare kolom (op desktop visueel meer naar het midden-rechts t.o.v. de achtergrond-titel), acties **Inloggen / registreren rechtsboven naast elkaar**, footer **sticky onderaan**. Ranglijsten: `GET /public/home` via dezelfde API-basis als de rest van de client (`AppConfig.apiBaseUrl`).
-- **CORS:** de API moet origins van de Flutter-web-shell (`https://themobstate.com`, `www`, `admin.themobstate.com`, `https://themobstate.nl`, `www`, `admin.themobstate.nl`) toestaan wanneer de client op een ander subdomein (`api.…`) aanroept; in productie worden die origins altijd met `ALLOWED_ORIGINS` geünioneerd (`config/index.ts`). Express zet `cors` vóór de Prisma-wachtmiddleware (`app.ts`) zodat ook fout- en 503-responses CORS-headers dragen.
-- **Domeinen:** het spel draait op `themobstate.com` (canonical) én `themobstate.nl` (zelfde app, API blijft `api.themobstate.com`). De **Almanak** staat op `https://wiki.themobstate.com` (catalogus + originele beelden, alle UI-talen). Transactionele mail (verificatie / wachtwoord-reset) komt van **`noreply@themobstate.nl`**.
-- Technische details, SPA-fallback en QA: `docs/module-protocols/marketing-web.md` en `frontend-platform.md`. SPA-fallback in `app.ts`: `app.use` met GET-check (geen `app.get('*')` — Express 5 / path-to-regexp v8).
+- **CORS:** de API moet origins van de Flutter-web-shell (`https://themobstate.com`, `www`, `admin.themobstate.com`, `https://themobstate.nl`, `www`, `admin.themobstate.nl`) toestaan wanneer de client op een ander subdomein (`api.â€¦`) aanroept; in productie worden die origins altijd met `ALLOWED_ORIGINS` geÃ¼nioneerd (`config/index.ts`). Express zet `cors` vÃ³Ã³r de Prisma-wachtmiddleware (`app.ts`) zodat ook fout- en 503-responses CORS-headers dragen.
+- **Domeinen:** het spel draait op `themobstate.com` (canonical) Ã©n `themobstate.nl` (zelfde app, API blijft `api.themobstate.com`). De **Almanak** staat op `https://wiki.themobstate.com` (catalogus + originele beelden, alle UI-talen). Transactionele mail (verificatie / wachtwoord-reset) komt van **`noreply@themobstate.nl`**.
+- Technische details, SPA-fallback en QA: `docs/module-protocols/marketing-web.md` en `frontend-platform.md`. SPA-fallback in `app.ts`: `app.use` met GET-check (geen `app.get('*')` â€” Express 5 / path-to-regexp v8).
 
 ---
 
@@ -1299,7 +1299,7 @@ healing = 5 HP (if health > 0 && health < 100)
 
 De Flutter-client hoort `flutter analyze` in `client/` **zonder** warnings of info-afsluiting te laten eindigen; richtlijnen staan in `docs/module-protocols/PROTOCOL_MASTER.md` onder *Analyzer zonder issues*.
 
-Selfie→portretgeneratie op de API hangt af van een geldige `LEONARDO_API_KEY` op de backend (zie `docs/module-protocols/player-portraits.md`); een foutieve key geeft bij Leonardo HTTP **401**, niet een mislukte spelersessie. Een **400** van Leonardo bij generatie komt vaak door ongeldige requestvelden (o.a. `negative_prompt` + toegestane `presetStyle` bij photoReal); zie hetzelfde protocolbestand. PNG’s moeten op de **gemounte** image-root landen (`IMAGE_LIBRARY_ROOT_PATH` / `/client/images` in Docker), anders zijn de tegels in Instellingen leeg terwijl de DB wel een portret heeft.
+Selfieâ†’portretgeneratie op de API hangt af van een geldige `LEONARDO_API_KEY` op de backend (zie `docs/module-protocols/player-portraits.md`); een foutieve key geeft bij Leonardo HTTP **401**, niet een mislukte spelersessie. Een **400** van Leonardo bij generatie komt vaak door ongeldige requestvelden (o.a. `negative_prompt` + toegestane `presetStyle` bij photoReal); zie hetzelfde protocolbestand. PNGâ€™s moeten op de **gemounte** image-root landen (`IMAGE_LIBRARY_ROOT_PATH` / `/client/images` in Docker), anders zijn de tegels in Instellingen leeg terwijl de DB wel een portret heeft.
 
 ## Support & Community
 
@@ -1307,7 +1307,7 @@ In-game **Support**-tickets: categorie-labels komen uit ARB (`supportCategoryBug
 
 Voor vragen, bugs, of suggesties:
 - In-game **Support** (tickets)
-- Discord-community (invite via `DISCORD_INVITE_URL`; knop op landing, Help en Instellingen). Wie niet via Discord is ingelogd kan Discord later **koppelen in Instellingen** of via de wekelijkse popup; de eerste koppeling op een bestaand account geeft **€5.000**. Bij koppelen/inloggen via Discord word je (als de server zo is ingesteld) automatisch lid van de officiële Discord. Patch notes staan in `#updates`.
+- Discord-community (invite via `DISCORD_INVITE_URL`; knop op landing, Help en Instellingen). Wie niet via Discord is ingelogd kan Discord later **koppelen in Instellingen** of via de wekelijkse popup; de eerste koppeling op een bestaand account geeft **â‚¬5.000**. Bij koppelen/inloggen via Discord word je (als de server zo is ingesteld) automatisch lid van de officiÃ«le Discord. Patch notes staan in `#updates`.
 - Wiki / Almanak: `https://wiki.themobstate.com`
 
 **Laatst bijgewerkt**: 16 september 2026

@@ -101,6 +101,8 @@ export function showroomVehicleRarity(def: VehicleCatalogEntry | null): string {
 }
 
 /** Cash cost to forge clean papers while the vehicle is on display. */
+export const SHOWROOM_CAT_COOLDOWN_SECONDS = 900;
+
 export function showroomCatCost(def: VehicleCatalogEntry | null): number {
   const rarity = showroomVehicleRarity(def);
   const base = Math.max(0, Math.floor(Number(def?.baseValue ?? 0)));

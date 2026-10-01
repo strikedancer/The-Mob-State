@@ -6,6 +6,7 @@ import { computeGarageSlotTotals } from './garageService';
 import { resolveSelectedCrimeVehicle } from './vehicleToolService';
 import {
   SHOWROOM_PROPERTY_IDS,
+  SHOWROOM_CAT_COOLDOWN_SECONDS,
   findShowroomVehicleDef,
   getShowroomCatalogSize,
   getShowroomCategory,
@@ -18,6 +19,7 @@ import {
   showroomVehicleRarity,
   type ShowroomVehicleType,
 } from './showroomCatalog';
+import { checkCooldown, setCooldown } from './cooldownService';
 
 export { isShowroomProperty, notInShowroomWhere };
 
@@ -246,6 +248,7 @@ class ShowroomService {
     const eligible = eligibleRaw.filter((item) => !exhibitedModels.has(item.vehicleId));
     const mappedExhibits = exhibits.map(mapVehicle);
     const totalValue = mappedExhibits.reduce((sum, item) => sum + (item.value || 0), 0);
+    const catCooldownRemainingSeconds = await checkCooldown(playerId, 'showroom_cat');
 
     return {
       success: true as const,
@@ -263,6 +266,8 @@ class ShowroomService {
         totalValue,
         rarityCounts: rarityCounts(mappedExhibits),
         canManage,
+        catCooldownRemainingSeconds,
+        catCooldownSeconds: SHOWROOM_CAT_COOLDOWN_SECONDS,
         exhibits: mappedExhibits,
         eligible: eligible.map(mapVehicle),
       },
@@ -475,6 +480,15 @@ class ShowroomService {
       return { success: false as const, error: 'SHOWROOM_ALREADY_CATTED' };
     }
 
+    const remainingCooldown = await checkCooldown(playerId, 'showroom_cat');
+    if (remainingCooldown > 0) {
+      return {
+        success: false as const,
+        error: 'SHOWROOM_CAT_COOLDOWN',
+        remainingSeconds: remainingCooldown,
+      };
+    }
+
     const def = findShowroomVehicleDef(vehicle.vehicleId);
     const cost = showroomCatCost(def);
     if (player.money < cost) {
@@ -492,6 +506,8 @@ class ShowroomService {
       }),
     ]);
 
+    const cooldown = await setCooldown(playerId, 'showroom_cat');
+
     await activityService.logActivity(
       playerId,
       'PROPERTY',
@@ -502,10 +518,15 @@ class ShowroomService {
         inventoryId: vehicle.id,
         country: property.countryId,
         cost,
+        cooldownSeconds: SHOWROOM_CAT_COOLDOWN_SECONDS,
       },
     );
 
-    return { success: true as const, cost };
+    return {
+      success: true as const,
+      cost,
+      remainingSeconds: cooldown.remainingSeconds,
+    };
   }
 
   async countExhibits(propertyDatabaseId: number): Promise<number> {

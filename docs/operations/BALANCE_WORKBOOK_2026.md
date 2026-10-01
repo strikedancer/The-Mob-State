@@ -163,7 +163,7 @@ Job CD = `calculateJobCooldown(maxEarnings)`. Success aangenomen 90%.
 | Travel | €250–€5 000 / etappe + 60m CD | Smokkel/arbitrage friction |
 | Launder | ~12% fee + delay + seize∝heat | Forced boven free bank deposit cap |
 | Drug heat cash-cool | €5 000 × 25 pts = **€125 000** / cool | Zware mid/late sink |
-| Cat papers (showroom) | floor €2.5k–€200k of 3–8% baseValue | Legendary bescherming duur |
+| Cat papers (showroom) | floor €2.5k–€200k of 3–8% baseValue + **15 min cooldown** per cat | Legendary bescherming duur; geen instant batch-cat |
 | Property buy | €75k–€5M | Warehouse/shop snelle ROI; showroom/casino prestige |
 | Property develop | `%` van purchase (runtime) | Permanent income bump |
 | RLD expansion | €40k→€500k (8 stappen) | Rooms + security €25k→€130k |
@@ -237,7 +237,7 @@ Cars/boats/motos combined approx: common/uncommon/rare/epic/legendary mix zwaar 
 ### Showroom
 
 - Seize chance **40%** bij arrest **alleen in showroom-land**; andere landen zoeken de vitrine niet.
-- Cat papers: `max(floor[rarity], baseValue × pct)` — legendary floor **€200 000** of 8%.
+- Cat papers: `max(floor[rarity], baseValue × pct)` — legendary floor **€200 000** of 8%, plus **15 min** player cooldown (`showroom_cat`) between cats.
 - Prestige/ROI: showroom passive income + collectie; Cat papers is de juiste late sink voor “safe legendary flex”.
 
 ---

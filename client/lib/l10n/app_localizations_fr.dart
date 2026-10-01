@@ -6953,15 +6953,15 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get propertyInfoCarShowroom =>
-      'Un showroom auto par compte, lié au pays d\'achat. Uniquement des voitures dans ce pays, à 100 %, un modèle. Les upgrades agrandissent la vitrine jusqu\'à tous les types. Les voitures exposées sont verrouillées et ne prennent pas de place au garage. Une arrestation ici fouille la vitrine (~40 % par voiture).';
+      'One car showroom per account. Achetez-le dans n\'importe quel pays ; it stays bound to that country. Uniquement les voitures qui se trouvent dans ce pays, en parfait état et qui ne sont pas déjà exposées. Les mises à niveau agrandissent la vitrine par étapes jusqu\'à ce que chaque modèle de voiture s\'adapte. Il s\'agit d\'une collection, pas d\'un espace de garage supplémentaire : les voitures exposées n\'utilisent pas d\'emplacements de garage et ne peuvent pas être utilisées, vendues ou passées en contrebande. Une arrestation dans ce pays fouille la vitrine (~ 40 % de chances par voiture non captée) ; arrests elsewhere leave it alone. Des papiers chat avec de l\'argent liquide pour que la police et le FBI traitent cette voiture comme légitime tant qu\'elle reste exposée. Les papiers pour chats ont un temps de recharge de 15 minutes entre les utilisations. Sell only after the collection is empty.';
 
   @override
   String get propertyInfoMotorcycleShowroom =>
-      'Une boutique moto par compte, liée au pays d\'achat. Motos du pays, 100 %, un modèle. ~40 % de saisie par moto en cas d\'arrestation.';
+      'Un magasin de motos par compte, lié au pays d\'achat. Uniquement des motos dans ce pays en état à 100 %, une par modèle. Les mises à niveau étendent la vitrine à chaque type de moto. Les vélos exposés sont verrouillés et n\'utilisent pas les emplacements du garage. Une arrestation là-bas a environ 40 % de chances par vélo non capté de le saisir ; arrests in other countries do not. Des papiers de chat avec de l\'argent liquide lorsqu\'ils sont exposés pour paraître légitimes. Les papiers pour chats ont un temps de recharge de 15 minutes entre les utilisations.';
 
   @override
   String get propertyInfoBoatHarbor =>
-      'Un port par compte, lié au pays d\'achat. Bateaux du pays, 100 %, un modèle. ~40 % de saisie par bateau en cas d\'arrestation.';
+      'Un port de plaisance par compte, lié au pays d\'achat. Uniquement des bateaux dans ce pays en parfait état, un par modèle. Les mises à niveau étendent la vitrine à chaque type de bateau. Les bateaux affichés sont verrouillés et n’utilisent pas les emplacements de la marina. Une arrestation là-bas a environ 40 % de chances par bateau non captivé de la saisir ; ce n’est pas le cas des arrestations dans d’autres pays. Des papiers de chat avec de l\'argent liquide lorsqu\'ils sont exposés pour paraître légitimes. Les papiers pour chats ont un temps de recharge de 15 minutes entre les utilisations.';
 
   @override
   String get showroomTitle => 'Collection';
@@ -7057,13 +7057,18 @@ class AppLocalizationsFr extends AppLocalizations {
   String get showroomAlreadyCatted => 'Ce véhicule a déjà des papiers vierges.';
 
   @override
+  String showroomCatCooldown(String time) {
+    return 'Les papiers du chat refroidissent ($time)';
+  }
+
+  @override
   String showroomCatInsufficientFunds(String cost) {
     return 'Pas assez d\'argent pour des papiers propres ($cost).';
   }
 
   @override
   String get showroomRules =>
-      'Collection, pas un garage extra. 100 %, même pays, un par modèle. La police peut saisir les véhicules exposés lors d\'une arrestation ici. Arrests in other countries do not touch this collection.';
+      'Collection, pas d\'espace de garage supplémentaire. Etat 100%, même pays, un par modèle. La police peut saisir ici des véhicules non catégorisés lors de leur arrestation (~ 40 % chacun). Les arrestations dans d\'autres pays ne touchent pas à cette collection. Papiers de chat (espèces) pour que les voitures exposées semblent légitimes jusqu\'à ce que vous les retiriez. Il y a un temps de recharge de 15 minutes entre chaque action de papiers Cat.';
 
   @override
   String get showroomWrongCountryManage =>

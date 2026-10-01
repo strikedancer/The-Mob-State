@@ -6922,15 +6922,15 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get propertyInfoCarShowroom =>
-      'Uno showroom auto per account, legato al paese di acquisto. Solo auto in quel paese, al 100%, un modello. Gli upgrade ampliano la vetrina fino a tutti i tipi. Le auto esposte non usano il garage. Un arresto lì perquisisce la vetrina (~40% per auto).';
+      'Un autosalone per account. Acquistalo in qualsiasi paese; rimane legato a quel paese. Solo le auto che si trovano in quel paese, in condizioni al 100%, e non già esposte. Gli aggiornamenti ampliano gradualmente la vetrina fino a quando ogni modello di auto si adatta. Si tratta di una raccolta, non di uno spazio garage aggiuntivo: le auto esposte non occupano posti garage e non possono essere utilizzate, vendute o contrabbandate. Un arresto in quel paese perquisisce la vetrina (~ 40% di probabilità per auto senza targa); gli arresti altrove lasciano tutto in pace. Documenti di gatto con contanti in modo che la polizia/FBI trattino l\'auto come legittima finché rimane in mostra. Le carte per gatti hanno un tempo di recupero di 15 minuti tra un utilizzo e l\'altro. Vendi solo quando la collezione è vuota.';
 
   @override
   String get propertyInfoMotorcycleShowroom =>
-      'Un negozio moto per account, legato al paese di acquisto. Moto del paese, 100%, un modello. ~40% di sequestro per moto all\'arresto.';
+      'Un negozio di moto per account, vincolato al paese di acquisto. Solo motociclette in quel paese in condizioni al 100%, una per modello. Gli aggiornamenti ampliano la vetrina fino a ogni tipo di motocicletta. Le biciclette esposte sono bloccate e non utilizzano gli spazi del garage. Un arresto lì ha circa il 40% di possibilità per ogni bicicletta senza targa di sequestrarla; gli arresti in altri paesi no. Documenti di gatto con contanti mentre sono in mostra per sembrare legittimi. Le carte per gatti hanno un tempo di recupero di 15 minuti tra un utilizzo e l\'altro.';
 
   @override
   String get propertyInfoBoatHarbor =>
-      'Un porto per account, legato al paese di acquisto. Barche del paese, 100%, un modello. ~40% di sequestro per barca all\'arresto.';
+      'Un porto per ogni account, vincolato al paese di acquisto. Solo barche in quel paese in condizioni al 100%, una per modello. Upgrades grow the vitrine up to every boat type. Le barche visualizzate sono bloccate e non utilizzano gli slot del porto turistico. Un arresto lì ha circa il 40% di possibilità per ogni barca senza catture di sequestrarla; gli arresti in altri paesi no. Documenti di gatto con contanti mentre sono in mostra per sembrare legittimi. Le carte per gatti hanno un tempo di recupero di 15 minuti tra un utilizzo e l\'altro.';
 
   @override
   String get showroomTitle => 'Collezione';
@@ -7026,13 +7026,18 @@ class AppLocalizationsIt extends AppLocalizations {
   String get showroomAlreadyCatted => 'Questo veicolo ha già documenti puliti.';
 
   @override
+  String showroomCatCooldown(String time) {
+    return 'Carte per gatti in raffreddamento ($time)';
+  }
+
+  @override
   String showroomCatInsufficientFunds(String cost) {
     return 'Contanti insufficienti per documenti puliti ($cost).';
   }
 
   @override
   String get showroomRules =>
-      'Collezione, non un garage extra. 100%, stesso paese, uno per modello. La polizia può sequestra i veicoli esposti se ti arrestano qui. Arrests in other countries do not touch this collection.';
+      'Collezione, non spazio aggiuntivo in garage. Condizioni al 100%, stesso paese, uno per modello. Qui la polizia può sequestrare veicoli senza targa in caso di arresto (~40% ciascuno). Gli arresti in altri paesi non toccano questa raccolta. Documenti di gatto (contanti), quindi le auto esposte sembrano legittime finché non le tiri fuori. C\'è un tempo di recupero di 15 minuti tra ogni azione di Cat Papers.';
 
   @override
   String get showroomWrongCountryManage =>

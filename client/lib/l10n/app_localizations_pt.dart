@@ -6902,15 +6902,15 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get propertyInfoCarShowroom =>
-      'Um showroom por conta, ligado ao país da compra. Só carros nesse país, a 100%, um modelo. Upgrades aumentam a vitrine até todos os tipos. Os expostos não usam a garagem. Uma prisão ali revista a vitrine (~40% por carro).';
+      'Um showroom de carros por conta. Compre em qualquer país; permanece vinculado a esse país. Somente carros que estão naquele país, em 100% estado, e ainda não em exposição. As atualizações aumentam a vitrine em etapas até que cada modelo de carro se encaixe. Trata-se de uma coleção, não de espaço extra de garagem: os carros expostos não utilizam vagas de garagem e não podem ser usados, vendidos ou contrabandeados. Uma prisão naquele país revista a vitrine (cerca de 40% de chance por carro não descoberto); prisões em outros lugares deixam tudo em paz. Documentos do gato com dinheiro para que a polícia/FBI trate o carro como legítimo enquanto ele permanece em exibição. Os papéis Cat têm um tempo de espera de 15 minutos entre os usos. Venda somente depois que a coleção estiver vazia.';
 
   @override
   String get propertyInfoMotorcycleShowroom =>
-      'Uma loja de motos por conta, ligada ao país da compra. Motos do país, 100%, um modelo. ~40% de apreensão por moto na prisão.';
+      'Uma loja de motocicletas por conta, vinculada ao país de compra. Somente motocicletas naquele país em 100% estado, uma por modelo. As atualizações aumentam a vitrine para cada tipo de motocicleta. As bicicletas exibidas estão trancadas e não utilizam vagas de garagem. Uma prisão lá tem cerca de 40% de chance por bicicleta não capturada de apreendê-la; prisões em outros países, não. Papéis de gato com dinheiro em exibição para parecerem legítimos. Os papéis Cat têm um tempo de espera de 15 minutos entre os usos.';
 
   @override
   String get propertyInfoBoatHarbor =>
-      'Um porto por conta, ligado ao país da compra. Barcos do país, 100%, um modelo. ~40% de apreensão por barco na prisão.';
+      'Um porto de barco por conta, vinculado ao país de compra. Somente barcos naquele país em 100% estado, um por modelo. As atualizações aumentam a vitrine para cada tipo de barco. Os barcos exibidos estão trancados e não utilizam vagas na marina. Uma prisão lá tem cerca de 40% de chance por barco não capturado de apreendê-lo; prisões em outros países, não. Papéis de gato com dinheiro em exibição para parecerem legítimos. Os papéis Cat têm um tempo de espera de 15 minutos entre os usos.';
 
   @override
   String get showroomTitle => 'Coleção';
@@ -7005,13 +7005,18 @@ class AppLocalizationsPt extends AppLocalizations {
   String get showroomAlreadyCatted => 'Este veículo já tem documentos limpos.';
 
   @override
+  String showroomCatCooldown(String time) {
+    return 'Papéis de gato esfriando ($time)';
+  }
+
+  @override
   String showroomCatInsufficientFunds(String cost) {
     return 'Não há dinheiro suficiente para documentos limpos ($cost).';
   }
 
   @override
   String get showroomRules =>
-      'Coleção, não uma garagem extra. 100%, mesmo país, um por modelo. A polícia pode apreender veículos expostos se fores preso aqui. Arrests in other countries do not touch this collection.';
+      'Arrecadação, não espaço extra de garagem. 100% estado, mesmo país, um por modelo. A polícia pode apreender veículos não capturados durante a prisão aqui (~40% cada). As prisões em outros países não afetam esta coleção. Papéis de gato (dinheiro) para que os carros exibidos pareçam legítimos até que você os retire. Há um tempo de espera de 15 minutos entre cada ação do Cat Papers.';
 
   @override
   String get showroomWrongCountryManage =>

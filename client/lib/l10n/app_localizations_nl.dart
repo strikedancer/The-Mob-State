@@ -6892,15 +6892,15 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get propertyInfoCarShowroom =>
-      'Eén auto-showroom per account, te koop in elk land maar gebonden aan het land van aankoop. Zet alleen auto\'s uit dat land in de vitrine, op 100% conditie, één model tegelijk. Upgrades vergroten de vitrine in stappen tot alle autotypes. Geen tweede garage: tentoongestelde auto\'s tellen niet in je garage en kun je niet gebruiken, verkopen of smokkelen. Bij aanhouding in dat land doorzoekt de politie de vitrine (~40% kans per ongecatte auto); in andere landen blijft de vitrine met rust. Cat papieren met cash zodat politie/FBI die auto als legaal zien zolang hij in de vitrine blijft. Verkopen kan pas als de collectie leeg is.';
+      'Eén auto-showroom per account, te koop in elk land maar gebonden aan het land van aankoop. Zet alleen auto\'s uit dat land in de vitrine, op 100% conditie, één model tegelijk. Upgrades vergroten de vitrine in stappen tot alle autotypes. Geen tweede garage: tentoongestelde auto\'s tellen niet in je garage en kun je niet gebruiken, verkopen of smokkelen. Bij aanhouding in dat land doorzoekt de politie de vitrine (~40% kans per ongecatte auto); in andere landen blijft de vitrine met rust. Cat papieren met cash zodat politie/FBI die auto als legaal zien zolang hij in de vitrine blijft. Tussen elke Cat papieren zit 15 minuten cooldown. Verkopen kan pas als de collectie leeg is.';
 
   @override
   String get propertyInfoMotorcycleShowroom =>
-      'Eén motorzaak per account, te koop in elk land maar gebonden aan het land van aankoop. Alleen motoren in dat land, 100% conditie, één per model. Upgrades vergroten de vitrine tot alle motortypes. Getoonde motoren zijn vergrendeld en tellen niet in je stalling. Bij aanhouding in dat land ~40% kans per ongecatte motor; aanhoudingen elders raken de vitrine niet. Cat papieren met cash terwijl hij in de vitrine staat.';
+      'Eén motorzaak per account, te koop in elk land maar gebonden aan het land van aankoop. Alleen motoren in dat land, 100% conditie, één per model. Upgrades vergroten de vitrine tot alle motortypes. Getoonde motoren zijn vergrendeld en tellen niet in je stalling. Bij aanhouding in dat land ~40% kans per ongecatte motor; aanhoudingen elders raken de vitrine niet. Cat papieren met cash terwijl hij in de vitrine staat. Tussen elke Cat papieren zit 15 minuten cooldown.';
 
   @override
   String get propertyInfoBoatHarbor =>
-      'Eén boothaven per account, te koop in elk land maar gebonden aan het land van aankoop. Alleen boten in dat land, 100% conditie, één per model. Upgrades vergroten de vitrine tot alle boottypes. Getoonde boten zijn vergrendeld en tellen niet in je haven. Bij aanhouding in dat land ~40% kans per ongecatte boot; aanhoudingen elders raken de vitrine niet. Cat papieren met cash terwijl hij in de vitrine staat.';
+      'Eén boothaven per account, te koop in elk land maar gebonden aan het land van aankoop. Alleen boten in dat land, 100% conditie, één per model. Upgrades vergroten de vitrine tot alle boottypes. Getoonde boten zijn vergrendeld en tellen niet in je haven. Bij aanhouding in dat land ~40% kans per ongecatte boot; aanhoudingen elders raken de vitrine niet. Cat papieren met cash terwijl hij in de vitrine staat. Tussen elke Cat papieren zit 15 minuten cooldown.';
 
   @override
   String get showroomTitle => 'Collectie';
@@ -6995,13 +6995,18 @@ class AppLocalizationsNl extends AppLocalizations {
   String get showroomAlreadyCatted => 'Dit voertuig heeft al schone papieren.';
 
   @override
+  String showroomCatCooldown(String time) {
+    return 'Cat papieren afkoelen ($time)';
+  }
+
+  @override
   String showroomCatInsufficientFunds(String cost) {
     return 'Niet genoeg cash voor schone papieren ($cost).';
   }
 
   @override
   String get showroomRules =>
-      'Collectie, geen extra garage. 100% conditie, zelfde land, één per model. Politie kan bij aanhouding hier ongecatte voertuigen afpakken (~40% per stuk). Aanhoudingen in andere landen raken deze collectie niet. Cat papieren (cash) zodat tentoongestelde wagens legaal lijken tot je ze eruit haalt.';
+      'Collectie, geen extra garage. 100% conditie, zelfde land, één per model. Politie kan bij aanhouding hier ongecatte voertuigen afpakken (~40% per stuk). Aanhoudingen in andere landen raken deze collectie niet. Cat papieren (cash) zodat tentoongestelde wagens legaal lijken tot je ze eruit haalt. Tussen elke Cat papieren zit 15 minuten cooldown.';
 
   @override
   String get showroomWrongCountryManage =>

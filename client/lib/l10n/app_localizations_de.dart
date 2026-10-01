@@ -6935,15 +6935,15 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get propertyInfoCarShowroom =>
-      'Ein Auto-Showroom pro Konto, im Kaufland gebunden. Nur Autos in diesem Land, 100% Zustand, ein Modell. Upgrades füllen die Vitrine schrittweise bis alle Autotypen. Ausgestellte Autos sind gesperrt und zählen nicht in der Garage. Bei Festnahme dort durchsucht die Polizei die Vitrine (~40% je Auto).';
+      'Ein Autohaus pro Konto. Kaufen Sie es in jedem Land; es bleibt an dieses Land gebunden. Nur Autos, die in diesem Land in 100 % Zustand sind und noch nicht ausgestellt sind. Durch Upgrades wächst die Vitrine schrittweise, bis jedes Automodell passt. Dies ist eine Sammlung, kein zusätzlicher Garagenplatz: Die ausgestellten Autos nutzen keine Garagenstellplätze und können nicht genutzt, verkauft oder geschmuggelt werden. Bei einer Festnahme in diesem Land wird die Vitrine durchsucht (ca. 40 % Wahrscheinlichkeit pro nicht erfasstem Auto); Verhaftungen andernorts lassen es in Ruhe. Katzenpapiere mit Bargeld, daher behandeln Polizei/FBI das Auto als legitim, solange es ausgestellt bleibt. Cat Papers haben eine Abklingzeit von 15 Minuten zwischen den Anwendungen. Verkauf erst, wenn die Sammlung leer ist.';
 
   @override
   String get propertyInfoMotorcycleShowroom =>
-      'Ein Motorradladen pro Konto, im Kaufland gebunden. Nur Motorräder in diesem Land, 100% Zustand, ein Modell. Ausgestellte Bikes sind gesperrt. Bei Festnahme ~40% je Bike.';
+      'Ein Motorradshop pro Account, gebunden an das Kaufland. Nur Motorräder in diesem Land in 100 % Zustand, eines pro Modell. Upgrades erweitern die Vitrine für jeden Motorradtyp. Die ausgestellten Fahrräder sind verschlossen und nutzen keine Garagenstellplätze. Bei einer Festnahme dort beträgt die Wahrscheinlichkeit, dass ein nicht erfasstes Fahrrad beschlagnahmt wird, etwa 40 %. Bei Verhaftungen in anderen Ländern ist dies nicht der Fall. Katze-Papiere mit Bargeld, während sie ausgestellt sind, um legitim auszusehen. Cat Papers haben eine Abklingzeit von 15 Minuten zwischen den Anwendungen.';
 
   @override
   String get propertyInfoBoatHarbor =>
-      'Ein Bootshafen pro Konto, im Kaufland gebunden. Nur Boote in diesem Land, 100% Zustand, ein Modell. Ausgestellte Boote sind gesperrt. Bei Festnahme ~40% je Boot.';
+      'Ein Bootshafen pro Konto, gebunden an das Kaufland. Nur Boote in diesem Land in 100 % Zustand, eines pro Modell. Durch Upgrades lässt sich die Vitrine für jeden Bootstyp erweitern. Die ausgestellten Boote sind verschlossen und nutzen keine Liegeplätze im Yachthafen. Bei einer Festnahme dort beträgt die Wahrscheinlichkeit, dass jedes nicht geangelte Boot es beschlagnahmt, etwa 40 %. Bei Verhaftungen in anderen Ländern ist dies nicht der Fall. Katze-Papiere mit Bargeld, während sie ausgestellt sind, um legitim auszusehen. Cat Papers haben eine Abklingzeit von 15 Minuten zwischen den Anwendungen.';
 
   @override
   String get showroomTitle => 'Sammlung';
@@ -7041,13 +7041,18 @@ class AppLocalizationsDe extends AppLocalizations {
       'Dieses Fahrzeug hat bereits saubere Papiere.';
 
   @override
+  String showroomCatCooldown(String time) {
+    return 'Katzenpapiere kühlen ab ($time)';
+  }
+
+  @override
   String showroomCatInsufficientFunds(String cost) {
     return 'Nicht genug Geld für saubere Papiere ($cost).';
   }
 
   @override
   String get showroomRules =>
-      'Sammlung, keine Extra-Garage. 100% Zustand, gleiches Land, ein Modell. Die Polizei kann ausgestellte Fahrzeuge bei Festnahme beschlagnahmen. Arrests in other countries do not touch this collection.';
+      'Sammlung, kein zusätzlicher Garagenplatz. 100 % Zustand, dasselbe Land, eines pro Modell. Die Polizei kann hier bei Festnahmen nicht erfasste Fahrzeuge beschlagnahmen (jeweils ca. 40 %). Verhaftungen in anderen Ländern berühren diese Sammlung nicht. Katzenpapiere (Bargeld), damit die ausgestellten Autos echt aussehen, bis Sie sie herausnehmen. Zwischen jeder Cat-Papers-Aktion gibt es eine Abklingzeit von 15 Minuten.';
 
   @override
   String get showroomWrongCountryManage =>

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -41,6 +43,8 @@ class _ShowroomScreenState extends State<ShowroomScreen>
   bool _loading = true;
   String? _error;
   int? _busyInventoryId;
+  int _catCooldownRemainingSeconds = 0;
+  Timer? _catCooldownTimer;
   CollectionViewLayout _viewLayout = CollectionViewLayout.grid4;
 
   @override
@@ -64,8 +68,39 @@ class _ShowroomScreenState extends State<ShowroomScreen>
 
   @override
   void dispose() {
+    _catCooldownTimer?.cancel();
     _tabController.dispose();
     super.dispose();
+  }
+
+  void _syncCatCooldown(int seconds) {
+    final remaining = seconds < 0 ? 0 : seconds;
+    _catCooldownTimer?.cancel();
+    _catCooldownRemainingSeconds = remaining;
+    if (remaining <= 0) return;
+    _catCooldownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
+      if (_catCooldownRemainingSeconds <= 1) {
+        timer.cancel();
+        setState(() => _catCooldownRemainingSeconds = 0);
+        return;
+      }
+      setState(() => _catCooldownRemainingSeconds -= 1);
+    });
+  }
+
+  bool get _catOnCooldown => _catCooldownRemainingSeconds > 0;
+
+  String _catActionLabel(AppLocalizations l10n, int catCost) {
+    if (_catOnCooldown) {
+      return l10n.showroomCatCooldown(
+        formatDuration(Duration(seconds: _catCooldownRemainingSeconds)),
+      );
+    }
+    return l10n.showroomCatActionWithCost(formatCurrency(catCost));
   }
 
   String get _propertyType => widget.property.type ?? widget.property.propertyId;
@@ -100,9 +135,13 @@ class _ShowroomScreenState extends State<ShowroomScreen>
     final result = await _service.getShowroom(widget.property.id);
     if (!mounted) return;
     if (result['event'] == 'showroom.loaded' && result['showroom'] is Map) {
+      final showroom = Map<String, dynamic>.from(result['showroom'] as Map);
       setState(() {
-        _showroom = Map<String, dynamic>.from(result['showroom'] as Map);
+        _showroom = showroom;
         _loading = false;
+        _syncCatCooldown(
+          (showroom['catCooldownRemainingSeconds'] as num?)?.toInt() ?? 0,
+        );
       });
       return;
     }
@@ -137,6 +176,10 @@ class _ShowroomScreenState extends State<ShowroomScreen>
         return l10n.showroomVehicleBusy;
       case 'SHOWROOM_ALREADY_CATTED':
         return l10n.showroomAlreadyCatted;
+      case 'SHOWROOM_CAT_COOLDOWN':
+        return l10n.showroomCatCooldown(
+          formatDuration(Duration(seconds: _catCooldownRemainingSeconds)),
+        );
       case 'INSUFFICIENT_FUNDS':
         return l10n.showroomLoadError;
       default:
@@ -247,8 +290,17 @@ class _ShowroomScreenState extends State<ShowroomScreen>
     if (!mounted) return;
     setState(() => _busyInventoryId = null);
     if (result['event'] == 'showroom.catted' && result['showroom'] is Map) {
+      final showroom = Map<String, dynamic>.from(result['showroom'] as Map);
+      final params = result['params'] is Map
+          ? Map<String, dynamic>.from(result['params'] as Map)
+          : <String, dynamic>{};
       setState(() {
-        _showroom = Map<String, dynamic>.from(result['showroom'] as Map);
+        _showroom = showroom;
+        _syncCatCooldown(
+          (params['remainingSeconds'] as num?)?.toInt() ??
+              (showroom['catCooldownRemainingSeconds'] as num?)?.toInt() ??
+              0,
+        );
       });
       if (!mounted) return;
       showTopRightFromSnackBar(
@@ -263,9 +315,19 @@ class _ShowroomScreenState extends State<ShowroomScreen>
         : <String, dynamic>{};
     final reason = params['reason']?.toString();
     final cost = params['cost'];
+    final remaining =
+        (params['remainingSeconds'] as num?)?.toInt() ??
+            _catCooldownRemainingSeconds;
+    if (reason == 'SHOWROOM_CAT_COOLDOWN') {
+      setState(() => _syncCatCooldown(remaining));
+    }
     final message = reason == 'INSUFFICIENT_FUNDS' && cost != null
         ? l10n.showroomCatInsufficientFunds(formatCurrency((cost as num).toInt()))
-        : _errorMessage(l10n, reason);
+        : reason == 'SHOWROOM_CAT_COOLDOWN'
+            ? l10n.showroomCatCooldown(
+                formatDuration(Duration(seconds: remaining)),
+              )
+            : _errorMessage(l10n, reason);
     showTopRightFromSnackBar(
       context,
       SnackBar(content: Text(message), backgroundColor: Colors.red),
@@ -469,6 +531,18 @@ class _ShowroomScreenState extends State<ShowroomScreen>
                 fontSize: 16,
               ),
             ),
+            if (_catOnCooldown) ...[
+              const SizedBox(height: 8),
+              Text(
+                l10n.showroomCatCooldown(
+                  formatDuration(Duration(seconds: _catCooldownRemainingSeconds)),
+                ),
+                style: const TextStyle(
+                  color: Colors.orangeAccent,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
             if (rarityCounts.isNotEmpty) ...[
               const SizedBox(height: 10),
               Wrap(
@@ -765,12 +839,10 @@ class _ShowroomScreenState extends State<ShowroomScreen>
                   Padding(
                     padding: const EdgeInsets.only(bottom: 6),
                     child: OutlinedButton(
-                      onPressed: busy || !canManage
+                      onPressed: busy || !canManage || _catOnCooldown
                           ? null
                           : () => onCat(inventoryId),
-                      child: Text(
-                        l10n.showroomCatActionWithCost(formatCurrency(catCost)),
-                      ),
+                      child: Text(_catActionLabel(l10n, catCost)),
                     ),
                   ),
                 FilledButton(
@@ -932,11 +1004,11 @@ class _ShowroomScreenState extends State<ShowroomScreen>
                               padding: const EdgeInsets.symmetric(horizontal: 8),
                             )
                           : null,
-                      onPressed: busy || !canManage
+                      onPressed: busy || !canManage || _catOnCooldown
                           ? null
                           : () => onCat(inventoryId),
                       child: Text(
-                        l10n.showroomCatActionWithCost(formatCurrency(catCost)),
+                        _catActionLabel(l10n, catCost),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),

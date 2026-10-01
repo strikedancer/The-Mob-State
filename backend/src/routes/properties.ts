@@ -835,6 +835,9 @@ router.post('/:id/showroom/cat', authenticate, async (req: AuthRequest, res: Res
       params: {
         reason: result.error,
         ...(typeof result.cost === 'number' ? { cost: result.cost } : {}),
+        ...(typeof result.remainingSeconds === 'number'
+          ? { remainingSeconds: result.remainingSeconds }
+          : {}),
       },
     });
   }
@@ -842,7 +845,10 @@ router.post('/:id/showroom/cat', authenticate, async (req: AuthRequest, res: Res
   const showroom = await showroomService.getShowroom(req.player!.id, propertyId);
   return res.status(200).json({
     event: 'showroom.catted',
-    params: { cost: result.cost },
+    params: {
+      cost: result.cost,
+      remainingSeconds: result.remainingSeconds,
+    },
     showroom: showroom.success ? showroom.showroom : null,
   });
 });

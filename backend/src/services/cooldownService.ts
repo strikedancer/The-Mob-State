@@ -38,6 +38,7 @@ interface CooldownConfig {
   motorcycle_ops_contract: number;
   boat_ops_contract: number;
   ammo: number;
+  showroom_cat: number;
 }
 
 const NOTIFY_ACTIONS = new Set<keyof CooldownConfig>([
@@ -80,6 +81,7 @@ const COOLDOWN_PERIODS: CooldownConfig = {
   motorcycle_ops_contract: 9600, // 2h40
   boat_ops_contract: 12600, // 3h30
   ammo: 3600, // 1 hour between ammo purchases
+  showroom_cat: 900, // 15 minutes between showroom cat papers
 };
 
 /**

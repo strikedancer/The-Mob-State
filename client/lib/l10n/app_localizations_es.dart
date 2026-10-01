@@ -6925,15 +6925,15 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get propertyInfoCarShowroom =>
-      'Un concesionario por cuenta, ligado al país de compra. Solo coches en ese país, al 100%, un modelo. Las mejoras amplían la vitrina hasta todos los tipos. Los expuestos no usan el garaje. Un arresto allí registra la vitrina (~40% por coche).';
+      'Una sala de exposición de automóviles por cuenta. Cómprelo en cualquier país; permanece vinculado a ese país. Sólo autos que estén en ese país, en 100% de condiciones y que aún no estén en exhibición. Las actualizaciones hacen crecer la vitrina en pasos hasta que todos los modelos de automóvil se ajusten. Se trata de una colección, no de un espacio de garaje adicional: los coches expuestos no utilizan espacios de garaje y no se pueden utilizar, vender ni contrabandear. Un arresto en ese país registra la vitrina (~40% de probabilidad por automóvil no registrado); las detenciones en otros lugares lo dejan en paz. Los documentos del gato con dinero en efectivo para que la policía y el FBI traten ese auto como legítimo mientras permanece en exhibición. Los papeles para gatos tienen un tiempo de reutilización de 15 minutos entre usos. Vender sólo después de que la colección esté vacía.';
 
   @override
   String get propertyInfoMotorcycleShowroom =>
-      'Una tienda de motos por cuenta, ligada al país de compra. Motos del país, 100%, un modelo. ~40% de embargo por moto al arresto.';
+      'Una tienda de motos por cuenta, vinculada al país de compra. Sólo motos en ese país al 100% de estado, una por modelo. Las actualizaciones hacen crecer la vitrina para cada tipo de motocicleta. Las bicicletas mostradas están cerradas con llave y no utilizan plazas de garaje. Un arresto allí tiene aproximadamente un 40 % de posibilidades de confiscarla por cada bicicleta no recuperada; los arrestos en otros países no lo hacen. Papeles de gato con dinero en efectivo mientras están en exhibición para que parezcan legítimos. Los papeles para gatos tienen un tiempo de reutilización de 15 minutos entre usos.';
 
   @override
   String get propertyInfoBoatHarbor =>
-      'Un puerto por cuenta, ligado al país de compra. Barcos del país, 100%, un modelo. ~40% de embargo por barco al arresto.';
+      'Un puerto de embarcaciones por cuenta, con destino al país de compra. Sólo embarcaciones en ese país al 100% de estado, una por modelo. Las actualizaciones hacen crecer la vitrina para cada tipo de embarcación. Los barcos mostrados están cerrados con llave y no utilizan espacios en el puerto deportivo. Un arresto allí tiene aproximadamente un 40 % de posibilidades por cada barco no capturado de confiscarlo; los arrestos en otros países no lo hacen. Papeles de gato con dinero en efectivo mientras están en exhibición para que parezcan legítimos. Los papeles para gatos tienen un tiempo de reutilización de 15 minutos entre usos.';
 
   @override
   String get showroomTitle => 'Colección';
@@ -7028,13 +7028,18 @@ class AppLocalizationsEs extends AppLocalizations {
   String get showroomAlreadyCatted => 'Este vehículo ya tiene papeles limpios.';
 
   @override
+  String showroomCatCooldown(String time) {
+    return 'Papeles de gato enfriándose ($time)';
+  }
+
+  @override
   String showroomCatInsufficientFunds(String cost) {
     return 'No hay suficiente efectivo para papeles limpios ($cost).';
   }
 
   @override
   String get showroomRules =>
-      'Colección, no un garaje extra. 100%, mismo país, uno por modelo. La policía puede embargar vehículos expuestos si te arrestan aquí. Arrests in other countries do not touch this collection.';
+      'Colección, no plaza de garaje extra. 100% estado, mismo país, uno por modelo. La policía puede confiscar vehículos no registrados al momento de arrestarlos aquí (~40 % cada uno). Los arrestos en otros países no tocan esta colección. Papeles de gato (efectivo) para que los autos exhibidos parezcan legítimos hasta que los saques. Hay un tiempo de reutilización de 15 minutos entre cada acción de los papeles de gato.';
 
   @override
   String get showroomWrongCountryManage =>

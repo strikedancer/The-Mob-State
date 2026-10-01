@@ -6902,15 +6902,15 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get propertyInfoCarShowroom =>
-      'Jeden salon na konto, przypisany do kraju zakupu. Tylko auta w tym kraju, 100% stanu, jeden model. Ulepszenia powiększają witrynę aż do wszystkich typów. Wystawione auta nie zajmują garażu. Areszt w tym kraju przeszukuje witrynę (~40% na auto).';
+      'Jeden salon samochodowy na konto. Kup w dowolnym kraju; pozostaje związany z tym krajem. Tylko samochody, które są w tym kraju, w 100% stanie i nie są jeszcze wystawione. Ulepszenia powiększają witrynę stopniowo, aż każdy model samochodu będzie pasował. To kolekcja, a nie dodatkowe miejsce w garażu: prezentowane samochody nie zajmują miejsc w garażu i nie można ich używać, sprzedawać ani przemycać. Aresztowanie w tym kraju polega na przeszukaniu witryny (~40% szans na samochód bez kota); aresztowania w innych miejscach, dajmy sobie z tym spokój. Dokumenty dotyczące kotów z gotówką, więc policja/FBI traktują ten samochód jako legalny, dopóki pozostaje na wystawie. Papiery Cat mają 15-minutowy okres odnowienia pomiędzy użyciami. Sprzedaję dopiero po wyczerpaniu kolekcji.';
 
   @override
   String get propertyInfoMotorcycleShowroom =>
-      'Jeden sklep motocyklowy na konto, przypisany do kraju zakupu. Motocykle z tego kraju, 100%, jeden model. ~40% konfiskaty na motocykl przy areszcie.';
+      'Jeden sklep motocyklowy na konto, powiązany z krajem zakupu. Tylko motocykle w tym kraju w 100% stanie, po jednym na model. Ulepszenia powiększają witrynę do każdego typu motocykla. Wystawione rowery są zamykane na klucz i nie korzystają z miejsc garażowych. Aresztowanie w tym miejscu ma ~40% szans na przejęcie roweru bez kota; aresztowania w innych krajach tego nie robią. Dokumenty dla kotów z gotówką na wystawie, aby wyglądały legalnie. Papiery Cat mają 15-minutowy okres odnowienia pomiędzy użyciami.';
 
   @override
   String get propertyInfoBoatHarbor =>
-      'Jedna przystań na konto, przypisana do kraju zakupu. Łodzie z tego kraju, 100%, jeden model. ~40% konfiskaty na łódź przy areszcie.';
+      'Jeden port dla łodzi na konto, powiązany z krajem zakupu. Tylko łodzie w tym kraju w 100% stanie, po jednej na model. Ulepszenia powiększają witrynę do każdego typu łodzi. Wyświetlane łodzie są zablokowane i nie korzystają z miejsc w marinie. Aresztowanie w tym miejscu ma ~40% szans na przejęcie łodzi bez załogi; aresztowania w innych krajach tego nie robią. Dokumenty dla kotów z gotówką na wystawie, aby wyglądały legalnie. Papiery Cat mają 15-minutowy okres odnowienia pomiędzy użyciami.';
 
   @override
   String get showroomTitle => 'Kolekcja';
@@ -7005,13 +7005,18 @@ class AppLocalizationsPl extends AppLocalizations {
   String get showroomAlreadyCatted => 'Ten pojazd ma już czyste papiery.';
 
   @override
+  String showroomCatCooldown(String time) {
+    return 'Papiery dla kotów schładzają się ($time)';
+  }
+
+  @override
   String showroomCatInsufficientFunds(String cost) {
     return 'Za mało gotówki na czyste papiery ($cost).';
   }
 
   @override
   String get showroomRules =>
-      'Kolekcja, nie dodatkowy garaż. 100%, ten sam kraj, jeden na model. Policja może zająć wystawione pojazdy przy areszcie tutaj. Arrests in other countries do not touch this collection.';
+      'Kolekcja, a nie dodatkowe miejsce w garażu. Stan 100%, ten sam kraj, po jednym na model. Policja może tutaj zatrzymać pojazdy bez nadzoru (~40% każdy). Aresztowania w innych krajach nie mają wpływu na tę kolekcję. Dokumenty Cat (gotówka), dzięki czemu wystawione samochody wyglądają legalnie, dopóki ich nie wyjmiesz. Pomiędzy każdą akcją Papieru Kota następuje 15-minutowy czas odnowienia.';
 
   @override
   String get showroomWrongCountryManage =>

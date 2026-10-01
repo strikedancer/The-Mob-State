@@ -12155,19 +12155,19 @@ abstract class AppLocalizations {
   /// No description provided for @propertyInfoCarShowroom.
   ///
   /// In en, this message translates to:
-  /// **'One car showroom per account. Buy it in any country; it stays bound to that country. Only cars that are in that country, at 100% condition, and not already on display. Upgrades grow the vitrine in steps until every car model fits. This is a collection, not extra garage space: displayed cars do not use garage slots and cannot be used, sold or smuggled. An arrest in that country searches the vitrine (~40% chance per uncatted car); arrests elsewhere leave it alone. Cat papers with cash so police/FBI treat that car as legitimate while it stays on display. Sell only after the collection is empty.'**
+  /// **'One car showroom per account. Buy it in any country; it stays bound to that country. Only cars that are in that country, at 100% condition, and not already on display. Upgrades grow the vitrine in steps until every car model fits. This is a collection, not extra garage space: displayed cars do not use garage slots and cannot be used, sold or smuggled. An arrest in that country searches the vitrine (~40% chance per uncatted car); arrests elsewhere leave it alone. Cat papers with cash so police/FBI treat that car as legitimate while it stays on display. Cat papers has a 15-minute cooldown between uses. Sell only after the collection is empty.'**
   String get propertyInfoCarShowroom;
 
   /// No description provided for @propertyInfoMotorcycleShowroom.
   ///
   /// In en, this message translates to:
-  /// **'One motorcycle shop per account, bound to the purchase country. Only motorcycles in that country at 100% condition, one per model. Upgrades grow the vitrine up to every motorcycle type. Displayed bikes are locked and do not use garage slots. An arrest there has ~40% chance per uncatted bike to seize it; arrests in other countries do not. Cat papers with cash while on display to look legitimate.'**
+  /// **'One motorcycle shop per account, bound to the purchase country. Only motorcycles in that country at 100% condition, one per model. Upgrades grow the vitrine up to every motorcycle type. Displayed bikes are locked and do not use garage slots. An arrest there has ~40% chance per uncatted bike to seize it; arrests in other countries do not. Cat papers with cash while on display to look legitimate. Cat papers has a 15-minute cooldown between uses.'**
   String get propertyInfoMotorcycleShowroom;
 
   /// No description provided for @propertyInfoBoatHarbor.
   ///
   /// In en, this message translates to:
-  /// **'One boat harbor per account, bound to the purchase country. Only boats in that country at 100% condition, one per model. Upgrades grow the vitrine up to every boat type. Displayed boats are locked and do not use marina slots. An arrest there has ~40% chance per uncatted boat to seize it; arrests in other countries do not. Cat papers with cash while on display to look legitimate.'**
+  /// **'One boat harbor per account, bound to the purchase country. Only boats in that country at 100% condition, one per model. Upgrades grow the vitrine up to every boat type. Displayed boats are locked and do not use marina slots. An arrest there has ~40% chance per uncatted boat to seize it; arrests in other countries do not. Cat papers with cash while on display to look legitimate. Cat papers has a 15-minute cooldown between uses.'**
   String get propertyInfoBoatHarbor;
 
   /// No description provided for @showroomTitle.
@@ -12320,6 +12320,12 @@ abstract class AppLocalizations {
   /// **'This vehicle already has clean papers.'**
   String get showroomAlreadyCatted;
 
+  /// No description provided for @showroomCatCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'Cat papers cooling down ({time})'**
+  String showroomCatCooldown(String time);
+
   /// No description provided for @showroomCatInsufficientFunds.
   ///
   /// In en, this message translates to:
@@ -12329,7 +12335,7 @@ abstract class AppLocalizations {
   /// No description provided for @showroomRules.
   ///
   /// In en, this message translates to:
-  /// **'Collection, not extra garage space. 100% condition, same country, one per model. Police can seize uncatted vehicles on arrest here (~40% each). Arrests in other countries do not touch this collection. Cat papers (cash) so displayed cars look legitimate until you take them out.'**
+  /// **'Collection, not extra garage space. 100% condition, same country, one per model. Police can seize uncatted vehicles on arrest here (~40% each). Arrests in other countries do not touch this collection. Cat papers (cash) so displayed cars look legitimate until you take them out. There is a 15-minute cooldown between each Cat papers action.'**
   String get showroomRules;
 
   /// No description provided for @showroomWrongCountryManage.
