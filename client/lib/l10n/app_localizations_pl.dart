@@ -13996,14 +13996,106 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get achievementDescription_school_mastermind =>
-      'Osiągnij poziom wykształcenia 10';
+      'Osiągnij łącznie 15 poziomów ścieżki szkolnej';
 
   @override
   String get achievementTitle_school_doctorate => 'Doktorat uliczny';
 
   @override
   String get achievementDescription_school_doctorate =>
-      'Osiągnij poziom wykształcenia 20';
+      'Osiągnij łącznie 30 poziomów ścieżki szkolnej';
+
+  @override
+  String get achievementTitle_school_automotive_master =>
+      'Absolwentka Szkoły Chop';
+
+  @override
+  String get achievementDescription_school_automotive_master =>
+      'Maksymalnie rozwiń tor szkolny Automotive & Chop';
+
+  @override
+  String get achievementTitle_school_narcotics_master => 'Inżynier Narco';
+
+  @override
+  String get achievementDescription_school_narcotics_master =>
+      'Maksymalnie rozwiń tor szkoły narkotykowej';
+
+  @override
+  String get achievementTitle_school_finance_operator => 'Analityk Imperium';
+
+  @override
+  String get achievementDescription_school_finance_operator =>
+      'Osiągnij poziom 4 w szkole finansów';
+
+  @override
+  String get achievementTitle_school_aviation_ace => 'Certyfikat nieba';
+
+  @override
+  String get achievementDescription_school_aviation_ace =>
+      'Osiągnij poziom 4 w szkole lotniczej';
+
+  @override
+  String get achievementTitle_school_medicine_license => 'Lekarz polowy';
+
+  @override
+  String get achievementDescription_school_medicine_license =>
+      'Maksymalnie rozwiń ścieżkę szkoły medycznej';
+
+  @override
+  String get achievementTitle_chop_shop_claimer => 'Zleceniodawca Chop Shop';
+
+  @override
+  String get achievementDescription_chop_shop_claimer =>
+      'Odbierz swój pierwszy kontrakt na chopperowanie pojazdów';
+
+  @override
+  String get achievementTitle_tune_shop_pro => 'Tune Shop Pro';
+
+  @override
+  String get achievementDescription_tune_shop_pro =>
+      'Osiągnij 4. poziom statystyk dostrojenia pojazdu w dowolnym pojeździe';
+
+  @override
+  String get achievementTitle_warehouse_baron => 'Baron magazynowy';
+
+  @override
+  String get achievementDescription_warehouse_baron =>
+      'Ulepsz magazyn do poziomu 4 lub wyższego';
+
+  @override
+  String get achievementTitle_laundry_kingpin => 'Kingpin do prania';
+
+  @override
+  String get achievementDescription_laundry_kingpin =>
+      'Wykonaj pranie o wartości co najmniej 250 000 EUR';
+
+  @override
+  String get achievementTitle_garage_expansionist => 'Ekspansjonista garażowy';
+
+  @override
+  String get achievementDescription_garage_expansionist =>
+      'Ulepsz garaż lub marinę do poziomu 4 lub wyższego';
+
+  @override
+  String get achievementTitle_midnight_racer => 'Wyścig o północy';
+
+  @override
+  String get achievementDescription_midnight_racer =>
+      'Ukończ swój pierwszy wyścig o północy';
+
+  @override
+  String get achievementTitle_stock_floor_debut => 'Debiut na magazynie';
+
+  @override
+  String get achievementDescription_stock_floor_debut =>
+      'Dokończ swój pierwszy zakup na giełdzie';
+
+  @override
+  String get achievementTitle_hitlist_first_contract => 'Pierwszy kontrakt';
+
+  @override
+  String get achievementDescription_hitlist_first_contract =>
+      'Umieść swój pierwszy kontrakt na listę hitów';
 
   @override
   String get achievementTitle_road_bandit => 'Drogowy bandyta';
@@ -19826,7 +19918,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicAchievementsTips =>
-      'Codziennie sprawdzaj swoje prawie ukończone osiągnięcia: niewielki dodatkowy wysiłek może zapewnić odznakę i nagrodę pieniężną, która w przeciwnym razie byłaby opóźniona o miesiące. \nSkoncentruj się już na kategoriach Ekonomia i Przestępczość: te zapewniają najwięcej nagród pieniężnych i najłatwiej je połączyć z normalną rozgrywką.';
+      'Codziennie sprawdzaj swoje prawie ukończone osiągnięcia: niewielki dodatkowy wysiłek może zapewnić odznakę i nagrodę pieniężną, która w przeciwnym razie byłaby opóźniona o miesiące. \nSkoncentruj się już na kategoriach Ekonomia i Przestępczość: te zapewniają najwięcej nagród pieniężnych i najłatwiej je połączyć z normalną rozgrywką. \nSchool Mastermind i Doctorate zliczają teraz łączny poziom ścieżek na wszystkich ścieżkach szkolnych. Nowe odznaki obejmują także ścieżki związane z motoryzacją/narkotykami/finansami/lotnictwem/medycyną, kontrakty na siekanie, tuning, magazyny, pranie, modernizacje garaży, wyścigi o północy, zakupy akcji i pierwszy kontrakt na listę przebojów.';
 
   @override
   String get helpTopicSupportTicketsCategory => 'Wsparcie';

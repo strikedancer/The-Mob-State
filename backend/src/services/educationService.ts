@@ -884,6 +884,14 @@ class EducationService {
       throw error;
     }
 
+    if (newLevel > previousLevel || certificationsEarned.length > 0) {
+      void import('./achievementService')
+        .then(({ checkAndUnlockAchievements }) => checkAndUnlockAchievements(playerId))
+        .catch((err) =>
+          console.error('[educationService] achievement check failed', playerId, err)
+        );
+    }
+
     return {
       trackId: track.id,
       xpGain,

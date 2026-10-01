@@ -7,6 +7,7 @@ import { activityService } from './activityService';
 import { getOrCreateBankAccount } from './bankService';
 import { propertyStorageService } from './propertyStorageService';
 import { educationService } from './educationService';
+import { checkAndUnlockAchievements } from './achievementService';
 import {
   isShowroomProperty,
   resolveShowroomSlotCaps,
@@ -1113,6 +1114,12 @@ class PropertyService {
       },
       playerId
     );
+
+    if (property.propertyType === 'warehouse' && newLevel >= 4) {
+      void checkAndUnlockAchievements(playerId).catch((err) =>
+        console.error('[propertyService] warehouse achievement check failed', playerId, err)
+      );
+    }
 
     return {
       success: true,

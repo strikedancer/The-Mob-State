@@ -2,6 +2,7 @@ import prisma from '../lib/prisma';
 import { activityService } from './activityService';
 import { getOrCreateBankAccount } from './bankService';
 import { educationService } from './educationService';
+import { checkAndUnlockAchievements } from './achievementService';
 
 function toNumeric(value: unknown): number {
   const n = Number(value);
@@ -275,6 +276,12 @@ export async function tradeStock(
     { symbol, quantity, price, totalCash },
     false,
   ).catch(() => {});
+
+  if (side === 'BUY') {
+    void checkAndUnlockAchievements(playerId).catch((err) =>
+      console.error('[stockMarketService] achievement check failed', playerId, err)
+    );
+  }
 
   return getStockMarket(playerId);
 }

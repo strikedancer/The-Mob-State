@@ -232,6 +232,32 @@ String localizedAchievementTitle(
       return t.achievementTitle_school_mastermind;
     case 'school_doctorate':
       return t.achievementTitle_school_doctorate;
+    case 'school_automotive_master':
+      return t.achievementTitle_school_automotive_master;
+    case 'school_narcotics_master':
+      return t.achievementTitle_school_narcotics_master;
+    case 'school_finance_operator':
+      return t.achievementTitle_school_finance_operator;
+    case 'school_aviation_ace':
+      return t.achievementTitle_school_aviation_ace;
+    case 'school_medicine_license':
+      return t.achievementTitle_school_medicine_license;
+    case 'chop_shop_claimer':
+      return t.achievementTitle_chop_shop_claimer;
+    case 'tune_shop_pro':
+      return t.achievementTitle_tune_shop_pro;
+    case 'warehouse_baron':
+      return t.achievementTitle_warehouse_baron;
+    case 'laundry_kingpin':
+      return t.achievementTitle_laundry_kingpin;
+    case 'garage_expansionist':
+      return t.achievementTitle_garage_expansionist;
+    case 'midnight_racer':
+      return t.achievementTitle_midnight_racer;
+    case 'stock_floor_debut':
+      return t.achievementTitle_stock_floor_debut;
+    case 'hitlist_first_contract':
+      return t.achievementTitle_hitlist_first_contract;
     case 'road_bandit':
       return t.achievementTitle_road_bandit;
     case 'grand_theft_fleet':

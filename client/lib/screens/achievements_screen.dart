@@ -195,6 +195,32 @@ class _AchievementsScreenState extends State<AchievementsScreen>
         return t.achievementDescription_school_mastermind;
       case 'school_doctorate':
         return t.achievementDescription_school_doctorate;
+      case 'school_automotive_master':
+        return t.achievementDescription_school_automotive_master;
+      case 'school_narcotics_master':
+        return t.achievementDescription_school_narcotics_master;
+      case 'school_finance_operator':
+        return t.achievementDescription_school_finance_operator;
+      case 'school_aviation_ace':
+        return t.achievementDescription_school_aviation_ace;
+      case 'school_medicine_license':
+        return t.achievementDescription_school_medicine_license;
+      case 'chop_shop_claimer':
+        return t.achievementDescription_chop_shop_claimer;
+      case 'tune_shop_pro':
+        return t.achievementDescription_tune_shop_pro;
+      case 'warehouse_baron':
+        return t.achievementDescription_warehouse_baron;
+      case 'laundry_kingpin':
+        return t.achievementDescription_laundry_kingpin;
+      case 'garage_expansionist':
+        return t.achievementDescription_garage_expansionist;
+      case 'midnight_racer':
+        return t.achievementDescription_midnight_racer;
+      case 'stock_floor_debut':
+        return t.achievementDescription_stock_floor_debut;
+      case 'hitlist_first_contract':
+        return t.achievementDescription_hitlist_first_contract;
       case 'road_bandit':
         return t.achievementDescription_road_bandit;
       case 'grand_theft_fleet':
@@ -829,6 +855,11 @@ class _AchievementsScreenState extends State<AchievementsScreen>
       'school_certified': 6,
       'school_multi_certified': 7,
       'school_track_specialist': 8,
+      'school_automotive_master': 9,
+      'school_narcotics_master': 10,
+      'school_finance_operator': 11,
+      'school_aviation_ace': 12,
+      'school_medicine_license': 13,
     };
 
     if (achievement.category == 'prostitution') {

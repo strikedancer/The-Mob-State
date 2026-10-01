@@ -14045,14 +14045,107 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get achievementDescription_school_mastermind =>
-      'Alcanzar el nivel educativo 10';
+      'Alcanza 15 niveles totales de seguimiento escolar';
 
   @override
   String get achievementTitle_school_doctorate => 'Doctorado en la calle';
 
   @override
   String get achievementDescription_school_doctorate =>
-      'Alcanzar el nivel educativo 20';
+      'Alcanza 30 niveles totales de seguimiento escolar';
+
+  @override
+  String get achievementTitle_school_automotive_master =>
+      'Graduado de la escuela Chop';
+
+  @override
+  String get achievementDescription_school_automotive_master =>
+      'Maximiza la pista de la escuela Automotive & Chop';
+
+  @override
+  String get achievementTitle_school_narcotics_master => 'Narcoingeniero';
+
+  @override
+  String get achievementDescription_school_narcotics_master =>
+      'Maximiza la pista de la escuela de Narcóticos';
+
+  @override
+  String get achievementTitle_school_finance_operator => 'Analista del imperio';
+
+  @override
+  String get achievementDescription_school_finance_operator =>
+      'Alcanza el nivel 4 de la escuela de finanzas';
+
+  @override
+  String get achievementTitle_school_aviation_ace => 'Credencial del cielo';
+
+  @override
+  String get achievementDescription_school_aviation_ace =>
+      'Alcanza el nivel 4 de la pista de la escuela de aviación.';
+
+  @override
+  String get achievementTitle_school_medicine_license => 'Medica de campo';
+
+  @override
+  String get achievementDescription_school_medicine_license =>
+      'Maximiza la pista de la escuela de medicina';
+
+  @override
+  String get achievementTitle_chop_shop_claimer => 'Reclamador de desguace';
+
+  @override
+  String get achievementDescription_chop_shop_claimer =>
+      'Reclama tu primer contrato de corte de vehículos';
+
+  @override
+  String get achievementTitle_tune_shop_pro => 'Tienda de melodías Pro';
+
+  @override
+  String get achievementDescription_tune_shop_pro =>
+      'Alcanza el nivel 4 de estadísticas de sintonización de vehículos en cualquier vehículo.';
+
+  @override
+  String get achievementTitle_warehouse_baron => 'Barón del almacén';
+
+  @override
+  String get achievementDescription_warehouse_baron =>
+      'Actualiza un almacén al nivel 4 o superior';
+
+  @override
+  String get achievementTitle_laundry_kingpin => 'Jefe de lavandería';
+
+  @override
+  String get achievementDescription_laundry_kingpin =>
+      'Realizar un trabajo de blanqueo de 250.000 € o más';
+
+  @override
+  String get achievementTitle_garage_expansionist => 'Expansionista de garaje';
+
+  @override
+  String get achievementDescription_garage_expansionist =>
+      'Mejora un garaje o puerto deportivo al nivel 4 o superior';
+
+  @override
+  String get achievementTitle_midnight_racer => 'Corredor de medianoche';
+
+  @override
+  String get achievementDescription_midnight_racer =>
+      'Termina tu primera carrera de medianoche';
+
+  @override
+  String get achievementTitle_stock_floor_debut =>
+      'Debut en el piso de existencias';
+
+  @override
+  String get achievementDescription_stock_floor_debut =>
+      'Completa tu primera compra en bolsa';
+
+  @override
+  String get achievementTitle_hitlist_first_contract => 'Primer contrato';
+
+  @override
+  String get achievementDescription_hitlist_first_contract =>
+      'Coloque su primer contrato de lista de éxito';
 
   @override
   String get achievementTitle_road_bandit => 'Bandido del camino';
@@ -19862,7 +19955,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicAchievementsTips =>
-      'Verifique diariamente sus logros casi completados: un pequeño esfuerzo adicional puede ganar una insignia y una recompensa en efectivo que de otro modo se retrasaría durante meses. \nConcéntrate desde el principio en las categorías de Economía y Crimen: tienen la mayor cantidad de recompensas en efectivo y son más fáciles de combinar con tu juego normal.';
+      'Verifique diariamente sus logros casi completados: un pequeño esfuerzo adicional puede ganar una insignia y una recompensa en efectivo que de otro modo se retrasaría durante meses. \nConcéntrate desde el principio en las categorías de Economía y Crimen: tienen la mayor cantidad de recompensas en efectivo y son más fáciles de combinar con tu juego normal. \nSchool Mastermind y Doctorate ahora cuentan los niveles totales de seguimiento en todas las áreas escolares. Las nuevas insignias también cubren temas de Automoción/Narcóticos/Finanzas/Aviación/Medicina, contratos de corte, tuning, almacenes, lavado de ropa, mejoras de garaje, carreras de medianoche, compra de acciones y tu primer contrato de lista de objetivos.';
 
   @override
   String get helpTopicSupportTicketsCategory => 'Soporte';

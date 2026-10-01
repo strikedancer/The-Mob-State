@@ -14073,14 +14073,108 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get achievementDescription_school_mastermind =>
-      'Atteindre le niveau d\'éducation 10';
+      'Atteignez 15 niveaux scolaires au total';
 
   @override
   String get achievementTitle_school_doctorate => 'Doctorat de rue';
 
   @override
   String get achievementDescription_school_doctorate =>
-      'Atteindre le niveau d\'éducation 20';
+      'Atteignez 30 niveaux scolaires au total';
+
+  @override
+  String get achievementTitle_school_automotive_master =>
+      'Diplômé de l\'école Chop';
+
+  @override
+  String get achievementDescription_school_automotive_master =>
+      'Maximisez la piste scolaire Automotive & Chop';
+
+  @override
+  String get achievementTitle_school_narcotics_master => 'Ingénieur Narco';
+
+  @override
+  String get achievementDescription_school_narcotics_master =>
+      'Maximisez la piste de l\'école des stupéfiants';
+
+  @override
+  String get achievementTitle_school_finance_operator => 'Analyste Empire';
+
+  @override
+  String get achievementDescription_school_finance_operator =>
+      'Atteindre le niveau 4 du parcours de l\'école de finance';
+
+  @override
+  String get achievementTitle_school_aviation_ace =>
+      'Informations d\'identification Sky';
+
+  @override
+  String get achievementDescription_school_aviation_ace =>
+      'Atteindre le niveau 4 de la piste de l\'école d\'aviation';
+
+  @override
+  String get achievementTitle_school_medicine_license => 'Médecin de terrain';
+
+  @override
+  String get achievementDescription_school_medicine_license =>
+      'Maximisez le parcours de l\'école de médecine';
+
+  @override
+  String get achievementTitle_chop_shop_claimer => 'Réclamant du Chop Shop';
+
+  @override
+  String get achievementDescription_chop_shop_claimer =>
+      'Réclamez votre premier contrat de ramassage de véhicule';
+
+  @override
+  String get achievementTitle_tune_shop_pro => 'Tune Shop Pro';
+
+  @override
+  String get achievementDescription_tune_shop_pro =>
+      'Atteignez le niveau 4 des statistiques de réglage du véhicule sur n\'importe quel véhicule.';
+
+  @override
+  String get achievementTitle_warehouse_baron => 'Baron de l\'entrepôt';
+
+  @override
+  String get achievementDescription_warehouse_baron =>
+      'Améliorez un entrepôt au niveau 4 ou supérieur';
+
+  @override
+  String get achievementTitle_laundry_kingpin =>
+      'Chef de file de la blanchisserie';
+
+  @override
+  String get achievementDescription_laundry_kingpin =>
+      'Effectuer un travail de blanchiment de 250 000 € ou plus';
+
+  @override
+  String get achievementTitle_garage_expansionist => 'Expansionniste de garage';
+
+  @override
+  String get achievementDescription_garage_expansionist =>
+      'Améliorez un garage ou une marina au niveau 4 ou supérieur';
+
+  @override
+  String get achievementTitle_midnight_racer => 'Coureur de minuit';
+
+  @override
+  String get achievementDescription_midnight_racer =>
+      'Terminez votre première course de minuit';
+
+  @override
+  String get achievementTitle_stock_floor_debut => 'Débuts en stock';
+
+  @override
+  String get achievementDescription_stock_floor_debut =>
+      'Réalisez votre premier achat en bourse';
+
+  @override
+  String get achievementTitle_hitlist_first_contract => 'Premier contrat';
+
+  @override
+  String get achievementDescription_hitlist_first_contract =>
+      'Placez votre premier contrat de liste de résultats';
 
   @override
   String get achievementTitle_road_bandit => 'Bandit de la route';
@@ -19919,7 +20013,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicAchievementsTips =>
-      'Vérifiez quotidiennement vos réalisations presque terminées : un petit effort supplémentaire peut gagner un badge et une récompense en espèces qui autrement seraient retardés de plusieurs mois. \nConcentrez-vous dès le début sur les catégories Économie et Crime : celles-ci offrent le plus de récompenses en espèces et sont les plus faciles à combiner avec votre jeu normal.';
+      'Vérifiez quotidiennement vos réalisations presque terminées : un petit effort supplémentaire peut gagner un badge et une récompense en espèces qui autrement seraient retardés de plusieurs mois. \nConcentrez-vous dès le début sur les catégories Économie et Crime : celles-ci offrent le plus de récompenses en espèces et sont les plus faciles à combiner avec votre jeu normal. \nSchool Mastermind et Doctorate comptent désormais le niveau total des filières dans toutes les filières scolaires. Les nouveaux badges couvrent également les pistes automobiles/narcotiques/finances/aviation/médecine, les contrats de coupe, le réglage, les entrepôts, le blanchiment, les améliorations de garages, les courses de minuit, les achats d\'actions et votre premier contrat de liste de succès.';
 
   @override
   String get helpTopicSupportTicketsCategory => 'Soutien';

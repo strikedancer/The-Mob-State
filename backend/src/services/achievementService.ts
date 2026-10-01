@@ -63,6 +63,7 @@ export interface AchievementDefinition {
   requirementJobId?: string;
   requirementDrugId?: string;
   requirementFacilityType?: string;
+  requirementTrackId?: string;
   rewardMoney?: number;
   rewardXp?: number;
   rewardReputation?: number;
@@ -946,10 +947,10 @@ export const ACHIEVEMENT_DEFINITIONS: Record<string, AchievementDefinition> = {
   school_mastermind: {
     id: 'school_mastermind',
     title: 'Academic Mastermind',
-    description: 'Reach education level 10',
+    description: 'Reach 15 total school track levels',
     category: 'school',
-    requirementType: 'education_level_reached',
-    requirementValue: 10,
+    requirementType: 'education_total_levels',
+    requirementValue: 15,
     rewardMoney: 35000,
     rewardXp: 700,
     icon: '🧠',
@@ -958,13 +959,174 @@ export const ACHIEVEMENT_DEFINITIONS: Record<string, AchievementDefinition> = {
   school_doctorate: {
     id: 'school_doctorate',
     title: 'Street Doctorate',
-    description: 'Reach education level 20',
+    description: 'Reach 30 total school track levels',
     category: 'school',
-    requirementType: 'education_level_reached',
-    requirementValue: 20,
+    requirementType: 'education_total_levels',
+    requirementValue: 30,
     rewardMoney: 100000,
     rewardXp: 2000,
     icon: '📜',
+  },
+
+  school_automotive_master: {
+    id: 'school_automotive_master',
+    title: 'Chop School Graduate',
+    description: 'Max out the Automotive & Chop school track',
+    category: 'school',
+    requirementType: 'school_track_level',
+    requirementValue: 5,
+    requirementTrackId: 'automotive',
+    rewardMoney: 25000,
+    rewardXp: 500,
+    icon: '🔧',
+  },
+
+  school_narcotics_master: {
+    id: 'school_narcotics_master',
+    title: 'Narco Engineer',
+    description: 'Max out the Narcotics school track',
+    category: 'school',
+    requirementType: 'school_track_level',
+    requirementValue: 5,
+    requirementTrackId: 'narcotics',
+    rewardMoney: 25000,
+    rewardXp: 500,
+    icon: '🧪',
+  },
+
+  school_finance_operator: {
+    id: 'school_finance_operator',
+    title: 'Empire Analyst',
+    description: 'Reach Finance school track level 4',
+    category: 'school',
+    requirementType: 'school_track_level',
+    requirementValue: 4,
+    requirementTrackId: 'finance',
+    rewardMoney: 20000,
+    rewardXp: 400,
+    icon: '💹',
+  },
+
+  school_aviation_ace: {
+    id: 'school_aviation_ace',
+    title: 'Sky Credential',
+    description: 'Reach Aviation school track level 4',
+    category: 'school',
+    requirementType: 'school_track_level',
+    requirementValue: 4,
+    requirementTrackId: 'aviation',
+    rewardMoney: 20000,
+    rewardXp: 400,
+    icon: '✈️',
+  },
+
+  school_medicine_license: {
+    id: 'school_medicine_license',
+    title: 'Field Physician',
+    description: 'Max out the Medicine school track',
+    category: 'school',
+    requirementType: 'school_track_level',
+    requirementValue: 5,
+    requirementTrackId: 'medicine',
+    rewardMoney: 25000,
+    rewardXp: 500,
+    icon: '🩺',
+  },
+
+  chop_shop_claimer: {
+    id: 'chop_shop_claimer',
+    title: 'Chop Shop Claimer',
+    description: 'Claim your first vehicle chop contract',
+    category: 'vehicles',
+    requirementType: 'chop_contracts_claimed',
+    requirementValue: 1,
+    rewardMoney: 15000,
+    rewardXp: 300,
+    icon: '🔩',
+  },
+
+  tune_shop_pro: {
+    id: 'tune_shop_pro',
+    title: 'Tune Shop Pro',
+    description: 'Reach vehicle tune stat level 4 on any vehicle',
+    category: 'vehicles',
+    requirementType: 'vehicle_tune_max_stat',
+    requirementValue: 4,
+    rewardMoney: 20000,
+    rewardXp: 400,
+    icon: '⚙️',
+  },
+
+  warehouse_baron: {
+    id: 'warehouse_baron',
+    title: 'Warehouse Baron',
+    description: 'Upgrade a warehouse to level 4 or higher',
+    category: 'trade',
+    requirementType: 'warehouse_max_level',
+    requirementValue: 4,
+    rewardMoney: 30000,
+    rewardXp: 500,
+    icon: '📦',
+  },
+
+  laundry_kingpin: {
+    id: 'laundry_kingpin',
+    title: 'Laundry Kingpin',
+    description: 'Complete a launder job of €250,000 or more',
+    category: 'trade',
+    requirementType: 'launder_high_completed',
+    requirementValue: 1,
+    rewardMoney: 35000,
+    rewardXp: 600,
+    icon: '🧼',
+  },
+
+  garage_expansionist: {
+    id: 'garage_expansionist',
+    title: 'Garage Expansionist',
+    description: 'Upgrade a garage or marina to level 4 or higher',
+    category: 'vehicles',
+    requirementType: 'garage_marina_max_level',
+    requirementValue: 4,
+    rewardMoney: 25000,
+    rewardXp: 450,
+    icon: '🅿️',
+  },
+
+  midnight_racer: {
+    id: 'midnight_racer',
+    title: 'Midnight Racer',
+    description: 'Finish your first Midnight Race',
+    category: 'vehicles',
+    requirementType: 'races_finished',
+    requirementValue: 1,
+    rewardMoney: 12000,
+    rewardXp: 250,
+    icon: '🏁',
+  },
+
+  stock_floor_debut: {
+    id: 'stock_floor_debut',
+    title: 'Stock Floor Debut',
+    description: 'Complete your first stock market buy',
+    category: 'trade',
+    requirementType: 'stock_buys_completed',
+    requirementValue: 1,
+    rewardMoney: 10000,
+    rewardXp: 200,
+    icon: '📈',
+  },
+
+  hitlist_first_contract: {
+    id: 'hitlist_first_contract',
+    title: 'First Contract',
+    description: 'Place your first hitlist contract',
+    category: 'power',
+    requirementType: 'hits_placed',
+    requirementValue: 1,
+    rewardMoney: 15000,
+    rewardXp: 300,
+    icon: '🎯',
   },
 
   road_bandit: {
@@ -2063,10 +2225,20 @@ interface AchievementSnapshot {
   jobsWithEducationRequirementsCount: number;
   uniqueEducationJobTypesCompletedCount: number;
   educationLevel: number;
+  educationTotalLevels: number;
+  schoolTrackLevels: Record<string, number>;
   maxVipProstituteLevel: number;
   specificJobsCount: Record<string, number>;
   certificationsEarnedCount: number;
   maxedSchoolTracksCount: number;
+  chopContractsClaimed: number;
+  vehicleTuneMaxStat: number;
+  warehouseMaxLevel: number;
+  launderHighCompleted: number;
+  garageMarinaMaxLevel: number;
+  racesFinished: number;
+  stockBuysCompleted: number;
+  hitsPlaced: number;
   jailbreaksSuccessCount: number;
   prisonerBuyoutsCount: number;
   drugQuantitiesProduced: Record<string, number>;
@@ -2436,6 +2608,14 @@ async function getAchievementSnapshot(playerId: number): Promise<AchievementSnap
     ? educationProfile.certifications.length
     : 0;
 
+  const schoolTrackLevels: Record<string, number> = {};
+  let educationTotalLevels = 0;
+  for (const [trackId, progress] of Object.entries(educationProfile.tracks || {})) {
+    const level = Math.max(0, Math.floor(progress?.level ?? 0));
+    schoolTrackLevels[trackId] = level;
+    educationTotalLevels += level;
+  }
+
   const maxedSchoolTracksCount = Object.entries(educationProfile.tracks || {}).reduce(
     (count, [trackId, progress]) => {
       const track = educationService.getTrack(trackId);
@@ -2448,6 +2628,107 @@ async function getAchievementSnapshot(playerId: number): Promise<AchievementSnap
     },
     0
   );
+
+  const [
+    chopContractsClaimed,
+    vehicleTuneMaxStat,
+    warehouseMaxLevel,
+    launderHighCompleted,
+    garageMaxLevel,
+    marinaMaxLevel,
+    racesFinished,
+    stockBuysCompleted,
+    hitsPlaced,
+  ] = await Promise.all([
+    safeCount('chopContractsClaimed', async () =>
+      prisma.playerActivity.count({
+        where: { playerId, activityType: 'VEHICLE_OPS_CHOP' },
+      })
+    ),
+    safeValue(
+      'vehicleTuneMaxStat',
+      async () => {
+        const rows = await prisma.$queryRawUnsafe<Array<{ maxStat: number | null }>>(
+          `SELECT MAX(GREATEST(speed_level, stealth_level, armor_level)) AS maxStat
+           FROM vehicle_tuning_upgrades
+           WHERE player_id = ?`,
+          playerId
+        );
+        return Math.max(0, Number(rows[0]?.maxStat ?? 0) || 0);
+      },
+      0
+    ),
+    safeValue(
+      'warehouseMaxLevel',
+      async () => {
+        const row = await prisma.property.findFirst({
+          where: { playerId, propertyType: 'warehouse' },
+          orderBy: { upgradeLevel: 'desc' },
+          select: { upgradeLevel: true },
+        });
+        return Math.max(0, Number(row?.upgradeLevel ?? 0) || 0);
+      },
+      0
+    ),
+    safeCount('launderHighCompleted', async () => {
+      const rows = await prisma.$queryRawUnsafe<Array<{ c: number | bigint }>>(
+        `SELECT COUNT(*) AS c
+         FROM launder_jobs
+         WHERE playerId = ?
+           AND status = 'completed'
+           AND amountIn >= 250000`,
+        playerId
+      );
+      return Number(rows[0]?.c ?? 0) || 0;
+    }),
+    safeValue(
+      'garageMaxLevel',
+      async () => {
+        const rows = await prisma.$queryRawUnsafe<Array<{ maxLvl: number | null }>>(
+          `SELECT MAX(gu.upgradeLevel) AS maxLvl
+           FROM garage_upgrades gu
+           INNER JOIN garages g ON g.id = gu.garageId
+           WHERE g.playerId = ?`,
+          playerId
+        );
+        return Math.max(0, Number(rows[0]?.maxLvl ?? 0) || 0);
+      },
+      0
+    ),
+    safeValue(
+      'marinaMaxLevel',
+      async () => {
+        const rows = await prisma.$queryRawUnsafe<Array<{ maxLvl: number | null }>>(
+          `SELECT MAX(mu.upgradeLevel) AS maxLvl
+           FROM marina_upgrades mu
+           INNER JOIN marinas m ON m.id = mu.marinaId
+           WHERE m.playerId = ?`,
+          playerId
+        );
+        return Math.max(0, Number(rows[0]?.maxLvl ?? 0) || 0);
+      },
+      0
+    ),
+    safeCount('racesFinished', async () =>
+      prisma.midnightRaceEntry.count({
+        where: { playerId, status: 'finished' },
+      })
+    ),
+    safeCount('stockBuysCompleted', async () => {
+      const rows = await prisma.$queryRawUnsafe<Array<{ c: number | bigint }>>(
+        `SELECT COUNT(*) AS c FROM stock_trades WHERE playerId = ? AND side = 'BUY'`,
+        playerId
+      );
+      return Number(rows[0]?.c ?? 0) || 0;
+    }),
+    safeCount('hitsPlaced', async () =>
+      prisma.hitList.count({
+        where: { placedById: playerId },
+      })
+    ),
+  ]);
+
+  const garageMarinaMaxLevel = Math.max(garageMaxLevel, marinaMaxLevel);
 
   // Drug quantity per type (sum of collected quantities from completed productions)
   const drugQuantitiesProduced: Record<string, number> = {};
@@ -2665,6 +2946,8 @@ async function getAchievementSnapshot(playerId: number): Promise<AchievementSnap
     jobsWithEducationRequirementsCount,
     uniqueEducationJobTypesCompletedCount,
     educationLevel: educationLevel > 0 ? educationLevel : 0,
+    educationTotalLevels,
+    schoolTrackLevels,
     maxVipProstituteLevel:
       prostitutes.length > 0
         ? prostitutes
@@ -2678,6 +2961,14 @@ async function getAchievementSnapshot(playerId: number): Promise<AchievementSnap
     specificJobsCount,
     certificationsEarnedCount,
     maxedSchoolTracksCount,
+    chopContractsClaimed,
+    vehicleTuneMaxStat,
+    warehouseMaxLevel,
+    launderHighCompleted,
+    garageMarinaMaxLevel,
+    racesFinished,
+    stockBuysCompleted,
+    hitsPlaced,
     jailbreaksSuccessCount,
     prisonerBuyoutsCount,
     drugQuantitiesProduced,
@@ -2834,6 +3125,58 @@ function evaluateAchievement(
     case 'school_tracks_mastered':
       currentValue = snapshot.maxedSchoolTracksCount;
       data = { maxedTracks: currentValue };
+      break;
+
+    case 'education_total_levels':
+      currentValue = snapshot.educationTotalLevels;
+      data = { educationTotalLevels: currentValue };
+      break;
+
+    case 'school_track_level': {
+      const trackId = achievement.requirementTrackId ?? '';
+      currentValue = trackId ? (snapshot.schoolTrackLevels[trackId] ?? 0) : 0;
+      data = { trackId, level: currentValue };
+      break;
+    }
+
+    case 'chop_contracts_claimed':
+      currentValue = snapshot.chopContractsClaimed;
+      data = { chopContractsClaimed: currentValue };
+      break;
+
+    case 'vehicle_tune_max_stat':
+      currentValue = snapshot.vehicleTuneMaxStat;
+      data = { vehicleTuneMaxStat: currentValue };
+      break;
+
+    case 'warehouse_max_level':
+      currentValue = snapshot.warehouseMaxLevel;
+      data = { warehouseMaxLevel: currentValue };
+      break;
+
+    case 'launder_high_completed':
+      currentValue = snapshot.launderHighCompleted;
+      data = { launderHighCompleted: currentValue };
+      break;
+
+    case 'garage_marina_max_level':
+      currentValue = snapshot.garageMarinaMaxLevel;
+      data = { garageMarinaMaxLevel: currentValue };
+      break;
+
+    case 'races_finished':
+      currentValue = snapshot.racesFinished;
+      data = { racesFinished: currentValue };
+      break;
+
+    case 'stock_buys_completed':
+      currentValue = snapshot.stockBuysCompleted;
+      data = { stockBuysCompleted: currentValue };
+      break;
+
+    case 'hits_placed':
+      currentValue = snapshot.hitsPlaced;
+      data = { hitsPlaced: currentValue };
       break;
 
     case 'cars_stolen_count':

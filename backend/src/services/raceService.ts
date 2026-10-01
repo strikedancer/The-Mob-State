@@ -9,6 +9,7 @@ import {
   automotiveRaceScoreBonus,
   educationService,
 } from './educationService';
+import { checkAndUnlockAchievements } from './achievementService';
 
 type VehicleCatalogRow = {
   id: string;
@@ -733,6 +734,12 @@ export const raceService = {
     }).catch((error) => {
       console.error('[raceService] Failed to notify settled race', meeting.id, error);
     });
+
+    for (const row of driverPayouts) {
+      void checkAndUnlockAchievements(row.playerId).catch((err) =>
+        console.error('[raceService] achievement check failed', row.playerId, err)
+      );
+    }
 
     return 'settled';
   },

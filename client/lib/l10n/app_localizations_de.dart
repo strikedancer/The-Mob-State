@@ -14081,14 +14081,107 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get achievementDescription_school_mastermind =>
-      'Erreiche Bildungsniveau 10';
+      'Erreiche insgesamt 15 Schulstufenstufen';
 
   @override
   String get achievementTitle_school_doctorate => 'Straßendoktorat';
 
   @override
   String get achievementDescription_school_doctorate =>
-      'Erreiche Bildungsniveau 20';
+      'Erreiche insgesamt 30 Schulstufenstufen';
+
+  @override
+  String get achievementTitle_school_automotive_master =>
+      'Absolvent der Chop-Schule';
+
+  @override
+  String get achievementDescription_school_automotive_master =>
+      'Maximieren Sie die Schulstrecke „Automotive & Chop“.';
+
+  @override
+  String get achievementTitle_school_narcotics_master => 'Narco-Ingenieur';
+
+  @override
+  String get achievementDescription_school_narcotics_master =>
+      'Maximieren Sie die Narcotics-Schulstrecke';
+
+  @override
+  String get achievementTitle_school_finance_operator => 'Empire-Analyst';
+
+  @override
+  String get achievementDescription_school_finance_operator =>
+      'Erreiche Level 4 der Finanzschule';
+
+  @override
+  String get achievementTitle_school_aviation_ace => 'Sky-Ausweis';
+
+  @override
+  String get achievementDescription_school_aviation_ace =>
+      'Erreiche Stufe 4 der Luftfahrtschulstrecke';
+
+  @override
+  String get achievementTitle_school_medicine_license => 'Feldarzt';
+
+  @override
+  String get achievementDescription_school_medicine_license =>
+      'Maximieren Sie die Medizinschulstrecke';
+
+  @override
+  String get achievementTitle_chop_shop_claimer =>
+      'Chop-Shop-Anspruchsberechtigter';
+
+  @override
+  String get achievementDescription_chop_shop_claimer =>
+      'Fordern Sie Ihren ersten Fahrzeug-Chop-Vertrag an';
+
+  @override
+  String get achievementTitle_tune_shop_pro => 'Tune Shop Pro';
+
+  @override
+  String get achievementDescription_tune_shop_pro =>
+      'Erreiche Fahrzeugtuning-Statistikstufe 4 für ein beliebiges Fahrzeug';
+
+  @override
+  String get achievementTitle_warehouse_baron => 'Lagerhausbaron';
+
+  @override
+  String get achievementDescription_warehouse_baron =>
+      'Werte ein Lagerhaus auf Level 4 oder höher auf';
+
+  @override
+  String get achievementTitle_laundry_kingpin => 'Wäsche-Kingpin';
+
+  @override
+  String get achievementDescription_laundry_kingpin =>
+      'Führen Sie einen Waschauftrag im Wert von 250.000 € oder mehr durch';
+
+  @override
+  String get achievementTitle_garage_expansionist => 'Garagenexpansionist';
+
+  @override
+  String get achievementDescription_garage_expansionist =>
+      'Werte eine Garage oder einen Yachthafen auf Level 4 oder höher auf';
+
+  @override
+  String get achievementTitle_midnight_racer => 'Mitternachtsrennfahrer';
+
+  @override
+  String get achievementDescription_midnight_racer =>
+      'Schließe dein erstes Mitternachtsrennen ab';
+
+  @override
+  String get achievementTitle_stock_floor_debut => 'Börsendebüt';
+
+  @override
+  String get achievementDescription_stock_floor_debut =>
+      'Schließen Sie Ihren ersten Börsenkauf ab';
+
+  @override
+  String get achievementTitle_hitlist_first_contract => 'Erster Vertrag';
+
+  @override
+  String get achievementDescription_hitlist_first_contract =>
+      'Platzieren Sie Ihren ersten Hitlist-Vertrag';
 
   @override
   String get achievementTitle_road_bandit => 'Straßenbandit';
@@ -19916,7 +20009,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicAchievementsTips =>
-      'Überprüfen Sie täglich Ihre fast erreichten Erfolge: Ein kleiner zusätzlicher Aufwand kann zu einem Abzeichen und einer Geldprämie führen, die andernfalls um Monate verzögert würden. \nKonzentrieren Sie sich frühzeitig auf die Kategorien Wirtschaft und Kriminalität: Diese bieten die meisten Geldprämien und lassen sich am einfachsten mit Ihrem normalen Gameplay kombinieren.';
+      'Überprüfen Sie täglich Ihre fast erreichten Erfolge: Ein kleiner zusätzlicher Aufwand kann zu einem Abzeichen und einer Geldprämie führen, die andernfalls um Monate verzögert würden. \nKonzentrieren Sie sich frühzeitig auf die Kategorien Wirtschaft und Kriminalität: Diese bieten die meisten Geldprämien und lassen sich am einfachsten mit Ihrem normalen Gameplay kombinieren. \nSchool Mastermind und Doctorate zählen jetzt die Gesamtstufenstufen aller Schulstrecken. Neue Abzeichen decken außerdem die Strecken Automobil/Drogen/Finanzen/Luftfahrt/Medizin, Chop-Verträge, Tuning, Lagerhäuser, Wäscherei, Garagen-Upgrades, Mitternachtsrennen, Aktienkäufe und Ihren ersten Hitlist-Vertrag ab.';
 
   @override
   String get helpTopicSupportTicketsCategory => 'Unterstützung';

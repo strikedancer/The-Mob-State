@@ -13915,14 +13915,106 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get achievementDescription_school_mastermind =>
-      'Reach education level 10';
+      'Reach 15 total school track levels';
 
   @override
   String get achievementTitle_school_doctorate => 'Street Doctorate';
 
   @override
   String get achievementDescription_school_doctorate =>
-      'Reach education level 20';
+      'Reach 30 total school track levels';
+
+  @override
+  String get achievementTitle_school_automotive_master =>
+      'Chop School Graduate';
+
+  @override
+  String get achievementDescription_school_automotive_master =>
+      'Max out the Automotive & Chop school track';
+
+  @override
+  String get achievementTitle_school_narcotics_master => 'Narco Engineer';
+
+  @override
+  String get achievementDescription_school_narcotics_master =>
+      'Max out the Narcotics school track';
+
+  @override
+  String get achievementTitle_school_finance_operator => 'Empire Analyst';
+
+  @override
+  String get achievementDescription_school_finance_operator =>
+      'Reach Finance school track level 4';
+
+  @override
+  String get achievementTitle_school_aviation_ace => 'Sky Credential';
+
+  @override
+  String get achievementDescription_school_aviation_ace =>
+      'Reach Aviation school track level 4';
+
+  @override
+  String get achievementTitle_school_medicine_license => 'Field Physician';
+
+  @override
+  String get achievementDescription_school_medicine_license =>
+      'Max out the Medicine school track';
+
+  @override
+  String get achievementTitle_chop_shop_claimer => 'Chop Shop Claimer';
+
+  @override
+  String get achievementDescription_chop_shop_claimer =>
+      'Claim your first vehicle chop contract';
+
+  @override
+  String get achievementTitle_tune_shop_pro => 'Tune Shop Pro';
+
+  @override
+  String get achievementDescription_tune_shop_pro =>
+      'Reach vehicle tune stat level 4 on any vehicle';
+
+  @override
+  String get achievementTitle_warehouse_baron => 'Warehouse Baron';
+
+  @override
+  String get achievementDescription_warehouse_baron =>
+      'Upgrade a warehouse to level 4 or higher';
+
+  @override
+  String get achievementTitle_laundry_kingpin => 'Laundry Kingpin';
+
+  @override
+  String get achievementDescription_laundry_kingpin =>
+      'Complete a launder job of €250,000 or more';
+
+  @override
+  String get achievementTitle_garage_expansionist => 'Garage Expansionist';
+
+  @override
+  String get achievementDescription_garage_expansionist =>
+      'Upgrade a garage or marina to level 4 or higher';
+
+  @override
+  String get achievementTitle_midnight_racer => 'Midnight Racer';
+
+  @override
+  String get achievementDescription_midnight_racer =>
+      'Finish your first Midnight Race';
+
+  @override
+  String get achievementTitle_stock_floor_debut => 'Stock Floor Debut';
+
+  @override
+  String get achievementDescription_stock_floor_debut =>
+      'Complete your first stock market buy';
+
+  @override
+  String get achievementTitle_hitlist_first_contract => 'First Contract';
+
+  @override
+  String get achievementDescription_hitlist_first_contract =>
+      'Place your first hitlist contract';
 
   @override
   String get achievementTitle_road_bandit => 'Road Bandit';
@@ -19684,7 +19776,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicAchievementsTips =>
-      'Check your nearly-completed achievements daily: a small extra effort can earn a badge and cash reward that would otherwise be delayed for months.\nFocus early on Economy and Crime categories: these have the most cash rewards and are easiest to combine with your normal gameplay.';
+      'Check your nearly-completed achievements daily: a small extra effort can earn a badge and cash reward that would otherwise be delayed for months.\nFocus early on Economy and Crime categories: these have the most cash rewards and are easiest to combine with your normal gameplay.\nSchool Mastermind and Doctorate now count total track levels across all school tracks. New badges also cover Automotive/Narcotics/Finance/Aviation/Medicine tracks, chop contracts, tuning, warehouses, laundering, garage upgrades, Midnight Races, stock buys and your first hitlist contract.';
 
   @override
   String get helpTopicSupportTicketsCategory => 'Support';

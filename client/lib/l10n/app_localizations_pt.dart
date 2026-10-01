@@ -14011,14 +14011,106 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get achievementDescription_school_mastermind =>
-      'Alcance o nível de escolaridade 10';
+      'Alcance 15 níveis de trilha escolar no total';
 
   @override
   String get achievementTitle_school_doctorate => 'Doutorado de Rua';
 
   @override
   String get achievementDescription_school_doctorate =>
-      'Alcance o nível de educação 20';
+      'Alcance 30 níveis de trilha escolar no total';
+
+  @override
+  String get achievementTitle_school_automotive_master =>
+      'Graduado da Escola Chop';
+
+  @override
+  String get achievementDescription_school_automotive_master =>
+      'Maximize o percurso escolar Automotive & Chop';
+
+  @override
+  String get achievementTitle_school_narcotics_master => 'Engenheiro de Narco';
+
+  @override
+  String get achievementDescription_school_narcotics_master =>
+      'Maximize o percurso escolar de Narcóticos';
+
+  @override
+  String get achievementTitle_school_finance_operator => 'Analista do Império';
+
+  @override
+  String get achievementDescription_school_finance_operator =>
+      'Alcance o nível 4 do curso de finanças';
+
+  @override
+  String get achievementTitle_school_aviation_ace => 'Credencial Sky';
+
+  @override
+  String get achievementDescription_school_aviation_ace =>
+      'Alcance o nível 4 do curso da Escola de Aviação';
+
+  @override
+  String get achievementTitle_school_medicine_license => 'Médico de campo';
+
+  @override
+  String get achievementDescription_school_medicine_license =>
+      'Maximize o percurso da faculdade de Medicina';
+
+  @override
+  String get achievementTitle_chop_shop_claimer => 'Reivindicador de Chop Shop';
+
+  @override
+  String get achievementDescription_chop_shop_claimer =>
+      'Reivindique seu primeiro contrato de corte de veículo';
+
+  @override
+  String get achievementTitle_tune_shop_pro => 'Tune Shop Pro';
+
+  @override
+  String get achievementDescription_tune_shop_pro =>
+      'Alcance o nível 4 de estatísticas de ajuste de veículo em qualquer veículo';
+
+  @override
+  String get achievementTitle_warehouse_baron => 'Barão do Armazém';
+
+  @override
+  String get achievementDescription_warehouse_baron =>
+      'Atualize um armazém para o nível 4 ou superior';
+
+  @override
+  String get achievementTitle_laundry_kingpin => 'Rei da Lavanderia';
+
+  @override
+  String get achievementDescription_laundry_kingpin =>
+      'Conclua um trabalho de lavagem de € 250.000 ou mais';
+
+  @override
+  String get achievementTitle_garage_expansionist => 'Expansionista de garagem';
+
+  @override
+  String get achievementDescription_garage_expansionist =>
+      'Atualize uma garagem ou marina para o nível 4 ou superior';
+
+  @override
+  String get achievementTitle_midnight_racer => 'Corredor da meia-noite';
+
+  @override
+  String get achievementDescription_midnight_racer =>
+      'Termine sua primeira Corrida da Meia-Noite';
+
+  @override
+  String get achievementTitle_stock_floor_debut => 'Estreia no piso de estoque';
+
+  @override
+  String get achievementDescription_stock_floor_debut =>
+      'Conclua sua primeira compra na bolsa de valores';
+
+  @override
+  String get achievementTitle_hitlist_first_contract => 'Primeiro Contrato';
+
+  @override
+  String get achievementDescription_hitlist_first_contract =>
+      'Faça seu primeiro contrato de hitlist';
 
   @override
   String get achievementTitle_road_bandit => 'Bandido da estrada';
@@ -19833,7 +19925,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicAchievementsTips =>
-      'Verifique diariamente suas conquistas quase concluídas: um pequeno esforço extra pode ganhar um distintivo e uma recompensa em dinheiro que, de outra forma, seria adiada por meses. \nConcentre-se desde o início nas categorias Economia e Crime: elas oferecem mais recompensas em dinheiro e são mais fáceis de combinar com o jogo normal.';
+      'Verifique diariamente suas conquistas quase concluídas: um pequeno esforço extra pode ganhar um distintivo e uma recompensa em dinheiro que, de outra forma, seria adiada por meses. \nConcentre-se desde o início nas categorias Economia e Crime: elas oferecem mais recompensas em dinheiro e são mais fáceis de combinar com o jogo normal. \nSchool Mastermind e Doctorate agora contam os níveis totais de todos os cursos escolares. Novos emblemas também cobrem pistas de Automotivo/Narcóticos/Finanças/Aviação/Medicina, contratos de corte, ajustes, armazéns, lavagem, atualizações de garagem, Corridas da Meia-Noite, compras de ações e seu primeiro contrato de lista de sucessos.';
 
   @override
   String get helpTopicSupportTicketsCategory => 'Suporte';

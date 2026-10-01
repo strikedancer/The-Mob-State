@@ -24204,7 +24204,7 @@ abstract class AppLocalizations {
   /// No description provided for @achievementDescription_school_mastermind.
   ///
   /// In en, this message translates to:
-  /// **'Reach education level 10'**
+  /// **'Reach 15 total school track levels'**
   String get achievementDescription_school_mastermind;
 
   /// No description provided for @achievementTitle_school_doctorate.
@@ -24216,8 +24216,164 @@ abstract class AppLocalizations {
   /// No description provided for @achievementDescription_school_doctorate.
   ///
   /// In en, this message translates to:
-  /// **'Reach education level 20'**
+  /// **'Reach 30 total school track levels'**
   String get achievementDescription_school_doctorate;
+
+  /// No description provided for @achievementTitle_school_automotive_master.
+  ///
+  /// In en, this message translates to:
+  /// **'Chop School Graduate'**
+  String get achievementTitle_school_automotive_master;
+
+  /// No description provided for @achievementDescription_school_automotive_master.
+  ///
+  /// In en, this message translates to:
+  /// **'Max out the Automotive & Chop school track'**
+  String get achievementDescription_school_automotive_master;
+
+  /// No description provided for @achievementTitle_school_narcotics_master.
+  ///
+  /// In en, this message translates to:
+  /// **'Narco Engineer'**
+  String get achievementTitle_school_narcotics_master;
+
+  /// No description provided for @achievementDescription_school_narcotics_master.
+  ///
+  /// In en, this message translates to:
+  /// **'Max out the Narcotics school track'**
+  String get achievementDescription_school_narcotics_master;
+
+  /// No description provided for @achievementTitle_school_finance_operator.
+  ///
+  /// In en, this message translates to:
+  /// **'Empire Analyst'**
+  String get achievementTitle_school_finance_operator;
+
+  /// No description provided for @achievementDescription_school_finance_operator.
+  ///
+  /// In en, this message translates to:
+  /// **'Reach Finance school track level 4'**
+  String get achievementDescription_school_finance_operator;
+
+  /// No description provided for @achievementTitle_school_aviation_ace.
+  ///
+  /// In en, this message translates to:
+  /// **'Sky Credential'**
+  String get achievementTitle_school_aviation_ace;
+
+  /// No description provided for @achievementDescription_school_aviation_ace.
+  ///
+  /// In en, this message translates to:
+  /// **'Reach Aviation school track level 4'**
+  String get achievementDescription_school_aviation_ace;
+
+  /// No description provided for @achievementTitle_school_medicine_license.
+  ///
+  /// In en, this message translates to:
+  /// **'Field Physician'**
+  String get achievementTitle_school_medicine_license;
+
+  /// No description provided for @achievementDescription_school_medicine_license.
+  ///
+  /// In en, this message translates to:
+  /// **'Max out the Medicine school track'**
+  String get achievementDescription_school_medicine_license;
+
+  /// No description provided for @achievementTitle_chop_shop_claimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Chop Shop Claimer'**
+  String get achievementTitle_chop_shop_claimer;
+
+  /// No description provided for @achievementDescription_chop_shop_claimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim your first vehicle chop contract'**
+  String get achievementDescription_chop_shop_claimer;
+
+  /// No description provided for @achievementTitle_tune_shop_pro.
+  ///
+  /// In en, this message translates to:
+  /// **'Tune Shop Pro'**
+  String get achievementTitle_tune_shop_pro;
+
+  /// No description provided for @achievementDescription_tune_shop_pro.
+  ///
+  /// In en, this message translates to:
+  /// **'Reach vehicle tune stat level 4 on any vehicle'**
+  String get achievementDescription_tune_shop_pro;
+
+  /// No description provided for @achievementTitle_warehouse_baron.
+  ///
+  /// In en, this message translates to:
+  /// **'Warehouse Baron'**
+  String get achievementTitle_warehouse_baron;
+
+  /// No description provided for @achievementDescription_warehouse_baron.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade a warehouse to level 4 or higher'**
+  String get achievementDescription_warehouse_baron;
+
+  /// No description provided for @achievementTitle_laundry_kingpin.
+  ///
+  /// In en, this message translates to:
+  /// **'Laundry Kingpin'**
+  String get achievementTitle_laundry_kingpin;
+
+  /// No description provided for @achievementDescription_laundry_kingpin.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete a launder job of €250,000 or more'**
+  String get achievementDescription_laundry_kingpin;
+
+  /// No description provided for @achievementTitle_garage_expansionist.
+  ///
+  /// In en, this message translates to:
+  /// **'Garage Expansionist'**
+  String get achievementTitle_garage_expansionist;
+
+  /// No description provided for @achievementDescription_garage_expansionist.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade a garage or marina to level 4 or higher'**
+  String get achievementDescription_garage_expansionist;
+
+  /// No description provided for @achievementTitle_midnight_racer.
+  ///
+  /// In en, this message translates to:
+  /// **'Midnight Racer'**
+  String get achievementTitle_midnight_racer;
+
+  /// No description provided for @achievementDescription_midnight_racer.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish your first Midnight Race'**
+  String get achievementDescription_midnight_racer;
+
+  /// No description provided for @achievementTitle_stock_floor_debut.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock Floor Debut'**
+  String get achievementTitle_stock_floor_debut;
+
+  /// No description provided for @achievementDescription_stock_floor_debut.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete your first stock market buy'**
+  String get achievementDescription_stock_floor_debut;
+
+  /// No description provided for @achievementTitle_hitlist_first_contract.
+  ///
+  /// In en, this message translates to:
+  /// **'First Contract'**
+  String get achievementTitle_hitlist_first_contract;
+
+  /// No description provided for @achievementDescription_hitlist_first_contract.
+  ///
+  /// In en, this message translates to:
+  /// **'Place your first hitlist contract'**
+  String get achievementDescription_hitlist_first_contract;
 
   /// No description provided for @achievementTitle_road_bandit.
   ///
@@ -33809,7 +33965,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicAchievementsTips.
   ///
   /// In en, this message translates to:
-  /// **'Check your nearly-completed achievements daily: a small extra effort can earn a badge and cash reward that would otherwise be delayed for months.\nFocus early on Economy and Crime categories: these have the most cash rewards and are easiest to combine with your normal gameplay.'**
+  /// **'Check your nearly-completed achievements daily: a small extra effort can earn a badge and cash reward that would otherwise be delayed for months.\nFocus early on Economy and Crime categories: these have the most cash rewards and are easiest to combine with your normal gameplay.\nSchool Mastermind and Doctorate now count total track levels across all school tracks. New badges also cover Automotive/Narcotics/Finance/Aviation/Medicine tracks, chop contracts, tuning, warehouses, laundering, garage upgrades, Midnight Races, stock buys and your first hitlist contract.'**
   String get helpTopicAchievementsTips;
 
   /// No description provided for @helpTopicSupportTicketsCategory.

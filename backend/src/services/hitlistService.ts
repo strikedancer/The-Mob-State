@@ -16,6 +16,7 @@ import { isVipStatusActive } from './vipBenefitsService';
 import { NotificationService } from './notificationService';
 import { systemLogService } from './systemLogService';
 import { educationService } from './educationService';
+import { checkAndUnlockAchievements } from './achievementService';
 import fs from 'fs';
 import path from 'path';
 import { activePortraitPathFromRow } from '../utils/avatarDisplay';
@@ -1313,6 +1314,10 @@ export async function placeHit(
       }
     );
   }
+
+  void checkAndUnlockAchievements(playerId).catch((err) =>
+    console.error('[hitlistService] achievement check failed', playerId, err)
+  );
 
   return hit as any;
 }

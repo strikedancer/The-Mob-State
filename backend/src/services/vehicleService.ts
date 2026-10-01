@@ -3042,6 +3042,10 @@ export const vehicleService = {
       true
     );
 
+    void checkAndUnlockAchievements(playerId).catch((err) =>
+      console.error('[vehicleService] chop achievement check failed', playerId, err)
+    );
+
     return {
       success: true,
       message: 'CHOP_CONTRACT_CLAIMED',
@@ -5494,6 +5498,10 @@ export const vehicleService = {
       where: { id: playerId },
       select: { money: true },
     });
+
+    void checkAndUnlockAchievements(playerId).catch((err) =>
+      console.error('[vehicleService] tune achievement check failed', playerId, err)
+    );
 
     return {
       newMoney: updatedPlayer?.money ?? 0,

@@ -13965,13 +13965,106 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get achievementDescription_school_mastermind =>
-      'Bereik schoollevel 10';
+      'Bereik 15 school-tracklevels in totaal';
 
   @override
   String get achievementTitle_school_doctorate => 'Straatdoctoraat';
 
   @override
-  String get achievementDescription_school_doctorate => 'Bereik schoollevel 20';
+  String get achievementDescription_school_doctorate =>
+      'Bereik 30 school-tracklevels in totaal';
+
+  @override
+  String get achievementTitle_school_automotive_master =>
+      'Chop School Afstudeerder';
+
+  @override
+  String get achievementDescription_school_automotive_master =>
+      'Max de Automotive & Chop school-track';
+
+  @override
+  String get achievementTitle_school_narcotics_master => 'Narco Ingenieur';
+
+  @override
+  String get achievementDescription_school_narcotics_master =>
+      'Max de Narcotics school-track';
+
+  @override
+  String get achievementTitle_school_finance_operator => 'Empire Analist';
+
+  @override
+  String get achievementDescription_school_finance_operator =>
+      'Bereik Finance school-track level 4';
+
+  @override
+  String get achievementTitle_school_aviation_ace => 'Luchtvaart Credential';
+
+  @override
+  String get achievementDescription_school_aviation_ace =>
+      'Bereik Aviation school-track level 4';
+
+  @override
+  String get achievementTitle_school_medicine_license => 'Veldarts';
+
+  @override
+  String get achievementDescription_school_medicine_license =>
+      'Max de Medicine school-track';
+
+  @override
+  String get achievementTitle_chop_shop_claimer => 'Chop Shop Claimer';
+
+  @override
+  String get achievementDescription_chop_shop_claimer =>
+      'Claim je eerste voertuig-chopcontract';
+
+  @override
+  String get achievementTitle_tune_shop_pro => 'Tune Shop Pro';
+
+  @override
+  String get achievementDescription_tune_shop_pro =>
+      'Bereik tune-stat level 4 op een voertuig';
+
+  @override
+  String get achievementTitle_warehouse_baron => 'Magazijnbaron';
+
+  @override
+  String get achievementDescription_warehouse_baron =>
+      'Upgrade een warehouse naar level 4 of hoger';
+
+  @override
+  String get achievementTitle_laundry_kingpin => 'Witwas Kingpin';
+
+  @override
+  String get achievementDescription_laundry_kingpin =>
+      'Rond een witwasjob van €250.000 of meer af';
+
+  @override
+  String get achievementTitle_garage_expansionist => 'Garage Expansionist';
+
+  @override
+  String get achievementDescription_garage_expansionist =>
+      'Upgrade een garage of jachthaven naar level 4 of hoger';
+
+  @override
+  String get achievementTitle_midnight_racer => 'Midnight Racer';
+
+  @override
+  String get achievementDescription_midnight_racer =>
+      'Finish je eerste Midnight Race';
+
+  @override
+  String get achievementTitle_stock_floor_debut => 'Beursdebutant';
+
+  @override
+  String get achievementDescription_stock_floor_debut =>
+      'Koop voor het eerst aandelen op de beurs';
+
+  @override
+  String get achievementTitle_hitlist_first_contract => 'Eerste Contract';
+
+  @override
+  String get achievementDescription_hitlist_first_contract =>
+      'Plaats je eerste hitlist-contract';
 
   @override
   String get achievementTitle_road_bandit => 'Weg Bandiet';
@@ -19733,7 +19826,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicAchievementsTips =>
-      'Bekijk je bijna-voltooide achievements dagelijks: een kleine extra inspanning kan een badge en cash-beloning opleveren die anders maanden uitgesteld wordt.\nRicht je vroeg op de Economie- en Crime-categorieën: deze hebben de meeste cash-beloningen en zijn het makkelijkst te combineren met je normale gameplay.';
+      'Bekijk je bijna-voltooide achievements dagelijks: een kleine extra inspanning kan een badge en cash-beloning opleveren die anders maanden uitgesteld wordt.\nRicht je vroeg op de Economie- en Crime-categorieën: deze hebben de meeste cash-beloningen en zijn het makkelijkst te combineren met je normale gameplay.\nSchool Mastermind en Doctorate tellen nu alle track-levels bij elkaar. Nieuwe badges dekken Automotive/Narcotics/Finance/Aviation/Medicine, chop-contracten, tuning, warehouses, witwassen, garage-upgrades, Midnight Races, aandelenkoop en je eerste hitlist-contract.';
 
   @override
   String get helpTopicSupportTicketsCategory => 'Steun';

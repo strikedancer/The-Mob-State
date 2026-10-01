@@ -126,6 +126,7 @@ Elke **5 minuten** gebeurt er automatisch:
 
 ### Drugs & prestaties (server)
 - Prestaties die op drugproductie (o.a. aantal voltooide batches, hoeveelheid per type) zijn gebaseerd, worden door de server **verwerkt wanneer productie klaar is of wanneer je ophaalt** (incl. VIP auto-ophalen), zodat je ze niet pas krijgt door later een ander scherm (zoals nachtclub) te openen. Zie `docs/module-protocols/drugs.md`.
+- School-prestaties Mastermind/Doctorate tellen **som van alle track-levels** (15 / 30). Extra badges voor Automotive, Narcotics, Finance, Aviation, Medicine, plus chop/tune, warehouse, witwassen, garage/marina, Midnight Race, aandelenkoop en eerste hitlist-contract. Zie `docs/module-protocols/achievements.md`.
 - In de **cel** kun je geen nieuwe batch starten, geen oogst ophalen en geen credit-speedup doen (zelfde jail-gate als materialen kopen). Lopende batches lopen door op de server.
 - **Low-profile** (heat koelen): standaard **4 uur** geen nieuwe batches, extra heat gehalveerd, lopende batches gaan door. Daarna **8 uur** cooldown vanaf het moment dat je het aanzette. De Drugs-hub toont de resterende tijd.
 - **Batch-ladder:** late chems (cocaïne → fentanyl) zijn weer lonend bij verkoop in dure landen na materiaalkosten; goedkope landen blijven dunner zodat export/smokkel telt. Wiet/paddo's bleven grotendeels gelijk. Heat/raid-regels ongewijzigd.

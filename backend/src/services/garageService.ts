@@ -5,6 +5,7 @@
 
 import prisma from '../lib/prisma';
 import { educationService } from './educationService';
+import { checkAndUnlockAchievements } from './achievementService';
 
 type GarageVehicleType = 'car' | 'motorcycle' | 'road';
 
@@ -278,6 +279,12 @@ export const garageService = {
       };
     });
 
+    if (newLevel >= 4) {
+      void checkAndUnlockAchievements(playerId).catch((err) =>
+        console.error('[garageService] garage achievement check failed', playerId, err)
+      );
+    }
+
     return result;
   },
 
@@ -427,6 +434,12 @@ export const garageService = {
         newMoney: updatedPlayer.money,
       };
     });
+
+    if (newLevel >= 4) {
+      void checkAndUnlockAchievements(playerId).catch((err) =>
+        console.error('[garageService] marina achievement check failed', playerId, err)
+      );
+    }
 
     return result;
   },

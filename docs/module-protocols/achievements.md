@@ -28,6 +28,12 @@ Badge progression, category tracking, rewards and long-term account goals.
 - Tiers: `smuggle_first_drop` (1), `smuggle_border_rat` (10), `smuggle_route_runner` (50), `smuggle_shadow_fleet` (150), `smuggle_kingpin` (400), plus `smuggle_variety_pack` (3 categories) and `smuggle_five_borders` (5 countries).
 - Badge art: `backend/scripts/generate_smuggling_achievement_badges_leonardo.py`.
 
+## School + balance coupling (2026-10)
+- `school_mastermind` / `school_doctorate` use **total track levels** (15 / 30), not a single unreachable track level.
+- Track masters: Automotive, Narcotics, Finance L4, Aviation L4, Medicine.
+- Economy/ops hooks: chop claim, tune max-stat 4, warehouse L4+, launder ≥€250k completed, garage/marina L4+, first Midnight Race finish, first stock BUY, first hitlist place.
+- Badge art: `backend/scripts/generate_balance_achievement_badges_leonardo.py` → `school/`, `vehicles/`, `trade/`, `power/`.
+
 ## Must Preserve
 - Elke unlock blijft één `sendSystemMessage` (één `direct_messages`-rij). De inbox toont die rij als **eigen item** (`friendId = -messageId`), niet als extra bubble in één gedeelde The Mob State-thread.
 - Alle unlocked achievements zijn zichtbaar op het publieke profiel (badge-PNG’s per categorie). Locked definitions, currentValue en progress blijven self-only via `GET /achievements`. `featuredAchievements` blijft de laatste 9 voor oudere clients.

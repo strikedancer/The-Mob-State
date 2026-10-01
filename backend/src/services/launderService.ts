@@ -6,6 +6,7 @@ import {
   financeLaunderSeizeMultiplier,
   LAUNDER_HIGH_AMOUNT_EDUCATION_THRESHOLD,
 } from './educationService';
+import { checkAndUnlockAchievements } from './achievementService';
 
 export class LaunderBoundError extends Error {
   minAmount: number;
@@ -75,10 +76,11 @@ export async function processDueLaunderJobs(limit = 50): Promise<number> {
   const rows = await prisma.$queryRawUnsafe<Array<{
     id: number;
     playerId: number;
+    amountIn: number;
     amountOut: number;
     seizeChancePercent: number | string;
   }>>(
-    `SELECT id, playerId, amountOut, seizeChancePercent
+    `SELECT id, playerId, amountIn, amountOut, seizeChancePercent
      FROM launder_jobs
      WHERE status = 'processing' AND completesAt <= NOW()
      ORDER BY completesAt ASC
@@ -136,6 +138,11 @@ export async function processDueLaunderJobs(limit = 50): Promise<number> {
         { jobId: row.id, amountOut: row.amountOut },
         false,
       ).catch(() => {});
+      if (toNumeric(row.amountIn) >= 250000) {
+        void checkAndUnlockAchievements(toNumeric(row.playerId)).catch((err) =>
+          console.error('[launderService] achievement check failed', row.playerId, err)
+        );
+      }
     }
     processed += 1;
   }
