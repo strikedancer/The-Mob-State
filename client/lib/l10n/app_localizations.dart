@@ -12248,6 +12248,12 @@ abstract class AppLocalizations {
   /// **'Place'**
   String get showroomPlaceAction;
 
+  /// No description provided for @vehicleCardPlaceInShowroom.
+  ///
+  /// In en, this message translates to:
+  /// **'Place in showroom'**
+  String get vehicleCardPlaceInShowroom;
+
   /// No description provided for @showroomRemoveAction.
   ///
   /// In en, this message translates to:

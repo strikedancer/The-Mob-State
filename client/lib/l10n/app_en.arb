@@ -4063,6 +4063,7 @@
   "showroomEmptyCollection": "No vehicles on display yet.",
   "showroomEmptyEligible": "No vehicle is ready to place. It must be in this country, at 100% condition, and that model cannot already be on display.",
   "showroomPlaceAction": "Place",
+  "vehicleCardPlaceInShowroom": "Place in showroom",
   "showroomRemoveAction": "Take out",
   "showroomNeedPerfectCondition": "Only vehicles at 100% condition can go on display.",
   "showroomNeedSameCountry": "Travel to this property's country to manage the collection.",

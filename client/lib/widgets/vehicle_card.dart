@@ -468,12 +468,43 @@ class VehicleCard extends StatelessWidget {
                         ),
                       if (onPlaceInShowroom != null && !modelInShowroom)
                         _buildActionButton(
-                          label: l10n.showroomPlaceAction,
-                          icon: Icons.collections,
-                          color: Colors.lightGreenAccent,
+                          label: l10n.vehicleCardPlaceInShowroom,
+                          icon: Icons.add_business,
+                          color: Colors.teal,
                           onPressed: vehicle.isBusy || vehicle.condition < 100
                               ? null
                               : onPlaceInShowroom!,
+                          customIcon: SizedBox(
+                            width: isSmallScreen ? 16 : 22,
+                            height: isSmallScreen ? 16 : 22,
+                            child: Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                Center(
+                                  child: Icon(
+                                    Icons.home_work,
+                                    size: isSmallScreen ? 13 : 18,
+                                    color: vehicle.isBusy ||
+                                            vehicle.condition < 100
+                                        ? Colors.grey
+                                        : Colors.teal,
+                                  ),
+                                ),
+                                Positioned(
+                                  right: -2,
+                                  bottom: -2,
+                                  child: Icon(
+                                    Icons.add_circle,
+                                    size: isSmallScreen ? 10 : 12,
+                                    color: vehicle.isBusy ||
+                                            vehicle.condition < 100
+                                        ? Colors.grey
+                                        : Colors.tealAccent,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       if (onList != null && !vehicle.marketListing)
                         _buildActionButton(

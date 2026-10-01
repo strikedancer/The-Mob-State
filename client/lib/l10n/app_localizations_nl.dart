@@ -6951,6 +6951,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get showroomPlaceAction => 'Plaats';
 
   @override
+  String get vehicleCardPlaceInShowroom => 'Plaats in showroom';
+
+  @override
   String get showroomRemoveAction => 'Haal weg';
 
   @override

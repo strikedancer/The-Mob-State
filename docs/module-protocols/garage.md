@@ -101,6 +101,7 @@ Vehicle inventory, steal flow, sorting, condition, fuel, timed repairs, country 
 - Verify catalog cards badge models already in the player's showroom (`showroomVehicleIds`) and that In showroom / Missing showroom filters work.
 - Verify garage/marina inventory tiles show the same **In showroom** badge when that model is already exhibited.
 - Verify Place on a garage/marina tile puts the vehicle into the matching owned showroom when country/condition/slots allow, and removes it from garage inventory.
+- Verify the Place-in-showroom action uses a visible teal home+add icon and tooltip **Plaats in showroom** / **Place in showroom** (not the short Place label from the showroom screen).
 - Verify catalog cards and theft-result stills show unique per-model new/dirty/damaged art, not the shared placeholder `image` file.
 - Start a repair and verify the vehicle becomes temporarily unavailable until the timer completes.
 - If a vehicle is sold, scrapped or seized while a repair job is still open, garage inventory must still load. The orphaned job is cancelled or completed without a Prisma P2025 update on a missing `vehicleInventory` row.

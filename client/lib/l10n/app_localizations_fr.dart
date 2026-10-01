@@ -7012,6 +7012,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get showroomPlaceAction => 'Placer';
 
   @override
+  String get vehicleCardPlaceInShowroom => 'Place in showroom';
+
+  @override
   String get showroomRemoveAction => 'Retirer';
 
   @override

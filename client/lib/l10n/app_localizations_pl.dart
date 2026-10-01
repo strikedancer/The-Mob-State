@@ -6961,6 +6961,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get showroomPlaceAction => 'Wstaw';
 
   @override
+  String get vehicleCardPlaceInShowroom => 'Place in showroom';
+
+  @override
   String get showroomRemoveAction => 'Wyjmij';
 
   @override

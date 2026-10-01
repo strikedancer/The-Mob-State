@@ -6994,6 +6994,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get showroomPlaceAction => 'Platzieren';
 
   @override
+  String get vehicleCardPlaceInShowroom => 'Place in showroom';
+
+  @override
   String get showroomRemoveAction => 'Herausnehmen';
 
   @override
