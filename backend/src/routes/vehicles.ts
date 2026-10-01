@@ -745,11 +745,13 @@ router.post('/steal/:vehicleId', authenticate, async (req: AuthRequest, res: Res
 router.get('/inventory', authenticate, async (req: AuthRequest, res: Response) => {
   try {
     const inventory = await vehicleService.getPlayerInventory(req.player!.id);
+    const showroomVehicleIds = await showroomService.getExhibitedVehicleIds(req.player!.id);
 
     return res.status(200).json({
       event: 'vehicles.inventory',
       params: {},
       inventory,
+      showroomVehicleIds,
     });
   } catch (error) {
     console.error('[VehiclesRoute] /inventory failed:', error);

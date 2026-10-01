@@ -476,6 +476,7 @@ class _MarinaScreenState extends State<MarinaScreen> {
   ) {
     return VehicleCard(
       vehicle: boat,
+      modelInShowroom: provider.isModelInShowroom(boat.vehicleId),
       onSelectForCrimes: _selectedVehicleId == boat.id
           ? null
           : () => _selectForCrimes(boat),
@@ -975,6 +976,7 @@ class _MarinaScreenState extends State<MarinaScreen> {
           Widget buildVehicleCard(VehicleInventoryItem boat) {
             return VehicleCard(
               vehicle: boat,
+              modelInShowroom: provider.isModelInShowroom(boat.vehicleId),
               onSelectForCrimes: _selectedVehicleId == boat.id
                   ? null
                   : () => _selectForCrimes(boat),

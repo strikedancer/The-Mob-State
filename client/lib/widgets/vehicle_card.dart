@@ -17,6 +17,8 @@ class VehicleCard extends StatelessWidget {
   final VoidCallback? onSelectForCrimes;
   final VoidCallback? onDeselectForCrimes;
   final bool isSelectedForCrimes;
+  /// True when this model is already exhibited in the player's showroom collection.
+  final bool modelInShowroom;
 
   const VehicleCard({
     super.key,
@@ -31,6 +33,7 @@ class VehicleCard extends StatelessWidget {
     this.onSelectForCrimes,
     this.onDeselectForCrimes,
     this.isSelectedForCrimes = false,
+    this.modelInShowroom = false,
   });
 
   Color _getConditionColor() {
@@ -176,6 +179,34 @@ class VehicleCard extends StatelessWidget {
                           ),
                         ),
                       ),
+                      if (modelInShowroom)
+                        Positioned(
+                          right: 8,
+                          top: 8,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: isSmallScreen ? 7 : 8,
+                              vertical: isSmallScreen ? 3 : 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withValues(alpha: 0.55),
+                              borderRadius: BorderRadius.circular(999),
+                              border: Border.all(
+                                color: Colors.lightGreenAccent.withValues(alpha: 0.85),
+                                width: 1,
+                              ),
+                            ),
+                            child: Text(
+                              l10n.vehicleHeistCatalogInShowroomTag,
+                              style: TextStyle(
+                                color: Colors.lightGreenAccent,
+                                fontWeight: FontWeight.w800,
+                                fontSize: isSmallScreen ? 10 : 11,
+                                letterSpacing: 0.2,
+                              ),
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                 ),

@@ -229,6 +229,10 @@ class VehicleProvider with ChangeNotifier {
             .map((item) => VehicleInventoryItem.fromJson(item))
             .where((item) => !item.isInShowroom)
             .toList();
+        _showroomVehicleIds = {
+          for (final id in (data['showroomVehicleIds'] as List<dynamic>? ?? const []))
+            id.toString(),
+        };
         _error = null;
       } else {
         print('[VehicleProvider] Error response: ${response.body}');

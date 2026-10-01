@@ -503,6 +503,7 @@ class _GarageScreenState extends State<GarageScreen> {
   ) {
     return VehicleCard(
       vehicle: vehicle,
+      modelInShowroom: provider.isModelInShowroom(vehicle.vehicleId),
       onRefuel: () => _refuelVehicle(provider, vehicle),
       onRepair: () => _repairVehicle(provider, vehicle),
       onFinishRepairWithCredits: vehicle.condition < 100
@@ -1018,6 +1019,7 @@ class _GarageScreenState extends State<GarageScreen> {
           Widget buildVehicleCard(VehicleInventoryItem vehicle) {
             return VehicleCard(
               vehicle: vehicle,
+              modelInShowroom: provider.isModelInShowroom(vehicle.vehicleId),
               onRefuel: () => _refuelVehicle(provider, vehicle),
               onRepair: () => _repairVehicle(provider, vehicle),
               onSell: () => _sellVehicle(provider, vehicle),
