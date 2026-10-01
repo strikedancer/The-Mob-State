@@ -3,6 +3,16 @@
 ## Scope
 Cross-cutting balansregels voor progression, economy pacing, cooldowns, premium sinks en non-pay-to-win monetization.
 
+### Year-long retention + audit workbook
+Spelers moeten blijven terugkomen met duidelijke korte-termijn progressie, maar na ~1 jaar nog zinvolle doelen (collecties, rarity, territory, empire, late ranks). Sturen via **risk + payout + cooldown + soft diminish** — geen harde daily caps op core loops.
+
+- **Week 1–2:** onboarding + early ranks belonend (early XP-mercy mag blijven).
+- **Maand 1–3:** midgame loops spannend; sinks en risk houden cash onder controle.
+- **Maand 3–12:** groei uit empire / collectie / territory / crew, niet oneindig snellere €/uur op dezelfde farm.
+- **Na 1 jaar:** schaarste (legendary, late ranks, showroom, territory prestige) + soft diminish.
+
+**Fase-1 audit (cijfers, scorecard, fase-2 voorstellen zonder live tweaks):** [`docs/operations/BALANCE_WORKBOOK_2026.md`](../operations/BALANCE_WORKBOOK_2026.md). Roadmap/telemetry context: [`docs/operations/BALANCE_PHASE_ROADMAP.md`](../operations/BALANCE_PHASE_ROADMAP.md). Catalog/runtime-wijzigingen pas na akkoord op de scorecard.
+
 Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 - payout, rewards, multipliers, drop rates, loot shares
 - cooldowns en reset/skip-mechanieken
