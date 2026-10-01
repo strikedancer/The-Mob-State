@@ -32819,19 +32819,19 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicPropertiesSummary.
   ///
   /// In en, this message translates to:
-  /// **'Buy properties to expand storage, housing capacity and access to certain systems such as the nightclub. Develop properties for a permanent income boost.'**
+  /// **'Buy properties to expand storage, housing capacity and access to certain systems such as the nightclub. Develop properties for a permanent income boost. Showroom collections can be protected with Cat papers against arrest seizures.'**
   String get helpTopicPropertiesSummary;
 
   /// No description provided for @helpTopicPropertiesHow.
   ///
   /// In en, this message translates to:
-  /// **'My properties opens on the country you are in. Filter All or another country. Each owned tile shows that building\'s country.\nEach property has its own role: storage space, housing capacity or access to a follow-up module such as the nightclub.\nWarehouse upgrades increase your storage capacity for items and other stock.\nHouses store weapons, ammo, vests, cash, materials, drugs and trade goods and are safer on arrest. Warehouses store the same plus tools.\nHouses and apartments increase housing capacity; VIP players receive extra slots on top of that.\nSome properties are unique or country locked: you must be in the correct country to buy or manage them.\nSelling yields 70% of purchase price. No cooldown on selling, it is instant.\nA purchased nightclub opens the separate nightclub management screen; that module handles management and revenue, not the properties overview.\nDevelop spends bank money: each level permanently raises that property\'s passive income (max level and cooldown are server-tuned).\nHouse, apartment and warehouse tiles use the same packing as your backpack (coffee vs diamonds, drugs 100 g, ammo 50).'**
+  /// **'My properties opens on the country you are in. Filter All or another country. Each owned tile shows that building\'s country.\nEach property has its own role: storage space, housing capacity or access to a follow-up module such as the nightclub.\nWarehouse upgrades increase your storage capacity for items and other stock.\nHouses store weapons, ammo, vests, cash, materials, drugs and trade goods and are safer on arrest. Warehouses store the same plus tools.\nHouses and apartments increase housing capacity; VIP players receive extra slots on top of that.\nSome properties are unique or country locked: you must be in the correct country to buy or manage them.\nSelling yields 70% of purchase price. No cooldown on selling, it is instant.\nA purchased nightclub opens the separate nightclub management screen; that module handles management and revenue, not the properties overview.\nDevelop spends bank money: each level permanently raises that property\'s passive income (max level and cooldown are server-tuned).\nHouse, apartment and warehouse tiles use the same packing as your backpack (coffee vs diamonds, drugs 100 g, ammo 50).\nCar showroom, motorcycle shop and boat harbor are unique collections (one each per account), not extra garage space. Place vehicles in the same country at 100% condition, one model at a time. On arrest in that country police/FBI can seize about 40% of uncatted display vehicles. On the Display tab, buy Cat papers with cash so that vehicle looks legitimate until you take it out; placing again requires a new cat.'**
   String get helpTopicPropertiesHow;
 
   /// No description provided for @helpTopicPropertiesTips.
   ///
   /// In en, this message translates to:
-  /// **'Invest in a Warehouse early if you need more storage space for your other systems.\nChoose houses and apartments when you want to build more housing capacity for related gameplay systems.\nDo not sell too quickly: 70% represents a serious markdown from purchase price.\nDevelop high base-income properties first — the percentage boost matters more there.'**
+  /// **'Invest in a Warehouse early if you need more storage space for your other systems.\nChoose houses and apartments when you want to build more housing capacity for related gameplay systems.\nDo not sell too quickly: 70% represents a serious markdown from purchase price.\nCat expensive showroom vehicles right after placing them — legendaries cost more cash but are safer on arrest.\nDevelop high base-income properties first — the percentage boost matters more there.'**
   String get helpTopicPropertiesTips;
 
   /// No description provided for @helpTopicDonCategory.
