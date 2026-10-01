@@ -22583,6 +22583,60 @@ abstract class AppLocalizations {
   /// **'Asset: Drug facility equipment upgrade III'**
   String get schoolGateAssetDrugFacilityEquipmentTier3;
 
+  /// No description provided for @schoolGateAssetDrugFacilityPurchase.
+  ///
+  /// In en, this message translates to:
+  /// **'Asset: Drug facility purchase'**
+  String get schoolGateAssetDrugFacilityPurchase;
+
+  /// No description provided for @schoolGateAssetNightclubPurchase.
+  ///
+  /// In en, this message translates to:
+  /// **'Asset: Nightclub purchase'**
+  String get schoolGateAssetNightclubPurchase;
+
+  /// No description provided for @schoolGateAssetRldPurchase.
+  ///
+  /// In en, this message translates to:
+  /// **'Asset: Red Light District purchase'**
+  String get schoolGateAssetRldPurchase;
+
+  /// No description provided for @schoolGateAssetRldExpansionAdvanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Asset: Advanced RLD expansion'**
+  String get schoolGateAssetRldExpansionAdvanced;
+
+  /// No description provided for @schoolGateAssetStockTradeBuy.
+  ///
+  /// In en, this message translates to:
+  /// **'Asset: Buy stocks'**
+  String get schoolGateAssetStockTradeBuy;
+
+  /// No description provided for @schoolGateAssetCryptoTradeBuy.
+  ///
+  /// In en, this message translates to:
+  /// **'Asset: Buy crypto'**
+  String get schoolGateAssetCryptoTradeBuy;
+
+  /// No description provided for @schoolGateAssetHitlistPlaceHit.
+  ///
+  /// In en, this message translates to:
+  /// **'Asset: Place hitlist contract'**
+  String get schoolGateAssetHitlistPlaceHit;
+
+  /// No description provided for @schoolGateAssetVehicleTuneAdvanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Asset: Advanced vehicle tuning'**
+  String get schoolGateAssetVehicleTuneAdvanced;
+
+  /// No description provided for @schoolGateAssetChopContractClaim.
+  ///
+  /// In en, this message translates to:
+  /// **'Asset: Claim chop contract'**
+  String get schoolGateAssetChopContractClaim;
+
   /// No description provided for @schoolGateAssetGeneric.
   ///
   /// In en, this message translates to:
@@ -22719,6 +22773,12 @@ abstract class AppLocalizations {
   /// **'Narcotics Engineering'**
   String get educationTrackNameNarcotics;
 
+  /// No description provided for @educationTrackNameAutomotive.
+  ///
+  /// In en, this message translates to:
+  /// **'Automotive & Chop'**
+  String get educationTrackNameAutomotive;
+
   /// No description provided for @schoolTrackDescriptionAviation.
   ///
   /// In en, this message translates to:
@@ -22761,6 +22821,12 @@ abstract class AppLocalizations {
   /// **'Controlled cultivation, process electrics and advanced chemical production.'**
   String get schoolTrackDescriptionNarcotics;
 
+  /// No description provided for @schoolTrackDescriptionAutomotive.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismantling, salvage yields, chop contracts and high-tier vehicle tuning.'**
+  String get schoolTrackDescriptionAutomotive;
+
   /// No description provided for @schoolTrackCooldownActive.
   ///
   /// In en, this message translates to:
@@ -22802,6 +22868,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Narco Grid Architect Certification'**
   String get educationCertNarcoGridArchitect;
+
+  /// No description provided for @educationCertScrapApprentice.
+  ///
+  /// In en, this message translates to:
+  /// **'Scrap Apprentice Certification'**
+  String get educationCertScrapApprentice;
+
+  /// No description provided for @educationCertDismantler.
+  ///
+  /// In en, this message translates to:
+  /// **'Certified Dismantler'**
+  String get educationCertDismantler;
+
+  /// No description provided for @educationCertMasterChop.
+  ///
+  /// In en, this message translates to:
+  /// **'Master Chop Certification'**
+  String get educationCertMasterChop;
+
+  /// No description provided for @educationCertSalvageArchitect.
+  ///
+  /// In en, this message translates to:
+  /// **'Salvage Architect Certification'**
+  String get educationCertSalvageArchitect;
 
   /// No description provided for @educationCertSoftwareEngineer.
   ///

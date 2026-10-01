@@ -13012,6 +13012,37 @@ class AppLocalizationsNl extends AppLocalizations {
       'Asset: Drugsfaciliteit apparatuur-upgrade III';
 
   @override
+  String get schoolGateAssetDrugFacilityPurchase =>
+      'Asset: Drugsfaciliteit aankoop';
+
+  @override
+  String get schoolGateAssetNightclubPurchase => 'Asset: Nachtclub aankoop';
+
+  @override
+  String get schoolGateAssetRldPurchase => 'Asset: Red Light District aankoop';
+
+  @override
+  String get schoolGateAssetRldExpansionAdvanced =>
+      'Asset: RLD uitbreiding gevorderd';
+
+  @override
+  String get schoolGateAssetStockTradeBuy => 'Asset: Aandelen kopen';
+
+  @override
+  String get schoolGateAssetCryptoTradeBuy => 'Asset: Crypto kopen';
+
+  @override
+  String get schoolGateAssetHitlistPlaceHit =>
+      'Asset: Hitlist opdracht plaatsen';
+
+  @override
+  String get schoolGateAssetVehicleTuneAdvanced =>
+      'Asset: Gevorderd voertuig tunen';
+
+  @override
+  String get schoolGateAssetChopContractClaim => 'Asset: Chop-contract claimen';
+
+  @override
   String schoolGateAssetGeneric(String target) {
     return 'Activa: $target';
   }
@@ -13095,6 +13126,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get educationTrackNameNarcotics => 'Narcoticatechnologie';
 
   @override
+  String get educationTrackNameAutomotive => 'Automotive & Chop';
+
+  @override
   String get schoolTrackDescriptionAviation =>
       'Vliegtheorie, navigatie en vliegtuigbediening.';
 
@@ -13123,6 +13157,10 @@ class AppLocalizationsNl extends AppLocalizations {
       'Gecontroleerde teelt, proces-elektra en geavanceerde chemische productie.';
 
   @override
+  String get schoolTrackDescriptionAutomotive =>
+      'Autos slopen, onderdelen salvage, chop-contracten en gevorderd tunen.';
+
+  @override
   String schoolTrackCooldownActive(int seconds) {
     return 'Cooldown actief: nog ${seconds}s';
   }
@@ -13148,6 +13186,18 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get educationCertNarcoGridArchitect =>
       'Narco grid architect certificaat';
+
+  @override
+  String get educationCertScrapApprentice => 'Sloop-leerling certificaat';
+
+  @override
+  String get educationCertDismantler => 'Gecertificeerd demonteur';
+
+  @override
+  String get educationCertMasterChop => 'Master chop certificaat';
+
+  @override
+  String get educationCertSalvageArchitect => 'Salvage architect certificaat';
 
   @override
   String get educationCertSoftwareEngineer => 'Software Engineer Certificaat';

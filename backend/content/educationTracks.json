@@ -68,6 +68,18 @@
         { "id": "clandestine_chemist", "name": "Clandestine Chemist", "requiredLevel": 4 },
         { "id": "narco_grid_architect", "name": "Narco Grid Architect", "requiredLevel": 5 }
       ]
+    },
+    {
+      "id": "automotive",
+      "name": "Automotive & Chop",
+      "description": "Dismantling, salvage yields, chop contracts, and high-tier vehicle tuning.",
+      "maxLevel": 5,
+      "certifications": [
+        { "id": "scrap_apprentice", "name": "Scrap Apprentice", "requiredLevel": 2 },
+        { "id": "dismantler", "name": "Certified Dismantler", "requiredLevel": 3 },
+        { "id": "master_chop", "name": "Master Chop Certification", "requiredLevel": 4 },
+        { "id": "salvage_architect", "name": "Salvage Architect", "requiredLevel": 5 }
+      ]
     }
   ]
 }

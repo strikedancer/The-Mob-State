@@ -8193,6 +8193,7 @@
   "schoolGateAssetDrugFacilityEquipmentTier1": "Asset: Drug facility equipment upgrade I",
   "schoolGateAssetDrugFacilityEquipmentTier2": "Asset: Drug facility equipment upgrade II",
   "schoolGateAssetDrugFacilityEquipmentTier3": "Asset: Drug facility equipment upgrade III",
+  "schoolGateAssetDrugFacilityPurchase": "Asset: Drug facility purchase",   "schoolGateAssetNightclubPurchase": "Asset: Nightclub purchase",   "schoolGateAssetRldPurchase": "Asset: Red Light District purchase",   "schoolGateAssetRldExpansionAdvanced": "Asset: Advanced RLD expansion",   "schoolGateAssetStockTradeBuy": "Asset: Buy stocks",   "schoolGateAssetCryptoTradeBuy": "Asset: Buy crypto",   "schoolGateAssetHitlistPlaceHit": "Asset: Place hitlist contract",   "schoolGateAssetVehicleTuneAdvanced": "Asset: Advanced vehicle tuning",   "schoolGateAssetChopContractClaim": "Asset: Claim chop contract",
   "schoolGateAssetGeneric": "Asset: {target}",
   "@schoolGateAssetGeneric": {
     "placeholders": {
@@ -8255,6 +8256,7 @@
   "educationTrackNameEngineering": "Engineering",
   "educationTrackNameIt": "IT",
   "educationTrackNameNarcotics": "Narcotics Engineering",
+  "educationTrackNameAutomotive": "Automotive & Chop",
   "schoolTrackDescriptionAviation": "Flight theory, navigation, and aircraft operation.",
   "schoolTrackDescriptionLaw": "Criminal law, procedure, and courtroom practice.",
   "schoolTrackDescriptionMedicine": "Emergency response, diagnostics, and medical practice.",
@@ -8262,6 +8264,7 @@
   "schoolTrackDescriptionEngineering": "Mechanical systems, industrial safety, and manufacturing.",
   "schoolTrackDescriptionIt": "Software development, systems, and network operations.",
   "schoolTrackDescriptionNarcotics": "Controlled cultivation, process electrics and advanced chemical production.",
+  "schoolTrackDescriptionAutomotive": "Dismantling, salvage yields, chop contracts and high-tier vehicle tuning.",
   "schoolTrackCooldownActive": "Cooldown active: {seconds}s remaining",
   "@schoolTrackCooldownActive": {
     "placeholders": {
@@ -8276,6 +8279,7 @@
   "educationCertProcessElectricsSpecialist": "Process Electrics Specialist Certification",
   "educationCertClandestineChemist": "Clandestine Chemist Certification",
   "educationCertNarcoGridArchitect": "Narco Grid Architect Certification",
+  "educationCertScrapApprentice": "Scrap Apprentice Certification",   "educationCertDismantler": "Certified Dismantler",   "educationCertMasterChop": "Master Chop Certification",   "educationCertSalvageArchitect": "Salvage Architect Certification",
   "educationCertSoftwareEngineer": "Software Engineer Certification",
   "educationCertBarExam": "Bar Exam",
   "educationCertMedicalLicense": "Medical License",

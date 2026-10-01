@@ -1,6 +1,7 @@
 import prisma from '../lib/prisma';
 import { activityService } from './activityService';
 import { getOrCreateBankAccount } from './bankService';
+import { educationService } from './educationService';
 
 function toNumeric(value: unknown): number {
   const n = Number(value);
@@ -170,6 +171,25 @@ export async function tradeStock(
   const holding = holdings[0];
 
   if (side === 'BUY') {
+    const playerRankRow = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { rank: true },
+    });
+    const educationEligibility = await educationService.checkAssetEligibility(
+      playerId,
+      'stock_trade_buy',
+      playerRankRow?.rank ?? 1
+    );
+    if (!educationEligibility.allowed) {
+      throw new Error(
+        `EDUCATION_REQUIREMENTS_NOT_MET:${JSON.stringify({
+          gateId: educationEligibility.gateId,
+          gateLabelKey: educationEligibility.gateLabelKey,
+          missing: educationEligibility.missing,
+        })}`
+      );
+    }
+
     if (account.balance < totalCash) throw new Error('INSUFFICIENT_BALANCE');
     const openPositions = await prisma.$queryRawUnsafe<Array<{ cnt: number }>>(
       `SELECT COUNT(*) AS cnt FROM stock_holdings WHERE playerId = ? AND quantity > 0`,

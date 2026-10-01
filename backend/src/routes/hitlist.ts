@@ -77,6 +77,23 @@ router.post(
         });
       }
 
+      if (typeof error.message === 'string' && error.message.startsWith('EDUCATION_REQUIREMENTS_NOT_MET:')) {
+        const raw = error.message.replace('EDUCATION_REQUIREMENTS_NOT_MET:', '');
+        let details: Record<string, unknown> = {};
+        try {
+          details = JSON.parse(raw);
+        } catch {
+          details = {};
+        }
+        return res.status(403).json({
+          success: false,
+          error: 'EDUCATION_REQUIREMENTS_NOT_MET',
+          reason: 'EDUCATION_REQUIREMENTS_NOT_MET',
+          education: details,
+          message: 'Schoolvereisten niet gehaald om een hit te plaatsen',
+        });
+      }
+
       return next(error);
     }
   }

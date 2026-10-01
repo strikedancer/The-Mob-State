@@ -11,7 +11,8 @@ type EducationTrackId =
   | 'finance'
   | 'engineering'
   | 'it'
-  | 'narcotics';
+  | 'narcotics'
+  | 'automotive';
 
 interface CertificationDefinition {
   id: string;
@@ -55,6 +56,7 @@ const TRACK_MIN_PLAYER_RANK: Record<EducationTrackId, number> = {
   engineering: 6,
   it: 5,
   narcotics: 7,
+  automotive: 6,
 };
 
 const EDUCATION_GATES: EducationGate[] = [
@@ -230,7 +232,123 @@ const EDUCATION_GATES: EducationGate[] = [
       certifications: ['clandestine_chemist'],
     },
   },
+  {
+    id: 'gate_asset_drug_facility_purchase',
+    label: 'Asset: Drugsfaciliteit aankoop',
+    labelKey: 'education.gate.asset.drug_facility_purchase',
+    targetType: 'asset',
+    targetId: 'drug_facility_purchase',
+    requirements: {
+      trackId: 'narcotics',
+      level: 2,
+      certifications: ['hydroponic_specialist'],
+    },
+  },
+  {
+    id: 'gate_asset_nightclub_purchase',
+    label: 'Asset: Nachtclub aankoop',
+    labelKey: 'education.gate.asset.nightclub_purchase',
+    targetType: 'asset',
+    targetId: 'nightclub_purchase',
+    requirements: {
+      trackId: 'finance',
+      level: 3,
+      certifications: ['financial_analyst'],
+    },
+  },
+  {
+    id: 'gate_asset_rld_purchase',
+    label: 'Asset: Red Light District aankoop',
+    labelKey: 'education.gate.asset.rld_purchase',
+    targetType: 'asset',
+    targetId: 'rld_purchase',
+    requirements: {
+      trackId: 'finance',
+      level: 3,
+      certifications: ['financial_analyst'],
+    },
+  },
+  {
+    id: 'gate_asset_rld_expansion_advanced',
+    label: 'Asset: RLD uitbreiding gevorderd',
+    labelKey: 'education.gate.asset.rld_expansion_advanced',
+    targetType: 'asset',
+    targetId: 'rld_expansion_advanced',
+    requirements: {
+      trackId: 'finance',
+      level: 4,
+      certifications: ['casino_management'],
+    },
+  },
+  {
+    id: 'gate_asset_stock_trade_buy',
+    label: 'Asset: Aandelen kopen',
+    labelKey: 'education.gate.asset.stock_trade_buy',
+    targetType: 'asset',
+    targetId: 'stock_trade_buy',
+    requirements: {
+      trackId: 'finance',
+      level: 3,
+      certifications: ['financial_analyst'],
+    },
+  },
+  {
+    id: 'gate_asset_crypto_trade_buy',
+    label: 'Asset: Crypto kopen',
+    labelKey: 'education.gate.asset.crypto_trade_buy',
+    targetType: 'asset',
+    targetId: 'crypto_trade_buy',
+    requirements: {
+      trackId: 'it',
+      level: 3,
+      certifications: ['software_engineer'],
+    },
+  },
+  {
+    id: 'gate_asset_hitlist_place_hit',
+    label: 'Asset: Hitlist opdracht plaatsen',
+    labelKey: 'education.gate.asset.hitlist_place_hit',
+    targetType: 'asset',
+    targetId: 'hitlist_place_hit',
+    requirements: { trackId: 'law', level: 3 },
+  },
+  {
+    id: 'gate_asset_vehicle_tune_advanced',
+    label: 'Asset: Gevorderd voertuig tunen',
+    labelKey: 'education.gate.asset.vehicle_tune_advanced',
+    targetType: 'asset',
+    targetId: 'vehicle_tune_advanced',
+    requirements: {
+      trackId: 'automotive',
+      level: 3,
+      certifications: ['dismantler'],
+    },
+  },
+  {
+    id: 'gate_asset_chop_contract_claim',
+    label: 'Asset: Chop-contract claimen',
+    labelKey: 'education.gate.asset.chop_contract_claim',
+    targetType: 'asset',
+    targetId: 'chop_contract_claim',
+    requirements: {
+      trackId: 'automotive',
+      level: 3,
+      certifications: ['dismantler'],
+    },
+  },
 ];
+
+/** Soft scrap-parts multiplier from Automotive track level (L0–L5). */
+export function automotiveScrapPartsMultiplier(level: number): number {
+  const safe = Math.max(0, Math.min(5, Math.floor(Number(level) || 0)));
+  return [1, 1.1, 1.25, 1.4, 1.6, 1.85][safe] ?? 1;
+}
+
+/** Soft drug-smuggle seizure reduction per narcotics level (4% each, capped). */
+export function narcoticsSmuggleRiskMultiplier(level: number): number {
+  const safe = Math.max(0, Math.min(5, Math.floor(Number(level) || 0)));
+  return Math.max(0.75, 1 - safe * 0.04);
+}
 
 interface TrackProgress {
   level: number;
@@ -679,6 +797,15 @@ class EducationService {
     }
 
     return this.checkEligibilityWithGate(profile, gate, playerRank);
+  }
+
+  getTrackLevelFromProfile(profile: PlayerEducationProfile, trackId: string): number {
+    return Math.max(0, Math.floor(Number(profile.tracks[trackId]?.level ?? 0)));
+  }
+
+  async getTrackLevel(playerId: number, trackId: string): Promise<number> {
+    const profile = await this.getPlayerEducationProfile(playerId);
+    return this.getTrackLevelFromProfile(profile, trackId);
   }
 
   private checkEligibilityWithGate(

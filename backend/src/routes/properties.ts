@@ -564,6 +564,10 @@ router.post('/claim/:propertyId', authenticate, async (req: AuthRequest, res: Re
           message = 'Je hebt niet genoeg geld om dit eigendom te kopen';
           statusCode = 403;
           break;
+        case 'EDUCATION_REQUIREMENTS_NOT_MET':
+          message = 'Schoolvereisten niet gehaald voor dit eigendom';
+          statusCode = 403;
+          break;
         case 'WRONG_COUNTRY':
           message = 'Je moet in het juiste land zijn om dit eigendom te claimen';
           statusCode = 403;
@@ -585,6 +589,9 @@ router.post('/claim/:propertyId', authenticate, async (req: AuthRequest, res: Re
         params: {
           reason: result.error,
           message,
+          ...(result.error === 'EDUCATION_REQUIREMENTS_NOT_MET'
+            ? { education: (result as any).education }
+            : {}),
         },
       });
     }

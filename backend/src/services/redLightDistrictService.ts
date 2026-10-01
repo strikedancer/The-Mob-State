@@ -2,6 +2,7 @@ import prisma from '../lib/prisma';
 import { checkAndUnlockAchievements, serializeAchievementForClient } from './achievementService';
 import { increaseFBIHeat } from './fbiService';
 import { isVipStatusActive } from './vipBenefitsService';
+import { educationService } from './educationService';
 import {
   RLD_COUNTRY_SLUGS,
   RLD_EXPANSION_COSTS,
@@ -239,11 +240,25 @@ export const redLightDistrictService = {
 
     const player = await prisma.player.findUnique({
       where: { id: playerId },
-      select: { money: true },
+      select: { money: true, rank: true },
     });
 
     if (!player) {
       return { success: false, message: 'Speler niet gevonden' };
+    }
+
+    const educationEligibility = await educationService.checkAssetEligibility(
+      playerId,
+      'rld_purchase',
+      player.rank ?? 1
+    );
+    if (!educationEligibility.allowed) {
+      return {
+        success: false,
+        message: 'EDUCATION_REQUIREMENTS_NOT_MET',
+        error: 'EDUCATION_REQUIREMENTS_NOT_MET',
+        education: educationEligibility,
+      };
     }
 
     if (player.money < district.purchasePrice) {
@@ -575,11 +590,27 @@ export const redLightDistrictService = {
 
     const player = await prisma.player.findUnique({
       where: { id: playerId },
-      select: { money: true },
+      select: { money: true, rank: true },
     });
 
     if (!player) {
       return { success: false, message: 'Speler niet gevonden' };
+    }
+
+    if (nextLevel >= 5) {
+      const educationEligibility = await educationService.checkAssetEligibility(
+        playerId,
+        'rld_expansion_advanced',
+        player.rank ?? 1
+      );
+      if (!educationEligibility.allowed) {
+        return {
+          success: false,
+          message: 'EDUCATION_REQUIREMENTS_NOT_MET',
+          error: 'EDUCATION_REQUIREMENTS_NOT_MET',
+          education: educationEligibility,
+        } as any;
+      }
     }
 
     if (player.money < upgradeCost) {

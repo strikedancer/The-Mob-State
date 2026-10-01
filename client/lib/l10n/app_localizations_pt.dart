@@ -13033,6 +13033,39 @@ class AppLocalizationsPt extends AppLocalizations {
       'Ativo: Atualização de equipamento de instalação de medicamentos III';
 
   @override
+  String get schoolGateAssetDrugFacilityPurchase =>
+      'Ativo: Compra de instalacao de drogas';
+
+  @override
+  String get schoolGateAssetNightclubPurchase => 'Ativo: Compra de boate';
+
+  @override
+  String get schoolGateAssetRldPurchase =>
+      'Ativo: Compra do Red Light District';
+
+  @override
+  String get schoolGateAssetRldExpansionAdvanced =>
+      'Ativo: Expansao RLD avancada';
+
+  @override
+  String get schoolGateAssetStockTradeBuy => 'Ativo: Comprar acoes';
+
+  @override
+  String get schoolGateAssetCryptoTradeBuy => 'Ativo: Comprar cripto';
+
+  @override
+  String get schoolGateAssetHitlistPlaceHit =>
+      'Ativo: Colocar contrato hitlist';
+
+  @override
+  String get schoolGateAssetVehicleTuneAdvanced =>
+      'Ativo: Tuning avancado de veiculos';
+
+  @override
+  String get schoolGateAssetChopContractClaim =>
+      'Ativo: Reivindicar contrato chop';
+
+  @override
   String schoolGateAssetGeneric(String target) {
     return 'Ativo: $target';
   }
@@ -13117,6 +13150,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get educationTrackNameNarcotics => 'Engenharia de Narcóticos';
 
   @override
+  String get educationTrackNameAutomotive => 'Automotivo e Chop';
+
+  @override
   String get schoolTrackDescriptionAviation =>
       'Teoria de vôo, navegação e operação de aeronaves.';
 
@@ -13145,6 +13181,10 @@ class AppLocalizationsPt extends AppLocalizations {
       'Cultivo controlado, processos elétricos e produção química avançada.';
 
   @override
+  String get schoolTrackDescriptionAutomotive =>
+      'Desmontagem, rendimento de pecas, contratos chop e tuning avancado.';
+
+  @override
   String schoolTrackCooldownActive(int seconds) {
     return 'Cooldown ativo: ${seconds}s restantes';
   }
@@ -13170,6 +13210,19 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get educationCertNarcoGridArchitect =>
       'Certificação Narco Grid Architect';
+
+  @override
+  String get educationCertScrapApprentice => 'Certificacao Aprendiz de sucata';
+
+  @override
+  String get educationCertDismantler => 'Desmantelador certificado';
+
+  @override
+  String get educationCertMasterChop => 'Certificacao Master Chop';
+
+  @override
+  String get educationCertSalvageArchitect =>
+      'Certificacao Arquiteto de salvamento';
 
   @override
   String get educationCertSoftwareEngineer =>

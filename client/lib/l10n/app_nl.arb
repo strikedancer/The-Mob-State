@@ -2915,6 +2915,15 @@
   "schoolGateAssetDrugFacilityEquipmentTier1": "Asset: Drugsfaciliteit apparatuur-upgrade I",
   "schoolGateAssetDrugFacilityEquipmentTier2": "Asset: Drugsfaciliteit apparatuur-upgrade II",
   "schoolGateAssetDrugFacilityEquipmentTier3": "Asset: Drugsfaciliteit apparatuur-upgrade III",
+  "schoolGateAssetDrugFacilityPurchase": "Asset: Drugsfaciliteit aankoop",
+  "schoolGateAssetNightclubPurchase": "Asset: Nachtclub aankoop",
+  "schoolGateAssetRldPurchase": "Asset: Red Light District aankoop",
+  "schoolGateAssetRldExpansionAdvanced": "Asset: RLD uitbreiding gevorderd",
+  "schoolGateAssetStockTradeBuy": "Asset: Aandelen kopen",
+  "schoolGateAssetCryptoTradeBuy": "Asset: Crypto kopen",
+  "schoolGateAssetHitlistPlaceHit": "Asset: Hitlist opdracht plaatsen",
+  "schoolGateAssetVehicleTuneAdvanced": "Asset: Gevorderd voertuig tunen",
+  "schoolGateAssetChopContractClaim": "Asset: Chop-contract claimen",
   "schoolGateAssetGeneric": "Activa: {target}",
   "@schoolGateAssetGeneric": {
     "placeholders": {
@@ -2977,6 +2986,7 @@
   "educationTrackNameEngineering": "Techniek",
   "educationTrackNameIt": "IT",
   "educationTrackNameNarcotics": "Narcoticatechnologie",
+  "educationTrackNameAutomotive": "Automotive & Chop",
   "schoolTrackDescriptionAviation": "Vliegtheorie, navigatie en vliegtuigbediening.",
   "schoolTrackDescriptionLaw": "Strafrecht, procedures en praktijk in de rechtszaal.",
   "schoolTrackDescriptionMedicine": "Spoedzorg, diagnostiek en medische praktijk.",
@@ -2984,6 +2994,7 @@
   "schoolTrackDescriptionEngineering": "Mechanische systemen, industriële veiligheid en productie.",
   "schoolTrackDescriptionIt": "Softwareontwikkeling, systemen en netwerkbeheer.",
   "schoolTrackDescriptionNarcotics": "Gecontroleerde teelt, proces-elektra en geavanceerde chemische productie.",
+  "schoolTrackDescriptionAutomotive": "Autos slopen, onderdelen salvage, chop-contracten en gevorderd tunen.",
   "schoolTrackCooldownActive": "Cooldown actief: nog {seconds}s",
   "@schoolTrackCooldownActive": {
     "placeholders": {
@@ -2998,6 +3009,10 @@
   "educationCertProcessElectricsSpecialist": "Proceselektrica specialist certificaat",
   "educationCertClandestineChemist": "Clandestien chemicus certificaat",
   "educationCertNarcoGridArchitect": "Narco grid architect certificaat",
+  "educationCertScrapApprentice": "Sloop-leerling certificaat",
+  "educationCertDismantler": "Gecertificeerd demonteur",
+  "educationCertMasterChop": "Master chop certificaat",
+  "educationCertSalvageArchitect": "Salvage architect certificaat",
   "educationCertSoftwareEngineer": "Software Engineer Certificaat",
   "educationCertBarExam": "Advocatenexamen",
   "educationCertMedicalLicense": "Medische Licentie",

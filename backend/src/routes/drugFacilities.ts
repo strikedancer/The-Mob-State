@@ -47,6 +47,12 @@ router.post('/buy', authenticate, async (req: Request, res: Response) => {
     }
 
     const result = await drugFacilityService.buyFacility(playerId, facilityType);
+    if (!result.success && (result as any).error === 'EDUCATION_REQUIREMENTS_NOT_MET') {
+      return res.status(403).json({
+        ...result,
+        reason: 'EDUCATION_REQUIREMENTS_NOT_MET',
+      });
+    }
     res.json(result);
   } catch (err) {
     console.error('POST /drug-facilities/buy error:', err);

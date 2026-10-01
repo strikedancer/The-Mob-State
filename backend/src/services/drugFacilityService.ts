@@ -175,6 +175,20 @@ class DrugFacilityService {
       };
     }
 
+    const educationEligibility = await educationService.checkAssetEligibility(
+      playerId,
+      'drug_facility_purchase',
+      player.rank ?? 1
+    );
+    if (!educationEligibility.allowed) {
+      return {
+        success: false,
+        message: 'EDUCATION_REQUIREMENTS_NOT_MET',
+        error: 'EDUCATION_REQUIREMENTS_NOT_MET',
+        education: educationEligibility,
+      } as any;
+    }
+
     await prisma.$transaction([
       prisma.player.update({ where: { id: playerId }, data: { money: { decrement: def.purchasePrice } } }),
       prisma.drugFacility.create({ data: { playerId, country: facilityCountry, facilityType, slots: 1 } }),

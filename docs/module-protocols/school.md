@@ -60,6 +60,10 @@ Education tracks, certifications, gates, cash tuition, cooldowns and unlock depe
 - **Narcotics track → Drugs facility upgrades**: drugsfaciliteit-upgrades zijn nu stapsgewijs gekoppeld aan de school track `narcotics`. Slot-upgrades en equipment-upgrades vereisen oplopende levels/certificaten (`hydroponic_specialist`, `process_electrics_specialist`, `clandestine_chemist`, `narco_grid_architect`) via asset-gates `drug_facility_upgrade_slots_tier_*` en `drug_facility_upgrade_equipment_tier_*`.
   - Dependency files: `backend/src/services/educationService.ts`, `backend/src/services/drugFacilityService.ts`, `backend/src/routes/drugFacilities.ts`
   - Als track-id, certificaat-id of gate-targets wijzigen: update ook `school_screen.dart`, `education_requirements_dialog.dart` en de drugs-helptekst.
+- **Narcotics soft bonus → Drug smuggle**: elk narcotics-level verlaagt smuggle `seizureChance` met 4% (cap 25% reductie) via `narcoticsSmuggleRiskMultiplier`.
+- **Finance/IT/Law empire gates**: nightclub aankoop, RLD aankoop, RLD expansion ≥5, aandelen kopen, crypto kopen en hitlist plaatsen vereisen schoolgates (`nightclub_purchase`, `rld_purchase`, `rld_expansion_advanced`, `stock_trade_buy`, `crypto_trade_buy`, `hitlist_place_hit`).
+- **Automotive & Chop track**: nieuwe track voor slopen/salvage. Soft bonus: scrap parts yield schaalt met track level (`automotiveScrapPartsMultiplier`). Hard gates: gevorderd tunen (stat level 4+) en chop-contract claimen (`vehicle_tune_advanced`, `chop_contract_claim`) vereisen automotive L3 + `dismantler`.
+  - Leonardo images: `backend/scripts/generate_school_automotive_images_leonardo.py` → `runtime/client-images/school/` (+ optional `--mirror-client-assets`).
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

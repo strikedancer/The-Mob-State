@@ -453,6 +453,15 @@ router.post('/ops/chop-contract/claim', authenticate, async (req: AuthRequest, r
   try {
     const vehicleType = (req.body?.vehicleType as string | undefined) ?? 'car';
     const result = await vehicleService.claimVehicleChopContract(req.player!.id, vehicleType);
+    if (!result.success && (result as any).error === 'EDUCATION_REQUIREMENTS_NOT_MET') {
+      return res.status(403).json({
+        event: 'vehicles.ops.chop_contract.failed',
+        params: {
+          ...result,
+          reason: 'EDUCATION_REQUIREMENTS_NOT_MET',
+        },
+      });
+    }
     return res.status(200).json({
       event: result.success
         ? 'vehicles.ops.chop_contract.claimed'
@@ -971,6 +980,22 @@ router.post(
           return res
             .status(400)
             .json({ event: 'vehicles.error', params: { reason: 'INVALID_VEHICLE' } });
+        }
+        if (error.message.startsWith('EDUCATION_REQUIREMENTS_NOT_MET:')) {
+          const raw = error.message.replace('EDUCATION_REQUIREMENTS_NOT_MET:', '');
+          let details: Record<string, unknown> = {};
+          try {
+            details = JSON.parse(raw);
+          } catch {
+            details = {};
+          }
+          return res.status(403).json({
+            event: 'vehicles.error',
+            params: {
+              reason: 'EDUCATION_REQUIREMENTS_NOT_MET',
+              ...details,
+            },
+          });
         }
       }
 

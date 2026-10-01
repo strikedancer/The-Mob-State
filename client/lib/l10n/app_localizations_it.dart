@@ -13077,6 +13077,39 @@ class AppLocalizationsIt extends AppLocalizations {
       'Risorsa: Aggiornamento delle attrezzature della struttura farmaceutica III';
 
   @override
+  String get schoolGateAssetDrugFacilityPurchase =>
+      'Risorsa: Acquisto struttura droga';
+
+  @override
+  String get schoolGateAssetNightclubPurchase => 'Risorsa: Acquisto nightclub';
+
+  @override
+  String get schoolGateAssetRldPurchase =>
+      'Risorsa: Acquisto Red Light District';
+
+  @override
+  String get schoolGateAssetRldExpansionAdvanced =>
+      'Risorsa: Espansione RLD avanzata';
+
+  @override
+  String get schoolGateAssetStockTradeBuy => 'Risorsa: Acquistare azioni';
+
+  @override
+  String get schoolGateAssetCryptoTradeBuy => 'Risorsa: Acquistare crypto';
+
+  @override
+  String get schoolGateAssetHitlistPlaceHit =>
+      'Risorsa: Piazzare contratto hitlist';
+
+  @override
+  String get schoolGateAssetVehicleTuneAdvanced =>
+      'Risorsa: Tuning veicolo avanzato';
+
+  @override
+  String get schoolGateAssetChopContractClaim =>
+      'Risorsa: Rivendicare contratto chop';
+
+  @override
   String schoolGateAssetGeneric(String target) {
     return 'Risorsa: $target';
   }
@@ -13161,6 +13194,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get educationTrackNameNarcotics => 'Ingegneria dei narcotici';
 
   @override
+  String get educationTrackNameAutomotive => 'Automotive e Chop';
+
+  @override
   String get schoolTrackDescriptionAviation =>
       'Teoria del volo, navigazione e funzionamento dell\'aereo.';
 
@@ -13189,6 +13225,10 @@ class AppLocalizationsIt extends AppLocalizations {
       'Coltivazione controllata, processi elettrici e produzione chimica avanzata.';
 
   @override
+  String get schoolTrackDescriptionAutomotive =>
+      'Smantellamento, rendimento pezzi, contratti chop e tuning avanzato.';
+
+  @override
   String schoolTrackCooldownActive(int seconds) {
     return 'Tempo di recupero attivo: ${seconds}s rimanenti';
   }
@@ -13215,6 +13255,20 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get educationCertNarcoGridArchitect =>
       'Certificazione di Narco Grid Architect';
+
+  @override
+  String get educationCertScrapApprentice =>
+      'Certificazione Apprendista rottamazione';
+
+  @override
+  String get educationCertDismantler => 'Smantellatore certificato';
+
+  @override
+  String get educationCertMasterChop => 'Certificazione Master Chop';
+
+  @override
+  String get educationCertSalvageArchitect =>
+      'Certificazione Architetto del recupero';
 
   @override
   String get educationCertSoftwareEngineer =>

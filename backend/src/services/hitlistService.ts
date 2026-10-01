@@ -15,6 +15,7 @@ import { getActiveEventBoostEffects } from './premiumCreditsService';
 import { isVipStatusActive } from './vipBenefitsService';
 import { NotificationService } from './notificationService';
 import { systemLogService } from './systemLogService';
+import { educationService } from './educationService';
 import fs from 'fs';
 import path from 'path';
 import { activePortraitPathFromRow } from '../utils/avatarDisplay';
@@ -1227,11 +1228,26 @@ export async function placeHit(
   // Check if player can afford bounty
   const player = await prisma.player.findUnique({
     where: { id: playerId },
-    select: { money: true, username: true },
+    select: { money: true, username: true, rank: true },
   });
 
   if (!player || player.money < bounty) {
     throw new Error('INSUFFICIENT_MONEY');
+  }
+
+  const educationEligibility = await educationService.checkAssetEligibility(
+    playerId,
+    'hitlist_place_hit',
+    player.rank ?? 1
+  );
+  if (!educationEligibility.allowed) {
+    throw new Error(
+      `EDUCATION_REQUIREMENTS_NOT_MET:${JSON.stringify({
+        gateId: educationEligibility.gateId,
+        gateLabelKey: educationEligibility.gateLabelKey,
+        missing: educationEligibility.missing,
+      })}`
+    );
   }
 
   // Deduct bounty from player

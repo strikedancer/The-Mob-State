@@ -369,6 +369,14 @@ class _SchoolScreenState extends State<SchoolScreen> {
         return l10n.educationCertClandestineChemist;
       case 'narco_grid_architect':
         return l10n.educationCertNarcoGridArchitect;
+      case 'scrap_apprentice':
+        return l10n.educationCertScrapApprentice;
+      case 'dismantler':
+        return l10n.educationCertDismantler;
+      case 'master_chop':
+        return l10n.educationCertMasterChop;
+      case 'salvage_architect':
+        return l10n.educationCertSalvageArchitect;
       default:
         return certificationId;
     }
@@ -394,6 +402,8 @@ class _SchoolScreenState extends State<SchoolScreen> {
         return l10n.educationTrackNameIt;
       case 'narcotics':
         return l10n.educationTrackNameNarcotics;
+      case 'automotive':
+        return l10n.educationTrackNameAutomotive;
       default:
         return fallback;
     }
@@ -419,6 +429,8 @@ class _SchoolScreenState extends State<SchoolScreen> {
         return l10n.schoolTrackDescriptionIt;
       case 'narcotics':
         return l10n.schoolTrackDescriptionNarcotics;
+      case 'automotive':
+        return l10n.schoolTrackDescriptionAutomotive;
       default:
         return fallback;
     }
@@ -535,6 +547,24 @@ class _SchoolScreenState extends State<SchoolScreen> {
           return l10n.schoolGateAssetDrugFacilityEquipmentTier2;
         case 'drug_facility_upgrade_equipment_tier_3':
           return l10n.schoolGateAssetDrugFacilityEquipmentTier3;
+        case 'drug_facility_purchase':
+          return l10n.schoolGateAssetDrugFacilityPurchase;
+        case 'nightclub_purchase':
+          return l10n.schoolGateAssetNightclubPurchase;
+        case 'rld_purchase':
+          return l10n.schoolGateAssetRldPurchase;
+        case 'rld_expansion_advanced':
+          return l10n.schoolGateAssetRldExpansionAdvanced;
+        case 'stock_trade_buy':
+          return l10n.schoolGateAssetStockTradeBuy;
+        case 'crypto_trade_buy':
+          return l10n.schoolGateAssetCryptoTradeBuy;
+        case 'hitlist_place_hit':
+          return l10n.schoolGateAssetHitlistPlaceHit;
+        case 'vehicle_tune_advanced':
+          return l10n.schoolGateAssetVehicleTuneAdvanced;
+        case 'chop_contract_claim':
+          return l10n.schoolGateAssetChopContractClaim;
         default:
           return l10n.schoolGateAssetGeneric(targetId);
       }
@@ -630,6 +660,8 @@ class _SchoolScreenState extends State<SchoolScreen> {
         return '💻';
       case 'narcotics':
         return '🧪';
+      case 'automotive':
+        return '🔧';
       default:
         return '🎓';
     }
@@ -660,6 +692,29 @@ class _SchoolScreenState extends State<SchoolScreen> {
         case 'ammo_factory_upgrade_output':
         case 'ammo_factory_upgrade_quality':
           return '⚙️';
+        case 'drug_facility_purchase':
+        case 'drug_facility_upgrade_slots_tier_1':
+        case 'drug_facility_upgrade_slots_tier_2':
+        case 'drug_facility_upgrade_slots_tier_3':
+        case 'drug_facility_upgrade_slots_tier_4':
+        case 'drug_facility_upgrade_equipment_tier_1':
+        case 'drug_facility_upgrade_equipment_tier_2':
+        case 'drug_facility_upgrade_equipment_tier_3':
+          return '🧪';
+        case 'nightclub_purchase':
+          return '🕺';
+        case 'rld_purchase':
+        case 'rld_expansion_advanced':
+          return '🏙️';
+        case 'stock_trade_buy':
+          return '📈';
+        case 'crypto_trade_buy':
+          return '🪙';
+        case 'hitlist_place_hit':
+          return '🎯';
+        case 'vehicle_tune_advanced':
+        case 'chop_contract_claim':
+          return '🔧';
         default:
           return '📦';
       }

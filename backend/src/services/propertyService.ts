@@ -6,6 +6,7 @@ import { timeProvider } from '../utils/timeProvider';
 import { activityService } from './activityService';
 import { getOrCreateBankAccount } from './bankService';
 import { propertyStorageService } from './propertyStorageService';
+import { educationService } from './educationService';
 import {
   isShowroomProperty,
   resolveShowroomSlotCaps,
@@ -365,6 +366,21 @@ class PropertyService {
     // Check if player has enough money
     if (player.money < purchasePrice) {
       return { success: false, error: 'INSUFFICIENT_MONEY' };
+    }
+
+    if (propertyId === 'nightclub') {
+      const educationEligibility = await educationService.checkAssetEligibility(
+        playerId,
+        'nightclub_purchase',
+        player.rank ?? 1
+      );
+      if (!educationEligibility.allowed) {
+        return {
+          success: false,
+          error: 'EDUCATION_REQUIREMENTS_NOT_MET',
+          education: educationEligibility,
+        };
+      }
     }
 
     // Check if player is in the correct country (only for country-specific properties)

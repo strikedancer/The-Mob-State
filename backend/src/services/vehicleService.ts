@@ -23,6 +23,10 @@ import { economyBalanceService } from './economyBalanceService';
 import { checkAndUnlockAchievements, serializeAchievementForClient } from './achievementService';
 import { computeGarageSlotTotals, pickLatestUpgradeForTrack } from './garageService';
 import { assertNotExhibited, notInShowroomWhere } from './showroomCatalog';
+import {
+  automotiveScrapPartsMultiplier,
+  educationService,
+} from './educationService';
 
 const COUNTRY_ALIASES: Record<string, string> = {
   united_kingdom: 'uk',
@@ -2947,8 +2951,21 @@ export const vehicleService = {
     const contract = getChopContractForVehicleType(vehicleType, new Date());
     const player = await prisma.player.findUnique({
       where: { id: playerId },
-      select: { currentCountry: true },
+      select: { currentCountry: true, rank: true },
     });
+    const educationEligibility = await educationService.checkAssetEligibility(
+      playerId,
+      'chop_contract_claim',
+      player?.rank ?? 1
+    );
+    if (!educationEligibility.allowed) {
+      return {
+        success: false,
+        message: 'EDUCATION_REQUIREMENTS_NOT_MET',
+        error: 'EDUCATION_REQUIREMENTS_NOT_MET',
+        education: educationEligibility,
+      };
+    }
     const blacklist = getRegionalBlacklistEvent(
       vehicleType,
       player?.currentCountry ?? '',
@@ -4747,9 +4764,12 @@ export const vehicleService = {
     const scrapPrice = Math.floor(
       baseValue * 0.35 * conditionMultiplier * chopShopMultiplier * tuneMultiplier
     );
-    const partsGained = vehicleDef
+    const automotiveLevel = await educationService.getTrackLevel(playerId, 'automotive');
+    const scrapPartsMultiplier = automotiveScrapPartsMultiplier(automotiveLevel);
+    const basePartsGained = vehicleDef
       ? calculatePartsYield(vehicleDef, inventoryItem.condition ?? 100)
       : calculateLegacyPartsYield(vehicleType, inventoryItem.condition ?? 100, baseValue);
+    const partsGained = Math.max(1, Math.floor(basePartsGained * scrapPartsMultiplier));
 
     const { applyOptionalCrewIncomeShare } = await import('./crewIncomeShareService');
     const share = await applyOptionalCrewIncomeShare(playerId, scrapPrice);
@@ -5353,6 +5373,24 @@ export const vehicleService = {
 
     const player = await prisma.player.findUnique({ where: { id: playerId } });
     if (!player) throw new Error('PLAYER_NOT_FOUND');
+
+    // Advanced tune levels (4+) require Automotive school track.
+    if (cost.nextLevel >= 4) {
+      const educationEligibility = await educationService.checkAssetEligibility(
+        playerId,
+        'vehicle_tune_advanced',
+        player.rank ?? 1
+      );
+      if (!educationEligibility.allowed) {
+        throw new Error(
+          `EDUCATION_REQUIREMENTS_NOT_MET:${JSON.stringify({
+            gateId: educationEligibility.gateId,
+            gateLabelKey: educationEligibility.gateLabelKey,
+            missing: educationEligibility.missing,
+          })}`
+        );
+      }
+    }
 
     const isVipActive = isPlayerVipActive(player);
     const maxConcurrentTunes = getConcurrentTuneLimit(isVipActive);

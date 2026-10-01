@@ -109,6 +109,12 @@ router.post('/purchase', authenticate, async (req: AuthRequest, res) => {
     const result = await redLightDistrictService.purchaseDistrict(playerId, countryCode);
 
     if (!result.success) {
+      if ((result as any).error === 'EDUCATION_REQUIREMENTS_NOT_MET') {
+        return res.status(403).json({
+          ...result,
+          reason: 'EDUCATION_REQUIREMENTS_NOT_MET',
+        });
+      }
       return res.status(400).json(result);
     }
 
@@ -317,7 +323,15 @@ router.post('/:id/upgrade-expansion', authenticate, async (req: AuthRequest, res
   try {
     const districtId = parseInt(String(req.params.id), 10);
     const result = await redLightDistrictService.upgradeExpansion(districtId, req.player!.id);
-    if (!result.success) return res.status(400).json(result);
+    if (!result.success) {
+      if ((result as any).error === 'EDUCATION_REQUIREMENTS_NOT_MET') {
+        return res.status(403).json({
+          ...result,
+          reason: 'EDUCATION_REQUIREMENTS_NOT_MET',
+        });
+      }
+      return res.status(400).json(result);
+    }
     res.json(result);
   } catch (error) {
     console.error('Error upgrading expansion:', error);

@@ -1,6 +1,10 @@
 import prisma from '../lib/prisma';
 import countries from '../../content/countries.json';
 import { getTravelCost, isValidCountry } from './travelService';
+import {
+  educationService,
+  narcoticsSmuggleRiskMultiplier,
+} from './educationService';
 
 type ShipmentStatus = 'in_transit' | 'ready' | 'seized' | 'claimed';
 
@@ -127,7 +131,13 @@ class DrugSmugglingService {
     const travelCost = getTravelCost(player.currentCountry, destinationCountry);
     const shippingFee = Math.max(350, Math.round(travelCost * 0.55 + quantity * 4));
     const etaMinutes = this.clamp(30 + Math.round(travelCost / 60), 30, 240);
-    const seizureChance = this.clamp(0.04 + player.wantedLevel * 0.012 + quantity / 4000, 0.03, 0.35);
+    const narcoticsLevel = await educationService.getTrackLevel(playerId, 'narcotics');
+    const riskMultiplier = narcoticsSmuggleRiskMultiplier(narcoticsLevel);
+    const seizureChance = this.clamp(
+      (0.04 + player.wantedLevel * 0.012 + quantity / 4000) * riskMultiplier,
+      0.03,
+      0.35
+    );
 
     const etaAt = new Date(Date.now() + etaMinutes * 60 * 1000);
 

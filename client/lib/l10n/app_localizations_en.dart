@@ -12955,6 +12955,36 @@ class AppLocalizationsEn extends AppLocalizations {
       'Asset: Drug facility equipment upgrade III';
 
   @override
+  String get schoolGateAssetDrugFacilityPurchase =>
+      'Asset: Drug facility purchase';
+
+  @override
+  String get schoolGateAssetNightclubPurchase => 'Asset: Nightclub purchase';
+
+  @override
+  String get schoolGateAssetRldPurchase => 'Asset: Red Light District purchase';
+
+  @override
+  String get schoolGateAssetRldExpansionAdvanced =>
+      'Asset: Advanced RLD expansion';
+
+  @override
+  String get schoolGateAssetStockTradeBuy => 'Asset: Buy stocks';
+
+  @override
+  String get schoolGateAssetCryptoTradeBuy => 'Asset: Buy crypto';
+
+  @override
+  String get schoolGateAssetHitlistPlaceHit => 'Asset: Place hitlist contract';
+
+  @override
+  String get schoolGateAssetVehicleTuneAdvanced =>
+      'Asset: Advanced vehicle tuning';
+
+  @override
+  String get schoolGateAssetChopContractClaim => 'Asset: Claim chop contract';
+
+  @override
   String schoolGateAssetGeneric(String target) {
     return 'Asset: $target';
   }
@@ -13038,6 +13068,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get educationTrackNameNarcotics => 'Narcotics Engineering';
 
   @override
+  String get educationTrackNameAutomotive => 'Automotive & Chop';
+
+  @override
   String get schoolTrackDescriptionAviation =>
       'Flight theory, navigation, and aircraft operation.';
 
@@ -13066,6 +13099,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Controlled cultivation, process electrics and advanced chemical production.';
 
   @override
+  String get schoolTrackDescriptionAutomotive =>
+      'Dismantling, salvage yields, chop contracts and high-tier vehicle tuning.';
+
+  @override
   String schoolTrackCooldownActive(int seconds) {
     return 'Cooldown active: ${seconds}s remaining';
   }
@@ -13091,6 +13128,18 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get educationCertNarcoGridArchitect =>
       'Narco Grid Architect Certification';
+
+  @override
+  String get educationCertScrapApprentice => 'Scrap Apprentice Certification';
+
+  @override
+  String get educationCertDismantler => 'Certified Dismantler';
+
+  @override
+  String get educationCertMasterChop => 'Master Chop Certification';
+
+  @override
+  String get educationCertSalvageArchitect => 'Salvage Architect Certification';
 
   @override
   String get educationCertSoftwareEngineer => 'Software Engineer Certification';

@@ -9,6 +9,7 @@ import { directMessageService } from './directMessageService';
 import { notificationService } from './notificationService';
 import { playerNotificationPreferenceService } from './playerNotificationPreferenceService';
 import { translationService, type Language } from './translationService';
+import { educationService } from './educationService';
 
 type CryptoSeed = {
   symbol: string;
@@ -2190,6 +2191,25 @@ export async function buyCrypto(playerId: number, symbol: string, quantityInput:
     throw new Error('INVALID_QUANTITY');
   }
 
+  const playerRankRow = await prisma.player.findUnique({
+    where: { id: playerId },
+    select: { rank: true },
+  });
+  const educationEligibility = await educationService.checkAssetEligibility(
+    playerId,
+    'crypto_trade_buy',
+    playerRankRow?.rank ?? 1
+  );
+  if (!educationEligibility.allowed) {
+    throw new Error(
+      `EDUCATION_REQUIREMENTS_NOT_MET:${JSON.stringify({
+        gateId: educationEligibility.gateId,
+        gateLabelKey: educationEligibility.gateLabelKey,
+        missing: educationEligibility.missing,
+      })}`
+    );
+  }
+
   const normalizedSymbol = symbol.trim().toUpperCase();
 
   const result = await prisma.$transaction(async (tx) => {
@@ -2585,6 +2605,27 @@ export async function placeOrder(
 
   if ((orderType === 'STOP_LOSS' || orderType === 'TAKE_PROFIT') && side !== 'SELL') {
     throw new Error('INVALID_ORDER_COMBINATION');
+  }
+
+  if (side === 'BUY') {
+    const playerRankRow = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { rank: true },
+    });
+    const educationEligibility = await educationService.checkAssetEligibility(
+      playerId,
+      'crypto_trade_buy',
+      playerRankRow?.rank ?? 1
+    );
+    if (!educationEligibility.allowed) {
+      throw new Error(
+        `EDUCATION_REQUIREMENTS_NOT_MET:${JSON.stringify({
+          gateId: educationEligibility.gateId,
+          gateLabelKey: educationEligibility.gateLabelKey,
+          missing: educationEligibility.missing,
+        })}`
+      );
+    }
   }
 
   const assets = await prisma.$queryRawUnsafe<Array<{ symbol: string; name: string }>>(

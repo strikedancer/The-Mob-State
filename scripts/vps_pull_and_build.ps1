@@ -120,6 +120,11 @@ cp -f client/assets/images/don/*.png runtime/client-images/don/ 2>/dev/null || t
 # Premium store tiles (/images/premium_tiles/*)
 mkdir -p runtime/client-images/premium_tiles || true
 cp -f client/assets/images/premium_tiles/*.png runtime/client-images/premium_tiles/ 2>/dev/null || true
+# School track/gate art (/game-assets/school/* → runtime/client-images/school)
+mkdir -p runtime/client-images/school/tracks runtime/client-images/school/gates || true
+cp -f client/assets/images/school/tracks/*.png runtime/client-images/school/tracks/ 2>/dev/null || true
+cp -f client/assets/images/school/gates/*.png runtime/client-images/school/gates/ 2>/dev/null || true
+cp -f client/assets/images/school/school_global_cooldown.png runtime/client-images/school/school_global_cooldown.png 2>/dev/null || true
 # Midnight Races hero (/images/races/*)
 mkdir -p runtime/client-images/races || true
 cp -f client/assets/images/races/*.png runtime/client-images/races/ 2>/dev/null || true

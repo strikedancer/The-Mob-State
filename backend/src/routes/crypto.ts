@@ -95,6 +95,22 @@ router.post('/buy', authenticate, async (req: AuthRequest, res: Response) => {
     });
   } catch (error: any) {
     if (error instanceof Error) {
+      if (error.message.startsWith('EDUCATION_REQUIREMENTS_NOT_MET:')) {
+        const raw = error.message.replace('EDUCATION_REQUIREMENTS_NOT_MET:', '');
+        let details: Record<string, unknown> = {};
+        try {
+          details = JSON.parse(raw);
+        } catch {
+          details = {};
+        }
+        return res.status(403).json({
+          success: false,
+          error: 'EDUCATION_REQUIREMENTS_NOT_MET',
+          reason: 'EDUCATION_REQUIREMENTS_NOT_MET',
+          education: details,
+          message: 'Schoolvereisten niet gehaald voor crypto aankoop.',
+        });
+      }
       if (error.message === 'INVALID_QUANTITY') {
         return res.status(400).json({ success: false, message: 'Ongeldige hoeveelheid.' });
       }
@@ -181,6 +197,22 @@ router.post('/orders', authenticate, async (req: AuthRequest, res: Response) => 
     });
   } catch (error: any) {
     if (error instanceof Error) {
+      if (error.message.startsWith('EDUCATION_REQUIREMENTS_NOT_MET:')) {
+        const raw = error.message.replace('EDUCATION_REQUIREMENTS_NOT_MET:', '');
+        let details: Record<string, unknown> = {};
+        try {
+          details = JSON.parse(raw);
+        } catch {
+          details = {};
+        }
+        return res.status(403).json({
+          success: false,
+          error: 'EDUCATION_REQUIREMENTS_NOT_MET',
+          reason: 'EDUCATION_REQUIREMENTS_NOT_MET',
+          education: details,
+          message: 'Schoolvereisten niet gehaald voor crypto order.',
+        });
+      }
       if (error.message === 'INVALID_QUANTITY') {
         return res.status(400).json({ success: false, message: 'Ongeldige hoeveelheid.' });
       }

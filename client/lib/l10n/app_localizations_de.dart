@@ -13107,6 +13107,36 @@ class AppLocalizationsDe extends AppLocalizations {
       'Vermögenswert: Modernisierung der Ausrüstung der Arzneimitteleinrichtung III';
 
   @override
+  String get schoolGateAssetDrugFacilityPurchase => 'Asset: Drogenlabor kaufen';
+
+  @override
+  String get schoolGateAssetNightclubPurchase => 'Asset: Nachtclub kaufen';
+
+  @override
+  String get schoolGateAssetRldPurchase => 'Asset: Rotlichtviertel kaufen';
+
+  @override
+  String get schoolGateAssetRldExpansionAdvanced =>
+      'Asset: Erweiterte RLD-Erweiterung';
+
+  @override
+  String get schoolGateAssetStockTradeBuy => 'Asset: Aktien kaufen';
+
+  @override
+  String get schoolGateAssetCryptoTradeBuy => 'Asset: Krypto kaufen';
+
+  @override
+  String get schoolGateAssetHitlistPlaceHit =>
+      'Asset: Hitlist-Auftrag platzieren';
+
+  @override
+  String get schoolGateAssetVehicleTuneAdvanced =>
+      'Asset: Fortgeschrittenes Fahrzeugtuning';
+
+  @override
+  String get schoolGateAssetChopContractClaim => 'Asset: Chop-Vertrag einlosen';
+
+  @override
   String schoolGateAssetGeneric(String target) {
     return 'Vermögenswert: $target';
   }
@@ -13190,6 +13220,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get educationTrackNameNarcotics => 'Betäubungsmitteltechnik';
 
   @override
+  String get educationTrackNameAutomotive => 'Automotive & Chop';
+
+  @override
   String get schoolTrackDescriptionAviation =>
       'Flugtheorie, Navigation und Flugzeugbetrieb.';
 
@@ -13216,6 +13249,10 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get schoolTrackDescriptionNarcotics =>
       'Kontrollierter Anbau, Prozesselektrik und fortschrittliche chemische Produktion.';
+
+  @override
+  String get schoolTrackDescriptionAutomotive =>
+      'Demontage, Schrottteile, Chop-Vertrage und High-End-Tuning.';
 
   @override
   String schoolTrackCooldownActive(int seconds) {
@@ -13245,6 +13282,18 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get educationCertNarcoGridArchitect =>
       'Narco Grid Architect-Zertifizierung';
+
+  @override
+  String get educationCertScrapApprentice => 'Schrott-Lehrling Zertifikat';
+
+  @override
+  String get educationCertDismantler => 'Zertifizierter Demonteur';
+
+  @override
+  String get educationCertMasterChop => 'Master-Chop-Zertifikat';
+
+  @override
+  String get educationCertSalvageArchitect => 'Salvage-Architekt-Zertifikat';
 
   @override
   String get educationCertSoftwareEngineer =>
