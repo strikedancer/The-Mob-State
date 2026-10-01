@@ -570,6 +570,7 @@
       "baseSuccessChance": 0.18,
       "minReward": 0,
       "maxReward": 0,
+      "cooldownSeconds": 3600,
       "xpReward": 850,
       "jailTime": 240,
       "requiredVehicle": false,

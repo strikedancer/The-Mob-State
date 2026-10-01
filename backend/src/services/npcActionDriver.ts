@@ -359,7 +359,7 @@ async function tryCrime(npcId: number, playerId: number, behavior: Behavior): Pr
     await cooldownService.setCooldown(
       playerId,
       'crime',
-      cooldownService.calculateCrimeCooldown(pick.crime.maxReward),
+      cooldownService.resolveCrimeCooldownSeconds(pick.crime),
     );
     await logNpcAction(
       npcId,

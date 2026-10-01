@@ -6,6 +6,8 @@ export interface Crime {
   baseSuccessChance: number;
   minReward: number;
   maxReward: number;
+  /** Optional explicit cooldown; overrides reward-tier `calculateCrimeCooldown(maxReward)`. */
+  cooldownSeconds?: number;
   xpReward: number;
   minXpReward?: number;
   maxXpReward?: number;

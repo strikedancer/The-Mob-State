@@ -125,13 +125,13 @@ Cooldown = `calculateCrimeCooldown(maxReward)`: ≤500→90s, ≤2k→5m, ≤10k
 | bank_robbery | 22 | 18% | 47 500 | 60m | 8 550 | 162 |
 | casino_heist | 25 | 15% | 55 000 | 60m | 8 250 | 150 |
 | museum_heist | 23 | 16% | 51 500 | 60m | 8 240 | 152 |
-| **criminal_record_wipe** | 21 | 18% | **0** | **90s** | 0 | **6 120** |
+| **criminal_record_wipe** | 21 | 18% | **0** | **3600s** (catalog override) | 0 | **~153** |
 
 ### Met soft diminish (illustratief)
 
 Op peak XP/h van shoplift (910): na deep session ×0.86 (live) ≈ **783**; ×0.78 (code default) ≈ **710**. Diminish raakt progression reward, niet de cooldown — early street blijft de snelste XP-loop tot mid ranks.
 
-**Outlier:** `criminal_record_wipe` heeft `maxReward: 0` → valt in de **90s** crime-CD tier, terwijl XP 850 @ 18% success ≈ **6 120 XP/h** theoretisch. Dat is ~40× late heist XP/h. Utility-crime (strafblad) mag niet de snelste rank-farm zijn.
+**Fixed (2026-10-01):** `criminal_record_wipe` had `maxReward: 0` → 90s CD → ~6 120 XP/h. Nu `cooldownSeconds: 3600` via `resolveCrimeCooldownSeconds` → ~153 XP/h @ 18% success (aligned with late federal heists). Utility wipe, geen rank-farm.
 
 ---
 
@@ -311,7 +311,7 @@ Criteria: **te snel / te traag / te veilig / te zwak sink** t.o.v. year-long ret
 | 1 | Early street XP (R1–5) | **Groen** | ~20–40 dagen naar R25 @ 4u; mercy + 60% floor voelt belonend |
 | 2 | XP curve R25→R60 | **Oranje** | Solo crime/job te traag zonder crew/events; OK als empire XP meedoet — verifiëren met telemetry |
 | 3 | XP curve R100+ | **Groen** | Bewust prestige-traag; past “na 1 jaar nog ranks” |
-| 4 | `criminal_record_wipe` XP/CD | **Rood** | maxReward 0 → 90s CD → ~6k XP/h; breekt late pacing |
+| 4 | `criminal_record_wipe` XP/CD | **Groen** (fixed 2026-10-01) | Was rood: maxReward 0 → 90s CD. Nu catalog `cooldownSeconds: 3600` → ~153 XP/h @ 18% success |
 | 5 | Job vs crime XP mid/late | **Oranje** | Jobs winnen XP-race; crimes moeten risk/reward blijven of XP-bijtrekken |
 | 6 | Soft diminish ECON_* | **Groen** | Geen hard caps; live curve milder dan code defaults — documenteer drift |
 | 7 | Warehouse/shop ROI | **Rood** | ~5–6 dagen payback = cash printer; te zwak als midgame sink |
@@ -340,9 +340,8 @@ Criteria: **te snel / te traag / te veilig / te zwak sink** t.o.v. year-long ret
 
 Prioriteit op rood/oranje met grootste impact op “nog 1 jaar willen spelen”:
 
-1. **Fix `criminal_record_wipe` pacing (rood)**  
-   - Opties: forceer CD-tier alsof maxReward hoog is (bijv. 30–60m), verlaag `xpReward`, of aparte cooldown key.  
-   - Verwacht: late XP-farm exploit dicht; utility blijft.
+1. **~~Fix `criminal_record_wipe` pacing~~ (done 2026-10-01)**  
+   - Catalog `cooldownSeconds: 3600` + `resolveCrimeCooldownSeconds`. Expected XP/h ~153 @ 18% success.
 
 2. **Property income / ROI (rood)**  
    - Verhoog intervals of verlaag `baseIncome` warehouse/shop (doel ROI weken, niet dagen), of zwaardere upkeep/heat.  

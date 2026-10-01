@@ -49,6 +49,7 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 - **Attempt roll** uses `computePlayerSuccessChanceFromContext` (rank/mastery/weapon/training/country-police/HP), clamped 5–95%. Same number as the Crimes list.
 - **Early street fail mercy:** `isEarlyStreetCrime` = rank ≤ 5 and crime `minLevel` ≤ 1. Those fails jail only 28% of the time; otherwise `FLED_NO_LOOT` (no extra `crimeJailChance`, no fail XP loss). Mid/late crimes still jail on a normal fail.
 - **Starter catalog:** vandalism and graffiti have no `requiredTools`, so rank-1 players have four street crimes (plus jobs) instead of only pickpocket/shoplift.
+- **Strafblad Wissen pacing:** catalog `cooldownSeconds: 3600` (1 hour). Without that override, `maxReward: 0` would map to the starter 90s tier and farm ~6k XP/h. Resolved via `resolveCrimeCooldownSeconds` in `cooldownService.ts`.
 - See [crimes.md](crimes.md) and `backend/src/utils/crimeJailScaling.ts`.
 
 ## Documented static modifiers (training → crimes)

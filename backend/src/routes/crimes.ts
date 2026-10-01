@@ -234,7 +234,7 @@ router.post(
       }
     }
 
-    const crimeCooldownSeconds = cooldownService.calculateCrimeCooldown(crime.maxReward);
+    const crimeCooldownSeconds = cooldownService.resolveCrimeCooldownSeconds(crime);
 
     // Check crime cooldown (dynamic based on crime reward tier)
     const remainingCooldown = await cooldownService.checkCooldown(

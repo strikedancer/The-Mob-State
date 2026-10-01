@@ -83,6 +83,8 @@ interface CrimeDefinition {
   baseSuccessChance: number;
   minReward: number;
   maxReward: number;
+  /** Optional explicit cooldown override (seconds). */
+  cooldownSeconds?: number;
   xpReward: number;
   minXpReward?: number;
   maxXpReward?: number;

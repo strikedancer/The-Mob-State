@@ -1,5 +1,5 @@
 import prisma from '../lib/prisma';
-import { calculateCrimeCooldown, calculateJobCooldown } from './cooldownService';
+import { calculateJobCooldown, resolveCrimeCooldownSeconds } from './cooldownService';
 import crimesData from '../../content/crimes.json';
 import jobsData from '../../content/jobs.json';
 
@@ -421,7 +421,9 @@ export const economyBalanceService = {
 
     for (const attempt of crimeAttempts) {
       const crimeDef = crimeById.get(attempt.crimeId);
-      const cooldownSeconds = calculateCrimeCooldown(crimeDef?.maxReward ?? attempt.reward);
+      const cooldownSeconds = resolveCrimeCooldownSeconds(
+        crimeDef ?? { maxReward: attempt.reward }
+      );
 
       crimeBucket.attempts += 1;
       crimeBucket.successes += attempt.success ? 1 : 0;

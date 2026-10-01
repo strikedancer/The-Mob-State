@@ -109,6 +109,22 @@ export function calculateCrimeCooldown(maxReward: number): number {
 }
 
 /**
+ * Resolve crime cooldown from catalog override or reward-tier curve.
+ * Zero-cash utility crimes (e.g. criminal_record_wipe) must set `cooldownSeconds`
+ * so they do not fall into the starter 90s tier via maxReward=0.
+ */
+export function resolveCrimeCooldownSeconds(crime: {
+  maxReward?: number;
+  cooldownSeconds?: number | null;
+}): number {
+  const override = Number(crime.cooldownSeconds);
+  if (Number.isFinite(override) && override > 0) {
+    return Math.floor(override);
+  }
+  return calculateCrimeCooldown(Number(crime.maxReward) || 0);
+}
+
+/**
  * Calculate dynamic cooldown for a job based on max earnings.
  * Higher-paying jobs take longer to repeat.
  *

@@ -41,6 +41,7 @@ Illegal action loop with rewards, failures, jail risk, cooldowns and supporting 
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
 - Crime pacing is reward-tier based, not flat-rate; low-reward crimes stay fast while high-reward crimes must pick up meaningfully longer cooldowns.
+- Zero-cash utility crimes may set catalog `cooldownSeconds` so they do not inherit the starter 90s tier via `maxReward: 0`. **Strafblad Wissen** (`criminal_record_wipe`) uses **3600s** (1 hour), same band as top federal heists — utility wipe, not XP farm.
 - Soft balancing via sessie-gebaseerde diminishing returns is toegestaan zolang het geen harde daily/action cap wordt en transparant in telemetry zichtbaar blijft.
 - Reward-tier cooldown changes must stay aligned between backend enforcement, player help copy and any cooldown-reset premium items that reference the crime loop.
 - Tijdelijke premium boosts op crimes zijn toegestaan als side-grade, maar moeten hard capped blijven en mogen event-tier progression niet vervangen.
