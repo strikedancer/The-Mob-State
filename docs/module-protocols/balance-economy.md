@@ -24,6 +24,12 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 - **Boat theft ease:** in `vehicleService.stealVehicle`, after heat / dynamic police pattern / ops-rep, **+0.06** success chance for `vehicleType === 'boat'` (max 0.95). **Port lockdown** window uses boat risk multiplier **1.10** (not 1.18). Rationale: boat `baseValue` bands in content skew harder than starter cars; see `steel_voertuig.md`.
 - **Street target weights:** `streetTheftRarityWeights(rank)` in `vehicleService.ts`. Risk is always a street (common/uncommon) attempt; rare/epic/legendary are post-success upgrades. Unlocks: rare 7, epic 13, legendary 22. Rank 7 ≈ 70/28/2; rank 13–21 ≈ 48/30/16/6; rank 22+ ≈ 42/28/18/9/3. Catalog count is not the drop rate. See `garage.md` / `steel_voertuig.md`.
 
+## Documented static modifiers (properties → warehouse/shop)
+- **Warehouse L1 passive:** `baseIncome` **450** every **90** minutes (~€300/h). Purchase €150 000 → ~**21 days** continuous ROI (was ~5 days at 2000/90m). Upgrade income bonuses scaled with base (180→810). Storage/trade features unchanged; arrest search still applies.
+- **Shop L1 passive (catalog; UI hidden):** `baseIncome` **320** every **80** minutes (~€240/h). Purchase €120 000 → ~**21 days** ROI. Upgrade bonuses 130/190/320.
+- Target: midgame property is a sink + utility (storage), not a cash printer. Casino/nightclub/showroom passives are separate empire-stack tuning.
+- See [properties.md](properties.md).
+
 ## Documented static modifiers (school tuition)
 - **Street-cash tuition:** `SCHOOL_TUITION_BY_LEVEL = [2000, 4000, 8000, 15000, 28000]` in `educationService.ts`, keyed by current track level (0–4) when a lesson starts. Same curve on every track. Time/cooldown remains the main pace limiter; cash is a modest sink (early lessons in the low thousands, top lessons in the tens of thousands — not millions).
 - **Not charged:** already completed levels, bank/crypto, premium credits. Aviation licenses stay a separate paid step after aviation school (no double school surcharge).

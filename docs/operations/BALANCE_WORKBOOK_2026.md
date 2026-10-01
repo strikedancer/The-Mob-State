@@ -177,13 +177,13 @@ Job CD = `calculateJobCooldown(maxEarnings)`. Success aangenomen 90%.
 
 | Property | Price | €/h (base) | ~ROI dagen 24/7 |
 |----------|-------|------------|-----------------|
-| warehouse | 150 000 | 1 333 | ~5 |
-| shop | 120 000 | 900 | ~6 |
+| warehouse | 150 000 | ~300 (450/90m) | **~21** (was ~5; retuned 2026-10-01) |
+| shop | 120 000 | ~240 (320/80m) | **~21** (was ~6; retuned 2026-10-01) |
 | casino | 5 000 000 | 8 000 | ~26 |
 | car_showroom | 2 500 000 | 2 133 | ~49 |
 | nightclub | 3 000 000 | 1 800 | ~69 |
 
-Warehouse/shop ROI in dagen is **zeer snel** t.o.v. year-long sinks — cash stapelt tenzij theft/crime risk en other sinks meedoen.
+Warehouse/shop zijn midgame sinks + storage utility; showroom/casino blijven prestige (aparte empire-stack pass).
 
 ---
 
@@ -314,7 +314,7 @@ Criteria: **te snel / te traag / te veilig / te zwak sink** t.o.v. year-long ret
 | 4 | `criminal_record_wipe` XP/CD | **Groen** (fixed 2026-10-01) | Was rood: maxReward 0 → 90s CD. Nu catalog `cooldownSeconds: 3600` → ~153 XP/h @ 18% success |
 | 5 | Job vs crime XP mid/late | **Oranje** | Jobs winnen XP-race; crimes moeten risk/reward blijven of XP-bijtrekken |
 | 6 | Soft diminish ECON_* | **Groen** | Geen hard caps; live curve milder dan code defaults — documenteer drift |
-| 7 | Warehouse/shop ROI | **Rood** | ~5–6 dagen payback = cash printer; te zwak als midgame sink |
+| 7 | Warehouse/shop ROI | **Groen** (fixed 2026-10-01) | Was ~5–6 dagen; nu ~21 dagen L1 ROI + scaled upgrade bonuses |
 | 8 | School/gym sinks | **Groen** | Modest; time-gated school correct |
 | 9 | Launder + bank cap | **Groen** | Forceert fee/risk boven free deposit |
 | 10 | Drug weed arbitrage | **Oranje** | Max-land ~2k €/h gezond; monitor stacking met theft |
@@ -343,9 +343,8 @@ Prioriteit op rood/oranje met grootste impact op “nog 1 jaar willen spelen”:
 1. **~~Fix `criminal_record_wipe` pacing~~ (done 2026-10-01)**  
    - Catalog `cooldownSeconds: 3600` + `resolveCrimeCooldownSeconds`. Expected XP/h ~153 @ 18% success.
 
-2. **Property income / ROI (rood)**  
-   - Verhoog intervals of verlaag `baseIncome` warehouse/shop (doel ROI weken, niet dagen), of zwaardere upkeep/heat.  
-   - Verwacht: midgame cash minder explosief; empire blijft lonend maar niet instant.
+2. **~~Property income / ROI~~ (done 2026-10-01)**  
+   - Warehouse 450/90m, shop 320/80m (~21d L1 ROI); upgrade bonuses scaled.
 
 3. **Drug late ladder (rood)**  
    - Of materials/yield/price herschalen zodat cocaine→fentanyl positieve export-EV heeft met oplopende heat; of Help/Almanac expliciet “alleen smokkel/crew mats”.  
