@@ -80,6 +80,7 @@ Endpoint: `POST /properties/:id/develop`
 - Verify Vitrine and Plaatsen share the Weergave filter (list / 4 / 7); preference persists via `showroom_collection_view_layout_v1`.
 - Verify Cat papers (cash) sets `showroomCatted`, skips police/FBI seize while exhibited, and clears when the vehicle is taken out / re-placed.
 - Verify Cat papers uses a **15-minute player cooldown** (`showroom_cat`) so you cannot batch-cat an entire collection instantly; UI shows remaining time and disables the button while cooling down.
+- Verify the vehicle theft catalog marks models already on display (`showroomVehicleIds` from `GET /vehicles` / `GET /vehicles/available/:country`) so collectors can see what they still need.
 - Verify exhibited vehicles disappear from garage/marina counts and cannot be used, sold, scrapped or smuggled until removed.
 - After placing a vehicle in a showroom, garage/marina inventory must refresh immediately (no stale ghost cards). Crime-vehicle resolve and select must ignore `showroomPropertyId` rows; packing a showroom vehicle as smuggle cargo must fail.
 - Verify an arrest in the showroom country can seize displayed vehicles (~40%) and leaves garage vehicles intact.

@@ -1766,6 +1766,7 @@ class _GarageScreenState extends State<GarageScreen> {
           : l10n.vehicleHeistCatalogTitleCars,
       vehicles: cars,
       currentCountry: currentCountry,
+      showroomVehicleIds: provider.showroomVehicleIds,
       headerBanner: headerBanner,
     );
   }

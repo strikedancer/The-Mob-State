@@ -1711,6 +1711,15 @@ class AppLocalizationsDe extends AppLocalizations {
   String get vehicleHeistCatalogFilterEvent => 'Event only';
 
   @override
+  String get vehicleHeistCatalogFilterInShowroom => 'In showroom';
+
+  @override
+  String get vehicleHeistCatalogFilterMissingShowroom => 'Missing showroom';
+
+  @override
+  String get vehicleHeistCatalogInShowroomTag => 'In showroom';
+
+  @override
   String get vehicleHeistCatalogSortLabel => 'Sort';
 
   @override

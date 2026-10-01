@@ -1700,6 +1700,15 @@ class AppLocalizationsNl extends AppLocalizations {
   String get vehicleHeistCatalogFilterEvent => 'Alleen event';
 
   @override
+  String get vehicleHeistCatalogFilterInShowroom => 'In showroom';
+
+  @override
+  String get vehicleHeistCatalogFilterMissingShowroom => 'Nog niet in showroom';
+
+  @override
+  String get vehicleHeistCatalogInShowroomTag => 'In showroom';
+
+  @override
   String get vehicleHeistCatalogSortLabel => 'Sorteer';
 
   @override

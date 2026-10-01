@@ -3082,6 +3082,24 @@ abstract class AppLocalizations {
   /// **'Event only'**
   String get vehicleHeistCatalogFilterEvent;
 
+  /// No description provided for @vehicleHeistCatalogFilterInShowroom.
+  ///
+  /// In en, this message translates to:
+  /// **'In showroom'**
+  String get vehicleHeistCatalogFilterInShowroom;
+
+  /// No description provided for @vehicleHeistCatalogFilterMissingShowroom.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing showroom'**
+  String get vehicleHeistCatalogFilterMissingShowroom;
+
+  /// No description provided for @vehicleHeistCatalogInShowroomTag.
+  ///
+  /// In en, this message translates to:
+  /// **'In showroom'**
+  String get vehicleHeistCatalogInShowroomTag;
+
   /// No description provided for @vehicleHeistCatalogSortLabel.
   ///
   /// In en, this message translates to:

@@ -896,6 +896,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
       title: title,
       vehicles: provider.availableVehicles,
       currentCountry: currentCountry,
+      showroomVehicleIds: provider.showroomVehicleIds,
     );
   }
 

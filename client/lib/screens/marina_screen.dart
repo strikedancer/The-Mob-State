@@ -1739,6 +1739,7 @@ class _MarinaScreenState extends State<MarinaScreen> {
       title: l10n.vehicleHeistCatalogTitleBoats,
       vehicles: boats,
       currentCountry: currentCountry,
+      showroomVehicleIds: provider.showroomVehicleIds,
       headerBanner: headerBanner,
     );
   }

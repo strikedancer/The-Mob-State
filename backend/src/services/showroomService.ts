@@ -200,6 +200,18 @@ class ShowroomService {
     return result;
   }
 
+  async getExhibitedVehicleIds(playerId: number): Promise<string[]> {
+    const rows = await prisma.vehicleInventory.findMany({
+      where: {
+        playerId,
+        showroomPropertyId: { not: null },
+      },
+      select: { vehicleId: true },
+      distinct: ['vehicleId'],
+    });
+    return rows.map((row) => row.vehicleId).filter((id) => Boolean(id));
+  }
+
   async getShowroom(playerId: number, propertyDatabaseId: number) {
     const property = await prisma.property.findUnique({
       where: { id: propertyDatabaseId },

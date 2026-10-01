@@ -1,6 +1,7 @@
 ﻿import { Router, Response } from 'express';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
 import { vehicleService } from '../services/vehicleService';
+import { showroomService } from '../services/showroomService';
 import { checkIfJailed } from '../services/policeService';
 import { gameEventService } from '../services/gameEventService';
 
@@ -8,15 +9,17 @@ const router = Router();
 
 /**
  * GET /vehicles
- * Get all available vehicle types
+ * Get all available vehicle types (authenticated so we can mark showroom collection models).
  */
-router.get('/', (_req, res: Response) => {
+router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
   const vehicles = vehicleService.getAvailableVehicles();
+  const showroomVehicleIds = await showroomService.getExhibitedVehicleIds(req.player!.id);
 
   return res.status(200).json({
     event: 'vehicles.list',
     params: {},
     vehicles,
+    showroomVehicleIds,
   });
 });
 
@@ -341,6 +344,7 @@ router.get('/available/:country', authenticate, async (req: AuthRequest, res: Re
     const vehicles = await vehicleService.getVehiclesInCountry(country as string);
     const policeVehicleEvent = vehicleService.getPoliceVehicleEventStatus();
     const regionalBlacklistByType = vehicleService.getRegionalBlacklistByType(country as string);
+    const showroomVehicleIds = await showroomService.getExhibitedVehicleIds(req.player!.id);
 
     return res.status(200).json({
       event: 'vehicles.available_in_country',
@@ -348,6 +352,7 @@ router.get('/available/:country', authenticate, async (req: AuthRequest, res: Re
       vehicles,
       policeVehicleEvent,
       regionalBlacklistByType,
+      showroomVehicleIds,
     });
   } catch {
     return res.status(500).json({

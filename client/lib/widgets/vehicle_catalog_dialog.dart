@@ -5,7 +5,7 @@ import '../models/vehicle.dart';
 import '../utils/formatters.dart';
 import 'overlay_image.dart';
 
-enum VehicleCatalogFilter { all, available, eventOnly }
+enum VehicleCatalogFilter { all, available, eventOnly, inShowroom, missingShowroom }
 
 enum VehicleCatalogSort { value, rank, rarity, name }
 
@@ -79,13 +79,19 @@ List<VehicleDefinition> filterAndSortCatalogVehicles(
   List<VehicleDefinition> source, {
   required VehicleCatalogFilter filter,
   required VehicleCatalogSort sort,
+  Set<String> showroomVehicleIds = const <String>{},
 }) {
   final filtered = source.where((vehicle) {
+    final inShowroom = showroomVehicleIds.contains(vehicle.id);
     switch (filter) {
       case VehicleCatalogFilter.available:
         return _hasWorldStock(vehicle);
       case VehicleCatalogFilter.eventOnly:
         return _isPoliceEventVehicle(vehicle);
+      case VehicleCatalogFilter.inShowroom:
+        return inShowroom;
+      case VehicleCatalogFilter.missingShowroom:
+        return !inShowroom;
       case VehicleCatalogFilter.all:
         return true;
     }
@@ -123,12 +129,14 @@ class VehicleCatalogDialog extends StatefulWidget {
     required this.title,
     required this.vehicles,
     required this.currentCountry,
+    this.showroomVehicleIds = const <String>{},
     this.headerBanner,
   });
 
   final String title;
   final List<VehicleDefinition> vehicles;
   final String currentCountry;
+  final Set<String> showroomVehicleIds;
   final Widget? headerBanner;
 
   @override
@@ -143,6 +151,7 @@ class _VehicleCatalogDialogState extends State<VehicleCatalogDialog> {
         widget.vehicles,
         filter: _filter,
         sort: _sort,
+        showroomVehicleIds: widget.showroomVehicleIds,
       );
 
   Widget _buildFilterSortBar(AppLocalizations l10n) {
@@ -205,6 +214,42 @@ class _VehicleCatalogDialogState extends State<VehicleCatalogDialog> {
                 : _panelBorder,
           ),
         ),
+        ChoiceChip(
+          label: Text(l10n.vehicleHeistCatalogFilterInShowroom),
+          selected: _filter == VehicleCatalogFilter.inShowroom,
+          onSelected: (_) =>
+              setState(() => _filter = VehicleCatalogFilter.inShowroom),
+          selectedColor: Colors.lightGreenAccent.withValues(alpha: 0.18),
+          labelStyle: TextStyle(
+            color: _filter == VehicleCatalogFilter.inShowroom
+                ? Colors.lightGreenAccent
+                : Colors.white70,
+            fontWeight: FontWeight.w600,
+          ),
+          side: BorderSide(
+            color: _filter == VehicleCatalogFilter.inShowroom
+                ? Colors.lightGreenAccent.withValues(alpha: 0.55)
+                : _panelBorder,
+          ),
+        ),
+        ChoiceChip(
+          label: Text(l10n.vehicleHeistCatalogFilterMissingShowroom),
+          selected: _filter == VehicleCatalogFilter.missingShowroom,
+          onSelected: (_) =>
+              setState(() => _filter = VehicleCatalogFilter.missingShowroom),
+          selectedColor: _gold.withValues(alpha: 0.18),
+          labelStyle: TextStyle(
+            color: _filter == VehicleCatalogFilter.missingShowroom
+                ? _gold
+                : Colors.white70,
+            fontWeight: FontWeight.w600,
+          ),
+          side: BorderSide(
+            color: _filter == VehicleCatalogFilter.missingShowroom
+                ? _gold.withValues(alpha: 0.55)
+                : _panelBorder,
+          ),
+        ),
         Text(
           l10n.vehicleHeistCatalogSortLabel,
           style: const TextStyle(color: Colors.white54, fontSize: 12),
@@ -250,6 +295,7 @@ class _VehicleCatalogDialogState extends State<VehicleCatalogDialog> {
     final countries = vehicle.availableInCountries ?? const <String>[];
     final primaryCountry = countries.isNotEmpty ? countries.first : '-';
     final isPoliceEventVehicle = _isPoliceEventVehicle(vehicle);
+    final inShowroom = widget.showroomVehicleIds.contains(vehicle.id);
     final availabilityLabel =
         '${vehicle.currentWorldCount ?? 0}/${vehicle.maxGameAvailability ?? '-'}';
 
@@ -259,9 +305,11 @@ class _VehicleCatalogDialogState extends State<VehicleCatalogDialog> {
         color: Colors.black.withValues(alpha: 0.35),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: isPoliceEventVehicle
-              ? Colors.redAccent.withValues(alpha: 0.45)
-              : _panelBorder,
+          color: inShowroom
+              ? Colors.lightGreenAccent.withValues(alpha: 0.45)
+              : isPoliceEventVehicle
+                  ? Colors.redAccent.withValues(alpha: 0.45)
+                  : _panelBorder,
         ),
       ),
       child: Column(
@@ -318,6 +366,27 @@ class _VehicleCatalogDialogState extends State<VehicleCatalogDialog> {
                             ),
                           ),
                         ),
+                        if (inShowroom)
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.lightGreenAccent.withValues(alpha: 0.18),
+                              borderRadius: BorderRadius.circular(999),
+                              border: Border.all(
+                                color: Colors.lightGreenAccent.withValues(alpha: 0.7),
+                              ),
+                            ),
+                            child: Text(
+                              l10n.vehicleHeistCatalogInShowroomTag,
+                              style: const TextStyle(
+                                color: Colors.lightGreenAccent,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
                         if (isPoliceEventVehicle)
                           Container(
                             padding: const EdgeInsets.symmetric(
@@ -482,6 +551,7 @@ Future<void> showVehicleCatalogDialog(
   required String title,
   required List<VehicleDefinition> vehicles,
   required String currentCountry,
+  Set<String> showroomVehicleIds = const <String>{},
   Widget? headerBanner,
 }) {
   return showDialog<void>(
@@ -490,6 +560,7 @@ Future<void> showVehicleCatalogDialog(
       title: title,
       vehicles: vehicles,
       currentCountry: currentCountry,
+      showroomVehicleIds: showroomVehicleIds,
       headerBanner: headerBanner,
     ),
   );

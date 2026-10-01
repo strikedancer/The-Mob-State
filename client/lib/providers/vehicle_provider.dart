@@ -15,6 +15,7 @@ class VehicleProvider with ChangeNotifier {
   GarageStatus? _garageStatus;
   MarinaStatus? _marinaStatus;
   List<VehicleDefinition> _availableVehicles = [];
+  Set<String> _showroomVehicleIds = <String>{};
   List<MarketListing> _marketListings = [];
   List<PlayerToolMarketListing> _toolMarketListings = [];
   List<PlayerToolMarketListing> _myToolMarketListings = [];
@@ -43,6 +44,12 @@ class VehicleProvider with ChangeNotifier {
   GarageStatus? get garageStatus => _garageStatus;
   MarinaStatus? get marinaStatus => _marinaStatus;
   List<VehicleDefinition> get availableVehicles => _availableVehicles;
+  Set<String> get showroomVehicleIds => _showroomVehicleIds;
+
+  bool isModelInShowroom(String? vehicleId) {
+    if (vehicleId == null || vehicleId.isEmpty) return false;
+    return _showroomVehicleIds.contains(vehicleId);
+  }
   List<MarketListing> get marketListings => _marketListings;
   List<PlayerToolMarketListing> get toolMarketListings => _toolMarketListings;
   List<PlayerToolMarketListing> get myToolMarketListings =>
@@ -257,6 +264,10 @@ class VehicleProvider with ChangeNotifier {
         _availableVehicles = vehiclesData
             .map((item) => VehicleDefinition.fromJson(item))
             .toList();
+        _showroomVehicleIds = {
+          for (final id in (data['showroomVehicleIds'] as List<dynamic>? ?? const []))
+            id.toString(),
+        };
         _policeVehicleEvent = data['policeVehicleEvent'] is Map<String, dynamic>
             ? data['policeVehicleEvent'] as Map<String, dynamic>
             : null;
@@ -340,6 +351,10 @@ class VehicleProvider with ChangeNotifier {
                   VehicleDefinition.fromJson(item as Map<String, dynamic>),
             )
             .toList();
+        _showroomVehicleIds = {
+          for (final id in (data['showroomVehicleIds'] as List<dynamic>? ?? const []))
+            id.toString(),
+        };
         _policeVehicleEvent = null;
         _error = null;
         notifyListeners();
