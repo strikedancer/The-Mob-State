@@ -193,26 +193,11 @@ Heat: +5 (+incident) bij start; sell +2 per 100g; decay −1 / 6u. Raid kans: 0 
 
 Wholesale: min 250g, spread +15% bps default, extra FBI/drug heat — bedoeld voor volume-export, niet retail-NL.
 
-### Street EV (materials @ shop price, avg yield)
+### Street EV (materials @ shop price, avg yield) — retuned 2026-10-01
 
-| Drug | Rank | Time | g avg | Mat € | Net @ NL | €/h @ NL | Net @ max land | €/h @ max |
-|------|------|------|-------|-------|----------|----------|----------------|-----------|
-| white_widow | 5 | 2h | 75 | 450 | +300 | 150 | +2 175 | **1 088** |
-| hash | 3 | 1h | 45 | 910 | −550 | −550 | +350 | 350 |
-| magic_mushrooms | 8 | 2.5h | 60 | 750 | +750 | 300 | +3 450 | **1 380** |
-| amnesia_haze | 10 | 3h | 115 | 685 | +1 040 | 347 | +5 065 | **1 688** |
-| xtc | 12 | 3h | 150 | 1 900 | −1 150 | −383 | +350 | 117 |
-| og_kush | 15 | 4h | 150 | 1 025 | +1 975 | 494 | +8 725 | **2 181** |
-| speed | 15 | 4h | 30 | 2 000 | −500 | −125 | +1 000 | 250 |
-| cocaine | 20 | 5h | 17.5 | 3 000 | −1 250 | −250 | +500 | 100 |
-| lsd | 22 | 5h | 350 | 24 900 | −17 900 | −3 580 | −7 400 | −1 480 |
-| heroin | 25 | 6h | 10 | 3 500 | −2 000 | −333 | −1 000 | −167 |
-| crystal_meth | 30 | 7h | 25 | 5 650 | −2 650 | −379 | +1 350 | 193 |
-| fentanyl | 40 | 8h | 12.5 | 34 900 | −31 150 | −3 894 | −27 400 | −3 425 |
+Late synthetics are **export-positive** again; NL can stay thin. Soft weed curves largely unchanged. See `drugs.md` Batch EV ladder for the rank climb summary.
 
-**g/uur (avg yield / hours):** weed strains ~38 g/h; mushrooms ~24; xtc ~50; hard chems vaak ≤8 g/h.
-
-**Lezing:** weed/mushrooms + land-arbitrage zijn de echte cash engines (~1–2k €/h max land, onder top theft maar boven mid crimes na mat-cost). Late synthetics (LSD/fentanyl) zijn **negatief** bij retail materials — ofwel intentional prestige/sink, ofwel broken ladder (speler moet smokkel/crew/cheaper mats begrijpen). Hash/XTC NL-negatief duwt naar export.
+Rough max-country €/h (avg yield, shop mats): hash ~920 → white widow ~1.1k → mushrooms ~1.4k → amnesia ~1.7k → xtc ~1.6k → og kush ~2.2k → cocaine ~2.4k → heroin ~2.5k → meth ~2.3k → fentanyl ~3.2k. Speed under og kush at same rank; LSD ~1.6k (micro units).
 
 Nightclub player-supply: **55%** van street price (runtime) = bewuste lagere payout, lokaal, geen extra heat.
 
@@ -318,8 +303,8 @@ Criteria: **te snel / te traag / te veilig / te zwak sink** t.o.v. year-long ret
 | 8 | School/gym sinks | **Groen** | Modest; time-gated school correct |
 | 9 | Launder + bank cap | **Groen** | Forceert fee/risk boven free deposit |
 | 10 | Drug weed arbitrage | **Oranje** | Max-land ~2k €/h gezond; monitor stacking met theft |
-| 11 | Drug late synthetics EV | **Rood** | LSD/fentanyl/heroin retail-negatief; ladder voelt broken of ongedocumenteerd |
-| 12 | Hash/XTC @ NL | **Oranje** | Duwt export — OK als intentional, slecht als Newbie-trap |
+| 11 | Drug late synthetics EV | **Groen** (fixed 2026-10-01) | Was retail-negative; precursor/yield/price ladder retuned |
+| 12 | Hash/XTC @ NL | **Groen** (improved) | Export still preferred; XTC/hash no longer newbie money pits at max land |
 | 13 | Drug heat cash-cool | **Groen** | €125k cool = serieuze sink |
 | 14 | Vehicle theft €/h | **Oranje** | Paper EV extreem; garage/jail moeten hard knippen — telemetry op storage-full + sell volume |
 | 15 | Legendary weight 3% @22 | **Groen** | ~11u per roll houdt collectie year-long spannend |
@@ -346,9 +331,8 @@ Prioriteit op rood/oranje met grootste impact op “nog 1 jaar willen spelen”:
 2. **~~Property income / ROI~~ (done 2026-10-01)**  
    - Warehouse 450/90m, shop 320/80m (~21d L1 ROI); upgrade bonuses scaled.
 
-3. **Drug late ladder (rood)**  
-   - Of materials/yield/price herschalen zodat cocaine→fentanyl positieve export-EV heeft met oplopende heat; of Help/Almanac expliciet “alleen smokkel/crew mats”.  
-   - Verwacht: late drug unlocks voelen als progressie, niet als geldverbranding.
+3. **~~Drug late ladder~~ (done 2026-10-01)**  
+   - Precursor prices, yields, and country prices retuned; max-land €/h climbs with rank.
 
 4. **Theft garage pressure (oranje)**  
    - Telemetry: sell €/h, storage-full rate. Zo nodig slot-kosten omhoog of jail op fail iets omhoog in high bands — **niet** rarity legendary onder 3% duwen zonder data.

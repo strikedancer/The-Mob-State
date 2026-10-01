@@ -8,6 +8,13 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - Materials buy / transfer: `client/lib/screens/materials_shop_screen.dart` (also via Black Market → Materials)
 - Material icons: `client/assets/images/materials/<id>.png` (filename = `drugs.json` material `id`). Generate/repair via `backend/scripts/generate_material_images_leonardo.py` (transparent PNG + rembg). Shop thumbs use `WebAssetHelper` on a dark plate so missing/white plates do not flash.
 
+## Batch EV ladder (2026-10-01 retune)
+Street sell uses `countryPricing` minus shop `materials.price`. Soft drugs (weed/mushrooms) were already export-positive. Hard/chem recipes that were **retail-negative** (esp. LSD/fentanyl precursor burn, XTC underpriced, tiny heroin/meth yields) were retuned so **max-land €/h climbs with rank** while NL can stay thinner (export push). Heat/raid unchanged — higher ranks still pay risk.
+
+Rough L1 shop-mat EV @ max country (avg yield): hash ~€900/h → white widow ~1.1k → mushrooms ~1.4k → amnesia ~1.7k → xtc ~1.6k → og kush ~2.2k → cocaine ~2.4k → heroin ~2.5k → meth ~2.3k → fentanyl ~3.2k. Speed sits under og kush at same rank (harder chem). LSD ~1.6k (micro units, not a cash king).
+
+Material shop price cuts: `lsd_precursor` 400, `fentanyl_precursor` 900, `lab_filter` 400, `hash_press` 350.
+
 ## Production materials: country depot + backpack (2026-08)
 
 ### Player rules

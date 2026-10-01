@@ -24,6 +24,11 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 - **Boat theft ease:** in `vehicleService.stealVehicle`, after heat / dynamic police pattern / ops-rep, **+0.06** success chance for `vehicleType === 'boat'` (max 0.95). **Port lockdown** window uses boat risk multiplier **1.10** (not 1.18). Rationale: boat `baseValue` bands in content skew harder than starter cars; see `steel_voertuig.md`.
 - **Street target weights:** `streetTheftRarityWeights(rank)` in `vehicleService.ts`. Risk is always a street (common/uncommon) attempt; rare/epic/legendary are post-success upgrades. Unlocks: rare 7, epic 13, legendary 22. Rank 7 ≈ 70/28/2; rank 13–21 ≈ 48/30/16/6; rank 22+ ≈ 42/28/18/9/3. Catalog count is not the drop rate. See `garage.md` / `steel_voertuig.md`.
 
+## Documented static modifiers (drugs → batch ladder)
+- **2026-10-01 ladder retune:** hard/chem batches that were retail-negative at shop material prices (LSD/fentanyl precursor burn, XTC floor prices, thin heroin/meth yields) were adjusted so max-country €/h generally rises with unlock rank. Weed/mushroom curves kept. Heat/raid/cash-cool unchanged.
+- Material defaults: `lsd_precursor` €400, `fentanyl_precursor` €900, `lab_filter` €400, `hash_press` €350.
+- See [drugs.md](drugs.md) and `backend/content/drugs.json`.
+
 ## Documented static modifiers (properties → warehouse/shop)
 - **Warehouse L1 passive:** `baseIncome` **450** every **90** minutes (~€300/h). Purchase €150 000 → ~**21 days** continuous ROI (was ~5 days at 2000/90m). Upgrade income bonuses scaled with base (180→810). Storage/trade features unchanged; arrest search still applies.
 - **Shop L1 passive (catalog; UI hidden):** `baseIncome` **320** every **80** minutes (~€240/h). Purchase €120 000 → ~**21 days** ROI. Upgrade bonuses 130/190/320.
