@@ -13634,5 +13634,25 @@
   "prostitutionWorkersTablePlace": "Lieu",
   "prostitutionWorkersTableIncome": "€/heure",
   "prostitutionWorkersTableStatus": "Statut",
-  "prostitutionWorkersTableActions": "Actes"
+  "prostitutionWorkersTableActions": "Actes",
+  "showroomCatted": "Papiers propres appliqués. La police et le FBI traiteront ce véhicule comme légitime tant qu'il restera exposé.",
+  "showroomCatAction": "Papiers de chat",
+  "showroomCatActionWithCost": "Papiers chat ({cost})",
+  "@showroomCatActionWithCost": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "showroomCattedBadge": "Chatté",
+  "showroomAlreadyCatted": "Ce véhicule a déjà des papiers vierges.",
+  "showroomCatInsufficientFunds": "Pas assez d'argent pour des papiers propres ({cost}).",
+  "@showroomCatInsufficientFunds": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  }
 }

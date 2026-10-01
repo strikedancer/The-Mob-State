@@ -13634,5 +13634,25 @@
   "prostitutionWorkersTablePlace": "Posto",
   "prostitutionWorkersTableIncome": "€/ora",
   "prostitutionWorkersTableStatus": "Stato",
-  "prostitutionWorkersTableActions": "Azioni"
+  "prostitutionWorkersTableActions": "Azioni",
+  "showroomCatted": "Carte pulite applicate. La polizia e l'FBI tratteranno questo veicolo come legittimo finché rimarrà in mostra.",
+  "showroomCatAction": "Documenti sui gatti",
+  "showroomCatActionWithCost": "Carte per gatti ({cost})",
+  "@showroomCatActionWithCost": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "showroomCattedBadge": "Catturato",
+  "showroomAlreadyCatted": "Questo veicolo ha già documenti puliti.",
+  "showroomCatInsufficientFunds": "Contanti insufficienti per documenti puliti ({cost}).",
+  "@showroomCatInsufficientFunds": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  }
 }

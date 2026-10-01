@@ -100,6 +100,29 @@ export function showroomVehicleRarity(def: VehicleCatalogEntry | null): string {
   return 'legendary';
 }
 
+/** Cash cost to forge clean papers while the vehicle is on display. */
+export function showroomCatCost(def: VehicleCatalogEntry | null): number {
+  const rarity = showroomVehicleRarity(def);
+  const base = Math.max(0, Math.floor(Number(def?.baseValue ?? 0)));
+  const floors: Record<string, number> = {
+    common: 2_500,
+    uncommon: 8_000,
+    rare: 25_000,
+    epic: 75_000,
+    legendary: 200_000,
+  };
+  const pct: Record<string, number> = {
+    common: 0.03,
+    uncommon: 0.04,
+    rare: 0.05,
+    epic: 0.06,
+    legendary: 0.08,
+  };
+  const floor = floors[rarity] ?? 2_500;
+  const percent = pct[rarity] ?? 0.05;
+  return Math.max(floor, Math.floor(base * percent));
+}
+
 export function showroomVehicleDisplayValue(
   def: VehicleCatalogEntry | null,
   condition: number,

@@ -1675,6 +1675,8 @@ model VehicleInventory {
   transportDestination String?   @db.VarChar(50)
   showroomPropertyId   Int?
   showroomPlacedAt     DateTime?
+  /// Clean/forged papers while on display — police/FBI skip seize when true.
+  showroomCatted       Boolean   @default(false)
   player               Player    @relation(fields: [playerId], references: [id], onDelete: Cascade)
   showroomProperty     Property? @relation(fields: [showroomPropertyId], references: [id], onDelete: SetNull)
 

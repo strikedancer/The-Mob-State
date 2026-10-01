@@ -16,6 +16,7 @@ import { ensureTerritorySchema } from './startup/ensureTerritorySchema';
 import { ensureCooldownSchema } from './startup/ensureCooldownSchema';
 import { ensureCrewMissionSchema } from './startup/ensureCrewMissionSchema';
 import { ensureGarageUpgradeTrackSchema } from './startup/ensureGarageUpgradeTrackSchema';
+import { ensureShowroomSchema } from './startup/ensureShowroomSchema';
 import { ensureGarageMotorcycleTrackBackfill } from './startup/ensureGarageMotorcycleTrackBackfill';
 import { ensureVaultSchema } from './startup/ensureVaultSchema';
 import { ensureDeepEconomySchema } from './startup/ensureDeepEconomySchema';
@@ -107,6 +108,7 @@ async function startServer() {
     console.error('[Startup] Failed to ensure venue NPC occupancy:', error);
   }
   await ensureGarageUpgradeTrackSchema();
+  await ensureShowroomSchema();
   await ensureGarageMotorcycleTrackBackfill();
   await ensureGameEventPresets();
 

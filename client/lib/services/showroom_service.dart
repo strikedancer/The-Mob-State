@@ -52,4 +52,22 @@ class ShowroomService {
       };
     }
   }
+
+  Future<Map<String, dynamic>> catVehicle({
+    required int propertyId,
+    required int vehicleInventoryId,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '/properties/$propertyId/showroom/cat',
+        {'vehicleInventoryId': vehicleInventoryId},
+      );
+      return json.decode(response.body) as Map<String, dynamic>;
+    } catch (e) {
+      return {
+        'event': 'showroom.cat_failed',
+        'params': {'reason': e.toString()},
+      };
+    }
+  }
 }

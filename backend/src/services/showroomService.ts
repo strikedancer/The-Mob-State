@@ -11,6 +11,7 @@ import {
   getShowroomCategory,
   isShowroomProperty,
   notInShowroomWhere,
+  showroomCatCost,
   showroomSlotCapAtLevel,
   showroomVehicleDisplayValue,
   showroomVehicleImage,
@@ -32,10 +33,12 @@ function mapVehicle(item: {
   currentLocation: string;
   fuelLevel: number;
   showroomPlacedAt?: Date | null;
+  showroomCatted?: boolean | null;
 }) {
   const def = findShowroomVehicleDef(item.vehicleId);
   const baseValue = def?.baseValue ?? 0;
   const value = showroomVehicleDisplayValue(def, item.condition);
+  const catted = Boolean(item.showroomCatted);
   return {
     inventoryId: item.id,
     vehicleId: item.vehicleId,
@@ -49,6 +52,8 @@ function mapVehicle(item: {
     baseValue,
     value,
     rarity: showroomVehicleRarity(def),
+    catted,
+    catCost: catted ? 0 : showroomCatCost(def),
   };
 }
 
@@ -337,6 +342,7 @@ class ShowroomService {
       data: {
         showroomPropertyId: property.id,
         showroomPlacedAt: timeProvider.now(),
+        showroomCatted: false,
       },
     });
 
@@ -406,6 +412,7 @@ class ShowroomService {
       data: {
         showroomPropertyId: null,
         showroomPlacedAt: null,
+        showroomCatted: false,
       },
     });
 
@@ -425,6 +432,82 @@ class ShowroomService {
     return { success: true as const };
   }
 
+  /**
+   * Forge clean papers for an exhibited vehicle (cash).
+   * Police/FBI skip seize while `showroomCatted` stays true in the vitrine.
+   */
+  async catVehicle(
+    playerId: number,
+    propertyDatabaseId: number,
+    vehicleInventoryId: number,
+  ) {
+    const property = await prisma.property.findUnique({
+      where: { id: propertyDatabaseId },
+    });
+    if (!property || property.playerId !== playerId) {
+      return { success: false as const, error: 'PROPERTY_NOT_FOUND' };
+    }
+    if (!isShowroomProperty(property.propertyType)) {
+      return { success: false as const, error: 'NOT_A_SHOWROOM' };
+    }
+
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { currentCountry: true, money: true },
+    });
+    if (!player) {
+      return { success: false as const, error: 'PLAYER_NOT_FOUND' };
+    }
+    if (player.currentCountry !== property.countryId) {
+      return { success: false as const, error: 'WRONG_COUNTRY' };
+    }
+
+    const vehicle = await prisma.vehicleInventory.findUnique({
+      where: { id: vehicleInventoryId },
+    });
+    if (!vehicle || vehicle.playerId !== playerId) {
+      return { success: false as const, error: 'VEHICLE_NOT_FOUND' };
+    }
+    if (vehicle.showroomPropertyId !== property.id) {
+      return { success: false as const, error: 'VEHICLE_NOT_IN_SHOWROOM' };
+    }
+    if (vehicle.showroomCatted) {
+      return { success: false as const, error: 'SHOWROOM_ALREADY_CATTED' };
+    }
+
+    const def = findShowroomVehicleDef(vehicle.vehicleId);
+    const cost = showroomCatCost(def);
+    if (player.money < cost) {
+      return { success: false as const, error: 'INSUFFICIENT_FUNDS', cost };
+    }
+
+    await prisma.$transaction([
+      prisma.player.update({
+        where: { id: playerId },
+        data: { money: { decrement: cost } },
+      }),
+      prisma.vehicleInventory.update({
+        where: { id: vehicle.id },
+        data: { showroomCatted: true },
+      }),
+    ]);
+
+    await activityService.logActivity(
+      playerId,
+      'PROPERTY',
+      `Catte papieren voor ${def?.name ?? vehicle.vehicleId} in de collectie`,
+      {
+        propertyType: property.propertyType,
+        vehicleId: vehicle.vehicleId,
+        inventoryId: vehicle.id,
+        country: property.countryId,
+        cost,
+      },
+    );
+
+    return { success: true as const, cost };
+  }
+
   async countExhibits(propertyDatabaseId: number): Promise<number> {
     return prisma.vehicleInventory.count({
       where: { showroomPropertyId: propertyDatabaseId },
@@ -435,8 +518,14 @@ class ShowroomService {
     showroomCount: number;
     vehiclesSeized: number;
     names: string[];
+    vehiclesProtected: number;
   }> {
-    const empty = { showroomCount: 0, vehiclesSeized: 0, names: [] as string[] };
+    const empty = {
+      showroomCount: 0,
+      vehiclesSeized: 0,
+      names: [] as string[],
+      vehiclesProtected: 0,
+    };
     const player = await prisma.player.findUnique({
       where: { id: playerId },
       select: { currentCountry: true },
@@ -461,7 +550,12 @@ class ShowroomService {
     });
 
     const seizedNames: string[] = [];
+    let skippedCatted = 0;
     for (const vehicle of exhibits) {
+      if (vehicle.showroomCatted) {
+        skippedCatted += 1;
+        continue;
+      }
       if (!seizeOne()) continue;
       const def = findShowroomVehicleDef(vehicle.vehicleId);
       await prisma.vehicleInventory.delete({ where: { id: vehicle.id } });
@@ -472,6 +566,7 @@ class ShowroomService {
       showroomCount: showrooms.length,
       vehiclesSeized: seizedNames.length,
       names: seizedNames,
+      vehiclesProtected: skippedCatted,
     };
   }
 }

@@ -135,6 +135,10 @@ class _ShowroomScreenState extends State<ShowroomScreen>
       case 'SHOWROOM_VEHICLE_BUSY':
       case 'VEHICLE_IN_SHOWROOM':
         return l10n.showroomVehicleBusy;
+      case 'SHOWROOM_ALREADY_CATTED':
+        return l10n.showroomAlreadyCatted;
+      case 'INSUFFICIENT_FUNDS':
+        return l10n.showroomLoadError;
       default:
         return l10n.showroomLoadError;
     }
@@ -231,6 +235,40 @@ class _ShowroomScreenState extends State<ShowroomScreen>
         ),
         backgroundColor: Colors.red,
       ),
+    );
+  }
+
+  Future<void> _cat(int inventoryId) async {
+    setState(() => _busyInventoryId = inventoryId);
+    final result = await _service.catVehicle(
+      propertyId: widget.property.id,
+      vehicleInventoryId: inventoryId,
+    );
+    if (!mounted) return;
+    setState(() => _busyInventoryId = null);
+    if (result['event'] == 'showroom.catted' && result['showroom'] is Map) {
+      setState(() {
+        _showroom = Map<String, dynamic>.from(result['showroom'] as Map);
+      });
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(content: Text(AppLocalizations.of(context)!.showroomCatted)),
+      );
+      return;
+    }
+    final l10n = AppLocalizations.of(context)!;
+    final params = result['params'] is Map
+        ? Map<String, dynamic>.from(result['params'] as Map)
+        : <String, dynamic>{};
+    final reason = params['reason']?.toString();
+    final cost = params['cost'];
+    final message = reason == 'INSUFFICIENT_FUNDS' && cost != null
+        ? l10n.showroomCatInsufficientFunds(formatCurrency((cost as num).toInt()))
+        : _errorMessage(l10n, reason);
+    showTopRightFromSnackBar(
+      context,
+      SnackBar(content: Text(message), backgroundColor: Colors.red),
     );
   }
 
@@ -339,6 +377,7 @@ class _ShowroomScreenState extends State<ShowroomScreen>
               empty: l10n.showroomEmptyCollection,
               actionLabel: l10n.showroomRemoveAction,
               onAction: _remove,
+              onCat: _cat,
             ),
             _buildVehicleGrid(
               l10n,
@@ -491,6 +530,7 @@ class _ShowroomScreenState extends State<ShowroomScreen>
     required String empty,
     required String actionLabel,
     required Future<void> Function(int inventoryId) onAction,
+    Future<void> Function(int inventoryId)? onCat,
   }) {
     return RefreshIndicator(
       onRefresh: _load,
@@ -534,6 +574,7 @@ class _ShowroomScreenState extends State<ShowroomScreen>
                       vehicle,
                       actionLabel: actionLabel,
                       onAction: onAction,
+                      onCat: onCat,
                     ),
                   ),
                 ),
@@ -560,6 +601,7 @@ class _ShowroomScreenState extends State<ShowroomScreen>
             l10n: l10n,
             actionLabel: actionLabel,
             onAction: onAction,
+            onCat: onCat,
           );
           if (gridWidth > contentWidth + 0.5) {
             grid = SingleChildScrollView(
@@ -589,6 +631,7 @@ class _ShowroomScreenState extends State<ShowroomScreen>
     required AppLocalizations l10n,
     required String actionLabel,
     required Future<void> Function(int inventoryId) onAction,
+    Future<void> Function(int inventoryId)? onCat,
   }) {
     final rows = <Widget>[];
     for (var start = 0; start < vehicles.length; start += columns) {
@@ -605,6 +648,7 @@ class _ShowroomScreenState extends State<ShowroomScreen>
                     rowItems[col],
                     actionLabel: actionLabel,
                     onAction: onAction,
+                    onCat: onCat,
                     compact: columns >= 7,
                   )
                 : const SizedBox.shrink(),
@@ -627,6 +671,7 @@ class _ShowroomScreenState extends State<ShowroomScreen>
     Map<String, dynamic> vehicle, {
     required String actionLabel,
     required Future<void> Function(int inventoryId) onAction,
+    Future<void> Function(int inventoryId)? onCat,
   }) {
     final inventoryId = (vehicle['inventoryId'] as num?)?.toInt();
     final name = vehicle['name']?.toString() ?? l10n.unknown;
@@ -636,6 +681,8 @@ class _ShowroomScreenState extends State<ShowroomScreen>
     final value = (vehicle['value'] as num?)?.toInt() ??
         (vehicle['baseValue'] as num?)?.toInt() ??
         0;
+    final catted = vehicle['catted'] == true;
+    final catCost = (vehicle['catCost'] as num?)?.toInt() ?? 0;
     final busy = inventoryId != null && _busyInventoryId == inventoryId;
     final canManage = _showroom?['canManage'] == true;
     final tone = rarityColor(rarity);
@@ -644,7 +691,11 @@ class _ShowroomScreenState extends State<ShowroomScreen>
       decoration: BoxDecoration(
         color: Colors.black.withValues(alpha: 0.4),
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: kEmpireGold.withValues(alpha: 0.28)),
+        border: Border.all(
+          color: catted
+              ? Colors.lightGreenAccent.withValues(alpha: 0.45)
+              : kEmpireGold.withValues(alpha: 0.28),
+        ),
       ),
       padding: const EdgeInsets.all(10),
       child: Row(
@@ -673,13 +724,29 @@ class _ShowroomScreenState extends State<ShowroomScreen>
                   ),
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  rarityLabel(l10n, rarity),
-                  style: TextStyle(
-                    color: tone,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 12,
-                  ),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 4,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    Text(
+                      rarityLabel(l10n, rarity),
+                      style: TextStyle(
+                        color: tone,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 12,
+                      ),
+                    ),
+                    if (catted)
+                      Text(
+                        l10n.showroomCattedBadge,
+                        style: const TextStyle(
+                          color: Colors.lightGreenAccent,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 12,
+                        ),
+                      ),
+                  ],
                 ),
                 const SizedBox(height: 2),
                 Text(
@@ -691,15 +758,33 @@ class _ShowroomScreenState extends State<ShowroomScreen>
           ),
           const SizedBox(width: 10),
           if (inventoryId != null)
-            FilledButton(
-              onPressed: busy || !canManage ? null : () => onAction(inventoryId),
-              child: busy
-                  ? const SizedBox(
-                      width: 16,
-                      height: 16,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : Text(actionLabel),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                if (onCat != null && !catted)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 6),
+                    child: OutlinedButton(
+                      onPressed: busy || !canManage
+                          ? null
+                          : () => onCat(inventoryId),
+                      child: Text(
+                        l10n.showroomCatActionWithCost(formatCurrency(catCost)),
+                      ),
+                    ),
+                  ),
+                FilledButton(
+                  onPressed:
+                      busy || !canManage ? null : () => onAction(inventoryId),
+                  child: busy
+                      ? const SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : Text(actionLabel),
+                ),
+              ],
             ),
         ],
       ),
@@ -711,6 +796,7 @@ class _ShowroomScreenState extends State<ShowroomScreen>
     Map<String, dynamic> vehicle, {
     required String actionLabel,
     required Future<void> Function(int inventoryId) onAction,
+    Future<void> Function(int inventoryId)? onCat,
     bool compact = false,
   }) {
     final inventoryId = (vehicle['inventoryId'] as num?)?.toInt();
@@ -721,6 +807,8 @@ class _ShowroomScreenState extends State<ShowroomScreen>
     final value = (vehicle['value'] as num?)?.toInt() ??
         (vehicle['baseValue'] as num?)?.toInt() ??
         0;
+    final catted = vehicle['catted'] == true;
+    final catCost = (vehicle['catCost'] as num?)?.toInt() ?? 0;
     final busy = inventoryId != null && _busyInventoryId == inventoryId;
     final canManage = _showroom?['canManage'] == true;
     final tone = rarityColor(rarity);
@@ -728,6 +816,14 @@ class _ShowroomScreenState extends State<ShowroomScreen>
     return Card(
       clipBehavior: Clip.antiAlias,
       color: Colors.black.withValues(alpha: 0.4),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(
+          color: catted
+              ? Colors.lightGreenAccent.withValues(alpha: 0.45)
+              : Colors.transparent,
+        ),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -760,6 +856,32 @@ class _ShowroomScreenState extends State<ShowroomScreen>
                     ),
                   ),
                 ),
+                if (catted)
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.72),
+                        borderRadius: BorderRadius.circular(999),
+                        border: Border.all(
+                          color: Colors.lightGreenAccent.withValues(alpha: 0.7),
+                        ),
+                      ),
+                      child: Text(
+                        l10n.showroomCattedBadge,
+                        style: TextStyle(
+                          color: Colors.lightGreenAccent,
+                          fontWeight: FontWeight.w800,
+                          fontSize: compact ? 10 : 11,
+                        ),
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),
@@ -801,7 +923,26 @@ class _ShowroomScreenState extends State<ShowroomScreen>
                   ),
                 ),
                 SizedBox(height: compact ? 6 : 8),
-                if (inventoryId != null)
+                if (inventoryId != null) ...[
+                  if (onCat != null && !catted) ...[
+                    OutlinedButton(
+                      style: compact
+                          ? OutlinedButton.styleFrom(
+                              visualDensity: VisualDensity.compact,
+                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                            )
+                          : null,
+                      onPressed: busy || !canManage
+                          ? null
+                          : () => onCat(inventoryId),
+                      child: Text(
+                        l10n.showroomCatActionWithCost(formatCurrency(catCost)),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    SizedBox(height: compact ? 4 : 6),
+                  ],
                   FilledButton(
                     style: compact
                         ? FilledButton.styleFrom(
@@ -824,6 +965,7 @@ class _ShowroomScreenState extends State<ShowroomScreen>
                             overflow: TextOverflow.ellipsis,
                           ),
                   ),
+                ],
               ],
             ),
           ),

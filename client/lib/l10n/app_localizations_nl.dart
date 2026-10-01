@@ -6892,15 +6892,15 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get propertyInfoCarShowroom =>
-      'Eén auto-showroom per account, te koop in elk land maar gebonden aan het land van aankoop. Zet alleen auto\'s uit dat land in de vitrine, op 100% conditie, één model tegelijk. Upgrades vergroten de vitrine in stappen tot alle autotypes. Geen tweede garage: tentoongestelde auto\'s tellen niet in je garage en kun je niet gebruiken, verkopen of smokkelen. Bij aanhouding in dat land doorzoekt de politie de vitrine (~40% kans per auto). Verkopen kan pas als de collectie leeg is.';
+      'Eén auto-showroom per account, te koop in elk land maar gebonden aan het land van aankoop. Zet alleen auto\'s uit dat land in de vitrine, op 100% conditie, één model tegelijk. Upgrades vergroten de vitrine in stappen tot alle autotypes. Geen tweede garage: tentoongestelde auto\'s tellen niet in je garage en kun je niet gebruiken, verkopen of smokkelen. Bij aanhouding in dat land doorzoekt de politie de vitrine (~40% kans per ongecatte auto). Cat papieren met cash zodat politie/FBI die auto als legaal zien zolang hij in de vitrine blijft. Verkopen kan pas als de collectie leeg is.';
 
   @override
   String get propertyInfoMotorcycleShowroom =>
-      'Eén motorzaak per account, te koop in elk land maar gebonden aan het land van aankoop. Alleen motoren in dat land, 100% conditie, één per model. Upgrades vergroten de vitrine tot alle motortypes. Getoonde motoren zijn vergrendeld en tellen niet in je stalling. Bij aanhouding in dat land ~40% kans per motor op inbeslagname.';
+      'Eén motorzaak per account, te koop in elk land maar gebonden aan het land van aankoop. Alleen motoren in dat land, 100% conditie, één per model. Upgrades vergroten de vitrine tot alle motortypes. Getoonde motoren zijn vergrendeld en tellen niet in je stalling. Bij aanhouding in dat land ~40% kans per ongecatte motor. Cat papieren met cash terwijl hij in de vitrine staat.';
 
   @override
   String get propertyInfoBoatHarbor =>
-      'Eén boothaven per account, te koop in elk land maar gebonden aan het land van aankoop. Alleen boten in dat land, 100% conditie, één per model. Upgrades vergroten de vitrine tot alle boottypes. Getoonde boten zijn vergrendeld en tellen niet in je haven. Bij aanhouding in dat land ~40% kans per boot op inbeslagname.';
+      'Eén boothaven per account, te koop in elk land maar gebonden aan het land van aankoop. Alleen boten in dat land, 100% conditie, één per model. Upgrades vergroten de vitrine tot alle boottypes. Getoonde boten zijn vergrendeld en tellen niet in je haven. Bij aanhouding in dat land ~40% kans per ongecatte boot. Cat papieren met cash terwijl hij in de vitrine staat.';
 
   @override
   String get showroomTitle => 'Collectie';
@@ -6977,8 +6977,31 @@ class AppLocalizationsNl extends AppLocalizations {
   String get showroomRemoved => 'Voertuig is terug in je stalling.';
 
   @override
+  String get showroomCatted =>
+      'Schone papieren gezet. Politie en FBI zien dit voertuig als legaal zolang het in de vitrine blijft.';
+
+  @override
+  String get showroomCatAction => 'Cat papieren';
+
+  @override
+  String showroomCatActionWithCost(String cost) {
+    return 'Cat papieren ($cost)';
+  }
+
+  @override
+  String get showroomCattedBadge => 'Gecat';
+
+  @override
+  String get showroomAlreadyCatted => 'Dit voertuig heeft al schone papieren.';
+
+  @override
+  String showroomCatInsufficientFunds(String cost) {
+    return 'Niet genoeg cash voor schone papieren ($cost).';
+  }
+
+  @override
   String get showroomRules =>
-      'Collectie, geen extra garage. 100% conditie, zelfde land, één per model. Politie kan bij aanhouding hier voertuigen afpakken.';
+      'Collectie, geen extra garage. 100% conditie, zelfde land, één per model. Politie kan bij aanhouding hier ongecatte voertuigen afpakken (~40% per stuk). Cat papieren (cash) zodat tentoongestelde wagens legaal lijken tot je ze eruit haalt.';
 
   @override
   String get showroomWrongCountryManage =>

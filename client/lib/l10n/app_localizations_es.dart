@@ -7010,6 +7010,29 @@ class AppLocalizationsEs extends AppLocalizations {
   String get showroomRemoved => 'Vehículo devuelto al almacén.';
 
   @override
+  String get showroomCatted =>
+      'Se aplicaron papeles limpios. La policía y el FBI tratarán este vehículo como legítimo mientras permanezca en exhibición.';
+
+  @override
+  String get showroomCatAction => 'papeles de gato';
+
+  @override
+  String showroomCatActionWithCost(String cost) {
+    return 'Papeles de gato ($cost)';
+  }
+
+  @override
+  String get showroomCattedBadge => 'gato';
+
+  @override
+  String get showroomAlreadyCatted => 'Este vehículo ya tiene papeles limpios.';
+
+  @override
+  String showroomCatInsufficientFunds(String cost) {
+    return 'No hay suficiente efectivo para papeles limpios ($cost).';
+  }
+
+  @override
   String get showroomRules =>
       'Colección, no un garaje extra. 100%, mismo país, uno por modelo. La policía puede embargar vehículos expuestos si te arrestan aquí.';
 

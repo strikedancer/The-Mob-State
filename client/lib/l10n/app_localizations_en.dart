@@ -6848,15 +6848,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get propertyInfoCarShowroom =>
-      'One car showroom per account. Buy it in any country; it stays bound to that country. Only cars that are in that country, at 100% condition, and not already on display. Upgrades grow the vitrine in steps until every car model fits. This is a collection, not extra garage space: displayed cars do not use garage slots and cannot be used, sold or smuggled. An arrest in that country searches the vitrine (~40% chance per car). Sell only after the collection is empty.';
+      'One car showroom per account. Buy it in any country; it stays bound to that country. Only cars that are in that country, at 100% condition, and not already on display. Upgrades grow the vitrine in steps until every car model fits. This is a collection, not extra garage space: displayed cars do not use garage slots and cannot be used, sold or smuggled. An arrest in that country searches the vitrine (~40% chance per uncatted car). Cat papers with cash so police/FBI treat that car as legitimate while it stays on display. Sell only after the collection is empty.';
 
   @override
   String get propertyInfoMotorcycleShowroom =>
-      'One motorcycle shop per account, bound to the purchase country. Only motorcycles in that country at 100% condition, one per model. Upgrades grow the vitrine up to every motorcycle type. Displayed bikes are locked and do not use garage slots. An arrest there has ~40% chance per bike to seize it.';
+      'One motorcycle shop per account, bound to the purchase country. Only motorcycles in that country at 100% condition, one per model. Upgrades grow the vitrine up to every motorcycle type. Displayed bikes are locked and do not use garage slots. An arrest there has ~40% chance per uncatted bike to seize it. Cat papers with cash while on display to look legitimate.';
 
   @override
   String get propertyInfoBoatHarbor =>
-      'One boat harbor per account, bound to the purchase country. Only boats in that country at 100% condition, one per model. Upgrades grow the vitrine up to every boat type. Displayed boats are locked and do not use marina slots. An arrest there has ~40% chance per boat to seize it.';
+      'One boat harbor per account, bound to the purchase country. Only boats in that country at 100% condition, one per model. Upgrades grow the vitrine up to every boat type. Displayed boats are locked and do not use marina slots. An arrest there has ~40% chance per uncatted boat to seize it. Cat papers with cash while on display to look legitimate.';
 
   @override
   String get showroomTitle => 'Collection';
@@ -6934,8 +6934,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get showroomRemoved => 'Vehicle returned to storage.';
 
   @override
+  String get showroomCatted =>
+      'Clean papers applied. Police and FBI will treat this vehicle as legitimate while it stays on display.';
+
+  @override
+  String get showroomCatAction => 'Cat papers';
+
+  @override
+  String showroomCatActionWithCost(String cost) {
+    return 'Cat papers ($cost)';
+  }
+
+  @override
+  String get showroomCattedBadge => 'Catted';
+
+  @override
+  String get showroomAlreadyCatted => 'This vehicle already has clean papers.';
+
+  @override
+  String showroomCatInsufficientFunds(String cost) {
+    return 'Not enough cash for clean papers ($cost).';
+  }
+
+  @override
   String get showroomRules =>
-      'Collection, not extra garage space. 100% condition, same country, one per model. Police can seize displayed vehicles on arrest here.';
+      'Collection, not extra garage space. 100% condition, same country, one per model. Police can seize uncatted vehicles on arrest here (~40% each). Cat papers (cash) so displayed cars look legitimate until you take them out.';
 
   @override
   String get showroomWrongCountryManage =>

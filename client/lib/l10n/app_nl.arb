@@ -438,9 +438,9 @@
   "propertyRoleCarShowroom": "Wereldwijde autocollectie. Geen tweede garage: getoonde auto's zijn vergrendeld.",
   "propertyRoleMotorcycleShowroom": "Wereldwijde motorcollectie. Getoonde motoren zijn vergrendeld tot je ze terugzet.",
   "propertyRoleBoatHarbor": "Wereldwijde bootcollectie. Getoonde boten zijn vergrendeld tot je ze terugzet.",
-  "propertyInfoCarShowroom": "Eén auto-showroom per account, te koop in elk land maar gebonden aan het land van aankoop. Zet alleen auto's uit dat land in de vitrine, op 100% conditie, één model tegelijk. Upgrades vergroten de vitrine in stappen tot alle autotypes. Geen tweede garage: tentoongestelde auto's tellen niet in je garage en kun je niet gebruiken, verkopen of smokkelen. Bij aanhouding in dat land doorzoekt de politie de vitrine (~40% kans per auto). Verkopen kan pas als de collectie leeg is.",
-  "propertyInfoMotorcycleShowroom": "Eén motorzaak per account, te koop in elk land maar gebonden aan het land van aankoop. Alleen motoren in dat land, 100% conditie, één per model. Upgrades vergroten de vitrine tot alle motortypes. Getoonde motoren zijn vergrendeld en tellen niet in je stalling. Bij aanhouding in dat land ~40% kans per motor op inbeslagname.",
-  "propertyInfoBoatHarbor": "Eén boothaven per account, te koop in elk land maar gebonden aan het land van aankoop. Alleen boten in dat land, 100% conditie, één per model. Upgrades vergroten de vitrine tot alle boottypes. Getoonde boten zijn vergrendeld en tellen niet in je haven. Bij aanhouding in dat land ~40% kans per boot op inbeslagname.",
+  "propertyInfoCarShowroom": "Eén auto-showroom per account, te koop in elk land maar gebonden aan het land van aankoop. Zet alleen auto's uit dat land in de vitrine, op 100% conditie, één model tegelijk. Upgrades vergroten de vitrine in stappen tot alle autotypes. Geen tweede garage: tentoongestelde auto's tellen niet in je garage en kun je niet gebruiken, verkopen of smokkelen. Bij aanhouding in dat land doorzoekt de politie de vitrine (~40% kans per ongecatte auto). Cat papieren met cash zodat politie/FBI die auto als legaal zien zolang hij in de vitrine blijft. Verkopen kan pas als de collectie leeg is.",
+  "propertyInfoMotorcycleShowroom": "Eén motorzaak per account, te koop in elk land maar gebonden aan het land van aankoop. Alleen motoren in dat land, 100% conditie, één per model. Upgrades vergroten de vitrine tot alle motortypes. Getoonde motoren zijn vergrendeld en tellen niet in je stalling. Bij aanhouding in dat land ~40% kans per ongecatte motor. Cat papieren met cash terwijl hij in de vitrine staat.",
+  "propertyInfoBoatHarbor": "Eén boothaven per account, te koop in elk land maar gebonden aan het land van aankoop. Alleen boten in dat land, 100% conditie, één per model. Upgrades vergroten de vitrine tot alle boottypes. Getoonde boten zijn vergrendeld en tellen niet in je haven. Bij aanhouding in dat land ~40% kans per ongecatte boot. Cat papieren met cash terwijl hij in de vitrine staat.",
   "showroomTitle": "Collectie",
   "showroomCollectionTab": "Vitrine",
   "showroomPlaceTab": "Plaatsen",
@@ -495,7 +495,27 @@
   "showroomVehicleBusy": "Dit voertuig is onderweg, te koop of al tentoongesteld.",
   "showroomPlaced": "Voertuig staat in de collectie.",
   "showroomRemoved": "Voertuig is terug in je stalling.",
-  "showroomRules": "Collectie, geen extra garage. 100% conditie, zelfde land, één per model. Politie kan bij aanhouding hier voertuigen afpakken.",
+  "showroomCatted": "Schone papieren gezet. Politie en FBI zien dit voertuig als legaal zolang het in de vitrine blijft.",
+  "showroomCatAction": "Cat papieren",
+  "showroomCatActionWithCost": "Cat papieren ({cost})",
+  "@showroomCatActionWithCost": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "showroomCattedBadge": "Gecat",
+  "showroomAlreadyCatted": "Dit voertuig heeft al schone papieren.",
+  "showroomCatInsufficientFunds": "Niet genoeg cash voor schone papieren ({cost}).",
+  "@showroomCatInsufficientFunds": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "showroomRules": "Collectie, geen extra garage. 100% conditie, zelfde land, één per model. Politie kan bij aanhouding hier ongecatte voertuigen afpakken (~40% per stuk). Cat papieren (cash) zodat tentoongestelde wagens legaal lijken tot je ze eruit haalt.",
   "showroomWrongCountryManage": "Je moet in het land van dit pand zijn om voertuigen te plaatsen of terug te zetten.",
   "showroomLoadError": "Kon de collectie niet laden.",
   "showroomRefresh": "Opnieuw laden",

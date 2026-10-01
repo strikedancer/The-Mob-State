@@ -807,6 +807,39 @@ router.post('/:id/showroom/remove', authenticate, async (req: AuthRequest, res: 
   });
 });
 
+router.post('/:id/showroom/cat', authenticate, async (req: AuthRequest, res: Response) => {
+  const propertyId = parseInt(String(req.params.id), 10);
+  const vehicleInventoryId = parseInt(String(req.body?.vehicleInventoryId ?? ''), 10);
+  if (isNaN(propertyId) || isNaN(vehicleInventoryId)) {
+    return res.status(400).json({
+      event: 'showroom.cat_failed',
+      params: { reason: 'INVALID_INPUT' },
+    });
+  }
+
+  const result = await showroomService.catVehicle(
+    req.player!.id,
+    propertyId,
+    vehicleInventoryId,
+  );
+  if (!result.success) {
+    return res.status(400).json({
+      event: 'showroom.cat_failed',
+      params: {
+        reason: result.error,
+        ...(typeof result.cost === 'number' ? { cost: result.cost } : {}),
+      },
+    });
+  }
+
+  const showroom = await showroomService.getShowroom(req.player!.id, propertyId);
+  return res.status(200).json({
+    event: 'showroom.catted',
+    params: { cost: result.cost },
+    showroom: showroom.success ? showroom.showroom : null,
+  });
+});
+
 /**
  * POST /properties/:id/sell
  * Sell a property for 70% of purchase price. Storage must be empty.
