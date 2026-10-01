@@ -2924,6 +2924,14 @@
   "schoolGateAssetHitlistPlaceHit": "Asset: Hitlist opdracht plaatsen",
   "schoolGateAssetVehicleTuneAdvanced": "Asset: Gevorderd voertuig tunen",
   "schoolGateAssetChopContractClaim": "Asset: Chop-contract claimen",
+  "schoolGateAssetWarehousePurchase": "Asset: Warehouse aankoop",
+  "schoolGateAssetWarehouseUpgradeAdvanced": "Asset: Warehouse upgrade gevorderd",
+  "schoolGateAssetTradeBuyAdvanced": "Asset: High-tier trade kopen",
+  "schoolGateAssetLaunderStart": "Asset: Witwassen starten",
+  "schoolGateAssetLaunderHighAmount": "Asset: Grote witwas-opdracht",
+  "schoolGateAssetGarageUpgradeAdvanced": "Asset: Garage upgrade gevorderd",
+  "schoolGateAssetMarinaUpgradeAdvanced": "Asset: Marina upgrade gevorderd",
+  "schoolGateAssetWeaponBuyAdvanced": "Asset: High-tier wapen kopen",
   "schoolGateAssetGeneric": "Activa: {target}",
   "@schoolGateAssetGeneric": {
     "placeholders": {

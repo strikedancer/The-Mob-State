@@ -565,6 +565,22 @@ class _SchoolScreenState extends State<SchoolScreen> {
           return l10n.schoolGateAssetVehicleTuneAdvanced;
         case 'chop_contract_claim':
           return l10n.schoolGateAssetChopContractClaim;
+        case 'warehouse_purchase':
+          return l10n.schoolGateAssetWarehousePurchase;
+        case 'warehouse_upgrade_advanced':
+          return l10n.schoolGateAssetWarehouseUpgradeAdvanced;
+        case 'trade_buy_advanced':
+          return l10n.schoolGateAssetTradeBuyAdvanced;
+        case 'launder_start':
+          return l10n.schoolGateAssetLaunderStart;
+        case 'launder_high_amount':
+          return l10n.schoolGateAssetLaunderHighAmount;
+        case 'garage_upgrade_advanced':
+          return l10n.schoolGateAssetGarageUpgradeAdvanced;
+        case 'marina_upgrade_advanced':
+          return l10n.schoolGateAssetMarinaUpgradeAdvanced;
+        case 'weapon_buy_advanced':
+          return l10n.schoolGateAssetWeaponBuyAdvanced;
         default:
           return l10n.schoolGateAssetGeneric(targetId);
       }
@@ -714,7 +730,19 @@ class _SchoolScreenState extends State<SchoolScreen> {
           return '🎯';
         case 'vehicle_tune_advanced':
         case 'chop_contract_claim':
+        case 'garage_upgrade_advanced':
+        case 'marina_upgrade_advanced':
           return '🔧';
+        case 'warehouse_purchase':
+        case 'warehouse_upgrade_advanced':
+          return '📦';
+        case 'trade_buy_advanced':
+          return '🧳';
+        case 'launder_start':
+        case 'launder_high_amount':
+          return '🧼';
+        case 'weapon_buy_advanced':
+          return '🔫';
         default:
           return '📦';
       }

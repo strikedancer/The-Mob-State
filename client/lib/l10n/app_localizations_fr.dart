@@ -13144,6 +13144,36 @@ class AppLocalizationsFr extends AppLocalizations {
       'Actif : Reclamer un contrat chop';
 
   @override
+  String get schoolGateAssetWarehousePurchase => 'Actif : Achat d\'entrepot';
+
+  @override
+  String get schoolGateAssetWarehouseUpgradeAdvanced =>
+      'Actif : Amelioration d\'entrepot avancee';
+
+  @override
+  String get schoolGateAssetTradeBuyAdvanced =>
+      'Actif : Acheter du commerce haut de gamme';
+
+  @override
+  String get schoolGateAssetLaunderStart => 'Actif : Demarrer le blanchiment';
+
+  @override
+  String get schoolGateAssetLaunderHighAmount =>
+      'Actif : Gros job de blanchiment';
+
+  @override
+  String get schoolGateAssetGarageUpgradeAdvanced =>
+      'Actif : Amelioration de garage avancee';
+
+  @override
+  String get schoolGateAssetMarinaUpgradeAdvanced =>
+      'Actif : Amelioration de marina avancee';
+
+  @override
+  String get schoolGateAssetWeaponBuyAdvanced =>
+      'Actif : Acheter une arme haut de gamme';
+
+  @override
   String schoolGateAssetGeneric(String target) {
     return 'Actif : $target';
   }

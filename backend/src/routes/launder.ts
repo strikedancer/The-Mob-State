@@ -23,6 +23,24 @@ function mapLaunderError(error: unknown, res: Response, next: NextFunction) {
     });
   }
   if (!(error instanceof Error)) return next(error);
+
+  if (error.message.startsWith('EDUCATION_REQUIREMENTS_NOT_MET:')) {
+    const raw = error.message.replace('EDUCATION_REQUIREMENTS_NOT_MET:', '');
+    let details: Record<string, unknown> = {};
+    try {
+      details = JSON.parse(raw);
+    } catch {
+      details = {};
+    }
+    return res.status(403).json({
+      event: 'launder.error',
+      params: {
+        reason: 'EDUCATION_REQUIREMENTS_NOT_MET',
+        ...details,
+      },
+    });
+  }
+
   const map: Record<string, [number, string]> = {
     LAUNDER_DISABLED: [403, 'launder.disabled'],
     INVALID_AMOUNT: [400, 'launder.invalid_amount'],

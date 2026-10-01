@@ -1,6 +1,11 @@
 import prisma from '../lib/prisma';
 import { activityService } from './activityService';
 import { getOrCreateBankAccount } from './bankService';
+import {
+  educationService,
+  financeLaunderSeizeMultiplier,
+  LAUNDER_HIGH_AMOUNT_EDUCATION_THRESHOLD,
+} from './educationService';
 
 export class LaunderBoundError extends Error {
   minAmount: number;
@@ -180,7 +185,11 @@ export async function getLaunderStatus(playerId: number) {
   }
 
   const heat = toNumeric(player.fbiHeat);
-  const estimatedSeizeChance = Math.min(75, Number((heat * cfg.seizeChancePerHeat).toFixed(2)));
+  const financeLevel = await educationService.getTrackLevel(playerId, 'finance');
+  const estimatedSeizeChance = Math.min(
+    75,
+    Number((heat * cfg.seizeChancePerHeat * financeLaunderSeizeMultiplier(financeLevel)).toFixed(2))
+  );
 
   return {
     enabled: cfg.enabled,
@@ -242,18 +251,57 @@ export async function startLaunderJob(playerId: number, amountInput: number) {
 
   const player = await prisma.player.findUnique({
     where: { id: playerId },
-    select: { money: true, fbiHeat: true },
+    select: { money: true, fbiHeat: true, rank: true },
   });
   if (!player) throw new Error('PLAYER_NOT_FOUND');
   if (toNumeric(player.money) < amount) throw new Error('INSUFFICIENT_CASH');
+
+  const educationStart = await educationService.checkAssetEligibility(
+    playerId,
+    'launder_start',
+    player.rank ?? 1
+  );
+  if (!educationStart.allowed) {
+    throw new Error(
+      `EDUCATION_REQUIREMENTS_NOT_MET:${JSON.stringify({
+        gateId: educationStart.gateId,
+        gateLabelKey: educationStart.gateLabelKey,
+        missing: educationStart.missing,
+      })}`
+    );
+  }
+
+  if (amount >= LAUNDER_HIGH_AMOUNT_EDUCATION_THRESHOLD) {
+    const educationHigh = await educationService.checkAssetEligibility(
+      playerId,
+      'launder_high_amount',
+      player.rank ?? 1
+    );
+    if (!educationHigh.allowed) {
+      throw new Error(
+        `EDUCATION_REQUIREMENTS_NOT_MET:${JSON.stringify({
+          gateId: educationHigh.gateId,
+          gateLabelKey: educationHigh.gateLabelKey,
+          missing: educationHigh.missing,
+        })}`
+      );
+    }
+  }
 
   const feeAmount = Math.max(1, Math.floor(amount * (cfg.feePercent / 100)));
   const amountOut = Math.max(0, amount - feeAmount);
   if (amountOut <= 0) throw new Error('INVALID_AMOUNT');
 
+  const financeLevel = await educationService.getTrackLevel(playerId, 'finance');
   const seizeChancePercent = Math.min(
     75,
-    Number((toNumeric(player.fbiHeat) * cfg.seizeChancePerHeat).toFixed(3)),
+    Number(
+      (
+        toNumeric(player.fbiHeat) *
+        cfg.seizeChancePerHeat *
+        financeLaunderSeizeMultiplier(financeLevel)
+      ).toFixed(3)
+    ),
   );
   const completesAt = new Date(Date.now() + cfg.durationMinutes * 60 * 1000);
 

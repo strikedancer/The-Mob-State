@@ -12985,6 +12985,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String get schoolGateAssetChopContractClaim => 'Asset: Claim chop contract';
 
   @override
+  String get schoolGateAssetWarehousePurchase => 'Asset: Warehouse purchase';
+
+  @override
+  String get schoolGateAssetWarehouseUpgradeAdvanced =>
+      'Asset: Advanced warehouse upgrade';
+
+  @override
+  String get schoolGateAssetTradeBuyAdvanced =>
+      'Asset: Buy high-tier trade goods';
+
+  @override
+  String get schoolGateAssetLaunderStart => 'Asset: Start money laundering';
+
+  @override
+  String get schoolGateAssetLaunderHighAmount => 'Asset: Large launder job';
+
+  @override
+  String get schoolGateAssetGarageUpgradeAdvanced =>
+      'Asset: Advanced garage upgrade';
+
+  @override
+  String get schoolGateAssetMarinaUpgradeAdvanced =>
+      'Asset: Advanced marina upgrade';
+
+  @override
+  String get schoolGateAssetWeaponBuyAdvanced => 'Asset: Buy high-tier weapon';
+
+  @override
   String schoolGateAssetGeneric(String target) {
     return 'Asset: $target';
   }

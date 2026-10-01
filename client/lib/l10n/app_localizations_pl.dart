@@ -13066,6 +13066,35 @@ class AppLocalizationsPl extends AppLocalizations {
       'Zasób: Odebranie kontraktu chop';
 
   @override
+  String get schoolGateAssetWarehousePurchase => 'Zasob: Zakup magazynu';
+
+  @override
+  String get schoolGateAssetWarehouseUpgradeAdvanced =>
+      'Zasob: Zaawansowany upgrade magazynu';
+
+  @override
+  String get schoolGateAssetTradeBuyAdvanced =>
+      'Zasob: Kupno handlu wysokiego poziomu';
+
+  @override
+  String get schoolGateAssetLaunderStart => 'Zasob: Start prania pieniedzy';
+
+  @override
+  String get schoolGateAssetLaunderHighAmount => 'Zasob: Duza operacja prania';
+
+  @override
+  String get schoolGateAssetGarageUpgradeAdvanced =>
+      'Zasob: Zaawansowany upgrade garazu';
+
+  @override
+  String get schoolGateAssetMarinaUpgradeAdvanced =>
+      'Zasob: Zaawansowany upgrade mariny';
+
+  @override
+  String get schoolGateAssetWeaponBuyAdvanced =>
+      'Zasob: Kupno broni wysokiego poziomu';
+
+  @override
   String schoolGateAssetGeneric(String target) {
     return 'Zasób: $target';
   }

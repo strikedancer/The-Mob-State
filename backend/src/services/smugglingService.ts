@@ -18,6 +18,12 @@ import {
   listBackpackTradeLots,
   refreshInventorySlotUsage,
 } from './carriedInventory';
+import {
+  aviationTravelRiskMultiplier,
+  educationService,
+  engineeringWeaponSmuggleRiskMultiplier,
+  financeTradeSmuggleRiskMultiplier,
+} from './educationService';
 
 export type SmugglingCategory = 'drug' | 'trade' | 'vehicle' | 'weapon' | 'ammo';
 export type SmugglingChannel = 'package' | 'courier' | 'container' | 'owned';
@@ -954,6 +960,29 @@ class SmugglingService {
     return { fee, etaMinutes, seizureChance, harborBonus };
   }
 
+  private async applyEducationSmuggleRisk(
+    playerId: number,
+    category: SmugglingCategory,
+    seizureChance: number,
+    ownedTransport?: OwnedTransportOption | null
+  ): Promise<number> {
+    let chance = seizureChance;
+    if (category === 'trade') {
+      const financeLevel = await educationService.getTrackLevel(playerId, 'finance');
+      chance *= financeTradeSmuggleRiskMultiplier(financeLevel);
+    } else if (category === 'weapon' || category === 'ammo') {
+      const engineeringLevel = await educationService.getTrackLevel(playerId, 'engineering');
+      chance *= engineeringWeaponSmuggleRiskMultiplier(engineeringLevel);
+    }
+
+    if (ownedTransport?.transportType === 'aircraft') {
+      const aviationLevel = await educationService.getTrackLevel(playerId, 'aviation');
+      chance *= aviationTravelRiskMultiplier(aviationLevel);
+    }
+
+    return this.clamp(chance, 0.01, 0.5);
+  }
+
   private validateQuantityByCategoryAndChannel(
     category: SmugglingCategory,
     channel: SmugglingChannel,
@@ -1283,6 +1312,12 @@ class SmugglingService {
       networkScope,
       ownedTransport,
       { harborBonus }
+    );
+    pricing.seizureChance = await this.applyEducationSmuggleRisk(
+      playerId,
+      category,
+      pricing.seizureChance,
+      ownedTransport
     );
 
     if (feePayer === 'crew_bank') {
@@ -1847,6 +1882,12 @@ class SmugglingService {
       networkScope,
       ownedTransport,
       { harborBonus }
+    );
+    pricing.seizureChance = await this.applyEducationSmuggleRisk(
+      playerId,
+      category,
+      pricing.seizureChance,
+      ownedTransport
     );
 
     let canAfford = (player.money ?? 0) >= pricing.fee;

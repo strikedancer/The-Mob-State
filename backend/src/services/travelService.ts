@@ -468,13 +468,15 @@ async function sendPlayerToJail(playerId: number, jailTimeMinutes: number): Prom
 export async function runCustomsInspection(
   playerId: number,
   wantedLevel: number,
+  options?: { riskMultiplier?: number },
 ): Promise<{
   confiscatedMaterials: Array<{ materialId: string; quantity: number }>;
   confiscatedDrugs: Array<{ drugType: string; quality: string; quantity: number }>;
   confiscatedGoods: Array<{ goodType: string; quantity: number }>;
 }> {
   const slots = await getRiskyBackpackSlots(playerId);
-  const chance = materialTravelConfiscationChance(slots, wantedLevel);
+  const riskMultiplier = Math.max(0.5, Math.min(1.25, Number(options?.riskMultiplier ?? 1) || 1));
+  const chance = materialTravelConfiscationChance(slots, wantedLevel) * riskMultiplier;
   const confiscatedMaterials = await confiscateCarriedMaterials(playerId, wantedLevel);
   const confiscatedDrugs = await confiscateCarriedDrugs(playerId, chance);
   const confiscatedGoods = await confiscateCarriedTrade(playerId, chance);

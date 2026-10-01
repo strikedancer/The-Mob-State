@@ -22637,6 +22637,54 @@ abstract class AppLocalizations {
   /// **'Asset: Claim chop contract'**
   String get schoolGateAssetChopContractClaim;
 
+  /// No description provided for @schoolGateAssetWarehousePurchase.
+  ///
+  /// In en, this message translates to:
+  /// **'Asset: Warehouse purchase'**
+  String get schoolGateAssetWarehousePurchase;
+
+  /// No description provided for @schoolGateAssetWarehouseUpgradeAdvanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Asset: Advanced warehouse upgrade'**
+  String get schoolGateAssetWarehouseUpgradeAdvanced;
+
+  /// No description provided for @schoolGateAssetTradeBuyAdvanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Asset: Buy high-tier trade goods'**
+  String get schoolGateAssetTradeBuyAdvanced;
+
+  /// No description provided for @schoolGateAssetLaunderStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Asset: Start money laundering'**
+  String get schoolGateAssetLaunderStart;
+
+  /// No description provided for @schoolGateAssetLaunderHighAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Asset: Large launder job'**
+  String get schoolGateAssetLaunderHighAmount;
+
+  /// No description provided for @schoolGateAssetGarageUpgradeAdvanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Asset: Advanced garage upgrade'**
+  String get schoolGateAssetGarageUpgradeAdvanced;
+
+  /// No description provided for @schoolGateAssetMarinaUpgradeAdvanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Asset: Advanced marina upgrade'**
+  String get schoolGateAssetMarinaUpgradeAdvanced;
+
+  /// No description provided for @schoolGateAssetWeaponBuyAdvanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Asset: Buy high-tier weapon'**
+  String get schoolGateAssetWeaponBuyAdvanced;
+
   /// No description provided for @schoolGateAssetGeneric.
   ///
   /// In en, this message translates to:

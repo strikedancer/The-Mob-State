@@ -7,7 +7,7 @@
 
 import prisma from '../lib/prisma';
 import { worldEventService } from './worldEventService';
-import { educationService } from './educationService';
+import { educationService, aviationTravelRiskMultiplier } from './educationService';
 import aircraft from '../../content/aircraft.json';
 import config from '../config';
 import {
@@ -721,7 +721,10 @@ export async function flyToDestination(
 
   const TRAVEL_JAIL_TIME_MINUTES = 30;
   const riskySlots = await getRiskyBackpackSlots(playerId);
-  const arrestChance = getTravelArrestChance(player.wantedLevel, riskySlots);
+  const aviationLevel = await educationService.getTrackLevel(playerId, 'aviation');
+  const arrestChance =
+    getTravelArrestChance(player.wantedLevel, riskySlots) *
+    aviationTravelRiskMultiplier(aviationLevel);
   if (Math.random() < arrestChance) {
     await prisma.$transaction([
       prisma.player.update({
@@ -749,7 +752,9 @@ export async function flyToDestination(
     throw error;
   }
 
-  await runCustomsInspection(playerId, player.wantedLevel);
+  await runCustomsInspection(playerId, player.wantedLevel, {
+    riskMultiplier: aviationTravelRiskMultiplier(aviationLevel),
+  });
 
   // Execute flight
   const [, updatedAircraft] = await prisma.$transaction([

@@ -64,6 +64,11 @@ Education tracks, certifications, gates, cash tuition, cooldowns and unlock depe
 - **Finance/IT/Law empire gates**: nightclub aankoop, RLD aankoop, RLD expansion ≥5, aandelen kopen, crypto kopen en hitlist plaatsen vereisen schoolgates (`nightclub_purchase`, `rld_purchase`, `rld_expansion_advanced`, `stock_trade_buy`, `crypto_trade_buy`, `hitlist_place_hit`).
 - **Automotive & Chop track**: nieuwe track voor slopen/salvage. Soft bonus: scrap parts yield schaalt met track level (`automotiveScrapPartsMultiplier`). Hard gates: gevorderd tunen (stat level 4+) en chop-contract claimen (`vehicle_tune_advanced`, `chop_contract_claim`) vereisen automotive L3 + `dismantler`.
   - Leonardo images: `backend/scripts/generate_school_automotive_images_leonardo.py` → `runtime/client-images/school/` (+ optional `--mirror-client-assets`).
+- **Medicine soft → Hospital**: `medicineHospitalCostMultiplier` / `medicineHospitalCooldownMultiplier` verlagen heal-kosten en cooldown.
+- **Finance empire + street**: warehouse aankoop/upgrade ≥4, high-tier/dangerous trade, witwassen (start + ≥€250k), soft launder-seize reductie, soft street-prostitutie yield, soft trade-smuggle risk.
+- **Automotive garage/marina/races**: garage/marina upgrade ≥4 hard; Midnight Races krijgen flat score-bonus via `automotiveRaceScoreBonus`.
+- **Aviation soft travel**: fly arrest + customs confiscation risk daalt met aviation level; aircraft-owned smuggle risk ook.
+- **Engineering hard + soft**: high-tier wapens (`requiredRank >= 12`) en soft weapon/ammo smuggle risk reductie.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

@@ -13101,6 +13101,36 @@ class AppLocalizationsEs extends AppLocalizations {
       'Activo: Reclamar contrato chop';
 
   @override
+  String get schoolGateAssetWarehousePurchase => 'Activo: Compra de almacen';
+
+  @override
+  String get schoolGateAssetWarehouseUpgradeAdvanced =>
+      'Activo: Mejora avanzada de almacen';
+
+  @override
+  String get schoolGateAssetTradeBuyAdvanced =>
+      'Activo: Comprar comercio de alto nivel';
+
+  @override
+  String get schoolGateAssetLaunderStart => 'Activo: Iniciar blanqueo';
+
+  @override
+  String get schoolGateAssetLaunderHighAmount =>
+      'Activo: Gran trabajo de blanqueo';
+
+  @override
+  String get schoolGateAssetGarageUpgradeAdvanced =>
+      'Activo: Mejora avanzada de garaje';
+
+  @override
+  String get schoolGateAssetMarinaUpgradeAdvanced =>
+      'Activo: Mejora avanzada de marina';
+
+  @override
+  String get schoolGateAssetWeaponBuyAdvanced =>
+      'Activo: Comprar arma de alto nivel';
+
+  @override
   String schoolGateAssetGeneric(String target) {
     return 'Activo: $target';
   }

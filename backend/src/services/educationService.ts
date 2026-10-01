@@ -336,6 +336,98 @@ const EDUCATION_GATES: EducationGate[] = [
       certifications: ['dismantler'],
     },
   },
+  {
+    id: 'gate_asset_warehouse_purchase',
+    label: 'Asset: Warehouse aankoop',
+    labelKey: 'education.gate.asset.warehouse_purchase',
+    targetType: 'asset',
+    targetId: 'warehouse_purchase',
+    requirements: {
+      trackId: 'finance',
+      level: 2,
+      certifications: ['financial_analyst'],
+    },
+  },
+  {
+    id: 'gate_asset_warehouse_upgrade_advanced',
+    label: 'Asset: Warehouse upgrade gevorderd',
+    labelKey: 'education.gate.asset.warehouse_upgrade_advanced',
+    targetType: 'asset',
+    targetId: 'warehouse_upgrade_advanced',
+    requirements: {
+      trackId: 'finance',
+      level: 4,
+      certifications: ['casino_management'],
+    },
+  },
+  {
+    id: 'gate_asset_trade_buy_advanced',
+    label: 'Asset: High-tier trade kopen',
+    labelKey: 'education.gate.asset.trade_buy_advanced',
+    targetType: 'asset',
+    targetId: 'trade_buy_advanced',
+    requirements: {
+      trackId: 'finance',
+      level: 3,
+      certifications: ['financial_analyst'],
+    },
+  },
+  {
+    id: 'gate_asset_launder_start',
+    label: 'Asset: Witwassen starten',
+    labelKey: 'education.gate.asset.launder_start',
+    targetType: 'asset',
+    targetId: 'launder_start',
+    requirements: { trackId: 'finance', level: 2 },
+  },
+  {
+    id: 'gate_asset_launder_high_amount',
+    label: 'Asset: Grote witwas-opdracht',
+    labelKey: 'education.gate.asset.launder_high_amount',
+    targetType: 'asset',
+    targetId: 'launder_high_amount',
+    requirements: {
+      trackId: 'finance',
+      level: 4,
+      certifications: ['casino_management'],
+    },
+  },
+  {
+    id: 'gate_asset_garage_upgrade_advanced',
+    label: 'Asset: Garage upgrade gevorderd',
+    labelKey: 'education.gate.asset.garage_upgrade_advanced',
+    targetType: 'asset',
+    targetId: 'garage_upgrade_advanced',
+    requirements: {
+      trackId: 'automotive',
+      level: 3,
+      certifications: ['dismantler'],
+    },
+  },
+  {
+    id: 'gate_asset_marina_upgrade_advanced',
+    label: 'Asset: Marina upgrade gevorderd',
+    labelKey: 'education.gate.asset.marina_upgrade_advanced',
+    targetType: 'asset',
+    targetId: 'marina_upgrade_advanced',
+    requirements: {
+      trackId: 'automotive',
+      level: 3,
+      certifications: ['dismantler'],
+    },
+  },
+  {
+    id: 'gate_asset_weapon_buy_advanced',
+    label: 'Asset: High-tier wapen kopen',
+    labelKey: 'education.gate.asset.weapon_buy_advanced',
+    targetType: 'asset',
+    targetId: 'weapon_buy_advanced',
+    requirements: {
+      trackId: 'engineering',
+      level: 3,
+      certifications: ['industrial_safety'],
+    },
+  },
 ];
 
 /** Soft scrap-parts multiplier from Automotive track level (L0–L5). */
@@ -349,6 +441,57 @@ export function narcoticsSmuggleRiskMultiplier(level: number): number {
   const safe = Math.max(0, Math.min(5, Math.floor(Number(level) || 0)));
   return Math.max(0.75, 1 - safe * 0.04);
 }
+
+/** Soft hospital heal cost discount from Medicine track (L0–L5). */
+export function medicineHospitalCostMultiplier(level: number): number {
+  const safe = Math.max(0, Math.min(5, Math.floor(Number(level) || 0)));
+  return [1, 0.97, 0.94, 0.9, 0.86, 0.82][safe] ?? 1;
+}
+
+/** Soft hospital cooldown reduction from Medicine track (L0–L5). */
+export function medicineHospitalCooldownMultiplier(level: number): number {
+  const safe = Math.max(0, Math.min(5, Math.floor(Number(level) || 0)));
+  return [1, 0.96, 0.92, 0.88, 0.84, 0.8][safe] ?? 1;
+}
+
+/** Soft launder seize-chance reduction from Finance track (L0–L5). */
+export function financeLaunderSeizeMultiplier(level: number): number {
+  const safe = Math.max(0, Math.min(5, Math.floor(Number(level) || 0)));
+  return Math.max(0.75, 1 - safe * 0.04);
+}
+
+/** Soft race score bonus from Automotive track (flat points, L0–L5). */
+export function automotiveRaceScoreBonus(level: number): number {
+  const safe = Math.max(0, Math.min(5, Math.floor(Number(level) || 0)));
+  return [0, 2, 4, 6, 9, 12][safe] ?? 0;
+}
+
+/** Soft aviation travel/customs risk reduction (L0–L5). */
+export function aviationTravelRiskMultiplier(level: number): number {
+  const safe = Math.max(0, Math.min(5, Math.floor(Number(level) || 0)));
+  return Math.max(0.75, 1 - safe * 0.04);
+}
+
+/** Soft street prostitution earnings from Finance track (L0–L5). */
+export function financeStreetProstitutionMultiplier(level: number): number {
+  const safe = Math.max(0, Math.min(5, Math.floor(Number(level) || 0)));
+  return [1, 1.03, 1.06, 1.1, 1.14, 1.2][safe] ?? 1;
+}
+
+/** Soft non-drug trade smuggle risk from Finance track (L0–L5). */
+export function financeTradeSmuggleRiskMultiplier(level: number): number {
+  const safe = Math.max(0, Math.min(5, Math.floor(Number(level) || 0)));
+  return Math.max(0.75, 1 - safe * 0.04);
+}
+
+/** Soft weapon/ammo smuggle risk from Engineering track (L0–L5). */
+export function engineeringWeaponSmuggleRiskMultiplier(level: number): number {
+  const safe = Math.max(0, Math.min(5, Math.floor(Number(level) || 0)));
+  return Math.max(0.75, 1 - safe * 0.04);
+}
+
+/** Launder jobs at or above this cash amount require the high-amount school gate. */
+export const LAUNDER_HIGH_AMOUNT_EDUCATION_THRESHOLD = 250_000;
 
 interface TrackProgress {
   level: number;

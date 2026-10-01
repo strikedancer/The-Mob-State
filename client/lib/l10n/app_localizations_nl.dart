@@ -13043,6 +13043,33 @@ class AppLocalizationsNl extends AppLocalizations {
   String get schoolGateAssetChopContractClaim => 'Asset: Chop-contract claimen';
 
   @override
+  String get schoolGateAssetWarehousePurchase => 'Asset: Warehouse aankoop';
+
+  @override
+  String get schoolGateAssetWarehouseUpgradeAdvanced =>
+      'Asset: Warehouse upgrade gevorderd';
+
+  @override
+  String get schoolGateAssetTradeBuyAdvanced => 'Asset: High-tier trade kopen';
+
+  @override
+  String get schoolGateAssetLaunderStart => 'Asset: Witwassen starten';
+
+  @override
+  String get schoolGateAssetLaunderHighAmount => 'Asset: Grote witwas-opdracht';
+
+  @override
+  String get schoolGateAssetGarageUpgradeAdvanced =>
+      'Asset: Garage upgrade gevorderd';
+
+  @override
+  String get schoolGateAssetMarinaUpgradeAdvanced =>
+      'Asset: Marina upgrade gevorderd';
+
+  @override
+  String get schoolGateAssetWeaponBuyAdvanced => 'Asset: High-tier wapen kopen';
+
+  @override
   String schoolGateAssetGeneric(String target) {
     return 'Activa: $target';
   }

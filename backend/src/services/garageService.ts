@@ -4,6 +4,7 @@
  */
 
 import prisma from '../lib/prisma';
+import { educationService } from './educationService';
 
 type GarageVehicleType = 'car' | 'motorcycle' | 'road';
 
@@ -229,6 +230,23 @@ export const garageService = {
       throw new Error(`RANK_REQUIRED:${requiredRank}`);
     }
 
+    if (newLevel >= 4) {
+      const educationEligibility = await educationService.checkAssetEligibility(
+        playerId,
+        'garage_upgrade_advanced',
+        player.rank ?? 1
+      );
+      if (!educationEligibility.allowed) {
+        throw new Error(
+          `EDUCATION_REQUIREMENTS_NOT_MET:${JSON.stringify({
+            gateId: educationEligibility.gateId,
+            gateLabelKey: educationEligibility.gateLabelKey,
+            missing: educationEligibility.missing,
+          })}`
+        );
+      }
+    }
+
     if (player.money < upgradeCost) {
       throw new Error('INSUFFICIENT_FUNDS');
     }
@@ -362,6 +380,23 @@ export const garageService = {
     const requiredRank = requiredRankForMarinaUpgrade(newLevel);
     if ((player.rank ?? 0) < requiredRank) {
       throw new Error(`RANK_REQUIRED:${requiredRank}`);
+    }
+
+    if (newLevel >= 4) {
+      const educationEligibility = await educationService.checkAssetEligibility(
+        playerId,
+        'marina_upgrade_advanced',
+        player.rank ?? 1
+      );
+      if (!educationEligibility.allowed) {
+        throw new Error(
+          `EDUCATION_REQUIREMENTS_NOT_MET:${JSON.stringify({
+            gateId: educationEligibility.gateId,
+            gateLabelKey: educationEligibility.gateLabelKey,
+            missing: educationEligibility.missing,
+          })}`
+        );
+      }
     }
 
     if (player.money < upgradeCost) {

@@ -13066,6 +13066,37 @@ class AppLocalizationsPt extends AppLocalizations {
       'Ativo: Reivindicar contrato chop';
 
   @override
+  String get schoolGateAssetWarehousePurchase => 'Ativo: Compra de armazem';
+
+  @override
+  String get schoolGateAssetWarehouseUpgradeAdvanced =>
+      'Ativo: Upgrade avancado de armazem';
+
+  @override
+  String get schoolGateAssetTradeBuyAdvanced =>
+      'Ativo: Comprar comercio de alto nivel';
+
+  @override
+  String get schoolGateAssetLaunderStart =>
+      'Ativo: Iniciar lavagem de dinheiro';
+
+  @override
+  String get schoolGateAssetLaunderHighAmount =>
+      'Ativo: Grande trabalho de lavagem';
+
+  @override
+  String get schoolGateAssetGarageUpgradeAdvanced =>
+      'Ativo: Upgrade avancado de garagem';
+
+  @override
+  String get schoolGateAssetMarinaUpgradeAdvanced =>
+      'Ativo: Upgrade avancado de marina';
+
+  @override
+  String get schoolGateAssetWeaponBuyAdvanced =>
+      'Ativo: Comprar arma de alto nivel';
+
+  @override
   String schoolGateAssetGeneric(String target) {
     return 'Ativo: $target';
   }

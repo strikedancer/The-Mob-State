@@ -109,6 +109,19 @@ router.post('/upgrade', authenticate, async (req: AuthRequest, res: Response) =>
           params: { reason: 'INSUFFICIENT_FUNDS' },
         });
       }
+      if (error.message.startsWith('EDUCATION_REQUIREMENTS_NOT_MET:')) {
+        const raw = error.message.replace('EDUCATION_REQUIREMENTS_NOT_MET:', '');
+        let details: Record<string, unknown> = {};
+        try {
+          details = JSON.parse(raw);
+        } catch {
+          details = {};
+        }
+        return res.status(403).json({
+          event: 'garage.error',
+          params: { reason: 'EDUCATION_REQUIREMENTS_NOT_MET', ...details },
+        });
+      }
     }
 
     console.error('Upgrade garage error:', error);
@@ -198,6 +211,19 @@ router.post('/marina/upgrade', authenticate, async (req: AuthRequest, res: Respo
         return res.status(400).json({
           event: 'marina.error',
           params: { reason: 'INSUFFICIENT_FUNDS' },
+        });
+      }
+      if (error.message.startsWith('EDUCATION_REQUIREMENTS_NOT_MET:')) {
+        const raw = error.message.replace('EDUCATION_REQUIREMENTS_NOT_MET:', '');
+        let details: Record<string, unknown> = {};
+        try {
+          details = JSON.parse(raw);
+        } catch {
+          details = {};
+        }
+        return res.status(403).json({
+          event: 'marina.error',
+          params: { reason: 'EDUCATION_REQUIREMENTS_NOT_MET', ...details },
         });
       }
     }

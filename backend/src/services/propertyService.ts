@@ -383,6 +383,21 @@ class PropertyService {
       }
     }
 
+    if (propertyId === 'warehouse') {
+      const educationEligibility = await educationService.checkAssetEligibility(
+        playerId,
+        'warehouse_purchase',
+        player.rank ?? 1
+      );
+      if (!educationEligibility.allowed) {
+        return {
+          success: false,
+          error: 'EDUCATION_REQUIREMENTS_NOT_MET',
+          education: educationEligibility,
+        };
+      }
+    }
+
     // Check if player is in the correct country (only for country-specific properties)
     if (property.type !== 'unlimited' && player.currentCountry !== countryId) {
       return { success: false, error: 'WRONG_COUNTRY' };
@@ -1022,11 +1037,27 @@ class PropertyService {
     // Get player money
     const player = await prisma.player.findUnique({
       where: { id: playerId },
-      select: { money: true },
+      select: { money: true, rank: true },
     });
 
     if (!player) {
       return { success: false, error: 'PLAYER_NOT_FOUND' };
+    }
+
+    const nextLevel = property.upgradeLevel + 1;
+    if (property.propertyType === 'warehouse' && nextLevel >= 4) {
+      const educationEligibility = await educationService.checkAssetEligibility(
+        playerId,
+        'warehouse_upgrade_advanced',
+        player.rank ?? 1
+      );
+      if (!educationEligibility.allowed) {
+        return {
+          success: false,
+          error: 'EDUCATION_REQUIREMENTS_NOT_MET',
+          education: educationEligibility,
+        };
+      }
     }
 
     // Check if player has enough money

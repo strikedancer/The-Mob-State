@@ -8194,6 +8194,7 @@
   "schoolGateAssetDrugFacilityEquipmentTier2": "Asset: Drug facility equipment upgrade II",
   "schoolGateAssetDrugFacilityEquipmentTier3": "Asset: Drug facility equipment upgrade III",
   "schoolGateAssetDrugFacilityPurchase": "Asset: Drug facility purchase",   "schoolGateAssetNightclubPurchase": "Asset: Nightclub purchase",   "schoolGateAssetRldPurchase": "Asset: Red Light District purchase",   "schoolGateAssetRldExpansionAdvanced": "Asset: Advanced RLD expansion",   "schoolGateAssetStockTradeBuy": "Asset: Buy stocks",   "schoolGateAssetCryptoTradeBuy": "Asset: Buy crypto",   "schoolGateAssetHitlistPlaceHit": "Asset: Place hitlist contract",   "schoolGateAssetVehicleTuneAdvanced": "Asset: Advanced vehicle tuning",   "schoolGateAssetChopContractClaim": "Asset: Claim chop contract",
+  "schoolGateAssetWarehousePurchase": "Asset: Warehouse purchase",   "schoolGateAssetWarehouseUpgradeAdvanced": "Asset: Advanced warehouse upgrade",   "schoolGateAssetTradeBuyAdvanced": "Asset: Buy high-tier trade goods",   "schoolGateAssetLaunderStart": "Asset: Start money laundering",   "schoolGateAssetLaunderHighAmount": "Asset: Large launder job",   "schoolGateAssetGarageUpgradeAdvanced": "Asset: Advanced garage upgrade",   "schoolGateAssetMarinaUpgradeAdvanced": "Asset: Advanced marina upgrade",   "schoolGateAssetWeaponBuyAdvanced": "Asset: Buy high-tier weapon",
   "schoolGateAssetGeneric": "Asset: {target}",
   "@schoolGateAssetGeneric": {
     "placeholders": {

@@ -3,6 +3,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import toolService from './toolService';
 import backpackService from './backpackService';
+import { educationService } from './educationService';
 
 const { getPlayerCarryingCapacity } = backpackService;
 
@@ -135,6 +136,21 @@ class WeaponService {
     // Check rank requirement (rank 15 unlocks all non-VIP weapons)
     if (player.rank < weapon.requiredRank && player.rank < 15) {
       return { success: false, error: 'RANK_TOO_LOW' };
+    }
+
+    if (Number(weapon.requiredRank ?? 0) >= 12) {
+      const educationEligibility = await educationService.checkAssetEligibility(
+        playerId,
+        'weapon_buy_advanced',
+        player.rank ?? 1
+      );
+      if (!educationEligibility.allowed) {
+        return {
+          success: false,
+          error: 'EDUCATION_REQUIREMENTS_NOT_MET',
+          education: educationEligibility,
+        };
+      }
     }
 
     // Check if player has enough money

@@ -2,6 +2,25 @@ import prisma from '../lib/prisma';
 import config from '../config';
 import { applyVipTimeoutReductionMs, isVipStatusActive } from './vipBenefitsService';
 import { hospitalInjuryRules } from '../lib/healthInjury';
+import {
+  educationService,
+  medicineHospitalCooldownMultiplier,
+  medicineHospitalCostMultiplier,
+} from './educationService';
+
+async function medicineAdjustedCooldownMs(playerId: number, isVip: boolean): Promise<number> {
+  const medicineLevel = await educationService.getTrackLevel(playerId, 'medicine');
+  const baseMs = applyVipTimeoutReductionMs(
+    config.hospitalCooldownMinutes * 60 * 1000,
+    isVip
+  );
+  return Math.max(30_000, Math.round(baseMs * medicineHospitalCooldownMultiplier(medicineLevel)));
+}
+
+async function medicineAdjustedHealCost(playerId: number, baseCost: number): Promise<number> {
+  const medicineLevel = await educationService.getTrackLevel(playerId, 'medicine');
+  return Math.max(1, Math.round(baseCost * medicineHospitalCostMultiplier(medicineLevel)));
+}
 
 export const hospitalService = {
   /**
@@ -40,10 +59,7 @@ export const hospitalService = {
     }
 
     // Check cooldown
-    const cooldownMs = applyVipTimeoutReductionMs(
-      config.hospitalCooldownMinutes * 60 * 1000,
-      isVipStatusActive(player)
-    );
+    const cooldownMs = await medicineAdjustedCooldownMs(playerId, isVipStatusActive(player));
     if (player.lastHospitalVisit) {
       const timeSinceLastVisit = Date.now() - player.lastHospitalVisit.getTime();
       if (timeSinceLastVisit < cooldownMs) {
@@ -52,14 +68,18 @@ export const hospitalService = {
       }
     }
 
+    const baseCost =
+      treatmentType === 'intensive'
+        ? Math.round(config.hospitalHealCost * 2)
+        : config.hospitalHealCost;
     const treatmentConfig =
       treatmentType === 'intensive'
         ? {
-            cost: Math.round(config.hospitalHealCost * 2),
+            cost: await medicineAdjustedHealCost(playerId, baseCost),
             healAmount: Math.round(config.hospitalHealAmount * 2.5),
           }
         : {
-            cost: config.hospitalHealCost,
+            cost: await medicineAdjustedHealCost(playerId, baseCost),
             healAmount: config.hospitalHealAmount,
           };
 
@@ -149,10 +169,7 @@ export const hospitalService = {
 
     if (!player) throw new Error('PLAYER_NOT_FOUND');
 
-    const cooldownMs = applyVipTimeoutReductionMs(
-      config.hospitalCooldownMinutes * 60 * 1000,
-      isVipStatusActive(player)
-    );
+    const cooldownMs = await medicineAdjustedCooldownMs(playerId, isVipStatusActive(player));
     if (player.lastHospitalVisit) {
       const elapsed = Date.now() - player.lastHospitalVisit.getTime();
       if (elapsed < cooldownMs) {

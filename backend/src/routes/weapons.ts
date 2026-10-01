@@ -238,6 +238,10 @@ router.post('/buy/:weaponId', authenticate, requireNotJailed, async (req: AuthRe
         message = 'This weapon is only available for VIP members';
         statusCode = 403;
         break;
+      case 'EDUCATION_REQUIREMENTS_NOT_MET':
+        message = 'School requirements not met for this weapon';
+        statusCode = 403;
+        break;
     }
 
     return res.status(statusCode).json({
@@ -245,6 +249,9 @@ router.post('/buy/:weaponId', authenticate, requireNotJailed, async (req: AuthRe
       params: {
         reason: result.error,
         message,
+        ...(result.error === 'EDUCATION_REQUIREMENTS_NOT_MET'
+          ? { education: (result as any).education }
+          : {}),
       },
     });
   }

@@ -5,6 +5,10 @@ import { getRaceRuntimeConfig, type RaceRuntimeConfig } from './raceRuntimeConfi
 import { translationService } from './translationService';
 import { directMessageService } from './directMessageService';
 import { notificationService } from './notificationService';
+import {
+  automotiveRaceScoreBonus,
+  educationService,
+} from './educationService';
 
 type VehicleCatalogRow = {
   id: string;
@@ -225,12 +229,14 @@ function rollSpeedScore(input: {
   tuneSpeed: number;
   condition: number;
   fixing: boolean;
+  educationBonus?: number;
 }): number {
   const rng = crypto.randomInt(0, 26);
   const tune = input.tuneSpeed * 6;
   const condition = Math.round(input.condition * 0.2);
   const fixing = input.fixing ? 12 : 0;
-  return Math.max(1, Math.round(input.baseSpeed + tune + condition + rng + fixing));
+  const education = Math.max(0, Number(input.educationBonus) || 0);
+  return Math.max(1, Math.round(input.baseSpeed + tune + condition + rng + fixing + education));
 }
 
 function serializeMeeting(
@@ -599,6 +605,7 @@ export const raceService = {
         select: { condition: true },
       });
       const tuneSpeed = await getTuneSpeed(entry.playerId, entry.vehicleInventoryId);
+      const automotiveLevel = await educationService.getTrackLevel(entry.playerId, 'automotive');
       scored.push({
         entry,
         score: rollSpeedScore({
@@ -606,6 +613,7 @@ export const raceService = {
           tuneSpeed,
           condition: inventory?.condition ?? 50,
           fixing: entry.fixing,
+          educationBonus: automotiveRaceScoreBonus(automotiveLevel),
         }),
       });
     }

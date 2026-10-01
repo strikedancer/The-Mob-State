@@ -19,6 +19,10 @@ import {
   rldSoftIncomeScale,
 } from './rldConfig';
 import { ensureAssignableRldRoom } from './redLightDistrictService';
+import {
+  educationService,
+  financeStreetProstitutionMultiplier,
+} from './educationService';
 
 const RECRUITMENT_COOLDOWN_MINUTES = 5;
 const RECRUITMENT_SUCCESS_CHANCE = 0.75; // 75% kans op succesvolle werving
@@ -267,6 +271,7 @@ function computePassiveEarningsSlice(args: {
   bustedUntil: Date | null;
   redLightRoom: PassiveEarningsRoom | null;
   now: Date;
+  streetEarningsMultiplier?: number;
 }): PassiveEarningsSlice {
   const empty: PassiveEarningsSlice = {
     hoursElapsed: 0,
@@ -338,7 +343,11 @@ function computePassiveEarningsSlice(args: {
   }
 
   const earnings = Math.floor(
-    STREET_EARNINGS_PER_HOUR * hoursElapsed * levelBonus * vipMultiplier
+    STREET_EARNINGS_PER_HOUR *
+      hoursElapsed *
+      levelBonus *
+      vipMultiplier *
+      Math.max(1, Number(args.streetEarningsMultiplier) || 1)
   );
   return {
     hoursElapsed,
@@ -1317,6 +1326,9 @@ export const prostituteService = {
       include: PASSIVE_EARNINGS_INCLUDE,
     });
 
+    const financeLevel = await educationService.getTrackLevel(playerId, 'finance');
+    const streetMultiplier = financeStreetProstitutionMultiplier(financeLevel);
+
     let totalEarnings = 0;
     const now = new Date();
 
@@ -1341,6 +1353,7 @@ export const prostituteService = {
         bustedUntil,
         redLightRoom: prostitute.redLightRoom,
         now,
+        streetEarningsMultiplier: streetMultiplier,
       });
 
       if (slice.skipReason === 'busted' || slice.skipReason === 'nightclub') {
@@ -1639,6 +1652,8 @@ export const prostituteService = {
     let streetCount = 0;
     let redlightCount = 0;
     let bustedCount = 0;
+    const financeLevel = await educationService.getTrackLevel(playerId, 'finance');
+    const streetMultiplier = financeStreetProstitutionMultiplier(financeLevel);
 
     for (const prostitute of prostitutes) {
       const slice = computePassiveEarningsSlice({
@@ -1650,6 +1665,7 @@ export const prostituteService = {
         bustedUntil: prostitute.bustedUntil,
         redLightRoom: prostitute.redLightRoom,
         now,
+        streetEarningsMultiplier: streetMultiplier,
       });
 
       if (slice.skipReason === 'busted') {
@@ -1872,8 +1888,13 @@ export const prostituteService = {
       );
     } else {
       // Street
+      const financeLevel = await educationService.getTrackLevel(playerId, 'finance');
       earnings = Math.floor(
-        STREET_EARNINGS_PER_HOUR * WORK_SHIFT_HOURS * levelBonus * vipMultiplier
+        STREET_EARNINGS_PER_HOUR *
+          WORK_SHIFT_HOURS *
+          levelBonus *
+          vipMultiplier *
+          financeStreetProstitutionMultiplier(financeLevel)
       );
     }
 

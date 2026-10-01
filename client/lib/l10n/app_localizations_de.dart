@@ -13137,6 +13137,35 @@ class AppLocalizationsDe extends AppLocalizations {
   String get schoolGateAssetChopContractClaim => 'Asset: Chop-Vertrag einlosen';
 
   @override
+  String get schoolGateAssetWarehousePurchase => 'Asset: Lagerkauf';
+
+  @override
+  String get schoolGateAssetWarehouseUpgradeAdvanced =>
+      'Asset: Erweiterte Lager-Upgrade';
+
+  @override
+  String get schoolGateAssetTradeBuyAdvanced =>
+      'Asset: High-Tier-Handelswaren kaufen';
+
+  @override
+  String get schoolGateAssetLaunderStart => 'Asset: Geldwaschen starten';
+
+  @override
+  String get schoolGateAssetLaunderHighAmount => 'Asset: Grosser Waschauftrag';
+
+  @override
+  String get schoolGateAssetGarageUpgradeAdvanced =>
+      'Asset: Erweiterte Garage-Upgrade';
+
+  @override
+  String get schoolGateAssetMarinaUpgradeAdvanced =>
+      'Asset: Erweiterte Marina-Upgrade';
+
+  @override
+  String get schoolGateAssetWeaponBuyAdvanced =>
+      'Asset: High-Tier-Waffe kaufen';
+
+  @override
   String schoolGateAssetGeneric(String target) {
     return 'Vermögenswert: $target';
   }

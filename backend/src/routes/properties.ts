@@ -939,6 +939,10 @@ router.post('/:id/upgrade', authenticate, async (req: AuthRequest, res: Response
           message = 'Je hebt niet genoeg geld om te upgraden';
           statusCode = 403;
           break;
+        case 'EDUCATION_REQUIREMENTS_NOT_MET':
+          message = 'Schoolvereisten niet gehaald voor deze upgrade';
+          statusCode = 403;
+          break;
       }
 
       return res.status(statusCode).json({
@@ -946,6 +950,9 @@ router.post('/:id/upgrade', authenticate, async (req: AuthRequest, res: Response
         params: {
           reason: result.error,
           message,
+          ...(result.error === 'EDUCATION_REQUIREMENTS_NOT_MET'
+            ? { education: (result as any).education }
+            : {}),
         },
       });
     }

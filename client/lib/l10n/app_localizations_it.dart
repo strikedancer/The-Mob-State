@@ -13110,6 +13110,36 @@ class AppLocalizationsIt extends AppLocalizations {
       'Risorsa: Rivendicare contratto chop';
 
   @override
+  String get schoolGateAssetWarehousePurchase => 'Risorsa: Acquisto magazzino';
+
+  @override
+  String get schoolGateAssetWarehouseUpgradeAdvanced =>
+      'Risorsa: Upgrade magazzino avanzato';
+
+  @override
+  String get schoolGateAssetTradeBuyAdvanced =>
+      'Risorsa: Acquisto trade di alto livello';
+
+  @override
+  String get schoolGateAssetLaunderStart => 'Risorsa: Avvia riciclaggio';
+
+  @override
+  String get schoolGateAssetLaunderHighAmount =>
+      'Risorsa: Grande lavoro di riciclaggio';
+
+  @override
+  String get schoolGateAssetGarageUpgradeAdvanced =>
+      'Risorsa: Upgrade garage avanzato';
+
+  @override
+  String get schoolGateAssetMarinaUpgradeAdvanced =>
+      'Risorsa: Upgrade marina avanzato';
+
+  @override
+  String get schoolGateAssetWeaponBuyAdvanced =>
+      'Risorsa: Acquisto arma di alto livello';
+
+  @override
   String schoolGateAssetGeneric(String target) {
     return 'Risorsa: $target';
   }

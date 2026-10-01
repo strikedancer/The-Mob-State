@@ -24,6 +24,7 @@ import {
   refreshInventorySlotUsage,
 } from './carriedInventory';
 import { CARRIED_TRADE_LOCATION } from '../utils/propertyStash';
+import { educationService } from './educationService';
 
 export interface TradableGood {
   id: string;
@@ -255,6 +256,29 @@ export async function buyGoods(
   const good = getGoodById(goodType);
   if (!good) {
     throw new Error('GOOD_NOT_FOUND');
+  }
+
+  const requiresAdvancedEducation =
+    good.category === 'dangerous' || Number(good.tier ?? 0) >= 3;
+  if (requiresAdvancedEducation) {
+    const playerRankRow = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { rank: true },
+    });
+    const educationEligibility = await educationService.checkAssetEligibility(
+      playerId,
+      'trade_buy_advanced',
+      playerRankRow?.rank ?? 1
+    );
+    if (!educationEligibility.allowed) {
+      throw new Error(
+        `EDUCATION_REQUIREMENTS_NOT_MET:${JSON.stringify({
+          gateId: educationEligibility.gateId,
+          gateLabelKey: educationEligibility.gateLabelKey,
+          missing: educationEligibility.missing,
+        })}`
+      );
+    }
   }
 
   // Get player's current country
