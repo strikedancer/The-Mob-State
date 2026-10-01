@@ -12302,6 +12302,12 @@ abstract class AppLocalizations {
   /// **'Vehicle added to the collection.'**
   String get showroomPlaced;
 
+  /// No description provided for @showroomNotOwned.
+  ///
+  /// In en, this message translates to:
+  /// **'You need to own the matching showroom or boat harbor first.'**
+  String get showroomNotOwned;
+
   /// No description provided for @showroomRemoved.
   ///
   /// In en, this message translates to:

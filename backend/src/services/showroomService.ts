@@ -10,6 +10,7 @@ import {
   findShowroomVehicleDef,
   getShowroomCatalogSize,
   getShowroomCategory,
+  getShowroomPropertyTypeForVehicle,
   isShowroomProperty,
   notInShowroomWhere,
   showroomCatCost,
@@ -210,6 +211,59 @@ class ShowroomService {
       distinct: ['vehicleId'],
     });
     return rows.map((row) => row.vehicleId).filter((id) => Boolean(id));
+  }
+
+  /**
+   * Lightweight map of owned showrooms so garage/marina can offer Place without
+   * opening Eigendommen first.
+   */
+  async getOwnedShowroomTargets(playerId: number): Promise<
+    Partial<Record<ShowroomVehicleType, { propertyId: number; countryId: string }>>
+  > {
+    const rows = await prisma.property.findMany({
+      where: {
+        playerId,
+        propertyType: { in: [...SHOWROOM_PROPERTY_IDS] },
+      },
+      select: { id: true, propertyType: true, countryId: true },
+    });
+    const result: Partial<
+      Record<ShowroomVehicleType, { propertyId: number; countryId: string }>
+    > = {};
+    for (const row of rows) {
+      const category = getShowroomCategory(row.propertyType);
+      if (!category) continue;
+      result[category] = {
+        propertyId: row.id,
+        countryId: row.countryId,
+      };
+    }
+    return result;
+  }
+
+  async placeVehicleFromInventory(playerId: number, vehicleInventoryId: number) {
+    const vehicle = await prisma.vehicleInventory.findUnique({
+      where: { id: vehicleInventoryId },
+      select: { id: true, playerId: true, vehicleType: true },
+    });
+    if (!vehicle || vehicle.playerId !== playerId) {
+      return { success: false as const, error: 'VEHICLE_NOT_FOUND' };
+    }
+
+    const propertyType = getShowroomPropertyTypeForVehicle(vehicle.vehicleType);
+    if (!propertyType) {
+      return { success: false as const, error: 'SHOWROOM_WRONG_TYPE' };
+    }
+
+    const property = await prisma.property.findFirst({
+      where: { playerId, propertyType },
+      select: { id: true },
+    });
+    if (!property) {
+      return { success: false as const, error: 'SHOWROOM_NOT_OWNED' };
+    }
+
+    return this.placeVehicle(playerId, property.id, vehicleInventoryId);
   }
 
   async getShowroom(playerId: number, propertyDatabaseId: number) {

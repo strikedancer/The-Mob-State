@@ -13714,5 +13714,6 @@
         "type": "String"
       }
     }
-  }
+  },
+  "showroomNotOwned": "You need to own the matching showroom or boat harbor first."
 }

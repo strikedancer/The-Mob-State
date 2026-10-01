@@ -7028,6 +7028,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get showroomPlaced => 'Fahrzeug steht in der Sammlung.';
 
   @override
+  String get showroomNotOwned =>
+      'You need to own the matching showroom or boat harbor first.';
+
+  @override
   String get showroomRemoved => 'Fahrzeug ist zurück im Stellplatz.';
 
   @override

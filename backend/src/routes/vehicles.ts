@@ -746,12 +746,14 @@ router.get('/inventory', authenticate, async (req: AuthRequest, res: Response) =
   try {
     const inventory = await vehicleService.getPlayerInventory(req.player!.id);
     const showroomVehicleIds = await showroomService.getExhibitedVehicleIds(req.player!.id);
+    const showroomPlaceTargets = await showroomService.getOwnedShowroomTargets(req.player!.id);
 
     return res.status(200).json({
       event: 'vehicles.inventory',
       params: {},
       inventory,
       showroomVehicleIds,
+      showroomPlaceTargets,
     });
   } catch (error) {
     console.error('[VehiclesRoute] /inventory failed:', error);
@@ -761,6 +763,47 @@ router.get('/inventory', authenticate, async (req: AuthRequest, res: Response) =
     });
   }
 });
+
+/**
+ * POST /vehicles/inventory/:inventoryId/showroom/place
+ * Place a garage/marina vehicle into the matching owned showroom (if any).
+ */
+router.post(
+  '/inventory/:inventoryId/showroom/place',
+  authenticate,
+  async (req: AuthRequest, res: Response) => {
+    const inventoryId = parseInt(String(req.params.inventoryId), 10);
+    if (isNaN(inventoryId)) {
+      return res.status(400).json({
+        event: 'showroom.place_failed',
+        params: { reason: 'INVALID_INPUT' },
+      });
+    }
+
+    const result = await showroomService.placeVehicleFromInventory(
+      req.player!.id,
+      inventoryId,
+    );
+    if (!result.success) {
+      return res.status(400).json({
+        event: 'showroom.place_failed',
+        params: { reason: result.error },
+      });
+    }
+
+    const [showroomVehicleIds, showroomPlaceTargets] = await Promise.all([
+      showroomService.getExhibitedVehicleIds(req.player!.id),
+      showroomService.getOwnedShowroomTargets(req.player!.id),
+    ]);
+
+    return res.status(200).json({
+      event: 'showroom.placed',
+      params: {},
+      showroomVehicleIds,
+      showroomPlaceTargets,
+    });
+  },
+);
 
 /**
  * POST /vehicles/scrap/:inventoryId

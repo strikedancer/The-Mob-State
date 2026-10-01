@@ -60,6 +60,21 @@ export function getShowroomCategory(propertyId: string): ShowroomVehicleType | n
   return SHOWROOM_CATEGORY[propertyId];
 }
 
+export function getShowroomPropertyTypeForVehicle(
+  vehicleType: string,
+): ShowroomPropertyId | null {
+  switch (vehicleType) {
+    case 'car':
+      return 'car_showroom';
+    case 'motorcycle':
+      return 'motorcycle_showroom';
+    case 'boat':
+      return 'boat_harbor';
+    default:
+      return null;
+  }
+}
+
 export function getShowroomCatalogSize(propertyId: string): number {
   const category = getShowroomCategory(propertyId);
   if (!category) return 0;

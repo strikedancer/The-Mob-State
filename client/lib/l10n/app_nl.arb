@@ -494,6 +494,7 @@
   "showroomWrongType": "Dit voertuig hoort niet in dit pand.",
   "showroomVehicleBusy": "Dit voertuig is onderweg, te koop of al tentoongesteld.",
   "showroomPlaced": "Voertuig staat in de collectie.",
+  "showroomNotOwned": "Je hebt eerst de juiste showroom of botenhaven nodig.",
   "showroomRemoved": "Voertuig is terug in je stalling.",
   "showroomCatted": "Schone papieren gezet. Politie en FBI zien dit voertuig als legaal zolang het in de vitrine blijft.",
   "showroomCatAction": "Cat papieren",

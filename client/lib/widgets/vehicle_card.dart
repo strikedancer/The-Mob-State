@@ -19,6 +19,7 @@ class VehicleCard extends StatelessWidget {
   final bool isSelectedForCrimes;
   /// True when this model is already exhibited in the player's showroom collection.
   final bool modelInShowroom;
+  final VoidCallback? onPlaceInShowroom;
 
   const VehicleCard({
     super.key,
@@ -34,6 +35,7 @@ class VehicleCard extends StatelessWidget {
     this.onDeselectForCrimes,
     this.isSelectedForCrimes = false,
     this.modelInShowroom = false,
+    this.onPlaceInShowroom,
   });
 
   Color _getConditionColor() {
@@ -463,6 +465,15 @@ class VehicleCard extends StatelessWidget {
                               ],
                             ),
                           ),
+                        ),
+                      if (onPlaceInShowroom != null && !modelInShowroom)
+                        _buildActionButton(
+                          label: l10n.showroomPlaceAction,
+                          icon: Icons.collections,
+                          color: Colors.lightGreenAccent,
+                          onPressed: vehicle.isBusy || vehicle.condition < 100
+                              ? null
+                              : onPlaceInShowroom!,
                         ),
                       if (onList != null && !vehicle.marketListing)
                         _buildActionButton(

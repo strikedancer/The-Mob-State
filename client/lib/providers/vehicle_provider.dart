@@ -16,6 +16,8 @@ class VehicleProvider with ChangeNotifier {
   MarinaStatus? _marinaStatus;
   List<VehicleDefinition> _availableVehicles = [];
   Set<String> _showroomVehicleIds = <String>{};
+  Map<String, Map<String, dynamic>> _showroomPlaceTargets =
+      <String, Map<String, dynamic>>{};
   List<MarketListing> _marketListings = [];
   List<PlayerToolMarketListing> _toolMarketListings = [];
   List<PlayerToolMarketListing> _myToolMarketListings = [];
@@ -45,10 +47,18 @@ class VehicleProvider with ChangeNotifier {
   MarinaStatus? get marinaStatus => _marinaStatus;
   List<VehicleDefinition> get availableVehicles => _availableVehicles;
   Set<String> get showroomVehicleIds => _showroomVehicleIds;
+  Map<String, Map<String, dynamic>> get showroomPlaceTargets =>
+      _showroomPlaceTargets;
 
   bool isModelInShowroom(String? vehicleId) {
     if (vehicleId == null || vehicleId.isEmpty) return false;
     return _showroomVehicleIds.contains(vehicleId);
+  }
+
+  bool ownsShowroomForType(String? vehicleType) {
+    final type = (vehicleType ?? '').toLowerCase();
+    if (type.isEmpty) return false;
+    return _showroomPlaceTargets.containsKey(type);
   }
   List<MarketListing> get marketListings => _marketListings;
   List<PlayerToolMarketListing> get toolMarketListings => _toolMarketListings;
@@ -233,6 +243,9 @@ class VehicleProvider with ChangeNotifier {
           for (final id in (data['showroomVehicleIds'] as List<dynamic>? ?? const []))
             id.toString(),
         };
+        _showroomPlaceTargets = _parseShowroomPlaceTargets(
+          data['showroomPlaceTargets'],
+        );
         _error = null;
       } else {
         print('[VehicleProvider] Error response: ${response.body}');
@@ -1578,5 +1591,55 @@ class VehicleProvider with ChangeNotifier {
   void clearError() {
     _error = null;
     notifyListeners();
+  }
+
+  Map<String, Map<String, dynamic>> _parseShowroomPlaceTargets(dynamic raw) {
+    if (raw is! Map) return <String, Map<String, dynamic>>{};
+    final result = <String, Map<String, dynamic>>{};
+    for (final entry in raw.entries) {
+      final value = entry.value;
+      if (value is! Map) continue;
+      final propertyId = value['propertyId'];
+      final countryId = value['countryId']?.toString();
+      if (propertyId == null || countryId == null || countryId.isEmpty) continue;
+      result[entry.key.toString()] = {
+        'propertyId': propertyId is num ? propertyId.toInt() : propertyId,
+        'countryId': countryId,
+      };
+    }
+    return result;
+  }
+
+  /// Place a garage/marina vehicle into the matching owned showroom.
+  /// Returns null on success, or an error reason code on failure.
+  Future<String?> placeVehicleInShowroom(int inventoryId) async {
+    try {
+      final headers = await _getHeaders();
+      final response = await http.post(
+        Uri.parse('$baseUrl/vehicles/inventory/$inventoryId/showroom/place'),
+        headers: headers,
+      );
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      if (response.statusCode == 200 && data['event'] == 'showroom.placed') {
+        _showroomVehicleIds = {
+          for (final id
+              in (data['showroomVehicleIds'] as List<dynamic>? ?? const []))
+            id.toString(),
+        };
+        if (data.containsKey('showroomPlaceTargets')) {
+          _showroomPlaceTargets = _parseShowroomPlaceTargets(
+            data['showroomPlaceTargets'],
+          );
+        }
+        await fetchInventory();
+        return null;
+      }
+      final reason = data['params'] is Map
+          ? (data['params'] as Map)['reason']?.toString()
+          : null;
+      return reason ?? 'SHOWROOM_PLACE_FAILED';
+    } catch (_) {
+      return 'SHOWROOM_PLACE_FAILED';
+    }
   }
 }

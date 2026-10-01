@@ -477,6 +477,10 @@ class _MarinaScreenState extends State<MarinaScreen> {
     return VehicleCard(
       vehicle: boat,
       modelInShowroom: provider.isModelInShowroom(boat.vehicleId),
+      onPlaceInShowroom: provider.ownsShowroomForType(boat.vehicleType) &&
+              !provider.isModelInShowroom(boat.vehicleId)
+          ? () => _placeVehicleInShowroom(provider, boat)
+          : null,
       onSelectForCrimes: _selectedVehicleId == boat.id
           ? null
           : () => _selectForCrimes(boat),
@@ -977,6 +981,10 @@ class _MarinaScreenState extends State<MarinaScreen> {
             return VehicleCard(
               vehicle: boat,
               modelInShowroom: provider.isModelInShowroom(boat.vehicleId),
+              onPlaceInShowroom: provider.ownsShowroomForType(boat.vehicleType) &&
+                      !provider.isModelInShowroom(boat.vehicleId)
+                  ? () => _placeVehicleInShowroom(provider, boat)
+                  : null,
               onSelectForCrimes: _selectedVehicleId == boat.id
                   ? null
                   : () => _selectForCrimes(boat),
@@ -1213,6 +1221,53 @@ class _MarinaScreenState extends State<MarinaScreen> {
           backgroundColor: Colors.red,
         ),
       );
+    }
+  }
+
+  Future<void> _placeVehicleInShowroom(
+    VehicleProvider provider,
+    VehicleInventoryItem vehicle,
+  ) async {
+    final l10n = AppLocalizations.of(context)!;
+    final reason = await provider.placeVehicleInShowroom(vehicle.id);
+    if (!mounted) return;
+    if (reason == null) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(content: Text(l10n.showroomPlaced)),
+      );
+      await _loadData();
+      return;
+    }
+    showTopRightFromSnackBar(
+      context,
+      SnackBar(
+        content: Text(_showroomPlaceErrorMessage(l10n, reason)),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
+
+  String _showroomPlaceErrorMessage(AppLocalizations l10n, String reason) {
+    switch (reason) {
+      case 'WRONG_COUNTRY':
+      case 'SHOWROOM_WRONG_COUNTRY':
+        return l10n.showroomNeedSameCountry;
+      case 'SHOWROOM_CONDITION':
+        return l10n.showroomNeedPerfectCondition;
+      case 'SHOWROOM_DUPLICATE_MODEL':
+        return l10n.showroomDuplicateModel;
+      case 'SHOWROOM_FULL':
+        return l10n.showroomFull;
+      case 'SHOWROOM_WRONG_TYPE':
+        return l10n.showroomWrongType;
+      case 'SHOWROOM_VEHICLE_BUSY':
+      case 'VEHICLE_IN_SHOWROOM':
+        return l10n.showroomVehicleBusy;
+      case 'SHOWROOM_NOT_OWNED':
+        return l10n.showroomNotOwned;
+      default:
+        return l10n.showroomLoadError;
     }
   }
 

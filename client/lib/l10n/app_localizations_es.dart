@@ -7016,6 +7016,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get showroomPlaced => 'Vehículo añadido a la colección.';
 
   @override
+  String get showroomNotOwned =>
+      'You need to own the matching showroom or boat harbor first.';
+
+  @override
   String get showroomRemoved => 'Vehículo devuelto al almacén.';
 
   @override

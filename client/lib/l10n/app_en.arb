@@ -4072,6 +4072,7 @@
   "showroomWrongType": "This vehicle does not belong in this building.",
   "showroomVehicleBusy": "This vehicle is in transit, listed for sale, or already on display.",
   "showroomPlaced": "Vehicle added to the collection.",
+  "showroomNotOwned": "You need to own the matching showroom or boat harbor first.",
   "showroomRemoved": "Vehicle returned to storage.",
   "showroomCatted": "Clean papers applied. Police and FBI will treat this vehicle as legitimate while it stays on display.",
   "showroomCatAction": "Cat papers",

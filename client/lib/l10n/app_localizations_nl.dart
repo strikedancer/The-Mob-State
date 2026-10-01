@@ -6983,6 +6983,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get showroomPlaced => 'Voertuig staat in de collectie.';
 
   @override
+  String get showroomNotOwned =>
+      'Je hebt eerst de juiste showroom of botenhaven nodig.';
+
+  @override
   String get showroomRemoved => 'Voertuig is terug in je stalling.';
 
   @override
