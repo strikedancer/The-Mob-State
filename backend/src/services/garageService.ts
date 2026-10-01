@@ -65,7 +65,7 @@ export function computeGarageSlotTotals(garage: {
   };
 }
 
-const CAR_UPGRADE_COSTS = [0, 50000, 100000, 200000, 400000, 800000];
+const CAR_UPGRADE_COSTS = [0, 87500, 175000, 350000, 700000, 1400000];
 
 const GARAGE_CAR_UPGRADE_REQUIRED_RANKS = [0, 5, 7, 10, 12, 15]; // target level -> rank
 const GARAGE_MOTORCYCLE_UPGRADE_REQUIRED_RANKS = [0, 7, 10, 12, 15, 18]; // target level -> rank
@@ -345,7 +345,7 @@ export const garageService = {
 
     const newLevel = currentLevel + 1;
 
-    const upgradeCosts = [0, 75000, 150000, 300000, 600000, 1200000];
+    const upgradeCosts = [0, 112500, 225000, 450000, 900000, 1800000];
     const upgradeCost = upgradeCosts[newLevel];
 
     const capacityBonus = newLevel * 3;

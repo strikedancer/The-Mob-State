@@ -23,6 +23,7 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 ## Documented static modifiers (vehicle theft → boats)
 - **Boat theft ease:** in `vehicleService.stealVehicle`, after heat / dynamic police pattern / ops-rep, **+0.06** success chance for `vehicleType === 'boat'` (max 0.95). **Port lockdown** window uses boat risk multiplier **1.10** (not 1.18). Rationale: boat `baseValue` bands in content skew harder than starter cars; see `steel_voertuig.md`.
 - **Street target weights:** `streetTheftRarityWeights(rank)` in `vehicleService.ts`. Risk is always a street (common/uncommon) attempt; rare/epic/legendary are post-success upgrades. Unlocks: rare 7, epic 13, legendary 22. Rank 7 ≈ 70/28/2; rank 13–21 ≈ 48/30/16/6; rank 22+ ≈ 42/28/18/9/3. Catalog count is not the drop rate. See `garage.md` / `steel_voertuig.md`.
+- **Theft garage pressure (2026-10-01):** garage/marina upgrade euro costs raised (~1.75× cars/motos, ~1.5× marina) so slot expansion is a real sink. Fail catch chance ~20–55% (was ~18–50%); high-value fail wanted bumps +11/+13; jail minutes up to 50 on top bands. Legendary weight unchanged at 3%.
 
 ## Documented static modifiers (drugs → batch ladder)
 - **2026-10-01 ladder retune:** hard/chem batches that were retail-negative at shop material prices (LSD/fentanyl precursor burn, XTC floor prices, thin heroin/meth yields) were adjusted so max-country €/h generally rises with unlock rank. Weed/mushroom curves kept. Heat/raid/cash-cool unchanged.

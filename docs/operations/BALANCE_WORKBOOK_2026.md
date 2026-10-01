@@ -306,7 +306,7 @@ Criteria: **te snel / te traag / te veilig / te zwak sink** t.o.v. year-long ret
 | 11 | Drug late synthetics EV | **Groen** (fixed 2026-10-01) | Was retail-negative; precursor/yield/price ladder retuned |
 | 12 | Hash/XTC @ NL | **Groen** (improved) | Export still preferred; XTC/hash no longer newbie money pits at max land |
 | 13 | Drug heat cash-cool | **Groen** | €125k cool = serieuze sink |
-| 14 | Vehicle theft €/h | **Oranje** | Paper EV extreem; garage/jail moeten hard knippen — telemetry op storage-full + sell volume |
+| 14 | Vehicle theft €/h | **Oranje→verbeterd** (2026-10-01) | Garage/marina upgrade costs ↑; fail catch/jail/wanted lightly ↑ on hard bands; paper €/h still high but slots+risk bite harder |
 | 15 | Legendary weight 3% @22 | **Groen** | ~11u per roll houdt collectie year-long spannend |
 | 16 | Epic unlock @13 | **Groen** | Midgame carrot |
 | 17 | Showroom seize + Cat papers | **Groen** | Country-scope + €200k legendary floor = juiste prestige sink |
@@ -334,8 +334,8 @@ Prioriteit op rood/oranje met grootste impact op “nog 1 jaar willen spelen”:
 3. **~~Drug late ladder~~ (done 2026-10-01)**  
    - Precursor prices, yields, and country prices retuned; max-land €/h climbs with rank.
 
-4. **Theft garage pressure (oranje)**  
-   - Telemetry: sell €/h, storage-full rate. Zo nodig slot-kosten omhoog of jail op fail iets omhoog in high bands — **niet** rarity legendary onder 3% duwen zonder data.
+4. **~~Theft garage pressure~~ (done 2026-10-01)**  
+   - Slot upgrade costs ↑; fail catch/jail/wanted lightly ↑ on expensive bands. Legendary weight untouched.
 
 5. **Job/crime XP parity mid (oranje)**  
    - Lichte XP-bump op 15m/30m crimes of job XP trim — behoud risk fantasy.
