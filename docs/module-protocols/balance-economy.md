@@ -62,6 +62,10 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 - **Daily cap:** `REFERRAL_DAILY_CAP` default **5** referrer payouts per UTC day. Extra qualified recruits wait until the next day.
 - Cash only, no premium credits. Self-referral ignored. See [referrals.md](referrals.md).
 
+## Documented static modifiers (crimes → mid XP parity)
+- **2026-10-01:** crimes with `minLevel` 5–19 (not wipe) have catalog `xpReward` ×**1.28** so mid risk loops stay closer to mid/high jobs. Rank 20+ heist XP unchanged (late prestige pace). Top jobs (`paramedic`…`airline_pilot`) `xpReward` ×**0.90**.
+- See [crimes.md](crimes.md) / jobs catalog.
+
 ## Documented static modifiers (crimes → onboarding)
 - **Listed success chance** starts at catalog `baseSuccessChance` (pickpocket 70%, shoplift 65%, graffiti 80%, vandalism 75%). Do **not** multiply by `0.385` — that made the UI show ~27% while the roll used the catalog base. Rank 1–5 street crimes (`minLevel` 1) also have a **60% floor** after HP/police penalties.
 - **Attempt roll** uses `computePlayerSuccessChanceFromContext` (rank/mastery/weapon/training/country-police/HP), clamped 5–95%. Same number as the Crimes list.
@@ -164,6 +168,8 @@ See also `country-police.md`.
 - `ECON_DIMINISH_2_MIN_ATTEMPTS` / `ECON_DIMINISH_2_MULTIPLIER`
 - `ECON_DIMINISH_3_MIN_ATTEMPTS` / `ECON_DIMINISH_3_MULTIPLIER`
 - `ECON_DIMINISH_4_MIN_ATTEMPTS` / `ECON_DIMINISH_4_MULTIPLIER`
+
+**ECON drift note:** code fallbacks in `economyBalanceService.ts` (60m window, 8/16/26/40 attempts → 0.96/0.90/0.84/0.78) may differ from production Admin values (roadmap snapshot used 90m / 12/24/36/52 → 0.98/0.94/0.90/0.86). Always read live `runtime_config` before tuning; do not silently overwrite code defaults to match an old snapshot.
 - `CREW_MISSION_CREW_LEVEL_BASE_XP`
 - `CREW_MISSION_CREW_LEVEL_STEP_XP`
 - `CREW_MISSION_CREW_LEVEL_CASH_BONUS_PER_LEVEL_PCT`

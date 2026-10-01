@@ -297,8 +297,8 @@ Criteria: **te snel / te traag / te veilig / te zwak sink** t.o.v. year-long ret
 | 2 | XP curve R25→R60 | **Oranje** | Solo crime/job te traag zonder crew/events; OK als empire XP meedoet — verifiëren met telemetry |
 | 3 | XP curve R100+ | **Groen** | Bewust prestige-traag; past “na 1 jaar nog ranks” |
 | 4 | `criminal_record_wipe` XP/CD | **Groen** (fixed 2026-10-01) | Was rood: maxReward 0 → 90s CD. Nu catalog `cooldownSeconds: 3600` → ~153 XP/h @ 18% success |
-| 5 | Job vs crime XP mid/late | **Oranje** | Jobs winnen XP-race; crimes moeten risk/reward blijven of XP-bijtrekken |
-| 6 | Soft diminish ECON_* | **Groen** | Geen hard caps; live curve milder dan code defaults — documenteer drift |
+| 5 | Job vs crime XP mid/late | **Groen** (fixed 2026-10-01) | Mid crime XP ×1.28 (R5–19); top job XP ×0.90; late heists untouched |
+| 6 | Soft diminish ECON_* | **Groen** | Geen hard caps; code defaults ≠ live snapshot — Admin runtime is truth (zie §12) |
 | 7 | Warehouse/shop ROI | **Groen** (fixed 2026-10-01) | Was ~5–6 dagen; nu ~21 dagen L1 ROI + scaled upgrade bonuses |
 | 8 | School/gym sinks | **Groen** | Modest; time-gated school correct |
 | 9 | Launder + bank cap | **Groen** | Forceert fee/risk boven free deposit |
@@ -337,14 +337,14 @@ Prioriteit op rood/oranje met grootste impact op “nog 1 jaar willen spelen”:
 4. **~~Theft garage pressure~~ (done 2026-10-01)**  
    - Slot upgrade costs ↑; fail catch/jail/wanted lightly ↑ on expensive bands. Legendary weight untouched.
 
-5. **Job/crime XP parity mid (oranje)**  
-   - Lichte XP-bump op 15m/30m crimes of job XP trim — behoud risk fantasy.
+5. **~~Job/crime XP parity mid~~ (done 2026-10-01)**  
+   - Mid crime XP ×1.28 (ranks 5–19); top job XP ×0.90; late heists unchanged.
 
 6. **~~Casino / RLD stacking~~ (done 2026-10-01)**  
    - Casino/nightclub passive trimmed; RLD soft income scale + higher full-occupancy heat/raid.
 
-7. **ECON defaults vs live documenteren**  
-   - Geen blinde sync; kies één source of truth in Admin na 72h telemetry.
+7. **~~ECON defaults vs live documenteren~~ (done 2026-10-01)**  
+   - Documented code defaults vs roadmap live snapshot; Admin runtime remains source of truth — no blind sync.
 
 8. **Niet doen in fase 2 zonder aparte beslissing**  
    - Legendary weight verlagen, hard daily caps, early mercy verwijderen, Clearing House gate wijzigen.
@@ -360,12 +360,24 @@ Prioriteit op rood/oranje met grootste impact op “nog 1 jaar willen spelen”:
 
 ---
 
-## 12. Volgende meetstap (voor fase-2 go)
+## 12. ECON_* code defaults vs live (documentatie)
 
-1. Admin `balance-telemetry?hours=72` — crimes/jobs/theft payout/min, jail%.  
-2. Spot-check: wipe attempt rate @ rank≥21; warehouse owners’ cash velocity; drug batch collect + negative-EV drugs.  
-3. Akkoord scorecard → gerichte content/runtime PRs met vóór/na telemetry + Discord player update waar nodig.
+| Key | Code default (`economyBalanceService`) | Roadmap live snapshot (2026-04-23) |
+|-----|----------------------------------------|-----------------------------------|
+| `ECON_SESSION_WINDOW_MINUTES` | 60 | 90 |
+| `ECON_DIMINISH_1` | 8 attempts → 0.96 | 12 → 0.98 |
+| `ECON_DIMINISH_2` | 16 → 0.90 | 24 → 0.94 |
+| `ECON_DIMINISH_3` | 26 → 0.84 | 36 → 0.90 |
+| `ECON_DIMINISH_4` | 40 → 0.78 | 52 → 0.86 |
+
+**Rule:** do **not** flip code defaults to match live (or vice versa) without 72h+ telemetry and an explicit Admin apply. Production `runtime_config` is the source of truth. Re-check live values in Admin → Economy before the next curve tweak.
+
+## 13. Post-fase-2 meetstap
+
+1. Admin `balance-telemetry?hours=72` — crimes/jobs/theft payout/min, jail%, storage-full / sell volume.
+2. Spot-check: wipe attempts @ rank≥21; warehouse collect rate; drug batch net; RLD rooms>40 income.
+3. Only then consider further `ECON_*` or legendary-weight changes.
 
 ---
 
-*Einde fase-1 workbook. Geen catalog- of runtime-wijzigingen in deze oplevering.*
+*Fase-1 workbook + fase-2 targeted tweaks (2026-10-01). Verdere curve-shifts alleen na telemetry.*

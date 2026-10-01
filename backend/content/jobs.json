@@ -166,7 +166,7 @@
     "minLevel": 10,
     "minEarnings": 600,
     "maxEarnings": 1000,
-    "xpReward": 60,
+    "xpReward": 54,
     "cooldownMinutes": 180
   },
   {
@@ -176,7 +176,7 @@
     "minLevel": 12,
     "minEarnings": 800,
     "maxEarnings": 1400,
-    "xpReward": 80,
+    "xpReward": 72,
     "cooldownMinutes": 240
   },
   {
@@ -196,7 +196,7 @@
     "minLevel": 15,
     "minEarnings": 1000,
     "maxEarnings": 2000,
-    "xpReward": 100,
+    "xpReward": 90,
     "cooldownMinutes": 300
   },
   {
@@ -206,7 +206,7 @@
     "minLevel": 13,
     "minEarnings": 900,
     "maxEarnings": 1600,
-    "xpReward": 90,
+    "xpReward": 81,
     "cooldownMinutes": 240
   },
   {
@@ -216,7 +216,7 @@
     "minLevel": 18,
     "minEarnings": 1500,
     "maxEarnings": 3000,
-    "xpReward": 150,
+    "xpReward": 135,
     "cooldownMinutes": 360
   },
   {
@@ -226,7 +226,7 @@
     "minLevel": 20,
     "minEarnings": 2000,
     "maxEarnings": 4000,
-    "xpReward": 200,
+    "xpReward": 180,
     "cooldownMinutes": 360
   },
   {
@@ -236,7 +236,7 @@
     "minLevel": 25,
     "minEarnings": 3000,
     "maxEarnings": 6000,
-    "xpReward": 300,
+    "xpReward": 270,
     "cooldownMinutes": 480
   }
 ]

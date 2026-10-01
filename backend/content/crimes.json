@@ -38,7 +38,9 @@
       "jailTime": 8,
       "requiredVehicle": false,
       "breakdownChance": 0,
-      "requiredTools": ["bolt_cutter"]
+      "requiredTools": [
+        "bolt_cutter"
+      ]
     },
     {
       "id": "car_theft",
@@ -52,7 +54,9 @@
       "jailTime": 30,
       "requiredVehicle": false,
       "breakdownChance": 0.15,
-      "requiredTools": ["car_theft_tools"]
+      "requiredTools": [
+        "car_theft_tools"
+      ]
     },
     {
       "id": "burglary",
@@ -62,13 +66,15 @@
       "baseSuccessChance": 0.45,
       "minReward": 800,
       "maxReward": 3000,
-      "xpReward": 80,
+      "xpReward": 102,
       "jailTime": 45,
       "requiredVehicle": true,
       "vehicleWearMultiplier": 0.75,
       "vehicleFuelMultiplier": 0.82,
       "breakdownChance": 0.2,
-      "requiredTools": ["burglary_kit"]
+      "requiredTools": [
+        "burglary_kit"
+      ]
     },
     {
       "id": "rob_store",
@@ -78,12 +84,15 @@
       "baseSuccessChance": 0.4,
       "minReward": 1500,
       "maxReward": 5000,
-      "xpReward": 120,
+      "xpReward": 154,
       "jailTime": 60,
       "requiredVehicle": true,
       "breakdownChance": 0.25,
       "requiredWeapon": true,
-      "suitableWeaponTypes": ["handgun", "shotgun"],
+      "suitableWeaponTypes": [
+        "handgun",
+        "shotgun"
+      ],
       "minIntimidation": 25
     },
     {
@@ -99,7 +108,10 @@
       "requiredVehicle": false,
       "breakdownChance": 0,
       "requiredWeapon": true,
-      "suitableWeaponTypes": ["melee", "handgun"],
+      "suitableWeaponTypes": [
+        "melee",
+        "handgun"
+      ],
       "minIntimidation": 10
     },
     {
@@ -114,7 +126,9 @@
       "jailTime": 25,
       "requiredVehicle": true,
       "breakdownChance": 0.1,
-      "requiredTools": ["toolbox"]
+      "requiredTools": [
+        "toolbox"
+      ]
     },
     {
       "id": "hijack_truck",
@@ -124,12 +138,15 @@
       "baseSuccessChance": 0.35,
       "minReward": 3000,
       "maxReward": 8000,
-      "xpReward": 200,
+      "xpReward": 256,
       "jailTime": 90,
       "requiredVehicle": true,
       "breakdownChance": 0.3,
       "requiredWeapon": true,
-      "suitableWeaponTypes": ["handgun", "shotgun"],
+      "suitableWeaponTypes": [
+        "handgun",
+        "shotgun"
+      ],
       "minIntimidation": 30
     },
     {
@@ -140,11 +157,13 @@
       "baseSuccessChance": 0.38,
       "minReward": 2000,
       "maxReward": 6000,
-      "xpReward": 150,
+      "xpReward": 192,
       "jailTime": 75,
       "requiredVehicle": true,
       "breakdownChance": 0.2,
-      "requiredTools": ["crowbar"]
+      "requiredTools": [
+        "crowbar"
+      ]
     },
     {
       "id": "jewelry_heist",
@@ -154,14 +173,20 @@
       "baseSuccessChance": 0.3,
       "minReward": 5000,
       "maxReward": 15000,
-      "xpReward": 300,
+      "xpReward": 384,
       "jailTime": 120,
       "requiredVehicle": true,
       "breakdownChance": 0.35,
       "requiredWeapon": true,
-      "suitableWeaponTypes": ["handgun", "shotgun", "smg"],
+      "suitableWeaponTypes": [
+        "handgun",
+        "shotgun",
+        "smg"
+      ],
       "minIntimidation": 40,
-      "requiredTools": ["glass_cutter"]
+      "requiredTools": [
+        "glass_cutter"
+      ]
     },
     {
       "id": "vandalism",
@@ -201,7 +226,12 @@
       "jailTime": 30,
       "requiredVehicle": false,
       "breakdownChance": 0,
-      "requiredDrugs": ["white_widow", "amnesia_haze", "og_kush", "xtc"],
+      "requiredDrugs": [
+        "white_widow",
+        "amnesia_haze",
+        "og_kush",
+        "xtc"
+      ],
       "minDrugQuantity": 10
     },
     {
@@ -212,11 +242,15 @@
       "baseSuccessChance": 0.4,
       "minReward": 2500,
       "maxReward": 7000,
-      "xpReward": 180,
+      "xpReward": 230,
       "jailTime": 100,
       "requiredVehicle": true,
       "breakdownChance": 0.25,
-      "requiredDrugs": ["cocaine", "speed", "heroin"],
+      "requiredDrugs": [
+        "cocaine",
+        "speed",
+        "heroin"
+      ],
       "minDrugQuantity": 5
     },
     {
@@ -227,12 +261,15 @@
       "baseSuccessChance": 0.45,
       "minReward": 1000,
       "maxReward": 3500,
-      "xpReward": 100,
+      "xpReward": 128,
       "jailTime": 50,
       "requiredVehicle": false,
       "breakdownChance": 0,
       "requiredWeapon": true,
-      "suitableWeaponTypes": ["melee", "handgun"],
+      "suitableWeaponTypes": [
+        "melee",
+        "handgun"
+      ],
       "minIntimidation": 15
     },
     {
@@ -243,15 +280,21 @@
       "baseSuccessChance": 0.25,
       "minReward": 10000,
       "maxReward": 30000,
-      "xpReward": 500,
+      "xpReward": 640,
       "jailTime": 180,
       "requiredVehicle": true,
       "breakdownChance": 0.4,
       "isFederal": true,
       "requiredWeapon": true,
-      "suitableWeaponTypes": ["handgun", "shotgun", "smg"],
+      "suitableWeaponTypes": [
+        "handgun",
+        "shotgun",
+        "smg"
+      ],
       "minIntimidation": 50,
-      "requiredTools": ["rope"]
+      "requiredTools": [
+        "rope"
+      ]
     },
     {
       "id": "arson",
@@ -261,11 +304,13 @@
       "baseSuccessChance": 0.35,
       "minReward": 3500,
       "maxReward": 10000,
-      "xpReward": 250,
+      "xpReward": 320,
       "jailTime": 110,
       "requiredVehicle": true,
       "breakdownChance": 0.3,
-      "requiredTools": ["jerry_can"]
+      "requiredTools": [
+        "jerry_can"
+      ]
     },
     {
       "id": "smuggling",
@@ -275,16 +320,21 @@
       "baseSuccessChance": 0.4,
       "minReward": 2800,
       "maxReward": 8500,
-      "xpReward": 220,
+      "xpReward": 282,
       "jailTime": 95,
       "requiredVehicle": true,
       "breakdownChance": 0.28,
       "vehicleRequirements": {
         "minCargo": 60,
         "minStealth": 50,
-        "preferredTypes": ["cargo", "stealth"]
+        "preferredTypes": [
+          "cargo",
+          "stealth"
+        ]
       },
-      "requiredTools": ["fake_documents"]
+      "requiredTools": [
+        "fake_documents"
+      ]
     },
     {
       "id": "assassination",
@@ -294,14 +344,19 @@
       "baseSuccessChance": 0.21,
       "minReward": 20000,
       "maxReward": 50000,
-      "xpReward": 700,
+      "xpReward": 896,
       "jailTime": 220,
       "requiredVehicle": true,
       "breakdownChance": 0.43,
       "requiredWeapon": true,
-      "suitableWeaponTypes": ["rifle", "sniper"],
+      "suitableWeaponTypes": [
+        "rifle",
+        "sniper"
+      ],
       "minDamage": 80,
-      "requiredTools": ["silencer"]
+      "requiredTools": [
+        "silencer"
+      ]
     },
     {
       "id": "eliminate_witness",
@@ -311,15 +366,20 @@
       "baseSuccessChance": 0.21,
       "minReward": 15000,
       "maxReward": 35000,
-      "xpReward": 680,
+      "xpReward": 870,
       "jailTime": 220,
       "requiredVehicle": true,
       "breakdownChance": 0.44,
       "isFederal": true,
       "requiredWeapon": true,
-      "suitableWeaponTypes": ["rifle", "sniper"],
+      "suitableWeaponTypes": [
+        "rifle",
+        "sniper"
+      ],
       "minDamage": 75,
-      "requiredTools": ["silencer"]
+      "requiredTools": [
+        "silencer"
+      ]
     },
     {
       "id": "diamond_heist",
@@ -335,14 +395,22 @@
       "breakdownChance": 0.46,
       "isFederal": true,
       "requiredWeapon": true,
-      "suitableWeaponTypes": ["rifle", "smg"],
+      "suitableWeaponTypes": [
+        "rifle",
+        "smg"
+      ],
       "minDamage": 55,
       "vehicleRequirements": {
         "minSpeed": 75,
         "minArmor": 50,
-        "preferredTypes": ["speed", "armored"]
+        "preferredTypes": [
+          "speed",
+          "armored"
+        ]
       },
-      "requiredTools": ["burner_phone"]
+      "requiredTools": [
+        "burner_phone"
+      ]
     },
     {
       "id": "evidence_room_heist",
@@ -358,9 +426,14 @@
       "breakdownChance": 0.47,
       "isFederal": true,
       "requiredWeapon": true,
-      "suitableWeaponTypes": ["rifle", "smg"],
+      "suitableWeaponTypes": [
+        "rifle",
+        "smg"
+      ],
       "minDamage": 55,
-      "requiredTools": ["night_vision"]
+      "requiredTools": [
+        "night_vision"
+      ]
     },
     {
       "id": "hack_account",
@@ -370,11 +443,13 @@
       "baseSuccessChance": 0.33,
       "minReward": 4000,
       "maxReward": 12000,
-      "xpReward": 280,
+      "xpReward": 358,
       "jailTime": 100,
       "requiredVehicle": false,
       "breakdownChance": 0,
-      "requiredTools": ["hacking_laptop"]
+      "requiredTools": [
+        "hacking_laptop"
+      ]
     },
     {
       "id": "counterfeit_money",
@@ -384,12 +459,14 @@
       "baseSuccessChance": 0.3,
       "minReward": 6000,
       "maxReward": 18000,
-      "xpReward": 350,
+      "xpReward": 448,
       "jailTime": 130,
       "requiredVehicle": false,
       "breakdownChance": 0,
       "isFederal": true,
-      "requiredTools": ["counterfeiting_kit"]
+      "requiredTools": [
+        "counterfeiting_kit"
+      ]
     },
     {
       "id": "identity_theft",
@@ -399,12 +476,14 @@
       "baseSuccessChance": 0.28,
       "minReward": 7000,
       "maxReward": 20000,
-      "xpReward": 400,
+      "xpReward": 512,
       "jailTime": 140,
       "requiredVehicle": false,
       "breakdownChance": 0,
       "isFederal": true,
-      "requiredTools": ["hacking_laptop"]
+      "requiredTools": [
+        "hacking_laptop"
+      ]
     },
     {
       "id": "rob_armored_truck",
@@ -414,15 +493,20 @@
       "baseSuccessChance": 0.22,
       "minReward": 15000,
       "maxReward": 40000,
-      "xpReward": 650,
+      "xpReward": 832,
       "jailTime": 200,
       "requiredVehicle": true,
       "breakdownChance": 0.42,
       "isFederal": true,
       "requiredWeapon": true,
-      "suitableWeaponTypes": ["rifle", "smg"],
+      "suitableWeaponTypes": [
+        "rifle",
+        "smg"
+      ],
       "minDamage": 55,
-      "requiredTools": ["gps_jammer"]
+      "requiredTools": [
+        "gps_jammer"
+      ]
     },
     {
       "id": "art_theft",
@@ -432,14 +516,19 @@
       "baseSuccessChance": 0.25,
       "minReward": 12000,
       "maxReward": 35000,
-      "xpReward": 550,
+      "xpReward": 704,
       "jailTime": 170,
       "requiredVehicle": true,
       "breakdownChance": 0.38,
       "requiredWeapon": true,
-      "suitableWeaponTypes": ["handgun", "shotgun"],
+      "suitableWeaponTypes": [
+        "handgun",
+        "shotgun"
+      ],
       "minIntimidation": 30,
-      "requiredTools": ["glass_cutter"]
+      "requiredTools": [
+        "glass_cutter"
+      ]
     },
     {
       "id": "protection_racket",
@@ -449,12 +538,15 @@
       "baseSuccessChance": 0.42,
       "minReward": 1200,
       "maxReward": 4000,
-      "xpReward": 110,
+      "xpReward": 141,
       "jailTime": 65,
       "requiredVehicle": false,
       "breakdownChance": 0,
       "requiredWeapon": true,
-      "suitableWeaponTypes": ["melee", "handgun"],
+      "suitableWeaponTypes": [
+        "melee",
+        "handgun"
+      ],
       "minIntimidation": 20
     },
     {
@@ -471,9 +563,14 @@
       "breakdownChance": 0.5,
       "isFederal": true,
       "requiredWeapon": true,
-      "suitableWeaponTypes": ["rifle", "smg"],
+      "suitableWeaponTypes": [
+        "rifle",
+        "smg"
+      ],
       "minDamage": 55,
-      "requiredTools": ["thermal_drill"]
+      "requiredTools": [
+        "thermal_drill"
+      ]
     },
     {
       "id": "bank_robbery",
@@ -491,14 +588,22 @@
       "breakdownChance": 0.48,
       "isFederal": true,
       "requiredWeapon": true,
-      "suitableWeaponTypes": ["rifle", "smg"],
+      "suitableWeaponTypes": [
+        "rifle",
+        "smg"
+      ],
       "minDamage": 55,
       "vehicleRequirements": {
         "minSpeed": 70,
         "minArmor": 40,
-        "preferredTypes": ["speed", "armored"]
+        "preferredTypes": [
+          "speed",
+          "armored"
+        ]
       },
-      "requiredTools": ["thermal_drill"]
+      "requiredTools": [
+        "thermal_drill"
+      ]
     },
     {
       "id": "museum_heist",
@@ -513,9 +618,14 @@
       "requiredVehicle": true,
       "breakdownChance": 0.49,
       "requiredWeapon": true,
-      "suitableWeaponTypes": ["rifle", "smg"],
+      "suitableWeaponTypes": [
+        "rifle",
+        "smg"
+      ],
       "minDamage": 55,
-      "requiredTools": ["glass_cutter"]
+      "requiredTools": [
+        "glass_cutter"
+      ]
     },
     {
       "id": "boss_assassination",
@@ -531,9 +641,14 @@
       "breakdownChance": 0.5,
       "isFederal": true,
       "requiredWeapon": true,
-      "suitableWeaponTypes": ["rifle", "sniper"],
+      "suitableWeaponTypes": [
+        "rifle",
+        "sniper"
+      ],
       "minDamage": 85,
-      "requiredTools": ["silencer"]
+      "requiredTools": [
+        "silencer"
+      ]
     },
     {
       "id": "steal_yacht",
@@ -543,11 +658,13 @@
       "baseSuccessChance": 0.23,
       "minReward": 18000,
       "maxReward": 45000,
-      "xpReward": 600,
+      "xpReward": 768,
       "jailTime": 190,
       "requiredVehicle": true,
       "breakdownChance": 0.4,
-      "requiredTools": ["car_theft_tools"]
+      "requiredTools": [
+        "car_theft_tools"
+      ]
     },
     {
       "id": "corrupt_official",
@@ -557,7 +674,7 @@
       "baseSuccessChance": 0.32,
       "minReward": 5000,
       "maxReward": 16000,
-      "xpReward": 320,
+      "xpReward": 410,
       "jailTime": 125,
       "requiredVehicle": false,
       "breakdownChance": 0
@@ -576,7 +693,10 @@
       "requiredVehicle": false,
       "breakdownChance": 0,
       "isFederal": true,
-      "requiredTools": ["hacking_laptop", "fake_documents"]
+      "requiredTools": [
+        "hacking_laptop",
+        "fake_documents"
+      ]
     }
   ]
 }
