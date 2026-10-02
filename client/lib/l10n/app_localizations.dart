@@ -10048,6 +10048,48 @@ abstract class AppLocalizations {
   /// **'Buy a paid license first, then pick a plane below.'**
   String get aviationHangarEmptyHint;
 
+  /// No description provided for @aviationFreightTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Freight contracts'**
+  String get aviationFreightTitle;
+
+  /// No description provided for @aviationFreightHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept a daily NPC cargo run, fly to the destination with enough cargo tiles, then claim the payout.'**
+  String get aviationFreightHint;
+
+  /// No description provided for @aviationFreightEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No freight offers today.'**
+  String get aviationFreightEmpty;
+
+  /// No description provided for @aviationFreightAccept.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get aviationFreightAccept;
+
+  /// No description provided for @aviationFreightClaim.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim payout'**
+  String get aviationFreightClaim;
+
+  /// No description provided for @aviationFreightActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active: {origin} → {dest} ({status})'**
+  String aviationFreightActive(String origin, String dest, String status);
+
+  /// No description provided for @aviationFreightOfferMeta.
+  ///
+  /// In en, this message translates to:
+  /// **'{tiles} cargo tiles · €{payout}'**
+  String aviationFreightOfferMeta(String tiles, String payout);
+
   /// No description provided for @aviationRequiresLicense.
   ///
   /// In en, this message translates to:
@@ -18292,6 +18334,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Attempt Hit'**
   String get attemptHit;
+
+  /// No description provided for @hitlistDailyContractTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Most-Wanted of the day'**
+  String get hitlistDailyContractTitle;
+
+  /// No description provided for @hitlistDailyContractOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract on {username}. Finish the hit for a €{bonus} bonus on top of the bounty.'**
+  String hitlistDailyContractOpen(String username, String bonus);
+
+  /// No description provided for @hitlistDailyContractDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s Most-Wanted contract is already completed.'**
+  String get hitlistDailyContractDone;
+
+  /// No description provided for @hitlistDailyContractBounty.
+  ///
+  /// In en, this message translates to:
+  /// **'Listed bounty: €{bounty}'**
+  String hitlistDailyContractBounty(String bounty);
 
   /// No description provided for @selectWeapon.
   ///
@@ -27142,6 +27208,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sell contraband for profit or claim smuggled trade shipments — highest score wins.'**
   String get gameEventTmplContrabandRushDesc;
+
+  /// No description provided for @gameEventTmplWeeklyDominationRushTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Domination Rush'**
+  String get gameEventTmplWeeklyDominationRushTitle;
+
+  /// No description provided for @gameEventTmplWeeklyDominationRushDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Score with Risk attacks: destroyed armies and captured regions count. Highest score wins.'**
+  String get gameEventTmplWeeklyDominationRushDesc;
 
   /// No description provided for @gameEventTmplMonthlyEmpireShowdownTitle.
   ///

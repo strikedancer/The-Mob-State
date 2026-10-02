@@ -3341,6 +3341,26 @@
   },
   "aviationOwnedBadge": "Owned",
   "aviationHangarEmptyHint": "Buy a paid license first, then pick a plane below.",
+  "aviationFreightTitle": "Freight contracts",
+  "aviationFreightHint": "Accept a daily NPC cargo run, fly to the destination with enough cargo tiles, then claim the payout.",
+  "aviationFreightEmpty": "No freight offers today.",
+  "aviationFreightAccept": "Accept",
+  "aviationFreightClaim": "Claim payout",
+  "aviationFreightActive": "Active: {origin} → {dest} ({status})",
+  "@aviationFreightActive": {
+    "placeholders": {
+      "origin": { "type": "String" },
+      "dest": { "type": "String" },
+      "status": { "type": "String" }
+    }
+  },
+  "aviationFreightOfferMeta": "{tiles} cargo tiles · €{payout}",
+  "@aviationFreightOfferMeta": {
+    "placeholders": {
+      "tiles": { "type": "String" },
+      "payout": { "type": "String" }
+    }
+  },
   "aviationRequiresLicense": "Needs {name}",
   "@aviationRequiresLicense": {
     "placeholders": {
@@ -6653,6 +6673,21 @@
   "counterBid": "COUNTER-BID",
   "counterBidPlaced": "Counter-bid placed! The contract has been reversed.",
   "attemptHit": "Attempt Hit",
+  "hitlistDailyContractTitle": "Most-Wanted of the day",
+  "hitlistDailyContractOpen": "Contract on {username}. Finish the hit for a €{bonus} bonus on top of the bounty.",
+  "@hitlistDailyContractOpen": {
+    "placeholders": {
+      "username": { "type": "String" },
+      "bonus": { "type": "String" }
+    }
+  },
+  "hitlistDailyContractDone": "Today's Most-Wanted contract is already completed.",
+  "hitlistDailyContractBounty": "Listed bounty: €{bounty}",
+  "@hitlistDailyContractBounty": {
+    "placeholders": {
+      "bounty": { "type": "String" }
+    }
+  },
   "selectWeapon": "Select Weapon and Ammo",
   "youAreTargeted": "You are on the hit list",
   "security": "Security",
@@ -9495,6 +9530,8 @@
   "gameEventTmplStreetCrimeSpreeDesc": "Complete as many crimes as possible in the live window.",
   "gameEventTmplContrabandRushTitle": "Contraband Rush",
   "gameEventTmplContrabandRushDesc": "Sell contraband for profit or claim smuggled trade shipments — highest score wins.",
+  "gameEventTmplWeeklyDominationRushTitle": "Domination Rush",
+  "gameEventTmplWeeklyDominationRushDesc": "Score with Risk attacks: destroyed armies and captured regions count. Highest score wins.",
   "gameEventTmplMonthlyEmpireShowdownTitle": "Monthly Empire Showdown",
   "gameEventTmplMonthlyEmpireShowdownDesc": "All-round monthly challenge: score via crimes, vehicles, drugs, smuggling and trade. Top ranks win rare vehicles, weapons, ammo and parts.",
   "gameScreenLoadError": "Could not load events.",

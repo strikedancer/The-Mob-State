@@ -126,6 +126,7 @@ class _HitlistScreenState extends State<HitlistScreen> {
 
   final ApiClient _apiClient = ApiClient();
   List<dynamic> _activeHits = [];
+  Map<String, dynamic>? _dailyContract;
   bool _isLoading = false;
   String? _loadError;
   bool _isHunted = false;
@@ -148,11 +149,18 @@ class _HitlistScreenState extends State<HitlistScreen> {
       _loadError = null;
     });
     try {
-      final response = await _apiClient.get('/hitlist/active?page=$_page');
-      final data = jsonDecode(response.body);
+      final results = await Future.wait([
+        _apiClient.get('/hitlist/active?page=$_page'),
+        _apiClient.get('/hitlist/daily-contract'),
+      ]);
+      final data = jsonDecode(results[0].body);
+      final contractData = jsonDecode(results[1].body);
       if (data['success'] == true) {
         setState(() {
           _activeHits = data['hits'] ?? [];
+          _dailyContract = contractData['success'] == true
+              ? (contractData['contract'] as Map?)?.cast<String, dynamic>()
+              : null;
           _loadError = null;
         });
         await _checkSecurityStatus();
@@ -230,6 +238,10 @@ class _HitlistScreenState extends State<HitlistScreen> {
         child: ListView(
           physics: const AlwaysScrollableScrollPhysics(),
           children: [
+            if (_dailyContract != null &&
+                (_dailyContract!['status']?.toString() == 'open' ||
+                    _dailyContract!['status']?.toString() == 'completed'))
+              _buildDailyContractCard(l10n),
             if (_loadError != null && _activeHits.isEmpty)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 48),
@@ -317,6 +329,68 @@ class _HitlistScreenState extends State<HitlistScreen> {
         border: Border.all(color: _panelBorder),
       ),
       child: child,
+    );
+  }
+
+  Widget _buildDailyContractCard(AppLocalizations l10n) {
+    final contract = _dailyContract!;
+    final status = contract['status']?.toString() ?? 'open';
+    final username = contract['targetUsername']?.toString() ?? '-';
+    final bonus = (contract['bonusCash'] as num?)?.toInt() ?? 25000;
+    final bounty = (contract['bounty'] as num?)?.toInt();
+    final hitId = contract['hitId'];
+    final open = status == 'open';
+    return Card(
+      color: _panelBg,
+      margin: const EdgeInsets.fromLTRB(0, 0, 0, 12),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: open ? _gold : _panelBorder),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              l10n.hitlistDailyContractTitle,
+              style: const TextStyle(
+                color: _gold,
+                fontWeight: FontWeight.w700,
+                fontSize: 15,
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              open
+                  ? l10n.hitlistDailyContractOpen(username, bonus.toString())
+                  : l10n.hitlistDailyContractDone,
+              style: const TextStyle(color: Colors.white70, fontSize: 13),
+            ),
+            if (bounty != null) ...[
+              const SizedBox(height: 4),
+              Text(
+                l10n.hitlistDailyContractBounty(bounty.toString()),
+                style: const TextStyle(color: Colors.white54, fontSize: 12),
+              ),
+            ],
+            if (open && hitId != null) ...[
+              const SizedBox(height: 10),
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () => _attemptHit(hitId),
+                  style: TextButton.styleFrom(
+                    backgroundColor: _hitAccent,
+                    foregroundColor: Colors.white,
+                  ),
+                  child: Text(l10n.attemptHit),
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
     );
   }
 

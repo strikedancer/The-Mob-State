@@ -779,6 +779,13 @@ export async function flyToDestination(
 
   await clearPlayerCrimeVehicle(playerId);
 
+  try {
+    const { markFreightInFlight } = await import('./aviationFreightService');
+    await markFreightInFlight(playerId, aircraftId, destinationCountry);
+  } catch {
+    // Non-critical freight bookkeeping
+  }
+
   // Create public world event (all flights are public)
   await worldEventService.createEvent(
     'aviation.flight',

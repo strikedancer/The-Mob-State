@@ -204,6 +204,23 @@ router.get('/active', authenticate, async (req: AuthRequest, res: Response, next
 });
 
 /**
+ * GET /hitlist/daily-contract
+ * Featured Most-Wanted contract of the UTC day.
+ */
+router.get('/daily-contract', authenticate, async (_req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const { getDailyContract } = await import('../services/hitlistDailyContractService');
+    const contract = await getDailyContract();
+    return res.json({
+      success: true,
+      contract,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+/**
  * POST /hitlist/attempt/:hitId
  * Attempt to complete a hit (combat mechanic)
  */

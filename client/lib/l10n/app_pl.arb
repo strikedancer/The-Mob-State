@@ -13805,5 +13805,58 @@
   "territoryErrorRiskFortifyUsed": "You already fortified this reinforce window.",
   "territoryErrorRiskInsufficientArmies": "Not enough armies (leave at least 1 behind).",
   "territoryErrorRiskOwnTarget": "You already own that region.",
-  "territoryErrorRiskAttackCooldown": "Attack cooldown still active for this border."
+  "territoryErrorRiskAttackCooldown": "Attack cooldown still active for this border.",
+  "aviationFreightTitle": "Freight contracts",
+  "aviationFreightHint": "Accept a daily NPC cargo run, fly to the destination with enough cargo tiles, then claim the payout.",
+  "aviationFreightEmpty": "No freight offers today.",
+  "aviationFreightAccept": "Accept",
+  "aviationFreightClaim": "Claim payout",
+  "aviationFreightActive": "Active: {origin} → {dest} ({status})",
+  "@aviationFreightActive": {
+    "placeholders": {
+      "origin": {
+        "type": "String"
+      },
+      "dest": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightOfferMeta": "{tiles} cargo tiles · €{payout}",
+  "@aviationFreightOfferMeta": {
+    "placeholders": {
+      "tiles": {
+        "type": "String"
+      },
+      "payout": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistDailyContractTitle": "Most-Wanted of the day",
+  "hitlistDailyContractOpen": "Contract on {username}. Finish the hit for a €{bonus} bonus on top of the bounty.",
+  "@hitlistDailyContractOpen": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      },
+      "bonus": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistDailyContractDone": "Today's Most-Wanted contract is already completed.",
+  "hitlistDailyContractBounty": "Listed bounty: €{bounty}",
+  "@hitlistDailyContractBounty": {
+    "placeholders": {
+      "bounty": {
+        "type": "String"
+      }
+    }
+  },
+  "gameEventTmplWeeklyDominationRushTitle": "Domination Rush",
+  "gameEventTmplWeeklyDominationRushDesc": "Score with Risk attacks: destroyed armies and captured regions count. Highest score wins."
 }

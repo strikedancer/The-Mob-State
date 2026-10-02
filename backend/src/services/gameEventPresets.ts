@@ -11,12 +11,13 @@ export const PRESET_GAME_EVENT_KEYS = [
   'lab_output_challenge',
   'street_crime_spree',
   'contraband_rush',
+  'weekly_domination_rush',
   'monthly_empire_showdown',
 ] as const;
 
 type PresetRow = {
   key: (typeof PRESET_GAME_EVENT_KEYS)[number];
-  category: 'vehicles' | 'smuggling' | 'drugs' | 'crime' | 'trade' | 'allround';
+  category: 'vehicles' | 'smuggling' | 'drugs' | 'crime' | 'trade' | 'territory' | 'allround';
   eventType: string;
   titleNl: string;
   titleEn: string;
@@ -96,6 +97,21 @@ const PRESET_ROWS: PresetRow[] = [
     durationMinutes: 2880,
     cooldownMinutes: 0,
     staggerDayOffset: 4,
+  },
+  {
+    key: 'weekly_domination_rush',
+    category: 'territory',
+    eventType: 'contribution',
+    titleNl: 'Dominatie Rush',
+    titleEn: 'Domination Rush',
+    shortDescriptionNl:
+      'Score met Risk-aanvallen: vernietigde legers en veroverde regio\'s tellen. Hoogste score wint.',
+    shortDescriptionEn:
+      'Score with Risk attacks: destroyed armies and captured regions count. Highest score wins.',
+    intervalMinutes: WEEK_MINUTES,
+    durationMinutes: 2880,
+    cooldownMinutes: 0,
+    staggerDayOffset: 5,
   },
   {
     key: 'monthly_empire_showdown',
@@ -201,6 +217,27 @@ export function getDefaultRewardRulesForTemplateKey(
           },
           low: {
             ammo: [{ ammoType: '9mm', quantity: 10 }],
+          },
+        };
+      case 'weekly_domination_rush':
+        return {
+          top: {
+            cash: 80_000,
+            ammo: [
+              { ammoType: '5.56', quantity: 80 },
+              { ammoType: '9mm', quantity: 60 },
+            ],
+            vehicleParts: { car: 6, motorcycle: 3 },
+            tools: [{ toolId: 'bolt_cutter', quantity: 1 }],
+          },
+          mid: {
+            cash: 40_000,
+            ammo: [{ ammoType: '9mm', quantity: 40 }],
+            vehicleParts: { car: 3 },
+          },
+          low: {
+            cash: 15_000,
+            ammo: [{ ammoType: '9mm', quantity: 20 }],
           },
         };
       case 'monthly_empire_showdown':

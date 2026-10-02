@@ -24,6 +24,8 @@ import { ensureNightclubPlayerSupplySchema } from './startup/ensureNightclubPlay
 import { ensureVipPrestigeSchema } from './startup/ensureVipPrestigeSchema';
 import { ensureCrewVipFundSchema } from './startup/ensureCrewVipFundSchema';
 import { ensureDailyGoalsSchema } from './startup/ensureDailyGoalsSchema';
+import { ensureHitlistDailyContractSchema } from './startup/ensureHitlistDailyContractSchema';
+import { ensureAviationFreightSchema } from './startup/ensureAviationFreightSchema';
 import { ensureSiteVisitorsSchema } from './startup/ensureSiteVisitorsSchema';
 import { ensureCrewRecruitingSchema } from './startup/ensureCrewRecruitingSchema';
 import { ensureDiscordSchema } from './startup/ensureDiscordSchema';
@@ -84,6 +86,8 @@ async function startServer() {
   await ensureVipPrestigeSchema();
   await ensureCrewVipFundSchema();
   await ensureDailyGoalsSchema();
+  await ensureHitlistDailyContractSchema();
+  await ensureAviationFreightSchema();
   await ensureSiteVisitorsSchema();
   await ensureCrewRecruitingSchema();
   await ensureDiscordSchema();

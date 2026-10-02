@@ -1798,6 +1798,27 @@
   "counterBid": "Tegen-bod",
   "counterBidPlaced": "Tegen-bod geplaatst! Het contract is omgekeerd.",
   "attemptHit": "Moord uitvoeren",
+  "hitlistDailyContractTitle": "Most Wanted van de dag",
+  "hitlistDailyContractOpen": "Contract op {username}. Maak de hit af voor €{bonus} bonus bovenop de bounty.",
+  "@hitlistDailyContractOpen": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      },
+      "bonus": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistDailyContractDone": "Het Most Wanted-contract van vandaag is al voltooid.",
+  "hitlistDailyContractBounty": "Bounty op de lijst: €{bounty}",
+  "@hitlistDailyContractBounty": {
+    "placeholders": {
+      "bounty": {
+        "type": "String"
+      }
+    }
+  },
   "selectWeapon": "Selecteer het wapen en munitie voor deze moord",
   "youAreTargeted": "Je bent op de moordlijst",
   "security": "Beveiliging",
@@ -6804,6 +6825,8 @@
   "gameEventTmplStreetCrimeSpreeDesc": "Pleg zoveel mogelijk misdaden in het actieve venster.",
   "gameEventTmplContrabandRushTitle": "Contraband Rush",
   "gameEventTmplContrabandRushDesc": "Verkoop handelswaren met winst of haal gesmokkelde lading op — hoogste score wint.",
+  "gameEventTmplWeeklyDominationRushTitle": "Dominatie Rush",
+  "gameEventTmplWeeklyDominationRushDesc": "Score met Risk-aanvallen: vernietigde legers en veroverde regio's tellen. Hoogste score wint.",
   "gameEventTmplMonthlyEmpireShowdownTitle": "Maandelijkse Empire Showdown",
   "gameEventTmplMonthlyEmpireShowdownDesc": "Maandchallenge: score met misdaden, voertuigen, drugs, smokkel én handel. Top ranks winnen zeldzame voertuigen, wapens, munitie en onderdelen.",
   "gameScreenLoadError": "Events konden niet geladen worden.",
@@ -11726,6 +11749,36 @@
   "aviationOwnedCountChip": "{count} vliegtuigen",
   "aviationOwnedBadge": "In bezit",
   "aviationHangarEmptyHint": "Koop eerst een betaalde licentie en kies daarna hieronder een toestel.",
+  "aviationFreightTitle": "Vrachtcontracten",
+  "aviationFreightHint": "Accepteer een dagelijkse NPC-vrachtrit, vlieg naar de bestemming met genoeg cargo-tegels, en claim daarna de uitbetaling.",
+  "aviationFreightEmpty": "Geen vrachtaanbiedingen vandaag.",
+  "aviationFreightAccept": "Accepteren",
+  "aviationFreightClaim": "Claim uitbetaling",
+  "aviationFreightActive": "Actief: {origin} → {dest} ({status})",
+  "@aviationFreightActive": {
+    "placeholders": {
+      "origin": {
+        "type": "String"
+      },
+      "dest": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightOfferMeta": "{tiles} cargo-tegels · €{payout}",
+  "@aviationFreightOfferMeta": {
+    "placeholders": {
+      "tiles": {
+        "type": "String"
+      },
+      "payout": {
+        "type": "String"
+      }
+    }
+  },
   "aviationRequiresLicense": "Vereist {name}",
   "aviationRankLocked": "Rang te laag",
   "aviationRefuel": "Tanken",

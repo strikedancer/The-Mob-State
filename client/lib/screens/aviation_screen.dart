@@ -47,6 +47,8 @@ class _AviationScreenState extends State<AviationScreen> {
 
   List<Map<String, dynamic>> _aircraft = const [];
   List<Map<String, dynamic>> _owned = const [];
+  List<Map<String, dynamic>> _freightOffers = const [];
+  Map<String, dynamic>? _freightJob;
   int _aviationLevel = 0;
   bool _hasFlightBasic = false;
   bool _hasFlightCommercial = false;
@@ -75,6 +77,7 @@ class _AviationScreenState extends State<AviationScreen> {
         _apiClient.get('/aviation/my-aircraft'),
         _apiClient.get('/aviation/my-license'),
         _apiClient.get('/aviation/licenses'),
+        _apiClient.get('/aviation/freight/board'),
       ]);
 
       final aircraftData =
@@ -82,6 +85,7 @@ class _AviationScreenState extends State<AviationScreen> {
       final ownedData = jsonDecode(responses[1].body) as Map<String, dynamic>;
       final licenseData = jsonDecode(responses[2].body) as Map<String, dynamic>;
       final offersData = jsonDecode(responses[3].body) as Map<String, dynamic>;
+      final freightData = jsonDecode(responses[4].body) as Map<String, dynamic>;
 
       var aviationLevel = 0;
       var hasFlightBasic = false;
@@ -128,6 +132,11 @@ class _AviationScreenState extends State<AviationScreen> {
             .whereType<Map>()
             .map((entry) => entry.cast<String, dynamic>())
             .toList(growable: false);
+        _freightOffers = ((freightData['offers'] as List?) ?? const [])
+            .whereType<Map>()
+            .map((entry) => entry.cast<String, dynamic>())
+            .toList(growable: false);
+        _freightJob = (freightData['activeJob'] as Map?)?.cast<String, dynamic>();
         _aviationLevel = aviationLevel;
         _hasFlightBasic = hasFlightBasic;
         _hasFlightCommercial = hasFlightCommercial;
@@ -1215,6 +1224,8 @@ class _AviationScreenState extends State<AviationScreen> {
                       )
                     else
                       ..._owned.map((item) => _buildOwnedCard(item, l10n)),
+                    _sectionTitle(l10n.aviationFreightTitle),
+                    _buildFreightBoard(l10n),
                     _sectionTitle(l10n.aviationUiAvailableAircraft),
                     ..._aircraft.map(
                       (item) => _buildCatalogCard(
@@ -1242,5 +1253,101 @@ class _AviationScreenState extends State<AviationScreen> {
       backgroundColor: widget.embedded ? Colors.transparent : null,
       body: body,
     );
+  }
+
+  Widget _buildFreightBoard(AppLocalizations l10n) {
+    final job = _freightJob;
+    return _buildPanel(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l10n.aviationFreightHint,
+            style: const TextStyle(color: Colors.white70, fontSize: 13),
+          ),
+          if (job != null) ...[
+            const SizedBox(height: 10),
+            Text(
+              l10n.aviationFreightActive(
+                job['originCountry']?.toString() ?? '-',
+                job['destCountry']?.toString() ?? '-',
+                job['status']?.toString() ?? '-',
+              ),
+              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+            ),
+            if (job['status'] == 'claimable' || job['status'] == 'accepted') ...[
+              const SizedBox(height: 8),
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () => _claimFreight(job['id']),
+                  child: Text(l10n.aviationFreightClaim),
+                ),
+              ),
+            ],
+          ] else if (_freightOffers.isEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text(
+                l10n.aviationFreightEmpty,
+                style: const TextStyle(color: Colors.white54),
+              ),
+            )
+          else
+            ..._freightOffers.map((offer) {
+              return ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(
+                  '${offer['originCountry']} → ${offer['destCountry']}',
+                  style: const TextStyle(color: Colors.white),
+                ),
+                subtitle: Text(
+                  l10n.aviationFreightOfferMeta(
+                    '${offer['cargoTiles']}',
+                    '${offer['payout']}',
+                  ),
+                  style: const TextStyle(color: Colors.white70, fontSize: 12),
+                ),
+                trailing: TextButton(
+                  onPressed: _owned.isEmpty
+                      ? null
+                      : () => _acceptFreight(
+                            offer['offerKey']?.toString() ?? '',
+                          ),
+                  child: Text(l10n.aviationFreightAccept),
+                ),
+              );
+            }),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _acceptFreight(String offerKey) async {
+    if (offerKey.isEmpty || _owned.isEmpty) return;
+    final aircraftId = (_owned.first['id'] as num?)?.toInt();
+    if (aircraftId == null) return;
+    try {
+      final response = await _apiClient.post('/aviation/freight/accept', {
+        'offerKey': offerKey,
+        'aircraftId': aircraftId,
+      });
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      if (data['success'] == true) {
+        await _loadData();
+      }
+    } catch (_) {}
+  }
+
+  Future<void> _claimFreight(dynamic jobId) async {
+    final id = (jobId as num?)?.toInt();
+    if (id == null) return;
+    try {
+      final response = await _apiClient.post('/aviation/freight/claim/$id', {});
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      if (data['success'] == true) {
+        await _loadData();
+      }
+    } catch (_) {}
   }
 }

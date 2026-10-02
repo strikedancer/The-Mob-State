@@ -176,6 +176,9 @@ Scope-afbakening:
 - Fortify: one adjacent owned→owned move per reinforce window.
 - Reinforce Call: claiming a new window notifies all crew members (push type `territory_risk_reinforce` + inbox). Cron reminds once per open window while `armiesRemaining > 0` (`notifiedAt` on `territory_risk_reinforce`). Dashboard exposes `riskReinforcePending` for a Home chip deep-linking to Territory.
 - Capture Wire: `GET /territory/risk/wire` + drama `recentCaptures` merge Risk battle_log captures with classic contest resolutions for Home/Territory visibility.
+- Domination Rush: weekly preset `weekly_domination_rush` (category `territory`, stagger day 5). Risk attacks call `recordContribution(playerId, 'territory', defenderLosses + captureBonus)`.
+- Most-Wanted daily contract: `hitlist_daily_contracts` + `GET /hitlist/daily-contract`; completing the featured hit pays `bonusCash` once via `maybePayoutDailyContractBonus`.
+- Hangar Freight: daily NPC board (`GET /aviation/freight/board`), accept/claim routes; successful Hangar Fly marks job claimable at destination.
 - In Risk countries contests cannot start for ownership (`RISK_MODE_ACTIVE`).
 
 ### Actions

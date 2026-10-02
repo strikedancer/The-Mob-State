@@ -5696,6 +5696,32 @@ class AppLocalizationsNl extends AppLocalizations {
       'Koop eerst een betaalde licentie en kies daarna hieronder een toestel.';
 
   @override
+  String get aviationFreightTitle => 'Vrachtcontracten';
+
+  @override
+  String get aviationFreightHint =>
+      'Accepteer een dagelijkse NPC-vrachtrit, vlieg naar de bestemming met genoeg cargo-tegels, en claim daarna de uitbetaling.';
+
+  @override
+  String get aviationFreightEmpty => 'Geen vrachtaanbiedingen vandaag.';
+
+  @override
+  String get aviationFreightAccept => 'Accepteren';
+
+  @override
+  String get aviationFreightClaim => 'Claim uitbetaling';
+
+  @override
+  String aviationFreightActive(String origin, String dest, String status) {
+    return 'Actief: $origin → $dest ($status)';
+  }
+
+  @override
+  String aviationFreightOfferMeta(String tiles, String payout) {
+    return '$tiles cargo-tegels · €$payout';
+  }
+
+  @override
   String aviationRequiresLicense(String name) {
     return 'Vereist $name';
   }
@@ -10554,6 +10580,23 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get attemptHit => 'Moord uitvoeren';
+
+  @override
+  String get hitlistDailyContractTitle => 'Most Wanted van de dag';
+
+  @override
+  String hitlistDailyContractOpen(String username, String bonus) {
+    return 'Contract op $username. Maak de hit af voor €$bonus bonus bovenop de bounty.';
+  }
+
+  @override
+  String get hitlistDailyContractDone =>
+      'Het Most Wanted-contract van vandaag is al voltooid.';
+
+  @override
+  String hitlistDailyContractBounty(String bounty) {
+    return 'Bounty op de lijst: €$bounty';
+  }
 
   @override
   String get selectWeapon => 'Selecteer het wapen en munitie voor deze moord';
@@ -15597,6 +15640,13 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get gameEventTmplContrabandRushDesc =>
       'Verkoop handelswaren met winst of haal gesmokkelde lading op — hoogste score wint.';
+
+  @override
+  String get gameEventTmplWeeklyDominationRushTitle => 'Dominatie Rush';
+
+  @override
+  String get gameEventTmplWeeklyDominationRushDesc =>
+      'Score met Risk-aanvallen: vernietigde legers en veroverde regio\'s tellen. Hoogste score wint.';
 
   @override
   String get gameEventTmplMonthlyEmpireShowdownTitle =>

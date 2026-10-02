@@ -1685,6 +1685,18 @@ export async function attemptHit(
       });
     });
 
+    let dailyContractBonus = 0;
+    try {
+      const { maybePayoutDailyContractBonus } = await import('./hitlistDailyContractService');
+      dailyContractBonus = await maybePayoutDailyContractBonus({
+        playerId,
+        hitId,
+        targetPlayerId: victimId,
+      });
+    } catch (error) {
+      console.error('[Hitlist] Daily contract bonus failed:', error);
+    }
+
     const { reclaimVacantCasino } = await import('./venueNpcOccupancyService');
     for (const countryId of lostCasinoCountries) {
       try {
@@ -1728,6 +1740,7 @@ export async function attemptHit(
       success: true,
       winner: playerId,
       bountyPaid: bounty,
+      dailyContractBonus,
       loot: lootSummary,
       combat: {
         ...combat,

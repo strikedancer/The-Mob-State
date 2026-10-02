@@ -5717,6 +5717,32 @@ class AppLocalizationsIt extends AppLocalizations {
       'Acquista prima una licenza a pagamento, quindi scegli un aereo di seguito.';
 
   @override
+  String get aviationFreightTitle => 'Freight contracts';
+
+  @override
+  String get aviationFreightHint =>
+      'Accept a daily NPC cargo run, fly to the destination with enough cargo tiles, then claim the payout.';
+
+  @override
+  String get aviationFreightEmpty => 'No freight offers today.';
+
+  @override
+  String get aviationFreightAccept => 'Accept';
+
+  @override
+  String get aviationFreightClaim => 'Claim payout';
+
+  @override
+  String aviationFreightActive(String origin, String dest, String status) {
+    return 'Active: $origin → $dest ($status)';
+  }
+
+  @override
+  String aviationFreightOfferMeta(String tiles, String payout) {
+    return '$tiles cargo tiles · €$payout';
+  }
+
+  @override
   String aviationRequiresLicense(String name) {
     return 'Bisogni $name';
   }
@@ -10606,6 +10632,23 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get attemptHit => 'Tentativo di colpo';
+
+  @override
+  String get hitlistDailyContractTitle => 'Most-Wanted of the day';
+
+  @override
+  String hitlistDailyContractOpen(String username, String bonus) {
+    return 'Contract on $username. Finish the hit for a €$bonus bonus on top of the bounty.';
+  }
+
+  @override
+  String get hitlistDailyContractDone =>
+      'Today\'s Most-Wanted contract is already completed.';
+
+  @override
+  String hitlistDailyContractBounty(String bounty) {
+    return 'Listed bounty: €$bounty';
+  }
 
   @override
   String get selectWeapon => 'Seleziona Arma e munizioni';
@@ -15723,6 +15766,13 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get gameEventTmplContrabandRushDesc =>
       'Vendi contrabbando con profitto o ritira spedizioni — vince il punteggio più alto.';
+
+  @override
+  String get gameEventTmplWeeklyDominationRushTitle => 'Domination Rush';
+
+  @override
+  String get gameEventTmplWeeklyDominationRushDesc =>
+      'Score with Risk attacks: destroyed armies and captured regions count. Highest score wins.';
 
   @override
   String get gameEventTmplMonthlyEmpireShowdownTitle =>

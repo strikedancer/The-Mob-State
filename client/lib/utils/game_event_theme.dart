@@ -66,6 +66,12 @@ GameEventTheme gameEventThemeForCategory(String? category) {
         icon: Icons.storefront,
         accent: Color(0xFFD4AF37),
       );
+    case 'territory':
+      return const GameEventTheme(
+        asset: 'assets/images/backgrounds/crime_background.png',
+        icon: Icons.public,
+        accent: Color(0xFF26A69A),
+      );
     case 'allround':
       return const GameEventTheme(
         asset: 'assets/images/backgrounds/nightclub_hub_bg_desktop.png',

@@ -541,4 +541,92 @@ router.get(
   }
 );
 
+/**
+ * GET /aviation/freight/board
+ */
+router.get(
+  '/freight/board',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const playerId = req.player?.id;
+      if (!playerId) return res.status(401).json({ error: 'Not authenticated' });
+      const { listFreightBoard } = await import('../services/aviationFreightService');
+      const board = await listFreightBoard(playerId);
+      return res.json({ success: true, ...board });
+    } catch (error) {
+      return next(error);
+    }
+  },
+);
+
+/**
+ * POST /aviation/freight/accept
+ * body: { offerKey, aircraftId }
+ */
+router.post(
+  '/freight/accept',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const playerId = req.player?.id;
+      if (!playerId) return res.status(401).json({ error: 'Not authenticated' });
+      const offerKey = String(req.body?.offerKey || '');
+      const aircraftId = Number(req.body?.aircraftId);
+      if (!offerKey || !Number.isFinite(aircraftId)) {
+        return res.status(400).json({ success: false, error: 'INVALID_INPUT' });
+      }
+      const { acceptFreightOffer } = await import('../services/aviationFreightService');
+      const result = await acceptFreightOffer(playerId, offerKey, aircraftId);
+      return res.json({ success: true, ...result });
+    } catch (error: any) {
+      const code = error?.message || 'FREIGHT_ERROR';
+      if (
+        [
+          'FREIGHT_OFFER_NOT_FOUND',
+          'FREIGHT_JOB_ACTIVE',
+          'AIRCRAFT_NOT_FOUND',
+          'AIRCRAFT_BROKEN',
+          'FREIGHT_CARGO_TOO_SMALL',
+          'FREIGHT_WRONG_ORIGIN',
+          'PLAYER_NOT_FOUND',
+        ].includes(code)
+      ) {
+        return res.status(400).json({ success: false, error: code });
+      }
+      return next(error);
+    }
+  },
+);
+
+/**
+ * POST /aviation/freight/claim/:jobId
+ */
+router.post(
+  '/freight/claim/:jobId',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const playerId = req.player?.id;
+      if (!playerId) return res.status(401).json({ error: 'Not authenticated' });
+      const jobId = Number(req.params.jobId);
+      const { claimFreightPayout } = await import('../services/aviationFreightService');
+      const result = await claimFreightPayout(playerId, jobId);
+      return res.json({ success: true, ...result });
+    } catch (error: any) {
+      const code = error?.message || 'FREIGHT_ERROR';
+      if (
+        [
+          'FREIGHT_JOB_NOT_FOUND',
+          'FREIGHT_JOB_NOT_CLAIMABLE',
+          'FREIGHT_WRONG_DEST',
+        ].includes(code)
+      ) {
+        return res.status(400).json({ success: false, error: code });
+      }
+      return next(error);
+    }
+  },
+);
+
 export default router;

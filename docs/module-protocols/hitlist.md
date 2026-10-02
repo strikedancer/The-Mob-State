@@ -17,10 +17,12 @@ Hit placement, bounties, detective investigations, combat mechanics, counter-bou
 
 ## Primary Backend
 - backend/src/services/hitlistService.ts
+- backend/src/services/hitlistDailyContractService.ts (Most-Wanted of the day)
 - backend/src/services/detectiveService.ts (NEW)
-- backend/src/routes/hitlist.ts
+- backend/src/routes/hitlist.ts (`GET /hitlist/daily-contract`)
 - backend/src/routes/detective.ts (NEW)
 - Prisma models: hitList, detective, playerSecurity, playerInsurance
+- Table `hitlist_daily_contracts`: one UTC-day featured hit/target + bonusCash; paid once on successful attemptHit
 
 ## Change Rules
 - Preserve hit economcis: €50K minimum, €50M maximum

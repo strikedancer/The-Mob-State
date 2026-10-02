@@ -801,6 +801,15 @@ export async function attack(
     risk.attackCooldownSeconds,
   );
 
+  const eventPoints = Math.max(0, defenderLossesTotal) + (captured ? 5 : 0);
+  if (eventPoints > 0) {
+    void import('./gameEventService')
+      .then(({ gameEventService }) =>
+        gameEventService.recordContribution(playerId, 'territory', eventPoints),
+      )
+      .catch(() => {});
+  }
+
   return {
     captured,
     rounds,
