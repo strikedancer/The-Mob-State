@@ -146,9 +146,9 @@ const TERRITORY_CONFIG_DEFAULTS: Record<string, string> = {
   TERRITORY_ABANDON_COST_DAYS_INCOME: '6',
   TERRITORY_ABANDON_COUNTRY_FLAT: '100000',
   TERRITORY_ABANDON_COUNTRY_COST_FACTOR_PERCENT: '75',
-  // Classic Risk conquest (NL-first)
+  // Classic Risk conquest (all countries when MODE=* )
   TERRITORY_RISK_ENABLED: '1',
-  TERRITORY_RISK_MODE_COUNTRIES: 'nl',
+  TERRITORY_RISK_MODE_COUNTRIES: '*',
   TERRITORY_RISK_REINFORCE_HOURS: '8',
   TERRITORY_RISK_ATTACK_COOLDOWN_SECONDS: '300',
   TERRITORY_RISK_MAX_ROUNDS_PER_ATTACK: '20',
@@ -271,6 +271,18 @@ async function seedRuntimeConfigDefaults(): Promise<void> {
   await prisma.$executeRawUnsafe(
     `INSERT INTO runtime_config (configKey, configValue)
      VALUES ('TERRITORY_ENABLED', '1')
+     ON DUPLICATE KEY UPDATE configValue = '1'`,
+  );
+
+  // Risk conquest applies to all countries (force MODE=* world-wide).
+  await prisma.$executeRawUnsafe(
+    `INSERT INTO runtime_config (configKey, configValue)
+     VALUES ('TERRITORY_RISK_MODE_COUNTRIES', '*')
+     ON DUPLICATE KEY UPDATE configValue = '*'`,
+  );
+  await prisma.$executeRawUnsafe(
+    `INSERT INTO runtime_config (configKey, configValue)
+     VALUES ('TERRITORY_RISK_ENABLED', '1')
      ON DUPLICATE KEY UPDATE configValue = '1'`,
   );
 }

@@ -9,13 +9,16 @@ import * as territoryArsenalService from './territoryArsenalService';
 
 type RiskConfig = {
   enabled: boolean;
+  /** When true, every country uses Risk ownership (MODE=* / all). */
+  allCountries: boolean;
   modeCountries: Set<string>;
   reinforceHours: number;
   attackCooldownSeconds: number;
   maxRoundsPerAttack: number;
   minArmiesOnCapture: number;
   neutralGarrison: number;
-  nlFullControlBonus: number;
+  /** Bonus armies when a crew owns every enabled region in a country. */
+  fullControlBonus: number;
   seedArmiesOnOwned: number;
 };
 
@@ -48,28 +51,39 @@ async function getRiskConfig(): Promise<RiskConfig> {
     'TERRITORY_RISK_NL_FULL_CONTROL_BONUS',
     'TERRITORY_RISK_SEED_ARMIES_ON_OWNED',
   ]);
-  const countries = String(cfg['TERRITORY_RISK_MODE_COUNTRIES'] ?? 'nl')
+  const countries = String(cfg['TERRITORY_RISK_MODE_COUNTRIES'] ?? '*')
     .split(',')
     .map((c) => c.trim().toLowerCase())
     .filter(Boolean);
+  const allCountries =
+    countries.length === 0 ||
+    countries.includes('*') ||
+    countries.includes('all');
   return {
     enabled: Number(cfg['TERRITORY_RISK_ENABLED'] ?? 1) === 1,
-    modeCountries: new Set(countries),
+    allCountries,
+    modeCountries: new Set(countries.filter((c) => c !== '*' && c !== 'all')),
     reinforceHours: Math.max(1, toNum(cfg['TERRITORY_RISK_REINFORCE_HOURS'] ?? 8)),
     attackCooldownSeconds: Math.max(30, toNum(cfg['TERRITORY_RISK_ATTACK_COOLDOWN_SECONDS'] ?? 300)),
     maxRoundsPerAttack: Math.max(1, Math.min(50, toNum(cfg['TERRITORY_RISK_MAX_ROUNDS_PER_ATTACK'] ?? 20))),
     minArmiesOnCapture: Math.max(1, toNum(cfg['TERRITORY_RISK_MIN_ARMIES_ON_CAPTURE'] ?? 1)),
     neutralGarrison: Math.max(1, toNum(cfg['TERRITORY_RISK_NEUTRAL_GARRISON'] ?? 3)),
-    nlFullControlBonus: Math.max(0, toNum(cfg['TERRITORY_RISK_NL_FULL_CONTROL_BONUS'] ?? 5)),
+    fullControlBonus: Math.max(0, toNum(cfg['TERRITORY_RISK_NL_FULL_CONTROL_BONUS'] ?? 5)),
     seedArmiesOnOwned: Math.max(1, toNum(cfg['TERRITORY_RISK_SEED_ARMIES_ON_OWNED'] ?? 3)),
   };
 }
 
+function countryUsesRiskMode(risk: RiskConfig, countryCode: string): boolean {
+  if (!risk.enabled) return false;
+  const code = countryCode.trim().toLowerCase();
+  if (!code) return false;
+  if (risk.allCountries) return true;
+  return risk.modeCountries.has(code);
+}
+
 export async function isRiskModeCountry(countryCode: string | null | undefined): Promise<boolean> {
   const risk = await getRiskConfig();
-  if (!risk.enabled) return false;
-  const code = String(countryCode ?? '').trim().toLowerCase();
-  return risk.modeCountries.has(code);
+  return countryUsesRiskMode(risk, String(countryCode ?? ''));
 }
 
 function assertInCountry(currentCountry: string | null | undefined, regionCountryCode: string): void {
@@ -140,7 +154,7 @@ async function setRegionArmies(regionKey: string, crewId: number | null, armies:
 /** Ensure owned regions in risk countries have at least seed armies. */
 export async function ensureSeedArmiesForOwnedRegions(countryCode: string): Promise<void> {
   const risk = await getRiskConfig();
-  if (!risk.enabled || !risk.modeCountries.has(countryCode.toLowerCase())) return;
+  if (!countryUsesRiskMode(risk, countryCode)) return;
 
   const rows = await prisma.$queryRawUnsafe<Array<{ regionKey: string; ownerCrewId: number }>>(
     `SELECT tc.regionKey, tc.ownerCrewId
@@ -169,7 +183,7 @@ export async function syncArmiesOnOwnershipChange(params: {
     params.regionKey,
   );
   const countryCode = String(region[0]?.countryCode ?? '').toLowerCase();
-  if (!risk.enabled || !risk.modeCountries.has(countryCode)) {
+  if (!countryUsesRiskMode(risk, countryCode)) {
     await setRegionArmies(params.regionKey, null, 0);
     return;
   }
@@ -208,8 +222,8 @@ function computeReinforceGrant(
   risk: RiskConfig,
 ): number {
   let grant = Math.max(3, Math.floor(ownedCount / 3));
-  if (countryCode === 'nl' && totalInCountry > 0 && ownedCount >= totalInCountry) {
-    grant += risk.nlFullControlBonus;
+  if (totalInCountry > 0 && ownedCount >= totalInCountry) {
+    grant += risk.fullControlBonus;
   }
   return grant;
 }
@@ -306,7 +320,7 @@ export async function getRiskSnapshotForMap(params: {
 }> {
   const risk = await getRiskConfig();
   const code = params.countryCode.toLowerCase();
-  const riskMode = risk.enabled && risk.modeCountries.has(code);
+  const riskMode = countryUsesRiskMode(risk, code);
   if (!riskMode) {
     return { riskMode: false, reinforce: null, armiesByRegion: {} };
   }

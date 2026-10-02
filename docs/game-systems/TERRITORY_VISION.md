@@ -20,14 +20,14 @@ Wat al live aanwezig is:
 - Crew leaders zien al territory economy samenvattingen in dashboard-statistieken.
 
 Wat nog grotendeels ontbreekt:
-- Fase F (live, NL eerst): classic Risk-ownership path (legers, adjacent attack, dice, reinforce/fortify) achter `TERRITORY_RISK_*`; verdere geopolitieke meta buiten tags/theater/aftermath blijft open
+- Fase F (live, alle landen): classic Risk-ownership path (legers, adjacent attack, dice, reinforce/fortify) achter `TERRITORY_RISK_*` (default `MODE=*`); verdere geopolitieke meta buiten tags/theater/aftermath blijft open
 
 ## Live diepte (Risk Fase F)
 
-Classic Risk-verovering is live voor landen in `TERRITORY_RISK_MODE_COUNTRIES` (start: Nederland):
-- Ownership flips alleen via Risk dice wipe (geen parallel contest-ownership in Risk-landen).
+Classic Risk-verovering is live wereldwijd (`TERRITORY_RISK_MODE_COUNTRIES=*`, tenzij admin een subset zet):
+- Ownership flips alleen via Risk dice wipe (geen parallel contest-ownership terwijl Risk aan staat).
 - Reinforce/fortify windows + attack cooldowns houden async MMO-pacing.
-- Contests blijven beschikbaar buiten Risk-landen.
+- Contests alleen nog als Risk uit staat of een land niet in de allowlist zit.
 
 ## Live diepte (2026-09-15)
 

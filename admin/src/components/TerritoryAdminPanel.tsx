@@ -106,7 +106,7 @@ type TerritoryRiskTuningForm = {
 
 const defaultRiskTuning: TerritoryRiskTuningForm = {
   riskEnabled: '1',
-  riskModeCountries: 'nl',
+  riskModeCountries: '*',
   riskReinforceHours: '8',
   riskAttackCooldownSeconds: '300',
   riskMaxRoundsPerAttack: '20',
@@ -240,7 +240,7 @@ export function TerritoryAdminPanel({ locale }: Props) {
       })
       setRiskTuning({
         riskEnabled: nextOverview.config.riskEnabled === false ? '0' : '1',
-        riskModeCountries: String(nextOverview.config.riskModeCountries ?? 'nl'),
+        riskModeCountries: String(nextOverview.config.riskModeCountries ?? '*'),
         riskReinforceHours: String(nextOverview.config.riskReinforceHours ?? 8),
         riskAttackCooldownSeconds: String(nextOverview.config.riskAttackCooldownSeconds ?? 300),
         riskMaxRoundsPerAttack: String(nextOverview.config.riskMaxRoundsPerAttack ?? 20),
@@ -608,8 +608,8 @@ export function TerritoryAdminPanel({ locale }: Props) {
           <p className="text-muted small mb-3">
             {tr(
               locale,
-              'In Risk-landen (csv, start nl) winnen crews ownership via legers + dobbelstenen i.p.v. contests. Zet Enabled op 0 om overal terug te vallen op contests. Wijzigingen zijn runtime en direct live.',
-              'In Risk countries (csv, starts with nl) crews win ownership via armies + dice instead of contests. Set Enabled to 0 to fall back to contests everywhere. Changes are runtime and apply live.',
+              'In Risk-landen (csv of * voor alle landen) winnen crews ownership via legers + dobbelstenen i.p.v. contests. Default is *: alle landen. Zet Enabled op 0 om overal terug te vallen op contests. Wijzigingen zijn runtime en direct live.',
+              'In Risk countries (csv, or * for all countries) crews win ownership via armies + dice instead of contests. Default is *: all countries. Set Enabled to 0 to fall back to contests everywhere. Changes are runtime and apply live.',
             )}
           </p>
           <div className="row g-3">
@@ -636,7 +636,7 @@ export function TerritoryAdminPanel({ locale }: Props) {
                 ['riskMaxRoundsPerAttack', 'Max dobbelrondes/aanval', 'Max dice rounds/attack'],
                 ['riskMinArmiesOnCapture', 'Min. legers bij capture', 'Min armies on capture'],
                 ['riskNeutralGarrison', 'Neutrale garnizoen', 'Neutral garrison'],
-                ['riskNlFullControlBonus', 'NL full-control bonus', 'NL full-control bonus'],
+                ['riskNlFullControlBonus', 'Full-control bonus (elk land)', 'Full-control bonus (any country)'],
                 ['riskSeedArmiesOnOwned', 'Seed-legers op owned', 'Seed armies on owned'],
               ] as const
             ).map(([key, nlLabel, enLabel]) => (

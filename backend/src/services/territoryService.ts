@@ -275,7 +275,7 @@ async function getTerritoryConfig() {
     arsenalAmmoCostPatrol: Number(cfg['TERRITORY_ARSENAL_AMMO_COST_PATROL'] ?? 15),
     arsenalAmmoCostSabotage: Number(cfg['TERRITORY_ARSENAL_AMMO_COST_SABOTAGE'] ?? 8),
     riskEnabled: Number(cfg['TERRITORY_RISK_ENABLED'] ?? 1) === 1,
-    riskModeCountries: String(cfg['TERRITORY_RISK_MODE_COUNTRIES'] ?? 'nl'),
+    riskModeCountries: String(cfg['TERRITORY_RISK_MODE_COUNTRIES'] ?? '*'),
     riskReinforceHours: Number(cfg['TERRITORY_RISK_REINFORCE_HOURS'] ?? 8),
     riskAttackCooldownSeconds: Number(cfg['TERRITORY_RISK_ATTACK_COOLDOWN_SECONDS'] ?? 300),
     riskMaxRoundsPerAttack: Number(cfg['TERRITORY_RISK_MAX_ROUNDS_PER_ATTACK'] ?? 20),
