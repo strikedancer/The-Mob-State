@@ -146,6 +146,16 @@ const TERRITORY_CONFIG_DEFAULTS: Record<string, string> = {
   TERRITORY_ABANDON_COST_DAYS_INCOME: '6',
   TERRITORY_ABANDON_COUNTRY_FLAT: '100000',
   TERRITORY_ABANDON_COUNTRY_COST_FACTOR_PERCENT: '75',
+  // Classic Risk conquest (NL-first)
+  TERRITORY_RISK_ENABLED: '1',
+  TERRITORY_RISK_MODE_COUNTRIES: 'nl',
+  TERRITORY_RISK_REINFORCE_HOURS: '8',
+  TERRITORY_RISK_ATTACK_COOLDOWN_SECONDS: '300',
+  TERRITORY_RISK_MAX_ROUNDS_PER_ATTACK: '20',
+  TERRITORY_RISK_MIN_ARMIES_ON_CAPTURE: '1',
+  TERRITORY_RISK_NEUTRAL_GARRISON: '3',
+  TERRITORY_RISK_NL_FULL_CONTROL_BONUS: '5',
+  TERRITORY_RISK_SEED_ARMIES_ON_OWNED: '3',
 };
 
 type TerritorySeedRegion = {
@@ -541,6 +551,61 @@ export async function ensureTerritorySchema(): Promise<void> {
       availableAt DATETIME NOT NULL,
       updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
       PRIMARY KEY (crewId, kind)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `);
+
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS territory_region_armies (
+      regionKey VARCHAR(60) NOT NULL,
+      crewId INT NOT NULL,
+      armies INT NOT NULL DEFAULT 0,
+      updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (regionKey),
+      INDEX idx_territory_region_armies_crew (crewId)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `);
+
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS territory_risk_reinforce (
+      crewId INT NOT NULL,
+      countryCode VARCHAR(10) NOT NULL,
+      windowStartedAt DATETIME NOT NULL,
+      armiesGranted INT NOT NULL DEFAULT 0,
+      armiesRemaining INT NOT NULL DEFAULT 0,
+      fortifyUsed TINYINT(1) NOT NULL DEFAULT 0,
+      updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (crewId, countryCode)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `);
+
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS territory_risk_attack_cooldown (
+      crewId INT NOT NULL,
+      fromRegionKey VARCHAR(60) NOT NULL,
+      toRegionKey VARCHAR(60) NOT NULL,
+      availableAt DATETIME NOT NULL,
+      updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (crewId, fromRegionKey, toRegionKey)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `);
+
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS territory_risk_battle_log (
+      id BIGINT NOT NULL AUTO_INCREMENT,
+      attackerCrewId INT NOT NULL,
+      defenderCrewId INT NULL,
+      fromRegionKey VARCHAR(60) NOT NULL,
+      toRegionKey VARCHAR(60) NOT NULL,
+      countryCode VARCHAR(10) NOT NULL,
+      committedArmies INT NOT NULL,
+      roundsJson LONGTEXT NOT NULL,
+      attackerLosses INT NOT NULL DEFAULT 0,
+      defenderLosses INT NOT NULL DEFAULT 0,
+      captured TINYINT(1) NOT NULL DEFAULT 0,
+      createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (id),
+      INDEX idx_territory_risk_battle_attacker (attackerCrewId),
+      INDEX idx_territory_risk_battle_to (toRegionKey)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
 

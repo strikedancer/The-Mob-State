@@ -91,6 +91,31 @@ type TerritoryProgressionTuningForm = {
   actionUnlockHqLevelDefense: string
 }
 
+
+type TerritoryRiskTuningForm = {
+  riskEnabled: string
+  riskModeCountries: string
+  riskReinforceHours: string
+  riskAttackCooldownSeconds: string
+  riskMaxRoundsPerAttack: string
+  riskMinArmiesOnCapture: string
+  riskNeutralGarrison: string
+  riskNlFullControlBonus: string
+  riskSeedArmiesOnOwned: string
+}
+
+const defaultRiskTuning: TerritoryRiskTuningForm = {
+  riskEnabled: '1',
+  riskModeCountries: 'nl',
+  riskReinforceHours: '8',
+  riskAttackCooldownSeconds: '300',
+  riskMaxRoundsPerAttack: '20',
+  riskMinArmiesOnCapture: '1',
+  riskNeutralGarrison: '3',
+  riskNlFullControlBonus: '5',
+  riskSeedArmiesOnOwned: '3',
+}
+
 const tr = (locale: AdminLanguage, nl: string, en: string) =>
   getAdminTr(locale, nl, en)
 
@@ -152,6 +177,8 @@ export function TerritoryAdminPanel({ locale }: Props) {
   })
   const [arsenalTuning, setArsenalTuning] = useState<TerritoryArsenalTuningForm>(defaultArsenalTuning)
   const [holdTuning, setHoldTuning] = useState<TerritoryHoldTuningForm>(defaultHoldTuning)
+  const [riskTuning, setRiskTuning] = useState<TerritoryRiskTuningForm>(defaultRiskTuning)
+  const [armiesInput, setArmiesInput] = useState('')
 
   const loadOverview = async () => {
     try {
@@ -211,6 +238,17 @@ export function TerritoryAdminPanel({ locale }: Props) {
         holdIncomeMiss2Percent: String(nextOverview.config.holdIncomeMiss2Percent ?? 0),
         holdUnrestCapturePenalty: String(nextOverview.config.holdUnrestCapturePenalty ?? 10),
       })
+      setRiskTuning({
+        riskEnabled: nextOverview.config.riskEnabled === false ? '0' : '1',
+        riskModeCountries: String(nextOverview.config.riskModeCountries ?? 'nl'),
+        riskReinforceHours: String(nextOverview.config.riskReinforceHours ?? 8),
+        riskAttackCooldownSeconds: String(nextOverview.config.riskAttackCooldownSeconds ?? 300),
+        riskMaxRoundsPerAttack: String(nextOverview.config.riskMaxRoundsPerAttack ?? 20),
+        riskMinArmiesOnCapture: String(nextOverview.config.riskMinArmiesOnCapture ?? 1),
+        riskNeutralGarrison: String(nextOverview.config.riskNeutralGarrison ?? 3),
+        riskNlFullControlBonus: String(nextOverview.config.riskNlFullControlBonus ?? 5),
+        riskSeedArmiesOnOwned: String(nextOverview.config.riskSeedArmiesOnOwned ?? 3),
+      })
 
       if (!selectedRegionKey && nextOverview.regions.length > 0) {
         setSelectedRegionKey(nextOverview.regions[0].regionKey)
@@ -237,6 +275,12 @@ export function TerritoryAdminPanel({ locale }: Props) {
     () => overview?.regions.find((region) => region.regionKey === selectedRegionKey) ?? null,
     [overview, selectedRegionKey],
   )
+
+  useEffect(() => {
+    if (selectedRegion) {
+      setArmiesInput(String(selectedRegion.armies ?? 0))
+    }
+  }, [selectedRegionKey, selectedRegion?.armies])
 
   const selectableContests = useMemo(
     () => overview?.contests.filter((contest) => !['resolved', 'cancelled'].includes(contest.status)) ?? [],
@@ -438,6 +482,73 @@ export function TerritoryAdminPanel({ locale }: Props) {
     }
   }
 
+
+  const handleSaveRiskTuning = async () => {
+    const numericKeys: Array<keyof TerritoryRiskTuningForm> = [
+      'riskEnabled',
+      'riskReinforceHours',
+      'riskAttackCooldownSeconds',
+      'riskMaxRoundsPerAttack',
+      'riskMinArmiesOnCapture',
+      'riskNeutralGarrison',
+      'riskNlFullControlBonus',
+      'riskSeedArmiesOnOwned',
+    ]
+    for (const key of numericKeys) {
+      const value = Number.parseFloat(riskTuning[key])
+      if (!Number.isFinite(value) || value < 0) {
+        window.alert(tr(locale, 'Vul alleen geldige positieve getallen in.', 'Use valid non-negative numbers only.'))
+        return
+      }
+    }
+    if (!riskTuning.riskModeCountries.trim()) {
+      window.alert(tr(locale, 'Vul minstens één landcode in (bijv. nl).', 'Provide at least one country code (e.g. nl).'))
+      return
+    }
+    const payload: Record<string, string> = {
+      TERRITORY_RISK_ENABLED: riskTuning.riskEnabled === '1' ? '1' : '0',
+      TERRITORY_RISK_MODE_COUNTRIES: riskTuning.riskModeCountries.trim().toLowerCase(),
+      TERRITORY_RISK_REINFORCE_HOURS: riskTuning.riskReinforceHours,
+      TERRITORY_RISK_ATTACK_COOLDOWN_SECONDS: riskTuning.riskAttackCooldownSeconds,
+      TERRITORY_RISK_MAX_ROUNDS_PER_ATTACK: riskTuning.riskMaxRoundsPerAttack,
+      TERRITORY_RISK_MIN_ARMIES_ON_CAPTURE: riskTuning.riskMinArmiesOnCapture,
+      TERRITORY_RISK_NEUTRAL_GARRISON: riskTuning.riskNeutralGarrison,
+      TERRITORY_RISK_NL_FULL_CONTROL_BONUS: riskTuning.riskNlFullControlBonus,
+      TERRITORY_RISK_SEED_ARMIES_ON_OWNED: riskTuning.riskSeedArmiesOnOwned,
+    }
+    try {
+      setSubmitting(true)
+      await adminService.updateConfig(payload)
+      await loadOverview()
+      window.alert(tr(locale, 'Risk-verovering tuning opgeslagen.', 'Risk conquest tuning saved.'))
+    } catch (error) {
+      window.alert(`${tr(locale, 'Opslaan mislukt', 'Save failed')}: ${(error as Error).message}`)
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  const handleSetArmies = async () => {
+    if (!selectedRegionKey) {
+      window.alert(tr(locale, 'Kies eerst een regio.', 'Select a region first.'))
+      return
+    }
+    const armies = Number.parseInt(armiesInput, 10)
+    if (!Number.isFinite(armies) || armies < 0) {
+      window.alert(tr(locale, 'Vul een geldig leger-aantal in (0+).', 'Enter a valid army count (0+).'))
+      return
+    }
+    try {
+      setSubmitting(true)
+      await adminService.territorySetArmies(selectedRegionKey, armies)
+      await loadOverview()
+    } catch (error) {
+      window.alert(`${tr(locale, 'Legers zetten mislukt', 'Failed to set armies')}: ${(error as Error).message}`)
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
   const handleSaveHoldTuning = async () => {
     const numericEntries = Object.entries(holdTuning).map(([key, value]) => ({
       key,
@@ -474,8 +585,8 @@ export function TerritoryAdminPanel({ locale }: Props) {
           kicker={tr(locale, 'Wereld · live ops', 'World · live ops')}
           description={tr(
             locale,
-            'Regio-eigendom, contests, seizoenen en HQ-progressie. Wijzigingen zijn runtime en direct live.',
-            'Region ownership, contests, seasons and HQ progression. Changes are runtime and apply live.',
+            'Regio-eigendom, Risk-legers, contests, seizoenen en HQ-progressie. Wijzigingen zijn runtime en direct live.',
+            'Region ownership, Risk armies, contests, seasons and HQ progression. Changes are runtime and apply live.',
           )}
         />
         <button type="button" className="btn btn-outline-secondary" onClick={() => void loadOverview()} disabled={loading || submitting}>
@@ -489,6 +600,71 @@ export function TerritoryAdminPanel({ locale }: Props) {
         <RuntimeKpi label={tr(locale, 'Actieve contests', 'Active contests')} value={String(overview?.summary.activeContests ?? 0)} />
         <RuntimeKpi label={tr(locale, 'Gecontroleerde regio’s', 'Controlled regions')} value={String(overview?.summary.controlledRegions ?? 0)} />
       </RuntimeKpiGrid>
+
+
+      <div className="card">
+        <div className="card-header"><h5 className="mb-0">{tr(locale, 'Risk-verovering (classic)', 'Risk conquest (classic)')}</h5></div>
+        <div className="card-body">
+          <p className="text-muted small mb-3">
+            {tr(
+              locale,
+              'In Risk-landen (csv, start nl) winnen crews ownership via legers + dobbelstenen i.p.v. contests. Zet Enabled op 0 om overal terug te vallen op contests. Wijzigingen zijn runtime en direct live.',
+              'In Risk countries (csv, starts with nl) crews win ownership via armies + dice instead of contests. Set Enabled to 0 to fall back to contests everywhere. Changes are runtime and apply live.',
+            )}
+          </p>
+          <div className="row g-3">
+            <div className="col-md-6 col-xl-3">
+              <label className="form-label fw-semibold">{tr(locale, 'Enabled (1/0)', 'Enabled (1/0)')}</label>
+              <input
+                className="form-control"
+                value={riskTuning.riskEnabled}
+                onChange={(event) => setRiskTuning((current) => ({ ...current, riskEnabled: event.target.value }))}
+              />
+            </div>
+            <div className="col-md-6 col-xl-3">
+              <label className="form-label fw-semibold">{tr(locale, 'Landen (csv)', 'Countries (csv)')}</label>
+              <input
+                className="form-control"
+                value={riskTuning.riskModeCountries}
+                onChange={(event) => setRiskTuning((current) => ({ ...current, riskModeCountries: event.target.value }))}
+              />
+            </div>
+            {(
+              [
+                ['riskReinforceHours', 'Reinforce-venster (uur)', 'Reinforce window (hours)'],
+                ['riskAttackCooldownSeconds', 'Aanvalscooldown (sec)', 'Attack cooldown (sec)'],
+                ['riskMaxRoundsPerAttack', 'Max dobbelrondes/aanval', 'Max dice rounds/attack'],
+                ['riskMinArmiesOnCapture', 'Min. legers bij capture', 'Min armies on capture'],
+                ['riskNeutralGarrison', 'Neutrale garnizoen', 'Neutral garrison'],
+                ['riskNlFullControlBonus', 'NL full-control bonus', 'NL full-control bonus'],
+                ['riskSeedArmiesOnOwned', 'Seed-legers op owned', 'Seed armies on owned'],
+              ] as const
+            ).map(([key, nlLabel, enLabel]) => (
+              <div className="col-md-6 col-xl-3" key={key}>
+                <label className="form-label fw-semibold">{tr(locale, nlLabel, enLabel)}</label>
+                <input
+                  className="form-control"
+                  value={riskTuning[key]}
+                  onChange={(event) => {
+                    const value = event.target.value
+                    setRiskTuning((current) => ({ ...current, [key]: value }))
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+          <div className="d-flex justify-content-end mt-3">
+            <button
+              type="button"
+              className="btn btn-primary"
+              disabled={loading || submitting}
+              onClick={() => void handleSaveRiskTuning()}
+            >
+              {tr(locale, 'Opslaan en live toepassen', 'Save and apply live')}
+            </button>
+          </div>
+        </div>
+      </div>
 
       <div className="card">
         <div className="card-header"><h5 className="mb-0">{tr(locale, 'Progression tuning', 'Progression tuning')}</h5></div>
@@ -772,8 +948,23 @@ export function TerritoryAdminPanel({ locale }: Props) {
                   <div><strong>SVG ID:</strong> {selectedRegion.svgElementId}</div>
                   <div><strong>{tr(locale, 'Stability', 'Stability')}:</strong> {selectedRegion.stability}</div>
                   <div><strong>{tr(locale, 'Actieve contest', 'Active contest')}:</strong> {selectedRegion.activeContestStatus ?? '-'}</div>
+                  <div><strong>{tr(locale, 'Risk-legers', 'Risk armies')}:</strong> {selectedRegion.armies ?? 0}</div>
                 </div>
               )}
+              <div>
+                <label className="form-label fw-semibold">{tr(locale, 'Risk-legers zetten', 'Set Risk armies')}</label>
+                <div className="d-flex gap-2">
+                  <input
+                    className="form-control"
+                    value={armiesInput}
+                    onChange={(event) => setArmiesInput(event.target.value)}
+                    placeholder="0"
+                  />
+                  <button type="button" className="btn btn-outline-secondary" onClick={() => void handleSetArmies()} disabled={submitting || loading || !selectedRegionKey}>
+                    {tr(locale, 'Zet', 'Set')}
+                  </button>
+                </div>
+              </div>
               <div className="d-flex gap-2 flex-wrap">
                 <button type="button" className="btn btn-primary" onClick={() => void handleAssignRegion()} disabled={submitting || loading}>{tr(locale, 'Toewijzen', 'Assign')}</button>
                 <button type="button" className="btn btn-outline-danger" onClick={() => void handleResetRegion()} disabled={submitting || loading}>{tr(locale, 'Reset regio', 'Reset region')}</button>

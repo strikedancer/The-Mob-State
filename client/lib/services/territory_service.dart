@@ -294,6 +294,100 @@ class TerritoryService {
     }
   }
 
+  // ── Classic Risk (NL-first ownership path) ───────────────────────────────
+
+  Future<Map<String, dynamic>> riskClaimReinforce(String countryCode) async {
+    try {
+      final response = await _api.post('/territory/risk/reinforce/claim', {
+        'countryCode': countryCode,
+      });
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      if (response.statusCode == 200) {
+        return {
+          'success': true,
+          ...data['params'] as Map<String, dynamic>? ?? {},
+          'event': data['event'],
+        };
+      }
+      return {'success': false, 'event': data['event'], 'message': data['message'] ?? ''};
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> riskPlaceReinforce({
+    required String regionKey,
+    required int amount,
+  }) async {
+    try {
+      final response = await _api.post('/territory/risk/reinforce/place', {
+        'regionKey': regionKey,
+        'amount': amount,
+      });
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      if (response.statusCode == 200) {
+        return {
+          'success': true,
+          ...data['params'] as Map<String, dynamic>? ?? {},
+          'event': data['event'],
+        };
+      }
+      return {'success': false, 'event': data['event'], 'message': data['message'] ?? ''};
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> riskAttack({
+    required String fromRegionKey,
+    required String toRegionKey,
+    required int commitArmies,
+  }) async {
+    try {
+      final response = await _api.post('/territory/risk/attack', {
+        'fromRegionKey': fromRegionKey,
+        'toRegionKey': toRegionKey,
+        'commitArmies': commitArmies,
+      });
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      if (response.statusCode == 200) {
+        return {
+          'success': true,
+          ...data['params'] as Map<String, dynamic>? ?? {},
+          'event': data['event'],
+        };
+      }
+      return {'success': false, 'event': data['event'], 'message': data['message'] ?? ''};
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> riskFortify({
+    required String fromRegionKey,
+    required String toRegionKey,
+    required int amount,
+  }) async {
+    try {
+      final response = await _api.post('/territory/risk/fortify', {
+        'fromRegionKey': fromRegionKey,
+        'toRegionKey': toRegionKey,
+        'amount': amount,
+      });
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      if (response.statusCode == 200) {
+        return {
+          'success': true,
+          ...data['params'] as Map<String, dynamic>? ?? {},
+          'event': data['event'],
+        };
+      }
+      return {'success': false, 'event': data['event'], 'message': data['message'] ?? ''};
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
   // ── Crew ───────────────────────────────────────────────────────────────────
 
   Future<Map<String, dynamic>> getCrewTerritory(int crewId) async {

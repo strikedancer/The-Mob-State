@@ -13716,5 +13716,56 @@
     }
   },
   "showroomNotOwned": "You need to own the matching showroom or boat harbor first.",
-  "vehicleCardPlaceInShowroom": "Place in showroom"
+  "vehicleCardPlaceInShowroom": "Place in showroom",
+  "territoryRiskArmies": "Armies: {count}",
+  "@territoryRiskArmies": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryRiskModeTitle": "Risk conquest",
+  "territoryRiskModeHint": "In this country you conquer with armies: reinforce, attack adjacent regions with dice, then fortify. Classic contests are disabled here.",
+  "territoryRiskClaimReinforce": "Claim reinforcements",
+  "territoryRiskPlaceReinforce": "Place armies here",
+  "territoryRiskFortify": "Fortify to neighbor",
+  "territoryRiskAttackAdjacent": "Attack adjacent",
+  "territoryRiskCommitLabel": "Armies to commit",
+  "territoryRiskPickNeighbor": "Choose neighboring region",
+  "territoryRiskReinforceLeft": "Reinforcements left: {count}",
+  "@territoryRiskReinforceLeft": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryRiskBattleResult": "Battle: you lost {atk}, they lost {def}. {outcome}",
+  "@territoryRiskBattleResult": {
+    "placeholders": {
+      "atk": {
+        "type": "String"
+      },
+      "def": {
+        "type": "String"
+      },
+      "outcome": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryRiskCaptured": "Region captured!",
+  "territoryRiskHeld": "Defense held.",
+  "territoryErrorRiskModeActive": "This country uses Risk conquest. Attack from an adjacent owned region instead.",
+  "territoryErrorRiskModeInactive": "Risk conquest is not active in this country.",
+  "territoryErrorRiskNoOwned": "You need at least one owned region in this country.",
+  "territoryErrorRiskInvalidAmount": "Invalid army amount.",
+  "territoryErrorRiskNotOwner": "You do not own that region.",
+  "territoryErrorRiskNoReinforce": "No reinforcements left in this window.",
+  "territoryErrorRiskNotAdjacent": "You can only attack or fortify adjacent regions.",
+  "territoryErrorRiskFortifyUsed": "You already fortified this reinforce window.",
+  "territoryErrorRiskInsufficientArmies": "Not enough armies (leave at least 1 behind).",
+  "territoryErrorRiskOwnTarget": "You already own that region.",
+  "territoryErrorRiskAttackCooldown": "Attack cooldown still active for this border."
 }

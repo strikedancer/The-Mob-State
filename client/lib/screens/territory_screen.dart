@@ -1129,6 +1129,28 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         return t.territoryErrorAbandonNoRegions;
       case 'territory.region_encircled':
         return t.territoryErrorRegionEncircled;
+      case 'territory.risk_mode_active':
+        return t.territoryErrorRiskModeActive;
+      case 'territory.risk_mode_inactive':
+        return t.territoryErrorRiskModeInactive;
+      case 'territory.risk_no_owned_regions':
+        return t.territoryErrorRiskNoOwned;
+      case 'territory.risk_invalid_amount':
+        return t.territoryErrorRiskInvalidAmount;
+      case 'territory.risk_not_owner':
+        return t.territoryErrorRiskNotOwner;
+      case 'territory.risk_no_reinforcements':
+        return t.territoryErrorRiskNoReinforce;
+      case 'territory.risk_not_adjacent':
+        return t.territoryErrorRiskNotAdjacent;
+      case 'territory.risk_fortify_used':
+        return t.territoryErrorRiskFortifyUsed;
+      case 'territory.risk_insufficient_armies':
+        return t.territoryErrorRiskInsufficientArmies;
+      case 'territory.risk_own_target':
+        return t.territoryErrorRiskOwnTarget;
+      case 'territory.risk_attack_cooldown':
+        return t.territoryErrorRiskAttackCooldown;
       case 'territory.arsenal_officer_only':
         return t.territoryErrorArsenalOfficerOnly;
       case 'territory.arsenal_cache_required':
@@ -1783,6 +1805,14 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       parts.add(
         '<circle cx="${cx + 22}" cy="${cy + 22}" r="6" fill="$color" stroke="#111827" stroke-width="0.8"/>'
         '<text x="${cx + 22}" y="${cy + 25}" text-anchor="middle" font-size="7" fill="#0F172A" font-family="Arial,sans-serif" font-weight="700">A</text>',
+      );
+    }
+    final armies = (region['armies'] as num?)?.toInt() ?? 0;
+    if ((_mapData['riskMode'] == true || region['riskMode'] == true) &&
+        armies > 0) {
+      parts.add(
+        '<circle cx="$cx" cy="${cy + 34}" r="9" fill="#0F766E" stroke="#111827" stroke-width="1"/>'
+        '<text x="$cx" y="${cy + 37}" text-anchor="middle" font-size="8" fill="#ECFDF5" font-family="Arial,sans-serif" font-weight="700">$armies</text>',
       );
     }
     if (region['holdDueAt'] != null) {
@@ -3412,16 +3442,81 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           _hasCrew &&
           !isMyCrewRegion &&
           canActInSelectedCountry &&
-          !encircled)
+          !encircled &&
+          _mapData['riskMode'] != true)
         _buildActionButton(
           label: t.territoryAttack,
           icon: Icons.gps_fixed,
           color: Colors.red[700]!,
           onTap: () => _confirmStartContest(region['regionKey'] as String),
         ),
+      if (_mapData['riskMode'] == true &&
+          _hasCrew &&
+          canActInSelectedCountry) ...[
+        const SizedBox(height: 12),
+        _buildInfoNotice(
+          t.territoryRiskModeHint,
+          borderColor: Colors.teal.shade800,
+          backgroundColor: Colors.teal.withValues(alpha: 0.08),
+          icon: Icons.casino_outlined,
+        ),
+        const SizedBox(height: 8),
+        Text(
+          t.territoryRiskArmies(
+            ((region['armies'] as num?)?.toInt() ?? 0).toString(),
+          ),
+          style: const TextStyle(fontWeight: FontWeight.w700),
+        ),
+        Builder(
+          builder: (_) {
+            final reinforce =
+                (_mapData['riskReinforce'] as Map?)?.cast<String, dynamic>();
+            final left = (reinforce?['armiesRemaining'] as num?)?.toInt() ?? 0;
+            return Padding(
+              padding: const EdgeInsets.only(top: 4, bottom: 8),
+              child: Text(
+                t.territoryRiskReinforceLeft(left.toString()),
+                style: TextStyle(color: Colors.grey[700], fontSize: 12),
+              ),
+            );
+          },
+        ),
+        _buildActionButton(
+          label: t.territoryRiskClaimReinforce,
+          icon: Icons.add_circle_outline,
+          color: Colors.teal[800]!,
+          onTap: _riskClaimReinforce,
+        ),
+        if (isMyCrewRegion) ...[
+          const SizedBox(height: 8),
+          _buildActionButton(
+            label: t.territoryRiskPlaceReinforce,
+            icon: Icons.group_add_outlined,
+            color: Colors.teal[700]!,
+            onTap: () => _riskPlaceReinforce(region),
+          ),
+          const SizedBox(height: 8),
+          _buildActionButton(
+            label: t.territoryRiskFortify,
+            icon: Icons.swap_horiz,
+            color: Colors.blueGrey[800]!,
+            onTap: () => _riskFortify(region),
+          ),
+        ],
+        if (!isMyCrewRegion && !encircled) ...[
+          const SizedBox(height: 8),
+          _buildActionButton(
+            label: t.territoryRiskAttackAdjacent,
+            icon: Icons.gps_fixed,
+            color: Colors.red[800]!,
+            onTap: () => _riskAttackTarget(region),
+          ),
+        ],
+      ],
       if (contestId != null &&
           contestStatus == 'active' &&
-          canActInSelectedCountry) ...[
+          canActInSelectedCountry &&
+          _mapData['riskMode'] != true) ...[
         const SizedBox(height: 8),
         Text(
           isAttacker
@@ -4744,7 +4839,263 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     };
   }
 
-  // â”€â”€ Actions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Actions ───────────────────────────────────────────────────────────────
+
+
+  Future<void> _riskClaimReinforce() async {
+    final t = _l10n;
+    final country = (_mapData['country'] as Map?)?.cast<String, dynamic>();
+    final code = (country?['countryCode'] as String?) ?? _selectedCountryCode;
+    setState(() => _isActing = true);
+    final result = await _service.riskClaimReinforce(code);
+    if (!mounted) return;
+    setState(() => _isActing = false);
+    if (result['success'] == true) {
+      await _loadData(silent: true);
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(t.territoryRiskReinforceLeft(
+            ((result['armiesRemaining'] as num?)?.toInt() ?? 0).toString(),
+          )),
+          backgroundColor: Colors.teal,
+        ),
+      );
+    } else {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_territoryErrorMessage(result['event'] ?? result['message'])),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Future<void> _riskPlaceReinforce(Map<String, dynamic> region) async {
+    final t = _l10n;
+    final regionKey = region['regionKey'] as String;
+    final reinforce = (_mapData['riskReinforce'] as Map?)?.cast<String, dynamic>();
+    final maxPlace = (reinforce?['armiesRemaining'] as num?)?.toInt() ?? 0;
+    if (maxPlace < 1) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(content: Text(t.territoryErrorRiskNoReinforce), backgroundColor: Colors.orange),
+      );
+      return;
+    }
+    final amount = await _promptArmyAmount(
+      title: t.territoryRiskPlaceReinforce,
+      max: maxPlace,
+      initial: 1,
+    );
+    if (amount == null || amount < 1) return;
+    setState(() => _isActing = true);
+    final result = await _service.riskPlaceReinforce(regionKey: regionKey, amount: amount);
+    if (!mounted) return;
+    setState(() => _isActing = false);
+    if (result['success'] == true) {
+      await _loadData(silent: true);
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(content: Text(t.territoryRiskReinforceLeft(
+          ((result['armiesRemaining'] as num?)?.toInt() ?? 0).toString(),
+        )), backgroundColor: Colors.teal),
+      );
+    } else {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_territoryErrorMessage(result['event'] ?? result['message'])),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Future<void> _riskFortify(Map<String, dynamic> region) async {
+    final t = _l10n;
+    final fromKey = region['regionKey'] as String;
+    final neighbors = ((region['neighbors'] as List?) ?? const [])
+        .map((e) => e.toString())
+        .toList();
+    final regions = (_mapData['regions'] as List?)?.whereType<Map<String, dynamic>>().toList() ?? [];
+    final ownedNeighbors = regions.where((r) {
+      final key = r['regionKey']?.toString();
+      if (key == null || !neighbors.contains(key)) return false;
+      return r['ownerCrewId'] != null &&
+          r['ownerCrewId'].toString() == region['ownerCrewId']?.toString();
+    }).toList();
+    if (ownedNeighbors.isEmpty) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(content: Text(t.territoryErrorRiskNotAdjacent), backgroundColor: Colors.orange),
+      );
+      return;
+    }
+    final target = await _pickNeighborRegion(ownedNeighbors, t.territoryRiskFortify);
+    if (target == null) return;
+    final fromArmies = (region['armies'] as num?)?.toInt() ?? 0;
+    final maxMove = fromArmies - 1;
+    if (maxMove < 1) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(content: Text(t.territoryErrorRiskInsufficientArmies), backgroundColor: Colors.orange),
+      );
+      return;
+    }
+    final amount = await _promptArmyAmount(title: t.territoryRiskFortify, max: maxMove, initial: 1);
+    if (amount == null) return;
+    setState(() => _isActing = true);
+    final result = await _service.riskFortify(
+      fromRegionKey: fromKey,
+      toRegionKey: target['regionKey'] as String,
+      amount: amount,
+    );
+    if (!mounted) return;
+    setState(() => _isActing = false);
+    if (result['success'] == true) {
+      await _loadData(silent: true);
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(content: Text(t.territoryRiskModeTitle), backgroundColor: Colors.teal),
+      );
+    } else {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_territoryErrorMessage(result['event'] ?? result['message'])),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Future<void> _riskAttackTarget(Map<String, dynamic> target) async {
+    final t = _l10n;
+    final toKey = target['regionKey'] as String;
+    final regions = (_mapData['regions'] as List?)?.whereType<Map<String, dynamic>>().toList() ?? [];
+    final myCrewId = _myCrewId;
+    final sources = regions.where((r) {
+      if (r['ownerCrewId'] == null || myCrewId == null) return false;
+      if (r['ownerCrewId'].toString() != myCrewId.toString()) return false;
+      final armies = (r['armies'] as num?)?.toInt() ?? 0;
+      if (armies < 2) return false;
+      final neighbors = ((r['neighbors'] as List?) ?? const []).map((e) => e.toString());
+      return neighbors.contains(toKey);
+    }).toList();
+    if (sources.isEmpty) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(content: Text(t.territoryErrorRiskNotAdjacent), backgroundColor: Colors.orange),
+      );
+      return;
+    }
+    final from = await _pickNeighborRegion(sources, t.territoryRiskAttackAdjacent);
+    if (from == null) return;
+    final fromArmies = (from['armies'] as num?)?.toInt() ?? 0;
+    final maxCommit = fromArmies - 1;
+    final commit = await _promptArmyAmount(
+      title: t.territoryRiskCommitLabel,
+      max: maxCommit,
+      initial: maxCommit.clamp(1, 3),
+    );
+    if (commit == null) return;
+    setState(() => _isActing = true);
+    final result = await _service.riskAttack(
+      fromRegionKey: from['regionKey'] as String,
+      toRegionKey: toKey,
+      commitArmies: commit,
+    );
+    if (!mounted) return;
+    setState(() => _isActing = false);
+    if (result['success'] == true) {
+      await _loadData(silent: true);
+      if (!mounted) return;
+      final captured = result['captured'] == true;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(t.territoryRiskBattleResult(
+            ((result['attackerLosses'] as num?)?.toInt() ?? 0).toString(),
+            ((result['defenderLosses'] as num?)?.toInt() ?? 0).toString(),
+            captured ? t.territoryRiskCaptured : t.territoryRiskHeld,
+          )),
+          backgroundColor: captured ? Colors.green : Colors.orange,
+          duration: const Duration(seconds: 6),
+        ),
+      );
+    } else {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_territoryErrorMessage(result['event'] ?? result['message'])),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Future<int?> _promptArmyAmount({
+    required String title,
+    required int max,
+    required int initial,
+  }) async {
+    final controller = TextEditingController(text: initial.clamp(1, max).toString());
+    final t = _l10n;
+    return showDialog<int>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(title),
+        content: TextField(
+          controller: controller,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(labelText: '1 – $max'),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: Text(t.cancel)),
+          ElevatedButton(
+            onPressed: () {
+              final v = int.tryParse(controller.text.trim()) ?? 0;
+              if (v < 1 || v > max) {
+                Navigator.pop(ctx);
+                return;
+              }
+              Navigator.pop(ctx, v);
+            },
+            child: Text(t.confirm),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<Map<String, dynamic>?> _pickNeighborRegion(
+    List<Map<String, dynamic>> options,
+    String title,
+  ) async {
+    final t = _l10n;
+    return showDialog<Map<String, dynamic>>(
+      context: context,
+      builder: (ctx) => SimpleDialog(
+        title: Text(title),
+        children: [
+          for (final opt in options)
+            SimpleDialogOption(
+              onPressed: () => Navigator.pop(ctx, opt),
+              child: Text(_localizedRegionNameFromMap(opt)),
+            ),
+          SimpleDialogOption(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(t.cancel),
+          ),
+        ],
+      ),
+    );
+  }
 
   Future<void> _confirmStartContest(String regionKey) async {
     final t = _l10n;

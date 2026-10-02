@@ -145,6 +145,15 @@ async function getTerritoryConfig() {
     'TERRITORY_ARSENAL_AMMO_COST_DEFENSE',
     'TERRITORY_ARSENAL_AMMO_COST_PATROL',
     'TERRITORY_ARSENAL_AMMO_COST_SABOTAGE',
+    'TERRITORY_RISK_ENABLED',
+    'TERRITORY_RISK_MODE_COUNTRIES',
+    'TERRITORY_RISK_REINFORCE_HOURS',
+    'TERRITORY_RISK_ATTACK_COOLDOWN_SECONDS',
+    'TERRITORY_RISK_MAX_ROUNDS_PER_ATTACK',
+    'TERRITORY_RISK_MIN_ARMIES_ON_CAPTURE',
+    'TERRITORY_RISK_NEUTRAL_GARRISON',
+    'TERRITORY_RISK_NL_FULL_CONTROL_BONUS',
+    'TERRITORY_RISK_SEED_ARMIES_ON_OWNED',
   ];
   const cfg = await getRuntimeConfig(keys);
   const actionUnlockHqLevels = {
@@ -265,6 +274,15 @@ async function getTerritoryConfig() {
     arsenalAmmoCostDefense: Number(cfg['TERRITORY_ARSENAL_AMMO_COST_DEFENSE'] ?? 30),
     arsenalAmmoCostPatrol: Number(cfg['TERRITORY_ARSENAL_AMMO_COST_PATROL'] ?? 15),
     arsenalAmmoCostSabotage: Number(cfg['TERRITORY_ARSENAL_AMMO_COST_SABOTAGE'] ?? 8),
+    riskEnabled: Number(cfg['TERRITORY_RISK_ENABLED'] ?? 1) === 1,
+    riskModeCountries: String(cfg['TERRITORY_RISK_MODE_COUNTRIES'] ?? 'nl'),
+    riskReinforceHours: Number(cfg['TERRITORY_RISK_REINFORCE_HOURS'] ?? 8),
+    riskAttackCooldownSeconds: Number(cfg['TERRITORY_RISK_ATTACK_COOLDOWN_SECONDS'] ?? 300),
+    riskMaxRoundsPerAttack: Number(cfg['TERRITORY_RISK_MAX_ROUNDS_PER_ATTACK'] ?? 20),
+    riskMinArmiesOnCapture: Number(cfg['TERRITORY_RISK_MIN_ARMIES_ON_CAPTURE'] ?? 1),
+    riskNeutralGarrison: Number(cfg['TERRITORY_RISK_NEUTRAL_GARRISON'] ?? 3),
+    riskNlFullControlBonus: Number(cfg['TERRITORY_RISK_NL_FULL_CONTROL_BONUS'] ?? 5),
+    riskSeedArmiesOnOwned: Number(cfg['TERRITORY_RISK_SEED_ARMIES_ON_OWNED'] ?? 3),
     abandonEnabled: Number(cfg['TERRITORY_ABANDON_ENABLED'] ?? 1) === 1,
     abandonRegionCooldownSeconds: Number(cfg['TERRITORY_ABANDON_REGION_COOLDOWN_SECONDS'] ?? 172800),
     abandonCountryCooldownSeconds: Number(cfg['TERRITORY_ABANDON_COUNTRY_COOLDOWN_SECONDS'] ?? 604800),
@@ -2277,7 +2295,26 @@ export async function getMapData(
     };
   });
 
-  return { country, viewerCaps, regions: enrichedRegions };
+  const { getRiskSnapshotForMap } = await import('./territoryRiskService');
+  const riskSnapshot = await getRiskSnapshotForMap({
+    countryCode: country.countryCode,
+    viewerCrewId: viewer?.viewerCrewId ?? null,
+    regionKeys: enrichedRegions.map((r) => r.regionKey),
+  });
+
+  const regionsWithRisk = enrichedRegions.map((r) => ({
+    ...r,
+    armies: riskSnapshot.armiesByRegion[r.regionKey] ?? 0,
+    riskMode: riskSnapshot.riskMode,
+  }));
+
+  return {
+    country,
+    viewerCaps,
+    riskMode: riskSnapshot.riskMode,
+    riskReinforce: riskSnapshot.reinforce,
+    regions: regionsWithRisk,
+  };
 }
 
 export async function getOverview(): Promise<{
@@ -2614,6 +2651,7 @@ export async function getAdminOverview(): Promise<{
     stability: number;
     activeContestId: number | null;
     activeContestStatus: string | null;
+    armies: number;
   }>;
   telemetry: TerritoryAdminTelemetry;
 }> {
@@ -2691,6 +2729,7 @@ export async function getAdminOverview(): Promise<{
       stability: number;
       activeContestId: number | null;
       activeContestStatus: string | null;
+      armies: number | null;
     }>>(
       `SELECT tr.regionKey,
               tr.countryCode,
@@ -2702,10 +2741,12 @@ export async function getAdminOverview(): Promise<{
               owner.name AS ownerCrewName,
               ctrl.stability,
               contest.id AS activeContestId,
-              contest.status AS activeContestStatus
+              contest.status AS activeContestStatus,
+              armies.armies AS armies
        FROM territory_regions tr
        LEFT JOIN territory_control ctrl ON ctrl.regionKey = tr.regionKey
        LEFT JOIN crews owner ON owner.id = ctrl.ownerCrewId
+       LEFT JOIN territory_region_armies armies ON armies.regionKey = tr.regionKey
        LEFT JOIN territory_contests contest
          ON contest.regionKey = tr.regionKey
         AND contest.status NOT IN ('resolved', 'cancelled')
@@ -2746,6 +2787,7 @@ export async function getAdminOverview(): Promise<{
       ownerCrewId: region.ownerCrewId == null ? null : toNumeric(region.ownerCrewId),
       stability: toNumeric(region.stability),
       activeContestId: region.activeContestId == null ? null : toNumeric(region.activeContestId),
+      armies: toNumeric(region.armies ?? 0),
     })),
     telemetry,
   };
@@ -2779,6 +2821,11 @@ export async function startContest(
   );
   if (!regions[0]) throw new Error('REGION_NOT_FOUND');
   assertPlayerInTerritoryCountry(currentCountry, regions[0].countryCode);
+
+  const { isRiskModeCountry } = await import('./territoryRiskService');
+  if (await isRiskModeCountry(regions[0].countryCode)) {
+    throw new Error('RISK_MODE_ACTIVE');
+  }
 
   // Validate no concurrent active contest
   const existingContests = await prisma.$queryRawUnsafe<ContestRow[]>(
@@ -3805,6 +3852,11 @@ export async function resolveContest(contestId: number): Promise<{ winnerCrewId:
         previousOwnerId,
         winnerCrewId,
       });
+      const { syncArmiesOnOwnershipChange } = await import('./territoryRiskService');
+      await syncArmiesOnOwnershipChange({
+        regionKey: contest.regionKey,
+        newOwnerCrewId: winnerCrewId,
+      });
     }
 
     _notifyCrewRegionCaptured(winnerCrewId, contest.regionKey).catch(() => {});
@@ -3852,6 +3904,8 @@ export async function adminAssignRegion(regionKey: string, crewId: number | null
       winnerCrewId: crewId,
     });
   }
+  const { syncArmiesOnOwnershipChange } = await import('./territoryRiskService');
+  await syncArmiesOnOwnershipChange({ regionKey, newOwnerCrewId: crewId });
 }
 
 export async function adminResetRegion(regionKey: string): Promise<void> {
@@ -3878,6 +3932,8 @@ export async function adminResetRegion(regionKey: string): Promise<void> {
     regionKey,
   );
   await territoryArsenalService.clearRegionCache(regionKey);
+  const { syncArmiesOnOwnershipChange } = await import('./territoryRiskService');
+  await syncArmiesOnOwnershipChange({ regionKey, newOwnerCrewId: null });
 }
 
 export async function adminStartSeason(seasonKey: string, startsAt: Date, endsAt: Date): Promise<void> {

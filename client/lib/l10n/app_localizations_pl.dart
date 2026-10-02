@@ -17417,6 +17417,93 @@ class AppLocalizationsPl extends AppLocalizations {
   String get territoryAttack => 'Atak';
 
   @override
+  String territoryRiskArmies(String count) {
+    return 'Armies: $count';
+  }
+
+  @override
+  String get territoryRiskModeTitle => 'Risk conquest';
+
+  @override
+  String get territoryRiskModeHint =>
+      'In this country you conquer with armies: reinforce, attack adjacent regions with dice, then fortify. Classic contests are disabled here.';
+
+  @override
+  String get territoryRiskClaimReinforce => 'Claim reinforcements';
+
+  @override
+  String get territoryRiskPlaceReinforce => 'Place armies here';
+
+  @override
+  String get territoryRiskFortify => 'Fortify to neighbor';
+
+  @override
+  String get territoryRiskAttackAdjacent => 'Attack adjacent';
+
+  @override
+  String get territoryRiskCommitLabel => 'Armies to commit';
+
+  @override
+  String get territoryRiskPickNeighbor => 'Choose neighboring region';
+
+  @override
+  String territoryRiskReinforceLeft(String count) {
+    return 'Reinforcements left: $count';
+  }
+
+  @override
+  String territoryRiskBattleResult(String atk, String def, String outcome) {
+    return 'Battle: you lost $atk, they lost $def. $outcome';
+  }
+
+  @override
+  String get territoryRiskCaptured => 'Region captured!';
+
+  @override
+  String get territoryRiskHeld => 'Defense held.';
+
+  @override
+  String get territoryErrorRiskModeActive =>
+      'This country uses Risk conquest. Attack from an adjacent owned region instead.';
+
+  @override
+  String get territoryErrorRiskModeInactive =>
+      'Risk conquest is not active in this country.';
+
+  @override
+  String get territoryErrorRiskNoOwned =>
+      'You need at least one owned region in this country.';
+
+  @override
+  String get territoryErrorRiskInvalidAmount => 'Invalid army amount.';
+
+  @override
+  String get territoryErrorRiskNotOwner => 'You do not own that region.';
+
+  @override
+  String get territoryErrorRiskNoReinforce =>
+      'No reinforcements left in this window.';
+
+  @override
+  String get territoryErrorRiskNotAdjacent =>
+      'You can only attack or fortify adjacent regions.';
+
+  @override
+  String get territoryErrorRiskFortifyUsed =>
+      'You already fortified this reinforce window.';
+
+  @override
+  String get territoryErrorRiskInsufficientArmies =>
+      'Not enough armies (leave at least 1 behind).';
+
+  @override
+  String get territoryErrorRiskOwnTarget => 'You already own that region.';
+
+  @override
+  String get territoryErrorRiskAttackCooldown =>
+      'Attack cooldown still active for this border.';
+
+  @override
   String get territoryAttackerActions => 'Działania atakującego';
 
   @override

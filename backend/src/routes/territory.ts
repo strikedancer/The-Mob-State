@@ -5,6 +5,7 @@ import { adminAuthMiddleware, type AdminRequest } from '../middleware/adminAuth'
 import * as territoryService from '../services/territoryService';
 import * as territoryArsenalService from '../services/territoryArsenalService';
 import * as territoryAbandonService from '../services/territoryAbandonService';
+import * as territoryRiskService from '../services/territoryRiskService';
 import * as crewService from '../services/crewService';
 
 const router = Router();
@@ -34,6 +35,11 @@ const adminAssignSchema = z.object({
 
 const adminResetSchema = z.object({
   regionKey: z.string().min(2).max(60),
+});
+
+const adminArmiesSchema = z.object({
+  regionKey: z.string().min(2).max(60),
+  armies: z.number().int().min(0).max(9999),
 });
 
 const adminResolveSchema = z.object({
@@ -109,6 +115,19 @@ function mapTerritoryError(error: unknown, res: Response, next: NextFunction) {
     ABANDON_COOLDOWN:               [429, 'territory.abandon_cooldown'],
     ABANDON_CONFIRM_REQUIRED:       [400, 'territory.abandon_confirm_required'],
     ABANDON_NO_REGIONS:             [400, 'territory.abandon_no_regions'],
+    RISK_MODE_ACTIVE:               [403, 'territory.risk_mode_active'],
+    RISK_MODE_INACTIVE:             [403, 'territory.risk_mode_inactive'],
+    RISK_NO_OWNED_REGIONS:          [400, 'territory.risk_no_owned_regions'],
+    RISK_INVALID_AMOUNT:            [400, 'territory.risk_invalid_amount'],
+    RISK_NOT_OWNER:                 [403, 'territory.risk_not_owner'],
+    RISK_NO_REINFORCEMENTS:         [400, 'territory.risk_no_reinforcements'],
+    RISK_SAME_REGION:               [400, 'territory.risk_same_region'],
+    RISK_CROSS_COUNTRY:             [400, 'territory.risk_cross_country'],
+    RISK_NOT_ADJACENT:              [403, 'territory.risk_not_adjacent'],
+    RISK_FORTIFY_USED:              [429, 'territory.risk_fortify_used'],
+    RISK_INSUFFICIENT_ARMIES:       [400, 'territory.risk_insufficient_armies'],
+    RISK_OWN_TARGET:                [400, 'territory.risk_own_target'],
+    RISK_ATTACK_COOLDOWN:           [429, 'territory.risk_attack_cooldown'],
   };
 
   const entry = map[error.message];
@@ -285,6 +304,130 @@ router.post('/contest/defend', authenticate, async (req: AuthRequest, res: Respo
       req.player?.currentCountry,
     );
     return res.json({ event: 'territory.defend_joined', params: {} });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ event: 'error.validation', params: { issues: error.issues } });
+    }
+    return mapTerritoryError(error, res, next);
+  }
+});
+
+const riskCountrySchema = z.object({
+  countryCode: z.string().min(2).max(10),
+});
+
+const riskPlaceSchema = z.object({
+  regionKey: z.string().min(2).max(60),
+  amount: z.number().int().positive().max(100),
+});
+
+const riskAttackSchema = z.object({
+  fromRegionKey: z.string().min(2).max(60),
+  toRegionKey: z.string().min(2).max(60),
+  commitArmies: z.number().int().positive().max(500),
+  maxRounds: z.number().int().positive().max(50).optional(),
+});
+
+const riskFortifySchema = z.object({
+  fromRegionKey: z.string().min(2).max(60),
+  toRegionKey: z.string().min(2).max(60),
+  amount: z.number().int().positive().max(500),
+});
+
+/**
+ * POST /territory/risk/reinforce/claim
+ * Open or refresh the reinforce window for a Risk-mode country.
+ */
+router.post('/risk/reinforce/claim', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const crewId = await requireCrew(req, res);
+    if (!crewId) return;
+    const body = riskCountrySchema.parse(req.body);
+    const result = await territoryRiskService.claimReinforce(
+      req.player!.id,
+      crewId,
+      body.countryCode,
+      req.player?.currentCountry,
+    );
+    return res.json({ event: 'territory.risk_reinforce_claimed', params: result });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ event: 'error.validation', params: { issues: error.issues } });
+    }
+    return mapTerritoryError(error, res, next);
+  }
+});
+
+/**
+ * POST /territory/risk/reinforce/place
+ * Place claimed reinforce armies onto an owned region.
+ */
+router.post('/risk/reinforce/place', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const crewId = await requireCrew(req, res);
+    if (!crewId) return;
+    const body = riskPlaceSchema.parse(req.body);
+    const result = await territoryRiskService.placeReinforce(
+      req.player!.id,
+      crewId,
+      body.regionKey,
+      body.amount,
+      req.player?.currentCountry,
+    );
+    return res.json({ event: 'territory.risk_reinforce_placed', params: result });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ event: 'error.validation', params: { issues: error.issues } });
+    }
+    return mapTerritoryError(error, res, next);
+  }
+});
+
+/**
+ * POST /territory/risk/attack
+ * Adjacent-only Risk attack with dice rounds.
+ */
+router.post('/risk/attack', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const crewId = await requireCrew(req, res);
+    if (!crewId) return;
+    const body = riskAttackSchema.parse(req.body);
+    const result = await territoryRiskService.attack(
+      req.player!.id,
+      crewId,
+      body.fromRegionKey,
+      body.toRegionKey,
+      body.commitArmies,
+      req.player?.currentCountry,
+      { maxRounds: body.maxRounds },
+    );
+    return res.json({ event: 'territory.risk_attack_resolved', params: result });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ event: 'error.validation', params: { issues: error.issues } });
+    }
+    return mapTerritoryError(error, res, next);
+  }
+});
+
+/**
+ * POST /territory/risk/fortify
+ * Move armies between adjacent owned regions (once per reinforce window).
+ */
+router.post('/risk/fortify', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const crewId = await requireCrew(req, res);
+    if (!crewId) return;
+    const body = riskFortifySchema.parse(req.body);
+    const result = await territoryRiskService.fortify(
+      req.player!.id,
+      crewId,
+      body.fromRegionKey,
+      body.toRegionKey,
+      body.amount,
+      req.player?.currentCountry,
+    );
+    return res.json({ event: 'territory.risk_fortified', params: result });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return res.status(400).json({ event: 'error.validation', params: { issues: error.issues } });
@@ -580,6 +723,23 @@ router.post('/admin/region/reset', adminAuthMiddleware, async (req: AdminRequest
     const body = adminResetSchema.parse(req.body);
     await territoryService.adminResetRegion(body.regionKey);
     return res.json({ event: 'territory.admin.reset', params: {} });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ event: 'error.validation', params: { issues: error.issues } });
+    }
+    return mapTerritoryError(error, res, next);
+  }
+});
+
+/**
+ * POST /territory/admin/region/armies
+ * Set Risk armies on a region (0 clears; owner row required for non-zero).
+ */
+router.post('/admin/region/armies', adminAuthMiddleware, async (req: AdminRequest, res: Response, next: NextFunction) => {
+  try {
+    const body = adminArmiesSchema.parse(req.body);
+    await territoryRiskService.adminSetArmies(body.regionKey, body.armies);
+    return res.json({ event: 'territory.admin.armies_set', params: { regionKey: body.regionKey, armies: body.armies } });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return res.status(400).json({ event: 'error.validation', params: { issues: error.issues } });

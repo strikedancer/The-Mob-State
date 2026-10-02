@@ -418,6 +418,15 @@ export interface AdminTerritoryOverview {
     arsenalAmmoCostDefense?: number;
     arsenalAmmoCostPatrol?: number;
     arsenalAmmoCostSabotage?: number;
+    riskEnabled?: boolean;
+    riskModeCountries?: string;
+    riskReinforceHours?: number;
+    riskAttackCooldownSeconds?: number;
+    riskMaxRoundsPerAttack?: number;
+    riskMinArmiesOnCapture?: number;
+    riskNeutralGarrison?: number;
+    riskNlFullControlBonus?: number;
+    riskSeedArmiesOnOwned?: number;
   };
   activeSeason: {
     seasonKey: string;
@@ -527,6 +536,7 @@ export interface AdminTerritoryOverview {
     stability: number;
     activeContestId: number | null;
     activeContestStatus: string | null;
+    armies?: number;
   }>;
 }
 
@@ -3356,6 +3366,20 @@ export const adminService = {
     });
 
     await ensureOk(response, "Failed to reset territory region");
+  },
+
+  async territorySetArmies(regionKey: string, armies: number): Promise<void> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/territory/admin/region/armies`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ regionKey, armies }),
+    });
+
+    await ensureOk(response, "Failed to set territory armies");
   },
 
   async territoryResolveContest(contestId: number): Promise<void> {

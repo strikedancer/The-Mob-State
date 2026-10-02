@@ -29817,6 +29817,150 @@ abstract class AppLocalizations {
   /// **'Attack'**
   String get territoryAttack;
 
+  /// No description provided for @territoryRiskArmies.
+  ///
+  /// In en, this message translates to:
+  /// **'Armies: {count}'**
+  String territoryRiskArmies(String count);
+
+  /// No description provided for @territoryRiskModeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Risk conquest'**
+  String get territoryRiskModeTitle;
+
+  /// No description provided for @territoryRiskModeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'In this country you conquer with armies: reinforce, attack adjacent regions with dice, then fortify. Classic contests are disabled here.'**
+  String get territoryRiskModeHint;
+
+  /// No description provided for @territoryRiskClaimReinforce.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim reinforcements'**
+  String get territoryRiskClaimReinforce;
+
+  /// No description provided for @territoryRiskPlaceReinforce.
+  ///
+  /// In en, this message translates to:
+  /// **'Place armies here'**
+  String get territoryRiskPlaceReinforce;
+
+  /// No description provided for @territoryRiskFortify.
+  ///
+  /// In en, this message translates to:
+  /// **'Fortify to neighbor'**
+  String get territoryRiskFortify;
+
+  /// No description provided for @territoryRiskAttackAdjacent.
+  ///
+  /// In en, this message translates to:
+  /// **'Attack adjacent'**
+  String get territoryRiskAttackAdjacent;
+
+  /// No description provided for @territoryRiskCommitLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Armies to commit'**
+  String get territoryRiskCommitLabel;
+
+  /// No description provided for @territoryRiskPickNeighbor.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose neighboring region'**
+  String get territoryRiskPickNeighbor;
+
+  /// No description provided for @territoryRiskReinforceLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Reinforcements left: {count}'**
+  String territoryRiskReinforceLeft(String count);
+
+  /// No description provided for @territoryRiskBattleResult.
+  ///
+  /// In en, this message translates to:
+  /// **'Battle: you lost {atk}, they lost {def}. {outcome}'**
+  String territoryRiskBattleResult(String atk, String def, String outcome);
+
+  /// No description provided for @territoryRiskCaptured.
+  ///
+  /// In en, this message translates to:
+  /// **'Region captured!'**
+  String get territoryRiskCaptured;
+
+  /// No description provided for @territoryRiskHeld.
+  ///
+  /// In en, this message translates to:
+  /// **'Defense held.'**
+  String get territoryRiskHeld;
+
+  /// No description provided for @territoryErrorRiskModeActive.
+  ///
+  /// In en, this message translates to:
+  /// **'This country uses Risk conquest. Attack from an adjacent owned region instead.'**
+  String get territoryErrorRiskModeActive;
+
+  /// No description provided for @territoryErrorRiskModeInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Risk conquest is not active in this country.'**
+  String get territoryErrorRiskModeInactive;
+
+  /// No description provided for @territoryErrorRiskNoOwned.
+  ///
+  /// In en, this message translates to:
+  /// **'You need at least one owned region in this country.'**
+  String get territoryErrorRiskNoOwned;
+
+  /// No description provided for @territoryErrorRiskInvalidAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid army amount.'**
+  String get territoryErrorRiskInvalidAmount;
+
+  /// No description provided for @territoryErrorRiskNotOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not own that region.'**
+  String get territoryErrorRiskNotOwner;
+
+  /// No description provided for @territoryErrorRiskNoReinforce.
+  ///
+  /// In en, this message translates to:
+  /// **'No reinforcements left in this window.'**
+  String get territoryErrorRiskNoReinforce;
+
+  /// No description provided for @territoryErrorRiskNotAdjacent.
+  ///
+  /// In en, this message translates to:
+  /// **'You can only attack or fortify adjacent regions.'**
+  String get territoryErrorRiskNotAdjacent;
+
+  /// No description provided for @territoryErrorRiskFortifyUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'You already fortified this reinforce window.'**
+  String get territoryErrorRiskFortifyUsed;
+
+  /// No description provided for @territoryErrorRiskInsufficientArmies.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough armies (leave at least 1 behind).'**
+  String get territoryErrorRiskInsufficientArmies;
+
+  /// No description provided for @territoryErrorRiskOwnTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'You already own that region.'**
+  String get territoryErrorRiskOwnTarget;
+
+  /// No description provided for @territoryErrorRiskAttackCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'Attack cooldown still active for this border.'**
+  String get territoryErrorRiskAttackCooldown;
+
   /// No description provided for @territoryAttackerActions.
   ///
   /// In en, this message translates to:
@@ -33905,13 +34049,13 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicTerritoryHow.
   ///
   /// In en, this message translates to:
-  /// **'Territory overview shows all available countries and regions by country. Click a country to see the interactive map.\nAll supported countries are now fully browseable through the same interactive map flow as the Netherlands.\nTap a region on the interactive map to open a modal with territory information and the attack button. The separate region cards below the map are no longer needed.\nViewing is allowed everywhere, but attacks, defense joins and contest actions only work in the country where your character is currently located.\nTimers in the region modal (your cooldown, when you can attack again, contest phases, and garrison) count down live. When a timer hits zero, the screen refreshes the buttons by itself; you do not need to reload the page by hand.\nOn mobile you can now pinch in and out with two fingers and drag the zoomed map directly, making smaller regions easier to tap without extra buttons on the map.\nTerritory is crew-based: you must create or join a crew before the attack button becomes available for neutral or hostile regions.\nHow many regions you may hold worldwide depends on HQ and real members: +1 slot every 3 HQ levels, +1 slot every 5 extra members, the lowest counts, never more than 10. HQ alone or members alone is not enough. At the cap you cannot start a new contest until you are under the maximum again; defense stays possible. Regions are not dropped if someone leaves the crew.\nEach region can be controlled by at most one crew at a time. Ownership grants passive income per hour, but Territory stops paying into the crew bank once the cash storage cap has been reached.\nStart a contest in an unclaimed region using the contest button. The contest automatically progresses through preparation (prep time), active (actions), and lockdown (resolution).\nWhen preparation ends, attacking and defending crew members receive a push notification and inbox message so you know you can attack or defend. That alert is sent by the minute cron even if nobody has the Territory screen open.\nDuring an active contest the region modal now also shows when actions unlock, when the contest ends, what the per-action cooldown is, and the real cash amount the region pays per payout, per hour and per day.\nRegions now also have strategic roles such as harbor, industry, capital, border region or logistics hub. That role determines which actions can earn extra points there.\nAdjacent regions already owned by your crew now provide extra support during contest actions. The region modal shows which strategic bonuses are active and how much adjacent support your crew has in that area.\nAction bonuses can now also come from crew progression: HQ level, crew mission level, and relevant side buildings (weapon/ammo/car/boat/drug storage). These bonuses only increase contest points, not passive region cash.\nSome advanced contest actions are HQ-gated: if your HQ level is too low, the action button shows `requires HQ level X` immediately.\nTerritory no longer uses a hard daily action cap by default (runtime cap 0 = disabled). Balance stays controlled through cooldowns, anti-farm and strategic action choices.\nWinning a Territory War or Total War can now leave temporary war pressure on the real Territory regions around that frontline. The region modal shows which crew holds the pressure, how much effective stability is reduced, and when the aftermath expires.\nWhen a contest has just started or an older contest was still missing timing fields, the screen now fills those timers immediately and refreshes the modal to the latest contest state without requiring you to navigate away first.\nAttackers only see attacker actions (intel, sabotage, raid) and defenders only see defender actions (patrol, supply run, defense), so the modal no longer shows confusing mixed buttons.\nA region now also shows the real Territory yield. Crew leaders also see how many regions and countries their crew controls on the dashboard, how much the crew is currently earning, and how much Territory has earned in total so far.\nContests result in ownership transfer and rewards (cash, XP, prestige). Losers also get partial xp for participation.\nLarge regions (harbors, capitals) give more passive income but also trigger more opponents and raid attempts.\nSeasonal events give bonus rewards and special challenges per region group.\nPrevent deadlocks: your crew cannot immediately attack the same opponent after a loss; wait for cooldown.\nAnti-abuse checks prevent one crew from attacking the same target repeatedly in short time windows.\nLeaders and co-leaders can voluntarily abandon one owned region or every owned region in the country you are standing in. Type ABANDON to confirm. The crew bank pays the fee, the depot burns completely (nothing returns to HQ), and projects or garrisons on that land are cleared. Region abandon has a 48-hour crew cooldown; abandoning a whole country has a 7-day cooldown. You cannot abandon during an active contest. Use this to free worldwide slots so you can relocate or contest a different piece of the same country when you are at the region cap.'**
+  /// **'Territory overview shows all available countries and regions by country. Click a country to see the interactive map.\nAll supported countries are now fully browseable through the same interactive map flow as the Netherlands.\nTap a region on the interactive map to open a modal with territory information and the attack button. The separate region cards below the map are no longer needed.\nViewing is allowed everywhere, but attacks, defense joins and contest actions only work in the country where your character is currently located.\nTimers in the region modal (your cooldown, when you can attack again, contest phases, and garrison) count down live. When a timer hits zero, the screen refreshes the buttons by itself; you do not need to reload the page by hand.\nOn mobile you can now pinch in and out with two fingers and drag the zoomed map directly, making smaller regions easier to tap without extra buttons on the map.\nTerritory is crew-based: you must create or join a crew before the attack button becomes available for neutral or hostile regions.\nHow many regions you may hold worldwide depends on HQ and real members: +1 slot every 3 HQ levels, +1 slot every 5 extra members, the lowest counts, never more than 10. HQ alone or members alone is not enough. At the cap you cannot start a new contest until you are under the maximum again; defense stays possible. Regions are not dropped if someone leaves the crew.\nEach region can be controlled by at most one crew at a time. Ownership grants passive income per hour, but Territory stops paying into the crew bank once the cash storage cap has been reached.\nStart a contest in an unclaimed region using the contest button. The contest automatically progresses through preparation (prep time), active (actions), and lockdown (resolution).\nWhen preparation ends, attacking and defending crew members receive a push notification and inbox message so you know you can attack or defend. That alert is sent by the minute cron even if nobody has the Territory screen open.\nDuring an active contest the region modal now also shows when actions unlock, when the contest ends, what the per-action cooldown is, and the real cash amount the region pays per payout, per hour and per day.\nRegions now also have strategic roles such as harbor, industry, capital, border region or logistics hub. That role determines which actions can earn extra points there.\nAdjacent regions already owned by your crew now provide extra support during contest actions. The region modal shows which strategic bonuses are active and how much adjacent support your crew has in that area.\nAction bonuses can now also come from crew progression: HQ level, crew mission level, and relevant side buildings (weapon/ammo/car/boat/drug storage). These bonuses only increase contest points, not passive region cash.\nSome advanced contest actions are HQ-gated: if your HQ level is too low, the action button shows `requires HQ level X` immediately.\nTerritory no longer uses a hard daily action cap by default (runtime cap 0 = disabled). Balance stays controlled through cooldowns, anti-farm and strategic action choices.\nWinning a Territory War or Total War can now leave temporary war pressure on the real Territory regions around that frontline. The region modal shows which crew holds the pressure, how much effective stability is reduced, and when the aftermath expires.\nWhen a contest has just started or an older contest was still missing timing fields, the screen now fills those timers immediately and refreshes the modal to the latest contest state without requiring you to navigate away first.\nAttackers only see attacker actions (intel, sabotage, raid) and defenders only see defender actions (patrol, supply run, defense), so the modal no longer shows confusing mixed buttons.\nA region now also shows the real Territory yield. Crew leaders also see how many regions and countries their crew controls on the dashboard, how much the crew is currently earning, and how much Territory has earned in total so far.\nContests result in ownership transfer and rewards (cash, XP, prestige). Losers also get partial xp for participation.\nLarge regions (harbors, capitals) give more passive income but also trigger more opponents and raid attempts.\nSeasonal events give bonus rewards and special challenges per region group.\nPrevent deadlocks: your crew cannot immediately attack the same opponent after a loss; wait for cooldown.\nAnti-abuse checks prevent one crew from attacking the same target repeatedly in short time windows.\nLeaders and co-leaders can voluntarily abandon one owned region or every owned region in the country you are standing in. Type ABANDON to confirm. The crew bank pays the fee, the depot burns completely (nothing returns to HQ), and projects or garrisons on that land are cleared. Region abandon has a 48-hour crew cooldown; abandoning a whole country has a 7-day cooldown. You cannot abandon during an active contest. Use this to free worldwide slots so you can relocate or contest a different piece of the same country when you are at the region cap.In the Netherlands (and any other Risk-mode country), classic contests are replaced by Risk conquest: claim reinforcements for your crew, place armies on owned regions, attack only adjacent regions with dice battles, and fortify armies between owned neighbors. Ownership changes only when the defender\'s armies hit zero. Other countries still use the contest loop until they are added to Risk mode.\n'**
   String get helpTopicTerritoryHow;
 
   /// No description provided for @helpTopicTerritoryTips.
   ///
   /// In en, this message translates to:
-  /// **'Start in a balanced country with medium-sized regions: less competition than large countries but reasonable passive income.\nFocus on one country where your crew is strong first: better knowledge leads to better contest strategy than shallow control in many countries.\nUse seasons as strategic resets: if you lose in a dry season, a better season always follows for a comeback.\nIf you need slots for another region in the same country, abandon one region instead of waiting for rivals to take it.\nOnly officers can abandon; agree in crew chat first because the depot burn is permanent.'**
+  /// **'Start in a balanced country with medium-sized regions: less competition than large countries but reasonable passive income.\nFocus on one country where your crew is strong first: better knowledge leads to better contest strategy than shallow control in many countries.\nUse seasons as strategic resets: if you lose in a dry season, a better season always follows for a comeback.\nIf you need slots for another region in the same country, abandon one region instead of waiting for rivals to take it.\nOnly officers can abandon; agree in crew chat first because the depot burn is permanent.\nIn Risk countries, leave at least one army behind when attacking or fortifying, and claim reinforcements every window so your front does not stall.\n'**
   String get helpTopicTerritoryTips;
 
   /// No description provided for @helpTopicProstitutionCategory.
