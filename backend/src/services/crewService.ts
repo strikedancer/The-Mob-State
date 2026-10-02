@@ -529,21 +529,29 @@ export async function getAllCrews(): Promise<CrewWithMembers[]> {
     },
   });
 
-  return crews.map((crew: any) => ({
-    id: crew.id,
-    name: crew.name,
-    bankBalance: crew.bankBalance,
-    createdAt: crew.createdAt,
-    hqStyle: crew.hqBuilding?.style ?? null,
-    hqLevel: crew.hqBuilding?.level ?? null,
-    isVip: Boolean(crew.isVip),
-    vipExpiresAt: crew.vipExpiresAt ?? null,
-    recruitingOpen: crew.recruitingOpen !== false,
-    autoAccept: Boolean(crew.autoAccept),
-    missionLevel: crew.missionLevel ?? 1,
-    members: crew.members,
-    memberCount: crew.members.length,
-  }));
+  return crews.map((crew: any) => {
+    // Prisma returns lifetimeContribution as BigInt — JSON.stringify cannot serialize it.
+    const members = (crew.members ?? []).map((member: any) => ({
+      ...member,
+      incomeShareEnabled: Boolean(member.incomeShareEnabled),
+      lifetimeContribution: Number(member.lifetimeContribution) || 0,
+    }));
+    return {
+      id: crew.id,
+      name: crew.name,
+      bankBalance: crew.bankBalance,
+      createdAt: crew.createdAt,
+      hqStyle: crew.hqBuilding?.style ?? null,
+      hqLevel: crew.hqBuilding?.level ?? null,
+      isVip: Boolean(crew.isVip),
+      vipExpiresAt: crew.vipExpiresAt ?? null,
+      recruitingOpen: crew.recruitingOpen !== false,
+      autoAccept: Boolean(crew.autoAccept),
+      missionLevel: crew.missionLevel ?? 1,
+      members,
+      memberCount: members.length,
+    };
+  });
 }
 
 export async function getRecruitingCrews(): Promise<CrewWithMembers[]> {
