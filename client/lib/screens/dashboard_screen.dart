@@ -2433,6 +2433,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       return _WebDashboardHomeContent(
         onOpenMarket: () =>
             _openBlackMarket(BlackMarketScreen.tabMarketplace),
+        onOpenTerritory: () => _selectWebSection(_WebSection.territory),
       );
     }
     switch (_selectedWebSection) {
@@ -2445,6 +2446,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return _WebDashboardHomeContent(
           onOpenMarket: () =>
               _openBlackMarket(BlackMarketScreen.tabMarketplace),
+          onOpenTerritory: () => _selectWebSection(_WebSection.territory),
         );
       case _WebSection.vault:
         return const VaultScreen(embedded: true);
@@ -3425,9 +3427,11 @@ class _HomeLiveTimers {
 class _WebDashboardHomeContent extends StatefulWidget {
   const _WebDashboardHomeContent({
     this.onOpenMarket,
+    this.onOpenTerritory,
   });
 
   final VoidCallback? onOpenMarket;
+  final VoidCallback? onOpenTerritory;
 
   @override
   State<_WebDashboardHomeContent> createState() =>
@@ -4736,11 +4740,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     if (_stats?.riskReinforcePending != null) ...[
                       const SizedBox(height: 12),
                       InkWell(
-                        onTap: () {
-                          setState(() {
-                            _selectedWebSection = _WebSection.territory;
-                          });
-                        },
+                        onTap: () => widget.onOpenTerritory?.call(),
                         child: _buildInfoRow(
                           l10n.territoryRiskModeTitle,
                           _stats!.riskReinforcePending!.canClaim
