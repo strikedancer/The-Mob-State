@@ -2933,7 +2933,8 @@ class _NightclubScreenState extends State<NightclubScreen> {
               ],
             ),
             ...staffTraits.take(2).map((raw) {
-              final map = raw as Map<String, dynamic>;
+              if (raw is! Map) return const SizedBox.shrink();
+              final map = Map<String, dynamic>.from(raw);
               final title = _pickLocaleField(map, 'nl', 'en');
               final effect = _pickLocaleField(map, 'effectNl', 'effectEn');
               return ListTile(
@@ -3111,45 +3112,78 @@ class _NightclubScreenState extends State<NightclubScreen> {
               _t.nightclubSectionRivals,
               Icons.sports_mma,
             ),
-            TextField(
-              controller: _rivalSearchController,
-              style: const TextStyle(color: Colors.white),
-              decoration: _fieldDecoration(
-                _t.nightclubSearchPlayerName,
-                suffixIcon: IconButton(
-                  onPressed: _searchRivals,
-                  icon: const Icon(Icons.search),
-                ),
-              ),
-              onSubmitted: (_) => _searchRivals(),
-            ),
-            const SizedBox(height: 6),
-            if (_rivalSearchResults.isNotEmpty)
-              DropdownButtonFormField<String>(
-                value: _validDropdownValue(
-                  _selectedRivalName,
-                  _rivalSearchResults.map(
-                    (raw) => ((raw as Map)['ownerName'] ?? '').toString(),
+            // Keep search IconButton outside InputDecoration.suffixIcon:
+            // on Flutter web that combo has painted a huge grey ErrorWidget
+            // under this section (unbounded ErrorBox inside ListView).
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _rivalSearchController,
+                    style: const TextStyle(color: Colors.white),
+                    cursorColor: const Color(0xFFD4A24D),
+                    decoration: _fieldDecoration(_t.nightclubSearchPlayerName),
+                    onSubmitted: (_) => _searchRivals(),
+                    textInputAction: TextInputAction.search,
                   ),
                 ),
-                isExpanded: true,
-                items: _rivalSearchResults.map((raw) {
-                  final map = raw as Map<String, dynamic>;
-                  final name = (map['ownerName'] ?? '').toString();
-                  return DropdownMenuItem(
-                    value: name,
-                    child: Text(
-                      _t.nightclubRivalCrowdLine(
-                        name,
-                        (map['country'] ?? '-').toString(),
-                        '${map['crowdSize'] ?? 0}',
+                const SizedBox(width: 8),
+                Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: FilledButton.tonal(
+                    onPressed: _searchRivals,
+                    style: FilledButton.styleFrom(
+                      backgroundColor: const Color(0xFF2A1C12),
+                      foregroundColor: const Color(0xFFFFE3A0),
+                      padding: const EdgeInsets.all(14),
+                      minimumSize: const Size(48, 48),
+                    ),
+                    child: const Icon(Icons.search),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 6),
+            Builder(
+              builder: (context) {
+                final rivalItems = <DropdownMenuItem<String>>[];
+                final seenNames = <String>{};
+                for (final raw in _rivalSearchResults) {
+                  if (raw is! Map) continue;
+                  final map = Map<String, dynamic>.from(raw);
+                  final name = (map['ownerName'] ?? '').toString().trim();
+                  if (name.isEmpty || !seenNames.add(name)) continue;
+                  rivalItems.add(
+                    DropdownMenuItem<String>(
+                      value: name,
+                      child: Text(
+                        _t.nightclubRivalCrowdLine(
+                          name,
+                          (map['country'] ?? '-').toString(),
+                          '${map['crowdSize'] ?? 0}',
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   );
-                }).toList(),
-                onChanged: (v) => setState(() => _selectedRivalName = v),
-                decoration: _fieldDecoration(_t.nightclubTargetName),
-              ),
+                }
+                if (rivalItems.isEmpty) {
+                  return const SizedBox.shrink();
+                }
+                final rivalKeys = rivalItems
+                    .map((item) => item.value)
+                    .whereType<String>()
+                    .toSet();
+                return DropdownButtonFormField<String>(
+                  value: _validDropdownValue(_selectedRivalName, rivalKeys),
+                  isExpanded: true,
+                  items: rivalItems,
+                  onChanged: (v) => setState(() => _selectedRivalName = v),
+                  decoration: _fieldDecoration(_t.nightclubTargetName),
+                );
+              },
+            ),
             const SizedBox(height: 6),
             Wrap(
               spacing: 8,
@@ -3176,7 +3210,9 @@ class _NightclubScreenState extends State<NightclubScreen> {
             const SizedBox(height: 6),
             Text(
               '${_t.nightclubMitigation}: ${counterIntel['mitigationPct'] ?? 0}% | ${_t.nightclubStatusActive}: ${counterIntel['active'] == true ? _t.yes : _t.no}',
-              style: Theme.of(context).textTheme.bodySmall,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Colors.white70,
+                  ),
             ),
             const SizedBox(height: 12),
             _intelligenceSectionTitle(
@@ -3184,9 +3220,15 @@ class _NightclubScreenState extends State<NightclubScreen> {
               Icons.timeline,
             ),
             if (timeline.isEmpty)
-              Text(_t.nightclubNoTimelineEvents),
+              Text(
+                _t.nightclubNoTimelineEvents,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Colors.white70,
+                    ),
+              ),
             ...timeline.take(6).map((raw) {
-              final map = raw as Map<String, dynamic>;
+              if (raw is! Map) return const SizedBox.shrink();
+              final map = Map<String, dynamic>.from(raw);
               final severity = (map['severity'] ?? 'low').toString();
               final color = severity == 'high'
                   ? Colors.redAccent
@@ -3206,8 +3248,14 @@ class _NightclubScreenState extends State<NightclubScreen> {
                   color: color,
                   size: 12,
                 ),
-                title: Text(label),
-                subtitle: Text(formatDate(map['at'])),
+                title: Text(
+                  label,
+                  style: const TextStyle(color: Colors.white),
+                ),
+                subtitle: Text(
+                  formatDate(map['at']),
+                  style: const TextStyle(color: Colors.white70),
+                ),
               );
             }),
             const SizedBox(height: 12),
@@ -3216,9 +3264,15 @@ class _NightclubScreenState extends State<NightclubScreen> {
               Icons.notifications_active,
             ),
             if (alerts.isEmpty)
-              Text(_t.nightclubNoCriticalAlerts),
+              Text(
+                _t.nightclubNoCriticalAlerts,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Colors.white70,
+                    ),
+              ),
             ...alerts.map((raw) {
-              final map = raw as Map<String, dynamic>;
+              if (raw is! Map) return const SizedBox.shrink();
+              final map = Map<String, dynamic>.from(raw);
               final severity = (map['severity'] ?? 'low').toString();
               final color = severity == 'high'
                   ? Colors.redAccent

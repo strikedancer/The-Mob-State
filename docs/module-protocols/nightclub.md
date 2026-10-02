@@ -27,7 +27,7 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 
 ## Must Preserve
 - Tonight’s loop-kaart (crowd, stock, Restock, Boost crowd) blijft bovenaan; **Drug Storage** staat daaronder in de hoofdflow (niet alleen onder Geavanceerd). Ops Lab / crew / DJ / security blijven onder Geavanceerd. Geen handmatige omzet-collect (tick blijft leidend).
-- **Geavanceerd** gebruikt een transparante `ExpansionTile` (geen Material-grijs vlak achter Ops/Rivalen) en donkere noir formuliervelden (`_fieldDecoration`) i.p.v. standaard grijze Material-inputs.
+- **Geavanceerd** gebruikt een transparante `ExpansionTile` (geen Material-grijs vlak achter Ops/Rivalen) en donkere noir formuliervelden (`_fieldDecoration`) i.p.v. standaard grijze Material-inputs. Rival-zoek: knop naast het veld (niet `InputDecoration.suffixIcon`) — IconButton-in-suffixIcon schilderde op Flutter web een groot grijs ErrorWidget onder sectie 10.
 - Clear success and failure feedback for the player.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
