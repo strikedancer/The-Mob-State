@@ -226,6 +226,15 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         '';
   }
 
+  bool _regionsShareBorder(Map<String, dynamic> a, Map<String, dynamic> b) {
+    final aKey = a['regionKey']?.toString();
+    final bKey = b['regionKey']?.toString();
+    if (aKey == null || bKey == null || aKey.isEmpty || bKey.isEmpty) return false;
+    final aNeighbors = ((a['neighbors'] as List?) ?? const []).map((e) => e.toString());
+    final bNeighbors = ((b['neighbors'] as List?) ?? const []).map((e) => e.toString());
+    return aNeighbors.contains(bKey) || bNeighbors.contains(aKey);
+  }
+
   String _bonusApiLabel(Map<dynamic, dynamic> rawBonus) {
     final lang = Localizations.localeOf(context).languageCode.toLowerCase();
     if (lang == 'nl') {
@@ -4918,13 +4927,9 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   Future<void> _riskFortify(Map<String, dynamic> region) async {
     final t = _l10n;
     final fromKey = region['regionKey'] as String;
-    final neighbors = ((region['neighbors'] as List?) ?? const [])
-        .map((e) => e.toString())
-        .toList();
     final regions = (_mapData['regions'] as List?)?.whereType<Map<String, dynamic>>().toList() ?? [];
     final ownedNeighbors = regions.where((r) {
-      final key = r['regionKey']?.toString();
-      if (key == null || !neighbors.contains(key)) return false;
+      if (!_regionsShareBorder(region, r)) return false;
       return r['ownerCrewId'] != null &&
           r['ownerCrewId'].toString() == region['ownerCrewId']?.toString();
     }).toList();
@@ -4984,8 +4989,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       if (r['ownerCrewId'].toString() != myCrewId.toString()) return false;
       final armies = (r['armies'] as num?)?.toInt() ?? 0;
       if (armies < 2) return false;
-      final neighbors = ((r['neighbors'] as List?) ?? const []).map((e) => e.toString());
-      return neighbors.contains(toKey);
+      return _regionsShareBorder(r, target);
     }).toList();
     if (sources.isEmpty) {
       showTopRightFromSnackBar(

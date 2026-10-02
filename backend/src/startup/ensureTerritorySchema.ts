@@ -209,6 +209,44 @@ function normalizeSeedList(values: string[] | undefined): string[] {
   return [...new Set(values.map((value) => value.trim()).filter(Boolean))];
 }
 
+/** Ensure A→B implies B→A within each country (Risk adjacency reads from the source region). */
+function symmetrizeNeighborsByCountry(regions: TerritorySeedRegion[]): TerritorySeedRegion[] {
+  const byCountry = new Map<string, TerritorySeedRegion[]>();
+  for (const region of regions) {
+    const list = byCountry.get(region.countryCode) ?? [];
+    list.push({
+      ...region,
+      neighbors: normalizeSeedList(region.neighbors),
+    });
+    byCountry.set(region.countryCode, list);
+  }
+
+  const out: TerritorySeedRegion[] = [];
+  for (const [, list] of byCountry) {
+    const validKeys = new Set(list.map((r) => r.key));
+    const neighborMap = new Map<string, Set<string>>();
+    for (const region of list) {
+      const set = new Set<string>();
+      for (const n of normalizeSeedList(region.neighbors)) {
+        if (validKeys.has(n)) set.add(n);
+      }
+      neighborMap.set(region.key, set);
+    }
+    for (const region of list) {
+      for (const neighborKey of neighborMap.get(region.key) ?? []) {
+        neighborMap.get(neighborKey)?.add(region.key);
+      }
+    }
+    for (const region of list) {
+      out.push({
+        ...region,
+        neighbors: [...(neighborMap.get(region.key) ?? [])].sort(),
+      });
+    }
+  }
+  return out;
+}
+
 function validateTerritorySeedRegions(regions: TerritorySeedRegion[]): void {
   const seenRegionKeys = new Set<string>();
   const seenCountrySvgIds = new Set<string>();
@@ -723,7 +761,7 @@ export async function ensureTerritorySchema(): Promise<void> {
     return buildAutoRegions(country.code, country.svgAssetKey);
   });
 
-  const allRegions = [...nlRegions, ...autoRegions];
+  const allRegions = symmetrizeNeighborsByCountry([...nlRegions, ...autoRegions]);
 
   validateTerritorySeedRegions(allRegions);
 

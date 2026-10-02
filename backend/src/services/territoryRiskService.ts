@@ -93,6 +93,17 @@ function assertInCountry(currentCountry: string | null | undefined, regionCountr
   }
 }
 
+function regionsShareBorder(
+  fromRegionKey: string,
+  fromNeighborsJson: string | null | undefined,
+  toRegionKey: string,
+  toNeighborsJson: string | null | undefined,
+): boolean {
+  const fromNeighbors = parseTerritoryStringArray(fromNeighborsJson);
+  const toNeighbors = parseTerritoryStringArray(toNeighborsJson);
+  return fromNeighbors.includes(toRegionKey) || toNeighbors.includes(fromRegionKey);
+}
+
 function rollDie(): number {
   return 1 + Math.floor(Math.random() * 6);
 }
@@ -508,8 +519,9 @@ export async function fortify(
   if (!(await isRiskModeCountry(code))) throw new Error('RISK_MODE_INACTIVE');
   assertInCountry(currentCountry, code);
 
-  const neighbors = parseTerritoryStringArray(from.neighborsJson);
-  if (!neighbors.includes(toRegionKey)) throw new Error('RISK_NOT_ADJACENT');
+  if (!regionsShareBorder(fromRegionKey, from.neighborsJson, toRegionKey, to.neighborsJson)) {
+    throw new Error('RISK_NOT_ADJACENT');
+  }
 
   const controls = await prisma.$queryRawUnsafe<Array<{ regionKey: string; ownerCrewId: number | null }>>(
     `SELECT regionKey, ownerCrewId FROM territory_control WHERE regionKey IN (?, ?)`,
@@ -644,8 +656,9 @@ export async function attack(
   if (!(await isRiskModeCountry(code))) throw new Error('RISK_MODE_INACTIVE');
   assertInCountry(currentCountry, code);
 
-  const neighbors = parseTerritoryStringArray(from.neighborsJson);
-  if (!neighbors.includes(toRegionKey)) throw new Error('RISK_NOT_ADJACENT');
+  if (!regionsShareBorder(fromRegionKey, from.neighborsJson, toRegionKey, to.neighborsJson)) {
+    throw new Error('RISK_NOT_ADJACENT');
+  }
 
   const controls = await prisma.$queryRawUnsafe<Array<{ regionKey: string; ownerCrewId: number | null }>>(
     `SELECT regionKey, ownerCrewId FROM territory_control WHERE regionKey IN (?, ?)`,

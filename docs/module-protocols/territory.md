@@ -172,7 +172,7 @@ Scope-afbakening:
 - Runtime: `TERRITORY_RISK_ENABLED`, `TERRITORY_RISK_MODE_COUNTRIES` (csv of `*`/`all` voor alle landen; default `*`).
 - Tables: `territory_region_armies`, `territory_risk_reinforce`, `territory_risk_battle_log`, attack cooldown rows.
 - Reinforce: `max(3, floor(ownedInCountry/3))` + NL full-control bonus; place only on owned regions; window hours via runtime.
-- Attack: adjacent-only, leave ≥1 army behind, classic Risk dice (atk ≤3, def ≤2, ties to defender), capture on defender wipe.
+- Attack: adjacent-only, leave ≥1 army behind, classic Risk dice (atk ≤3, def ≤2, ties to defender), capture on defender wipe. Adjacency is symmetric (`A↔B` in `neighborsJson` per country); seed symmetrizes overlays on startup and the server accepts a border if either region lists the other.
 - Fortify: one adjacent owned→owned move per reinforce window.
 - In Risk countries contests cannot start for ownership (`RISK_MODE_ACTIVE`).
 

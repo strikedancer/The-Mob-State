@@ -60,19 +60,27 @@ export const TERRITORY_STRATEGIC_OVERLAYS_BY_SVG: Record<string, TerritoryStrate
   'fr-bfc': { strategicTags: ['industry'], valueTier: 1, neighbors: ['fr-idf', 'fr-ges', 'fr-ara', 'fr-cvl'] },
   'fr-cor': { strategicTags: ['harbor', 'border'], valueTier: 1, neighbors: ['fr-pac'] },
 
-  // ── Italy ────────────────────────────────────────────────────────────────
-  'it-62': { strategicTags: ['capital', 'logistics'], valueTier: 3, neighbors: ['it-57', 'it-55', 'it-65', 'it-72'] }, // Lazio
-  'it-25': { strategicTags: ['industry', 'logistics', 'airhub'], valueTier: 3, neighbors: ['it-21', 'it-34', 'it-45'] }, // Lombardia
-  'it-42': { strategicTags: ['harbor', 'border'], valueTier: 2, neighbors: ['it-21', 'it-45', 'it-52'] }, // Liguria
-  'it-34': { strategicTags: ['harbor', 'industry'], valueTier: 2, neighbors: ['it-25', 'it-32', 'it-36', 'it-45'] }, // Veneto
-  'it-82': { strategicTags: ['harbor', 'border'], valueTier: 2, neighbors: ['it-78'] }, // Sicilia
-  'it-88': { strategicTags: ['harbor'], valueTier: 1, neighbors: [] }, // Sardegna
-  'it-72': { strategicTags: ['harbor', 'industry'], valueTier: 2, neighbors: ['it-62', 'it-67', 'it-65', 'it-75'] }, // Campania
-  'it-36': { strategicTags: ['border', 'harbor'], valueTier: 2, neighbors: ['it-34', 'it-32'] }, // Friuli
-  'it-32': { strategicTags: ['border'], valueTier: 1, neighbors: ['it-34', 'it-36', 'it-25'] }, // Trentino
-  'it-21': { strategicTags: ['industry', 'border'], valueTier: 2, neighbors: ['it-25', 'it-42', 'it-23'] }, // Piemonte
-  'it-45': { strategicTags: ['industry', 'logistics'], valueTier: 2, neighbors: ['it-25', 'it-34', 'it-42', 'it-52', 'it-57'] }, // Emilia
-  'it-52': { strategicTags: ['logistics'], valueTier: 2, neighbors: ['it-42', 'it-45', 'it-55', 'it-57'] }, // Toscana
+  // ── Italy (full adjacency; symmetrized again at seed) ─────────────────────
+  'it-21': { strategicTags: ['industry', 'border'], valueTier: 2, neighbors: ['it-23', 'it-25', 'it-42'] },
+  'it-23': { strategicTags: ['border'], valueTier: 1, neighbors: ['it-21'] },
+  'it-25': { strategicTags: ['industry', 'logistics', 'airhub'], valueTier: 3, neighbors: ['it-21', 'it-32', 'it-34', 'it-45'] },
+  'it-32': { strategicTags: ['border'], valueTier: 1, neighbors: ['it-25', 'it-34', 'it-36'] },
+  'it-34': { strategicTags: ['harbor', 'industry'], valueTier: 2, neighbors: ['it-25', 'it-32', 'it-36', 'it-45'] },
+  'it-36': { strategicTags: ['border', 'harbor'], valueTier: 2, neighbors: ['it-32', 'it-34'] },
+  'it-42': { strategicTags: ['harbor', 'border'], valueTier: 2, neighbors: ['it-21', 'it-45', 'it-52'] },
+  'it-45': { strategicTags: ['industry', 'logistics'], valueTier: 2, neighbors: ['it-25', 'it-34', 'it-42', 'it-52', 'it-57'] },
+  'it-52': { strategicTags: ['logistics'], valueTier: 2, neighbors: ['it-42', 'it-45', 'it-55', 'it-57'] },
+  'it-55': { strategicTags: ['logistics'], valueTier: 1, neighbors: ['it-52', 'it-57', 'it-62'] },
+  'it-57': { strategicTags: ['border'], valueTier: 2, neighbors: ['it-45', 'it-52', 'it-55', 'it-62', 'it-65'] },
+  'it-62': { strategicTags: ['capital', 'logistics'], valueTier: 3, neighbors: ['it-55', 'it-57', 'it-65', 'it-72'] },
+  'it-65': { strategicTags: ['border'], valueTier: 1, neighbors: ['it-57', 'it-62', 'it-67'] },
+  'it-67': { strategicTags: ['border'], valueTier: 1, neighbors: ['it-65', 'it-72', 'it-75'] },
+  'it-72': { strategicTags: ['harbor', 'industry'], valueTier: 2, neighbors: ['it-62', 'it-67', 'it-75', 'it-77'] },
+  'it-75': { strategicTags: ['harbor', 'border'], valueTier: 2, neighbors: ['it-67', 'it-72', 'it-77'] },
+  'it-77': { strategicTags: ['border'], valueTier: 1, neighbors: ['it-72', 'it-75', 'it-78'] },
+  'it-78': { strategicTags: ['harbor', 'border'], valueTier: 2, neighbors: ['it-77', 'it-82'] },
+  'it-82': { strategicTags: ['harbor', 'border'], valueTier: 2, neighbors: ['it-78'] },
+  'it-88': { strategicTags: ['harbor'], valueTier: 1, neighbors: [] },
 
   // ── Spain ────────────────────────────────────────────────────────────────
   'es-md': { strategicTags: ['capital', 'logistics', 'airhub'], valueTier: 3, neighbors: ['es-cm', 'es-cl'] },
