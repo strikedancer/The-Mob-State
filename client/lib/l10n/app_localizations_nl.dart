@@ -17385,6 +17385,31 @@ class AppLocalizationsNl extends AppLocalizations {
   String get territoryRiskHeld => 'Verdediging hield stand.';
 
   @override
+  String get territoryRiskWireTitle => 'Recente Risk-veroveringen';
+
+  @override
+  String get territoryRiskWireEmpty => 'Nog geen Risk-veroveringen.';
+
+  @override
+  String territoryRiskWireLine(String crew, String region, String country) {
+    return '$crew nam $region ($country)';
+  }
+
+  @override
+  String territoryRiskReinforceDashboardChip(
+    String armies,
+    String country,
+    String remaining,
+  ) {
+    return 'Plaats $armies Risk-legers in $country — nog $remaining.';
+  }
+
+  @override
+  String territoryRiskReinforceClaimChip(String country) {
+    return 'Claim Risk-versterkingen in $country.';
+  }
+
+  @override
   String get territoryErrorRiskModeActive =>
       'Dit land gebruikt Risk-verovering. Val aan vanuit een aangrenzend eigen gebied.';
 
@@ -19880,7 +19905,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicTerritoryTips =>
-      'Begin in een uitgebalanceerd land met middelgrote regio\'s: minder competitie dan grote landen, maar redelijk passief inkomen.\nFocus eerst op één land waar je crew sterk is: betere kennis leidt tot betere contest-strategie dan oppervlakkige controle in veel landen.\nGebruik seasons als strategisch reset: als je lost in een drought-seizoen, volgt er altijd een beter seizoen voor comeback.\nHeb je slots nodig voor een ander gebied in hetzelfde land, geef dan één regio op in plaats van te wachten tot rivalen hem innemen.\nAlleen officers kunnen opgeven; stem het eerst in de crew af, want depot-burn is permanent.\nLaat minstens één leger achter bij aanvallen of fortificeren, en claim elk reinforce-venster zodat je front niet stilvalt.\n';
+      'Begin in een uitgebalanceerd land met middelgrote regio\'s: minder competitie dan grote landen, maar redelijk passief inkomen.\nFocus eerst op één land waar je crew sterk is: betere kennis leidt tot betere contest-strategie dan oppervlakkige controle in veel landen.\nGebruik seasons als strategisch reset: als je lost in een drought-seizoen, volgt er altijd een beter seizoen voor comeback.\nHeb je slots nodig voor een ander gebied in hetzelfde land, geef dan één regio op in plaats van te wachten tot rivalen hem innemen.\nAlleen officers kunnen opgeven; stem het eerst in de crew af, want depot-burn is permanent.\nLaat minstens één leger achter bij aanvallen of fortificeren, en claim elk reinforce-venster zodat je front niet stilvalt.\nNa een claim krijgen alle crewleden push en inbox; op Home staat een chip zolang er nog legers te plaatsen zijn. Recente Risk-veroveringen zie je op Territorium en in de Home-drama-strip.\n';
 
   @override
   String get helpTopicProstitutionCategory => 'Empire';

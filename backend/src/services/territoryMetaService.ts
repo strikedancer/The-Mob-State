@@ -540,12 +540,19 @@ export async function getTerritoryDramaSnapshot(now: Date = new Date()): Promise
       winnerCrewName: string | null;
       resolvedAt: Date | null;
     }>>(
-      `SELECT tc.regionKey, c.name AS winnerCrewName, tc.resolvedAt
-       FROM territory_contests tc
-       LEFT JOIN crews c ON c.id = tc.winnerCrewId
-       WHERE tc.status = 'resolved' AND tc.winnerCrewId IS NOT NULL
-       ORDER BY tc.resolvedAt DESC
-       LIMIT 5`,
+      `SELECT regionKey, winnerCrewName, resolvedAt FROM (
+         SELECT tc.regionKey AS regionKey, c.name AS winnerCrewName, tc.resolvedAt AS resolvedAt
+         FROM territory_contests tc
+         LEFT JOIN crews c ON c.id = tc.winnerCrewId
+         WHERE tc.status = 'resolved' AND tc.winnerCrewId IS NOT NULL
+         UNION ALL
+         SELECT b.toRegionKey AS regionKey, ac.name AS winnerCrewName, b.createdAt AS resolvedAt
+         FROM territory_risk_battle_log b
+         LEFT JOIN crews ac ON ac.id = b.attackerCrewId
+         WHERE b.captured = 1
+       ) captures
+       ORDER BY resolvedAt DESC
+       LIMIT 8`,
     ),
     prisma.$queryRawUnsafe<Array<{ crewName: string; captures: number }>>(
       `SELECT c.name AS crewName, COUNT(*) AS captures

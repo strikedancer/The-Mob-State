@@ -17337,6 +17337,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get territoryRiskHeld => 'Defense held.';
 
   @override
+  String get territoryRiskWireTitle => 'Recent Risk captures';
+
+  @override
+  String get territoryRiskWireEmpty => 'No Risk captures yet.';
+
+  @override
+  String territoryRiskWireLine(String crew, String region, String country) {
+    return '$crew took $region ($country)';
+  }
+
+  @override
+  String territoryRiskReinforceDashboardChip(
+    String armies,
+    String country,
+    String remaining,
+  ) {
+    return 'Place $armies Risk armies in $country — $remaining left.';
+  }
+
+  @override
+  String territoryRiskReinforceClaimChip(String country) {
+    return 'Claim Risk reinforcements in $country.';
+  }
+
+  @override
   String get territoryErrorRiskModeActive =>
       'This country uses Risk conquest. Attack from an adjacent owned region instead.';
 
@@ -19830,7 +19855,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicTerritoryTips =>
-      'Start in a balanced country with medium-sized regions: less competition than large countries but reasonable passive income.\nFocus on one country where your crew is strong first: better knowledge leads to better contest strategy than shallow control in many countries.\nUse seasons as strategic resets: if you lose in a dry season, a better season always follows for a comeback.\nIf you need slots for another region in the same country, abandon one region instead of waiting for rivals to take it.\nOnly officers can abandon; agree in crew chat first because the depot burn is permanent.\nLeave at least one army behind when attacking or fortifying, and claim reinforcements every window so your front does not stall.\n';
+      'Start in a balanced country with medium-sized regions: less competition than large countries but reasonable passive income.\nFocus on one country where your crew is strong first: better knowledge leads to better contest strategy than shallow control in many countries.\nUse seasons as strategic resets: if you lose in a dry season, a better season always follows for a comeback.\nIf you need slots for another region in the same country, abandon one region instead of waiting for rivals to take it.\nOnly officers can abandon; agree in crew chat first because the depot burn is permanent.\nLeave at least one army behind when attacking or fortifying, and claim reinforcements every window so your front does not stall.\nWhen reinforcements are claimed, every crew member gets a push and inbox notice; Home also shows a chip while armies still need placing. Recent Risk captures appear on Territory and in the Home drama strip.\n';
 
   @override
   String get helpTopicProstitutionCategory => 'Empire';

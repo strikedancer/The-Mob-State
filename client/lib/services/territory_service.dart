@@ -50,6 +50,24 @@ class TerritoryService {
     }
   }
 
+  Future<List<Map<String, dynamic>>> getRiskWire({int limit = 10}) async {
+    try {
+      final response = await _api.get('/territory/risk/wire?limit=$limit');
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body) as Map<String, dynamic>;
+        final captures = data['params']?['captures'];
+        if (captures is! List) return const [];
+        return captures
+            .whereType<Map>()
+            .map((e) => Map<String, dynamic>.from(e))
+            .toList(growable: false);
+      }
+      return const [];
+    } catch (_) {
+      return const [];
+    }
+  }
+
   Future<Map<String, dynamic>?> getMyCrew() async {
     try {
       final response = await _api.get('/crews/mine');

@@ -623,10 +623,16 @@ export async function ensureTerritorySchema(): Promise<void> {
       armiesGranted INT NOT NULL DEFAULT 0,
       armiesRemaining INT NOT NULL DEFAULT 0,
       fortifyUsed TINYINT(1) NOT NULL DEFAULT 0,
+      notifiedAt DATETIME NULL,
       updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
       PRIMARY KEY (crewId, countryCode)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
+  await ensureColumn(
+    'territory_risk_reinforce',
+    'notifiedAt',
+    'ALTER TABLE territory_risk_reinforce ADD COLUMN notifiedAt DATETIME NULL',
+  );
 
   await prisma.$executeRawUnsafe(`
     CREATE TABLE IF NOT EXISTS territory_risk_attack_cooldown (

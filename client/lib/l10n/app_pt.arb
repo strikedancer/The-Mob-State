@@ -13757,6 +13757,44 @@
   },
   "territoryRiskCaptured": "Region captured!",
   "territoryRiskHeld": "Defense held.",
+  "territoryRiskWireTitle": "Recent Risk captures",
+  "territoryRiskWireEmpty": "No Risk captures yet.",
+  "territoryRiskWireLine": "{crew} took {region} ({country})",
+  "@territoryRiskWireLine": {
+    "placeholders": {
+      "crew": {
+        "type": "String"
+      },
+      "region": {
+        "type": "String"
+      },
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryRiskReinforceDashboardChip": "Place {armies} Risk armies in {country} — {remaining} left.",
+  "@territoryRiskReinforceDashboardChip": {
+    "placeholders": {
+      "armies": {
+        "type": "String"
+      },
+      "country": {
+        "type": "String"
+      },
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryRiskReinforceClaimChip": "Claim Risk reinforcements in {country}.",
+  "@territoryRiskReinforceClaimChip": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
   "territoryErrorRiskModeActive": "This country uses Risk conquest. Attack from an adjacent owned region instead.",
   "territoryErrorRiskModeInactive": "Risk conquest is not active in this country.",
   "territoryErrorRiskNoOwned": "You need at least one owned region in this country.",

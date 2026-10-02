@@ -19,6 +19,7 @@ import {
 import { existsCached, getCached } from '../services/redisClient';
 import * as crewWarService from '../services/crewWarService';
 import * as territoryService from '../services/territoryService';
+import * as territoryRiskService from '../services/territoryRiskService';
 import {
   applyVipTimeoutReductionMs,
   applyVipTimeoutReductionSeconds,
@@ -1435,7 +1436,8 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
     const cryptoSymbols = Array.from(
       new Set(cryptoHoldingRows.map((holding) => holding.asset_symbol))
     );
-    const [territoryLeaderStats, territoryHoldDuty, cryptoAssets] = await Promise.all([
+    const [territoryLeaderStats, territoryHoldDuty, cryptoAssets, riskReinforcePending] =
+      await Promise.all([
       crewMembership?.role === 'leader'
         ? territoryService.getCrewEconomySummary(crewMembership.crewId).catch((error) => {
             console.error(
@@ -1468,6 +1470,16 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
             select: { symbol: true, current_price: true },
           })
         : Promise.resolve([]),
+      crewMembership
+        ? territoryRiskService.getCrewRiskReinforcePending(crewMembership.crewId).catch((error) => {
+            console.error('[Dashboard] Risk reinforce pending failed:', {
+              playerId,
+              crewId: crewMembership.crewId,
+              error,
+            });
+            return null;
+          })
+        : Promise.resolve(null),
     ]);
 
     const vipCooldownActive = isVipStatusActive(playerCore);
@@ -1835,6 +1847,7 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
         },
         territoryLeaderStats,
         territoryHoldDuty: territoryHoldDuty ?? territoryLeaderStats?.holdDuty ?? null,
+        riskReinforcePending,
         territoryDrama,
         vehicleOps: {
           hasCrew: Boolean(crewMembership),

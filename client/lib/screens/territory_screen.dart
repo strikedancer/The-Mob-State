@@ -128,6 +128,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   List<dynamic> _leaderboard = [];
   Map<String, dynamic> _overview = {};
   Map<String, dynamic>? _crewTerritory;
+  List<Map<String, dynamic>> _riskWireCaptures = const [];
   bool _leaderboardShowSeason = false;
   String _selectedCountryCode = 'nl';
   bool _userPickedCountry = false;
@@ -350,11 +351,12 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     final previousRegionKey = _selectedRegion?['regionKey'] as String? ??
         _regionDetailNotifier.value?['regionKey'] as String?;
 
-    final [mapData, overview, leaderboard, myCrew] = await Future.wait([
+    final [mapData, overview, leaderboard, myCrew, riskWire] = await Future.wait([
       _service.getMap(targetCountryCode),
       _service.getOverview(),
       _service.getLeaderboard(),
       _service.getMyCrew(),
+      _service.getRiskWire(limit: 10),
     ]);
 
     final mapDataMap = mapData as Map<String, dynamic>;
@@ -410,6 +412,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       _overview = overviewMap;
       _leaderboard = leaderboard as List<dynamic>;
       _crewTerritory = crewTerritory;
+      _riskWireCaptures = (riskWire as List<Map<String, dynamic>>);
       _isTerritoryEnabled = (_overview['config']?['enabled'] as bool?) ?? false;
       _myCrewId = myCrewId;
       _myCrewName = myCrewMap?['name'] as String?;
@@ -2255,6 +2258,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         children: [
           if (viewerCaps != null) _buildViewerCapsChips(viewerCaps),
           _buildHoldDutyChip(),
+          _buildRiskWireStrip(),
           _buildAbandonCountryButton(),
           _buildNextActionChip(),
           if (_crewTerritory != null) _buildCrewStatsCard(_crewTerritory!),
@@ -2267,6 +2271,58 @@ class _TerritoryScreenState extends State<TerritoryScreen>
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildRiskWireStrip() {
+    final t = _l10n;
+    final isNl = Localizations.localeOf(context).languageCode == 'nl';
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+      child: Card(
+        color: Colors.teal.shade900.withValues(alpha: 0.35),
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                t.territoryRiskWireTitle,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 8),
+              if (_riskWireCaptures.isEmpty)
+                Text(
+                  t.territoryRiskWireEmpty,
+                  style: TextStyle(color: Colors.grey[300], fontSize: 12),
+                )
+              else
+                ..._riskWireCaptures.take(6).map((row) {
+                  final region = isNl
+                      ? (row['regionNameNl']?.toString().isNotEmpty == true
+                          ? row['regionNameNl'].toString()
+                          : row['regionKey']?.toString() ?? '-')
+                      : (row['regionNameEn']?.toString().isNotEmpty == true
+                          ? row['regionNameEn'].toString()
+                          : row['regionKey']?.toString() ?? '-');
+                  final crew = row['winnerCrewName']?.toString() ?? '-';
+                  final country =
+                      (row['countryCode']?.toString() ?? '').toUpperCase();
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 4),
+                    child: Text(
+                      t.territoryRiskWireLine(crew, region, country),
+                      style: TextStyle(color: Colors.grey[200], fontSize: 12),
+                    ),
+                  );
+                }),
+            ],
+          ),
+        ),
       ),
     );
   }

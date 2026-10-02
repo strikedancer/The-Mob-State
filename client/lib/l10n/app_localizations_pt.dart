@@ -17471,6 +17471,31 @@ class AppLocalizationsPt extends AppLocalizations {
   String get territoryRiskHeld => 'Defense held.';
 
   @override
+  String get territoryRiskWireTitle => 'Recent Risk captures';
+
+  @override
+  String get territoryRiskWireEmpty => 'No Risk captures yet.';
+
+  @override
+  String territoryRiskWireLine(String crew, String region, String country) {
+    return '$crew took $region ($country)';
+  }
+
+  @override
+  String territoryRiskReinforceDashboardChip(
+    String armies,
+    String country,
+    String remaining,
+  ) {
+    return 'Place $armies Risk armies in $country — $remaining left.';
+  }
+
+  @override
+  String territoryRiskReinforceClaimChip(String country) {
+    return 'Claim Risk reinforcements in $country.';
+  }
+
+  @override
   String get territoryErrorRiskModeActive =>
       'This country uses Risk conquest. Attack from an adjacent owned region instead.';
 

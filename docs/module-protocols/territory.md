@@ -174,6 +174,8 @@ Scope-afbakening:
 - Reinforce: `max(3, floor(ownedInCountry/3))` + NL full-control bonus; place only on owned regions; window hours via runtime.
 - Attack: adjacent-only, leave ≥1 army behind, classic Risk dice (atk ≤3, def ≤2, ties to defender), capture on defender wipe. Adjacency is symmetric (`A↔B` in `neighborsJson` per country); seed symmetrizes overlays on startup and the server accepts a border if either region lists the other.
 - Fortify: one adjacent owned→owned move per reinforce window.
+- Reinforce Call: claiming a new window notifies all crew members (push type `territory_risk_reinforce` + inbox). Cron reminds once per open window while `armiesRemaining > 0` (`notifiedAt` on `territory_risk_reinforce`). Dashboard exposes `riskReinforcePending` for a Home chip deep-linking to Territory.
+- Capture Wire: `GET /territory/risk/wire` + drama `recentCaptures` merge Risk battle_log captures with classic contest resolutions for Home/Territory visibility.
 - In Risk countries contests cannot start for ownership (`RISK_MODE_ACTIVE`).
 
 ### Actions

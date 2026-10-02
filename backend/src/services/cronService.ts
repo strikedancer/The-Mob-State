@@ -11,6 +11,7 @@ import {
 import { processPendingCooldownExpiryNotifications } from './cooldownService';
 import { processPendingCrewMissionCooldownReadyNotifications } from './crewMissionService';
 import { processPendingTerritoryContests } from './territoryService';
+import * as territoryRiskService from './territoryRiskService';
 import { processDueVehicleRepairCompletions } from './vehicleService';
 import { processDueLaunderJobs } from './launderService';
 import { tickStockPrices } from './stockMarketService';
@@ -475,6 +476,10 @@ export async function runTerritoryContestProcessor(): Promise<void> {
 
   try {
     await processPendingTerritoryContests(now);
+    const reinforceReminders = await territoryRiskService.processRiskReinforceReminders(now);
+    if (reinforceReminders > 0) {
+      console.log(`[CRON JOB] riskReinforceReminders sent=${reinforceReminders}`);
+    }
     lastJobExecutions['territoryContestProcessor'] = now;
   } catch (error) {
     console.error('[CRON ERROR] runTerritoryContestProcessor:', error);

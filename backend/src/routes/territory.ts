@@ -359,6 +359,28 @@ router.post('/risk/reinforce/claim', authenticate, async (req: AuthRequest, res:
 });
 
 /**
+ * GET /territory/risk/wire
+ * Recent Risk captures for Territory UI + Home drama.
+ */
+router.get('/risk/wire', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const limitRaw = Number(req.query.limit ?? 10);
+    const wire = await territoryRiskService.getRiskCaptureWire(limitRaw);
+    return res.json({
+      event: 'territory.risk_wire',
+      params: {
+        captures: wire.map((row) => ({
+          ...row,
+          capturedAt: row.capturedAt.toISOString(),
+        })),
+      },
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+/**
  * POST /territory/risk/reinforce/place
  * Place claimed reinforce armies onto an owned region.
  */

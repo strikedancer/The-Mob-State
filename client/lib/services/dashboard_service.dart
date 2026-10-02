@@ -148,6 +148,34 @@ class TerritoryHoldDutyDashboardSummary {
   }
 }
 
+class RiskReinforcePendingSummary {
+  final String countryCode;
+  final int armiesRemaining;
+  final DateTime? windowEndsAt;
+  final int secondsRemaining;
+  final bool canClaim;
+
+  RiskReinforcePendingSummary({
+    required this.countryCode,
+    this.armiesRemaining = 0,
+    this.windowEndsAt,
+    this.secondsRemaining = 0,
+    this.canClaim = false,
+  });
+
+  factory RiskReinforcePendingSummary.fromJson(Map<String, dynamic> json) {
+    return RiskReinforcePendingSummary(
+      countryCode: json['countryCode']?.toString() ?? '',
+      armiesRemaining: (json['armiesRemaining'] as num?)?.toInt() ?? 0,
+      windowEndsAt: json['windowEndsAt'] != null
+          ? DateTime.tryParse(json['windowEndsAt'].toString())
+          : null,
+      secondsRemaining: (json['secondsRemaining'] as num?)?.toInt() ?? 0,
+      canClaim: json['canClaim'] == true,
+    );
+  }
+}
+
 class TerritoryDramaDashboardSummary {
   final List<String> hottestContestLines;
   final List<String> recentCaptureLines;
@@ -563,6 +591,7 @@ class DashboardStats {
   final CrewWarDashboardSummary? crewWar;
   final TerritoryLeaderDashboardSummary? territoryLeaderStats;
   final TerritoryHoldDutyDashboardSummary? territoryHoldDuty;
+  final RiskReinforcePendingSummary? riskReinforcePending;
   final TerritoryDramaDashboardSummary? territoryDrama;
   final VehicleOpsDashboardSummary? vehicleOps;
   final Map<String, int> cooldowns;
@@ -599,6 +628,7 @@ class DashboardStats {
     this.crewWar,
     this.territoryLeaderStats,
     this.territoryHoldDuty,
+    this.riskReinforcePending,
     this.territoryDrama,
     this.vehicleOps,
     required this.cooldowns,
@@ -673,6 +703,11 @@ class DashboardStats {
       territoryHoldDuty: json['territoryHoldDuty'] != null
           ? TerritoryHoldDutyDashboardSummary.fromJson(
               json['territoryHoldDuty'] as Map<String, dynamic>,
+            )
+          : null,
+      riskReinforcePending: json['riskReinforcePending'] != null
+          ? RiskReinforcePendingSummary.fromJson(
+              json['riskReinforcePending'] as Map<String, dynamic>,
             )
           : null,
       territoryDrama: json['territoryDrama'] != null

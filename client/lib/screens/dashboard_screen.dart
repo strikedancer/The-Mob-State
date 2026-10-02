@@ -4733,6 +4733,36 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                         Colors.amber.shade300,
                       ),
                     ],
+                    if (_stats?.riskReinforcePending != null) ...[
+                      const SizedBox(height: 12),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            _selectedWebSection = _WebSection.territory;
+                          });
+                        },
+                        child: _buildInfoRow(
+                          l10n.territoryRiskModeTitle,
+                          _stats!.riskReinforcePending!.canClaim
+                              ? l10n.territoryRiskReinforceClaimChip(
+                                  _stats!.riskReinforcePending!.countryCode
+                                      .toUpperCase(),
+                                )
+                              : l10n.territoryRiskReinforceDashboardChip(
+                                  _stats!.riskReinforcePending!.armiesRemaining
+                                      .toString(),
+                                  _stats!.riskReinforcePending!.countryCode
+                                      .toUpperCase(),
+                                  _formatCooldown(
+                                    _stats!.riskReinforcePending!
+                                        .secondsRemaining
+                                        .clamp(0, 864000),
+                                  ),
+                                ),
+                          Colors.teal.shade300,
+                        ),
+                      ),
+                    ],
                     if (_stats?.territoryLeaderStats != null) ...[
                       const SizedBox(height: 12),
                       const Divider(height: 1, color: dashboardHairline),

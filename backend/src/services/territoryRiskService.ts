@@ -6,6 +6,9 @@ import {
 } from './territoryService';
 import * as territoryCrewStatsService from './territoryCrewStatsService';
 import * as territoryArsenalService from './territoryArsenalService';
+import { notificationService } from './notificationService';
+import { translationService, type Language } from './translationService';
+import { directMessageService } from './directMessageService';
 
 type RiskConfig = {
   enabled: boolean;
@@ -290,13 +293,14 @@ async function getOrOpenReinforceWindow(
   const grant = computeReinforceGrant(owned, total, countryCode, risk);
   await prisma.$executeRawUnsafe(
     `INSERT INTO territory_risk_reinforce
-       (crewId, countryCode, windowStartedAt, armiesGranted, armiesRemaining, fortifyUsed)
-     VALUES (?, ?, NOW(), ?, ?, 0)
+       (crewId, countryCode, windowStartedAt, armiesGranted, armiesRemaining, fortifyUsed, notifiedAt)
+     VALUES (?, ?, NOW(), ?, ?, 0, NULL)
      ON DUPLICATE KEY UPDATE
        windowStartedAt = NOW(),
        armiesGranted = VALUES(armiesGranted),
        armiesRemaining = VALUES(armiesRemaining),
        fortifyUsed = 0,
+       notifiedAt = NULL,
        updatedAt = NOW()`,
     crewId,
     countryCode,
@@ -433,6 +437,11 @@ export async function claimReinforce(
   assertInCountry(currentCountry, code);
   const risk = await getRiskConfig();
   const window = await getOrOpenReinforceWindow(crewId, code, risk);
+  if (window.canClaimNew && window.armiesRemaining > 0) {
+    void notifyCrewRiskReinforce(crewId, code, window.armiesRemaining, window.windowEndsAt).catch(
+      (err) => console.error('[Risk] reinforce claim notify failed', err),
+    );
+  }
   return {
     armiesGranted: window.armiesGranted,
     armiesRemaining: window.armiesRemaining,
@@ -814,4 +823,220 @@ export async function adminSetArmies(regionKey: string, armies: number): Promise
     return;
   }
   await setRegionArmies(regionKey, owner, Math.max(0, Math.floor(armies)));
+}
+
+async function _getCrewPlayerIds(crewId: number): Promise<number[]> {
+  const rows = await prisma.$queryRawUnsafe<Array<{ id: number }>>(
+    `SELECT playerId AS id FROM crew_members WHERE crewId = ?
+     ORDER BY FIELD(role, 'leader', 'co_leader', 'consigliere', 'capo', 'officer', 'member'), playerId ASC`,
+    crewId,
+  );
+  return rows.map((r) => toNum(r.id)).filter((id) => id > 0);
+}
+
+async function _getPlayerLanguage(playerId: number): Promise<Language> {
+  const player = await prisma.player.findUnique({
+    where: { id: playerId },
+    select: { preferredLanguage: true },
+  });
+  return translationService.getPlayerLanguage(player ?? {});
+}
+
+async function notifyCrewRiskReinforce(
+  crewId: number,
+  countryCode: string,
+  armiesRemaining: number,
+  windowEndsAt: Date,
+): Promise<void> {
+  const armiesLabel = String(Math.max(0, Math.floor(armiesRemaining)));
+  const countryLabel = countryCode.toUpperCase();
+  const players = await _getCrewPlayerIds(crewId);
+  for (const playerId of players) {
+    const lang = await _getPlayerLanguage(playerId);
+    const n = translationService.getTranslations(lang).notification;
+    const sender = translationService.getTranslations(lang).common.territorySystemSender;
+    await notificationService
+      .sendToPlayer(
+        playerId,
+        n.territoryRiskReinforce.title,
+        n.territoryRiskReinforce.pushBody(armiesLabel, countryLabel),
+        {
+          type: 'territory_risk_reinforce',
+          countryCode,
+          armiesRemaining: armiesLabel,
+          windowEndsAt: windowEndsAt.toISOString(),
+        },
+      )
+      .catch(() => {});
+    await directMessageService
+      .sendSystemMessage(playerId, n.territoryRiskReinforce.inboxMessage(armiesLabel, countryLabel), {
+        sendPush: false,
+        senderName: sender,
+      })
+      .catch(() => {});
+  }
+  await prisma.$executeRawUnsafe(
+    `UPDATE territory_risk_reinforce SET notifiedAt = NOW(), updatedAt = NOW()
+     WHERE crewId = ? AND countryCode = ?`,
+    crewId,
+    countryCode.toLowerCase(),
+  );
+}
+
+/**
+ * Once per open reinforce window: remind crews that still have unplaced armies.
+ */
+export async function processRiskReinforceReminders(now: Date = new Date()): Promise<number> {
+  const risk = await getRiskConfig();
+  if (!risk.enabled) return 0;
+  const hours = risk.reinforceHours;
+  const rows = await prisma.$queryRawUnsafe<
+    Array<{
+      crewId: number;
+      countryCode: string;
+      armiesRemaining: number;
+      windowEndsAt: Date;
+    }>
+  >(
+    `SELECT crewId, countryCode, armiesRemaining,
+            DATE_ADD(windowStartedAt, INTERVAL ? HOUR) AS windowEndsAt
+     FROM territory_risk_reinforce
+     WHERE armiesRemaining > 0
+       AND notifiedAt IS NULL
+       AND DATE_ADD(windowStartedAt, INTERVAL ? HOUR) > ?
+     ORDER BY armiesRemaining DESC
+     LIMIT 40`,
+    hours,
+    hours,
+    now,
+  );
+  let sent = 0;
+  for (const row of rows) {
+    await notifyCrewRiskReinforce(
+      toNum(row.crewId),
+      String(row.countryCode).toLowerCase(),
+      toNum(row.armiesRemaining),
+      new Date(row.windowEndsAt),
+    );
+    sent += 1;
+  }
+  return sent;
+}
+
+export async function getCrewRiskReinforcePending(crewId: number): Promise<{
+  countryCode: string;
+  armiesRemaining: number;
+  windowEndsAt: string | null;
+  secondsRemaining: number;
+  canClaim: boolean;
+} | null> {
+  if (!crewId) return null;
+  const risk = await getRiskConfig();
+  if (!risk.enabled) return null;
+  const hours = risk.reinforceHours;
+  const open = await prisma.$queryRawUnsafe<
+    Array<{
+      countryCode: string;
+      armiesRemaining: number;
+      windowEndsAt: Date;
+    }>
+  >(
+    `SELECT countryCode, armiesRemaining,
+            DATE_ADD(windowStartedAt, INTERVAL ? HOUR) AS windowEndsAt
+     FROM territory_risk_reinforce
+     WHERE crewId = ?
+       AND armiesRemaining > 0
+       AND DATE_ADD(windowStartedAt, INTERVAL ? HOUR) > NOW()
+     ORDER BY armiesRemaining DESC
+     LIMIT 1`,
+    hours,
+    crewId,
+    hours,
+  );
+  if (open[0]) {
+    const ends = new Date(open[0].windowEndsAt);
+    const secondsRemaining = Math.max(0, Math.floor((ends.getTime() - Date.now()) / 1000));
+    return {
+      countryCode: String(open[0].countryCode).toLowerCase(),
+      armiesRemaining: Math.max(0, toNum(open[0].armiesRemaining)),
+      windowEndsAt: ends.toISOString(),
+      secondsRemaining,
+      canClaim: false,
+    };
+  }
+
+  // No open window with leftover armies: check if any owned country can claim a new window.
+  const claimable = await prisma.$queryRawUnsafe<Array<{ countryCode: string }>>(
+    `SELECT DISTINCT tc.countryCode
+     FROM territory_control ctrl
+     JOIN territory_regions tc ON tc.regionKey = ctrl.regionKey AND tc.enabled = 1
+     LEFT JOIN territory_risk_reinforce r
+       ON r.crewId = ? AND r.countryCode = tc.countryCode
+     WHERE ctrl.ownerCrewId = ?
+       AND (
+         r.crewId IS NULL
+         OR DATE_ADD(r.windowStartedAt, INTERVAL ? HOUR) <= NOW()
+       )
+     LIMIT 1`,
+    crewId,
+    crewId,
+    hours,
+  );
+  if (!claimable[0]) return null;
+  return {
+    countryCode: String(claimable[0].countryCode).toLowerCase(),
+    armiesRemaining: 0,
+    windowEndsAt: null,
+    secondsRemaining: 0,
+    canClaim: true,
+  };
+}
+
+export async function getRiskCaptureWire(limit = 10): Promise<
+  Array<{
+    id: number;
+    regionKey: string;
+    regionNameNl: string | null;
+    regionNameEn: string | null;
+    countryCode: string;
+    winnerCrewName: string | null;
+    defenderCrewName: string | null;
+    capturedAt: Date;
+  }>
+> {
+  const take = Math.max(1, Math.min(25, Math.floor(limit) || 10));
+  const rows = await prisma.$queryRawUnsafe<
+    Array<{
+      id: number;
+      toRegionKey: string;
+      countryCode: string;
+      createdAt: Date;
+      winnerCrewName: string | null;
+      defenderCrewName: string | null;
+      nameNl: string | null;
+      nameEn: string | null;
+    }>
+  >(
+    `SELECT b.id, b.toRegionKey, b.countryCode, b.createdAt,
+            ac.name AS winnerCrewName, dc.name AS defenderCrewName,
+            tr.nameNl, tr.nameEn
+     FROM territory_risk_battle_log b
+     LEFT JOIN crews ac ON ac.id = b.attackerCrewId
+     LEFT JOIN crews dc ON dc.id = b.defenderCrewId
+     LEFT JOIN territory_regions tr ON tr.regionKey = b.toRegionKey
+     WHERE b.captured = 1
+     ORDER BY b.createdAt DESC
+     LIMIT ?`,
+    take,
+  );
+  return rows.map((row) => ({
+    id: toNum(row.id),
+    regionKey: row.toRegionKey,
+    regionNameNl: row.nameNl,
+    regionNameEn: row.nameEn,
+    countryCode: String(row.countryCode).toLowerCase(),
+    winnerCrewName: row.winnerCrewName,
+    defenderCrewName: row.defenderCrewName,
+    capturedAt: new Date(row.createdAt),
+  }));
 }

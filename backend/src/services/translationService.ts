@@ -251,6 +251,11 @@ export interface Translations {
       pushBody: (regionName: string, incomePercent: string) => string;
       inboxMessage: (regionName: string, incomePercent: string) => string;
     };
+    territoryRiskReinforce: {
+      title: string;
+      pushBody: (armies: string, countryCode: string) => string;
+      inboxMessage: (armies: string, countryCode: string) => string;
+    };
     rldStolen: {
       title: string;
       pushBody: (thiefName: string, workerName: string) => string;
@@ -613,6 +618,18 @@ const translations: Record<'en' | 'nl', Translations> = {
             `Region: ${regionName}`,
             `Passive income from this region is now ${incomePercent}% until a crew member travels there and patrols.`,
             'The land is still yours. Repeated misses also make it easier for a rival to capture.',
+          ].join('\n'),
+      },
+      territoryRiskReinforce: {
+        title: 'Place Risk armies',
+        pushBody: (armies, countryCode) =>
+          `${armies} reinforcement armies waiting in ${countryCode}. Open Territory to place them.`,
+        inboxMessage: (armies, countryCode) =>
+          [
+            'Place Risk armies',
+            '',
+            `Your crew has ${armies} reinforcement armies ready in ${countryCode}.`,
+            'Open Territory, travel to that country if needed, and place them on owned regions before the window ends.',
           ].join('\n'),
       },
       rldStolen: {
@@ -1007,6 +1024,18 @@ const translations: Record<'en' | 'nl', Translations> = {
             `Regio: ${regionName}`,
             `Het passieve inkomen van dit gebied is nu ${incomePercent}% tot een crewlid erheen reist en patrouilleert.`,
             'Het land blijft van jullie. Wie het vaker laat liggen, maakt het voor een rivaal makkelijker om in te nemen.',
+          ].join('\n'),
+      },
+      territoryRiskReinforce: {
+        title: 'Risk-legers plaatsen',
+        pushBody: (armies, countryCode) =>
+          `${armies} versterkingslegers wachten in ${countryCode}. Open Territorium om ze te plaatsen.`,
+        inboxMessage: (armies, countryCode) =>
+          [
+            'Risk-legers plaatsen',
+            '',
+            `Jullie crew heeft ${armies} versterkingslegers klaar in ${countryCode}.`,
+            'Open Territorium, reis zo nodig naar dat land, en plaats ze op eigen gebieden vóór het venster sluit.',
           ].join('\n'),
       },
       rldStolen: {
