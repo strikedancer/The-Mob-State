@@ -77,7 +77,6 @@ class _AviationScreenState extends State<AviationScreen> {
         _apiClient.get('/aviation/my-aircraft'),
         _apiClient.get('/aviation/my-license'),
         _apiClient.get('/aviation/licenses'),
-        _apiClient.get('/aviation/freight/board'),
       ]);
 
       final aircraftData =
@@ -85,7 +84,24 @@ class _AviationScreenState extends State<AviationScreen> {
       final ownedData = jsonDecode(responses[1].body) as Map<String, dynamic>;
       final licenseData = jsonDecode(responses[2].body) as Map<String, dynamic>;
       final offersData = jsonDecode(responses[3].body) as Map<String, dynamic>;
-      final freightData = jsonDecode(responses[4].body) as Map<String, dynamic>;
+
+      List<Map<String, dynamic>> freightOffers = const [];
+      Map<String, dynamic>? freightJob;
+      try {
+        final freightResponse = await _apiClient.get('/aviation/freight/board');
+        if (freightResponse.statusCode == 200) {
+          final freightData =
+              jsonDecode(freightResponse.body) as Map<String, dynamic>;
+          freightOffers = ((freightData['offers'] as List?) ?? const [])
+              .whereType<Map>()
+              .map((entry) => entry.cast<String, dynamic>())
+              .toList(growable: false);
+          freightJob =
+              (freightData['activeJob'] as Map?)?.cast<String, dynamic>();
+        }
+      } catch (_) {
+        // Keep hangar usable if freight board is down.
+      }
 
       var aviationLevel = 0;
       var hasFlightBasic = false;
@@ -132,11 +148,8 @@ class _AviationScreenState extends State<AviationScreen> {
             .whereType<Map>()
             .map((entry) => entry.cast<String, dynamic>())
             .toList(growable: false);
-        _freightOffers = ((freightData['offers'] as List?) ?? const [])
-            .whereType<Map>()
-            .map((entry) => entry.cast<String, dynamic>())
-            .toList(growable: false);
-        _freightJob = (freightData['activeJob'] as Map?)?.cast<String, dynamic>();
+        _freightOffers = freightOffers;
+        _freightJob = freightJob;
         _aviationLevel = aviationLevel;
         _hasFlightBasic = hasFlightBasic;
         _hasFlightCommercial = hasFlightCommercial;
@@ -1194,6 +1207,8 @@ class _AviationScreenState extends State<AviationScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                     _buildHero(l10n),
+                    _sectionTitle(l10n.aviationFreightTitle),
+                    _buildFreightBoard(l10n),
                     _sectionTitle(l10n.aviationUiLicensesTitle),
                     ..._licenseOffers.map(
                       (offer) => _buildLicenseCard(offer, l10n),
@@ -1224,8 +1239,6 @@ class _AviationScreenState extends State<AviationScreen> {
                       )
                     else
                       ..._owned.map((item) => _buildOwnedCard(item, l10n)),
-                    _sectionTitle(l10n.aviationFreightTitle),
-                    _buildFreightBoard(l10n),
                     _sectionTitle(l10n.aviationUiAvailableAircraft),
                     ..._aircraft.map(
                       (item) => _buildCatalogCard(
@@ -1295,16 +1308,21 @@ class _AviationScreenState extends State<AviationScreen> {
             )
           else
             ..._freightOffers.map((offer) {
+              final origin = offer['originCountry']?.toString() ?? '-';
+              final dest = offer['destCountry']?.toString() ?? '-';
               return ListTile(
                 contentPadding: EdgeInsets.zero,
                 title: Text(
-                  '${offer['originCountry']} → ${offer['destCountry']}',
+                  '${CountryHelper.getCountryFlag(origin)} '
+                  '${CountryHelper.getLocalizedCountryName(origin, l10n)} → '
+                  '${CountryHelper.getCountryFlag(dest)} '
+                  '${CountryHelper.getLocalizedCountryName(dest, l10n)}',
                   style: const TextStyle(color: Colors.white),
                 ),
                 subtitle: Text(
                   l10n.aviationFreightOfferMeta(
                     '${offer['cargoTiles']}',
-                    '${offer['payout']}',
+                    '${(offer['payout'] as num?)?.toInt() ?? 0}',
                   ),
                   style: const TextStyle(color: Colors.white70, fontSize: 12),
                 ),
