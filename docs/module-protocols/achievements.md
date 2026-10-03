@@ -28,6 +28,12 @@ Badge progression, category tracking, rewards and long-term account goals.
 - Tiers: `smuggle_first_drop` (1), `smuggle_border_rat` (10), `smuggle_route_runner` (50), `smuggle_shadow_fleet` (150), `smuggle_kingpin` (400), plus `smuggle_variety_pack` (3 categories) and `smuggle_five_borders` (5 countries).
 - Badge art: `backend/scripts/generate_smuggling_achievement_badges_leonardo.py`.
 
+## Hangar freight (Travel category)
+- Progress hooks on successful freight claim (`aviationFreightService.claimFreightPayout` → `checkAndUnlockAchievements`).
+- Counters from `aviation_freight_jobs` where `status = 'done'`: count + distinct `destCountry`.
+- Tiers: `freight_first_haul` (1), `freight_sky_courier` (10), `freight_air_bridge` (50), `freight_cargo_baron` (150), plus `freight_five_destinations` (5 countries).
+- Expired/failed jobs do not count toward these badges.
+
 ## School + balance coupling (2026-10)
 - `school_mastermind` / `school_doctorate` use **total track levels** (15 / 30), not a single unreachable track level.
 - Track masters: Automotive, Narcotics, Finance L4, Aviation L4, Medicine.

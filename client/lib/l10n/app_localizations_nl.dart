@@ -19454,15 +19454,15 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicAviationSummary =>
-      'Rond Luchtvaart-school af, koop een betaalde licentie en koop daarna een vliegtuig om met Vliegen direct naar een land te gaan, de wacht tussen Reizen-etappes te korten en je hangar te onderhouden.';
+      'Rond Luchtvaart-school af, koop een betaalde licentie en koop daarna een vliegtuig om met Vliegen direct naar een land te gaan, hangar-vrachtcontracten te draaien, de wacht tussen Reizen-etappes te korten en je vloot te onderhouden.';
 
   @override
   String get helpTopicAviationHow =>
-      'Haal Luchtvaart-school tot level 5 en beide vliegbrevetten voordat je een betaalde licentie kunt kopen.\nKoop op het Luchtvaart-scherm een betaalde licentie: basic, commercial of cargo. Hogere tiers ontgrendelen zwaardere toestellen.\nKoop een vliegtuig uit de hangar-catalogus. Nieuwe toestellen starten met een lege tank.\nTank in de hangar voor €50 per liter. Vliegen in de hangar kost 100 L en zet je in één sprong in elk land: geen etappes en geen uur-wacht. Spullen in je rugzak gaan mee (zelf smokkelen) en kunnen door de douane worden afgepakt, net als bij gewoon reizen.\nGewoon Reizen landt je per etappe al meteen. Een eigen vliegtuig verkort alleen de wacht van 60 minuten tot de volgende etappe of volgende reis: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, vrachttoestellen −30%. Alleen het beste toestel telt.\nVerkoop een toestel voor 50% van de aankoopprijs. Repareer een kapot toestel voordat je kunt tanken of vliegen.\nHet Cargo-getal in de hangar is het aantal smokkelvakjes. Packing is gelijk aan opslag: 100 cargo = 100 tegels (bijv. 1000 goud of 500 koffie).';
+      'Haal Luchtvaart-school tot level 5 en beide vliegbrevetten voordat je een betaalde licentie kunt kopen.\nKoop op het Luchtvaart-scherm een betaalde licentie: basic, commercial of cargo. Hogere tiers ontgrendelen zwaardere toestellen.\nKoop een vliegtuig uit de hangar-catalogus. Nieuwe toestellen starten met een lege tank.\nTank in de hangar voor €50 per liter. Vliegen in de hangar kost 100 L en zet je in één sprong in elk land: geen etappes en geen uur-wacht. Spullen in je rugzak gaan mee (zelf smokkelen) en kunnen door de douane worden afgepakt, net als bij gewoon reizen.\nGewoon Reizen landt je per etappe al meteen. Een eigen vliegtuig verkort alleen de wacht van 60 minuten tot de volgende etappe of volgende reis: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, vrachttoestellen −30%. Alleen het beste toestel telt.\nVerkoop een toestel voor 50% van de aankoopprijs. Repareer een kapot toestel voordat je kunt tanken of vliegen.\nHet Cargo-getal in de hangar is het aantal smokkelvakjes. Packing is gelijk aan opslag: 100 cargo = 100 tegels (bijv. 1000 goud of 500 koffie).\nVrachtcontracten staan bovenaan in de hangar. Aanbiedingen vernieuwen dagelijks om middernacht UTC. Accepteer alleen als je in het land van vertrek bent, met een toestel dat genoeg cargo-tegels heeft. Na accepteren heb je 3 uur om met Hangar-Vliegen naar de bestemming te gaan en daar de uitbetaling te claimen. Mis je de deadline, dan mislukt het contract; na afronden of mislukken wacht je 45 minuten tot je opnieuw mag accepteren. Voltooide vrachtcontracten ontgrendelen Travel-prestaties.';
 
   @override
   String get helpTopicAviationTips =>
-      'School 5/5 is niet genoeg: je hebt nog steeds de betaalde licentie nodig voor aankoop.\nTank minstens 100 L voordat je vliegt. Een lege tank blijft aan de grond.\nOp Reizen zie je −% wacht per etappe. Dat is niet dezelfde instant-sprong als Vliegen in de hangar.\nVerkoop ongebruikte toestellen als je cash nodig hebt; je krijgt de helft terug.';
+      'School 5/5 is niet genoeg: je hebt nog steeds de betaalde licentie nodig voor aankoop.\nTank minstens 100 L voordat je vliegt. Een lege tank blijft aan de grond.\nOp Reizen zie je −% wacht per etappe. Dat is niet dezelfde instant-sprong als Vliegen in de hangar.\nVerkoop ongebruikte toestellen als je cash nodig hebt; je krijgt de helft terug.\nPak eerst de lokale rit vanuit het land waar je al bent.\nLet op de lopende deadline bij een actief contract; claim vóór die op nul staat.\nVracht-cargo-tegels zijn iets anders dan smokkelvoorraad in je rugzak.';
 
   @override
   String get helpTopicCrewCategory => 'Sociaal';
@@ -20074,7 +20074,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicAchievementsTips =>
-      'Bekijk je bijna-voltooide achievements dagelijks: een kleine extra inspanning kan een badge en cash-beloning opleveren die anders maanden uitgesteld wordt.\nRicht je vroeg op de Economie- en Crime-categorieën: deze hebben de meeste cash-beloningen en zijn het makkelijkst te combineren met je normale gameplay.\nSchool Mastermind en Doctorate tellen nu alle track-levels bij elkaar. Nieuwe badges dekken Automotive/Narcotics/Finance/Aviation/Medicine, chop-contracten, tuning, warehouses, witwassen, garage-upgrades, Midnight Races, aandelenkoop en je eerste hitlist-contract.';
+      'Bekijk je bijna-voltooide achievements dagelijks: een kleine extra inspanning kan een badge en cash-beloning opleveren die anders maanden uitgesteld wordt.\nRicht je vroeg op de Economie- en Crime-categorieën: deze hebben de meeste cash-beloningen en zijn het makkelijkst te combineren met je normale gameplay.\nSchool Mastermind en Doctorate tellen nu alle track-levels bij elkaar. Nieuwe badges dekken Automotive/Narcotics/Finance/Aviation/Medicine, chop-contracten, tuning, warehouses, witwassen, garage-upgrades, Midnight Races, aandelenkoop en je eerste hitlist-contract.\nHangar-vrachtcontracten ontgrendelen Travel-badges voor leveringen en bestemmingen.';
 
   @override
   String get helpTopicSupportTicketsCategory => 'Steun';
@@ -21661,4 +21661,39 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get statsBoardHelpHow =>
       'Wekelijkse en all-time borden voor gelukte misdaden, opgelegde celminuten, voertuigdiefstallen en misdaadbuit (niet je cash-op-zak). Celminuten zijn opgelegd; borg of uitbraak kan korter zijn.';
+
+  @override
+  String get achievementTitle_freight_first_haul => 'Eerste vracht';
+
+  @override
+  String get achievementDescription_freight_first_haul =>
+      'Voltooi je eerste hangar-vrachtcontract';
+
+  @override
+  String get achievementTitle_freight_sky_courier => 'Luchtkoerier';
+
+  @override
+  String get achievementDescription_freight_sky_courier =>
+      'Voltooi 10 hangar-vrachtcontracten';
+
+  @override
+  String get achievementTitle_freight_air_bridge => 'Luchtbrug';
+
+  @override
+  String get achievementDescription_freight_air_bridge =>
+      'Voltooi 50 hangar-vrachtcontracten';
+
+  @override
+  String get achievementTitle_freight_cargo_baron => 'Vrachtbaron';
+
+  @override
+  String get achievementDescription_freight_cargo_baron =>
+      'Voltooi 150 hangar-vrachtcontracten';
+
+  @override
+  String get achievementTitle_freight_five_destinations => 'Vijf bestemmingen';
+
+  @override
+  String get achievementDescription_freight_five_destinations =>
+      'Lever hangar-vracht af in 5 verschillende landen';
 }

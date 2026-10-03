@@ -19615,15 +19615,15 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpTopicAviationSummary =>
-      'Completa la scuola di aviazione, acquista una licenza a pagamento, quindi acquista un aereo per volare direttamente in un paese, riduci l\'attesa tra le tratte di viaggio e mantieni la tua flotta di hangar.';
+      'Completa la scuola di aviazione, acquista una licenza a pagamento, quindi acquista un aereo per volare direttamente in un paese, riduci l\'attesa tra le tratte di viaggio e mantieni la tua flotta di hangar. Include i contratti di trasporto dell\'hangar.';
 
   @override
   String get helpTopicAviationHow =>
-      'Completa la scuola di aviazione fino al livello 5 e ottieni entrambi i certificati di volo prima di poter acquistare una licenza a pagamento. \nAcquista una licenza a pagamento nella schermata Aviazione: base, commerciale o cargo. I livelli più alti sbloccano aerei più pesanti. \nAcquista un aereo dal catalogo dell\'hangar. I nuovi aerei iniziano con un serbatoio vuoto. \nRifornimento dall\'hangar a 50€ al litro. Hangar Fly consuma 100 L e ti porta in qualsiasi paese in un solo salto: senza gambe e senza ore di attesa. \nIl viaggio commerciale ti fa già atterrare immediatamente su ogni tratta. Possedere un aereo riduce solo i 60 minuti di attesa fino alla tratta successiva o al prossimo viaggio: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, aerei cargo −30%. Conta solo l\'aereo migliore. \nVendere un aereo di proprietà al 50% del prezzo di acquisto. Ripara un aereo rotto prima di poterlo rifornire di carburante o farlo volare.\nThe hangar Cargo number is smuggle tiles. Packing matches storage: 100 cargo = 100 tiles (e.g. 1000 gold or 500 coffee).';
+      'Completa la scuola di aviazione fino al livello 5 e ottieni entrambi i certificati di volo prima di poter acquistare una licenza a pagamento. \nAcquista una licenza a pagamento nella schermata Aviazione: base, commerciale o cargo. I livelli più alti sbloccano aerei più pesanti. \nAcquista un aereo dal catalogo dell\'hangar. I nuovi aerei iniziano con un serbatoio vuoto. \nRifornimento dall\'hangar a 50€ al litro. Hangar Fly consuma 100 L e ti porta in qualsiasi paese in un solo salto: senza gambe e senza ore di attesa. \nIl viaggio commerciale ti fa già atterrare immediatamente su ogni tratta. Possedere un aereo riduce solo i 60 minuti di attesa fino alla tratta successiva o al prossimo viaggio: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, aerei cargo −30%. Conta solo l\'aereo migliore. \nVendere un aereo di proprietà al 50% del prezzo di acquisto. Ripara un aereo rotto prima di poterlo rifornire di carburante o farlo volare.\nThe hangar Cargo number is smuggle tiles. Packing matches storage: 100 cargo = 100 tiles (e.g. 1000 gold or 500 coffee).\nFreight contracts (hangar): daily board (UTC midnight). Accept in the origin country with enough cargo tiles. 3-hour delivery window via Hangar Fly, then claim payout. Missed deadline = failed job; then 45-minute cooldown. Completing freight unlocks Travel achievements.';
 
   @override
   String get helpTopicAviationTips =>
-      'School 5/5 non basta: serve comunque la licenza a pagamento prima di qualsiasi acquisto. \nSerbatoio sufficiente per 100 litri prima del volo. Un aereo vuoto non può lasciare l\'hangar. \nIn Viaggio vedi −% di attesa per tratta. Non è lo stesso salto istantaneo di Vola nell\'hangar. \nVendi aerei inutilizzati se hai bisogno di contanti; ottieni solo la metà di quello che hai pagato.';
+      'School 5/5 non basta: serve comunque la licenza a pagamento prima di qualsiasi acquisto. \nSerbatoio sufficiente per 100 litri prima del volo. Un aereo vuoto non può lasciare l\'hangar. \nIn Viaggio vedi −% di attesa per tratta. Non è lo stesso salto istantaneo di Vola nell\'hangar. \nVendi aerei inutilizzati se hai bisogno di contanti; ottieni solo la metà di quello che hai pagato.\nFreight: prefer the local-origin offer, watch the deadline, and remember cargo tiles are not backpack smuggle stock.';
 
   @override
   String get helpTopicCrewCategory => 'Sociale';
@@ -21829,4 +21829,40 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get statsBoardHelpHow =>
       'Weekly and all-time boards for successful crimes, sentenced jail minutes, vehicle thefts and crime loot (not cash on hand). Jail minutes are sentenced; bail or breakout can shorten real time served.';
+
+  @override
+  String get achievementTitle_freight_first_haul => 'Primo carico';
+
+  @override
+  String get achievementDescription_freight_first_haul =>
+      'Completa il tuo primo contratto di trasporto dell\'hangar';
+
+  @override
+  String get achievementTitle_freight_sky_courier => 'Corriere del cielo';
+
+  @override
+  String get achievementDescription_freight_sky_courier =>
+      'Completa 10 contratti di trasporto dell\'hangar';
+
+  @override
+  String get achievementTitle_freight_air_bridge => 'Ponte aereo';
+
+  @override
+  String get achievementDescription_freight_air_bridge =>
+      'Completa 50 contratti di trasporto dell\'hangar';
+
+  @override
+  String get achievementTitle_freight_cargo_baron => 'Barone del cargo';
+
+  @override
+  String get achievementDescription_freight_cargo_baron =>
+      'Completa 150 contratti di trasporto dell\'hangar';
+
+  @override
+  String get achievementTitle_freight_five_destinations =>
+      'Cinque destinazioni';
+
+  @override
+  String get achievementDescription_freight_five_destinations =>
+      'Consegna trasporto hangar in 5 paesi diversi';
 }

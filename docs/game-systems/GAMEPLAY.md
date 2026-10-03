@@ -762,7 +762,7 @@ In **Voertuig stelen** kies je Auto / Motor / Boot via de drie lane-cards. Catal
 ### Gates (school + licentie)
 - **School:** Aviation-track level 5 + alle certificaten (`flight_basic`, `flight_commercial`) is verplicht vÃ³Ã³r licentie- of vliegtuigkoop.
 - **Licentie:** aparte betaalde aankoop op het Aviation-scherm (`basic` â‚¬100k / `commercial` â‚¬500k / `cargo` â‚¬1M). Zonder licentie kun je geen vliegtuig kopen, ook niet met school 5/5.
-- **Vrachtcontracten:** dagelijkse NPC-board bovenaan in de hangar (reset om middernacht UTC). Accepteer alleen in het land van vertrek met genoeg cargo-tegels; na accept heb je **3 uur** om te vliegen en te claimen. Na afronden of verlopen geldt **45 minuten** cooldown. Timers en foutmeldingen staan op het bord.
+- **Vrachtcontracten:** dagelijkse NPC-board bovenaan in de hangar (reset om middernacht UTC). Accepteer alleen in het land van vertrek met genoeg cargo-tegels; na accept heb je **3 uur** om te vliegen en te claimen. Na afronden of verlopen geldt **45 minuten** cooldown. Timers en foutmeldingen staan op het bord. Succesvolle leveringen tellen voor Travel-prestaties (1 / 10 / 50 / 150 leveringen + 5 bestemmingen). Help/Almanac (`helpTopicAviation*`) beschrijft deze loop.
 - Web dashboard Luchtvaart toont schoolniveau, brevetten en licentie in de hangar-hero; catalogusknoppen tonen waarom een toestel nog geblokkeerd is. Op grote schermen vult de hangar de contentkolom. Citation X en Antonov gebruiken cutout-URLâ€™s (`citation_x_cut` / `antonov_cut`) zodat oude witte studioplaten niet in de browsercache blijven.
 - Hogere licentie-tier ontgrendelt zwaardere `aircraft.type`-groepen; upgrade is mogelijk.
 

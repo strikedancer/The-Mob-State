@@ -19404,15 +19404,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicAviationSummary =>
-      'Finish Aviation school, buy a paid license, then buy a plane to Fly straight to a country, shorten the wait between Travel legs, and maintain your hangar fleet.';
+      'Finish Aviation school, buy a paid license, then buy a plane to Fly straight to a country, run hangar freight contracts, shorten Travel wait between legs, and maintain your fleet.';
 
   @override
   String get helpTopicAviationHow =>
-      'Complete Aviation school to level 5 and earn both flight certificates before you can buy a paid license.\nBuy a paid license on the Aviation screen: basic, commercial or cargo. Higher tiers unlock heavier planes.\nBuy an aircraft from the hangar catalog. New planes start with an empty tank.\nRefuel from the hangar at €50 per litre. Hangar Fly uses 100 L and puts you in any country in one jump: no legs and no hour wait. Goods in your backpack travel with you (self-smuggle) and can be seized by customs the same way as commercial travel.\nCommercial Travel already lands you immediately on each leg. Owning a plane only shortens the 60-minute wait until the next leg or next trip: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, cargo planes −30%. Only the best plane counts.\nSell an owned plane for 50% of the purchase price. Repair a broken plane before you can refuel or fly it.\nThe hangar Cargo number is smuggle tiles. Packing matches storage: 100 cargo = 100 tiles (e.g. 1000 gold or 500 coffee).';
+      'Complete Aviation school to level 5 and earn both flight certificates before you can buy a paid license.\nBuy a paid license on the Aviation screen: basic, commercial or cargo. Higher tiers unlock heavier planes.\nBuy an aircraft from the hangar catalog. New planes start with an empty tank.\nRefuel from the hangar at €50 per litre. Hangar Fly uses 100 L and puts you in any country in one jump: no legs and no hour wait. Goods in your backpack travel with you (self-smuggle) and can be seized by customs the same way as commercial travel.\nCommercial Travel already lands you immediately on each leg. Owning a plane only shortens the 60-minute wait until the next leg or next trip: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, cargo planes −30%. Only the best plane counts.\nSell an owned plane for 50% of the purchase price. Repair a broken plane before you can refuel or fly it.\nThe hangar Cargo number is smuggle tiles. Packing matches storage: 100 cargo = 100 tiles (e.g. 1000 gold or 500 coffee).\nFreight contracts sit at the top of the hangar. Offers refresh daily at UTC midnight. Accept only while you are in the origin country, with a plane that has enough cargo tiles. After accept you have 3 hours to Hangar Fly to the destination and claim payout there. Miss the deadline and the contract fails; after a finish or fail you wait 45 minutes before the next accept. Completing freight contracts unlocks Travel achievements.';
 
   @override
   String get helpTopicAviationTips =>
-      'School 5/5 is not enough: you still need the paid license before any purchase.\nTank enough for 100 L before you fly. An empty plane cannot leave the hangar.\nOn Travel you see −% wait per leg. That is not the same instant jump as Fly in the hangar.\nSell unused planes if you need cash; you only get half of what you paid.';
+      'School 5/5 is not enough: you still need the paid license before any purchase.\nTank enough for 100 L before you fly. An empty plane cannot leave the hangar.\nOn Travel you see −% wait per leg. That is not the same instant jump as Fly in the hangar.\nSell unused planes if you need cash; you only get half of what you paid.\nTake the local-origin freight offer first when you are already in that country.\nWatch the live deadline on an active contract; claim before it hits zero.\nFreight cargo tiles are separate from backpack smuggle stock.';
 
   @override
   String get helpTopicCrewCategory => 'Social';
@@ -20024,7 +20024,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicAchievementsTips =>
-      'Check your nearly-completed achievements daily: a small extra effort can earn a badge and cash reward that would otherwise be delayed for months.\nFocus early on Economy and Crime categories: these have the most cash rewards and are easiest to combine with your normal gameplay.\nSchool Mastermind and Doctorate now count total track levels across all school tracks. New badges also cover Automotive/Narcotics/Finance/Aviation/Medicine tracks, chop contracts, tuning, warehouses, laundering, garage upgrades, Midnight Races, stock buys and your first hitlist contract.';
+      'Check your nearly-completed achievements daily: a small extra effort can earn a badge and cash reward that would otherwise be delayed for months.\nFocus early on Economy and Crime categories: these have the most cash rewards and are easiest to combine with your normal gameplay.\nSchool Mastermind and Doctorate now count total track levels across all school tracks. New badges also cover Automotive/Narcotics/Finance/Aviation/Medicine tracks, chop contracts, tuning, warehouses, laundering, garage upgrades, Midnight Races, stock buys and your first hitlist contract.\nHangar freight contracts unlock Travel badges for deliveries and destinations.';
 
   @override
   String get helpTopicSupportTicketsCategory => 'Support';
@@ -21608,4 +21608,39 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get statsBoardHelpHow =>
       'Weekly and all-time boards for successful crimes, sentenced jail minutes, vehicle thefts and crime loot (not cash on hand). Jail minutes are sentenced; bail or breakout can shorten real time served.';
+
+  @override
+  String get achievementTitle_freight_first_haul => 'First Haul';
+
+  @override
+  String get achievementDescription_freight_first_haul =>
+      'Complete your first hangar freight contract';
+
+  @override
+  String get achievementTitle_freight_sky_courier => 'Sky Courier';
+
+  @override
+  String get achievementDescription_freight_sky_courier =>
+      'Complete 10 hangar freight contracts';
+
+  @override
+  String get achievementTitle_freight_air_bridge => 'Air Bridge';
+
+  @override
+  String get achievementDescription_freight_air_bridge =>
+      'Complete 50 hangar freight contracts';
+
+  @override
+  String get achievementTitle_freight_cargo_baron => 'Cargo Baron';
+
+  @override
+  String get achievementDescription_freight_cargo_baron =>
+      'Complete 150 hangar freight contracts';
+
+  @override
+  String get achievementTitle_freight_five_destinations => 'Five Destinations';
+
+  @override
+  String get achievementDescription_freight_five_destinations =>
+      'Deliver hangar freight to 5 different countries';
 }

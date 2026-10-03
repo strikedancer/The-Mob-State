@@ -19637,15 +19637,15 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicAviationSummary =>
-      'Beenden Sie die Flugschule, kaufen Sie eine kostenpflichtige Lizenz, kaufen Sie dann ein Flugzeug, um direkt in ein Land zu fliegen, verkürzen Sie die Wartezeit zwischen den Reiseabschnitten und warten Sie Ihre Hangarflotte.';
+      'Beenden Sie die Flugschule, kaufen Sie eine kostenpflichtige Lizenz, kaufen Sie dann ein Flugzeug, um direkt in ein Land zu fliegen, verkürzen Sie die Wartezeit zwischen den Reiseabschnitten und warten Sie Ihre Hangarflotte. Frachtverträge im Hangar inklusive.';
 
   @override
   String get helpTopicAviationHow =>
-      'Absolvieren Sie die Flugschule bis zur Stufe 5 und erwerben Sie beide Flugzertifikate, bevor Sie eine kostenpflichtige Lizenz erwerben können. \nKaufen Sie eine kostenpflichtige Lizenz auf dem Luftfahrtbildschirm: Basislizenz, kommerzielle Lizenz oder Frachtlizenz. Höhere Stufen schalten schwerere Flugzeuge frei.\n Kaufen Sie ein Flugzeug aus dem Hangarkatalog. Neue Flugzeuge starten mit leerem Tank. \nTanken Sie im Hangar für 50 € pro Liter. Hangar Fly verbraucht 100 L und bringt Sie mit einem Sprung in jedes Land: keine Beine und keine stundenlange Wartezeit. \nBei kommerziellen Reisen landen Sie sofort auf jeder Etappe. Der Besitz eines Flugzeugs verkürzt nur die 60-minütige Wartezeit bis zur nächsten Etappe oder Reise: Cessna −15 %, King Air −25 %, Citation −30 %, Gulfstream −35 %, Frachtflugzeuge −30 %. Nur das beste Flugzeug zählt. \nVerkaufen Sie ein eigenes Flugzeug für 50 % des Kaufpreises. Reparieren Sie ein kaputtes Flugzeug, bevor Sie es auftanken oder fliegen können.\nThe hangar Cargo number is smuggle tiles. Packing matches storage: 100 cargo = 100 tiles (e.g. 1000 gold or 500 coffee).';
+      'Absolvieren Sie die Flugschule bis zur Stufe 5 und erwerben Sie beide Flugzertifikate, bevor Sie eine kostenpflichtige Lizenz erwerben können. \nKaufen Sie eine kostenpflichtige Lizenz auf dem Luftfahrtbildschirm: Basislizenz, kommerzielle Lizenz oder Frachtlizenz. Höhere Stufen schalten schwerere Flugzeuge frei.\n Kaufen Sie ein Flugzeug aus dem Hangarkatalog. Neue Flugzeuge starten mit leerem Tank. \nTanken Sie im Hangar für 50 € pro Liter. Hangar Fly verbraucht 100 L und bringt Sie mit einem Sprung in jedes Land: keine Beine und keine stundenlange Wartezeit. \nBei kommerziellen Reisen landen Sie sofort auf jeder Etappe. Der Besitz eines Flugzeugs verkürzt nur die 60-minütige Wartezeit bis zur nächsten Etappe oder Reise: Cessna −15 %, King Air −25 %, Citation −30 %, Gulfstream −35 %, Frachtflugzeuge −30 %. Nur das beste Flugzeug zählt. \nVerkaufen Sie ein eigenes Flugzeug für 50 % des Kaufpreises. Reparieren Sie ein kaputtes Flugzeug, bevor Sie es auftanken oder fliegen können.\nThe hangar Cargo number is smuggle tiles. Packing matches storage: 100 cargo = 100 tiles (e.g. 1000 gold or 500 coffee).\nFreight contracts (hangar): daily board (UTC midnight). Accept in the origin country with enough cargo tiles. 3-hour delivery window via Hangar Fly, then claim payout. Missed deadline = failed job; then 45-minute cooldown. Completing freight unlocks Travel achievements.';
 
   @override
   String get helpTopicAviationTips =>
-      'School 5/5 reicht nicht aus: Sie benötigen vor jedem Kauf immer noch die kostenpflichtige Lizenz. \nTanken Sie genug für 100 Liter, bevor Sie fliegen. Ein leeres Flugzeug darf den Hangar nicht verlassen. \nAuf Reisen sehen Sie − % Wartezeit pro Strecke. Das ist nicht derselbe Sofortsprung wie „Fliegen im Hangar“. \nVerkaufen Sie unbenutzte Flugzeuge, wenn Sie Bargeld benötigen; Sie bekommen nur die Hälfte von dem, was Sie bezahlt haben.';
+      'School 5/5 reicht nicht aus: Sie benötigen vor jedem Kauf immer noch die kostenpflichtige Lizenz. \nTanken Sie genug für 100 Liter, bevor Sie fliegen. Ein leeres Flugzeug darf den Hangar nicht verlassen. \nAuf Reisen sehen Sie − % Wartezeit pro Strecke. Das ist nicht derselbe Sofortsprung wie „Fliegen im Hangar“. \nVerkaufen Sie unbenutzte Flugzeuge, wenn Sie Bargeld benötigen; Sie bekommen nur die Hälfte von dem, was Sie bezahlt haben.\nFreight: prefer the local-origin offer, watch the deadline, and remember cargo tiles are not backpack smuggle stock.';
 
   @override
   String get helpTopicCrewCategory => 'Sozial';
@@ -21856,4 +21856,39 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get statsBoardHelpHow =>
       'Weekly and all-time boards for successful crimes, sentenced jail minutes, vehicle thefts and crime loot (not cash on hand). Jail minutes are sentenced; bail or breakout can shorten real time served.';
+
+  @override
+  String get achievementTitle_freight_first_haul => 'Erste Fracht';
+
+  @override
+  String get achievementDescription_freight_first_haul =>
+      'Schließe deinen ersten Hangar-Frachtvertrag ab';
+
+  @override
+  String get achievementTitle_freight_sky_courier => 'Himmelkurier';
+
+  @override
+  String get achievementDescription_freight_sky_courier =>
+      'Schließe 10 Hangar-Frachtverträge ab';
+
+  @override
+  String get achievementTitle_freight_air_bridge => 'Luftbrücke';
+
+  @override
+  String get achievementDescription_freight_air_bridge =>
+      'Schließe 50 Hangar-Frachtverträge ab';
+
+  @override
+  String get achievementTitle_freight_cargo_baron => 'Frachtbaron';
+
+  @override
+  String get achievementDescription_freight_cargo_baron =>
+      'Schließe 150 Hangar-Frachtverträge ab';
+
+  @override
+  String get achievementTitle_freight_five_destinations => 'Fünf Ziele';
+
+  @override
+  String get achievementDescription_freight_five_destinations =>
+      'Liefere Hangar-Fracht in 5 verschiedene Länder';
 }

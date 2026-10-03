@@ -1309,6 +1309,66 @@ export const ACHIEVEMENT_DEFINITIONS: Record<string, AchievementDefinition> = {
     icon: '🧳',
   },
 
+  freight_first_haul: {
+    id: 'freight_first_haul',
+    title: 'First Haul',
+    description: 'Complete your first hangar freight contract',
+    category: 'travel',
+    requirementType: 'freight_jobs_completed',
+    requirementValue: 1,
+    rewardMoney: 5000,
+    rewardXp: 150,
+    icon: '📦',
+  },
+
+  freight_sky_courier: {
+    id: 'freight_sky_courier',
+    title: 'Sky Courier',
+    description: 'Complete 10 hangar freight contracts',
+    category: 'travel',
+    requirementType: 'freight_jobs_completed',
+    requirementValue: 10,
+    rewardMoney: 15000,
+    rewardXp: 400,
+    icon: '🛩️',
+  },
+
+  freight_air_bridge: {
+    id: 'freight_air_bridge',
+    title: 'Air Bridge',
+    description: 'Complete 50 hangar freight contracts',
+    category: 'travel',
+    requirementType: 'freight_jobs_completed',
+    requirementValue: 50,
+    rewardMoney: 40000,
+    rewardXp: 1000,
+    icon: '🌉',
+  },
+
+  freight_cargo_baron: {
+    id: 'freight_cargo_baron',
+    title: 'Cargo Baron',
+    description: 'Complete 150 hangar freight contracts',
+    category: 'travel',
+    requirementType: 'freight_jobs_completed',
+    requirementValue: 150,
+    rewardMoney: 100000,
+    rewardXp: 2200,
+    icon: '👑',
+  },
+
+  freight_five_destinations: {
+    id: 'freight_five_destinations',
+    title: 'Five Destinations',
+    description: 'Deliver hangar freight to 5 different countries',
+    category: 'travel',
+    requirementType: 'freight_destinations_completed',
+    requirementValue: 5,
+    rewardMoney: 40000,
+    rewardXp: 900,
+    icon: '🗺️',
+  },
+
   chemist_apprentice: {
     id: 'chemist_apprentice',
     title: 'Chemist Apprentice',
@@ -2217,6 +2277,8 @@ interface AchievementSnapshot {
   smugglingPackagesClaimed: number;
   smugglingCategoriesClaimed: number;
   smugglingCountriesClaimed: number;
+  freightJobsCompleted: number;
+  freightDestinationsCompleted: number;
   crimeWithVehicleCount: number;
   crimeWithWeaponCount: number;
   crimeWithVehicleWeaponToolCount: number;
@@ -2890,7 +2952,13 @@ async function getAchievementSnapshot(playerId: number): Promise<AchievementSnap
     )
   `;
 
-  const [smugglingPackagesClaimed, smugglingCategoriesClaimed, smugglingCountriesClaimed] =
+  const [
+    smugglingPackagesClaimed,
+    smugglingCategoriesClaimed,
+    smugglingCountriesClaimed,
+    freightJobsCompleted,
+    freightDestinationsCompleted,
+  ] =
     await Promise.all([
       safeCount('smugglingPackagesClaimed', async () => {
         const rows = await prisma.$queryRawUnsafe<Array<{ total: bigint | number }>>(
@@ -2916,6 +2984,30 @@ async function getAchievementSnapshot(playerId: number): Promise<AchievementSnap
         );
         return Number(rows[0]?.total ?? 0);
       }),
+      safeCount('freightJobsCompleted', async () => {
+        try {
+          const rows = await prisma.$queryRawUnsafe<Array<{ total: bigint | number }>>(
+            `SELECT COUNT(*) AS total FROM aviation_freight_jobs
+             WHERE playerId = ? AND status = 'done'`,
+            playerId,
+          );
+          return Number(rows[0]?.total ?? 0);
+        } catch {
+          return 0;
+        }
+      }),
+      safeCount('freightDestinationsCompleted', async () => {
+        try {
+          const rows = await prisma.$queryRawUnsafe<Array<{ total: bigint | number }>>(
+            `SELECT COUNT(DISTINCT destCountry) AS total FROM aviation_freight_jobs
+             WHERE playerId = ? AND status = 'done'`,
+            playerId,
+          );
+          return Number(rows[0]?.total ?? 0);
+        } catch {
+          return 0;
+        }
+      }),
     ]);
 
   return {
@@ -2938,6 +3030,8 @@ async function getAchievementSnapshot(playerId: number): Promise<AchievementSnap
     smugglingPackagesClaimed,
     smugglingCategoriesClaimed,
     smugglingCountriesClaimed,
+    freightJobsCompleted,
+    freightDestinationsCompleted,
     crimeWithVehicleCount,
     crimeWithWeaponCount,
     crimeWithVehicleWeaponToolCount,
@@ -3241,6 +3335,16 @@ function evaluateAchievement(
     case 'smuggling_countries_claimed':
       currentValue = snapshot.smugglingCountriesClaimed;
       data = { smugglingCountriesClaimed: currentValue };
+      break;
+
+    case 'freight_jobs_completed':
+      currentValue = snapshot.freightJobsCompleted;
+      data = { freightJobsCompleted: currentValue };
+      break;
+
+    case 'freight_destinations_completed':
+      currentValue = snapshot.freightDestinationsCompleted;
+      data = { freightDestinationsCompleted: currentValue };
       break;
 
     case 'jailbreaks_success_count':

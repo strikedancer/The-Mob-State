@@ -352,5 +352,11 @@ export async function claimFreightPayout(playerId: number, jobId: number): Promi
     where: { id: playerId },
     data: { money: { increment: payout } },
   });
+  try {
+    const { checkAndUnlockAchievements } = await import('./achievementService');
+    await checkAndUnlockAchievements(playerId);
+  } catch (err) {
+    console.error('[aviationFreightService] achievement check failed', playerId, err);
+  }
   return { payout };
 }

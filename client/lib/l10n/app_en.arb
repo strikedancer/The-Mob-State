@@ -3349,23 +3349,35 @@
   "aviationFreightActive": "Active: {origin} → {dest} ({status})",
   "@aviationFreightActive": {
     "placeholders": {
-      "origin": { "type": "String" },
-      "dest": { "type": "String" },
-      "status": { "type": "String" }
+      "origin": {
+        "type": "String"
+      },
+      "dest": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
     }
   },
   "aviationFreightOfferMeta": "{tiles} cargo tiles · €{payout}",
   "@aviationFreightOfferMeta": {
     "placeholders": {
-      "tiles": { "type": "String" },
-      "payout": { "type": "String" }
+      "tiles": {
+        "type": "String"
+      },
+      "payout": {
+        "type": "String"
+      }
     }
   },
   "aviationFreightAcceptedSuccess": "Freight contract accepted. Fly to the destination, then claim payout.",
   "aviationFreightNeedOrigin": "You must be in {country} to accept this contract.",
   "@aviationFreightNeedOrigin": {
     "placeholders": {
-      "country": { "type": "String" }
+      "country": {
+        "type": "String"
+      }
     }
   },
   "aviationFreightCargoTooSmall": "Your aircraft does not have enough cargo tiles for this contract.",
@@ -3375,7 +3387,9 @@
   "aviationFreightClaimSuccess": "Freight payout claimed: {amount}.",
   "@aviationFreightClaimSuccess": {
     "placeholders": {
-      "amount": { "type": "String" }
+      "amount": {
+        "type": "String"
+      }
     }
   },
   "aviationFreightClaimWrongDest": "Fly to the destination country before claiming the payout.",
@@ -3383,31 +3397,41 @@
   "aviationFreightBoardResets": "Board refreshes in {time}",
   "@aviationFreightBoardResets": {
     "placeholders": {
-      "time": { "type": "String" }
+      "time": {
+        "type": "String"
+      }
     }
   },
   "aviationFreightDeliveryWindow": "Deliver within {time}",
   "@aviationFreightDeliveryWindow": {
     "placeholders": {
-      "time": { "type": "String" }
+      "time": {
+        "type": "String"
+      }
     }
   },
   "aviationFreightDeadline": "Deadline: {time}",
   "@aviationFreightDeadline": {
     "placeholders": {
-      "time": { "type": "String" }
+      "time": {
+        "type": "String"
+      }
     }
   },
   "aviationFreightCooldown": "Next contract in {time}",
   "@aviationFreightCooldown": {
     "placeholders": {
-      "time": { "type": "String" }
+      "time": {
+        "type": "String"
+      }
     }
   },
   "aviationFreightOnCooldown": "Freight cooldown active. Wait {time}.",
   "@aviationFreightOnCooldown": {
     "placeholders": {
-      "time": { "type": "String" }
+      "time": {
+        "type": "String"
+      }
     }
   },
   "aviationFreightExpired": "This freight contract expired.",
@@ -5691,29 +5715,41 @@
   "vehicleDisposeSellBody": "Sell {name} now for {amount}. After you confirm, it leaves your garage for good.",
   "@vehicleDisposeSellBody": {
     "placeholders": {
-      "name": { "type": "String" },
-      "amount": { "type": "String" }
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
     }
   },
   "vehicleDisposeScrapTitle": "Scrap for parts?",
   "vehicleDisposeScrapBody": "Break {name} down for salvage cash and parts. After you confirm, the vehicle is gone.",
   "@vehicleDisposeScrapBody": {
     "placeholders": {
-      "name": { "type": "String" }
+      "name": {
+        "type": "String"
+      }
     }
   },
   "vehicleDisposeChopTitle": "Claim chop contract?",
   "vehicleDisposeChopBody": "This contract takes {name} from your garage and pays {amount}. After you confirm, that vehicle is gone.",
   "@vehicleDisposeChopBody": {
     "placeholders": {
-      "name": { "type": "String" },
-      "amount": { "type": "String" }
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
     }
   },
   "vehicleDisposeChopBodyUnknown": "This contract takes one eligible vehicle from your garage and pays {amount}. After you confirm, that vehicle is gone.",
   "@vehicleDisposeChopBodyUnknown": {
     "placeholders": {
-      "amount": { "type": "String" }
+      "amount": {
+        "type": "String"
+      }
     }
   },
   "vehicleDisposeOpsContractTitle": "Start ops contract?",
@@ -6727,15 +6763,21 @@
   "hitlistDailyContractOpen": "Contract on {username}. Finish the hit for a €{bonus} bonus on top of the bounty.",
   "@hitlistDailyContractOpen": {
     "placeholders": {
-      "username": { "type": "String" },
-      "bonus": { "type": "String" }
+      "username": {
+        "type": "String"
+      },
+      "bonus": {
+        "type": "String"
+      }
     }
   },
   "hitlistDailyContractDone": "Today's Most-Wanted contract is already completed.",
   "hitlistDailyContractBounty": "Listed bounty: €{bounty}",
   "@hitlistDailyContractBounty": {
     "placeholders": {
-      "bounty": { "type": "String" }
+      "bounty": {
+        "type": "String"
+      }
     }
   },
   "selectWeapon": "Select Weapon and Ammo",
@@ -8291,8 +8333,23 @@
   "schoolGateAssetDrugFacilityEquipmentTier1": "Asset: Drug facility equipment upgrade I",
   "schoolGateAssetDrugFacilityEquipmentTier2": "Asset: Drug facility equipment upgrade II",
   "schoolGateAssetDrugFacilityEquipmentTier3": "Asset: Drug facility equipment upgrade III",
-  "schoolGateAssetDrugFacilityPurchase": "Asset: Drug facility purchase",   "schoolGateAssetNightclubPurchase": "Asset: Nightclub purchase",   "schoolGateAssetRldPurchase": "Asset: Red Light District purchase",   "schoolGateAssetRldExpansionAdvanced": "Asset: Advanced RLD expansion",   "schoolGateAssetStockTradeBuy": "Asset: Buy stocks",   "schoolGateAssetCryptoTradeBuy": "Asset: Buy crypto",   "schoolGateAssetHitlistPlaceHit": "Asset: Place hitlist contract",   "schoolGateAssetVehicleTuneAdvanced": "Asset: Advanced vehicle tuning",   "schoolGateAssetChopContractClaim": "Asset: Claim chop contract",
-  "schoolGateAssetWarehousePurchase": "Asset: Warehouse purchase",   "schoolGateAssetWarehouseUpgradeAdvanced": "Asset: Advanced warehouse upgrade",   "schoolGateAssetTradeBuyAdvanced": "Asset: Buy high-tier trade goods",   "schoolGateAssetLaunderStart": "Asset: Start money laundering",   "schoolGateAssetLaunderHighAmount": "Asset: Large launder job",   "schoolGateAssetGarageUpgradeAdvanced": "Asset: Advanced garage upgrade",   "schoolGateAssetMarinaUpgradeAdvanced": "Asset: Advanced marina upgrade",   "schoolGateAssetWeaponBuyAdvanced": "Asset: Buy high-tier weapon",
+  "schoolGateAssetDrugFacilityPurchase": "Asset: Drug facility purchase",
+  "schoolGateAssetNightclubPurchase": "Asset: Nightclub purchase",
+  "schoolGateAssetRldPurchase": "Asset: Red Light District purchase",
+  "schoolGateAssetRldExpansionAdvanced": "Asset: Advanced RLD expansion",
+  "schoolGateAssetStockTradeBuy": "Asset: Buy stocks",
+  "schoolGateAssetCryptoTradeBuy": "Asset: Buy crypto",
+  "schoolGateAssetHitlistPlaceHit": "Asset: Place hitlist contract",
+  "schoolGateAssetVehicleTuneAdvanced": "Asset: Advanced vehicle tuning",
+  "schoolGateAssetChopContractClaim": "Asset: Claim chop contract",
+  "schoolGateAssetWarehousePurchase": "Asset: Warehouse purchase",
+  "schoolGateAssetWarehouseUpgradeAdvanced": "Asset: Advanced warehouse upgrade",
+  "schoolGateAssetTradeBuyAdvanced": "Asset: Buy high-tier trade goods",
+  "schoolGateAssetLaunderStart": "Asset: Start money laundering",
+  "schoolGateAssetLaunderHighAmount": "Asset: Large launder job",
+  "schoolGateAssetGarageUpgradeAdvanced": "Asset: Advanced garage upgrade",
+  "schoolGateAssetMarinaUpgradeAdvanced": "Asset: Advanced marina upgrade",
+  "schoolGateAssetWeaponBuyAdvanced": "Asset: Buy high-tier weapon",
   "schoolGateAssetGeneric": "Asset: {target}",
   "@schoolGateAssetGeneric": {
     "placeholders": {
@@ -8378,7 +8435,10 @@
   "educationCertProcessElectricsSpecialist": "Process Electrics Specialist Certification",
   "educationCertClandestineChemist": "Clandestine Chemist Certification",
   "educationCertNarcoGridArchitect": "Narco Grid Architect Certification",
-  "educationCertScrapApprentice": "Scrap Apprentice Certification",   "educationCertDismantler": "Certified Dismantler",   "educationCertMasterChop": "Master Chop Certification",   "educationCertSalvageArchitect": "Salvage Architect Certification",
+  "educationCertScrapApprentice": "Scrap Apprentice Certification",
+  "educationCertDismantler": "Certified Dismantler",
+  "educationCertMasterChop": "Master Chop Certification",
+  "educationCertSalvageArchitect": "Salvage Architect Certification",
   "educationCertSoftwareEngineer": "Software Engineer Certification",
   "educationCertBarExam": "Bar Exam",
   "educationCertMedicalLicense": "Medical License",
@@ -11096,7 +11156,9 @@
   "territoryRiskArmies": "Armies: {count}",
   "@territoryRiskArmies": {
     "placeholders": {
-      "count": { "type": "String" }
+      "count": {
+        "type": "String"
+      }
     }
   },
   "territoryRiskModeTitle": "Risk conquest",
@@ -11110,15 +11172,23 @@
   "territoryRiskReinforceLeft": "Reinforcements left: {count}",
   "@territoryRiskReinforceLeft": {
     "placeholders": {
-      "count": { "type": "String" }
+      "count": {
+        "type": "String"
+      }
     }
   },
   "territoryRiskBattleResult": "Battle: you lost {atk}, they lost {def}. {outcome}",
   "@territoryRiskBattleResult": {
     "placeholders": {
-      "atk": { "type": "String" },
-      "def": { "type": "String" },
-      "outcome": { "type": "String" }
+      "atk": {
+        "type": "String"
+      },
+      "def": {
+        "type": "String"
+      },
+      "outcome": {
+        "type": "String"
+      }
     }
   },
   "territoryRiskCaptured": "Region captured!",
@@ -11128,23 +11198,37 @@
   "territoryRiskWireLine": "{crew} took {region} ({country})",
   "@territoryRiskWireLine": {
     "placeholders": {
-      "crew": { "type": "String" },
-      "region": { "type": "String" },
-      "country": { "type": "String" }
+      "crew": {
+        "type": "String"
+      },
+      "region": {
+        "type": "String"
+      },
+      "country": {
+        "type": "String"
+      }
     }
   },
   "territoryRiskReinforceDashboardChip": "Place {armies} Risk armies in {country} — {remaining} left.",
   "@territoryRiskReinforceDashboardChip": {
     "placeholders": {
-      "armies": { "type": "String" },
-      "country": { "type": "String" },
-      "remaining": { "type": "String" }
+      "armies": {
+        "type": "String"
+      },
+      "country": {
+        "type": "String"
+      },
+      "remaining": {
+        "type": "String"
+      }
     }
   },
   "territoryRiskReinforceClaimChip": "Claim Risk reinforcements in {country}.",
   "@territoryRiskReinforceClaimChip": {
     "placeholders": {
-      "country": { "type": "String" }
+      "country": {
+        "type": "String"
+      }
     }
   },
   "territoryErrorRiskModeActive": "This country uses Risk conquest. Attack from an adjacent owned region instead.",
@@ -12609,9 +12693,9 @@
   "helpTopicTravelTips": "Commercial travel does not move trade goods — smuggle stock to the country where you want to sell.\nLower your Wanted Level before departure: high wanted greatly increases confiscation risk for carried materials and smuggling runs.\nPlan your return trip in advance so you already know what to bring back on arrival.\nTo jump anywhere without legs: refuel 100 L and use Fly on Aviation. The % on Travel only shortens the layover, it does not land you faster.",
   "helpTopicAviationCategory": "World",
   "helpTopicAviationTitle": "Aviation",
-  "helpTopicAviationSummary": "Finish Aviation school, buy a paid license, then buy a plane to Fly straight to a country, shorten the wait between Travel legs, and maintain your hangar fleet.",
-  "helpTopicAviationHow": "Complete Aviation school to level 5 and earn both flight certificates before you can buy a paid license.\nBuy a paid license on the Aviation screen: basic, commercial or cargo. Higher tiers unlock heavier planes.\nBuy an aircraft from the hangar catalog. New planes start with an empty tank.\nRefuel from the hangar at €50 per litre. Hangar Fly uses 100 L and puts you in any country in one jump: no legs and no hour wait. Goods in your backpack travel with you (self-smuggle) and can be seized by customs the same way as commercial travel.\nCommercial Travel already lands you immediately on each leg. Owning a plane only shortens the 60-minute wait until the next leg or next trip: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, cargo planes −30%. Only the best plane counts.\nSell an owned plane for 50% of the purchase price. Repair a broken plane before you can refuel or fly it.\nThe hangar Cargo number is smuggle tiles. Packing matches storage: 100 cargo = 100 tiles (e.g. 1000 gold or 500 coffee).",
-  "helpTopicAviationTips": "School 5/5 is not enough: you still need the paid license before any purchase.\nTank enough for 100 L before you fly. An empty plane cannot leave the hangar.\nOn Travel you see −% wait per leg. That is not the same instant jump as Fly in the hangar.\nSell unused planes if you need cash; you only get half of what you paid.",
+  "helpTopicAviationSummary": "Finish Aviation school, buy a paid license, then buy a plane to Fly straight to a country, run hangar freight contracts, shorten Travel wait between legs, and maintain your fleet.",
+  "helpTopicAviationHow": "Complete Aviation school to level 5 and earn both flight certificates before you can buy a paid license.\nBuy a paid license on the Aviation screen: basic, commercial or cargo. Higher tiers unlock heavier planes.\nBuy an aircraft from the hangar catalog. New planes start with an empty tank.\nRefuel from the hangar at €50 per litre. Hangar Fly uses 100 L and puts you in any country in one jump: no legs and no hour wait. Goods in your backpack travel with you (self-smuggle) and can be seized by customs the same way as commercial travel.\nCommercial Travel already lands you immediately on each leg. Owning a plane only shortens the 60-minute wait until the next leg or next trip: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, cargo planes −30%. Only the best plane counts.\nSell an owned plane for 50% of the purchase price. Repair a broken plane before you can refuel or fly it.\nThe hangar Cargo number is smuggle tiles. Packing matches storage: 100 cargo = 100 tiles (e.g. 1000 gold or 500 coffee).\nFreight contracts sit at the top of the hangar. Offers refresh daily at UTC midnight. Accept only while you are in the origin country, with a plane that has enough cargo tiles. After accept you have 3 hours to Hangar Fly to the destination and claim payout there. Miss the deadline and the contract fails; after a finish or fail you wait 45 minutes before the next accept. Completing freight contracts unlocks Travel achievements.",
+  "helpTopicAviationTips": "School 5/5 is not enough: you still need the paid license before any purchase.\nTank enough for 100 L before you fly. An empty plane cannot leave the hangar.\nOn Travel you see −% wait per leg. That is not the same instant jump as Fly in the hangar.\nSell unused planes if you need cash; you only get half of what you paid.\nTake the local-origin freight offer first when you are already in that country.\nWatch the live deadline on an active contract; claim before it hits zero.\nFreight cargo tiles are separate from backpack smuggle stock.",
   "helpTopicCrewCategory": "Social",
   "helpTopicCrewTitle": "Crew",
   "helpTopicCrewSummary": "Start a crew or join existing players to pull off heists together, share storage and become stronger as a unit.",
@@ -12781,7 +12865,7 @@
   "helpTopicAchievementsTitle": "Achievements",
   "helpTopicAchievementsSummary": "Earn badges by reaching milestones across all game systems. Achievements give rewards, raise your status profile and show your progress per category.",
   "helpTopicAchievementsHow": "Achievements are grouped in categories: Crimes, Jobs, School, Vehicles, Travel, Smuggling, Drugs, Trade, Social and more.\nEach achievement has multiple tiers (Bronze, Silver, Gold, Platinum). Each tier gives a higher reward and a more impressive badge.\nRewards per achievement include: cash, XP, special items, permanent bonuses or unique titles for your profile.\nProgress is tracked automatically. You do not need to activate anything: reach the threshold and the badge is awarded immediately.\nSome achievements are hidden until you partially complete them — they then appear with their real name and requirements.\nAll earned achievement badges are visible on your public profile, grouped by category. Locked progress stays private.\nChain achievements: some badges are linked in a chain. Gold requires Silver to be already obtained. Plan early for higher tiers.",
-  "helpTopicAchievementsTips": "Check your nearly-completed achievements daily: a small extra effort can earn a badge and cash reward that would otherwise be delayed for months.\nFocus early on Economy and Crime categories: these have the most cash rewards and are easiest to combine with your normal gameplay.\nSchool Mastermind and Doctorate now count total track levels across all school tracks. New badges also cover Automotive/Narcotics/Finance/Aviation/Medicine tracks, chop contracts, tuning, warehouses, laundering, garage upgrades, Midnight Races, stock buys and your first hitlist contract.",
+  "helpTopicAchievementsTips": "Check your nearly-completed achievements daily: a small extra effort can earn a badge and cash reward that would otherwise be delayed for months.\nFocus early on Economy and Crime categories: these have the most cash rewards and are easiest to combine with your normal gameplay.\nSchool Mastermind and Doctorate now count total track levels across all school tracks. New badges also cover Automotive/Narcotics/Finance/Aviation/Medicine tracks, chop contracts, tuning, warehouses, laundering, garage upgrades, Midnight Races, stock buys and your first hitlist contract.\nHangar freight contracts unlock Travel badges for deliveries and destinations.",
   "helpTopicSupportTicketsCategory": "Support",
   "helpTopicSupportTicketsTitle": "Reports & Tickets",
   "helpTopicSupportTicketsSummary": "Report bugs, questions or feedback via the ticket system. Support and admins can reply, manage internal follow-up and send updates back through the support conversation itself and optional push notifications.",
@@ -13118,7 +13202,9 @@
   "launderStartedSuccessWithTime": "Laundering started. Cash is gone from your pocket. Completes in {time} — see Bank and Home timeouts.",
   "@launderStartedSuccessWithTime": {
     "placeholders": {
-      "time": { "type": "String" }
+      "time": {
+        "type": "String"
+      }
     }
   },
   "launderErrorCooldown": "Laundering is on cooldown.",
@@ -13828,9 +13914,23 @@
   "statsBoardJailScore": "{hours}h {mins}m",
   "@statsBoardJailScore": {
     "placeholders": {
-      "hours": { "type": "String" },
-      "mins": { "type": "String" }
+      "hours": {
+        "type": "String"
+      },
+      "mins": {
+        "type": "String"
+      }
     }
   },
-  "statsBoardHelpHow": "Weekly and all-time boards for successful crimes, sentenced jail minutes, vehicle thefts and crime loot (not cash on hand). Jail minutes are sentenced; bail or breakout can shorten real time served."
+  "statsBoardHelpHow": "Weekly and all-time boards for successful crimes, sentenced jail minutes, vehicle thefts and crime loot (not cash on hand). Jail minutes are sentenced; bail or breakout can shorten real time served.",
+  "achievementTitle_freight_first_haul": "First Haul",
+  "achievementDescription_freight_first_haul": "Complete your first hangar freight contract",
+  "achievementTitle_freight_sky_courier": "Sky Courier",
+  "achievementDescription_freight_sky_courier": "Complete 10 hangar freight contracts",
+  "achievementTitle_freight_air_bridge": "Air Bridge",
+  "achievementDescription_freight_air_bridge": "Complete 50 hangar freight contracts",
+  "achievementTitle_freight_cargo_baron": "Cargo Baron",
+  "achievementDescription_freight_cargo_baron": "Complete 150 hangar freight contracts",
+  "achievementTitle_freight_five_destinations": "Five Destinations",
+  "achievementDescription_freight_five_destinations": "Deliver hangar freight to 5 different countries"
 }

@@ -19546,15 +19546,15 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicAviationSummary =>
-      'Ukończ szkołę lotniczą, kup płatną licencję, a następnie kup samolot, aby polecieć prosto do kraju, skróć czas oczekiwania między etapami podróży i utrzymuj flotę w hangarze.';
+      'Ukończ szkołę lotniczą, kup płatną licencję, a następnie kup samolot, aby polecieć prosto do kraju, skróć czas oczekiwania między etapami podróży i utrzymuj flotę w hangarze. Zawiera kontrakty frachtowe hangaru.';
 
   @override
   String get helpTopicAviationHow =>
-      'Ukończ szkołę lotniczą do poziomu 5 i zdobądź oba certyfikaty lotu, zanim będziesz mógł kupić płatną licencję. \nKup płatną licencję na ekranie Lotnictwo: podstawową, komercyjną lub cargo. Wyższe poziomy odblokowują cięższe samoloty. \nKup samolot z katalogu hangaru. Nowe samoloty startują z pustym zbiornikiem. \nTankuj w hangarze po 50 € za litr. Hangar Fly zużywa 100 litrów i jednym skokiem przeniesie Cię do dowolnego kraju: bez nóg i bez godzinnego czekania. \nDzięki podróżom komercyjnym natychmiast znajdziesz się na każdej nodze. Posiadanie samolotu jedynie skraca 60-minutowe oczekiwanie do następnego etapu lub kolejnej podróży: Cessna –15%, King Air –25%, Citation –30%, Gulfstream –35%, samoloty cargo –30%. Liczy się tylko najlepszy samolot. \nSprzedaj posiadany samolot za 50% ceny zakupu. Napraw zepsuty samolot, zanim będziesz mógł go zatankować lub polecieć.\nThe hangar Cargo number is smuggle tiles. Packing matches storage: 100 cargo = 100 tiles (e.g. 1000 gold or 500 coffee).';
+      'Ukończ szkołę lotniczą do poziomu 5 i zdobądź oba certyfikaty lotu, zanim będziesz mógł kupić płatną licencję. \nKup płatną licencję na ekranie Lotnictwo: podstawową, komercyjną lub cargo. Wyższe poziomy odblokowują cięższe samoloty. \nKup samolot z katalogu hangaru. Nowe samoloty startują z pustym zbiornikiem. \nTankuj w hangarze po 50 € za litr. Hangar Fly zużywa 100 litrów i jednym skokiem przeniesie Cię do dowolnego kraju: bez nóg i bez godzinnego czekania. \nDzięki podróżom komercyjnym natychmiast znajdziesz się na każdej nodze. Posiadanie samolotu jedynie skraca 60-minutowe oczekiwanie do następnego etapu lub kolejnej podróży: Cessna –15%, King Air –25%, Citation –30%, Gulfstream –35%, samoloty cargo –30%. Liczy się tylko najlepszy samolot. \nSprzedaj posiadany samolot za 50% ceny zakupu. Napraw zepsuty samolot, zanim będziesz mógł go zatankować lub polecieć.\nThe hangar Cargo number is smuggle tiles. Packing matches storage: 100 cargo = 100 tiles (e.g. 1000 gold or 500 coffee).\nFreight contracts (hangar): daily board (UTC midnight). Accept in the origin country with enough cargo tiles. 3-hour delivery window via Hangar Fly, then claim payout. Missed deadline = failed job; then 45-minute cooldown. Completing freight unlocks Travel achievements.';
 
   @override
   String get helpTopicAviationTips =>
-      'Szkoła 5/5 nie wystarczy: przed zakupem nadal potrzebujesz płatnej licencji. \nZbiornik wystarczający na 100 litrów przed lotem. Pusty samolot nie może opuścić hangaru. \nW opcji Podróż widzisz −% oczekiwania na nogę. To nie jest ten sam natychmiastowy skok, co Fly in the hangar. \nSprzedaj nieużywane samoloty, jeśli potrzebujesz gotówki; dostajesz tylko połowę tego, co zapłaciłeś.';
+      'Szkoła 5/5 nie wystarczy: przed zakupem nadal potrzebujesz płatnej licencji. \nZbiornik wystarczający na 100 litrów przed lotem. Pusty samolot nie może opuścić hangaru. \nW opcji Podróż widzisz −% oczekiwania na nogę. To nie jest ten sam natychmiastowy skok, co Fly in the hangar. \nSprzedaj nieużywane samoloty, jeśli potrzebujesz gotówki; dostajesz tylko połowę tego, co zapłaciłeś.\nFreight: prefer the local-origin offer, watch the deadline, and remember cargo tiles are not backpack smuggle stock.';
 
   @override
   String get helpTopicCrewCategory => 'Społeczny';
@@ -21756,4 +21756,39 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get statsBoardHelpHow =>
       'Weekly and all-time boards for successful crimes, sentenced jail minutes, vehicle thefts and crime loot (not cash on hand). Jail minutes are sentenced; bail or breakout can shorten real time served.';
+
+  @override
+  String get achievementTitle_freight_first_haul => 'Pierwszy fracht';
+
+  @override
+  String get achievementDescription_freight_first_haul =>
+      'Ukończ swój pierwszy kontrakt frachtowy w hangarze';
+
+  @override
+  String get achievementTitle_freight_sky_courier => 'Kurier nieba';
+
+  @override
+  String get achievementDescription_freight_sky_courier =>
+      'Ukończ 10 kontraktów frachtowych w hangarze';
+
+  @override
+  String get achievementTitle_freight_air_bridge => 'Most powietrzny';
+
+  @override
+  String get achievementDescription_freight_air_bridge =>
+      'Ukończ 50 kontraktów frachtowych w hangarze';
+
+  @override
+  String get achievementTitle_freight_cargo_baron => 'Baron ładunku';
+
+  @override
+  String get achievementDescription_freight_cargo_baron =>
+      'Ukończ 150 kontraktów frachtowych w hangarze';
+
+  @override
+  String get achievementTitle_freight_five_destinations => 'Pięć celów';
+
+  @override
+  String get achievementDescription_freight_five_destinations =>
+      'Dostarcz fracht hangaru do 5 różnych krajów';
 }

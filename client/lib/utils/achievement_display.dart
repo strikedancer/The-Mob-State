@@ -284,6 +284,16 @@ String localizedAchievementTitle(
       return t.achievementTitle_globe_trotter;
     case 'jet_setter':
       return t.achievementTitle_jet_setter;
+    case 'freight_first_haul':
+      return t.achievementTitle_freight_first_haul;
+    case 'freight_sky_courier':
+      return t.achievementTitle_freight_sky_courier;
+    case 'freight_air_bridge':
+      return t.achievementTitle_freight_air_bridge;
+    case 'freight_cargo_baron':
+      return t.achievementTitle_freight_cargo_baron;
+    case 'freight_five_destinations':
+      return t.achievementTitle_freight_five_destinations;
     case 'chemist_apprentice':
       return t.achievementTitle_chemist_apprentice;
     case 'narco_chemist':

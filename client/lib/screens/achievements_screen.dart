@@ -247,7 +247,17 @@ class _AchievementsScreenState extends State<AchievementsScreen>
         return t.achievementDescription_globe_trotter;
       case 'jet_setter':
         return t.achievementDescription_jet_setter;
-      case 'chemist_apprentice':
+        case 'freight_first_haul':
+        return t.achievementDescription_freight_first_haul;
+        case 'freight_sky_courier':
+        return t.achievementDescription_freight_sky_courier;
+        case 'freight_air_bridge':
+        return t.achievementDescription_freight_air_bridge;
+        case 'freight_cargo_baron':
+        return t.achievementDescription_freight_cargo_baron;
+        case 'freight_five_destinations':
+        return t.achievementDescription_freight_five_destinations;
+        case 'chemist_apprentice':
         return t.achievementDescription_chemist_apprentice;
       case 'narco_chemist':
         return t.achievementDescription_narco_chemist;

@@ -11381,9 +11381,9 @@
   },
   "helpTopicAviationCategory": "Mundo",
   "helpTopicAviationTitle": "Aviación",
-  "helpTopicAviationSummary": "Termine la escuela de aviación, compre una licencia paga, luego compre un avión para volar directamente a un país, acorte la espera entre los tramos de viaje y mantenga su flota de hangares.",
-  "helpTopicAviationHow": "Complete la escuela de aviación hasta el nivel 5 y obtenga ambos certificados de vuelo antes de poder comprar una licencia paga. \nCompra una licencia paga en la pantalla de Aviación: básica, comercial o de carga. Los niveles más altos desbloquean aviones más pesados. \nCompra un avión del catálogo de hangares. Los nuevos aviones comienzan con el tanque vacío. \nRepostar desde el hangar a 50€ el litro. Hangar Fly utiliza 100 L y te lleva a cualquier país de un solo salto: sin piernas y sin horas de espera. \nCommercial Travel ya lo lleva inmediatamente a cada tramo. Ser propietario de un avión sólo acorta la espera de 60 minutos hasta el siguiente tramo o viaje: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, aviones de carga −30%. Sólo el mejor avión cuenta. \nVender un avión en propiedad por el 50% del precio de compra. Repara un avión averiado antes de poder repostar o volarlo.\nThe hangar Cargo number is smuggle tiles. Packing matches storage: 100 cargo = 100 tiles (e.g. 1000 gold or 500 coffee).",
-  "helpTopicAviationTips": "School 5/5 no es suficiente: aún necesita la licencia paga antes de cualquier compra. \nTanque suficiente para 100 L antes de volar. Un avión vacío no puede salir del hangar. \nEn Viaje verá −% de espera por tramo. Ese no es el mismo salto instantáneo que Volar en el hangar. \nVender aviones no utilizados si necesita dinero en efectivo; solo obtienes la mitad de lo que pagaste.",
+  "helpTopicAviationSummary": "Termine la escuela de aviación, compre una licencia paga, luego compre un avión para volar directamente a un país, acorte la espera entre los tramos de viaje y mantenga su flota de hangares. Incluye contratos de carga del hangar.",
+  "helpTopicAviationHow": "Complete la escuela de aviación hasta el nivel 5 y obtenga ambos certificados de vuelo antes de poder comprar una licencia paga. \nCompra una licencia paga en la pantalla de Aviación: básica, comercial o de carga. Los niveles más altos desbloquean aviones más pesados. \nCompra un avión del catálogo de hangares. Los nuevos aviones comienzan con el tanque vacío. \nRepostar desde el hangar a 50€ el litro. Hangar Fly utiliza 100 L y te lleva a cualquier país de un solo salto: sin piernas y sin horas de espera. \nCommercial Travel ya lo lleva inmediatamente a cada tramo. Ser propietario de un avión sólo acorta la espera de 60 minutos hasta el siguiente tramo o viaje: Cessna −15%, King Air −25%, Citation −30%, Gulfstream −35%, aviones de carga −30%. Sólo el mejor avión cuenta. \nVender un avión en propiedad por el 50% del precio de compra. Repara un avión averiado antes de poder repostar o volarlo.\nThe hangar Cargo number is smuggle tiles. Packing matches storage: 100 cargo = 100 tiles (e.g. 1000 gold or 500 coffee).\nFreight contracts (hangar): daily board (UTC midnight). Accept in the origin country with enough cargo tiles. 3-hour delivery window via Hangar Fly, then claim payout. Missed deadline = failed job; then 45-minute cooldown. Completing freight unlocks Travel achievements.",
+  "helpTopicAviationTips": "School 5/5 no es suficiente: aún necesita la licencia paga antes de cualquier compra. \nTanque suficiente para 100 L antes de volar. Un avión vacío no puede salir del hangar. \nEn Viaje verá −% de espera por tramo. Ese no es el mismo salto instantáneo que Volar en el hangar. \nVender aviones no utilizados si necesita dinero en efectivo; solo obtienes la mitad de lo que pagaste.\nFreight: prefer the local-origin offer, watch the deadline, and remember cargo tiles are not backpack smuggle stock.",
   "territoryErrorGarrisonNotOwner": "Sólo la Crew que controla esta región puede desplegar una guarnición.",
   "territoryErrorGarrisonAlreadyActive": "Esta región ya cuenta con una guarnición activa.",
   "territoryErrorGarrisonCrewLimit": "Tu Crew ya tiene el número máximo de guarniciones activas.",
@@ -13922,5 +13922,15 @@
     }
   },
   "gameEventTmplWeeklyDominationRushTitle": "Domination Rush",
-  "gameEventTmplWeeklyDominationRushDesc": "Score with Risk attacks: destroyed armies and captured regions count. Highest score wins."
+  "gameEventTmplWeeklyDominationRushDesc": "Score with Risk attacks: destroyed armies and captured regions count. Highest score wins.",
+  "achievementTitle_freight_first_haul": "Primer cargamento",
+  "achievementDescription_freight_first_haul": "Completa tu primer contrato de carga del hangar",
+  "achievementTitle_freight_sky_courier": "Mensajero aéreo",
+  "achievementDescription_freight_sky_courier": "Completa 10 contratos de carga del hangar",
+  "achievementTitle_freight_air_bridge": "Puente aéreo",
+  "achievementDescription_freight_air_bridge": "Completa 50 contratos de carga del hangar",
+  "achievementTitle_freight_cargo_baron": "Barón de carga",
+  "achievementDescription_freight_cargo_baron": "Completa 150 contratos de carga del hangar",
+  "achievementTitle_freight_five_destinations": "Cinco destinos",
+  "achievementDescription_freight_five_destinations": "Entrega carga del hangar en 5 países distintos"
 }

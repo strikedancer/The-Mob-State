@@ -207,11 +207,63 @@ export const ACHIEVEMENT_ARB_BY_LANG = {
     },
     "school_mastermind": {
       "title": "Academic Mastermind",
-      "description": "Reach education level 10"
+      "description": "Reach 15 total school track levels"
     },
     "school_doctorate": {
       "title": "Street Doctorate",
-      "description": "Reach education level 20"
+      "description": "Reach 30 total school track levels"
+    },
+    "school_automotive_master": {
+      "title": "Chop School Graduate",
+      "description": "Max out the Automotive & Chop school track"
+    },
+    "school_narcotics_master": {
+      "title": "Narco Engineer",
+      "description": "Max out the Narcotics school track"
+    },
+    "school_finance_operator": {
+      "title": "Empire Analyst",
+      "description": "Reach Finance school track level 4"
+    },
+    "school_aviation_ace": {
+      "title": "Sky Credential",
+      "description": "Reach Aviation school track level 4"
+    },
+    "school_medicine_license": {
+      "title": "Field Physician",
+      "description": "Max out the Medicine school track"
+    },
+    "chop_shop_claimer": {
+      "title": "Chop Shop Claimer",
+      "description": "Claim your first vehicle chop contract"
+    },
+    "tune_shop_pro": {
+      "title": "Tune Shop Pro",
+      "description": "Reach vehicle tune stat level 4 on any vehicle"
+    },
+    "warehouse_baron": {
+      "title": "Warehouse Baron",
+      "description": "Upgrade a warehouse to level 4 or higher"
+    },
+    "laundry_kingpin": {
+      "title": "Laundry Kingpin",
+      "description": "Complete a launder job of €250,000 or more"
+    },
+    "garage_expansionist": {
+      "title": "Garage Expansionist",
+      "description": "Upgrade a garage or marina to level 4 or higher"
+    },
+    "midnight_racer": {
+      "title": "Midnight Racer",
+      "description": "Finish your first Midnight Race"
+    },
+    "stock_floor_debut": {
+      "title": "Stock Floor Debut",
+      "description": "Complete your first stock market buy"
+    },
+    "hitlist_first_contract": {
+      "title": "First Contract",
+      "description": "Place your first hitlist contract"
     },
     "road_bandit": {
       "title": "Road Bandit",
@@ -364,6 +416,26 @@ export const ACHIEVEMENT_ARB_BY_LANG = {
     "nightclub_season_champion": {
       "title": "Season Champion",
       "description": "Win a weekly nightclub season"
+    },
+    "freight_first_haul": {
+      "title": "First Haul",
+      "description": "Complete your first hangar freight contract"
+    },
+    "freight_sky_courier": {
+      "title": "Sky Courier",
+      "description": "Complete 10 hangar freight contracts"
+    },
+    "freight_air_bridge": {
+      "title": "Air Bridge",
+      "description": "Complete 50 hangar freight contracts"
+    },
+    "freight_cargo_baron": {
+      "title": "Cargo Baron",
+      "description": "Complete 150 hangar freight contracts"
+    },
+    "freight_five_destinations": {
+      "title": "Five Destinations",
+      "description": "Deliver hangar freight to 5 different countries"
     }
   },
   "nl": {
@@ -569,11 +641,63 @@ export const ACHIEVEMENT_ARB_BY_LANG = {
     },
     "school_mastermind": {
       "title": "Academische Mastermind",
-      "description": "Bereik schoollevel 10"
+      "description": "Bereik 15 school-tracklevels in totaal"
     },
     "school_doctorate": {
       "title": "Straatdoctoraat",
-      "description": "Bereik schoollevel 20"
+      "description": "Bereik 30 school-tracklevels in totaal"
+    },
+    "school_automotive_master": {
+      "title": "Chop School Afstudeerder",
+      "description": "Max de Automotive & Chop school-track"
+    },
+    "school_narcotics_master": {
+      "title": "Narco Ingenieur",
+      "description": "Max de Narcotics school-track"
+    },
+    "school_finance_operator": {
+      "title": "Empire Analist",
+      "description": "Bereik Finance school-track level 4"
+    },
+    "school_aviation_ace": {
+      "title": "Luchtvaart Credential",
+      "description": "Bereik Aviation school-track level 4"
+    },
+    "school_medicine_license": {
+      "title": "Veldarts",
+      "description": "Max de Medicine school-track"
+    },
+    "chop_shop_claimer": {
+      "title": "Chop Shop Claimer",
+      "description": "Claim je eerste voertuig-chopcontract"
+    },
+    "tune_shop_pro": {
+      "title": "Tune Shop Pro",
+      "description": "Bereik tune-stat level 4 op een voertuig"
+    },
+    "warehouse_baron": {
+      "title": "Magazijnbaron",
+      "description": "Upgrade een warehouse naar level 4 of hoger"
+    },
+    "laundry_kingpin": {
+      "title": "Witwas Kingpin",
+      "description": "Rond een witwasjob van €250.000 of meer af"
+    },
+    "garage_expansionist": {
+      "title": "Garage Expansionist",
+      "description": "Upgrade een garage of jachthaven naar level 4 of hoger"
+    },
+    "midnight_racer": {
+      "title": "Midnight Racer",
+      "description": "Finish je eerste Midnight Race"
+    },
+    "stock_floor_debut": {
+      "title": "Beursdebutant",
+      "description": "Koop voor het eerst aandelen op de beurs"
+    },
+    "hitlist_first_contract": {
+      "title": "Eerste Contract",
+      "description": "Plaats je eerste hitlist-contract"
     },
     "road_bandit": {
       "title": "Weg Bandiet",
@@ -726,6 +850,26 @@ export const ACHIEVEMENT_ARB_BY_LANG = {
     "nightclub_season_champion": {
       "title": "Season Kampioen",
       "description": "Win een wekelijkse nightclub-season"
+    },
+    "freight_first_haul": {
+      "title": "Eerste vracht",
+      "description": "Voltooi je eerste hangar-vrachtcontract"
+    },
+    "freight_sky_courier": {
+      "title": "Luchtkoerier",
+      "description": "Voltooi 10 hangar-vrachtcontracten"
+    },
+    "freight_air_bridge": {
+      "title": "Luchtbrug",
+      "description": "Voltooi 50 hangar-vrachtcontracten"
+    },
+    "freight_cargo_baron": {
+      "title": "Vrachtbaron",
+      "description": "Voltooi 150 hangar-vrachtcontracten"
+    },
+    "freight_five_destinations": {
+      "title": "Vijf bestemmingen",
+      "description": "Lever hangar-vracht af in 5 verschillende landen"
     }
   },
   "de": {
@@ -931,11 +1075,11 @@ export const ACHIEVEMENT_ARB_BY_LANG = {
     },
     "school_mastermind": {
       "title": "Akademischer Vordenker",
-      "description": "Erreiche Bildungsniveau 10"
+      "description": "Erreiche insgesamt 15 Schulstufenstufen"
     },
     "school_doctorate": {
       "title": "Straßendoktorat",
-      "description": "Erreiche Bildungsniveau 20"
+      "description": "Erreiche insgesamt 30 Schulstufenstufen"
     },
     "road_bandit": {
       "title": "Straßenbandit",
@@ -1088,6 +1232,78 @@ export const ACHIEVEMENT_ARB_BY_LANG = {
     "smuggle_five_borders": {
       "title": "Fünf Grenzen",
       "description": "Hole geschmuggelte Fracht in 5 verschiedenen Ländern ab"
+    },
+    "school_automotive_master": {
+      "title": "Absolvent der Chop-Schule",
+      "description": "Maximieren Sie die Schulstrecke „Automotive & Chop“."
+    },
+    "school_narcotics_master": {
+      "title": "Narco-Ingenieur",
+      "description": "Maximieren Sie die Narcotics-Schulstrecke"
+    },
+    "school_finance_operator": {
+      "title": "Empire-Analyst",
+      "description": "Erreiche Level 4 der Finanzschule"
+    },
+    "school_aviation_ace": {
+      "title": "Sky-Ausweis",
+      "description": "Erreiche Stufe 4 der Luftfahrtschulstrecke"
+    },
+    "school_medicine_license": {
+      "title": "Feldarzt",
+      "description": "Maximieren Sie die Medizinschulstrecke"
+    },
+    "chop_shop_claimer": {
+      "title": "Chop-Shop-Anspruchsberechtigter",
+      "description": "Fordern Sie Ihren ersten Fahrzeug-Chop-Vertrag an"
+    },
+    "tune_shop_pro": {
+      "title": "Tune Shop Pro",
+      "description": "Erreiche Fahrzeugtuning-Statistikstufe 4 für ein beliebiges Fahrzeug"
+    },
+    "warehouse_baron": {
+      "title": "Lagerhausbaron",
+      "description": "Werte ein Lagerhaus auf Level 4 oder höher auf"
+    },
+    "laundry_kingpin": {
+      "title": "Wäsche-Kingpin",
+      "description": "Führen Sie einen Waschauftrag im Wert von 250.000 € oder mehr durch"
+    },
+    "garage_expansionist": {
+      "title": "Garagenexpansionist",
+      "description": "Werte eine Garage oder einen Yachthafen auf Level 4 oder höher auf"
+    },
+    "midnight_racer": {
+      "title": "Mitternachtsrennfahrer",
+      "description": "Schließe dein erstes Mitternachtsrennen ab"
+    },
+    "stock_floor_debut": {
+      "title": "Börsendebüt",
+      "description": "Schließen Sie Ihren ersten Börsenkauf ab"
+    },
+    "hitlist_first_contract": {
+      "title": "Erster Vertrag",
+      "description": "Platzieren Sie Ihren ersten Hitlist-Vertrag"
+    },
+    "freight_first_haul": {
+      "title": "Erste Fracht",
+      "description": "Schließe deinen ersten Hangar-Frachtvertrag ab"
+    },
+    "freight_sky_courier": {
+      "title": "Himmelkurier",
+      "description": "Schließe 10 Hangar-Frachtverträge ab"
+    },
+    "freight_air_bridge": {
+      "title": "Luftbrücke",
+      "description": "Schließe 50 Hangar-Frachtverträge ab"
+    },
+    "freight_cargo_baron": {
+      "title": "Frachtbaron",
+      "description": "Schließe 150 Hangar-Frachtverträge ab"
+    },
+    "freight_five_destinations": {
+      "title": "Fünf Ziele",
+      "description": "Liefere Hangar-Fracht in 5 verschiedene Länder"
     }
   },
   "fr": {
@@ -1293,11 +1509,11 @@ export const ACHIEVEMENT_ARB_BY_LANG = {
     },
     "school_mastermind": {
       "title": "Cerveau académique",
-      "description": "Atteindre le niveau d'éducation 10"
+      "description": "Atteignez 15 niveaux scolaires au total"
     },
     "school_doctorate": {
       "title": "Doctorat de rue",
-      "description": "Atteindre le niveau d'éducation 20"
+      "description": "Atteignez 30 niveaux scolaires au total"
     },
     "road_bandit": {
       "title": "Bandit de la route",
@@ -1450,6 +1666,78 @@ export const ACHIEVEMENT_ARB_BY_LANG = {
     "smuggle_five_borders": {
       "title": "Cinq frontières",
       "description": "Réclamez des marchandises de contrebande dans 5 pays différents"
+    },
+    "school_automotive_master": {
+      "title": "Diplômé de l'école Chop",
+      "description": "Maximisez la piste scolaire Automotive & Chop"
+    },
+    "school_narcotics_master": {
+      "title": "Ingénieur Narco",
+      "description": "Maximisez la piste de l'école des stupéfiants"
+    },
+    "school_finance_operator": {
+      "title": "Analyste Empire",
+      "description": "Atteindre le niveau 4 du parcours de l'école de finance"
+    },
+    "school_aviation_ace": {
+      "title": "Informations d'identification Sky",
+      "description": "Atteindre le niveau 4 de la piste de l'école d'aviation"
+    },
+    "school_medicine_license": {
+      "title": "Médecin de terrain",
+      "description": "Maximisez le parcours de l'école de médecine"
+    },
+    "chop_shop_claimer": {
+      "title": "Réclamant du Chop Shop",
+      "description": "Réclamez votre premier contrat de ramassage de véhicule"
+    },
+    "tune_shop_pro": {
+      "title": "Tune Shop Pro",
+      "description": "Atteignez le niveau 4 des statistiques de réglage du véhicule sur n'importe quel véhicule."
+    },
+    "warehouse_baron": {
+      "title": "Baron de l'entrepôt",
+      "description": "Améliorez un entrepôt au niveau 4 ou supérieur"
+    },
+    "laundry_kingpin": {
+      "title": "Chef de file de la blanchisserie",
+      "description": "Effectuer un travail de blanchiment de 250 000 € ou plus"
+    },
+    "garage_expansionist": {
+      "title": "Expansionniste de garage",
+      "description": "Améliorez un garage ou une marina au niveau 4 ou supérieur"
+    },
+    "midnight_racer": {
+      "title": "Coureur de minuit",
+      "description": "Terminez votre première course de minuit"
+    },
+    "stock_floor_debut": {
+      "title": "Débuts en stock",
+      "description": "Réalisez votre premier achat en bourse"
+    },
+    "hitlist_first_contract": {
+      "title": "Premier contrat",
+      "description": "Placez votre premier contrat de liste de résultats"
+    },
+    "freight_first_haul": {
+      "title": "Premier fret",
+      "description": "Terminez votre premier contrat de fret du hangar"
+    },
+    "freight_sky_courier": {
+      "title": "Courrier du ciel",
+      "description": "Terminez 10 contrats de fret du hangar"
+    },
+    "freight_air_bridge": {
+      "title": "Pont aérien",
+      "description": "Terminez 50 contrats de fret du hangar"
+    },
+    "freight_cargo_baron": {
+      "title": "Baron du fret",
+      "description": "Terminez 150 contrats de fret du hangar"
+    },
+    "freight_five_destinations": {
+      "title": "Cinq destinations",
+      "description": "Livrez du fret hangar dans 5 pays différents"
     }
   },
   "es": {
@@ -1655,11 +1943,11 @@ export const ACHIEVEMENT_ARB_BY_LANG = {
     },
     "school_mastermind": {
       "title": "Mente maestra académica",
-      "description": "Alcanzar el nivel educativo 10"
+      "description": "Alcanza 15 niveles totales de seguimiento escolar"
     },
     "school_doctorate": {
       "title": "Doctorado en la calle",
-      "description": "Alcanzar el nivel educativo 20"
+      "description": "Alcanza 30 niveles totales de seguimiento escolar"
     },
     "road_bandit": {
       "title": "Bandido del camino",
@@ -1812,6 +2100,78 @@ export const ACHIEVEMENT_ARB_BY_LANG = {
     "smuggle_five_borders": {
       "title": "Cinco Fronteras",
       "description": "Reclama carga de contrabando en 5 países diferentes"
+    },
+    "school_automotive_master": {
+      "title": "Graduado de la escuela Chop",
+      "description": "Maximiza la pista de la escuela Automotive & Chop"
+    },
+    "school_narcotics_master": {
+      "title": "Narcoingeniero",
+      "description": "Maximiza la pista de la escuela de Narcóticos"
+    },
+    "school_finance_operator": {
+      "title": "Analista del imperio",
+      "description": "Alcanza el nivel 4 de la escuela de finanzas"
+    },
+    "school_aviation_ace": {
+      "title": "Credencial del cielo",
+      "description": "Alcanza el nivel 4 de la pista de la escuela de aviación."
+    },
+    "school_medicine_license": {
+      "title": "Medica de campo",
+      "description": "Maximiza la pista de la escuela de medicina"
+    },
+    "chop_shop_claimer": {
+      "title": "Reclamador de desguace",
+      "description": "Reclama tu primer contrato de corte de vehículos"
+    },
+    "tune_shop_pro": {
+      "title": "Tienda de melodías Pro",
+      "description": "Alcanza el nivel 4 de estadísticas de sintonización de vehículos en cualquier vehículo."
+    },
+    "warehouse_baron": {
+      "title": "Barón del almacén",
+      "description": "Actualiza un almacén al nivel 4 o superior"
+    },
+    "laundry_kingpin": {
+      "title": "Jefe de lavandería",
+      "description": "Realizar un trabajo de blanqueo de 250.000 € o más"
+    },
+    "garage_expansionist": {
+      "title": "Expansionista de garaje",
+      "description": "Mejora un garaje o puerto deportivo al nivel 4 o superior"
+    },
+    "midnight_racer": {
+      "title": "Corredor de medianoche",
+      "description": "Termina tu primera carrera de medianoche"
+    },
+    "stock_floor_debut": {
+      "title": "Debut en el piso de existencias",
+      "description": "Completa tu primera compra en bolsa"
+    },
+    "hitlist_first_contract": {
+      "title": "Primer contrato",
+      "description": "Coloque su primer contrato de lista de éxito"
+    },
+    "freight_first_haul": {
+      "title": "Primer cargamento",
+      "description": "Completa tu primer contrato de carga del hangar"
+    },
+    "freight_sky_courier": {
+      "title": "Mensajero aéreo",
+      "description": "Completa 10 contratos de carga del hangar"
+    },
+    "freight_air_bridge": {
+      "title": "Puente aéreo",
+      "description": "Completa 50 contratos de carga del hangar"
+    },
+    "freight_cargo_baron": {
+      "title": "Barón de carga",
+      "description": "Completa 150 contratos de carga del hangar"
+    },
+    "freight_five_destinations": {
+      "title": "Cinco destinos",
+      "description": "Entrega carga del hangar en 5 países distintos"
     }
   },
   "it": {
@@ -2017,11 +2377,11 @@ export const ACHIEVEMENT_ARB_BY_LANG = {
     },
     "school_mastermind": {
       "title": "Mente accademica",
-      "description": "Raggiungi il livello di istruzione 10"
+      "description": "Raggiungi 15 livelli totali di percorsi scolastici"
     },
     "school_doctorate": {
       "title": "Dottorato di strada",
-      "description": "Raggiungi il livello di istruzione 20"
+      "description": "Raggiungi 30 livelli totali di percorsi scolastici"
     },
     "road_bandit": {
       "title": "Bandito di strada",
@@ -2174,6 +2534,78 @@ export const ACHIEVEMENT_ARB_BY_LANG = {
     "smuggle_five_borders": {
       "title": "Cinque confini",
       "description": "Rivendica merci di contrabbando in 5 paesi diversi"
+    },
+    "school_automotive_master": {
+      "title": "Diplomato alla Chop School",
+      "description": "Massimizza il percorso scolastico Automotive & Chop"
+    },
+    "school_narcotics_master": {
+      "title": "Ingegnere narcotrafficante",
+      "description": "Massimizza il percorso scolastico della Narcotici"
+    },
+    "school_finance_operator": {
+      "title": "Analista dell'Impero",
+      "description": "Raggiungi il livello 4 del percorso scolastico di Finanza"
+    },
+    "school_aviation_ace": {
+      "title": "Credenziali Sky",
+      "description": "Raggiungi il livello 4 della pista della Scuola di aviazione"
+    },
+    "school_medicine_license": {
+      "title": "Medico sul campo",
+      "description": "Massimizza il percorso della scuola di medicina"
+    },
+    "chop_shop_claimer": {
+      "title": "Reclamatore del Chop Shop",
+      "description": "Richiedi il tuo primo contratto di taglio del veicolo"
+    },
+    "tune_shop_pro": {
+      "title": "Accorda Negozio Pro",
+      "description": "Raggiungi il livello 4 delle statistiche di messa a punto del veicolo su qualsiasi veicolo"
+    },
+    "warehouse_baron": {
+      "title": "Barone del magazzino",
+      "description": "Migliora un magazzino al livello 4 o superiore"
+    },
+    "laundry_kingpin": {
+      "title": "Perno della lavanderia",
+      "description": "Completa un lavoro di riciclaggio di € 250.000 o più"
+    },
+    "garage_expansionist": {
+      "title": "Espansionista del garage",
+      "description": "Migliora un garage o un porto turistico al livello 4 o superiore"
+    },
+    "midnight_racer": {
+      "title": "Il corridore di mezzanotte",
+      "description": "Completa la tua prima gara di mezzanotte"
+    },
+    "stock_floor_debut": {
+      "title": "Debutto azionario",
+      "description": "Completa il tuo primo acquisto in borsa"
+    },
+    "hitlist_first_contract": {
+      "title": "Primo contratto",
+      "description": "Inserisci il tuo primo contratto con la lista dei risultati"
+    },
+    "freight_first_haul": {
+      "title": "Primo carico",
+      "description": "Completa il tuo primo contratto di trasporto dell'hangar"
+    },
+    "freight_sky_courier": {
+      "title": "Corriere del cielo",
+      "description": "Completa 10 contratti di trasporto dell'hangar"
+    },
+    "freight_air_bridge": {
+      "title": "Ponte aereo",
+      "description": "Completa 50 contratti di trasporto dell'hangar"
+    },
+    "freight_cargo_baron": {
+      "title": "Barone del cargo",
+      "description": "Completa 150 contratti di trasporto dell'hangar"
+    },
+    "freight_five_destinations": {
+      "title": "Cinque destinazioni",
+      "description": "Consegna trasporto hangar in 5 paesi diversi"
     }
   },
   "pl": {
@@ -2379,11 +2811,11 @@ export const ACHIEVEMENT_ARB_BY_LANG = {
     },
     "school_mastermind": {
       "title": "Akademicki geniusz",
-      "description": "Osiągnij poziom wykształcenia 10"
+      "description": "Osiągnij łącznie 15 poziomów ścieżki szkolnej"
     },
     "school_doctorate": {
       "title": "Doktorat uliczny",
-      "description": "Osiągnij poziom wykształcenia 20"
+      "description": "Osiągnij łącznie 30 poziomów ścieżki szkolnej"
     },
     "road_bandit": {
       "title": "Drogowy bandyta",
@@ -2536,6 +2968,78 @@ export const ACHIEVEMENT_ARB_BY_LANG = {
     "smuggle_five_borders": {
       "title": "Pięć granic",
       "description": "Zdobądź przemycony ładunek w 5 różnych krajach"
+    },
+    "school_automotive_master": {
+      "title": "Absolwentka Szkoły Chop",
+      "description": "Maksymalnie rozwiń tor szkolny Automotive & Chop"
+    },
+    "school_narcotics_master": {
+      "title": "Inżynier Narco",
+      "description": "Maksymalnie rozwiń tor szkoły narkotykowej"
+    },
+    "school_finance_operator": {
+      "title": "Analityk Imperium",
+      "description": "Osiągnij poziom 4 w szkole finansów"
+    },
+    "school_aviation_ace": {
+      "title": "Certyfikat nieba",
+      "description": "Osiągnij poziom 4 w szkole lotniczej"
+    },
+    "school_medicine_license": {
+      "title": "Lekarz polowy",
+      "description": "Maksymalnie rozwiń ścieżkę szkoły medycznej"
+    },
+    "chop_shop_claimer": {
+      "title": "Zleceniodawca Chop Shop",
+      "description": "Odbierz swój pierwszy kontrakt na chopperowanie pojazdów"
+    },
+    "tune_shop_pro": {
+      "title": "Tune Shop Pro",
+      "description": "Osiągnij 4. poziom statystyk dostrojenia pojazdu w dowolnym pojeździe"
+    },
+    "warehouse_baron": {
+      "title": "Baron magazynowy",
+      "description": "Ulepsz magazyn do poziomu 4 lub wyższego"
+    },
+    "laundry_kingpin": {
+      "title": "Kingpin do prania",
+      "description": "Wykonaj pranie o wartości co najmniej 250 000 EUR"
+    },
+    "garage_expansionist": {
+      "title": "Ekspansjonista garażowy",
+      "description": "Ulepsz garaż lub marinę do poziomu 4 lub wyższego"
+    },
+    "midnight_racer": {
+      "title": "Wyścig o północy",
+      "description": "Ukończ swój pierwszy wyścig o północy"
+    },
+    "stock_floor_debut": {
+      "title": "Debiut na magazynie",
+      "description": "Dokończ swój pierwszy zakup na giełdzie"
+    },
+    "hitlist_first_contract": {
+      "title": "Pierwszy kontrakt",
+      "description": "Umieść swój pierwszy kontrakt na listę hitów"
+    },
+    "freight_first_haul": {
+      "title": "Pierwszy fracht",
+      "description": "Ukończ swój pierwszy kontrakt frachtowy w hangarze"
+    },
+    "freight_sky_courier": {
+      "title": "Kurier nieba",
+      "description": "Ukończ 10 kontraktów frachtowych w hangarze"
+    },
+    "freight_air_bridge": {
+      "title": "Most powietrzny",
+      "description": "Ukończ 50 kontraktów frachtowych w hangarze"
+    },
+    "freight_cargo_baron": {
+      "title": "Baron ładunku",
+      "description": "Ukończ 150 kontraktów frachtowych w hangarze"
+    },
+    "freight_five_destinations": {
+      "title": "Pięć celów",
+      "description": "Dostarcz fracht hangaru do 5 różnych krajów"
     }
   },
   "pt": {
@@ -2741,11 +3245,11 @@ export const ACHIEVEMENT_ARB_BY_LANG = {
     },
     "school_mastermind": {
       "title": "Mentor Acadêmico",
-      "description": "Alcance o nível de escolaridade 10"
+      "description": "Alcance 15 níveis de trilha escolar no total"
     },
     "school_doctorate": {
       "title": "Doutorado de Rua",
-      "description": "Alcance o nível de educação 20"
+      "description": "Alcance 30 níveis de trilha escolar no total"
     },
     "road_bandit": {
       "title": "Bandido da estrada",
@@ -2898,6 +3402,78 @@ export const ACHIEVEMENT_ARB_BY_LANG = {
     "smuggle_five_borders": {
       "title": "Cinco Fronteiras",
       "description": "Reivindique carga contrabandeada em 5 países diferentes"
+    },
+    "school_automotive_master": {
+      "title": "Graduado da Escola Chop",
+      "description": "Maximize o percurso escolar Automotive & Chop"
+    },
+    "school_narcotics_master": {
+      "title": "Engenheiro de Narco",
+      "description": "Maximize o percurso escolar de Narcóticos"
+    },
+    "school_finance_operator": {
+      "title": "Analista do Império",
+      "description": "Alcance o nível 4 do curso de finanças"
+    },
+    "school_aviation_ace": {
+      "title": "Credencial Sky",
+      "description": "Alcance o nível 4 do curso da Escola de Aviação"
+    },
+    "school_medicine_license": {
+      "title": "Médico de campo",
+      "description": "Maximize o percurso da faculdade de Medicina"
+    },
+    "chop_shop_claimer": {
+      "title": "Reivindicador de Chop Shop",
+      "description": "Reivindique seu primeiro contrato de corte de veículo"
+    },
+    "tune_shop_pro": {
+      "title": "Tune Shop Pro",
+      "description": "Alcance o nível 4 de estatísticas de ajuste de veículo em qualquer veículo"
+    },
+    "warehouse_baron": {
+      "title": "Barão do Armazém",
+      "description": "Atualize um armazém para o nível 4 ou superior"
+    },
+    "laundry_kingpin": {
+      "title": "Rei da Lavanderia",
+      "description": "Conclua um trabalho de lavagem de € 250.000 ou mais"
+    },
+    "garage_expansionist": {
+      "title": "Expansionista de garagem",
+      "description": "Atualize uma garagem ou marina para o nível 4 ou superior"
+    },
+    "midnight_racer": {
+      "title": "Corredor da meia-noite",
+      "description": "Termine sua primeira Corrida da Meia-Noite"
+    },
+    "stock_floor_debut": {
+      "title": "Estreia no piso de estoque",
+      "description": "Conclua sua primeira compra na bolsa de valores"
+    },
+    "hitlist_first_contract": {
+      "title": "Primeiro Contrato",
+      "description": "Faça seu primeiro contrato de hitlist"
+    },
+    "freight_first_haul": {
+      "title": "Primeiro frete",
+      "description": "Conclui o teu primeiro contrato de frete no hangar"
+    },
+    "freight_sky_courier": {
+      "title": "Estafeta do céu",
+      "description": "Conclui 10 contratos de frete no hangar"
+    },
+    "freight_air_bridge": {
+      "title": "Ponte aérea",
+      "description": "Conclui 50 contratos de frete no hangar"
+    },
+    "freight_cargo_baron": {
+      "title": "Barão da carga",
+      "description": "Conclui 150 contratos de frete no hangar"
+    },
+    "freight_five_destinations": {
+      "title": "Cinco destinos",
+      "description": "Entrega frete do hangar em 5 países diferentes"
     }
   }
 } as const;
