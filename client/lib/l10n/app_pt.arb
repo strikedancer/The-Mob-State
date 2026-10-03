@@ -13807,7 +13807,7 @@
   "territoryErrorRiskOwnTarget": "You already own that region.",
   "territoryErrorRiskAttackCooldown": "Attack cooldown still active for this border.",
   "aviationFreightTitle": "Freight contracts",
-  "aviationFreightHint": "Accept a daily NPC cargo run, fly to the destination with enough cargo tiles, then claim the payout.",
+  "aviationFreightHint": "Aceita uma corrida de frete NPC diária enquanto estás no país de origem. Tens 3 horas para voar e reclamar; depois 45 minutos de cooldown até ao próximo contrato.",
   "aviationFreightEmpty": "No freight offers today.",
   "aviationFreightAccept": "Accept",
   "aviationFreightClaim": "Claim payout",
@@ -13859,6 +13859,47 @@
   },
   "aviationFreightClaimWrongDest": "Voa primeiro para o país de destino antes de reclamar o pagamento.",
   "aviationFreightFailed": "Não foi possível concluir essa ação de frete.",
+  "aviationFreightBoardResets": "Quadro atualiza em {time}",
+  "@aviationFreightBoardResets": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightDeliveryWindow": "Entregar em {time}",
+  "@aviationFreightDeliveryWindow": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightDeadline": "Prazo: {time}",
+  "@aviationFreightDeadline": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightCooldown": "Próximo contrato em {time}",
+  "@aviationFreightCooldown": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightOnCooldown": "Cooldown de frete ativo. Espera {time}.",
+  "@aviationFreightOnCooldown": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightExpired": "Este contrato de frete expirou.",
   "hitlistDailyContractTitle": "Most-Wanted of the day",
   "hitlistDailyContractOpen": "Contract on {username}. Finish the hit for a €{bonus} bonus on top of the bounty.",
   "@hitlistDailyContractOpen": {

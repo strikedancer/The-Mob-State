@@ -13807,7 +13807,7 @@
   "territoryErrorRiskOwnTarget": "You already own that region.",
   "territoryErrorRiskAttackCooldown": "Attack cooldown still active for this border.",
   "aviationFreightTitle": "Freight contracts",
-  "aviationFreightHint": "Accept a daily NPC cargo run, fly to the destination with enough cargo tiles, then claim the payout.",
+  "aviationFreightHint": "Acceptez une course de fret PNJ quotidienne depuis le pays d'origine. Vous avez 3 heures pour voler et réclamer ; puis 45 minutes de cooldown avant le prochain contrat.",
   "aviationFreightEmpty": "No freight offers today.",
   "aviationFreightAccept": "Accept",
   "aviationFreightClaim": "Claim payout",
@@ -13859,6 +13859,47 @@
   },
   "aviationFreightClaimWrongDest": "Volez d'abord vers le pays de destination avant de réclamer le paiement.",
   "aviationFreightFailed": "Impossible de terminer cette action de fret.",
+  "aviationFreightBoardResets": "Tableau renouvelé dans {time}",
+  "@aviationFreightBoardResets": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightDeliveryWindow": "Livrer sous {time}",
+  "@aviationFreightDeliveryWindow": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightDeadline": "Délai : {time}",
+  "@aviationFreightDeadline": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightCooldown": "Prochain contrat dans {time}",
+  "@aviationFreightCooldown": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightOnCooldown": "Cooldown fret actif. Attendez {time}.",
+  "@aviationFreightOnCooldown": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightExpired": "Ce contrat de fret a expiré.",
   "hitlistDailyContractTitle": "Most-Wanted of the day",
   "hitlistDailyContractOpen": "Contract on {username}. Finish the hit for a €{bonus} bonus on top of the bounty.",
   "@hitlistDailyContractOpen": {

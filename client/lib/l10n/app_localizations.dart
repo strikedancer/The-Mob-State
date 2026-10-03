@@ -10057,7 +10057,7 @@ abstract class AppLocalizations {
   /// No description provided for @aviationFreightHint.
   ///
   /// In en, this message translates to:
-  /// **'Accept a daily NPC cargo run while you are in the origin country, fly to the destination with enough cargo tiles, then claim the payout.'**
+  /// **'Accept a daily NPC cargo run while you are in the origin country. You have 3 hours to fly and claim; then a 45-minute cooldown before the next contract.'**
   String get aviationFreightHint;
 
   /// No description provided for @aviationFreightEmpty.
@@ -10143,6 +10143,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not complete that freight action.'**
   String get aviationFreightFailed;
+
+  /// No description provided for @aviationFreightBoardResets.
+  ///
+  /// In en, this message translates to:
+  /// **'Board refreshes in {time}'**
+  String aviationFreightBoardResets(String time);
+
+  /// No description provided for @aviationFreightDeliveryWindow.
+  ///
+  /// In en, this message translates to:
+  /// **'Deliver within {time}'**
+  String aviationFreightDeliveryWindow(String time);
+
+  /// No description provided for @aviationFreightDeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Deadline: {time}'**
+  String aviationFreightDeadline(String time);
+
+  /// No description provided for @aviationFreightCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'Next contract in {time}'**
+  String aviationFreightCooldown(String time);
+
+  /// No description provided for @aviationFreightOnCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'Freight cooldown active. Wait {time}.'**
+  String aviationFreightOnCooldown(String time);
+
+  /// No description provided for @aviationFreightExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'This freight contract expired.'**
+  String get aviationFreightExpired;
 
   /// No description provided for @aviationRequiresLicense.
   ///

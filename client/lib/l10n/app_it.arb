@@ -13807,7 +13807,7 @@
   "territoryErrorRiskOwnTarget": "You already own that region.",
   "territoryErrorRiskAttackCooldown": "Attack cooldown still active for this border.",
   "aviationFreightTitle": "Freight contracts",
-  "aviationFreightHint": "Accept a daily NPC cargo run, fly to the destination with enough cargo tiles, then claim the payout.",
+  "aviationFreightHint": "Accetta una corsa cargo NPC giornaliera mentre sei nel paese di partenza. Hai 3 ore per volare e riscuotere; poi 45 minuti di cooldown prima del contratto successivo.",
   "aviationFreightEmpty": "No freight offers today.",
   "aviationFreightAccept": "Accept",
   "aviationFreightClaim": "Claim payout",
@@ -13859,6 +13859,47 @@
   },
   "aviationFreightClaimWrongDest": "Vola prima nel paese di destinazione prima di riscuotere il pagamento.",
   "aviationFreightFailed": "Impossibile completare quell'azione di trasporto.",
+  "aviationFreightBoardResets": "Bacheca aggiornata tra {time}",
+  "@aviationFreightBoardResets": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightDeliveryWindow": "Consegna entro {time}",
+  "@aviationFreightDeliveryWindow": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightDeadline": "Scadenza: {time}",
+  "@aviationFreightDeadline": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightCooldown": "Prossimo contratto tra {time}",
+  "@aviationFreightCooldown": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightOnCooldown": "Cooldown trasporto attivo. Attendi {time}.",
+  "@aviationFreightOnCooldown": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightExpired": "Questo contratto di trasporto è scaduto.",
   "hitlistDailyContractTitle": "Most-Wanted of the day",
   "hitlistDailyContractOpen": "Contract on {username}. Finish the hit for a €{bonus} bonus on top of the bounty.",
   "@hitlistDailyContractOpen": {

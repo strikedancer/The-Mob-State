@@ -13807,7 +13807,7 @@
   "territoryErrorRiskOwnTarget": "You already own that region.",
   "territoryErrorRiskAttackCooldown": "Attack cooldown still active for this border.",
   "aviationFreightTitle": "Freight contracts",
-  "aviationFreightHint": "Accept a daily NPC cargo run, fly to the destination with enough cargo tiles, then claim the payout.",
+  "aviationFreightHint": "Acepta un viaje de carga NPC diario mientras estás en el país de origen. Tienes 3 horas para volar y reclamar; luego 45 minutos de enfriamiento antes del siguiente contrato.",
   "aviationFreightEmpty": "No freight offers today.",
   "aviationFreightAccept": "Accept",
   "aviationFreightClaim": "Claim payout",
@@ -13859,6 +13859,47 @@
   },
   "aviationFreightClaimWrongDest": "Vuela al país de destino antes de reclamar el pago.",
   "aviationFreightFailed": "No se pudo completar esa acción de carga.",
+  "aviationFreightBoardResets": "El tablero se renueva en {time}",
+  "@aviationFreightBoardResets": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightDeliveryWindow": "Entrega en {time}",
+  "@aviationFreightDeliveryWindow": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightDeadline": "Plazo: {time}",
+  "@aviationFreightDeadline": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightCooldown": "Próximo contrato en {time}",
+  "@aviationFreightCooldown": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightOnCooldown": "Enfriamiento de carga activo. Espera {time}.",
+  "@aviationFreightOnCooldown": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightExpired": "Este contrato de carga ha caducado.",
   "hitlistDailyContractTitle": "Most-Wanted of the day",
   "hitlistDailyContractOpen": "Contract on {username}. Finish the hit for a €{bonus} bonus on top of the bounty.",
   "@hitlistDailyContractOpen": {

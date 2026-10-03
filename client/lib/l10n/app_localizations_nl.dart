@@ -5700,7 +5700,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get aviationFreightHint =>
-      'Accepteer een dagelijkse NPC-vrachtrit terwijl je in het land van vertrek bent, vlieg naar de bestemming met genoeg cargo-tegels, en claim daarna de uitbetaling.';
+      'Accepteer een dagelijkse NPC-vrachtrit terwijl je in het land van vertrek bent. Je hebt 3 uur om te vliegen en te claimen; daarna 45 minuten cooldown tot het volgende contract.';
 
   @override
   String get aviationFreightEmpty => 'Geen vrachtaanbiedingen vandaag.';
@@ -5757,6 +5757,34 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get aviationFreightFailed => 'Die vrachthandeling is niet gelukt.';
+
+  @override
+  String aviationFreightBoardResets(String time) {
+    return 'Bord vernieuwt over $time';
+  }
+
+  @override
+  String aviationFreightDeliveryWindow(String time) {
+    return 'Lever binnen $time';
+  }
+
+  @override
+  String aviationFreightDeadline(String time) {
+    return 'Deadline: $time';
+  }
+
+  @override
+  String aviationFreightCooldown(String time) {
+    return 'Volgend contract over $time';
+  }
+
+  @override
+  String aviationFreightOnCooldown(String time) {
+    return 'Vracht-cooldown actief. Wacht $time.';
+  }
+
+  @override
+  String get aviationFreightExpired => 'Dit vrachtcontract is verlopen.';
 
   @override
   String aviationRequiresLicense(String name) {

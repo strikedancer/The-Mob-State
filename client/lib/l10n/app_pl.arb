@@ -13807,7 +13807,7 @@
   "territoryErrorRiskOwnTarget": "You already own that region.",
   "territoryErrorRiskAttackCooldown": "Attack cooldown still active for this border.",
   "aviationFreightTitle": "Freight contracts",
-  "aviationFreightHint": "Accept a daily NPC cargo run, fly to the destination with enough cargo tiles, then claim the payout.",
+  "aviationFreightHint": "Przyjmij dzienny kurs frachtowy NPC będąc w kraju startu. Masz 3 godziny na lot i odbiór; potem 45 minut cooldownu do następnego kontraktu.",
   "aviationFreightEmpty": "No freight offers today.",
   "aviationFreightAccept": "Accept",
   "aviationFreightClaim": "Claim payout",
@@ -13859,6 +13859,47 @@
   },
   "aviationFreightClaimWrongDest": "Najpierw poleć do kraju docelowego, zanim odbierzesz wypłatę.",
   "aviationFreightFailed": "Nie udało się wykonać tej akcji frachtowej.",
+  "aviationFreightBoardResets": "Tablica odświeży się za {time}",
+  "@aviationFreightBoardResets": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightDeliveryWindow": "Dostarcz w ciągu {time}",
+  "@aviationFreightDeliveryWindow": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightDeadline": "Termin: {time}",
+  "@aviationFreightDeadline": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightCooldown": "Następny kontrakt za {time}",
+  "@aviationFreightCooldown": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightOnCooldown": "Aktywny cooldown frachtu. Poczekaj {time}.",
+  "@aviationFreightOnCooldown": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightExpired": "Ten kontrakt frachtowy wygasł.",
   "hitlistDailyContractTitle": "Most-Wanted of the day",
   "hitlistDailyContractOpen": "Contract on {username}. Finish the hit for a €{bonus} bonus on top of the bounty.",
   "@hitlistDailyContractOpen": {

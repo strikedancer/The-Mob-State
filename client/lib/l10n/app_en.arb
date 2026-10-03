@@ -3342,7 +3342,7 @@
   "aviationOwnedBadge": "Owned",
   "aviationHangarEmptyHint": "Buy a paid license first, then pick a plane below.",
   "aviationFreightTitle": "Freight contracts",
-  "aviationFreightHint": "Accept a daily NPC cargo run while you are in the origin country, fly to the destination with enough cargo tiles, then claim the payout.",
+  "aviationFreightHint": "Accept a daily NPC cargo run while you are in the origin country. You have 3 hours to fly and claim; then a 45-minute cooldown before the next contract.",
   "aviationFreightEmpty": "No freight offers today.",
   "aviationFreightAccept": "Accept",
   "aviationFreightClaim": "Claim payout",
@@ -3380,6 +3380,37 @@
   },
   "aviationFreightClaimWrongDest": "Fly to the destination country before claiming the payout.",
   "aviationFreightFailed": "Could not complete that freight action.",
+  "aviationFreightBoardResets": "Board refreshes in {time}",
+  "@aviationFreightBoardResets": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "aviationFreightDeliveryWindow": "Deliver within {time}",
+  "@aviationFreightDeliveryWindow": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "aviationFreightDeadline": "Deadline: {time}",
+  "@aviationFreightDeadline": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "aviationFreightCooldown": "Next contract in {time}",
+  "@aviationFreightCooldown": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "aviationFreightOnCooldown": "Freight cooldown active. Wait {time}.",
+  "@aviationFreightOnCooldown": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "aviationFreightExpired": "This freight contract expired.",
   "aviationRequiresLicense": "Needs {name}",
   "@aviationRequiresLicense": {
     "placeholders": {

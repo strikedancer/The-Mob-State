@@ -585,6 +585,7 @@ router.post(
         [
           'FREIGHT_OFFER_NOT_FOUND',
           'FREIGHT_JOB_ACTIVE',
+          'FREIGHT_COOLDOWN',
           'AIRCRAFT_NOT_FOUND',
           'AIRCRAFT_BROKEN',
           'FREIGHT_CARGO_TOO_SMALL',
@@ -592,7 +593,13 @@ router.post(
           'PLAYER_NOT_FOUND',
         ].includes(code)
       ) {
-        return res.status(400).json({ success: false, error: code });
+        return res.status(400).json({
+          success: false,
+          error: code,
+          ...(typeof error?.retryAfterSeconds === 'number'
+            ? { retryAfterSeconds: error.retryAfterSeconds }
+            : {}),
+        });
       }
       return next(error);
     }
@@ -620,6 +627,7 @@ router.post(
           'FREIGHT_JOB_NOT_FOUND',
           'FREIGHT_JOB_NOT_CLAIMABLE',
           'FREIGHT_WRONG_DEST',
+          'FREIGHT_EXPIRED',
         ].includes(code)
       ) {
         return res.status(400).json({ success: false, error: code });

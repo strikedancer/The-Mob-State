@@ -11750,7 +11750,7 @@
   "aviationOwnedBadge": "In bezit",
   "aviationHangarEmptyHint": "Koop eerst een betaalde licentie en kies daarna hieronder een toestel.",
   "aviationFreightTitle": "Vrachtcontracten",
-  "aviationFreightHint": "Accepteer een dagelijkse NPC-vrachtrit terwijl je in het land van vertrek bent, vlieg naar de bestemming met genoeg cargo-tegels, en claim daarna de uitbetaling.",
+  "aviationFreightHint": "Accepteer een dagelijkse NPC-vrachtrit terwijl je in het land van vertrek bent. Je hebt 3 uur om te vliegen en te claimen; daarna 45 minuten cooldown tot het volgende contract.",
   "aviationFreightEmpty": "Geen vrachtaanbiedingen vandaag.",
   "aviationFreightAccept": "Accepteren",
   "aviationFreightClaim": "Claim uitbetaling",
@@ -11802,6 +11802,47 @@
   },
   "aviationFreightClaimWrongDest": "Vlieg eerst naar het bestemmingsland voordat je de uitbetaling claimt.",
   "aviationFreightFailed": "Die vrachthandeling is niet gelukt.",
+  "aviationFreightBoardResets": "Bord vernieuwt over {time}",
+  "@aviationFreightBoardResets": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightDeliveryWindow": "Lever binnen {time}",
+  "@aviationFreightDeliveryWindow": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightDeadline": "Deadline: {time}",
+  "@aviationFreightDeadline": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightCooldown": "Volgend contract over {time}",
+  "@aviationFreightCooldown": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightOnCooldown": "Vracht-cooldown actief. Wacht {time}.",
+  "@aviationFreightOnCooldown": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightExpired": "Dit vrachtcontract is verlopen.",
   "aviationRequiresLicense": "Vereist {name}",
   "aviationRankLocked": "Rang te laag",
   "aviationRefuel": "Tanken",

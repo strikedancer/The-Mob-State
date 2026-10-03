@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -49,6 +50,10 @@ class _AviationScreenState extends State<AviationScreen> {
   List<Map<String, dynamic>> _owned = const [];
   List<Map<String, dynamic>> _freightOffers = const [];
   Map<String, dynamic>? _freightJob;
+  int _freightBoardResetsIn = 0;
+  int _freightAcceptCooldown = 0;
+  int _freightDeliveryWindow = 0;
+  Timer? _freightTick;
   int _aviationLevel = 0;
   bool _hasFlightBasic = false;
   bool _hasFlightCommercial = false;
@@ -63,6 +68,56 @@ class _AviationScreenState extends State<AviationScreen> {
   void initState() {
     super.initState();
     _loadData();
+  }
+
+  @override
+  void dispose() {
+    _freightTick?.cancel();
+    super.dispose();
+  }
+
+  void _syncFreightTick() {
+    _freightTick?.cancel();
+    final jobRemaining =
+        (_freightJob?['secondsRemaining'] as num?)?.toInt() ?? 0;
+    final needsTick = _freightBoardResetsIn > 0 ||
+        _freightAcceptCooldown > 0 ||
+        jobRemaining > 0;
+    if (!needsTick) return;
+    _freightTick = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (!mounted) return;
+      setState(() {
+        if (_freightBoardResetsIn > 0) {
+          _freightBoardResetsIn -= 1;
+        }
+        if (_freightAcceptCooldown > 0) {
+          _freightAcceptCooldown -= 1;
+        }
+        final rem = (_freightJob?['secondsRemaining'] as num?)?.toInt();
+        if (rem != null && rem > 0) {
+          _freightJob = {
+            ..._freightJob!,
+            'secondsRemaining': rem - 1,
+          };
+        }
+      });
+      final jobRem =
+          (_freightJob?['secondsRemaining'] as num?)?.toInt() ?? 0;
+      if (_freightBoardResetsIn <= 0 &&
+          _freightAcceptCooldown <= 0 &&
+          jobRem <= 0) {
+        _freightTick?.cancel();
+        _freightTick = null;
+      }
+    });
+  }
+
+  String _freightTime(int seconds) {
+    return formatAdaptiveDuration(
+      Duration(seconds: seconds.clamp(0, 864000)),
+      localeName: Localizations.localeOf(context).languageCode,
+      includeSeconds: seconds < 3600,
+    );
   }
 
   Future<void> _loadData() async {
@@ -87,6 +142,9 @@ class _AviationScreenState extends State<AviationScreen> {
 
       List<Map<String, dynamic>> freightOffers = const [];
       Map<String, dynamic>? freightJob;
+      var boardResetsIn = 0;
+      var acceptCooldown = 0;
+      var deliveryWindow = 0;
       try {
         final freightResponse = await _apiClient.get('/aviation/freight/board');
         if (freightResponse.statusCode == 200) {
@@ -98,6 +156,12 @@ class _AviationScreenState extends State<AviationScreen> {
               .toList(growable: false);
           freightJob =
               (freightData['activeJob'] as Map?)?.cast<String, dynamic>();
+          boardResetsIn =
+              (freightData['boardResetsInSeconds'] as num?)?.toInt() ?? 0;
+          acceptCooldown =
+              (freightData['acceptCooldownSeconds'] as num?)?.toInt() ?? 0;
+          deliveryWindow =
+              (freightData['deliveryWindowSeconds'] as num?)?.toInt() ?? 0;
         }
       } catch (_) {
         // Keep hangar usable if freight board is down.
@@ -150,11 +214,15 @@ class _AviationScreenState extends State<AviationScreen> {
             .toList(growable: false);
         _freightOffers = freightOffers;
         _freightJob = freightJob;
+        _freightBoardResetsIn = boardResetsIn;
+        _freightAcceptCooldown = acceptCooldown;
+        _freightDeliveryWindow = deliveryWindow;
         _aviationLevel = aviationLevel;
         _hasFlightBasic = hasFlightBasic;
         _hasFlightCommercial = hasFlightCommercial;
         _isLoading = false;
       });
+      _syncFreightTick();
     } catch (e) {
       setState(() {
         _error = e.toString();
@@ -1272,6 +1340,7 @@ class _AviationScreenState extends State<AviationScreen> {
     AppLocalizations l10n,
     String? code, {
     String? originCountry,
+    int? retryAfterSeconds,
   }) {
     switch (code) {
       case 'FREIGHT_WRONG_ORIGIN':
@@ -1282,6 +1351,12 @@ class _AviationScreenState extends State<AviationScreen> {
         return l10n.aviationFreightCargoTooSmall;
       case 'FREIGHT_JOB_ACTIVE':
         return l10n.aviationFreightJobActive;
+      case 'FREIGHT_COOLDOWN':
+        return l10n.aviationFreightOnCooldown(
+          _freightTime(retryAfterSeconds ?? _freightAcceptCooldown),
+        );
+      case 'FREIGHT_EXPIRED':
+        return l10n.aviationFreightExpired;
       case 'AIRCRAFT_BROKEN':
         return l10n.aviationFreightAircraftBroken;
       case 'AIRCRAFT_NOT_FOUND':
@@ -1314,6 +1389,9 @@ class _AviationScreenState extends State<AviationScreen> {
         Provider.of<AuthProvider>(context, listen: false)
             .currentPlayer
             ?.currentCountry;
+    final deliveryWindow = _freightDeliveryWindow > 0
+        ? _freightDeliveryWindow
+        : 3 * 60 * 60;
     return _buildPanel(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1322,6 +1400,23 @@ class _AviationScreenState extends State<AviationScreen> {
             l10n.aviationFreightHint,
             style: const TextStyle(color: Colors.white70, fontSize: 13),
           ),
+          const SizedBox(height: 8),
+          Text(
+            l10n.aviationFreightBoardResets(_freightTime(_freightBoardResetsIn)),
+            style: const TextStyle(color: Colors.white54, fontSize: 12),
+          ),
+          Text(
+            l10n.aviationFreightDeliveryWindow(_freightTime(deliveryWindow)),
+            style: const TextStyle(color: Colors.white54, fontSize: 12),
+          ),
+          if (_freightAcceptCooldown > 0 && job == null)
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Text(
+                l10n.aviationFreightCooldown(_freightTime(_freightAcceptCooldown)),
+                style: TextStyle(color: Colors.orange.shade200, fontSize: 12),
+              ),
+            ),
           if (job != null) ...[
             const SizedBox(height: 10),
             Text(
@@ -1337,6 +1432,15 @@ class _AviationScreenState extends State<AviationScreen> {
                 job['status']?.toString() ?? '-',
               ),
               style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              l10n.aviationFreightDeadline(
+                _freightTime(
+                  (job['secondsRemaining'] as num?)?.toInt() ?? 0,
+                ),
+              ),
+              style: TextStyle(color: Colors.amber.shade200, fontSize: 12),
             ),
             if (job['status'] == 'claimable' || job['status'] == 'accepted') ...[
               const SizedBox(height: 8),
@@ -1362,7 +1466,11 @@ class _AviationScreenState extends State<AviationScreen> {
               final dest = offer['destCountry']?.toString() ?? '-';
               final originOk = playerCountry != null &&
                   playerCountry == origin;
-              final canAccept = _owned.isNotEmpty && originOk;
+              final onCooldown = _freightAcceptCooldown > 0;
+              final canAccept = _owned.isNotEmpty && originOk && !onCooldown;
+              final offerWindow =
+                  (offer['deliveryWindowSeconds'] as num?)?.toInt() ??
+                      deliveryWindow;
               return ListTile(
                 contentPadding: EdgeInsets.zero,
                 title: Text(
@@ -1373,16 +1481,22 @@ class _AviationScreenState extends State<AviationScreen> {
                   style: const TextStyle(color: Colors.white),
                 ),
                 subtitle: Text(
-                  originOk
-                      ? l10n.aviationFreightOfferMeta(
-                          '${offer['cargoTiles']}',
-                          '${(offer['payout'] as num?)?.toInt() ?? 0}',
-                        )
-                      : l10n.aviationFreightNeedOrigin(
-                          CountryHelper.getLocalizedCountryName(origin, l10n),
-                        ),
+                  [
+                    if (originOk)
+                      l10n.aviationFreightOfferMeta(
+                        '${offer['cargoTiles']}',
+                        '${(offer['payout'] as num?)?.toInt() ?? 0}',
+                      )
+                    else
+                      l10n.aviationFreightNeedOrigin(
+                        CountryHelper.getLocalizedCountryName(origin, l10n),
+                      ),
+                    l10n.aviationFreightDeliveryWindow(_freightTime(offerWindow)),
+                  ].join(' · '),
                   style: TextStyle(
-                    color: originOk ? Colors.white70 : Colors.orange.shade200,
+                    color: originOk && !onCooldown
+                        ? Colors.white70
+                        : Colors.orange.shade200,
                     fontSize: 12,
                   ),
                 ),
@@ -1396,6 +1510,15 @@ class _AviationScreenState extends State<AviationScreen> {
                           if (_owned.isEmpty) {
                             _showFreightMessage(
                               l10n.aviationFreightNeedPlane,
+                              error: true,
+                            );
+                            return;
+                          }
+                          if (onCooldown) {
+                            _showFreightMessage(
+                              l10n.aviationFreightOnCooldown(
+                                _freightTime(_freightAcceptCooldown),
+                              ),
                               error: true,
                             );
                             return;
@@ -1445,11 +1568,17 @@ class _AviationScreenState extends State<AviationScreen> {
         await _loadData();
         return;
       }
+      final retry = (data['retryAfterSeconds'] as num?)?.toInt();
+      if (data['error']?.toString() == 'FREIGHT_COOLDOWN' && retry != null) {
+        setState(() => _freightAcceptCooldown = retry);
+        _syncFreightTick();
+      }
       _showFreightMessage(
         _freightErrorMessage(
           l10n,
           data['error']?.toString(),
           originCountry: originCountry,
+          retryAfterSeconds: retry,
         ),
         error: true,
       );
@@ -1477,6 +1606,9 @@ class _AviationScreenState extends State<AviationScreen> {
         _freightErrorMessage(l10n, data['error']?.toString()),
         error: true,
       );
+      if (data['error']?.toString() == 'FREIGHT_EXPIRED') {
+        await _loadData();
+      }
     } catch (_) {
       _showFreightMessage(l10n.aviationFreightFailed, error: true);
     }

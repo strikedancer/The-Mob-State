@@ -5734,7 +5734,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get aviationFreightHint =>
-      'Accept a daily NPC cargo run, fly to the destination with enough cargo tiles, then claim the payout.';
+      'Nimm eine tägliche NPC-Frachtfahrt an, während du im Startland bist. Du hast 3 Stunden zum Fliegen und Abholen; danach 45 Minuten Cooldown bis zum nächsten Vertrag.';
 
   @override
   String get aviationFreightEmpty => 'No freight offers today.';
@@ -5791,6 +5791,34 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get aviationFreightFailed => 'Diese Frachtaktion ist fehlgeschlagen.';
+
+  @override
+  String aviationFreightBoardResets(String time) {
+    return 'Board aktualisiert in $time';
+  }
+
+  @override
+  String aviationFreightDeliveryWindow(String time) {
+    return 'Liefern innerhalb von $time';
+  }
+
+  @override
+  String aviationFreightDeadline(String time) {
+    return 'Frist: $time';
+  }
+
+  @override
+  String aviationFreightCooldown(String time) {
+    return 'Nächster Vertrag in $time';
+  }
+
+  @override
+  String aviationFreightOnCooldown(String time) {
+    return 'Fracht-Cooldown aktiv. Warte $time.';
+  }
+
+  @override
+  String get aviationFreightExpired => 'Dieser Frachtvertrag ist abgelaufen.';
 
   @override
   String aviationRequiresLicense(String name) {

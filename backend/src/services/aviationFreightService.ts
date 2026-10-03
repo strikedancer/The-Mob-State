@@ -1,5 +1,10 @@
 import prisma from '../lib/prisma';
 
+/** Time to deliver after accept (Hangar Fly is instant; this is the contract window). */
+export const FREIGHT_DELIVERY_SECONDS = 3 * 60 * 60; // 3 hours
+/** Wait after completing/failing a job before accepting another. */
+export const FREIGHT_COOLDOWN_SECONDS = 45 * 60; // 45 minutes
+
 export async function ensureAviationFreightSchema(): Promise<void> {
   await prisma.$executeRawUnsafe(`
     CREATE TABLE IF NOT EXISTS aviation_freight_jobs (
@@ -13,12 +18,20 @@ export async function ensureAviationFreightSchema(): Promise<void> {
       status VARCHAR(20) NOT NULL DEFAULT 'accepted',
       offerKey VARCHAR(64) NOT NULL,
       acceptedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      expiresAt DATETIME NULL,
       completedAt DATETIME NULL,
       PRIMARY KEY (id),
       KEY idx_aviation_freight_player (playerId),
       KEY idx_aviation_freight_status (status)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
+  try {
+    await prisma.$executeRawUnsafe(
+      `ALTER TABLE aviation_freight_jobs ADD COLUMN expiresAt DATETIME NULL`,
+    );
+  } catch {
+    // column already exists
+  }
 }
 
 type FreightOffer = {
@@ -27,9 +40,10 @@ type FreightOffer = {
   destCountry: string;
   cargoTiles: number;
   payout: number;
+  deliveryWindowSeconds: number;
 };
 
-const OFFER_POOL: Array<Omit<FreightOffer, 'offerKey'>> = [
+const OFFER_POOL: Array<Omit<FreightOffer, 'offerKey' | 'deliveryWindowSeconds'>> = [
   { originCountry: 'netherlands', destCountry: 'belgium', cargoTiles: 2, payout: 18000 },
   { originCountry: 'belgium', destCountry: 'france', cargoTiles: 3, payout: 28000 },
   { originCountry: 'france', destCountry: 'spain', cargoTiles: 4, payout: 42000 },
@@ -44,6 +58,17 @@ function utcDateKey(d = new Date()): string {
   return d.toISOString().slice(0, 10);
 }
 
+function secondsUntilUtcMidnight(now = new Date()): number {
+  const next = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1));
+  return Math.max(0, Math.floor((next.getTime() - now.getTime()) / 1000));
+}
+
+function withDeliveryWindow(
+  offer: Omit<FreightOffer, 'deliveryWindowSeconds'>,
+): FreightOffer {
+  return { ...offer, deliveryWindowSeconds: FREIGHT_DELIVERY_SECONDS };
+}
+
 function dailyOffers(): FreightOffer[] {
   const day = utcDateKey();
   // Stable 4 offers per UTC day.
@@ -51,10 +76,12 @@ function dailyOffers(): FreightOffer[] {
   const picks: FreightOffer[] = [];
   for (let i = 0; i < 4; i++) {
     const base = OFFER_POOL[(seed + i * 3) % OFFER_POOL.length];
-    picks.push({
-      ...base,
-      offerKey: `${day}-${i}-${base.originCountry}-${base.destCountry}`,
-    });
+    picks.push(
+      withDeliveryWindow({
+        ...base,
+        offerKey: `${day}-${i}-${base.originCountry}-${base.destCountry}`,
+      }),
+    );
   }
   return picks;
 }
@@ -63,10 +90,10 @@ function localOriginOffer(currentCountry: string): FreightOffer | null {
   const base = OFFER_POOL.find((o) => o.originCountry === currentCountry);
   if (!base) return null;
   const day = utcDateKey();
-  return {
+  return withDeliveryWindow({
     ...base,
     offerKey: `${day}-local-${base.originCountry}-${base.destCountry}`,
-  };
+  });
 }
 
 /** Daily board plus a guaranteed offer from the player's current country when possible. */
@@ -95,10 +122,40 @@ function resolveOffer(
   return offersForPlayer(currentCountry).find((o) => o.offerKey === offerKey);
 }
 
+async function expireStaleJobs(playerId: number): Promise<void> {
+  await prisma.$executeRawUnsafe(
+    `UPDATE aviation_freight_jobs
+     SET status = 'failed', completedAt = COALESCE(completedAt, NOW())
+     WHERE playerId = ?
+       AND status IN ('accepted','in_flight','claimable')
+       AND expiresAt IS NOT NULL
+       AND expiresAt < NOW()`,
+    playerId,
+  );
+}
+
+async function acceptCooldownSecondsRemaining(playerId: number): Promise<number> {
+  const rows = await prisma.$queryRawUnsafe<Array<{ completedAt: Date | null }>>(
+    `SELECT completedAt FROM aviation_freight_jobs
+     WHERE playerId = ? AND status IN ('done','failed') AND completedAt IS NOT NULL
+     ORDER BY completedAt DESC LIMIT 1`,
+    playerId,
+  );
+  const completedAt = rows[0]?.completedAt;
+  if (!completedAt) return 0;
+  const elapsed = Math.floor((Date.now() - new Date(completedAt).getTime()) / 1000);
+  return Math.max(0, FREIGHT_COOLDOWN_SECONDS - elapsed);
+}
+
 export async function listFreightBoard(playerId: number): Promise<{
   offers: FreightOffer[];
   activeJob: Record<string, unknown> | null;
+  boardResetsInSeconds: number;
+  acceptCooldownSeconds: number;
+  deliveryWindowSeconds: number;
+  cooldownSeconds: number;
 }> {
+  await expireStaleJobs(playerId);
   const player = await prisma.player.findUnique({
     where: { id: playerId },
     select: { currentCountry: true },
@@ -113,28 +170,50 @@ export async function listFreightBoard(playerId: number): Promise<{
       payout: number;
       status: string;
       offerKey: string;
+      acceptedAt: Date;
+      expiresAt: Date | null;
     }>
   >(
-    `SELECT id, aircraftId, originCountry, destCountry, cargoTiles, payout, status, offerKey
+    `SELECT id, aircraftId, originCountry, destCountry, cargoTiles, payout, status, offerKey,
+            acceptedAt, expiresAt
      FROM aviation_freight_jobs
      WHERE playerId = ? AND status IN ('accepted','in_flight','claimable')
      ORDER BY id DESC LIMIT 1`,
     playerId,
   );
+  const job = active[0];
+  let secondsRemaining = 0;
+  if (job?.expiresAt) {
+    secondsRemaining = Math.max(
+      0,
+      Math.floor((new Date(job.expiresAt).getTime() - Date.now()) / 1000),
+    );
+  } else if (job?.acceptedAt) {
+    const end =
+      new Date(job.acceptedAt).getTime() + FREIGHT_DELIVERY_SECONDS * 1000;
+    secondsRemaining = Math.max(0, Math.floor((end - Date.now()) / 1000));
+  }
+
   return {
     offers: offersForPlayer(player?.currentCountry),
-    activeJob: active[0]
+    activeJob: job
       ? {
-          id: Number(active[0].id),
-          aircraftId: active[0].aircraftId == null ? null : Number(active[0].aircraftId),
-          originCountry: active[0].originCountry,
-          destCountry: active[0].destCountry,
-          cargoTiles: Number(active[0].cargoTiles),
-          payout: Number(active[0].payout),
-          status: active[0].status,
-          offerKey: active[0].offerKey,
+          id: Number(job.id),
+          aircraftId: job.aircraftId == null ? null : Number(job.aircraftId),
+          originCountry: job.originCountry,
+          destCountry: job.destCountry,
+          cargoTiles: Number(job.cargoTiles),
+          payout: Number(job.payout),
+          status: job.status,
+          offerKey: job.offerKey,
+          expiresAt: job.expiresAt ? new Date(job.expiresAt).toISOString() : null,
+          secondsRemaining,
         }
       : null,
+    boardResetsInSeconds: secondsUntilUtcMidnight(),
+    acceptCooldownSeconds: await acceptCooldownSecondsRemaining(playerId),
+    deliveryWindowSeconds: FREIGHT_DELIVERY_SECONDS,
+    cooldownSeconds: FREIGHT_COOLDOWN_SECONDS,
   };
 }
 
@@ -142,12 +221,20 @@ export async function acceptFreightOffer(
   playerId: number,
   offerKey: string,
   aircraftId: number,
-): Promise<{ jobId: number }> {
+): Promise<{ jobId: number; expiresAt: string; secondsRemaining: number }> {
+  await expireStaleJobs(playerId);
   const player = await prisma.player.findUnique({
     where: { id: playerId },
     select: { currentCountry: true },
   });
   if (!player) throw new Error('PLAYER_NOT_FOUND');
+
+  const cooldown = await acceptCooldownSecondsRemaining(playerId);
+  if (cooldown > 0) {
+    const err = new Error('FREIGHT_COOLDOWN') as Error & { retryAfterSeconds?: number };
+    err.retryAfterSeconds = cooldown;
+    throw err;
+  }
 
   const offer = resolveOffer(offerKey, player.currentCountry);
   if (!offer) throw new Error('FREIGHT_OFFER_NOT_FOUND');
@@ -170,10 +257,10 @@ export async function acceptFreightOffer(
     throw new Error('FREIGHT_WRONG_ORIGIN');
   }
 
-  const result = await prisma.$executeRawUnsafe(
+  await prisma.$executeRawUnsafe(
     `INSERT INTO aviation_freight_jobs
-       (playerId, aircraftId, originCountry, destCountry, cargoTiles, payout, status, offerKey)
-     VALUES (?, ?, ?, ?, ?, ?, 'accepted', ?)`,
+       (playerId, aircraftId, originCountry, destCountry, cargoTiles, payout, status, offerKey, expiresAt)
+     VALUES (?, ?, ?, ?, ?, ?, 'accepted', ?, DATE_ADD(NOW(), INTERVAL ? SECOND))`,
     playerId,
     aircraftId,
     offer.originCountry,
@@ -181,20 +268,29 @@ export async function acceptFreightOffer(
     offer.cargoTiles,
     offer.payout,
     offer.offerKey,
+    FREIGHT_DELIVERY_SECONDS,
   );
-  const rows = await prisma.$queryRawUnsafe<Array<{ id: number }>>(
-    `SELECT id FROM aviation_freight_jobs WHERE playerId = ? ORDER BY id DESC LIMIT 1`,
+  const rows = await prisma.$queryRawUnsafe<Array<{ id: number; expiresAt: Date | null }>>(
+    `SELECT id, expiresAt FROM aviation_freight_jobs WHERE playerId = ? ORDER BY id DESC LIMIT 1`,
     playerId,
   );
-  void result;
-  return { jobId: Number(rows[0]?.id ?? 0) };
+  const expiresAt = rows[0]?.expiresAt
+    ? new Date(rows[0].expiresAt).toISOString()
+    : new Date(Date.now() + FREIGHT_DELIVERY_SECONDS * 1000).toISOString();
+  return {
+    jobId: Number(rows[0]?.id ?? 0),
+    expiresAt,
+    secondsRemaining: FREIGHT_DELIVERY_SECONDS,
+  };
 }
 
 export async function markFreightInFlight(playerId: number, aircraftId: number, destination: string): Promise<void> {
+  await expireStaleJobs(playerId);
   await prisma.$executeRawUnsafe(
     `UPDATE aviation_freight_jobs
      SET status = 'claimable'
-     WHERE playerId = ? AND aircraftId = ? AND status = 'accepted' AND destCountry = ?`,
+     WHERE playerId = ? AND aircraftId = ? AND status = 'accepted' AND destCountry = ?
+       AND (expiresAt IS NULL OR expiresAt >= NOW())`,
     playerId,
     aircraftId,
     destination,
@@ -202,18 +298,36 @@ export async function markFreightInFlight(playerId: number, aircraftId: number, 
 }
 
 export async function claimFreightPayout(playerId: number, jobId: number): Promise<{ payout: number }> {
+  await expireStaleJobs(playerId);
   const rows = await prisma.$queryRawUnsafe<
-    Array<{ id: number; payout: number; destCountry: string; status: string }>
+    Array<{
+      id: number;
+      payout: number;
+      destCountry: string;
+      status: string;
+      expiresAt: Date | null;
+    }>
   >(
-    `SELECT id, payout, destCountry, status FROM aviation_freight_jobs
+    `SELECT id, payout, destCountry, status, expiresAt FROM aviation_freight_jobs
      WHERE id = ? AND playerId = ? LIMIT 1`,
     jobId,
     playerId,
   );
   const job = rows[0];
   if (!job) throw new Error('FREIGHT_JOB_NOT_FOUND');
+  if (job.status === 'failed') throw new Error('FREIGHT_EXPIRED');
   if (job.status !== 'claimable' && job.status !== 'accepted') {
     throw new Error('FREIGHT_JOB_NOT_CLAIMABLE');
+  }
+  if (job.expiresAt && new Date(job.expiresAt).getTime() < Date.now()) {
+    await prisma.$executeRawUnsafe(
+      `UPDATE aviation_freight_jobs
+       SET status = 'failed', completedAt = NOW()
+       WHERE id = ? AND playerId = ?`,
+      jobId,
+      playerId,
+    );
+    throw new Error('FREIGHT_EXPIRED');
   }
 
   const player = await prisma.player.findUnique({
@@ -228,7 +342,8 @@ export async function claimFreightPayout(playerId: number, jobId: number): Promi
   const updated = await prisma.$executeRawUnsafe(
     `UPDATE aviation_freight_jobs
      SET status = 'done', completedAt = NOW()
-     WHERE id = ? AND playerId = ? AND status IN ('accepted','claimable')`,
+     WHERE id = ? AND playerId = ? AND status IN ('accepted','claimable')
+       AND (expiresAt IS NULL OR expiresAt >= NOW())`,
     jobId,
     playerId,
   );
