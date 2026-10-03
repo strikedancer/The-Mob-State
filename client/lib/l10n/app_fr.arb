@@ -13836,6 +13836,29 @@
       }
     }
   },
+  "aviationFreightAcceptedSuccess": "Contrat de fret accepté. Volez vers la destination, puis réclamez le paiement.",
+  "aviationFreightNeedOrigin": "Vous devez être en {country} pour accepter ce contrat.",
+  "@aviationFreightNeedOrigin": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightCargoTooSmall": "Votre avion n'a pas assez de cases cargo pour ce contrat.",
+  "aviationFreightJobActive": "Vous avez déjà un contrat de fret actif.",
+  "aviationFreightAircraftBroken": "Réparez votre avion avant d'accepter un contrat de fret.",
+  "aviationFreightNeedPlane": "Achetez d'abord un avion avant d'accepter des contrats de fret.",
+  "aviationFreightClaimSuccess": "Paiement de fret réclamé : {amount}.",
+  "@aviationFreightClaimSuccess": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightClaimWrongDest": "Volez d'abord vers le pays de destination avant de réclamer le paiement.",
+  "aviationFreightFailed": "Impossible de terminer cette action de fret.",
   "hitlistDailyContractTitle": "Most-Wanted of the day",
   "hitlistDailyContractOpen": "Contract on {username}. Finish the hit for a €{bonus} bonus on top of the bounty.",
   "@hitlistDailyContractOpen": {

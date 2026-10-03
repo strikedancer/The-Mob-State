@@ -5730,6 +5730,43 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
+  String get aviationFreightAcceptedSuccess =>
+      'Kontrakt frachtowy przyjęty. Poleć do celu, a potem odbierz wypłatę.';
+
+  @override
+  String aviationFreightNeedOrigin(String country) {
+    return 'Musisz być w kraju: $country, aby przyjąć ten kontrakt.';
+  }
+
+  @override
+  String get aviationFreightCargoTooSmall =>
+      'Twój samolot nie ma wystarczającej liczby kafelków ładunku do tego kontraktu.';
+
+  @override
+  String get aviationFreightJobActive => 'Masz już aktywny kontrakt frachtowy.';
+
+  @override
+  String get aviationFreightAircraftBroken =>
+      'Napraw samolot przed przyjęciem kontraktu frachtowego.';
+
+  @override
+  String get aviationFreightNeedPlane =>
+      'Najpierw kup samolot, zanim przyjmiesz kontrakty frachtowe.';
+
+  @override
+  String aviationFreightClaimSuccess(String amount) {
+    return 'Wypłata frachtu odebrana: $amount.';
+  }
+
+  @override
+  String get aviationFreightClaimWrongDest =>
+      'Najpierw poleć do kraju docelowego, zanim odbierzesz wypłatę.';
+
+  @override
+  String get aviationFreightFailed =>
+      'Nie udało się wykonać tej akcji frachtowej.';
+
+  @override
   String aviationRequiresLicense(String name) {
     return 'Potrzebuje $name';
   }

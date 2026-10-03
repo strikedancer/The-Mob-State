@@ -3342,7 +3342,7 @@
   "aviationOwnedBadge": "Owned",
   "aviationHangarEmptyHint": "Buy a paid license first, then pick a plane below.",
   "aviationFreightTitle": "Freight contracts",
-  "aviationFreightHint": "Accept a daily NPC cargo run, fly to the destination with enough cargo tiles, then claim the payout.",
+  "aviationFreightHint": "Accept a daily NPC cargo run while you are in the origin country, fly to the destination with enough cargo tiles, then claim the payout.",
   "aviationFreightEmpty": "No freight offers today.",
   "aviationFreightAccept": "Accept",
   "aviationFreightClaim": "Claim payout",
@@ -3361,6 +3361,25 @@
       "payout": { "type": "String" }
     }
   },
+  "aviationFreightAcceptedSuccess": "Freight contract accepted. Fly to the destination, then claim payout.",
+  "aviationFreightNeedOrigin": "You must be in {country} to accept this contract.",
+  "@aviationFreightNeedOrigin": {
+    "placeholders": {
+      "country": { "type": "String" }
+    }
+  },
+  "aviationFreightCargoTooSmall": "Your aircraft does not have enough cargo tiles for this contract.",
+  "aviationFreightJobActive": "You already have an active freight contract.",
+  "aviationFreightAircraftBroken": "Repair your aircraft before accepting a freight contract.",
+  "aviationFreightNeedPlane": "Buy an aircraft first before accepting freight contracts.",
+  "aviationFreightClaimSuccess": "Freight payout claimed: {amount}.",
+  "@aviationFreightClaimSuccess": {
+    "placeholders": {
+      "amount": { "type": "String" }
+    }
+  },
+  "aviationFreightClaimWrongDest": "Fly to the destination country before claiming the payout.",
+  "aviationFreightFailed": "Could not complete that freight action.",
   "aviationRequiresLicense": "Needs {name}",
   "@aviationRequiresLicense": {
     "placeholders": {

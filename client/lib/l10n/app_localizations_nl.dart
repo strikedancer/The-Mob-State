@@ -5700,7 +5700,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get aviationFreightHint =>
-      'Accepteer een dagelijkse NPC-vrachtrit, vlieg naar de bestemming met genoeg cargo-tegels, en claim daarna de uitbetaling.';
+      'Accepteer een dagelijkse NPC-vrachtrit terwijl je in het land van vertrek bent, vlieg naar de bestemming met genoeg cargo-tegels, en claim daarna de uitbetaling.';
 
   @override
   String get aviationFreightEmpty => 'Geen vrachtaanbiedingen vandaag.';
@@ -5720,6 +5720,43 @@ class AppLocalizationsNl extends AppLocalizations {
   String aviationFreightOfferMeta(String tiles, String payout) {
     return '$tiles cargo-tegels · €$payout';
   }
+
+  @override
+  String get aviationFreightAcceptedSuccess =>
+      'Vrachtcontract geaccepteerd. Vlieg naar de bestemming en claim daarna de uitbetaling.';
+
+  @override
+  String aviationFreightNeedOrigin(String country) {
+    return 'Je moet in $country zijn om dit contract te accepteren.';
+  }
+
+  @override
+  String get aviationFreightCargoTooSmall =>
+      'Je vliegtuig heeft te weinig cargo-tegels voor dit contract.';
+
+  @override
+  String get aviationFreightJobActive =>
+      'Je hebt al een actief vrachtcontract.';
+
+  @override
+  String get aviationFreightAircraftBroken =>
+      'Repareer je vliegtuig voordat je een vrachtcontract accepteert.';
+
+  @override
+  String get aviationFreightNeedPlane =>
+      'Koop eerst een vliegtuig voordat je vrachtcontracten accepteert.';
+
+  @override
+  String aviationFreightClaimSuccess(String amount) {
+    return 'Vrachtuitbetaling geclaimd: $amount.';
+  }
+
+  @override
+  String get aviationFreightClaimWrongDest =>
+      'Vlieg eerst naar het bestemmingsland voordat je de uitbetaling claimt.';
+
+  @override
+  String get aviationFreightFailed => 'Die vrachthandeling is niet gelukt.';
 
   @override
   String aviationRequiresLicense(String name) {

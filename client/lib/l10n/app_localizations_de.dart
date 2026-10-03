@@ -5756,6 +5756,43 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get aviationFreightAcceptedSuccess =>
+      'Frachtvertrag angenommen. Fliege zum Ziel und fordere danach die Auszahlung an.';
+
+  @override
+  String aviationFreightNeedOrigin(String country) {
+    return 'Du musst in $country sein, um diesen Vertrag anzunehmen.';
+  }
+
+  @override
+  String get aviationFreightCargoTooSmall =>
+      'Dein Flugzeug hat zu wenig Cargo-Kacheln für diesen Vertrag.';
+
+  @override
+  String get aviationFreightJobActive =>
+      'Du hast bereits einen aktiven Frachtvertrag.';
+
+  @override
+  String get aviationFreightAircraftBroken =>
+      'Repariere dein Flugzeug, bevor du einen Frachtvertrag annimmst.';
+
+  @override
+  String get aviationFreightNeedPlane =>
+      'Kaufe zuerst ein Flugzeug, bevor du Frachtverträge annimmst.';
+
+  @override
+  String aviationFreightClaimSuccess(String amount) {
+    return 'Frachtauszahlung eingefordert: $amount.';
+  }
+
+  @override
+  String get aviationFreightClaimWrongDest =>
+      'Fliege zuerst ins Zielland, bevor du die Auszahlung forderst.';
+
+  @override
+  String get aviationFreightFailed => 'Diese Frachtaktion ist fehlgeschlagen.';
+
+  @override
   String aviationRequiresLicense(String name) {
     return 'Bedürfnisse $name';
   }

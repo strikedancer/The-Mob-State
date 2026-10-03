@@ -13836,6 +13836,29 @@
       }
     }
   },
+  "aviationFreightAcceptedSuccess": "Contrato de carga aceptado. Vuela al destino y reclama el pago.",
+  "aviationFreightNeedOrigin": "Debes estar en {country} para aceptar este contrato.",
+  "@aviationFreightNeedOrigin": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightCargoTooSmall": "Tu avión no tiene suficientes baldosas de carga para este contrato.",
+  "aviationFreightJobActive": "Ya tienes un contrato de carga activo.",
+  "aviationFreightAircraftBroken": "Repara tu avión antes de aceptar un contrato de carga.",
+  "aviationFreightNeedPlane": "Compra primero un avión antes de aceptar contratos de carga.",
+  "aviationFreightClaimSuccess": "Pago de carga reclamado: {amount}.",
+  "@aviationFreightClaimSuccess": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightClaimWrongDest": "Vuela al país de destino antes de reclamar el pago.",
+  "aviationFreightFailed": "No se pudo completar esa acción de carga.",
   "hitlistDailyContractTitle": "Most-Wanted of the day",
   "hitlistDailyContractOpen": "Contract on {username}. Finish the hit for a €{bonus} bonus on top of the bounty.",
   "@hitlistDailyContractOpen": {

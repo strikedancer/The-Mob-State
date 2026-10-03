@@ -1268,8 +1268,52 @@ class _AviationScreenState extends State<AviationScreen> {
     );
   }
 
+  String _freightErrorMessage(
+    AppLocalizations l10n,
+    String? code, {
+    String? originCountry,
+  }) {
+    switch (code) {
+      case 'FREIGHT_WRONG_ORIGIN':
+        return l10n.aviationFreightNeedOrigin(
+          CountryHelper.getLocalizedCountryName(originCountry ?? '', l10n),
+        );
+      case 'FREIGHT_CARGO_TOO_SMALL':
+        return l10n.aviationFreightCargoTooSmall;
+      case 'FREIGHT_JOB_ACTIVE':
+        return l10n.aviationFreightJobActive;
+      case 'AIRCRAFT_BROKEN':
+        return l10n.aviationFreightAircraftBroken;
+      case 'AIRCRAFT_NOT_FOUND':
+      case 'FREIGHT_OFFER_NOT_FOUND':
+        return l10n.aviationFreightFailed;
+      case 'FREIGHT_WRONG_DEST':
+        return l10n.aviationFreightClaimWrongDest;
+      case 'FREIGHT_JOB_NOT_FOUND':
+      case 'FREIGHT_JOB_NOT_CLAIMABLE':
+        return l10n.aviationFreightFailed;
+      default:
+        return l10n.aviationFreightFailed;
+    }
+  }
+
+  void _showFreightMessage(String message, {bool error = false}) {
+    if (!mounted) return;
+    showTopRightFromSnackBar(
+      context,
+      SnackBar(
+        backgroundColor: error ? Colors.red : Colors.green,
+        content: Text(message),
+      ),
+    );
+  }
+
   Widget _buildFreightBoard(AppLocalizations l10n) {
     final job = _freightJob;
+    final playerCountry =
+        Provider.of<AuthProvider>(context, listen: false)
+            .currentPlayer
+            ?.currentCountry;
     return _buildPanel(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1282,8 +1326,14 @@ class _AviationScreenState extends State<AviationScreen> {
             const SizedBox(height: 10),
             Text(
               l10n.aviationFreightActive(
-                job['originCountry']?.toString() ?? '-',
-                job['destCountry']?.toString() ?? '-',
+                CountryHelper.getLocalizedCountryName(
+                  job['originCountry']?.toString() ?? '-',
+                  l10n,
+                ),
+                CountryHelper.getLocalizedCountryName(
+                  job['destCountry']?.toString() ?? '-',
+                  l10n,
+                ),
                 job['status']?.toString() ?? '-',
               ),
               style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
@@ -1310,6 +1360,9 @@ class _AviationScreenState extends State<AviationScreen> {
             ..._freightOffers.map((offer) {
               final origin = offer['originCountry']?.toString() ?? '-';
               final dest = offer['destCountry']?.toString() ?? '-';
+              final originOk = playerCountry != null &&
+                  playerCountry == origin;
+              final canAccept = _owned.isNotEmpty && originOk;
               return ListTile(
                 contentPadding: EdgeInsets.zero,
                 title: Text(
@@ -1320,18 +1373,43 @@ class _AviationScreenState extends State<AviationScreen> {
                   style: const TextStyle(color: Colors.white),
                 ),
                 subtitle: Text(
-                  l10n.aviationFreightOfferMeta(
-                    '${offer['cargoTiles']}',
-                    '${(offer['payout'] as num?)?.toInt() ?? 0}',
+                  originOk
+                      ? l10n.aviationFreightOfferMeta(
+                          '${offer['cargoTiles']}',
+                          '${(offer['payout'] as num?)?.toInt() ?? 0}',
+                        )
+                      : l10n.aviationFreightNeedOrigin(
+                          CountryHelper.getLocalizedCountryName(origin, l10n),
+                        ),
+                  style: TextStyle(
+                    color: originOk ? Colors.white70 : Colors.orange.shade200,
+                    fontSize: 12,
                   ),
-                  style: const TextStyle(color: Colors.white70, fontSize: 12),
                 ),
                 trailing: TextButton(
-                  onPressed: _owned.isEmpty
-                      ? null
-                      : () => _acceptFreight(
+                  onPressed: canAccept
+                      ? () => _acceptFreight(
                             offer['offerKey']?.toString() ?? '',
-                          ),
+                            originCountry: origin,
+                          )
+                      : () {
+                          if (_owned.isEmpty) {
+                            _showFreightMessage(
+                              l10n.aviationFreightNeedPlane,
+                              error: true,
+                            );
+                            return;
+                          }
+                          _showFreightMessage(
+                            l10n.aviationFreightNeedOrigin(
+                              CountryHelper.getLocalizedCountryName(
+                                origin,
+                                l10n,
+                              ),
+                            ),
+                            error: true,
+                          );
+                        },
                   child: Text(l10n.aviationFreightAccept),
                 ),
               );
@@ -1341,10 +1419,21 @@ class _AviationScreenState extends State<AviationScreen> {
     );
   }
 
-  Future<void> _acceptFreight(String offerKey) async {
-    if (offerKey.isEmpty || _owned.isEmpty) return;
+  Future<void> _acceptFreight(
+    String offerKey, {
+    String? originCountry,
+  }) async {
+    final l10n = AppLocalizations.of(context)!;
+    if (offerKey.isEmpty) return;
+    if (_owned.isEmpty) {
+      _showFreightMessage(l10n.aviationFreightNeedPlane, error: true);
+      return;
+    }
     final aircraftId = (_owned.first['id'] as num?)?.toInt();
-    if (aircraftId == null) return;
+    if (aircraftId == null) {
+      _showFreightMessage(l10n.aviationFreightNeedPlane, error: true);
+      return;
+    }
     try {
       final response = await _apiClient.post('/aviation/freight/accept', {
         'offerKey': offerKey,
@@ -1352,20 +1441,44 @@ class _AviationScreenState extends State<AviationScreen> {
       });
       final data = jsonDecode(response.body) as Map<String, dynamic>;
       if (data['success'] == true) {
+        _showFreightMessage(l10n.aviationFreightAcceptedSuccess);
         await _loadData();
+        return;
       }
-    } catch (_) {}
+      _showFreightMessage(
+        _freightErrorMessage(
+          l10n,
+          data['error']?.toString(),
+          originCountry: originCountry,
+        ),
+        error: true,
+      );
+    } catch (_) {
+      _showFreightMessage(l10n.aviationFreightFailed, error: true);
+    }
   }
 
   Future<void> _claimFreight(dynamic jobId) async {
+    final l10n = AppLocalizations.of(context)!;
     final id = (jobId as num?)?.toInt();
     if (id == null) return;
     try {
       final response = await _apiClient.post('/aviation/freight/claim/$id', {});
       final data = jsonDecode(response.body) as Map<String, dynamic>;
       if (data['success'] == true) {
+        final payout = (data['payout'] as num?)?.toInt() ?? 0;
+        _showFreightMessage(
+          l10n.aviationFreightClaimSuccess(formatCurrency(payout)),
+        );
         await _loadData();
+        return;
       }
-    } catch (_) {}
+      _showFreightMessage(
+        _freightErrorMessage(l10n, data['error']?.toString()),
+        error: true,
+      );
+    } catch (_) {
+      _showFreightMessage(l10n.aviationFreightFailed, error: true);
+    }
   }
 }

@@ -5772,6 +5772,44 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get aviationFreightAcceptedSuccess =>
+      'Contrat de fret accepté. Volez vers la destination, puis réclamez le paiement.';
+
+  @override
+  String aviationFreightNeedOrigin(String country) {
+    return 'Vous devez être en $country pour accepter ce contrat.';
+  }
+
+  @override
+  String get aviationFreightCargoTooSmall =>
+      'Votre avion n\'a pas assez de cases cargo pour ce contrat.';
+
+  @override
+  String get aviationFreightJobActive =>
+      'Vous avez déjà un contrat de fret actif.';
+
+  @override
+  String get aviationFreightAircraftBroken =>
+      'Réparez votre avion avant d\'accepter un contrat de fret.';
+
+  @override
+  String get aviationFreightNeedPlane =>
+      'Achetez d\'abord un avion avant d\'accepter des contrats de fret.';
+
+  @override
+  String aviationFreightClaimSuccess(String amount) {
+    return 'Paiement de fret réclamé : $amount.';
+  }
+
+  @override
+  String get aviationFreightClaimWrongDest =>
+      'Volez d\'abord vers le pays de destination avant de réclamer le paiement.';
+
+  @override
+  String get aviationFreightFailed =>
+      'Impossible de terminer cette action de fret.';
+
+  @override
   String aviationRequiresLicense(String name) {
     return 'Besoins $name';
   }

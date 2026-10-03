@@ -5664,7 +5664,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aviationFreightHint =>
-      'Accept a daily NPC cargo run, fly to the destination with enough cargo tiles, then claim the payout.';
+      'Accept a daily NPC cargo run while you are in the origin country, fly to the destination with enough cargo tiles, then claim the payout.';
 
   @override
   String get aviationFreightEmpty => 'No freight offers today.';
@@ -5684,6 +5684,43 @@ class AppLocalizationsEn extends AppLocalizations {
   String aviationFreightOfferMeta(String tiles, String payout) {
     return '$tiles cargo tiles · €$payout';
   }
+
+  @override
+  String get aviationFreightAcceptedSuccess =>
+      'Freight contract accepted. Fly to the destination, then claim payout.';
+
+  @override
+  String aviationFreightNeedOrigin(String country) {
+    return 'You must be in $country to accept this contract.';
+  }
+
+  @override
+  String get aviationFreightCargoTooSmall =>
+      'Your aircraft does not have enough cargo tiles for this contract.';
+
+  @override
+  String get aviationFreightJobActive =>
+      'You already have an active freight contract.';
+
+  @override
+  String get aviationFreightAircraftBroken =>
+      'Repair your aircraft before accepting a freight contract.';
+
+  @override
+  String get aviationFreightNeedPlane =>
+      'Buy an aircraft first before accepting freight contracts.';
+
+  @override
+  String aviationFreightClaimSuccess(String amount) {
+    return 'Freight payout claimed: $amount.';
+  }
+
+  @override
+  String get aviationFreightClaimWrongDest =>
+      'Fly to the destination country before claiming the payout.';
+
+  @override
+  String get aviationFreightFailed => 'Could not complete that freight action.';
 
   @override
   String aviationRequiresLicense(String name) {

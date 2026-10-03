@@ -13836,6 +13836,29 @@
       }
     }
   },
+  "aviationFreightAcceptedSuccess": "Frachtvertrag angenommen. Fliege zum Ziel und fordere danach die Auszahlung an.",
+  "aviationFreightNeedOrigin": "Du musst in {country} sein, um diesen Vertrag anzunehmen.",
+  "@aviationFreightNeedOrigin": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightCargoTooSmall": "Dein Flugzeug hat zu wenig Cargo-Kacheln für diesen Vertrag.",
+  "aviationFreightJobActive": "Du hast bereits einen aktiven Frachtvertrag.",
+  "aviationFreightAircraftBroken": "Repariere dein Flugzeug, bevor du einen Frachtvertrag annimmst.",
+  "aviationFreightNeedPlane": "Kaufe zuerst ein Flugzeug, bevor du Frachtverträge annimmst.",
+  "aviationFreightClaimSuccess": "Frachtauszahlung eingefordert: {amount}.",
+  "@aviationFreightClaimSuccess": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightClaimWrongDest": "Fliege zuerst ins Zielland, bevor du die Auszahlung forderst.",
+  "aviationFreightFailed": "Diese Frachtaktion ist fehlgeschlagen.",
   "hitlistDailyContractTitle": "Most-Wanted of the day",
   "hitlistDailyContractOpen": "Contract on {username}. Finish the hit for a €{bonus} bonus on top of the bounty.",
   "@hitlistDailyContractOpen": {

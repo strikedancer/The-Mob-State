@@ -13836,6 +13836,29 @@
       }
     }
   },
+  "aviationFreightAcceptedSuccess": "Kontrakt frachtowy przyjęty. Poleć do celu, a potem odbierz wypłatę.",
+  "aviationFreightNeedOrigin": "Musisz być w kraju: {country}, aby przyjąć ten kontrakt.",
+  "@aviationFreightNeedOrigin": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightCargoTooSmall": "Twój samolot nie ma wystarczającej liczby kafelków ładunku do tego kontraktu.",
+  "aviationFreightJobActive": "Masz już aktywny kontrakt frachtowy.",
+  "aviationFreightAircraftBroken": "Napraw samolot przed przyjęciem kontraktu frachtowego.",
+  "aviationFreightNeedPlane": "Najpierw kup samolot, zanim przyjmiesz kontrakty frachtowe.",
+  "aviationFreightClaimSuccess": "Wypłata frachtu odebrana: {amount}.",
+  "@aviationFreightClaimSuccess": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightClaimWrongDest": "Najpierw poleć do kraju docelowego, zanim odbierzesz wypłatę.",
+  "aviationFreightFailed": "Nie udało się wykonać tej akcji frachtowej.",
   "hitlistDailyContractTitle": "Most-Wanted of the day",
   "hitlistDailyContractOpen": "Contract on {username}. Finish the hit for a €{bonus} bonus on top of the bounty.",
   "@hitlistDailyContractOpen": {

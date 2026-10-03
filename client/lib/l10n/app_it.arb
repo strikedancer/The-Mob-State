@@ -13836,6 +13836,29 @@
       }
     }
   },
+  "aviationFreightAcceptedSuccess": "Contratto di trasporto accettato. Vola a destinazione e poi riscuoti il pagamento.",
+  "aviationFreightNeedOrigin": "Devi essere in {country} per accettare questo contratto.",
+  "@aviationFreightNeedOrigin": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightCargoTooSmall": "Il tuo aereo non ha abbastanza slot cargo per questo contratto.",
+  "aviationFreightJobActive": "Hai già un contratto di trasporto attivo.",
+  "aviationFreightAircraftBroken": "Ripara l'aereo prima di accettare un contratto di trasporto.",
+  "aviationFreightNeedPlane": "Compra prima un aereo prima di accettare contratti di trasporto.",
+  "aviationFreightClaimSuccess": "Pagamento trasporto riscosso: {amount}.",
+  "@aviationFreightClaimSuccess": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationFreightClaimWrongDest": "Vola prima nel paese di destinazione prima di riscuotere il pagamento.",
+  "aviationFreightFailed": "Impossibile completare quell'azione di trasporto.",
   "hitlistDailyContractTitle": "Most-Wanted of the day",
   "hitlistDailyContractOpen": "Contract on {username}. Finish the hit for a €{bonus} bonus on top of the bounty.",
   "@hitlistDailyContractOpen": {

@@ -10057,7 +10057,7 @@ abstract class AppLocalizations {
   /// No description provided for @aviationFreightHint.
   ///
   /// In en, this message translates to:
-  /// **'Accept a daily NPC cargo run, fly to the destination with enough cargo tiles, then claim the payout.'**
+  /// **'Accept a daily NPC cargo run while you are in the origin country, fly to the destination with enough cargo tiles, then claim the payout.'**
   String get aviationFreightHint;
 
   /// No description provided for @aviationFreightEmpty.
@@ -10089,6 +10089,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{tiles} cargo tiles · €{payout}'**
   String aviationFreightOfferMeta(String tiles, String payout);
+
+  /// No description provided for @aviationFreightAcceptedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Freight contract accepted. Fly to the destination, then claim payout.'**
+  String get aviationFreightAcceptedSuccess;
+
+  /// No description provided for @aviationFreightNeedOrigin.
+  ///
+  /// In en, this message translates to:
+  /// **'You must be in {country} to accept this contract.'**
+  String aviationFreightNeedOrigin(String country);
+
+  /// No description provided for @aviationFreightCargoTooSmall.
+  ///
+  /// In en, this message translates to:
+  /// **'Your aircraft does not have enough cargo tiles for this contract.'**
+  String get aviationFreightCargoTooSmall;
+
+  /// No description provided for @aviationFreightJobActive.
+  ///
+  /// In en, this message translates to:
+  /// **'You already have an active freight contract.'**
+  String get aviationFreightJobActive;
+
+  /// No description provided for @aviationFreightAircraftBroken.
+  ///
+  /// In en, this message translates to:
+  /// **'Repair your aircraft before accepting a freight contract.'**
+  String get aviationFreightAircraftBroken;
+
+  /// No description provided for @aviationFreightNeedPlane.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy an aircraft first before accepting freight contracts.'**
+  String get aviationFreightNeedPlane;
+
+  /// No description provided for @aviationFreightClaimSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Freight payout claimed: {amount}.'**
+  String aviationFreightClaimSuccess(String amount);
+
+  /// No description provided for @aviationFreightClaimWrongDest.
+  ///
+  /// In en, this message translates to:
+  /// **'Fly to the destination country before claiming the payout.'**
+  String get aviationFreightClaimWrongDest;
+
+  /// No description provided for @aviationFreightFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not complete that freight action.'**
+  String get aviationFreightFailed;
 
   /// No description provided for @aviationRequiresLicense.
   ///

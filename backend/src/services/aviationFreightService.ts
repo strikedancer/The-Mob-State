@@ -59,10 +59,50 @@ function dailyOffers(): FreightOffer[] {
   return picks;
 }
 
+function localOriginOffer(currentCountry: string): FreightOffer | null {
+  const base = OFFER_POOL.find((o) => o.originCountry === currentCountry);
+  if (!base) return null;
+  const day = utcDateKey();
+  return {
+    ...base,
+    offerKey: `${day}-local-${base.originCountry}-${base.destCountry}`,
+  };
+}
+
+/** Daily board plus a guaranteed offer from the player's current country when possible. */
+export function offersForPlayer(currentCountry: string | null | undefined): FreightOffer[] {
+  const offers = dailyOffers();
+  const country = (currentCountry || '').trim();
+  if (!country) return offers;
+
+  const sorted = [...offers].sort((a, b) => {
+    const aMatch = a.originCountry === country ? 0 : 1;
+    const bMatch = b.originCountry === country ? 0 : 1;
+    return aMatch - bMatch;
+  });
+
+  if (sorted.some((o) => o.originCountry === country)) return sorted;
+
+  const local = localOriginOffer(country);
+  if (!local) return sorted;
+  return [local, ...sorted.slice(0, 3)];
+}
+
+function resolveOffer(
+  offerKey: string,
+  currentCountry: string | null | undefined,
+): FreightOffer | undefined {
+  return offersForPlayer(currentCountry).find((o) => o.offerKey === offerKey);
+}
+
 export async function listFreightBoard(playerId: number): Promise<{
   offers: FreightOffer[];
   activeJob: Record<string, unknown> | null;
 }> {
+  const player = await prisma.player.findUnique({
+    where: { id: playerId },
+    select: { currentCountry: true },
+  });
   const active = await prisma.$queryRawUnsafe<
     Array<{
       id: number;
@@ -82,7 +122,7 @@ export async function listFreightBoard(playerId: number): Promise<{
     playerId,
   );
   return {
-    offers: dailyOffers(),
+    offers: offersForPlayer(player?.currentCountry),
     activeJob: active[0]
       ? {
           id: Number(active[0].id),
@@ -103,7 +143,13 @@ export async function acceptFreightOffer(
   offerKey: string,
   aircraftId: number,
 ): Promise<{ jobId: number }> {
-  const offer = dailyOffers().find((o) => o.offerKey === offerKey);
+  const player = await prisma.player.findUnique({
+    where: { id: playerId },
+    select: { currentCountry: true },
+  });
+  if (!player) throw new Error('PLAYER_NOT_FOUND');
+
+  const offer = resolveOffer(offerKey, player.currentCountry);
   if (!offer) throw new Error('FREIGHT_OFFER_NOT_FOUND');
 
   const board = await listFreightBoard(playerId);
@@ -120,11 +166,6 @@ export async function acceptFreightOffer(
   const capacity = Number(def?.cargoCapacity ?? 0);
   if (capacity < offer.cargoTiles) throw new Error('FREIGHT_CARGO_TOO_SMALL');
 
-  const player = await prisma.player.findUnique({
-    where: { id: playerId },
-    select: { currentCountry: true },
-  });
-  if (!player) throw new Error('PLAYER_NOT_FOUND');
   if (player.currentCountry !== offer.originCountry) {
     throw new Error('FREIGHT_WRONG_ORIGIN');
   }

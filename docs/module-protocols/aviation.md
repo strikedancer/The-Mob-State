@@ -20,8 +20,8 @@ Dit protocol omvat ook het **eigen-voertuig smokkelkanaal** voor alle vervoersty
 - `POST /aviation/buy-aircraft`          — vliegtuig kopen (school + licentie + rank + cash)
 - `POST /aviation/refuel/:aircraftId`    — tanken `{ amount }` (€50/L)
 - `POST /aviation/fly/:aircraftId`       — instant landwissel `{ destination }` (100 L)
-- `GET  /aviation/freight/board`         — dagelijkse NPC-vrachtboard + actieve job
-- `POST /aviation/freight/accept`        — `{ offerKey, aircraftId }` (cargo tiles + origin country)
+- `GET  /aviation/freight/board`         — dagelijkse NPC-vrachtboard + actieve job (garandeert waar mogelijk één offer vanuit `currentCountry`)
+- `POST /aviation/freight/accept`        — `{ offerKey, aircraftId }` (cargo tiles + moet in origin country staan); client toont fouttoast bij reject
 - `POST /aviation/freight/claim/:jobId`  — claim payout op bestemming
 - `POST /aviation/sell/:aircraftId`      — verkopen (50% van `purchasePrice`)
 - `POST /aviation/repair/:aircraftId`    — repareren (`repairCost` uit catalogus)

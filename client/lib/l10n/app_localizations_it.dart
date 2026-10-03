@@ -5743,6 +5743,44 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String get aviationFreightAcceptedSuccess =>
+      'Contratto di trasporto accettato. Vola a destinazione e poi riscuoti il pagamento.';
+
+  @override
+  String aviationFreightNeedOrigin(String country) {
+    return 'Devi essere in $country per accettare questo contratto.';
+  }
+
+  @override
+  String get aviationFreightCargoTooSmall =>
+      'Il tuo aereo non ha abbastanza slot cargo per questo contratto.';
+
+  @override
+  String get aviationFreightJobActive =>
+      'Hai già un contratto di trasporto attivo.';
+
+  @override
+  String get aviationFreightAircraftBroken =>
+      'Ripara l\'aereo prima di accettare un contratto di trasporto.';
+
+  @override
+  String get aviationFreightNeedPlane =>
+      'Compra prima un aereo prima di accettare contratti di trasporto.';
+
+  @override
+  String aviationFreightClaimSuccess(String amount) {
+    return 'Pagamento trasporto riscosso: $amount.';
+  }
+
+  @override
+  String get aviationFreightClaimWrongDest =>
+      'Vola prima nel paese di destinazione prima di riscuotere il pagamento.';
+
+  @override
+  String get aviationFreightFailed =>
+      'Impossibile completare quell\'azione di trasporto.';
+
+  @override
   String aviationRequiresLicense(String name) {
     return 'Bisogni $name';
   }

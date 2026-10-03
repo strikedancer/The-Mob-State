@@ -5729,6 +5729,43 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String get aviationFreightAcceptedSuccess =>
+      'Contrato de frete aceite. Voe até o destino e depois reclame o pagamento.';
+
+  @override
+  String aviationFreightNeedOrigin(String country) {
+    return 'Tens de estar em $country para aceitar este contrato.';
+  }
+
+  @override
+  String get aviationFreightCargoTooSmall =>
+      'O teu avião não tem tiles de carga suficientes para este contrato.';
+
+  @override
+  String get aviationFreightJobActive => 'Já tens um contrato de frete ativo.';
+
+  @override
+  String get aviationFreightAircraftBroken =>
+      'Repara o avião antes de aceitar um contrato de frete.';
+
+  @override
+  String get aviationFreightNeedPlane =>
+      'Compra primeiro um avião antes de aceitar contratos de frete.';
+
+  @override
+  String aviationFreightClaimSuccess(String amount) {
+    return 'Pagamento de frete reclamado: $amount.';
+  }
+
+  @override
+  String get aviationFreightClaimWrongDest =>
+      'Voa primeiro para o país de destino antes de reclamar o pagamento.';
+
+  @override
+  String get aviationFreightFailed =>
+      'Não foi possível concluir essa ação de frete.';
+
+  @override
   String aviationRequiresLicense(String name) {
     return 'Necessidades $name';
   }
