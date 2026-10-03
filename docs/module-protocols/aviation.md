@@ -8,8 +8,8 @@ Spelers die de school aviation-track hebben voltooid kunnen privévliegtuigen ko
 Dit protocol omvat ook het **eigen-voertuig smokkelkanaal** voor alle vervoerstypen (vliegtuig, auto, motor, boot). Zie ook smuggling.md en travel.md.
 
 ## Primary Frontend Entry
-- `client/lib/screens/aviation_screen.dart` (catalogus + hangar + licenties)
-- Web dashboard Aviation hides the inner AppBar title. The hangar fills the dashboard content column on large screens (no 860px cap). It uses a noir hangar hero (school level, flight certs, paid license, owned count), compact license rows with gold actions, catalog cards with price/rank/smuggle-cargo/license/Travel-wait chips (no fake Speed chip — Hangar Fly is always instant), and owned-plane actions: refuel, fly, sell (50%), repair. Aircraft thumbs are cutouts (`runtime/client-images/aircraft/`); no white studio plate.
+- `client/lib/screens/aviation_screen.dart` (catalogus + hangar + licenties + vrachtcontracten)
+- Web dashboard Aviation hides the inner AppBar title. The hangar fills the dashboard content column on large screens (no 860px cap). It uses a noir hangar hero (school level, flight certs, paid license, owned count), then **Vrachtcontracten** (daily NPC board) directly under the hero, then compact license rows with gold actions, catalog cards with price/rank/smuggle-cargo/license/Travel-wait chips (no fake Speed chip — Hangar Fly is always instant), and owned-plane actions: refuel, fly, sell (50%), repair. Aircraft thumbs are cutouts (`runtime/client-images/aircraft/`); no white studio plate. Freight board load failures do not block the rest of the hangar.
 - Catalog `−% Travel wait / leg` and Travel `Own aircraft: −%` apply **only** to commercial Travel post-leg cooldowns via `getBestAircraftBonus`. Hangar `Fly` ignores speed/wait and jumps in one hop (100 L). `Smuggle: N tiles` is owned-smuggle cargo capacity, not hangar payload.
 
 ## Primary Backend Entry
