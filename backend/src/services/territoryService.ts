@@ -407,19 +407,14 @@ async function buildViewerTerritoryCaps(
     regionHardCap: cfg.regionHardCap,
     vipRegionBonus: vipInfo.vipRegionBonus,
   });
-  // Worldwide Risk uses the hard cap (+ VIP); contest dual-key applies when Risk is off.
-  const riskWorldwide =
-    cfg.riskEnabled === true && String(cfg.riskModeCountries ?? '*').trim() === '*';
-  const effectiveMaxRegions = riskWorldwide
-    ? regionCaps.regionHardCap
-    : regionCaps.effectiveMaxRegions;
 
   return {
     hqGlobalLevel: crewProgression.hqGlobalLevel,
     ownedRegions: toNumeric(ownedCount[0]?.cnt ?? 0),
     activeContests: toNumeric(contestCount[0]?.cnt ?? 0),
     baseMaxRegions: cfg.maxRegionsPerCrew,
-    effectiveMaxRegions,
+    // Dual-key + flat Crew VIP bonus only (+2), never jump straight to the world hard cap.
+    effectiveMaxRegions: regionCaps.effectiveMaxRegions,
     baseMaxContests: cfg.maxConcurrentContestsPerCrew,
     effectiveMaxContests: Math.max(
       cfg.maxConcurrentContestsPerCrew,

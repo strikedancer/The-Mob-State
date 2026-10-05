@@ -3,18 +3,13 @@ import {
   getTerritoryConfig,
   parseTerritoryStringArray,
   mapTravelCountryToTerritoryCode,
+  buildViewerTerritoryCaps,
 } from './territoryService';
 import * as territoryCrewStatsService from './territoryCrewStatsService';
 import * as territoryArsenalService from './territoryArsenalService';
 import { notificationService } from './notificationService';
 import { translationService, type Language } from './translationService';
 import { directMessageService } from './directMessageService';
-
-function hasActiveCrewVip(isVip: boolean, vipExpiresAt: Date | null): boolean {
-  if (!isVip) return false;
-  if (!vipExpiresAt) return true;
-  return vipExpiresAt.getTime() > Date.now();
-}
 
 type RiskConfig = {
   enabled: boolean;
@@ -686,27 +681,12 @@ export async function attack(
   if (toNum(ownerFrom) !== crewId) throw new Error('RISK_NOT_OWNER');
   if (ownerTo === crewId) throw new Error('RISK_OWN_TARGET');
 
-  // Region cap when capturing a new (not already owned) region.
-  // Risk uses the world hard cap (+ Crew VIP bonus); contest dual-key remains separate.
+  // Region cap when capturing a new (not already owned) region:
+  // same dual-key + Crew VIP (+2) limit as the Territory UI / contests.
   if (ownerTo !== crewId) {
     const territoryCfg = await getTerritoryConfig();
-    const globalOwned = await prisma.$queryRawUnsafe<Array<{ cnt: number }>>(
-      `SELECT COUNT(*) AS cnt FROM territory_control WHERE ownerCrewId = ?`,
-      crewId,
-    );
-    let vipBonus = 0;
-    const configuredVipBonus = Math.max(0, Math.floor(territoryCfg.vipCrewRegionBonus));
-    if (configuredVipBonus > 0) {
-      const crew = await prisma.crew.findUnique({
-        where: { id: crewId },
-        select: { isVip: true, vipExpiresAt: true },
-      });
-      if (crew && hasActiveCrewVip(crew.isVip, crew.vipExpiresAt)) {
-        vipBonus = configuredVipBonus;
-      }
-    }
-    const riskRegionCap = Math.max(1, Math.floor(territoryCfg.regionHardCap)) + vipBonus;
-    if (toNum(globalOwned[0]?.cnt) >= riskRegionCap) {
+    const caps = await buildViewerTerritoryCaps(crewId, territoryCfg);
+    if (caps.ownedRegions >= caps.effectiveMaxRegions) {
       throw new Error('REGIONS_CAP_REACHED');
     }
   }
