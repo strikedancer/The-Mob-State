@@ -9,6 +9,8 @@ export type TerritoryRegionCapInput = {
   memberRegionPer: number;
   memberRegionBonusCap: number;
   regionHardCap: number;
+  /** Flat bonus when the crew has active Crew VIP (default 0). */
+  vipRegionBonus?: number;
 };
 
 export type TerritoryRegionCapResult = {
@@ -16,6 +18,9 @@ export type TerritoryRegionCapResult = {
   memberSlots: number;
   hqRegionBonus: number;
   memberRegionBonus: number;
+  vipRegionBonus: number;
+  /** World hard cap including VIP bonus (base hardCap + vipRegionBonus). */
+  regionHardCap: number;
   effectiveMaxRegions: number;
   nextHqLevel: number | null;
   nextMemberCount: number | null;
@@ -68,19 +73,24 @@ function nextMemberThreshold(input: TerritoryRegionCapInput, currentBonus: numbe
 
 export function computeTerritoryRegionCaps(input: TerritoryRegionCapInput): TerritoryRegionCapResult {
   const baseMaxRegions = Math.max(1, safeInt(input.baseMaxRegions, 5));
-  const hardCap = Math.max(baseMaxRegions, safeInt(input.regionHardCap, 10));
+  const baseHardCap = Math.max(baseMaxRegions, safeInt(input.regionHardCap, 10));
+  const vipBonus = safeInt(input.vipRegionBonus ?? 0);
+  const hardCap = baseHardCap + vipBonus;
   const hqBonus = hqRegionBonus(input);
   const memberBonus = memberRegionBonus(input);
   const hqSlots = baseMaxRegions + hqBonus;
   const memberSlots = Math.max(1, safeInt(input.memberRegionBase, 5)) + memberBonus;
-  const effectiveMaxRegions = Math.min(hqSlots, memberSlots, hardCap);
+  // Dual-key floor first, then flat VIP bonus on top (and against raised hard cap).
+  const effectiveMaxRegions = Math.min(hqSlots, memberSlots, baseHardCap) + vipBonus;
 
   return {
     hqSlots,
     memberSlots,
     hqRegionBonus: hqBonus,
     memberRegionBonus: memberBonus,
-    effectiveMaxRegions,
+    vipRegionBonus: vipBonus,
+    regionHardCap: hardCap,
+    effectiveMaxRegions: Math.min(effectiveMaxRegions, hardCap),
     nextHqLevel: nextHqThreshold(input, hqBonus),
     nextMemberCount: nextMemberThreshold(input, memberBonus),
   };

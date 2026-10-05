@@ -12669,6 +12669,14 @@
     }
   },
   "territoryCapsAtHardCap": "massimo raggiunto",
+  "territoryCapsVipBonus": "Crew VIP +{bonus} regioni",
+  "@territoryCapsVipBonus": {
+    "placeholders": {
+      "bonus": {
+        "type": "int"
+      }
+    }
+  },
   "territoryHqUpgradeHint": "Slot territorio: +1 ogni 3 livelli HQ, +1 ogni 5 membri extra, il numero più basso, mai più di 10.",
   "crewHeistsFailedJailed": "The heist failed. The whole crew is locked up for {minutes} minutes.",
   "@crewHeistsFailedJailed": {

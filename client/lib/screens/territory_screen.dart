@@ -2466,6 +2466,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     final nextHqLevel = (viewerCaps['nextHqLevel'] as num?)?.toInt();
     final nextMemberCount = (viewerCaps['nextMemberCount'] as num?)?.toInt();
     final hardCap = (viewerCaps['regionHardCap'] as num?)?.toInt() ?? 10;
+    final vipBonus = (viewerCaps['vipRegionBonus'] as num?)?.toInt() ?? 0;
     final breakdown = _territoryCapsBreakdown(
       hqSlots: hqSlots,
       memberSlots: memberSlots,
@@ -2474,6 +2475,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       nextMemberCount: nextMemberCount,
       hardCap: hardCap,
       effectiveMax: maxRegions,
+      vipBonus: vipBonus,
     );
 
     return Padding(
@@ -2525,11 +2527,15 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     required int? nextMemberCount,
     required int hardCap,
     required int effectiveMax,
+    int vipBonus = 0,
   }) {
     final parts = <String>[
       _l10n.territoryCapsHqSlots(hqSlots),
       _l10n.territoryCapsMemberSlots(memberSlots),
     ];
+    if (vipBonus > 0) {
+      parts.add(_l10n.territoryCapsVipBonus(vipBonus));
+    }
     if (effectiveMax >= hardCap) {
       parts.add(_l10n.territoryCapsAtHardCap);
       return parts.join(' · ');

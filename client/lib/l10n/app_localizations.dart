@@ -35123,10 +35123,16 @@ abstract class AppLocalizations {
   /// **'maximum reached'**
   String get territoryCapsAtHardCap;
 
+  /// No description provided for @territoryCapsVipBonus.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew VIP +{bonus} regions'**
+  String territoryCapsVipBonus(int bonus);
+
   /// No description provided for @territoryHqUpgradeHint.
   ///
   /// In en, this message translates to:
-  /// **'Territory slots: +1 every 3 HQ levels, +1 every 5 extra members, the lowest counts, never more than 10.'**
+  /// **'Territory slots: +1 every 3 HQ levels, +1 every 5 extra members, the lowest counts, never more than 10 (Crew VIP +2, so max 12).'**
   String get territoryHqUpgradeHint;
 
   /// No description provided for @territoryDetailProject.

@@ -1269,7 +1269,7 @@ healing = 5 HP (if health > 0 && health < 100)
 - âœ… Territory Fase D (season awards, region event rotation, drama widgets) â€” see TERRITORY_VISION.md / territory.md
 - âœ… Territory crew-stats (all-time + seizoen W/D/L/hold op leaderboard + crew-kaart) â€” see `territory.md`
 - âœ… Territory garnizoen / luchtafweer (crew-bank, tijdelijk defense + hogere capture-drempel, geen nachtslot) â€” see `territory.md`
-- âœ… Territory dual-key region-cap (HQ + leden, hard cap 10, extra garnizoen vanaf 8 slots) â€” see `territory.md`
+- âœ… Territory dual-key region-cap (HQ + leden, hard cap 10, Crew VIP +2 → max 12, extra garnizoen vanaf 8 slots) â€” see `territory.md`
 - âœ… Money laundering (cashâ†’bank wash above the free daily deposit cap: fee, delay, FBI-heat seize risk) â€” see `money-laundering.md` / `bank.md`
 - âœ… Stock market (bank-funded slow tickers, separate from crypto; UI has load/empty states + portfolio summary) â€” see `stock-market.md`
 - âœ… Real estate development (bank-funded permanent income levels; confirm/cooldown/error UX) â€” see `properties.md`

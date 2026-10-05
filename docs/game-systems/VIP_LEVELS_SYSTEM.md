@@ -10,6 +10,7 @@ This provides 50% more progression depth and exclusive endgame content for VIP c
 ## VIP Levels Explained
 
 ### What is Crew VIP?
+Crew VIP is a real-money subscription for the whole crew. Benefits include VIP HQ / side buildings above level 9, war-point bonus, Shield for members, and **+2 worldwide territory regions** (hard cap 10 → 12 while VIP is active).
 - **Type**: Per-crew subscription status (separate from player VIP)
 - **Duration**: Time-limited activation with optional auto-renewal
 - **Benefits**: Unlock levels 10-14 on all buildings

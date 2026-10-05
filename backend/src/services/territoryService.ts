@@ -84,6 +84,7 @@ async function getTerritoryConfig() {
     'TERRITORY_MEMBER_REGION_PER',
     'TERRITORY_MEMBER_REGION_BONUS_CAP',
     'TERRITORY_REGION_HARD_CAP',
+    'TERRITORY_VIP_CREW_REGION_BONUS',
     'TERRITORY_GARRISON_EXTRA_AT_REGION_CAP',
     'TERRITORY_HQ_CONTEST_CAP_PER_LEVEL',
     'TERRITORY_HQ_CONTEST_CAP_BONUS_CAP',
@@ -212,6 +213,7 @@ async function getTerritoryConfig() {
     memberRegionPer: Number(cfg['TERRITORY_MEMBER_REGION_PER'] ?? 5),
     memberRegionBonusCap: Number(cfg['TERRITORY_MEMBER_REGION_BONUS_CAP'] ?? 5),
     regionHardCap: Number(cfg['TERRITORY_REGION_HARD_CAP'] ?? 10),
+    vipCrewRegionBonus: Number(cfg['TERRITORY_VIP_CREW_REGION_BONUS'] ?? 2),
     garrisonExtraAtRegionCap: Number(cfg['TERRITORY_GARRISON_EXTRA_AT_REGION_CAP'] ?? 8),
     hqContestCapPerLevel: Number(cfg['TERRITORY_HQ_CONTEST_CAP_PER_LEVEL'] ?? 0.1),
     hqContestCapBonusCap: Number(cfg['TERRITORY_HQ_CONTEST_CAP_BONUS_CAP'] ?? 2),
@@ -309,8 +311,35 @@ export type ViewerTerritoryCaps = {
   nextHqLevel: number | null;
   nextMemberCount: number | null;
   regionHardCap: number;
+  vipRegionBonus: number;
+  crewVipActive: boolean;
   projectSafehouseMinHqLevel: number;
 };
+
+function hasActiveCrewVip(isVip: boolean, vipExpiresAt: Date | null): boolean {
+  if (!isVip) return false;
+  if (!vipExpiresAt) return true;
+  return vipExpiresAt.getTime() > Date.now();
+}
+
+async function getCrewVipRegionBonus(
+  crewId: number,
+  cfg: Awaited<ReturnType<typeof getTerritoryConfig>>,
+): Promise<{ crewVipActive: boolean; vipRegionBonus: number }> {
+  const configured = Math.max(0, Math.floor(cfg.vipCrewRegionBonus));
+  if (configured <= 0) {
+    return { crewVipActive: false, vipRegionBonus: 0 };
+  }
+  const crew = await prisma.crew.findUnique({
+    where: { id: crewId },
+    select: { isVip: true, vipExpiresAt: true },
+  });
+  const crewVipActive = Boolean(crew && hasActiveCrewVip(crew.isVip, crew.vipExpiresAt));
+  return {
+    crewVipActive,
+    vipRegionBonus: crewVipActive ? configured : 0,
+  };
+}
 
 function getProjectConfig(
   cfg: Awaited<ReturnType<typeof getTerritoryConfig>>,
@@ -352,7 +381,7 @@ async function buildViewerTerritoryCaps(
     cfg.hqContestCapPerLevel,
     cfg.hqContestCapBonusCap,
   );
-  const [ownedCount, contestCount, memberCountRow] = await Promise.all([
+  const [ownedCount, contestCount, memberCountRow, vipInfo] = await Promise.all([
     prisma.$queryRawUnsafe<Array<{ cnt: number }>>(
       `SELECT COUNT(*) AS cnt FROM territory_control WHERE ownerCrewId = ?`,
       crewId,
@@ -363,6 +392,7 @@ async function buildViewerTerritoryCaps(
       crewId,
     ),
     prisma.crewMember.count({ where: { crewId } }),
+    getCrewVipRegionBonus(crewId, cfg),
   ]);
   const regionCaps = computeTerritoryRegionCaps({
     hqGlobalLevel: crewProgression.hqGlobalLevel,
@@ -375,14 +405,21 @@ async function buildViewerTerritoryCaps(
     memberRegionPer: cfg.memberRegionPer,
     memberRegionBonusCap: cfg.memberRegionBonusCap,
     regionHardCap: cfg.regionHardCap,
+    vipRegionBonus: vipInfo.vipRegionBonus,
   });
+  // Worldwide Risk uses the hard cap (+ VIP); contest dual-key applies when Risk is off.
+  const riskWorldwide =
+    cfg.riskEnabled === true && String(cfg.riskModeCountries ?? '*').trim() === '*';
+  const effectiveMaxRegions = riskWorldwide
+    ? regionCaps.regionHardCap
+    : regionCaps.effectiveMaxRegions;
 
   return {
     hqGlobalLevel: crewProgression.hqGlobalLevel,
     ownedRegions: toNumeric(ownedCount[0]?.cnt ?? 0),
     activeContests: toNumeric(contestCount[0]?.cnt ?? 0),
     baseMaxRegions: cfg.maxRegionsPerCrew,
-    effectiveMaxRegions: regionCaps.effectiveMaxRegions,
+    effectiveMaxRegions,
     baseMaxContests: cfg.maxConcurrentContestsPerCrew,
     effectiveMaxContests: Math.max(
       cfg.maxConcurrentContestsPerCrew,
@@ -395,7 +432,9 @@ async function buildViewerTerritoryCaps(
     memberCount: memberCountRow,
     nextHqLevel: regionCaps.nextHqLevel,
     nextMemberCount: regionCaps.nextMemberCount,
-    regionHardCap: Math.max(cfg.maxRegionsPerCrew, Math.floor(cfg.regionHardCap)),
+    regionHardCap: regionCaps.regionHardCap,
+    vipRegionBonus: regionCaps.vipRegionBonus,
+    crewVipActive: vipInfo.crewVipActive,
     projectSafehouseMinHqLevel: Math.max(0, Math.floor(cfg.projectSafehouseMinHqLevel)),
   };
 }
@@ -663,6 +702,7 @@ export {
   parseStringArray as parseTerritoryStringArray,
   holdIncomePercentForStreak,
   applyHoldIncomeMultiplier,
+  buildViewerTerritoryCaps,
 };
 
 /** True when the crew owns at least one enabled region with the given strategic tag in a territory country. */

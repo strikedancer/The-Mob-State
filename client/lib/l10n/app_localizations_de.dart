@@ -20722,6 +20722,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get territoryCapsAtHardCap => 'Maximum erreicht';
 
   @override
+  String territoryCapsVipBonus(int bonus) {
+    return 'Crew-VIP +${bonus} Gebiete';
+  }
+
+  @override
   String get territoryHqUpgradeHint =>
       'Gebietsplätze: +1 alle 3 HQ-Stufen, +1 alle 5 zusätzlichen Mitglieder, der niedrigste Wert, nie mehr als 10.';
 
