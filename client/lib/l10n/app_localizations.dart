@@ -30154,6 +30154,7 @@ abstract class AppLocalizations {
   String territoryRiskFortifyUsedStatus(String time);
 
   /// No description provided for @territoryRiskFortifyUsedButton.
+  String territoryRiskFortifyRemaining(String used, String max);
   String get territoryRiskFortifyUsedButton;
 
   /// No description provided for @territoryErrorRiskInsufficientArmies.

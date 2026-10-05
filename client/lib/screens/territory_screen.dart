@@ -3559,6 +3559,10 @@ class _TerritoryScreenState extends State<TerritoryScreen>
             }
             final left = (reinforce?['armiesRemaining'] as num?)?.toInt() ?? 0;
             final fortifyUsed = reinforce?['fortifyUsed'] == true;
+            final fortifyCount =
+                (reinforce?['fortifyCount'] as num?)?.toInt() ?? 0;
+            final fortifyMax =
+                (reinforce?['fortifyMax'] as num?)?.toInt() ?? 1;
             final secs =
                 (reinforce?['secondsRemaining'] as num?)?.toInt() ?? 0;
             return Padding(
@@ -3570,6 +3574,17 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                     t.territoryRiskReinforceLeft(left.toString()),
                     style: TextStyle(color: Colors.grey[700], fontSize: 12),
                   ),
+                  if (fortifyMax > 1 && !fortifyUsed)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4),
+                      child: Text(
+                        t.territoryRiskFortifyRemaining(
+                          fortifyCount.toString(),
+                          fortifyMax.toString(),
+                        ),
+                        style: TextStyle(color: Colors.grey[700], fontSize: 12),
+                      ),
+                    ),
                   if (fortifyUsed)
                     Padding(
                       padding: const EdgeInsets.only(top: 4),

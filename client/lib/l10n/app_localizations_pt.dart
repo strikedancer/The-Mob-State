@@ -6637,7 +6637,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get premiumUiCrewVipBenefitsInCrewBody =>
-      'Crew VIP é para toda a Crew: QG VIP, edifícios laterais acima do nível 10, +10% de pontos de guerra e escudo para cada membro. \nQualquer pessoa da Crew pode doar para o valor mensal; quando o pote está cheio a Crew tem 30 dias. \nUm membro também pode fazer a assinatura mensal em seu próprio cartão (renovação automática). O Gift Crew VIP continua sendo um presente único de 30 dias para qualquer Crew pelo nome.';
+      'Crew VIP is for the whole crew: VIP HQ, side buildings above level 10, +10% war points, Shield for every member, +2 territory regions, +2 reinforce armies per window, 2 fortify moves per round, +1 garrison slot, and +10% passive territory income.\\nAnyone in the crew can donate toward the monthly price; when the pot is full the crew gets 30 days.\\nOne member can also take the monthly subscription on their own card (auto-renew). Gift Crew VIP remains a one-time 30-day gift to any crew by name.'; quando o pote está cheio a Crew tem 30 dias. \nUm membro também pode fazer a assinatura mensal em seu próprio cartão (renovação automática). O Gift Crew VIP continua sendo um presente único de 30 dias para qualquer Crew pelo nome.';
 
   @override
   String get premiumUiBadgeCrewNeeded => 'Crew necessária';
@@ -17661,6 +17661,12 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String territoryRiskFortifyUsedStatus(String time) {
     return 'Fortify already used this round. Available again in $time.';
+  }
+
+  @override
+  @override
+  String territoryRiskFortifyRemaining(String used, String max) {
+    return 'Fortify: $used/$max this round';
   }
 
   @override

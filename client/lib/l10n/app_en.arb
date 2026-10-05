@@ -3869,7 +3869,7 @@
   "premiumUiPlayerVipBenefitsBody": "Player VIP benefits:\n- 10% shorter action timeouts/cooldowns (jail time stays unchanged).\n- In Drug Production, you get a VIP quick-buy button on each production card to buy missing materials into your current-country depot in one click (after cost confirmation).\n- On death, you lose on-hand cash but restart with EUR 500,000 cash.\n- Your rank is halved instead of a full reset.\n- Education progress and unlocked achievements are preserved.\n- Bank balance and crypto are preserved.\n- Properties, vehicles, prostitutes, carried inventory and stored items are removed.\n- Drug progress and drug stock are reset.\n- You receive 100 premium credits weekly while VIP is active.",
   "premiumUiCrewVipSubtitleNoCrew": "You must be in a crew before you can activate Crew VIP.",
   "premiumUiCrewVipSubtitleInCrew": "For crew upgrades, side buildings 11-15, a shared donation pot, or one member’s subscription.",
-  "premiumUiCrewVipBenefitsInCrewBody": "Crew VIP is for the whole crew: VIP HQ, side buildings above level 10, +10% war points, Shield for every member, and +2 territory regions worldwide.\nAnyone in the crew can donate toward the monthly price; when the pot is full the crew gets 30 days.\nOne member can also take the monthly subscription on their own card (auto-renew). Gift Crew VIP remains a one-time 30-day gift to any crew by name.",
+  "premiumUiCrewVipBenefitsInCrewBody": "Crew VIP is for the whole crew: VIP HQ, side buildings above level 10, +10% war points, Shield for every member, +2 territory regions, +2 reinforce armies per window, 2 fortify moves per round, +1 garrison slot, and +10% passive territory income.\nAnyone in the crew can donate toward the monthly price; when the pot is full the crew gets 30 days.\nOne member can also take the monthly subscription on their own card (auto-renew). Gift Crew VIP remains a one-time 30-day gift to any crew by name.",
   "premiumUiBadgeCrewNeeded": "Crew needed",
   "premiumUiBadgeCrewVipLabel": "Crew VIP",
   "premiumUiCtaCrewRequired": "Crew required",
@@ -13105,7 +13105,7 @@
       }
     }
   },
-  "territoryHqUpgradeHint": "Territory slots: +1 every 3 HQ levels, +1 every 5 extra members, the lowest counts, never more than 10 (Crew VIP +2, so max 12).",
+  "territoryHqUpgradeHint": "Territory slots: +1 every 3 HQ levels, +1 every 5 extra members, the lowest counts, never more than 10 (Crew VIP +2 regions so max 12, plus reinforce/fortify/garrison/income perks).",
   "territoryDetailProject": "Region project",
   "territoryProjectSafehouse": "Safehouse network",
   "territoryProjectStatusBuilding": "Building",
@@ -13972,6 +13972,13 @@
       "time": {
         "type": "String"
       }
+    }
+  },
+  "territoryRiskFortifyRemaining": "Fortify: {used}/{max} this round",
+  "@territoryRiskFortifyRemaining": {
+    "placeholders": {
+      "used": { "type": "String" },
+      "max": { "type": "String" }
     }
   },
   "territoryRiskFortifyUsedButton": "Fortify already used"

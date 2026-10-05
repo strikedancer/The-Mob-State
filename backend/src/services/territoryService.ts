@@ -85,6 +85,10 @@ async function getTerritoryConfig() {
     'TERRITORY_MEMBER_REGION_BONUS_CAP',
     'TERRITORY_REGION_HARD_CAP',
     'TERRITORY_VIP_CREW_REGION_BONUS',
+    'TERRITORY_VIP_CREW_REINFORCE_BONUS',
+    'TERRITORY_VIP_CREW_FORTIFY_MAX',
+    'TERRITORY_VIP_CREW_GARRISON_BONUS',
+    'TERRITORY_VIP_CREW_INCOME_BONUS_PERCENT',
     'TERRITORY_GARRISON_EXTRA_AT_REGION_CAP',
     'TERRITORY_HQ_CONTEST_CAP_PER_LEVEL',
     'TERRITORY_HQ_CONTEST_CAP_BONUS_CAP',
@@ -219,6 +223,10 @@ async function getTerritoryConfig() {
     memberRegionBonusCap: Number(cfg['TERRITORY_MEMBER_REGION_BONUS_CAP'] ?? 5),
     regionHardCap: Number(cfg['TERRITORY_REGION_HARD_CAP'] ?? 10),
     vipCrewRegionBonus: Number(cfg['TERRITORY_VIP_CREW_REGION_BONUS'] ?? 2),
+    vipCrewReinforceBonus: Number(cfg['TERRITORY_VIP_CREW_REINFORCE_BONUS'] ?? 2),
+    vipCrewFortifyMax: Number(cfg['TERRITORY_VIP_CREW_FORTIFY_MAX'] ?? 2),
+    vipCrewGarrisonBonus: Number(cfg['TERRITORY_VIP_CREW_GARRISON_BONUS'] ?? 1),
+    vipCrewIncomeBonusPercent: Number(cfg['TERRITORY_VIP_CREW_INCOME_BONUS_PERCENT'] ?? 10),
     garrisonExtraAtRegionCap: Number(cfg['TERRITORY_GARRISON_EXTRA_AT_REGION_CAP'] ?? 8),
     hqContestCapPerLevel: Number(cfg['TERRITORY_HQ_CONTEST_CAP_PER_LEVEL'] ?? 0.1),
     hqContestCapBonusCap: Number(cfg['TERRITORY_HQ_CONTEST_CAP_BONUS_CAP'] ?? 2),
@@ -322,8 +330,21 @@ export type ViewerTerritoryCaps = {
   nextMemberCount: number | null;
   regionHardCap: number;
   vipRegionBonus: number;
+  vipReinforceBonus: number;
+  vipFortifyMax: number;
+  vipGarrisonBonus: number;
+  vipIncomeBonusPercent: number;
   crewVipActive: boolean;
   projectSafehouseMinHqLevel: number;
+};
+
+export type CrewVipTerritoryPerks = {
+  crewVipActive: boolean;
+  vipRegionBonus: number;
+  vipReinforceBonus: number;
+  vipFortifyMax: number;
+  vipGarrisonBonus: number;
+  vipIncomeBonusPercent: number;
 };
 
 function hasActiveCrewVip(isVip: boolean, vipExpiresAt: Date | null): boolean {
@@ -332,22 +353,51 @@ function hasActiveCrewVip(isVip: boolean, vipExpiresAt: Date | null): boolean {
   return vipExpiresAt.getTime() > Date.now();
 }
 
-async function getCrewVipRegionBonus(
+export async function getCrewVipTerritoryPerks(
   crewId: number,
-  cfg: Awaited<ReturnType<typeof getTerritoryConfig>>,
-): Promise<{ crewVipActive: boolean; vipRegionBonus: number }> {
-  const configured = Math.max(0, Math.floor(cfg.vipCrewRegionBonus));
-  if (configured <= 0) {
-    return { crewVipActive: false, vipRegionBonus: 0 };
-  }
+  cfg?: Awaited<ReturnType<typeof getTerritoryConfig>>,
+): Promise<CrewVipTerritoryPerks> {
+  const territoryCfg = cfg ?? (await getTerritoryConfig());
+  const regionConfigured = Math.max(0, Math.floor(territoryCfg.vipCrewRegionBonus));
+  const reinforceConfigured = Math.max(0, Math.floor(territoryCfg.vipCrewReinforceBonus));
+  const fortifyConfigured = Math.max(1, Math.floor(territoryCfg.vipCrewFortifyMax));
+  const garrisonConfigured = Math.max(0, Math.floor(territoryCfg.vipCrewGarrisonBonus));
+  const incomeConfigured = Math.max(0, Math.floor(territoryCfg.vipCrewIncomeBonusPercent));
+
+  const inactive: CrewVipTerritoryPerks = {
+    crewVipActive: false,
+    vipRegionBonus: 0,
+    vipReinforceBonus: 0,
+    vipFortifyMax: 1,
+    vipGarrisonBonus: 0,
+    vipIncomeBonusPercent: 0,
+  };
+
   const crew = await prisma.crew.findUnique({
     where: { id: crewId },
     select: { isVip: true, vipExpiresAt: true },
   });
   const crewVipActive = Boolean(crew && hasActiveCrewVip(crew.isVip, crew.vipExpiresAt));
+  if (!crewVipActive) return inactive;
+
   return {
-    crewVipActive,
-    vipRegionBonus: crewVipActive ? configured : 0,
+    crewVipActive: true,
+    vipRegionBonus: regionConfigured,
+    vipReinforceBonus: reinforceConfigured,
+    vipFortifyMax: fortifyConfigured,
+    vipGarrisonBonus: garrisonConfigured,
+    vipIncomeBonusPercent: incomeConfigured,
+  };
+}
+
+async function getCrewVipRegionBonus(
+  crewId: number,
+  cfg: Awaited<ReturnType<typeof getTerritoryConfig>>,
+): Promise<{ crewVipActive: boolean; vipRegionBonus: number }> {
+  const perks = await getCrewVipTerritoryPerks(crewId, cfg);
+  return {
+    crewVipActive: perks.crewVipActive,
+    vipRegionBonus: perks.vipRegionBonus,
   };
 }
 
@@ -402,7 +452,7 @@ async function buildViewerTerritoryCaps(
       crewId,
     ),
     prisma.crewMember.count({ where: { crewId } }),
-    getCrewVipRegionBonus(crewId, cfg),
+    getCrewVipTerritoryPerks(crewId, cfg),
   ]);
   const regionCaps = computeTerritoryRegionCaps({
     hqGlobalLevel: crewProgression.hqGlobalLevel,
@@ -439,6 +489,10 @@ async function buildViewerTerritoryCaps(
     nextMemberCount: regionCaps.nextMemberCount,
     regionHardCap: regionCaps.regionHardCap,
     vipRegionBonus: regionCaps.vipRegionBonus,
+    vipReinforceBonus: vipInfo.vipReinforceBonus,
+    vipFortifyMax: vipInfo.vipFortifyMax,
+    vipGarrisonBonus: vipInfo.vipGarrisonBonus,
+    vipIncomeBonusPercent: vipInfo.vipIncomeBonusPercent,
     crewVipActive: vipInfo.crewVipActive,
     projectSafehouseMinHqLevel: Math.max(0, Math.floor(cfg.projectSafehouseMinHqLevel)),
   };
@@ -973,17 +1027,19 @@ async function getActiveGarrisonEffects(
 function garrisonOfferFromConfig(
   cfg: Awaited<ReturnType<typeof getTerritoryConfig>>,
   effectiveMaxRegions?: number,
+  vipGarrisonBonus = 0,
 ) {
   return {
     cashCost: Math.max(0, Math.floor(cfg.garrisonCashCost)),
     hours: Math.max(1, Math.floor(cfg.garrisonHours)),
     defenseBonusPoints: Math.max(0, Math.floor(cfg.garrisonDefenseBonusPoints)),
     captureThresholdBonus: Math.max(0, Math.floor(cfg.garrisonCaptureThresholdBonus)),
-    maxActivePerCrew: garrisonMaxActiveForRegionCap(
-      cfg.garrisonMaxActivePerCrew,
-      cfg.garrisonExtraAtRegionCap,
-      effectiveMaxRegions ?? 0,
-    ),
+    maxActivePerCrew:
+      garrisonMaxActiveForRegionCap(
+        cfg.garrisonMaxActivePerCrew,
+        cfg.garrisonExtraAtRegionCap,
+        effectiveMaxRegions ?? 0,
+      ) + Math.max(0, Math.floor(vipGarrisonBonus)),
     minHqLevel: Math.max(0, Math.floor(cfg.garrisonMinHqLevel)),
     captureThresholdCap: Math.min(95, Math.max(60, Math.floor(cfg.garrisonCaptureThresholdCap))),
   };
@@ -1584,6 +1640,17 @@ async function processPassiveTerritoryIncome(
     now,
   );
 
+  const ownerCrewIds = Array.from(
+    new Set(rows.map((row) => toNumeric(row.ownerCrewId)).filter((id) => id > 0)),
+  );
+  const vipIncomeByCrew = new Map<number, number>();
+  await Promise.all(
+    ownerCrewIds.map(async (crewId) => {
+      const perks = await getCrewVipTerritoryPerks(crewId, cfg);
+      vipIncomeByCrew.set(crewId, perks.vipIncomeBonusPercent);
+    }),
+  );
+
   for (const row of rows) {
     const lastIncomeAt = row.lastIncomeAt ?? now;
     const elapsedMs = now.getTime() - lastIncomeAt.getTime();
@@ -1598,10 +1665,14 @@ async function processPassiveTerritoryIncome(
       incomeBonusByRegion[row.regionKey] ?? 0,
     );
     const withIndustry = applyPercentBonus(boosted, tagModifiers.industryIncomeBonusPercent);
+    const withVip = applyIncomeBonus(
+      withIndustry,
+      vipIncomeByCrew.get(toNumeric(row.ownerCrewId)) ?? 0,
+    );
     const penaltyPercent = incomePenaltyByRegion[row.regionKey] ?? 0;
     const amountPerCycle = penaltyPercent > 0
-      ? Math.max(0, Math.round(withIndustry * (1 - (penaltyPercent / 100))))
-      : withIndustry;
+      ? Math.max(0, Math.round(withVip * (1 - (penaltyPercent / 100))))
+      : withVip;
     const holdPercent = holdIncomePercentForStreak(
       toNumeric(row.holdMissStreak),
       cfg.holdIncomeMiss1Percent,
@@ -1721,14 +1792,16 @@ export async function getCrewEconomySummary(crewId: number): Promise<TerritoryCr
   ]);
 
   const countriesOwned = new Set(controlledRows.map((row) => row.countryCode)).size;
+  const vipPerks = await getCrewVipTerritoryPerks(crewId, cfg);
   const passiveIncomePerInterval = controlledRows.reduce((sum, row) => {
     const base = buildPassiveIncomeSnapshot(toNumeric(row.valueTier), cfg).amountPerInterval;
+    const withVip = applyIncomeBonus(base, vipPerks.vipIncomeBonusPercent);
     const holdPercent = holdIncomePercentForStreak(
       toNumeric(row.holdMissStreak),
       cfg.holdIncomeMiss1Percent,
       cfg.holdIncomeMiss2Percent,
     );
-    return sum + applyHoldIncomeMultiplier(base, holdPercent);
+    return sum + applyHoldIncomeMultiplier(withVip, holdPercent);
   }, 0);
   const cyclesPerHour = 60 / Math.max(1, cfg.passiveIncomeIntervalMinutes);
   const passiveIncomePerHour = Math.round(passiveIncomePerInterval * cyclesPerHour);
@@ -1994,7 +2067,11 @@ export async function getMapData(
   const viewerCaps = viewer?.viewerCrewId
     ? await buildViewerTerritoryCaps(viewer.viewerCrewId, cfg, viewerCrewProgression)
     : null;
-  const garrisonOffer = garrisonOfferFromConfig(cfg, viewerCaps?.effectiveMaxRegions);
+  const garrisonOffer = garrisonOfferFromConfig(
+    cfg,
+    viewerCaps?.effectiveMaxRegions,
+    viewerCaps?.vipGarrisonBonus ?? 0,
+  );
 
   const [countries, regions, controls, contests] = await Promise.all([
     prisma.$queryRawUnsafe<TerritoryRow[]>(
@@ -2053,6 +2130,13 @@ export async function getMapData(
     );
   }
   const crewNameMap = crewNames.reduce<Record<number, string>>((a, c) => { a[c.id] = c.name; return a; }, {});
+  const vipIncomeByOwnerCrew = new Map<number, number>();
+  await Promise.all(
+    ownerIds.map(async (crewId) => {
+      const perks = await getCrewVipTerritoryPerks(crewId, cfg);
+      vipIncomeByOwnerCrew.set(crewId, perks.vipIncomeBonusPercent);
+    }),
+  );
   const controlMap = controls.reduce<Record<string, ControlRow>>((a, c) => { a[c.regionKey] = c; return a; }, {});
   const contestMap = contests.reduce<Record<string, MapContestRow>>((acc, contest) => {
     acc[contest.regionKey] = contest;
@@ -2189,6 +2273,12 @@ export async function getMapData(
     amountPerInterval = applyPercentBonus(amountPerInterval, tagModifiers.industryIncomeBonusPercent);
     amountPerHour = applyPercentBonus(amountPerHour, tagModifiers.industryIncomeBonusPercent);
     amountPerDay = applyPercentBonus(amountPerDay, tagModifiers.industryIncomeBonusPercent);
+    const ownerVipIncomePercent = ctrl?.ownerCrewId
+      ? (vipIncomeByOwnerCrew.get(toNumeric(ctrl.ownerCrewId)) ?? 0)
+      : 0;
+    amountPerInterval = applyIncomeBonus(amountPerInterval, ownerVipIncomePercent);
+    amountPerHour = applyIncomeBonus(amountPerHour, ownerVipIncomePercent);
+    amountPerDay = applyIncomeBonus(amountPerDay, ownerVipIncomePercent);
     if (eventPenaltyPercent > 0) {
       const factor = 1 - (eventPenaltyPercent / 100);
       amountPerInterval = Math.max(0, Math.round(amountPerInterval * factor));
@@ -3460,7 +3550,11 @@ export async function deployGarrison(
   if (!cfg.enabled) throw new Error('TERRITORY_DISABLED');
   const progression = await getCrewTerritoryProgression(crewId);
   const caps = await buildViewerTerritoryCaps(crewId, cfg, progression);
-  const offer = garrisonOfferFromConfig(cfg, caps.effectiveMaxRegions);
+  const offer = garrisonOfferFromConfig(
+    cfg,
+    caps.effectiveMaxRegions,
+    caps.vipGarrisonBonus,
+  );
   if (progression.hqGlobalLevel < offer.minHqLevel) {
     throw new Error('GARRISON_HQ_LEVEL_REQUIRED');
   }

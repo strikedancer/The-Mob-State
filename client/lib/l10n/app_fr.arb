@@ -7679,7 +7679,7 @@
   "premiumUiBuyCrewVip": "Acheter Crew VIP",
   "premiumUiCrewVipBenefitsTitle": "Avantages VIP de l'équipage",
   "premiumUiCrewVipBenefitsNoCrewBody": "Vous devez rejoindre un équipage avant d'acheter Crew VIP. Crew VIP débloque des avantages axés sur l’équipage et une progression de mise à niveau plus élevée.",
-  "premiumUiCrewVipBenefitsInCrewBody": "Crew VIP s'adresse à tout l'équipage : QG VIP, bâtiments secondaires au-dessus du niveau 10, +10 % de points de guerre et bouclier pour chaque membre. \nN'importe quel membre de l'équipage peut faire un don pour le prix mensuel ; lorsque la cagnotte est pleine, l'équipage dispose de 30 jours. \nUn membre peut également souscrire l'abonnement mensuel sur sa propre carte (renouvellement automatique). Gift Crew VIP reste un cadeau unique de 30 jours à tout équipage nommément nommé.",
+  "premiumUiCrewVipBenefitsInCrewBody": "Crew VIP is for the whole crew: VIP HQ, side buildings above level 10, +10% war points, Shield for every member, +2 territory regions, +2 reinforce armies per window, 2 fortify moves per round, +1 garrison slot, and +10% passive territory income.\nAnyone in the crew can donate toward the monthly price; when the pot is full the crew gets 30 days.\nOne member can also take the monthly subscription on their own card (auto-renew). Gift Crew VIP remains a one-time 30-day gift to any crew by name.",
   "premiumUiSectionBuyCreditsTitle": "Acheter des crédits",
   "premiumUiSectionBuyCreditsSubtitle": "Choisissez un forfait, puis choisissez le nombre de packs à acheter en un seul paiement.",
   "premiumUiNoCreditBundles": "Il n’y a aucun forfait de crédit actif pour le moment.",
@@ -13986,5 +13986,16 @@
   },
   "territoryErrorRiskInvadeDisabled": "Landings are currently disabled.",
   "territoryErrorRiskInvadeNotEligible": "Landings are only for crews with no regions in this country yet.",
-  "territoryErrorRiskInvadeCooldown": "Landing cooldown still active for this country."
+  "territoryErrorRiskInvadeCooldown": "Landing cooldown still active for this country.",
+  "territoryRiskFortifyRemaining": "Fortify: {used}/{max} this round",
+  "@territoryRiskFortifyRemaining": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -6628,7 +6628,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get premiumUiCrewVipBenefitsInCrewBody =>
-      'Crew VIP geldt voor de hele crew: VIP-HQ, bijgebouwen boven niveau 10, +10% oorlogspunten, Schild voor ieder lid, en +2 territorium-gebieden wereldwijd.\nIedereen in de crew kan doneren tot de maandprijs; als de pot vol is krijgt de crew 30 dagen.\nEén lid kan ook het maandabonnement op eigen naam nemen (auto-verlenging). Crew VIP cadeau blijft een eenmalige 30 dagen voor een crew via de naam.';
+      'Crew VIP geldt voor de hele crew: VIP-HQ, bijgebouwen boven niveau 10, +10% oorlogspunten, Schild voor ieder lid, +2 territorium-gebieden, +2 versterkingslegers per venster, 2× fortificeren per ronde, +1 garnizoen-slot, en +10% passief territorium-inkomen.\\nIedereen in de crew kan doneren tot de maandprijs; als de pot vol is krijgt de crew 30 dagen.\\nEén lid kan ook het maandabonnement op eigen naam nemen (auto-verlenging). Crew VIP cadeau blijft een eenmalige 30 dagen voor een crew via de naam.'; als de pot vol is krijgt de crew 30 dagen.\nEén lid kan ook het maandabonnement op eigen naam nemen (auto-verlenging). Crew VIP cadeau blijft een eenmalige 30 dagen voor een crew via de naam.';
 
   @override
   String get premiumUiBadgeCrewNeeded => 'Crew nodig';
@@ -17575,6 +17575,12 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String territoryRiskFortifyUsedStatus(String time) {
     return 'Fortificeren al gebruikt deze ronde. Opnieuw over $time.';
+  }
+
+  @override
+  @override
+  String territoryRiskFortifyRemaining(String used, String max) {
+    return 'Fortificeren: $used/$max deze ronde';
   }
 
   @override

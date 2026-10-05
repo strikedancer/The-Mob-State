@@ -7679,7 +7679,7 @@
   "premiumUiBuyCrewVip": "Kup Crew VIP",
   "premiumUiCrewVipBenefitsTitle": "Korzyści VIP dla załogi",
   "premiumUiCrewVipBenefitsNoCrewBody": "Przed zakupem Crew VIP musisz dołączyć do załogi. VIP dla załogi odblokowuje korzyści skupione na załodze i wyższy postęp ulepszeń.",
-  "premiumUiCrewVipBenefitsInCrewBody": "Crew VIP jest dla całej załogi: siedziba VIP, budynki boczne powyżej poziomu 10, +10% punktów wojennych i tarcza dla każdego członka. \nKażdy członek załogi może przekazać darowiznę na poczet miesięcznej ceny; po zapełnieniu garnka Crew dostaje 30 dni. \nJeden członek może również wykupić miesięczną subskrypcję na własnej karcie (automatyczne odnawianie). Gift Crew VIP pozostaje jednorazowym, 30-dniowym prezentem dla dowolnej załogi imiennie.",
+  "premiumUiCrewVipBenefitsInCrewBody": "Crew VIP is for the whole crew: VIP HQ, side buildings above level 10, +10% war points, Shield for every member, +2 territory regions, +2 reinforce armies per window, 2 fortify moves per round, +1 garrison slot, and +10% passive territory income.\nAnyone in the crew can donate toward the monthly price; when the pot is full the crew gets 30 days.\nOne member can also take the monthly subscription on their own card (auto-renew). Gift Crew VIP remains a one-time 30-day gift to any crew by name.",
   "premiumUiSectionBuyCreditsTitle": "Kup kredyty",
   "premiumUiSectionBuyCreditsSubtitle": "Wybierz pakiet, a następnie wybierz, ile pakietów chcesz kupić w jednej płatności.",
   "premiumUiNoCreditBundles": "W tej chwili nie ma aktywnych pakietów kredytów.",
@@ -13986,5 +13986,16 @@
   },
   "territoryErrorRiskInvadeDisabled": "Landings are currently disabled.",
   "territoryErrorRiskInvadeNotEligible": "Landings are only for crews with no regions in this country yet.",
-  "territoryErrorRiskInvadeCooldown": "Landing cooldown still active for this country."
+  "territoryErrorRiskInvadeCooldown": "Landing cooldown still active for this country.",
+  "territoryRiskFortifyRemaining": "Fortify: {used}/{max} this round",
+  "@territoryRiskFortifyRemaining": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -54,7 +54,7 @@
   - Territory bonus-label UX-fix: de regio-modal maakt nu expliciet dat `Actiebonussen` contestpunten per actie verhogen (niet de €-uitbetaling), en groepeert bonussen per actietype zodat dubbele bronlabels niet meer verwarrend als één lange regel verschijnen
   - Territory bonus-formule UX-fix: de regio-modal toont nu per actietype expliciet `basispunten + bonuspunten = totale contestpunten`, inclusief bronverdeling, zodat spelers direct zien waarom payout-bedragen gelijk blijven.
   - Territory progression-koppeling: contest-caps schalen nu mee met HQ global level (runtime-tunable), en actiebonussen kunnen nu naast regio/war pressure ook uit crew mission level en crew bijgebouwen komen (weapon/ammo/car/boat/drug storage), zodat crew progression en map-control elkaar logisch versterken
-  - Territory region-cap dual-key: `effectiveMaxRegions = min(hqSlots, memberSlots, hardCap) + vipBonus`. HQ-slots = `5 + min(5, floor(hqGlobalLevel / 3))`, leden-slots = `5 + min(5, floor(max(0, members - 5) / 5))`, harde wereldwijde cap 10. **Crew VIP** voegt `TERRITORY_VIP_CREW_REGION_BONUS` (default **2**) toe bovenop de dual-key (bijv. 5 → 7), niet in één keer naar de hard cap. Hard cap met VIP wordt 12. Geldt voor UI, contests én Risk-capture. Nieuwe contests/captures blokkeren bij over-cap; verdedigen blijft mogelijk; geen automatisch gebiedsverlies bij leave. Contest-frontage blijft HQ-only. Extra garnizoen vanaf 8 slots. `viewerCaps` toont HQ/leden-slots, VIP-bonus en de volgende drempel.
+  - Territory region-cap dual-key: `effectiveMaxRegions = min(hqSlots, memberSlots, hardCap) + vipBonus`. HQ-slots = `5 + min(5, floor(hqGlobalLevel / 3))`, leden-slots = `5 + min(5, floor(max(0, members - 5) / 5))`, harde wereldwijde cap 10. **Crew VIP** voegt `TERRITORY_VIP_CREW_REGION_BONUS` (default **2**) toe bovenop de dual-key (bijv. 5 → 7), niet in één keer naar de hard cap. Hard cap met VIP wordt 12. Extra VIP-territory perks (defaults): `TERRITORY_VIP_CREW_REINFORCE_BONUS=2`, `TERRITORY_VIP_CREW_FORTIFY_MAX=2`, `TERRITORY_VIP_CREW_GARRISON_BONUS=1`, `TERRITORY_VIP_CREW_INCOME_BONUS_PERCENT=10`. Geldt voor UI, contests én Risk-capture. Nieuwe contests/captures blokkeren bij over-cap; verdedigen blijft mogelijk; geen automatisch gebiedsverlies bij leave of VIP-expiry (soft-lock). Contest-frontage blijft HQ-only. Extra garnizoen vanaf 8 slots (+ VIP garrison bonus). `viewerCaps` toont HQ/leden-slots, VIP-bonus en de volgende drempel.
   - Territory HQ action-gates: geavanceerde contest-acties kunnen nu per actietype een minimaal HQ global level vereisen (runtime keys), met server-side enforcement en expliciete NL/EN lock-tekst in de regio-modal.
   - Territory admin telemetry: admin-overzicht bevat nu 24u economy/progression metrics voor reward per minuut, contest winrate per HQ-band, region growth per crew-size en bonus usage per HQ/building tier.
   - Territory pacing update: `TERRITORY_ACTION_DAILY_CAP` ondersteunt nu expliciet `0` als "geen harde dagcap", zodat actieve crews oneindig kunnen doorspelen binnen cooldown/anti-farm guardrails
@@ -235,6 +235,10 @@ Verplichte keys:
 - `TERRITORY_MEMBER_REGION_BONUS_CAP` (default `5`)
 - `TERRITORY_REGION_HARD_CAP` (default `10`, wereldwijd)
 - `TERRITORY_VIP_CREW_REGION_BONUS` (default `2`; flat +slots bij actieve Crew VIP; hard cap wordt ook +bonus)
+- `TERRITORY_VIP_CREW_REINFORCE_BONUS` (default `2`; extra legers bij reinforce-claim)
+- `TERRITORY_VIP_CREW_FORTIFY_MAX` (default `2`; fortify-moves per reinforce-venster; non-VIP = 1)
+- `TERRITORY_VIP_CREW_GARRISON_BONUS` (default `1`; extra actieve garnizoenen)
+- `TERRITORY_VIP_CREW_INCOME_BONUS_PERCENT` (default `10`; passief regio-inkomen)
 - `TERRITORY_GARRISON_EXTRA_AT_REGION_CAP` (default `8`; +1 actief garnizoen)
 - `TERRITORY_MAX_CONCURRENT_CONTESTS_PER_CREW`
 - `TERRITORY_PRIME_TIME_START_HOUR_UTC`

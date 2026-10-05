@@ -4,6 +4,7 @@ import {
   parseTerritoryStringArray,
   mapTravelCountryToTerritoryCode,
   buildViewerTerritoryCaps,
+  getCrewVipTerritoryPerks,
 } from './territoryService';
 import * as territoryCrewStatsService from './territoryCrewStatsService';
 import * as territoryArsenalService from './territoryArsenalService';
@@ -255,11 +256,13 @@ function computeReinforceGrant(
   totalInCountry: number,
   countryCode: string,
   risk: RiskConfig,
+  vipReinforceBonus = 0,
 ): number {
   let grant = Math.max(3, Math.floor(ownedCount / 3));
   if (totalInCountry > 0 && ownedCount >= totalInCountry) {
     grant += risk.fullControlBonus;
   }
+  grant += Math.max(0, Math.floor(vipReinforceBonus));
   return grant;
 }
 
@@ -271,11 +274,15 @@ async function getOrOpenReinforceWindow(
   armiesRemaining: number;
   armiesGranted: number;
   fortifyUsed: boolean;
+  fortifyCount: number;
+  fortifyMax: number;
   windowStartedAt: Date;
   windowEndsAt: Date;
   canClaimNew: boolean;
 }> {
   const now = new Date();
+  const vipPerks = await getCrewVipTerritoryPerks(crewId);
+  const fortifyMax = Math.max(1, vipPerks.vipFortifyMax);
   const rows = await prisma.$queryRawUnsafe<
     Array<{
       windowStartedAt: Date;
@@ -295,10 +302,13 @@ async function getOrOpenReinforceWindow(
     const started = new Date(existing.windowStartedAt);
     const endsAt = new Date(started.getTime() + windowMs);
     if (now < endsAt) {
+      const fortifyCount = Math.max(0, toNum(existing.fortifyUsed));
       return {
         armiesRemaining: Math.max(0, toNum(existing.armiesRemaining)),
         armiesGranted: Math.max(0, toNum(existing.armiesGranted)),
-        fortifyUsed: toNum(existing.fortifyUsed) === 1,
+        fortifyUsed: fortifyCount >= fortifyMax,
+        fortifyCount,
+        fortifyMax,
         windowStartedAt: started,
         windowEndsAt: endsAt,
         canClaimNew: false,
@@ -311,7 +321,13 @@ async function getOrOpenReinforceWindow(
     throw new Error('RISK_NO_OWNED_REGIONS');
   }
   const total = await countEnabledInCountry(countryCode);
-  const grant = computeReinforceGrant(owned, total, countryCode, risk);
+  const grant = computeReinforceGrant(
+    owned,
+    total,
+    countryCode,
+    risk,
+    vipPerks.vipReinforceBonus,
+  );
   await prisma.$executeRawUnsafe(
     `INSERT INTO territory_risk_reinforce
        (crewId, countryCode, windowStartedAt, armiesGranted, armiesRemaining, fortifyUsed, notifiedAt)
@@ -333,6 +349,8 @@ async function getOrOpenReinforceWindow(
     armiesRemaining: grant,
     armiesGranted: grant,
     fortifyUsed: false,
+    fortifyCount: 0,
+    fortifyMax,
     windowStartedAt: now,
     windowEndsAt: endsAt,
     canClaimNew: true,
@@ -349,6 +367,8 @@ export async function getRiskSnapshotForMap(params: {
     armiesRemaining: number;
     armiesGranted: number;
     fortifyUsed: boolean;
+    fortifyCount: number;
+    fortifyMax: number;
     windowEndsAt: Date;
     secondsRemaining: number;
   };
@@ -395,6 +415,8 @@ export async function getRiskSnapshotForMap(params: {
     armiesRemaining: number;
     armiesGranted: number;
     fortifyUsed: boolean;
+    fortifyCount: number;
+    fortifyMax: number;
     windowEndsAt: Date;
     secondsRemaining: number;
   } | null = null;
@@ -412,6 +434,8 @@ export async function getRiskSnapshotForMap(params: {
   if (params.viewerCrewId != null) {
     const owned = await countOwnedInCountry(params.viewerCrewId, code);
     if (owned > 0) {
+      const vipPerks = await getCrewVipTerritoryPerks(params.viewerCrewId);
+      const fortifyMax = Math.max(1, vipPerks.vipFortifyMax);
       const rows = await prisma.$queryRawUnsafe<
         Array<{
           windowStartedAt: Date;
@@ -430,11 +454,14 @@ export async function getRiskSnapshotForMap(params: {
       if (rows[0]) {
         const started = new Date(rows[0].windowStartedAt).getTime();
         const endsAt = new Date(started + windowMs);
+        const fortifyCount = Math.max(0, toNum(rows[0].fortifyUsed));
         if (now < endsAt.getTime()) {
           reinforce = {
             armiesRemaining: Math.max(0, toNum(rows[0].armiesRemaining)),
             armiesGranted: Math.max(0, toNum(rows[0].armiesGranted)),
-            fortifyUsed: toNum(rows[0].fortifyUsed) === 1,
+            fortifyUsed: fortifyCount >= fortifyMax,
+            fortifyCount,
+            fortifyMax,
             windowEndsAt: endsAt,
             secondsRemaining: Math.max(0, Math.ceil((endsAt.getTime() - now) / 1000)),
           };
@@ -443,6 +470,8 @@ export async function getRiskSnapshotForMap(params: {
             armiesRemaining: 0,
             armiesGranted: 0,
             fortifyUsed: false,
+            fortifyCount: 0,
+            fortifyMax,
             windowEndsAt: new Date(now),
             secondsRemaining: 0,
           };
@@ -452,6 +481,8 @@ export async function getRiskSnapshotForMap(params: {
           armiesRemaining: 0,
           armiesGranted: 0,
           fortifyUsed: false,
+          fortifyCount: 0,
+          fortifyMax,
           windowEndsAt: new Date(now),
           secondsRemaining: 0,
         };
@@ -613,7 +644,7 @@ export async function fortify(
   await setRegionArmies(fromRegionKey, crewId, fromArmies - move);
   await setRegionArmies(toRegionKey, crewId, toArmies + move);
   await prisma.$executeRawUnsafe(
-    `UPDATE territory_risk_reinforce SET fortifyUsed = 1, updatedAt = NOW()
+    `UPDATE territory_risk_reinforce SET fortifyUsed = fortifyUsed + 1, updatedAt = NOW()
      WHERE crewId = ? AND countryCode = ?`,
     crewId,
     code,

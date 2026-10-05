@@ -1090,7 +1090,7 @@ Bob: Ã¢â€šÂ¬300K counter-hit
 
 - Spelers hebben **Winkel** direct onder Dashboard in het zijmenu; web/PWA checkouts landen daarna terug in die ingesloten game-sectie.
 - VIP-tab: Player VIP, Crew VIP, Event Pass, status. Credits-tab: creditbundels en in-game cashpakketten. Tegels om wachttijden te verkorten staan hier niet; die blijven op het scherm waar je wacht.
-- Player VIP is persoonlijk. Crew VIP werkt alleen als je in een crew zit: VIP-HQ, bijgebouwen boven 10, +10% oorlogspunten en Schild voor de hele crew. Ieder lid kan euro's in de Crew VIP-pot doneren op de **Crew**-pagina tot een maand vol is, of Ã©Ã©n lid neemt het maandabonnement in Winkel. In-game crew-bank koopt geen Crew VIP.
+- Player VIP is persoonlijk. Crew VIP werkt alleen als je in een crew zit: VIP-HQ, bijgebouwen boven 10, +10% oorlogspunten, Schild voor de hele crew, +2 territorium-gebieden, +2 versterkingslegers per venster, 2× fortificeren per ronde, +1 garnizoen-slot en +10% passief territorium-inkomen. Ieder lid kan euro's in de Crew VIP-pot doneren op de **Crew**-pagina tot een maand vol is, of Ã©Ã©n lid neemt het maandabonnement in Winkel. In-game crew-bank koopt geen Crew VIP.
 - Cosmetische credit-items (zoals het gouden landgoedhek) geven geen combat-power.
 - VIP- en credit-checkouts openen de betaalpagina en keren daarna terug naar **Winkel** in de game-shell, zodat de speler direct de uitkomst, vernieuwde VIP-status en bijgewerkte credits ziet.
 - Creditbundels openen eerst een aantalkeuze (1â€“20 pakketten). Je betaalt het totaal in Ã©Ã©n checkout; Event Pass en VIP blijven Ã©Ã©n stuk.
@@ -1269,7 +1269,7 @@ healing = 5 HP (if health > 0 && health < 100)
 - âœ… Territory Fase D (season awards, region event rotation, drama widgets) â€” see TERRITORY_VISION.md / territory.md
 - âœ… Territory crew-stats (all-time + seizoen W/D/L/hold op leaderboard + crew-kaart) â€” see `territory.md`
 - âœ… Territory garnizoen / luchtafweer (crew-bank, tijdelijk defense + hogere capture-drempel, geen nachtslot) â€” see `territory.md`
-- âœ… Territory dual-key region-cap (HQ + leden, hard cap 10, Crew VIP +2 op dual-key (bijv. 5→7), hard max 12, extra garnizoen vanaf 8 slots) â€” see `territory.md`
+- âœ… Territory dual-key region-cap (HQ + leden, hard cap 10, Crew VIP +2 op dual-key (bijv. 5→7), hard max 12, reinforce/fortify/garnizoen/inkomen VIP-perks, extra garnizoen vanaf 8 slots) â€” see `territory.md`
 - âœ… Money laundering (cashâ†’bank wash above the free daily deposit cap: fee, delay, FBI-heat seize risk) â€” see `money-laundering.md` / `bank.md`
 - âœ… Stock market (bank-funded slow tickers, separate from crypto; UI has load/empty states + portfolio summary) â€” see `stock-market.md`
 - âœ… Real estate development (bank-funded permanent income levels; confirm/cooldown/error UX) â€” see `properties.md`
