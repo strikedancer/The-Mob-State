@@ -654,20 +654,14 @@ export const donService = {
       { racketId, businessKey: racket.businessKey, countryCode: racket.countryCode },
       playerId
     );
-    const attacker = await prisma.player.findUnique({
-      where: { id: playerId },
-      select: { username: true },
-    });
-    const attackerName = attacker?.username || '???';
-    void notifyDon(
-      playerId,
-      {
-        nl: `Contest gestart op de ${donBusinessLabel(racket.businessKey, true)}. De eigenaar kan nog houden.`,
-        en: `Contest started on the ${donBusinessLabel(racket.businessKey, false)}. The owner can still hold.`,
-      },
-      { push: false }
-    );
+    // Attacker: no inbox on start — only final outcome (seize success or hold failure).
+    // Owner still gets an alert so they can hold before the timer ends.
     if (racket.ownerPlayerId) {
+      const attacker = await prisma.player.findUnique({
+        where: { id: playerId },
+        select: { username: true },
+      });
+      const attackerName = attacker?.username || '???';
       void notifyDon(racket.ownerPlayerId, {
         nl: `${attackerName} betwist je ${donBusinessLabel(racket.businessKey, true)}. Houd de zaak op Don voordat de tijd om is.`,
         en: `${attackerName} is contesting your ${donBusinessLabel(racket.businessKey, false)}. Hold it on Don before time runs out.`,
