@@ -24,7 +24,17 @@ type RiskConfig = {
   /** Bonus armies when a crew owns every enabled region in a country. */
   fullControlBonus: number;
   seedArmiesOnOwned: number;
+  /** Crews with 0 owned regions may land once per cooldown. */
+  invadeEnabled: boolean;
+  invadeExpedition: number;
+  /** Landing fights only this many defender armies (soft beachhead). */
+  invadeDefenderCap: number;
+  /** Extra armies the winner keeps from the captured depot (1–2 typical). */
+  invadeRemnant: number;
+  invadeCooldownHours: number;
 };
+
+const LANDING_FROM_KEY = '__landing__';
 
 function toNum(v: unknown): number {
   const n = Number(v);
@@ -54,6 +64,11 @@ async function getRiskConfig(): Promise<RiskConfig> {
     'TERRITORY_RISK_NEUTRAL_GARRISON',
     'TERRITORY_RISK_NL_FULL_CONTROL_BONUS',
     'TERRITORY_RISK_SEED_ARMIES_ON_OWNED',
+    'TERRITORY_RISK_INVADE_ENABLED',
+    'TERRITORY_RISK_INVADE_EXPEDITION',
+    'TERRITORY_RISK_INVADE_DEFENDER_CAP',
+    'TERRITORY_RISK_INVADE_REMNANT',
+    'TERRITORY_RISK_INVADE_COOLDOWN_HOURS',
   ]);
   const countries = String(cfg['TERRITORY_RISK_MODE_COUNTRIES'] ?? '*')
     .split(',')
@@ -74,6 +89,11 @@ async function getRiskConfig(): Promise<RiskConfig> {
     neutralGarrison: Math.max(1, toNum(cfg['TERRITORY_RISK_NEUTRAL_GARRISON'] ?? 3)),
     fullControlBonus: Math.max(0, toNum(cfg['TERRITORY_RISK_NL_FULL_CONTROL_BONUS'] ?? 5)),
     seedArmiesOnOwned: Math.max(1, toNum(cfg['TERRITORY_RISK_SEED_ARMIES_ON_OWNED'] ?? 3)),
+    invadeEnabled: Number(cfg['TERRITORY_RISK_INVADE_ENABLED'] ?? 1) === 1,
+    invadeExpedition: Math.max(2, toNum(cfg['TERRITORY_RISK_INVADE_EXPEDITION'] ?? 6)),
+    invadeDefenderCap: Math.max(1, toNum(cfg['TERRITORY_RISK_INVADE_DEFENDER_CAP'] ?? 4)),
+    invadeRemnant: Math.max(0, Math.min(5, toNum(cfg['TERRITORY_RISK_INVADE_REMNANT'] ?? 2))),
+    invadeCooldownHours: Math.max(1, toNum(cfg['TERRITORY_RISK_INVADE_COOLDOWN_HOURS'] ?? 8)),
   };
 }
 
@@ -332,13 +352,22 @@ export async function getRiskSnapshotForMap(params: {
     windowEndsAt: Date;
     secondsRemaining: number;
   };
+  invade: null | {
+    eligible: boolean;
+    enabled: boolean;
+    canInvade: boolean;
+    expedition: number;
+    defenderCap: number;
+    remnant: number;
+    secondsRemaining: number;
+  };
   armiesByRegion: Record<string, number>;
 }> {
   const risk = await getRiskConfig();
   const code = params.countryCode.toLowerCase();
   const riskMode = countryUsesRiskMode(risk, code);
   if (!riskMode) {
-    return { riskMode: false, reinforce: null, armiesByRegion: {} };
+    return { riskMode: false, reinforce: null, invade: null, armiesByRegion: {} };
   }
 
   await ensureSeedArmiesForOwnedRegions(code);
@@ -367,6 +396,16 @@ export async function getRiskSnapshotForMap(params: {
     armiesGranted: number;
     fortifyUsed: boolean;
     windowEndsAt: Date;
+    secondsRemaining: number;
+  } | null = null;
+
+  let invade: {
+    eligible: boolean;
+    enabled: boolean;
+    canInvade: boolean;
+    expedition: number;
+    defenderCap: number;
+    remnant: number;
     secondsRemaining: number;
   } | null = null;
 
@@ -417,10 +456,30 @@ export async function getRiskSnapshotForMap(params: {
           secondsRemaining: 0,
         };
       }
+    } else {
+      // Zero-owned: expose landing / invade status for this country.
+      const cdRows = await prisma.$queryRawUnsafe<Array<{ availableAt: Date }>>(
+        `SELECT availableAt FROM territory_risk_invade_cooldown
+         WHERE crewId = ? AND countryCode = ? LIMIT 1`,
+        params.viewerCrewId,
+        code,
+      );
+      const now = Date.now();
+      const availableAt = cdRows[0] ? new Date(cdRows[0].availableAt).getTime() : 0;
+      const secondsRemaining = availableAt > now ? Math.max(0, Math.ceil((availableAt - now) / 1000)) : 0;
+      invade = {
+        eligible: true,
+        enabled: risk.invadeEnabled,
+        canInvade: risk.invadeEnabled && secondsRemaining <= 0,
+        expedition: risk.invadeExpedition,
+        defenderCap: risk.invadeDefenderCap,
+        remnant: risk.invadeRemnant,
+        secondsRemaining,
+      };
     }
   }
 
-  return { riskMode: true, reinforce, armiesByRegion };
+  return { riskMode: true, reinforce, invade, armiesByRegion };
 }
 
 export async function claimReinforce(
@@ -817,6 +876,189 @@ export async function attack(
     fromArmies: finalFrom,
     toArmies: finalTo,
     toOwnerCrewId: finalOwner,
+  };
+}
+
+/**
+ * Soft landing for crews with zero owned regions in a Risk country.
+ * Fights only invadeDefenderCap armies; on capture winner gets survivors + remnant.
+ */
+export async function invade(
+  playerId: number,
+  crewId: number,
+  toRegionKey: string,
+  currentCountry: string | null | undefined,
+  options?: { maxRounds?: number },
+): Promise<{
+  captured: boolean;
+  rounds: Array<{
+    attackerDice: number[];
+    defenderDice: number[];
+    attackerLosses: number;
+    defenderLosses: number;
+    attackerArmiesLeft: number;
+    defenderArmiesLeft: number;
+  }>;
+  attackerLosses: number;
+  defenderLosses: number;
+  toArmies: number;
+  toOwnerCrewId: number | null;
+  expedition: number;
+  defenderCap: number;
+  remnant: number;
+}> {
+  const risk = await getRiskConfig();
+  if (!risk.invadeEnabled) throw new Error('RISK_INVADE_DISABLED');
+
+  const region = await prisma.$queryRawUnsafe<
+    Array<{ regionKey: string; countryCode: string }>
+  >(
+    `SELECT regionKey, countryCode FROM territory_regions WHERE regionKey = ? AND enabled = 1 LIMIT 1`,
+    toRegionKey,
+  );
+  if (!region[0]) throw new Error('REGION_NOT_FOUND');
+  const code = String(region[0].countryCode).toLowerCase();
+  if (!(await isRiskModeCountry(code))) throw new Error('RISK_MODE_INACTIVE');
+  assertInCountry(currentCountry, code);
+
+  const owned = await countOwnedInCountry(crewId, code);
+  if (owned > 0) throw new Error('RISK_INVADE_NOT_ELIGIBLE');
+
+  const control = await prisma.$queryRawUnsafe<Array<{ ownerCrewId: number | null }>>(
+    `SELECT ownerCrewId FROM territory_control WHERE regionKey = ? LIMIT 1`,
+    toRegionKey,
+  );
+  const ownerToRaw = control[0]?.ownerCrewId;
+  const ownerTo = ownerToRaw == null ? null : toNum(ownerToRaw);
+  if (ownerTo === crewId) throw new Error('RISK_OWN_TARGET');
+
+  const territoryCfg = await getTerritoryConfig();
+  const caps = await buildViewerTerritoryCaps(crewId, territoryCfg);
+  if (caps.ownedRegions >= caps.effectiveMaxRegions) {
+    throw new Error('REGIONS_CAP_REACHED');
+  }
+
+  const cdRows = await prisma.$queryRawUnsafe<Array<{ availableAt: Date }>>(
+    `SELECT availableAt FROM territory_risk_invade_cooldown
+     WHERE crewId = ? AND countryCode = ? LIMIT 1`,
+    crewId,
+    code,
+  );
+  if (cdRows[0] && new Date(cdRows[0].availableAt).getTime() > Date.now()) {
+    throw new Error('RISK_INVADE_COOLDOWN');
+  }
+
+  const armies = await getArmiesByRegionKeys([toRegionKey]);
+  const realDefenderArmies =
+    ownerTo != null && armies[toRegionKey]?.crewId === ownerTo
+      ? armies[toRegionKey]!.armies
+      : risk.neutralGarrison;
+  const fightingDefender = Math.min(
+    Math.max(1, realDefenderArmies || risk.neutralGarrison),
+    risk.invadeDefenderCap,
+  );
+
+  let attackingForce = risk.invadeExpedition;
+  let defenderArmies = fightingDefender;
+  const rounds: Array<{
+    attackerDice: number[];
+    defenderDice: number[];
+    attackerLosses: number;
+    defenderLosses: number;
+    attackerArmiesLeft: number;
+    defenderArmiesLeft: number;
+  }> = [];
+  let attackerLossesTotal = 0;
+  let defenderLossesTotal = 0;
+  const maxRounds = options?.maxRounds ?? risk.maxRoundsPerAttack;
+
+  while (attackingForce > 0 && defenderArmies > 0 && rounds.length < maxRounds) {
+    const resolved = resolveRiskRound(attackingForce, defenderArmies);
+    const aLoss = Math.min(resolved.attackerLosses, attackingForce);
+    const dLoss = Math.min(resolved.defenderLosses, defenderArmies);
+    attackingForce -= aLoss;
+    defenderArmies -= dLoss;
+    attackerLossesTotal += aLoss;
+    defenderLossesTotal += dLoss;
+    rounds.push({
+      attackerDice: resolved.attackerDice,
+      defenderDice: resolved.defenderDice,
+      attackerLosses: aLoss,
+      defenderLosses: dLoss,
+      attackerArmiesLeft: attackingForce,
+      defenderArmiesLeft: defenderArmies,
+    });
+  }
+
+  const captured = defenderArmies <= 0 && attackingForce > 0;
+  let finalTo = defenderArmies;
+  let finalOwner: number | null = ownerTo;
+
+  if (captured) {
+    const movedIn = Math.max(
+      risk.minArmiesOnCapture,
+      attackingForce + risk.invadeRemnant,
+    );
+    finalTo = movedIn;
+    finalOwner = crewId;
+    await transferOwnership({
+      regionKey: toRegionKey,
+      winnerCrewId: crewId,
+      previousOwnerId: ownerTo,
+      armiesMovedIn: movedIn,
+    });
+  } else if (ownerTo != null) {
+    const after = Math.max(1, realDefenderArmies - defenderLossesTotal);
+    await setRegionArmies(toRegionKey, ownerTo, after);
+    finalTo = after;
+  } else {
+    finalTo = Math.max(0, realDefenderArmies - defenderLossesTotal);
+  }
+
+  await prisma.$executeRawUnsafe(
+    `INSERT INTO territory_risk_battle_log
+       (attackerCrewId, defenderCrewId, fromRegionKey, toRegionKey, countryCode, committedArmies, roundsJson, attackerLosses, defenderLosses, captured)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    crewId,
+    ownerTo,
+    LANDING_FROM_KEY,
+    toRegionKey,
+    code,
+    risk.invadeExpedition,
+    JSON.stringify(rounds),
+    attackerLossesTotal,
+    defenderLossesTotal,
+    captured ? 1 : 0,
+  );
+
+  await prisma.$executeRawUnsafe(
+    `INSERT INTO territory_risk_invade_cooldown (crewId, countryCode, availableAt)
+     VALUES (?, ?, DATE_ADD(NOW(), INTERVAL ? HOUR))
+     ON DUPLICATE KEY UPDATE availableAt = VALUES(availableAt), updatedAt = NOW()`,
+    crewId,
+    code,
+    risk.invadeCooldownHours,
+  );
+
+  const eventPoints = Math.max(0, defenderLossesTotal) + (captured ? 5 : 0);
+  if (eventPoints > 0) {
+    void import('./gameEventService')
+      .then(({ gameEventService }) =>
+        gameEventService.recordContribution(playerId, 'territory', eventPoints),
+      )
+      .catch(() => {});
+  }
+
+  return {
+    captured,
+    rounds,
+    attackerLosses: attackerLossesTotal,
+    defenderLosses: defenderLossesTotal,
+    toArmies: finalTo,
+    toOwnerCrewId: finalOwner,
+    expedition: risk.invadeExpedition,
+    defenderCap: risk.invadeDefenderCap,
+    remnant: risk.invadeRemnant,
   };
 }
 

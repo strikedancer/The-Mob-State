@@ -30027,6 +30027,11 @@ abstract class AppLocalizations {
   /// **'Attack adjacent'**
   String get territoryRiskAttackAdjacent;
 
+  String get territoryRiskInvade;
+  String territoryRiskInvadeHint(String expedition, String cap, String remnant);
+  String territoryRiskInvadeCooldown(String time);
+  String territoryRiskInvadeConfirm(String expedition, String cap);
+
   /// No description provided for @territoryRiskCommitLabel.
   ///
   /// In en, this message translates to:
@@ -30168,6 +30173,10 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Attack cooldown still active for this border.'**
   String get territoryErrorRiskAttackCooldown;
+
+  String get territoryErrorRiskInvadeDisabled;
+  String get territoryErrorRiskInvadeNotEligible;
+  String get territoryErrorRiskInvadeCooldown;
 
   /// No description provided for @territoryAttackerActions.
   ///

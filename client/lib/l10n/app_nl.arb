@@ -8660,11 +8660,45 @@
     }
   },
   "territoryRiskModeTitle": "Risk-verovering",
-  "territoryRiskModeHint": "In dit land verover je met legers: versterken, aangrenzende regio's aanvallen met dobbelstenen, daarna fortificeren. Klassieke contests staan hier uit.",
+  "territoryRiskModeHint": "In dit land verover je met legers: versterken, aangrenzende regio's aanvallen met dobbelstenen, daarna fortificeren. Crews zonder land hier kunnen een landing proberen (zachte beachhead). Klassieke contests staan hier uit.",
   "territoryRiskClaimReinforce": "Claim versterkingen",
   "territoryRiskPlaceReinforce": "Plaats legers hier",
   "territoryRiskFortify": "Fortificeer naar buur",
   "territoryRiskAttackAdjacent": "Val buur aan",
+  "territoryRiskInvade": "Landing",
+  "territoryRiskInvadeHint": "Nog geen land in dit land: land met {expedition} legers. De beachhead vecht tegen max {cap} verdedigers; bij succes houd je overlevenden plus {remnant} restant-legers.",
+  "@territoryRiskInvadeHint": {
+    "placeholders": {
+      "expedition": {
+        "type": "String"
+      },
+      "cap": {
+        "type": "String"
+      },
+      "remnant": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryRiskInvadeCooldown": "Landing-cooldown: opnieuw over {time}.",
+  "@territoryRiskInvadeCooldown": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryRiskInvadeConfirm": "Stuur een landing van {expedition} legers naar dit gebied? Beachhead vecht tegen max {cap} verdedigers.",
+  "@territoryRiskInvadeConfirm": {
+    "placeholders": {
+      "expedition": {
+        "type": "String"
+      },
+      "cap": {
+        "type": "String"
+      }
+    }
+  },
   "territoryRiskCommitLabel": "Legers inzetten",
   "territoryRiskPickNeighbor": "Kies aangrenzende regio",
   "territoryRiskReinforceLeft": "Versterkingen over: {count}",
@@ -8740,6 +8774,9 @@
   "territoryErrorRiskInsufficientArmies": "Niet genoeg legers (laat minstens 1 achter).",
   "territoryErrorRiskOwnTarget": "Dat gebied is al van jou.",
   "territoryErrorRiskAttackCooldown": "Aanvalscooldown voor deze grens is nog actief.",
+  "territoryErrorRiskInvadeDisabled": "Landingen staan nu uit.",
+  "territoryErrorRiskInvadeNotEligible": "Landingen zijn alleen voor crews zonder regio's in dit land.",
+  "territoryErrorRiskInvadeCooldown": "Landing-cooldown voor dit land is nog actief.",
   "territoryAttackerActions": "Aanvalsacties",
   "territoryDefenderActions": "Verdedigingsacties",
   "territoryContestActions": "Contestacties",

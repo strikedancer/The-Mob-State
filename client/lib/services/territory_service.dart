@@ -381,6 +381,27 @@ class TerritoryService {
     }
   }
 
+  Future<Map<String, dynamic>> riskInvade({
+    required String toRegionKey,
+  }) async {
+    try {
+      final response = await _api.post('/territory/risk/invade', {
+        'toRegionKey': toRegionKey,
+      });
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      if (response.statusCode == 200) {
+        return {
+          'success': true,
+          ...data['params'] as Map<String, dynamic>? ?? {},
+          'event': data['event'],
+        };
+      }
+      return {'success': false, 'event': data['event'], 'message': data['message'] ?? ''};
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
   Future<Map<String, dynamic>> riskFortify({
     required String fromRegionKey,
     required String toRegionKey,

@@ -11162,11 +11162,33 @@
     }
   },
   "territoryRiskModeTitle": "Risk conquest",
-  "territoryRiskModeHint": "In this country you conquer with armies: reinforce, attack adjacent regions with dice, then fortify. Classic contests are disabled here.",
+  "territoryRiskModeHint": "In this country you conquer with armies: reinforce, attack adjacent regions with dice, then fortify. Crews with no land here can try a landing (soft beachhead). Classic contests are disabled here.",
   "territoryRiskClaimReinforce": "Claim reinforcements",
   "territoryRiskPlaceReinforce": "Place armies here",
   "territoryRiskFortify": "Fortify to neighbor",
   "territoryRiskAttackAdjacent": "Attack adjacent",
+  "territoryRiskInvade": "Landing assault",
+  "territoryRiskInvadeHint": "No land yet in this country: land with {expedition} armies. The beachhead fights at most {cap} defenders; on success you keep survivors plus {remnant} remnant armies.",
+  "@territoryRiskInvadeHint": {
+    "placeholders": {
+      "expedition": { "type": "String" },
+      "cap": { "type": "String" },
+      "remnant": { "type": "String" }
+    }
+  },
+  "territoryRiskInvadeCooldown": "Landing cooldown: available again in {time}.",
+  "@territoryRiskInvadeCooldown": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "territoryRiskInvadeConfirm": "Send a landing force of {expedition} armies against this region? Beachhead fights at most {cap} defenders.",
+  "@territoryRiskInvadeConfirm": {
+    "placeholders": {
+      "expedition": { "type": "String" },
+      "cap": { "type": "String" }
+    }
+  },
   "territoryRiskCommitLabel": "Armies to commit",
   "territoryRiskPickNeighbor": "Choose neighboring region",
   "territoryRiskReinforceLeft": "Reinforcements left: {count}",
@@ -11242,6 +11264,9 @@
   "territoryErrorRiskInsufficientArmies": "Not enough armies (leave at least 1 behind).",
   "territoryErrorRiskOwnTarget": "You already own that region.",
   "territoryErrorRiskAttackCooldown": "Attack cooldown still active for this border.",
+  "territoryErrorRiskInvadeDisabled": "Landings are currently disabled.",
+  "territoryErrorRiskInvadeNotEligible": "Landings are only for crews with no regions in this country yet.",
+  "territoryErrorRiskInvadeCooldown": "Landing cooldown still active for this country.",
   "territoryAttackerActions": "Attacker actions",
   "territoryDefenderActions": "Defender actions",
   "territoryContestActions": "Contest actions",

@@ -128,6 +128,9 @@ function mapTerritoryError(error: unknown, res: Response, next: NextFunction) {
     RISK_INSUFFICIENT_ARMIES:       [400, 'territory.risk_insufficient_armies'],
     RISK_OWN_TARGET:                [400, 'territory.risk_own_target'],
     RISK_ATTACK_COOLDOWN:           [429, 'territory.risk_attack_cooldown'],
+    RISK_INVADE_DISABLED:           [403, 'territory.risk_invade_disabled'],
+    RISK_INVADE_NOT_ELIGIBLE:       [400, 'territory.risk_invade_not_eligible'],
+    RISK_INVADE_COOLDOWN:           [429, 'territory.risk_invade_cooldown'],
   };
 
   const entry = map[error.message];
@@ -424,6 +427,36 @@ router.post('/risk/attack', authenticate, async (req: AuthRequest, res: Response
       { maxRounds: body.maxRounds },
     );
     return res.json({ event: 'territory.risk_attack_resolved', params: result });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ event: 'error.validation', params: { issues: error.issues } });
+    }
+    return mapTerritoryError(error, res, next);
+  }
+});
+
+const riskInvadeSchema = z.object({
+  toRegionKey: z.string().min(2).max(60),
+  maxRounds: z.number().int().positive().max(50).optional(),
+});
+
+/**
+ * POST /territory/risk/invade
+ * Soft landing for crews with zero owned regions in this Risk country.
+ */
+router.post('/risk/invade', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const crewId = await requireCrew(req, res);
+    if (!crewId) return;
+    const body = riskInvadeSchema.parse(req.body);
+    const result = await territoryRiskService.invade(
+      req.player!.id,
+      crewId,
+      body.toRegionKey,
+      req.player?.currentCountry,
+      { maxRounds: body.maxRounds },
+    );
+    return res.json({ event: 'territory.risk_invade_resolved', params: result });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return res.status(400).json({ event: 'error.validation', params: { issues: error.issues } });

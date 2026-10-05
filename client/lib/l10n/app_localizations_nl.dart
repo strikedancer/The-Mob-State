@@ -17463,7 +17463,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get territoryRiskModeHint =>
-      'In dit land verover je met legers: versterken, aangrenzende regio\'s aanvallen met dobbelstenen, daarna fortificeren. Klassieke contests staan hier uit.';
+      'In dit land verover je met legers: versterken, aangrenzende regio\'s aanvallen met dobbelstenen, daarna fortificeren. Crews zonder land hier kunnen een landing proberen (zachte beachhead). Klassieke contests staan hier uit.';
 
   @override
   String get territoryRiskClaimReinforce => 'Claim versterkingen';
@@ -17476,6 +17476,24 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get territoryRiskAttackAdjacent => 'Val buur aan';
+
+  @override
+  String get territoryRiskInvade => 'Landing';
+
+  @override
+  String territoryRiskInvadeHint(String expedition, String cap, String remnant) {
+    return 'Nog geen land in dit land: land met $expedition legers. De beachhead vecht tegen max $cap verdedigers; bij succes houd je overlevenden plus $remnant restant-legers.';
+  }
+
+  @override
+  String territoryRiskInvadeCooldown(String time) {
+    return 'Landing-cooldown: opnieuw over $time.';
+  }
+
+  @override
+  String territoryRiskInvadeConfirm(String expedition, String cap) {
+    return 'Stuur een landing van $expedition legers naar dit gebied? Beachhead vecht tegen max $cap verdedigers.';
+  }
 
   @override
   String get territoryRiskCommitLabel => 'Legers inzetten';
@@ -17573,6 +17591,15 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get territoryErrorRiskAttackCooldown =>
       'Aanvalscooldown voor deze grens is nog actief.';
+
+  @override
+  String get territoryErrorRiskInvadeDisabled => 'Landingen staan nu uit.';
+
+  @override
+  String get territoryErrorRiskInvadeNotEligible => 'Landings zijn alleen voor crews zonder regio\'s in dit land.';
+
+  @override
+  String get territoryErrorRiskInvadeCooldown => 'Landing-cooldown voor dit land is nog actief.';
 
   @override
   String get territoryAttackerActions => 'Aanvalsacties';

@@ -1167,6 +1167,12 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         return t.territoryErrorRiskOwnTarget;
       case 'territory.risk_attack_cooldown':
         return t.territoryErrorRiskAttackCooldown;
+      case 'territory.risk_invade_disabled':
+        return t.territoryErrorRiskInvadeDisabled;
+      case 'territory.risk_invade_not_eligible':
+        return t.territoryErrorRiskInvadeNotEligible;
+      case 'territory.risk_invade_cooldown':
+        return t.territoryErrorRiskInvadeCooldown;
       case 'territory.arsenal_officer_only':
         return t.territoryErrorArsenalOfficerOnly;
       case 'territory.arsenal_cache_required':
@@ -3546,6 +3552,11 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           builder: (_) {
             final reinforce =
                 (_mapData['riskReinforce'] as Map?)?.cast<String, dynamic>();
+            final invade =
+                (_mapData['riskInvade'] as Map?)?.cast<String, dynamic>();
+            if (invade != null && invade['eligible'] == true) {
+              return const SizedBox.shrink();
+            }
             final left = (reinforce?['armiesRemaining'] as num?)?.toInt() ?? 0;
             final fortifyUsed = reinforce?['fortifyUsed'] == true;
             final secs =
@@ -3578,11 +3589,20 @@ class _TerritoryScreenState extends State<TerritoryScreen>
             );
           },
         ),
-        _buildActionButton(
-          label: t.territoryRiskClaimReinforce,
-          icon: Icons.add_circle_outline,
-          color: Colors.teal[800]!,
-          onTap: _riskClaimReinforce,
+        Builder(
+          builder: (_) {
+            final invade =
+                (_mapData['riskInvade'] as Map?)?.cast<String, dynamic>();
+            if (invade != null && invade['eligible'] == true) {
+              return const SizedBox.shrink();
+            }
+            return _buildActionButton(
+              label: t.territoryRiskClaimReinforce,
+              icon: Icons.add_circle_outline,
+              color: Colors.teal[800]!,
+              onTap: _riskClaimReinforce,
+            );
+          },
         ),
         if (isMyCrewRegion) ...[
           const SizedBox(height: 8),
@@ -3610,13 +3630,83 @@ class _TerritoryScreenState extends State<TerritoryScreen>
             },
           ),
         ],
+        Builder(
+          builder: (_) {
+            final invade =
+                (_mapData['riskInvade'] as Map?)?.cast<String, dynamic>();
+            if (invade == null || invade['eligible'] != true) {
+              return const SizedBox.shrink();
+            }
+            if (isMyCrewRegion) return const SizedBox.shrink();
+            final enabled = invade['enabled'] == true;
+            final canInvade = invade['canInvade'] == true;
+            final secs = (invade['secondsRemaining'] as num?)?.toInt() ?? 0;
+            final expedition =
+                (invade['expedition'] as num?)?.toInt() ?? 6;
+            final cap = (invade['defenderCap'] as num?)?.toInt() ?? 4;
+            final remnant = (invade['remnant'] as num?)?.toInt() ?? 2;
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 8),
+                Text(
+                  t.territoryRiskInvadeHint(
+                    expedition.toString(),
+                    cap.toString(),
+                    remnant.toString(),
+                  ),
+                  style: TextStyle(color: Colors.grey[700], fontSize: 12),
+                ),
+                if (!canInvade && secs > 0)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Text(
+                      t.territoryRiskInvadeCooldown(
+                        _formatRiskWindowRemaining(secs),
+                      ),
+                      style: TextStyle(
+                        color: Colors.orange.shade900,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                const SizedBox(height: 8),
+                _buildActionButton(
+                  label: t.territoryRiskInvade,
+                  icon: Icons.anchor,
+                  color: Colors.indigo[800]!,
+                  onTap: enabled && canInvade && !encircled
+                      ? () => _riskInvade(region)
+                      : null,
+                  forceDisabled: !(enabled && canInvade && !encircled),
+                ),
+              ],
+            );
+          },
+        ),
         if (!isMyCrewRegion && !encircled) ...[
-          const SizedBox(height: 8),
-          _buildActionButton(
-            label: t.territoryRiskAttackAdjacent,
-            icon: Icons.gps_fixed,
-            color: Colors.red[800]!,
-            onTap: () => _riskAttackTarget(region),
+          Builder(
+            builder: (_) {
+              final invade =
+                  (_mapData['riskInvade'] as Map?)?.cast<String, dynamic>();
+              // Zero-owned crews use Landing instead of adjacent attack.
+              if (invade != null && invade['eligible'] == true) {
+                return const SizedBox.shrink();
+              }
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(height: 8),
+                  _buildActionButton(
+                    label: t.territoryRiskAttackAdjacent,
+                    icon: Icons.gps_fixed,
+                    color: Colors.red[800]!,
+                    onTap: () => _riskAttackTarget(region),
+                  ),
+                ],
+              );
+            },
           ),
         ],
       ],
@@ -5125,6 +5215,64 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       fromRegionKey: from['regionKey'] as String,
       toRegionKey: toKey,
       commitArmies: commit,
+    );
+    if (!mounted) return;
+    setState(() => _isActing = false);
+    if (result['success'] == true) {
+      await _loadData(silent: true);
+      if (!mounted) return;
+      final captured = result['captured'] == true;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(t.territoryRiskBattleResult(
+            ((result['attackerLosses'] as num?)?.toInt() ?? 0).toString(),
+            ((result['defenderLosses'] as num?)?.toInt() ?? 0).toString(),
+            captured ? t.territoryRiskCaptured : t.territoryRiskHeld,
+          )),
+          backgroundColor: captured ? Colors.green : Colors.orange,
+          duration: const Duration(seconds: 6),
+        ),
+      );
+    } else {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_territoryErrorMessage(result['event'] ?? result['message'])),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Future<void> _riskInvade(Map<String, dynamic> target) async {
+    final t = _l10n;
+    final invade = (_mapData['riskInvade'] as Map?)?.cast<String, dynamic>();
+    final expedition = (invade?['expedition'] as num?)?.toInt() ?? 6;
+    final cap = (invade?['defenderCap'] as num?)?.toInt() ?? 4;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(t.territoryRiskInvade),
+        content: Text(
+          t.territoryRiskInvadeConfirm(expedition.toString(), cap.toString()),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: Text(t.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: Text(t.territoryRiskInvade),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+    setState(() => _isActing = true);
+    final result = await _service.riskInvade(
+      toRegionKey: target['regionKey'] as String,
     );
     if (!mounted) return;
     setState(() => _isActing = false);

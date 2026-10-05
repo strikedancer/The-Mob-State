@@ -13949,5 +13949,42 @@
         "type": "String"
       }
     }
-  }
+  },
+  "territoryRiskInvade": "Landing assault",
+  "territoryRiskInvadeHint": "No land yet in this country: land with {expedition} armies. The beachhead fights at most {cap} defenders; on success you keep survivors plus {remnant} remnant armies.",
+  "@territoryRiskInvadeHint": {
+    "placeholders": {
+      "expedition": {
+        "type": "String"
+      },
+      "cap": {
+        "type": "String"
+      },
+      "remnant": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryRiskInvadeCooldown": "Landing cooldown: available again in {time}.",
+  "@territoryRiskInvadeCooldown": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryRiskInvadeConfirm": "Send a landing force of {expedition} armies against this region? Beachhead fights at most {cap} defenders.",
+  "@territoryRiskInvadeConfirm": {
+    "placeholders": {
+      "expedition": {
+        "type": "String"
+      },
+      "cap": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryErrorRiskInvadeDisabled": "Landings are currently disabled.",
+  "territoryErrorRiskInvadeNotEligible": "Landings are only for crews with no regions in this country yet.",
+  "territoryErrorRiskInvadeCooldown": "Landing cooldown still active for this country."
 }

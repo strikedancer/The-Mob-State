@@ -17624,7 +17624,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get territoryRiskModeHint =>
-      'In this country you conquer with armies: reinforce, attack adjacent regions with dice, then fortify. Classic contests are disabled here.';
+      'In this country you conquer with armies: reinforce, attack adjacent regions with dice, then fortify. Crews with no land here can try a landing (soft beachhead). Classic contests are disabled here.';
 
   @override
   String get territoryRiskClaimReinforce => 'Claim reinforcements';
@@ -17637,6 +17637,24 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get territoryRiskAttackAdjacent => 'Attack adjacent';
+
+  @override
+  String get territoryRiskInvade => 'Landing assault';
+
+  @override
+  String territoryRiskInvadeHint(String expedition, String cap, String remnant) {
+    return 'No land yet in this country: land with $expedition armies. The beachhead fights at most $cap defenders; on success you keep survivors plus $remnant remnant armies.';
+  }
+
+  @override
+  String territoryRiskInvadeCooldown(String time) {
+    return 'Landing cooldown: available again in $time.';
+  }
+
+  @override
+  String territoryRiskInvadeConfirm(String expedition, String cap) {
+    return 'Send a landing force of $expedition armies against this region? Beachhead fights at most $cap defenders.';
+  }
 
   @override
   String get territoryRiskCommitLabel => 'Armies to commit';
@@ -17734,6 +17752,15 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get territoryErrorRiskAttackCooldown =>
       'Attack cooldown still active for this border.';
+
+  @override
+  String get territoryErrorRiskInvadeDisabled => 'Landings are currently disabled.';
+
+  @override
+  String get territoryErrorRiskInvadeNotEligible => 'Landings are only for crews with no regions in this country yet.';
+
+  @override
+  String get territoryErrorRiskInvadeCooldown => 'Landing cooldown still active for this country.';
 
   @override
   String get territoryAttackerActions => 'Aktionen des Angreifers';

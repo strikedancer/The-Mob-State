@@ -427,6 +427,11 @@ export interface AdminTerritoryOverview {
     riskNeutralGarrison?: number;
     riskNlFullControlBonus?: number;
     riskSeedArmiesOnOwned?: number;
+    riskInvadeEnabled?: boolean;
+    riskInvadeExpedition?: number;
+    riskInvadeDefenderCap?: number;
+    riskInvadeRemnant?: number;
+    riskInvadeCooldownHours?: number;
   };
   activeSeason: {
     seasonKey: string;

@@ -155,6 +155,11 @@ async function getTerritoryConfig() {
     'TERRITORY_RISK_NEUTRAL_GARRISON',
     'TERRITORY_RISK_NL_FULL_CONTROL_BONUS',
     'TERRITORY_RISK_SEED_ARMIES_ON_OWNED',
+    'TERRITORY_RISK_INVADE_ENABLED',
+    'TERRITORY_RISK_INVADE_EXPEDITION',
+    'TERRITORY_RISK_INVADE_DEFENDER_CAP',
+    'TERRITORY_RISK_INVADE_REMNANT',
+    'TERRITORY_RISK_INVADE_COOLDOWN_HOURS',
   ];
   const cfg = await getRuntimeConfig(keys);
   const actionUnlockHqLevels = {
@@ -285,6 +290,11 @@ async function getTerritoryConfig() {
     riskNeutralGarrison: Number(cfg['TERRITORY_RISK_NEUTRAL_GARRISON'] ?? 3),
     riskNlFullControlBonus: Number(cfg['TERRITORY_RISK_NL_FULL_CONTROL_BONUS'] ?? 5),
     riskSeedArmiesOnOwned: Number(cfg['TERRITORY_RISK_SEED_ARMIES_ON_OWNED'] ?? 3),
+    riskInvadeEnabled: Number(cfg['TERRITORY_RISK_INVADE_ENABLED'] ?? 1) === 1,
+    riskInvadeExpedition: Number(cfg['TERRITORY_RISK_INVADE_EXPEDITION'] ?? 6),
+    riskInvadeDefenderCap: Number(cfg['TERRITORY_RISK_INVADE_DEFENDER_CAP'] ?? 4),
+    riskInvadeRemnant: Number(cfg['TERRITORY_RISK_INVADE_REMNANT'] ?? 2),
+    riskInvadeCooldownHours: Number(cfg['TERRITORY_RISK_INVADE_COOLDOWN_HOURS'] ?? 8),
     abandonEnabled: Number(cfg['TERRITORY_ABANDON_ENABLED'] ?? 1) === 1,
     abandonRegionCooldownSeconds: Number(cfg['TERRITORY_ABANDON_REGION_COOLDOWN_SECONDS'] ?? 172800),
     abandonCountryCooldownSeconds: Number(cfg['TERRITORY_ABANDON_COUNTRY_COOLDOWN_SECONDS'] ?? 604800),
@@ -2348,6 +2358,7 @@ export async function getMapData(
     viewerCaps,
     riskMode: riskSnapshot.riskMode,
     riskReinforce: riskSnapshot.reinforce,
+    riskInvade: riskSnapshot.invade,
     regions: regionsWithRisk,
   };
 }

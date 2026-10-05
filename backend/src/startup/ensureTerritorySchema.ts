@@ -157,6 +157,12 @@ const TERRITORY_CONFIG_DEFAULTS: Record<string, string> = {
   TERRITORY_RISK_NEUTRAL_GARRISON: '3',
   TERRITORY_RISK_NL_FULL_CONTROL_BONUS: '5',
   TERRITORY_RISK_SEED_ARMIES_ON_OWNED: '3',
+  // Landing / invade for crews with 0 owned regions in a Risk country
+  TERRITORY_RISK_INVADE_ENABLED: '1',
+  TERRITORY_RISK_INVADE_EXPEDITION: '6',
+  TERRITORY_RISK_INVADE_DEFENDER_CAP: '4',
+  TERRITORY_RISK_INVADE_REMNANT: '2',
+  TERRITORY_RISK_INVADE_COOLDOWN_HOURS: '8',
 };
 
 type TerritorySeedRegion = {
@@ -663,6 +669,16 @@ export async function ensureTerritorySchema(): Promise<void> {
       PRIMARY KEY (id),
       INDEX idx_territory_risk_battle_attacker (attackerCrewId),
       INDEX idx_territory_risk_battle_to (toRegionKey)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `);
+
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS territory_risk_invade_cooldown (
+      crewId INT NOT NULL,
+      countryCode VARCHAR(10) NOT NULL,
+      availableAt DATETIME NOT NULL,
+      updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (crewId, countryCode)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
 

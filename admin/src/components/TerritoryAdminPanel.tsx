@@ -102,6 +102,11 @@ type TerritoryRiskTuningForm = {
   riskNeutralGarrison: string
   riskNlFullControlBonus: string
   riskSeedArmiesOnOwned: string
+  riskInvadeEnabled: string
+  riskInvadeExpedition: string
+  riskInvadeDefenderCap: string
+  riskInvadeRemnant: string
+  riskInvadeCooldownHours: string
 }
 
 const defaultRiskTuning: TerritoryRiskTuningForm = {
@@ -114,6 +119,11 @@ const defaultRiskTuning: TerritoryRiskTuningForm = {
   riskNeutralGarrison: '3',
   riskNlFullControlBonus: '5',
   riskSeedArmiesOnOwned: '3',
+  riskInvadeEnabled: '1',
+  riskInvadeExpedition: '6',
+  riskInvadeDefenderCap: '4',
+  riskInvadeRemnant: '2',
+  riskInvadeCooldownHours: '8',
 }
 
 const tr = (locale: AdminLanguage, nl: string, en: string) =>
@@ -248,6 +258,11 @@ export function TerritoryAdminPanel({ locale }: Props) {
         riskNeutralGarrison: String(nextOverview.config.riskNeutralGarrison ?? 3),
         riskNlFullControlBonus: String(nextOverview.config.riskNlFullControlBonus ?? 5),
         riskSeedArmiesOnOwned: String(nextOverview.config.riskSeedArmiesOnOwned ?? 3),
+        riskInvadeEnabled: nextOverview.config.riskInvadeEnabled === false ? '0' : '1',
+        riskInvadeExpedition: String(nextOverview.config.riskInvadeExpedition ?? 6),
+        riskInvadeDefenderCap: String(nextOverview.config.riskInvadeDefenderCap ?? 4),
+        riskInvadeRemnant: String(nextOverview.config.riskInvadeRemnant ?? 2),
+        riskInvadeCooldownHours: String(nextOverview.config.riskInvadeCooldownHours ?? 8),
       })
 
       if (!selectedRegionKey && nextOverview.regions.length > 0) {
@@ -493,6 +508,11 @@ export function TerritoryAdminPanel({ locale }: Props) {
       'riskNeutralGarrison',
       'riskNlFullControlBonus',
       'riskSeedArmiesOnOwned',
+      'riskInvadeEnabled',
+      'riskInvadeExpedition',
+      'riskInvadeDefenderCap',
+      'riskInvadeRemnant',
+      'riskInvadeCooldownHours',
     ]
     for (const key of numericKeys) {
       const value = Number.parseFloat(riskTuning[key])
@@ -515,6 +535,11 @@ export function TerritoryAdminPanel({ locale }: Props) {
       TERRITORY_RISK_NEUTRAL_GARRISON: riskTuning.riskNeutralGarrison,
       TERRITORY_RISK_NL_FULL_CONTROL_BONUS: riskTuning.riskNlFullControlBonus,
       TERRITORY_RISK_SEED_ARMIES_ON_OWNED: riskTuning.riskSeedArmiesOnOwned,
+      TERRITORY_RISK_INVADE_ENABLED: riskTuning.riskInvadeEnabled === '1' ? '1' : '0',
+      TERRITORY_RISK_INVADE_EXPEDITION: riskTuning.riskInvadeExpedition,
+      TERRITORY_RISK_INVADE_DEFENDER_CAP: riskTuning.riskInvadeDefenderCap,
+      TERRITORY_RISK_INVADE_REMNANT: riskTuning.riskInvadeRemnant,
+      TERRITORY_RISK_INVADE_COOLDOWN_HOURS: riskTuning.riskInvadeCooldownHours,
     }
     try {
       setSubmitting(true)
@@ -638,6 +663,11 @@ export function TerritoryAdminPanel({ locale }: Props) {
                 ['riskNeutralGarrison', 'Neutrale garnizoen', 'Neutral garrison'],
                 ['riskNlFullControlBonus', 'Full-control bonus (elk land)', 'Full-control bonus (any country)'],
                 ['riskSeedArmiesOnOwned', 'Seed-legers op owned', 'Seed armies on owned'],
+                ['riskInvadeEnabled', 'Landing aan (1/0)', 'Landing enabled (1/0)'],
+                ['riskInvadeExpedition', 'Landing-expeditie', 'Landing expedition'],
+                ['riskInvadeDefenderCap', 'Landing verdediger-cap', 'Landing defender cap'],
+                ['riskInvadeRemnant', 'Landing restant-legers', 'Landing remnant armies'],
+                ['riskInvadeCooldownHours', 'Landing-cooldown (uur)', 'Landing cooldown (hours)'],
               ] as const
             ).map(([key, nlLabel, enLabel]) => (
               <div className="col-md-6 col-xl-3" key={key}>
