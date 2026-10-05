@@ -153,7 +153,7 @@ class TickQueue {
         console.error('[TickQueue] NPC ammo factory production failed:', npcAmmoErr);
       }
       const seasonResult = await nightclubService.processWeeklySeasonIfNeeded();
-      let donTick = { abandoned: 0, contests: 0, loans: 0, contracts: 0 };
+      let donTick = { abandoned: 0, contests: 0, officialsExpired: 0, loans: 0, contracts: 0 };
       try {
         const { donService } = await import('../services/donService');
         donTick = await donService.processTick();
@@ -194,6 +194,7 @@ class TickQueue {
         seasonWinnerCount: seasonResult.winners.length,
         donAbandoned: donTick.abandoned,
         donContests: donTick.contests,
+        donOfficialsExpired: donTick.officialsExpired,
         donLoans: donTick.loans,
         donContracts: donTick.contracts,
         racesSettled: raceTick.settled,

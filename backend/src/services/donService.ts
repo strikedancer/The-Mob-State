@@ -323,6 +323,37 @@ async function resolveExpiredContests(now: Date): Promise<number> {
   return count;
 }
 
+async function resolveExpiredOfficials(now: Date): Promise<number> {
+  const expired = await prisma.donOfficial.findMany({
+    where: {
+      patronPlayerId: { not: null },
+      paidUntil: { lte: now },
+    },
+  });
+  // Avoid inbox spam for long-stale rows left after old deploys.
+  const recentCutoff = new Date(now.getTime() - 2 * 3600 * 1000);
+  let count = 0;
+  for (const row of expired) {
+    const patronId = row.patronPlayerId;
+    const recentlyExpired = !!(row.paidUntil && row.paidUntil >= recentCutoff);
+    await prisma.donOfficial.update({
+      where: { id: row.id },
+      data: {
+        patronPlayerId: null,
+        paidUntil: null,
+      },
+    });
+    if (patronId && recentlyExpired) {
+      void notifyDon(patronId, {
+        nl: `Je invloed als ${donOfficeLabel(row.office, true)} in ${row.countryCode} is verlopen.`,
+        en: `Your ${donOfficeLabel(row.office, false)} influence in ${row.countryCode} has expired.`,
+      });
+    }
+    count += 1;
+  }
+  return count;
+}
+
 export const donService = {
   async getOverview(playerId: number) {
     const { cfg, player } = await requireEnabled(playerId);
@@ -955,15 +986,9 @@ export const donService = {
       { office, countryCode: player.currentCountry, cost, replaced: Boolean(replaced) },
       playerId
     );
-    void notifyDon(
-      playerId,
-      {
-        nl: `Je kocht de ${donOfficeLabel(office, true)} voor ${formatDonCash(cost, true)}.`,
-        en: `You bought the ${donOfficeLabel(office, false)} for ${formatDonCash(cost, false)}.`,
-      },
-      { push: false }
-    );
-    if (replaced) {
+    // Briber: toast-only on the hub — no inbox for buying the office.
+    // Previous patron still gets inbox+push when overbid.
+    if (replaced && row.patronPlayerId) {
       void notifyDon(row.patronPlayerId, {
         nl: `Iemand overbood je als ${donOfficeLabel(office, true)} in ${player.currentCountry}.`,
         en: `Someone outbid you as ${donOfficeLabel(office, false)} in ${player.currentCountry}.`,
@@ -1081,14 +1106,21 @@ export const donService = {
     return row ? cfg.commissionerWantedMult / 100 : 1;
   },
 
-  async processTick(): Promise<{ abandoned: number; contests: number; loans: number; contracts: number }> {
+  async processTick(): Promise<{
+    abandoned: number;
+    contests: number;
+    officialsExpired: number;
+    loans: number;
+    contracts: number;
+  }> {
     const cfg = await getDonRuntimeConfig();
     if (!cfg.enabled) {
-      return { abandoned: 0, contests: 0, loans: 0, contracts: 0 };
+      return { abandoned: 0, contests: 0, officialsExpired: 0, loans: 0, contracts: 0 };
     }
     const now = new Date();
     const abandoned = await abandonStaleRackets(now, cfg.abandonSeconds * 1000);
     const contests = await resolveExpiredContests(now);
+    const officialsExpired = await resolveExpiredOfficials(now);
 
     const dueNpc = await prisma.donLoan.findMany({
       where: { status: 'active', npcKey: { not: null }, dueAt: { lte: now } },
@@ -1209,6 +1241,6 @@ export const donService = {
       await ensureCountryContracts(countryCode);
     }
 
-    return { abandoned, contests, loans, contracts };
+    return { abandoned, contests, officialsExpired, loans, contracts };
   },
 };
