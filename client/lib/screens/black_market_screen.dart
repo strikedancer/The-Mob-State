@@ -742,13 +742,17 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
   String _bmL10n(AppLocalizations l10n, String key, String fallback) {
     final dynamic d = l10n;
     final Object? value = switch (key) {
+      'bmHubSellKindVehicle' => d.bmHubSellKindVehicle,
       'bmHubSellKindTool' => d.bmHubSellKindTool,
       'bmHubSellKindDrug' => d.bmHubSellKindDrug,
       'bmHubSellKindCrypto' => d.bmHubSellKindCrypto,
       'bmHubSellKindTrade' => d.bmHubSellKindTrade,
+      'bmHubNoVehiclesToSell' => d.bmHubNoVehiclesToSell,
       'bmHubNoDrugsToSell' => d.bmHubNoDrugsToSell,
       'bmHubNoCryptoToSell' => d.bmHubNoCryptoToSell,
       'bmHubNoTradeGoodsToSell' => d.bmHubNoTradeGoodsToSell,
+      'bmHubListVehicleTitle' => d.bmHubListVehicleTitle,
+      'bmHubListVehicleSelectLabel' => d.bmHubListVehicleSelectLabel,
       'bmHubListDrugTitle' => d.bmHubListDrugTitle,
       'bmHubListDrugSelectLabel' => d.bmHubListDrugSelectLabel,
       'bmHubListCryptoTitle' => d.bmHubListCryptoTitle,
@@ -1064,6 +1068,11 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
+                leading: const Icon(Icons.directions_car_outlined),
+                title: Text(_bmL10n(l10n, 'bmHubSellKindVehicle', 'Vehicles')),
+                onTap: () => Navigator.pop(dialogContext, 'vehicle'),
+              ),
+              ListTile(
                 leading: const Icon(Icons.build_circle_outlined),
                 title: Text(_bmL10n(l10n, 'bmHubSellKindTool', 'Tool')),
                 onTap: () => Navigator.pop(dialogContext, 'tool'),
@@ -1103,6 +1112,8 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
     if (!mounted || kind == null) return;
 
     switch (kind) {
+      case 'vehicle':
+        await _showListVehicleDialog(vehicleProvider);
       case 'tool':
         await _showListCarriedToolDialog(vehicleProvider);
       case 'drug':
@@ -1113,6 +1124,163 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
         await _showListTradeGoodDialog(vehicleProvider);
       case 'event':
         await _showListEventItemDialog(vehicleProvider);
+    }
+  }
+
+  Future<void> _showListVehicleDialog(VehicleProvider vehicleProvider) async {
+    final l10n = AppLocalizations.of(context)!;
+    await vehicleProvider.fetchInventory();
+    if (!mounted) return;
+
+    final listable = vehicleProvider.inventory
+        .where(
+          (v) =>
+              !v.marketListing &&
+              !v.isInShowroom &&
+              (v.transportStatus == null || v.transportStatus!.isEmpty) &&
+              !v.repairInProgress,
+        )
+        .toList();
+
+    if (listable.isEmpty) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            _bmL10n(l10n, 'bmHubNoVehiclesToSell', 'No vehicles available to list'),
+          ),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+
+    final selectedRef = <VehicleInventoryItem>[listable.first];
+    final priceController = TextEditingController(
+      text: listable.first.getMarketValue().toStringAsFixed(0),
+    );
+
+    final submitted = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            final selected = selectedRef[0];
+            return AlertDialog(
+              title: Text(
+                _bmL10n(l10n, 'bmHubListVehicleTitle', 'List vehicle'),
+              ),
+              content: ResponsiveDialogContent(
+                phoneMaxWidth: 320,
+                tabletMaxWidth: 400,
+                desktopMaxWidth: 440,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    DropdownButtonFormField<VehicleInventoryItem>(
+                      decoration: InputDecoration(
+                        labelText: _bmL10n(
+                          l10n,
+                          'bmHubListVehicleSelectLabel',
+                          'Vehicle',
+                        ),
+                      ),
+                      value: selected,
+                      items: listable
+                          .map(
+                            (v) {
+                              final vType =
+                                  (v.vehicleType ?? 'vehicle').toLowerCase();
+                              return DropdownMenuItem(
+                                value: v,
+                                child: Text(
+                                  '${v.definition?.name ?? v.vehicleId ?? l10n.vehicleHeistGenericVehicle}'
+                                  ' · $vType'
+                                  ' · ${v.condition}%',
+                                ),
+                              );
+                            },
+                          )
+                          .toList(),
+                      onChanged: (v) {
+                        if (v == null) return;
+                        setState(() {
+                          selectedRef[0] = v;
+                          priceController.text =
+                              v.getMarketValue().toStringAsFixed(0);
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      l10n.marketValue(
+                        selected.getMarketValue().toStringAsFixed(0),
+                      ),
+                      style: TextStyle(color: Colors.grey[700], fontSize: 13),
+                    ),
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: priceController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: l10n.askingPrice,
+                        hintText: l10n.enterPrice,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(dialogContext, false),
+                  child: Text(l10n.cancel),
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.pop(dialogContext, true),
+                  child: Text(l10n.list),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+
+    if (submitted != true || !mounted) return;
+
+    final price = int.tryParse(priceController.text.trim());
+    if (price == null) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(content: Text(l10n.invalidPrice), backgroundColor: Colors.red),
+      );
+      return;
+    }
+
+    final success = await vehicleProvider.listVehicleOnMarket(
+      selectedRef[0].id,
+      price,
+    );
+    if (!mounted) return;
+
+    if (success) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(l10n.vehicleListed),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            vehicleProvider.error ?? l10n.listVehicleFailed,
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 

@@ -17711,6 +17711,10 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Tool'**
+  String get bmHubSellKindVehicle;
+  String get bmHubNoVehiclesToSell;
+  String get bmHubListVehicleTitle;
+  String get bmHubListVehicleSelectLabel;
   String get bmHubSellKindTool;
 
   /// No description provided for @bmHubSellKindDrug.

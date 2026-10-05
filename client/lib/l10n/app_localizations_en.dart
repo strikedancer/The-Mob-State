@@ -10064,7 +10064,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bmHubEmptyMyListingsHint =>
-      'List vehicles from Garage or Marina, or sell carried tools with Sell item';
+      'List vehicles, tools, drugs or trade goods with Sell item (or from Garage/Marina)';
 
   @override
   String get bmHubSellerLabel => 'Seller';
@@ -10171,9 +10171,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bmHubNoMarketListingsBody =>
-      'No vehicles or items match your filters. You can list carried tools with the Sell item button.';
+      'No vehicles or items match your filters. You can list vehicles, tools, drugs and more with Sell item.';
 
   @override
+  @override
+  String get bmHubSellKindVehicle => 'Vehicles';
+
+  @override
+  String get bmHubNoVehiclesToSell => 'No vehicles available to list (already listed, in showroom, in transit, or in repair).';
+
+  @override
+  String get bmHubListVehicleTitle => 'List vehicle';
+
+  @override
+  String get bmHubListVehicleSelectLabel => 'Vehicle';
+
   String get bmHubSellKindTool => 'Tool';
 
   @override
@@ -10243,7 +10255,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get marketTeaserOpen => 'Open';
 
   @override
-  String get marketTeaserEmpty => 'List tools, drugs or trade goods for sale';
+  String get marketTeaserEmpty =>
+      'List vehicles, tools, drugs or trade goods for sale';
 
   @override
   String marketTeaserActiveCount(int count) {

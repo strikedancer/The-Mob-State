@@ -37,10 +37,10 @@ Inventory for event items: `GET /game-events/my-items`. Public gold/silver/bronz
 - `blackMarketService.ts` — vehicles
 
 ## Dashboard
-- Compact **Markt**-tegel toont het aantal actieve advertenties (`GET /market/unified`) plus tot drie **categorieën** (gereedschap, drugs, crypto, handelswaren, evenementitems, voertuigen). Nooit interne `kind`-codes zoals `player_tool`. Lege staat: “Zet gereedschap, drugs of handelswaren te koop”. Geen NPC-fake listings. Op web opent de tegel de Marktplaats-tab **in de dashboard-shell** (`MarketTeaserTile.onOpenMarket` → `_openBlackMarket(tabMarketplace)`), niet `Navigator.push`.
+- Compact **Markt**-tegel toont het aantal actieve advertenties (`GET /market/unified`) plus tot drie **categorieën** (gereedschap, drugs, crypto, handelswaren, evenementitems, voertuigen). Nooit interne `kind`-codes zoals `player_tool`. Lege staat: “Zet voertuigen, gereedschap, drugs of handelswaren te koop”. Geen NPC-fake listings. Op web opent de tegel de Marktplaats-tab **in de dashboard-shell** (`MarketTeaserTile.onOpenMarket` → `_openBlackMarket(tabMarketplace)`), niet `Navigator.push`.
 
 ## Client
-- Sell CTA → kind picker (tool/drug/crypto/trade/event). Empty Marktplaats / Mijn advertenties must show **Verkoop item** in the empty state (not only a FAB when listings exist). FAB stays when the list has rows; inset from the right so the live-event rail does not cover it.
+- Sell CTA → kind picker (vehicle/tool/drug/crypto/trade/event). Empty Marktplaats / Mijn advertenties must show **Verkoop item** in the empty state (not only a FAB when listings exist). FAB stays when the list has rows; inset from the right so the live-event rail does not cover it. Vehicles can also still be listed from Garage/Marina.
 - Polymorphic `PlayerToolMarketListing` model
 
 ## QA

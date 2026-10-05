@@ -10194,7 +10194,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get bmHubEmptyMyListingsHint =>
-      'Véhicules via Garage/Marina, ou outils portés via Vendre un objet';
+      'List vehicles, tools, drugs or trade goods with Sell item (or from Garage/Marina)';
 
   @override
   String get bmHubSellerLabel => 'Vendeuse';
@@ -10301,9 +10301,21 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get bmHubNoMarketListingsBody =>
-      'Rien ne correspond à vos filtres. Listez des outils portés avec Vendre un objet.';
+      'No vehicles or items match your filters. You can list vehicles, tools, drugs and more with Sell item.';
 
   @override
+  @override
+  String get bmHubSellKindVehicle => 'Vehicles';
+
+  @override
+  String get bmHubNoVehiclesToSell => 'No vehicles available to list (already listed, in showroom, in transit, or in repair).';
+
+  @override
+  String get bmHubListVehicleTitle => 'List vehicle';
+
+  @override
+  String get bmHubListVehicleSelectLabel => 'Vehicle';
+
   String get bmHubSellKindTool => 'Tool';
 
   @override
@@ -10374,7 +10386,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get marketTeaserEmpty =>
-      'Répertoriez les outils, les médicaments ou les biens commerciaux à vendre';
+      'List vehicles, tools, drugs or trade goods for sale';
 
   @override
   String marketTeaserActiveCount(int count) {

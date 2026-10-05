@@ -10115,7 +10115,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get bmHubEmptyMyListingsHint =>
-      'Voertuigen via Garage of Jachthaven te koop zetten, of gedragen gereedschap via Verkoop item';
+      'Zet voertuigen, gereedschap, drugs of handelswaren te koop via Verkoop item (of via Garage/Jachthaven)';
 
   @override
   String get bmHubSellerLabel => 'Seller';
@@ -10222,9 +10222,21 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get bmHubNoMarketListingsBody =>
-      'Geen voertuigen of items die aan je filters voldoen. Je kunt gedragen gereedschap verkopen via Verkoop item.';
+      'Geen voertuigen of items die aan je filters voldoen. Zet voertuigen, gereedschap, drugs en meer te koop via Verkoop item.';
 
   @override
+  @override
+  String get bmHubSellKindVehicle => 'Voertuigen';
+
+  @override
+  String get bmHubNoVehiclesToSell => 'Geen voertuigen om te zetten (al te koop, in showroom, onderweg of in reparatie).';
+
+  @override
+  String get bmHubListVehicleTitle => 'Voertuig te koop zetten';
+
+  @override
+  String get bmHubListVehicleSelectLabel => 'Voertuig';
+
   String get bmHubSellKindTool => 'Gereedschap';
 
   @override
@@ -10295,7 +10307,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get marketTeaserEmpty =>
-      'Zet gereedschap, drugs of handelswaren te koop';
+      'Zet voertuigen, gereedschap, drugs of handelswaren te koop';
 
   @override
   String marketTeaserActiveCount(int count) {
