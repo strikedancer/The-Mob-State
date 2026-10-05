@@ -761,6 +761,10 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     return '${seconds}s';
   }
 
+  String _formatRiskWindowRemaining(int seconds) {
+    return _formatDuration(Duration(seconds: seconds < 0 ? 0 : seconds));
+  }
+
   String _formatLiveDuration(Duration duration) {
     final safeDuration = duration.isNegative ? Duration.zero : duration;
     final hours = safeDuration.inHours;
@@ -3543,11 +3547,33 @@ class _TerritoryScreenState extends State<TerritoryScreen>
             final reinforce =
                 (_mapData['riskReinforce'] as Map?)?.cast<String, dynamic>();
             final left = (reinforce?['armiesRemaining'] as num?)?.toInt() ?? 0;
+            final fortifyUsed = reinforce?['fortifyUsed'] == true;
+            final secs =
+                (reinforce?['secondsRemaining'] as num?)?.toInt() ?? 0;
             return Padding(
               padding: const EdgeInsets.only(top: 4, bottom: 8),
-              child: Text(
-                t.territoryRiskReinforceLeft(left.toString()),
-                style: TextStyle(color: Colors.grey[700], fontSize: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    t.territoryRiskReinforceLeft(left.toString()),
+                    style: TextStyle(color: Colors.grey[700], fontSize: 12),
+                  ),
+                  if (fortifyUsed)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4),
+                      child: Text(
+                        t.territoryRiskFortifyUsedStatus(
+                          _formatRiskWindowRemaining(secs),
+                        ),
+                        style: TextStyle(
+                          color: Colors.orange.shade900,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                ],
               ),
             );
           },
@@ -3567,11 +3593,21 @@ class _TerritoryScreenState extends State<TerritoryScreen>
             onTap: () => _riskPlaceReinforce(region),
           ),
           const SizedBox(height: 8),
-          _buildActionButton(
-            label: t.territoryRiskFortify,
-            icon: Icons.swap_horiz,
-            color: Colors.blueGrey[800]!,
-            onTap: () => _riskFortify(region),
+          Builder(
+            builder: (_) {
+              final reinforce =
+                  (_mapData['riskReinforce'] as Map?)?.cast<String, dynamic>();
+              final fortifyUsed = reinforce?['fortifyUsed'] == true;
+              return _buildActionButton(
+                label: fortifyUsed
+                    ? t.territoryRiskFortifyUsedButton
+                    : t.territoryRiskFortify,
+                icon: Icons.swap_horiz,
+                color: Colors.blueGrey[800]!,
+                onTap: fortifyUsed ? null : () => _riskFortify(region),
+                forceDisabled: fortifyUsed,
+              );
+            },
           ),
         ],
         if (!isMyCrewRegion && !encircled) ...[
@@ -4988,6 +5024,20 @@ class _TerritoryScreenState extends State<TerritoryScreen>
 
   Future<void> _riskFortify(Map<String, dynamic> region) async {
     final t = _l10n;
+    final reinforce = (_mapData['riskReinforce'] as Map?)?.cast<String, dynamic>();
+    if (reinforce?['fortifyUsed'] == true) {
+      final secs = (reinforce?['secondsRemaining'] as num?)?.toInt() ?? 0;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            t.territoryRiskFortifyUsedStatus(_formatRiskWindowRemaining(secs)),
+          ),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
     final fromKey = region['regionKey'] as String;
     final regions = (_mapData['regions'] as List?)?.whereType<Map<String, dynamic>>().toList() ?? [];
     final ownedNeighbors = regions.where((r) {

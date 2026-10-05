@@ -8736,7 +8736,7 @@
   "territoryErrorRiskNotOwner": "Dit gebied is niet van jouw crew.",
   "territoryErrorRiskNoReinforce": "Geen versterkingen meer in dit venster.",
   "territoryErrorRiskNotAdjacent": "Alleen aangrenzende regio's mogen.",
-  "territoryErrorRiskFortifyUsed": "Je hebt dit venster al gefortificeerd.",
+  "territoryErrorRiskFortifyUsed": "Je mag één keer legers verplaatsen (fortificeren) per versterkingsronde. Die verplaatsing is al gedaan; wacht tot de ronde voorbij is.",
   "territoryErrorRiskInsufficientArmies": "Niet genoeg legers (laat minstens 1 achter).",
   "territoryErrorRiskOwnTarget": "Dat gebied is al van jou.",
   "territoryErrorRiskAttackCooldown": "Aanvalscooldown voor deze grens is nog actief.",
@@ -13940,5 +13940,14 @@
   "achievementTitle_freight_cargo_baron": "Vrachtbaron",
   "achievementDescription_freight_cargo_baron": "Voltooi 150 hangar-vrachtcontracten",
   "achievementTitle_freight_five_destinations": "Vijf bestemmingen",
-  "achievementDescription_freight_five_destinations": "Lever hangar-vracht af in 5 verschillende landen"
+  "achievementDescription_freight_five_destinations": "Lever hangar-vracht af in 5 verschillende landen",
+  "territoryRiskFortifyUsedStatus": "Fortificeren al gebruikt deze ronde. Opnieuw over {time}.",
+  "@territoryRiskFortifyUsedStatus": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryRiskFortifyUsedButton": "Fortificeren al gebruikt"
 }

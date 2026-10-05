@@ -13940,5 +13940,14 @@
   "achievementTitle_freight_cargo_baron": "Barone del cargo",
   "achievementDescription_freight_cargo_baron": "Completa 150 contratti di trasporto dell'hangar",
   "achievementTitle_freight_five_destinations": "Cinque destinazioni",
-  "achievementDescription_freight_five_destinations": "Consegna trasporto hangar in 5 paesi diversi"
+  "achievementDescription_freight_five_destinations": "Consegna trasporto hangar in 5 paesi diversi",
+  "territoryRiskFortifyUsedStatus": "Fortify already used this round. Available again in {time}.",
+  "territoryRiskFortifyUsedButton": "Fortify already used",
+  "@territoryRiskFortifyUsedStatus": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  }
 }

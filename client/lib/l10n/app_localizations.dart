@@ -30145,6 +30145,12 @@ abstract class AppLocalizations {
   /// **'You already fortified this reinforce window.'**
   String get territoryErrorRiskFortifyUsed;
 
+  /// No description provided for @territoryRiskFortifyUsedStatus.
+  String territoryRiskFortifyUsedStatus(String time);
+
+  /// No description provided for @territoryRiskFortifyUsedButton.
+  String get territoryRiskFortifyUsedButton;
+
   /// No description provided for @territoryErrorRiskInsufficientArmies.
   ///
   /// In en, this message translates to:

@@ -17552,7 +17552,16 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get territoryErrorRiskFortifyUsed =>
-      'Je hebt dit venster al gefortificeerd.';
+      'Je mag één keer legers verplaatsen (fortificeren) per versterkingsronde. Die verplaatsing is al gedaan;
+
+  @override
+  String territoryRiskFortifyUsedStatus(String time) {
+    return 'Fortificeren al gebruikt deze ronde. Opnieuw over $time.';
+  }
+
+  @override
+  String get territoryRiskFortifyUsedButton =>
+      'Fortificeren al gebruikt'; wacht tot de ronde voorbij is.'
 
   @override
   String get territoryErrorRiskInsufficientArmies =>

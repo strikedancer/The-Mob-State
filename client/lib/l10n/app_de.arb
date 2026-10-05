@@ -13940,5 +13940,14 @@
   "achievementTitle_freight_cargo_baron": "Frachtbaron",
   "achievementDescription_freight_cargo_baron": "Schließe 150 Hangar-Frachtverträge ab",
   "achievementTitle_freight_five_destinations": "Fünf Ziele",
-  "achievementDescription_freight_five_destinations": "Liefere Hangar-Fracht in 5 verschiedene Länder"
+  "achievementDescription_freight_five_destinations": "Liefere Hangar-Fracht in 5 verschiedene Länder",
+  "territoryRiskFortifyUsedStatus": "Fortify already used this round. Available again in {time}.",
+  "territoryRiskFortifyUsedButton": "Fortify already used",
+  "@territoryRiskFortifyUsedStatus": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  }
 }

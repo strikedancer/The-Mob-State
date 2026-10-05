@@ -13940,5 +13940,14 @@
   "achievementTitle_freight_cargo_baron": "Baron ładunku",
   "achievementDescription_freight_cargo_baron": "Ukończ 150 kontraktów frachtowych w hangarze",
   "achievementTitle_freight_five_destinations": "Pięć celów",
-  "achievementDescription_freight_five_destinations": "Dostarcz fracht hangaru do 5 różnych krajów"
+  "achievementDescription_freight_five_destinations": "Dostarcz fracht hangaru do 5 różnych krajów",
+  "territoryRiskFortifyUsedStatus": "Fortify already used this round. Available again in {time}.",
+  "territoryRiskFortifyUsedButton": "Fortify already used",
+  "@territoryRiskFortifyUsedStatus": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  }
 }

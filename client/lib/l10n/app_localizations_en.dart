@@ -17504,7 +17504,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get territoryErrorRiskFortifyUsed =>
-      'You already fortified this reinforce window.';
+      'You may move armies (fortify) once per reinforce round. That move is already used;
+
+  @override
+  String territoryRiskFortifyUsedStatus(String time) {
+    return 'Fortify already used this round. Available again in $time.';
+  }
+
+  @override
+  String get territoryRiskFortifyUsedButton =>
+      'Fortify already used'; wait until the round resets.'
 
   @override
   String get territoryErrorRiskInsufficientArmies =>

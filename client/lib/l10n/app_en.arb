@@ -11238,7 +11238,7 @@
   "territoryErrorRiskNotOwner": "You do not own that region.",
   "territoryErrorRiskNoReinforce": "No reinforcements left in this window.",
   "territoryErrorRiskNotAdjacent": "You can only attack or fortify adjacent regions.",
-  "territoryErrorRiskFortifyUsed": "You already fortified this reinforce window.",
+  "territoryErrorRiskFortifyUsed": "You may move armies (fortify) once per reinforce round. That move is already used; wait until the round resets.",
   "territoryErrorRiskInsufficientArmies": "Not enough armies (leave at least 1 behind).",
   "territoryErrorRiskOwnTarget": "You already own that region.",
   "territoryErrorRiskAttackCooldown": "Attack cooldown still active for this border.",
@@ -13940,5 +13940,14 @@
   "achievementTitle_freight_cargo_baron": "Cargo Baron",
   "achievementDescription_freight_cargo_baron": "Complete 150 hangar freight contracts",
   "achievementTitle_freight_five_destinations": "Five Destinations",
-  "achievementDescription_freight_five_destinations": "Deliver hangar freight to 5 different countries"
+  "achievementDescription_freight_five_destinations": "Deliver hangar freight to 5 different countries",
+  "territoryRiskFortifyUsedStatus": "Fortify already used this round. Available again in {time}.",
+  "@territoryRiskFortifyUsedStatus": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryRiskFortifyUsedButton": "Fortify already used"
 }
