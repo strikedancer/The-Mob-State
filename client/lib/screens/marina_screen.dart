@@ -17,6 +17,7 @@ import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/formatters.dart';
 import '../utils/web_asset_helper.dart';
+import '../widgets/action_result_toast.dart';
 import '../widgets/stolen_vehicle_dialog.dart';
 import '../widgets/vehicle_dispose_confirm_dialog.dart';
 import '../widgets/game_page_info.dart';
@@ -1464,8 +1465,10 @@ class _MarinaScreenState extends State<MarinaScreen> {
     final fuelNeeded = maxFuel - currentFuel;
 
     if (fuelNeeded <= 0.5) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.vehicleGarageTankFull)),
+      showActionResultToast(
+        context,
+        title: l10n.vehicleGarageTankFull,
+        success: false,
       );
       return;
     }
@@ -1532,8 +1535,10 @@ class _MarinaScreenState extends State<MarinaScreen> {
     if (!mounted) return;
 
     if (success) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.vehicleGarageRefuelSuccess)),
+      showActionResultToast(
+        context,
+        title: l10n.vehicleGarageRefuelSuccess,
+        success: true,
       );
       // Small delay to ensure data is fetched and UI updates
       await Future.delayed(const Duration(milliseconds: 500));
@@ -1541,13 +1546,10 @@ class _MarinaScreenState extends State<MarinaScreen> {
         _loadData();
       }
     } else {
-      showTopRightFromSnackBar(
+      showActionResultToast(
         context,
-        SnackBar(
-          content: Text(
-            provider.error ?? l10n.vehicleGarageRefuelFailed,
-          ),
-        ),
+        title: provider.error ?? l10n.vehicleGarageRefuelFailed,
+        success: false,
       );
     }
   }
@@ -1651,20 +1653,17 @@ class _MarinaScreenState extends State<MarinaScreen> {
     if (!mounted) return;
 
     if (success) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.vehicleGarageRepairStartedUnavailable),
-        ),
+      showActionResultToast(
+        context,
+        title: l10n.vehicleGarageRepairStartedUnavailable,
+        success: true,
       );
       await _loadData();
     } else {
-      showTopRightFromSnackBar(
+      showActionResultToast(
         context,
-        SnackBar(
-          content: Text(
-            provider.error ?? l10n.vehicleGarageRepairFailed,
-          ),
-        ),
+        title: provider.error ?? l10n.vehicleGarageRepairFailed,
+        success: false,
       );
     }
   }

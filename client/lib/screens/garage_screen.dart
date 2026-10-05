@@ -17,6 +17,7 @@ import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/formatters.dart';
 import '../utils/web_asset_helper.dart';
+import '../widgets/action_result_toast.dart';
 import '../widgets/stolen_vehicle_dialog.dart';
 import '../widgets/vehicle_dispose_confirm_dialog.dart';
 import '../widgets/game_page_info.dart';
@@ -1494,11 +1495,10 @@ class _GarageScreenState extends State<GarageScreen> {
   Future<void> _refuelVehicle(VehicleProvider provider, vehicle) async {
     final l10n = AppLocalizations.of(context)!;
     if (vehicle.definition?.fuelCapacity == null) {
-      showTopRightFromSnackBar(
+      showActionResultToast(
         context,
-        SnackBar(
-          content: Text(l10n.vehicleGarageNoFuelTank),
-        ),
+        title: l10n.vehicleGarageNoFuelTank,
+        success: false,
       );
       return;
     }
@@ -1509,9 +1509,10 @@ class _GarageScreenState extends State<GarageScreen> {
     final fuelNeeded = maxFuel - currentFuel;
 
     if (fuelNeeded <= 0.5) {
-      showTopRightFromSnackBar(
+      showActionResultToast(
         context,
-        SnackBar(content: Text(l10n.vehicleGarageTankFull)),
+        title: l10n.vehicleGarageTankFull,
+        success: false,
       );
       return;
     }
@@ -1578,9 +1579,10 @@ class _GarageScreenState extends State<GarageScreen> {
     if (!mounted) return;
 
     if (success) {
-      showTopRightFromSnackBar(
+      showActionResultToast(
         context,
-        SnackBar(content: Text(l10n.vehicleGarageRefuelSuccess)),
+        title: l10n.vehicleGarageRefuelSuccess,
+        success: true,
       );
       // Small delay to ensure data is fetched and UI updates
       await Future.delayed(const Duration(milliseconds: 500));
@@ -1588,13 +1590,10 @@ class _GarageScreenState extends State<GarageScreen> {
         _loadData();
       }
     } else {
-      showTopRightFromSnackBar(
+      showActionResultToast(
         context,
-        SnackBar(
-          content: Text(
-            provider.error ?? l10n.vehicleGarageRefuelFailed,
-          ),
-        ),
+        title: provider.error ?? l10n.vehicleGarageRefuelFailed,
+        success: false,
       );
     }
   }
