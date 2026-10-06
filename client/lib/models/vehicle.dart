@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'vehicle.g.dart';
@@ -170,6 +172,17 @@ class VehicleInventoryItem {
     final basePrice = countryPrice ?? (definition?.baseValue ?? 0);
     final tune = tunedValueMultiplier ?? 1;
     return (basePrice * (condition / 100) * tune).floor();
+  }
+
+  /// Allowed asking price on Marktplaats.
+  /// Keep in sync with vehicleService.getMarketListingPriceBounds.
+  ({int min, int max}) marketListingPriceBounds() {
+    final quote = math.max(1, getMarketValue());
+    final catalog = definition?.baseValue;
+    final base = catalog != null && catalog > 0 ? catalog : quote;
+    final minPrice = math.max(1, (math.min(base, quote) * 0.1).floor());
+    final maxPrice = math.max(base * 2, math.max(quote * 2, quote));
+    return (min: minPrice, max: maxPrice);
   }
 
   // Get condition color (red/orange/green)

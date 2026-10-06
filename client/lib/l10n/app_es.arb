@@ -970,6 +970,17 @@
   "invalidPrice": "Precio no válido",
   "vehicleListed": "¡Vehículo listado en el mercado!",
   "listVehicleFailed": "No se pudo enumerar el vehículo",
+  "marketListPriceRange": "El precio debe estar entre €{min} y €{max}.",
+  "@marketListPriceRange": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
   "marina": "Puerto pequeño",
   "hospital": "Hospital",
   "court": "Corte",

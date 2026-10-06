@@ -34,7 +34,7 @@ Inventory for event items: `GET /game-events/my-items`. Public gold/silver/bronz
 ## Services
 - `playerMarketplaceService.ts` — tools + drug/crypto/trade/event lots
 - `eventItemService.ts` — catalog + inventory credit/debit
-- `blackMarketService.ts` — vehicles
+- `blackMarketService.ts` — vehicles. Asking price must sit between 10% of the lower of catalog `baseValue` and the quoted sell price, and twice the higher of those two (the quote is country market × condition × tuning, so the prefilled price is always allowed). Out of range returns `PRICE_OUT_OF_RANGE` with `minPrice` and `maxPrice`. Changing the vehicle in the sell dialog resets the price field to that quote.
 
 ## Dashboard
 - Compact **Markt**-tegel toont het aantal actieve advertenties (`GET /market/unified`) plus tot drie **categorieën** (gereedschap, drugs, crypto, handelswaren, evenementitems, voertuigen). Nooit interne `kind`-codes zoals `player_tool`. Lege staat: “Zet voertuigen, gereedschap, drugs of handelswaren te koop”. Geen NPC-fake listings. Op web opent de tegel de Marktplaats-tab **in de dashboard-shell** (`MarketTeaserTile.onOpenMarket` → `_openBlackMarket(tabMarketplace)`), niet `Navigator.push`.

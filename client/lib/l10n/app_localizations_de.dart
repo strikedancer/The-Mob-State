@@ -7467,6 +7467,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get listVehicleFailed => 'Fahrzeug konnte nicht aufgelistet werden';
 
   @override
+  String marketListPriceRange(String min, String max) {
+    return 'Der Preis muss zwischen €$min und €$max liegen.';
+  }
+
+  @override
   String get marina => 'Yachthafen';
 
   @override

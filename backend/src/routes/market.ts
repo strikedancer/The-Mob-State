@@ -58,6 +58,18 @@ function parsePrice(value: unknown): number | null {
   return Math.floor(value);
 }
 
+/** Whole euros from a JSON number or a numeric string. */
+function parseAskingPrice(value: unknown): number | null {
+  if (typeof value === 'number' && Number.isFinite(value) && value > 0) {
+    return Math.floor(value);
+  }
+  if (typeof value === 'string' && value.trim()) {
+    const parsed = Number(value.trim());
+    if (Number.isFinite(parsed) && parsed > 0) return Math.floor(parsed);
+  }
+  return null;
+}
+
 /**
  * GET /market/unified
  * Vehicles plus all player-item listings (tools, drug lots, crypto lots, trade goods).
@@ -529,7 +541,7 @@ router.post('/buy-item/:listingId', authenticate, requireNotJailed, async (req: 
 router.post('/list/:inventoryId', authenticate, requireNotJailed, async (req: AuthRequest, res: Response) => {
   try {
     const inventoryId = parseInt(req.params.inventoryId as string);
-    const { askingPrice } = req.body;
+    const askingPrice = parseAskingPrice(req.body?.askingPrice);
 
     if (isNaN(inventoryId)) {
       return res.status(400).json({
@@ -538,7 +550,7 @@ router.post('/list/:inventoryId', authenticate, requireNotJailed, async (req: Au
       });
     }
 
-    if (!askingPrice || typeof askingPrice !== 'number' || askingPrice <= 0) {
+    if (askingPrice === null) {
       return res.status(400).json({
         event: 'market.error',
         params: { reason: 'INVALID_ASKING_PRICE' },
@@ -556,6 +568,9 @@ router.post('/list/:inventoryId', authenticate, requireNotJailed, async (req: Au
         event: 'market.list_failed',
         params: {
           reason: result.message,
+          ...(result.minPrice != null && result.maxPrice != null
+            ? { minPrice: result.minPrice, maxPrice: result.maxPrice }
+            : {}),
         },
       });
     }
@@ -595,6 +610,13 @@ router.post('/list/:inventoryId', authenticate, requireNotJailed, async (req: Au
         return res.status(400).json({
           event: 'market.error',
           params: { reason: 'INVALID_VEHICLE' },
+        });
+      }
+
+      if (error.message === 'VEHICLE_IN_SHOWROOM') {
+        return res.status(400).json({
+          event: 'market.error',
+          params: { reason: 'VEHICLE_IN_SHOWROOM' },
         });
       }
     }

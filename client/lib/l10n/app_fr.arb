@@ -1040,6 +1040,17 @@
   "invalidPrice": "Prix ​​invalide",
   "vehicleListed": "Véhicule répertorié sur le marché !",
   "listVehicleFailed": "Échec de la liste du véhicule",
+  "marketListPriceRange": "Le prix doit être compris entre €{min} et €{max}.",
+  "@marketListPriceRange": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
   "marina": "Marina",
   "hospital": "Hôpital",
   "court": "Tribunal",

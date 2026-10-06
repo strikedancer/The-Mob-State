@@ -12980,6 +12980,12 @@ abstract class AppLocalizations {
   /// **'Failed to list vehicle'**
   String get listVehicleFailed;
 
+  /// Allowed asking price when listing a vehicle on the marketplace.
+  ///
+  /// In en, this message translates to:
+  /// **'Price must be between €{min} and €{max}.'**
+  String marketListPriceRange(String min, String max);
+
   /// No description provided for @marina.
   ///
   /// In en, this message translates to:
@@ -33691,7 +33697,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicBlackMarketHow.
   ///
   /// In en, this message translates to:
-  /// **'Trade goods tab: one continuous scroll — first the five contraband lines (pricing, caps, risk chips: spoilage, volatility, trip damage, seizure), then your inventory to sell from. Buy/sell uses the /trade API; partial load failures show a warning banner. Street prices for each good in a country stay the same for one hour, so the listed buy price is what you pay. Bought-for on your stock is your real average cost, not the live street price.\nThe black market is divided into submarkets: Materials (raw materials), Weapons (firearms and knives), Ammo (ammo per caliber), Vehicles (illegal vehicles).\nPrices and availability vary heavily by country and time. A listing can sell out fast.\nBlack market transactions leave no official trail but increase FBI Heat for large purchases.\nWeapons bought here can be used in crimes, PvP and security. Better weapons give higher damage and success chance.\nFilters by category (type, country, price, availability) help you quickly find the right listing.\nYou can post your own listings as a seller, including price and quantity. Other players buy from you.\nListings expire after a certain time if unsold. Monitor your own offers via your profile.\nMarketplace tab: peer-to-peer cash trades. You’ll see other players’ vehicles for sale and carried tools in one feed (country + price filters). Tap Sell item to list a tool you are carrying; My listings shows your active vehicle and tool ads. You cannot buy your own ad. Selling drugs, crypto or special event rewards player-to-player here is not available yet.\nWhile you are in jail the whole Black Market is closed. You cannot buy, sell or list there until you are released.\nHow many fit per storage tile depends on the trade good (compact goods more, bulky less). The Almanac lists \"Per tile\" on each good.'**
+  /// **'Trade goods tab: one continuous scroll — first the five contraband lines (pricing, caps, risk chips: spoilage, volatility, trip damage, seizure), then your inventory to sell from. Buy/sell uses the /trade API; partial load failures show a warning banner. Street prices for each good in a country stay the same for one hour, so the listed buy price is what you pay. Bought-for on your stock is your real average cost, not the live street price.\nThe black market is divided into submarkets: Materials (raw materials), Weapons (firearms and knives), Ammo (ammo per caliber), Vehicles (illegal vehicles).\nPrices and availability vary heavily by country and time. A listing can sell out fast.\nBlack market transactions leave no official trail but increase FBI Heat for large purchases.\nWeapons bought here can be used in crimes, PvP and security. Better weapons give higher damage and success chance.\nFilters by category (type, country, price, availability) help you quickly find the right listing.\nYou can post your own listings as a seller, including price and quantity. Other players buy from you.\nListings expire after a certain time if unsold. Monitor your own offers via your profile.\nMarketplace tab: peer-to-peer cash trades. You’ll see other players’ vehicles for sale and carried tools in one feed (country + price filters). Tap Sell item and choose Vehicles; the asking price starts at the quoted market value and must stay between the minimum and maximum shown under the field. My listings shows your active ads. You cannot buy your own ad.\nWhile you are in jail the whole Black Market is closed. You cannot buy, sell or list there until you are released.\nHow many fit per storage tile depends on the trade good (compact goods more, bulky less). The Almanac lists \"Per tile\" on each good.'**
   String get helpTopicBlackMarketHow;
 
   /// No description provided for @helpTopicBlackMarketTips.

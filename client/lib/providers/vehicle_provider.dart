@@ -1387,8 +1387,13 @@ class VehicleProvider with ChangeNotifier {
     }
   }
 
+  int? _listingPriceMin;
+  int? _listingPriceMax;
+
   /// List vehicle on market
   Future<bool> listVehicleOnMarket(int inventoryId, int askingPrice) async {
+    _listingPriceMin = null;
+    _listingPriceMax = null;
     try {
       final headers = await _getHeaders();
       final response = await http.post(
@@ -1403,7 +1408,17 @@ class VehicleProvider with ChangeNotifier {
         await fetchInventory();
         return true;
       } else {
-        _error = _getErrorMessage(data['params']?['reason']?.toString());
+        final params = data is Map ? data['params'] : null;
+        final reason = params is Map ? params['reason']?.toString() : null;
+        if (reason == 'PRICE_OUT_OF_RANGE') {
+          _error = 'PRICE_OUT_OF_RANGE';
+          _listingPriceMin = (params['minPrice'] as num?)?.toInt();
+          _listingPriceMax = (params['maxPrice'] as num?)?.toInt();
+        } else if (reason != null && reason.startsWith('Prijs moet')) {
+          _error = reason;
+        } else {
+          _error = _getErrorMessage(reason);
+        }
         notifyListeners();
         return false;
       }
@@ -1412,6 +1427,20 @@ class VehicleProvider with ChangeNotifier {
       notifyListeners();
       return false;
     }
+  }
+
+  /// Player-facing text for the last failed listing. Does not clear it.
+  String listingFailureMessage({
+    required String Function(int min, int max) priceRange,
+    required String fallback,
+  }) {
+    final min = _listingPriceMin;
+    final max = _listingPriceMax;
+    if (_error == 'PRICE_OUT_OF_RANGE' && min != null && max != null) {
+      return priceRange(min, max);
+    }
+    if (_error == null || _error == 'Er is een fout opgetreden') return fallback;
+    return _error!;
   }
 
   /// Buy vehicle from market
@@ -1550,9 +1579,14 @@ class VehicleProvider with ChangeNotifier {
       case 'NOT_ACTIVE':
         return 'Advertentie is niet actief';
       case 'INVALID_PRICE':
+      case 'INVALID_ASKING_PRICE':
       case 'INVALID_PLAYER_TOOL_ID':
       case 'INVALID_LISTING_ID':
         return 'Ongeldige invoer';
+      case 'INVALID_VEHICLE':
+        return 'Voertuig niet gevonden';
+      case 'VEHICLE_IN_SHOWROOM':
+        return 'Voertuig staat in de showroom';
       case 'ALREADY_LISTED':
         return 'Staat al te koop';
       case 'INVALID_TOOL':
@@ -1590,6 +1624,8 @@ class VehicleProvider with ChangeNotifier {
 
   void clearError() {
     _error = null;
+    _listingPriceMin = null;
+    _listingPriceMax = null;
     notifyListeners();
   }
 

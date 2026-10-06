@@ -480,12 +480,15 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (provider.error != null) {
+    final err = provider.error;
+    final listingPriceError = err == 'PRICE_OUT_OF_RANGE' ||
+        (err != null && err.startsWith('Prijs moet'));
+    if (err != null && !listingPriceError) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(l10n.hitError(provider.error!)),
+            Text(l10n.hitError(err!)),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _loadData,
@@ -1114,16 +1117,22 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
     switch (kind) {
       case 'vehicle':
         await _showListVehicleDialog(vehicleProvider);
+        break;
       case 'tool':
         await _showListCarriedToolDialog(vehicleProvider);
+        break;
       case 'drug':
         await _showListDrugLotDialog(vehicleProvider);
+        break;
       case 'crypto':
         await _showListCryptoLotDialog(vehicleProvider);
+        break;
       case 'trade':
         await _showListTradeGoodDialog(vehicleProvider);
+        break;
       case 'event':
         await _showListEventItemDialog(vehicleProvider);
+        break;
     }
   }
 
@@ -1155,17 +1164,21 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
       return;
     }
 
-    final selectedRef = <VehicleInventoryItem>[listable.first];
+    final selectedIdRef = <int>[listable.first.id];
     final priceController = TextEditingController(
-      text: listable.first.getMarketValue().toStringAsFixed(0),
+      text: listable.first.getMarketValue().toString(),
     );
+    final priceErrorRef = <String?>[null];
 
     final submitted = await showDialog<bool>(
       context: context,
       builder: (dialogContext) {
         return StatefulBuilder(
           builder: (context, setState) {
-            final selected = selectedRef[0];
+            final selected = listable.firstWhere(
+              (v) => v.id == selectedIdRef[0],
+            );
+            final bounds = selected.marketListingPriceBounds();
             return AlertDialog(
               title: Text(
                 _bmL10n(l10n, 'bmHubListVehicleTitle', 'List vehicle'),
@@ -1177,7 +1190,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    DropdownButtonFormField<VehicleInventoryItem>(
+                    DropdownButtonFormField<int>(
                       decoration: InputDecoration(
                         labelText: _bmL10n(
                           l10n,
@@ -1185,48 +1198,70 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
                           'Vehicle',
                         ),
                       ),
-                      value: selected,
+                      isExpanded: true,
+                      value: selected.id,
                       items: listable
                           .map(
                             (v) {
                               final vType =
                                   (v.vehicleType ?? 'vehicle').toLowerCase();
-                              return DropdownMenuItem(
-                                value: v,
+                              return DropdownMenuItem<int>(
+                                value: v.id,
                                 child: Text(
                                   '${v.definition?.name ?? v.vehicleId ?? l10n.vehicleHeistGenericVehicle}'
                                   ' · $vType'
                                   ' · ${v.condition}%',
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               );
                             },
                           )
                           .toList(),
-                      onChanged: (v) {
-                        if (v == null) return;
+                      onChanged: (id) {
+                        if (id == null) return;
+                        final next = listable.firstWhere((v) => v.id == id);
+                        final text = next.getMarketValue().toString();
+                        priceController.value = TextEditingValue(
+                          text: text,
+                          selection: TextSelection.collapsed(
+                            offset: text.length,
+                          ),
+                        );
                         setState(() {
-                          selectedRef[0] = v;
-                          priceController.text =
-                              v.getMarketValue().toStringAsFixed(0);
+                          selectedIdRef[0] = id;
+                          priceErrorRef[0] = null;
                         });
                       },
                     ),
                     const SizedBox(height: 12),
                     Text(
                       l10n.marketValue(
-                        selected.getMarketValue().toStringAsFixed(0),
+                        selected.getMarketValue().toString(),
                       ),
                       style: TextStyle(color: Colors.grey[700], fontSize: 13),
                     ),
                     const SizedBox(height: 16),
                     TextField(
+                      key: ValueKey<int>(selected.id),
                       controller: priceController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         labelText: l10n.askingPrice,
                         hintText: l10n.enterPrice,
+                        helperText: l10n.marketListPriceRange(
+                          '${bounds.min}',
+                          '${bounds.max}',
+                        ),
+                        helperMaxLines: 2,
                       ),
                     ),
+                    if (priceErrorRef[0] != null) ...[
+                      const SizedBox(height: 8),
+                      Text(
+                        priceErrorRef[0]!,
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                    ],
                   ],
                 ),
               ),
@@ -1236,7 +1271,25 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
                   child: Text(l10n.cancel),
                 ),
                 ElevatedButton(
-                  onPressed: () => Navigator.pop(dialogContext, true),
+                  onPressed: () {
+                    final price = int.tryParse(priceController.text.trim());
+                    if (price == null || price <= 0) {
+                      setState(() => priceErrorRef[0] = l10n.invalidPrice);
+                      return;
+                    }
+                    final selectedBounds = selected.marketListingPriceBounds();
+                    if (price < selectedBounds.min ||
+                        price > selectedBounds.max) {
+                      setState(
+                        () => priceErrorRef[0] = l10n.marketListPriceRange(
+                          '${selectedBounds.min}',
+                          '${selectedBounds.max}',
+                        ),
+                      );
+                      return;
+                    }
+                    Navigator.pop(dialogContext, true);
+                  },
                   child: Text(l10n.list),
                 ),
               ],
@@ -1258,7 +1311,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
     }
 
     final success = await vehicleProvider.listVehicleOnMarket(
-      selectedRef[0].id,
+      selectedIdRef[0],
       price,
     );
     if (!mounted) return;
@@ -1272,12 +1325,15 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
         ),
       );
     } else {
+      final message = vehicleProvider.listingFailureMessage(
+        priceRange: (min, max) => l10n.marketListPriceRange('$min', '$max'),
+        fallback: l10n.listVehicleFailed,
+      );
+      vehicleProvider.clearError();
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(
-            vehicleProvider.error ?? l10n.listVehicleFailed,
-          ),
+          content: Text(message),
           backgroundColor: Colors.red,
         ),
       );
@@ -2459,11 +2515,14 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
         ),
       );
     } else {
+      final message = vehicleProvider.listingFailureMessage(
+        priceRange: (min, max) => l10n.marketListPriceRange('$min', '$max'),
+        fallback: l10n.bmHubPriceUpdateFailed,
+      );
+      vehicleProvider.clearError();
       showTopRightFromSnackBar(context, 
         SnackBar(
-          content: Text(
-            vehicleProvider.error ?? l10n.bmHubPriceUpdateFailed,
-          ),
+          content: Text(message),
           backgroundColor: Colors.red,
         ),
       );

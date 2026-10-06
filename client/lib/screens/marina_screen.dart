@@ -1390,6 +1390,11 @@ class _MarinaScreenState extends State<MarinaScreen> {
               decoration: InputDecoration(
                 labelText: AppLocalizations.of(context)!.askingPrice,
                 hintText: AppLocalizations.of(context)!.enterPrice,
+                helperText: AppLocalizations.of(context)!.marketListPriceRange(
+                  '${vehicle.marketListingPriceBounds().min}',
+                  '${vehicle.marketListingPriceBounds().max}',
+                ),
+                helperMaxLines: 2,
               ),
             ),
           ],
@@ -1422,6 +1427,23 @@ class _MarinaScreenState extends State<MarinaScreen> {
       return;
     }
 
+    final bounds = vehicle.marketListingPriceBounds();
+    if (price < bounds.min || price > bounds.max) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            AppLocalizations.of(context)!.marketListPriceRange(
+              '${bounds.min}',
+              '${bounds.max}',
+            ),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
     final success = await provider.listVehicleOnMarket(vehicle.id, price);
 
     if (!mounted) return;
@@ -1435,12 +1457,16 @@ class _MarinaScreenState extends State<MarinaScreen> {
         ),
       );
     } else {
+      final l10n = AppLocalizations.of(context)!;
+      final message = provider.listingFailureMessage(
+        priceRange: (min, max) => l10n.marketListPriceRange('$min', '$max'),
+        fallback: l10n.listVehicleFailed,
+      );
+      provider.clearError();
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(
-            provider.error ?? AppLocalizations.of(context)!.listVehicleFailed,
-          ),
+          content: Text(message),
           backgroundColor: Colors.red,
         ),
       );

@@ -1040,6 +1040,17 @@
   "invalidPrice": "Nieprawidłowa cena",
   "vehicleListed": "Pojazd wystawiony na rynku!",
   "listVehicleFailed": "Nie udało się wyświetlić listy pojazdów",
+  "marketListPriceRange": "Cena musi wynosić od €{min} do €{max}.",
+  "@marketListPriceRange": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
   "marina": "Marina",
   "hospital": "Szpital",
   "court": "Sąd",

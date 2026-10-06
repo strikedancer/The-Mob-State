@@ -49,6 +49,8 @@ export const blackMarketService = {
   ): Promise<{
     success: boolean;
     message: string;
+    minPrice?: number;
+    maxPrice?: number;
   }> {
     const vehicle = await prisma.vehicleInventory.findUnique({
       where: { id: inventoryId },
@@ -70,19 +72,24 @@ export const blackMarketService = {
       throw new Error('ALREADY_LISTED');
     }
 
-    // Validate asking price (must be reasonable)
-    const definition = vehicleService.getVehicleById(vehicle.vehicleId);
-    if (!definition) {
+    const bounds = await vehicleService.getMarketListingPriceBounds({
+      vehicleId: vehicle.vehicleId,
+      vehicleType: vehicle.vehicleType,
+      currentLocation: vehicle.currentLocation,
+      condition: vehicle.condition,
+      playerId,
+      inventoryId,
+    });
+    if (!bounds) {
       throw new Error('INVALID_VEHICLE');
     }
 
-    const maxPrice = definition.baseValue * 2; // Max 200% of base value
-    const minPrice = Math.floor(definition.baseValue * 0.1); // Min 10% of base value
-
-    if (askingPrice > maxPrice || askingPrice < minPrice) {
+    if (askingPrice < bounds.minPrice || askingPrice > bounds.maxPrice) {
       return {
         success: false,
-        message: `Prijs moet tussen €${minPrice} en €${maxPrice} zijn`,
+        message: 'PRICE_OUT_OF_RANGE',
+        minPrice: bounds.minPrice,
+        maxPrice: bounds.maxPrice,
       };
     }
 

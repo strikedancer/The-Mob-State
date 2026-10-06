@@ -4592,6 +4592,40 @@ export const vehicleService = {
   },
 
   /**
+   * Asking-price band for a marketplace listing.
+   * The quoted sell price (country × condition × tune) is always inside the band.
+   * Keep in sync with VehicleInventoryItem.marketListingPriceBounds on the client.
+   */
+  async getMarketListingPriceBounds(input: {
+    vehicleId: string;
+    vehicleType?: string | null;
+    currentLocation?: string | null;
+    condition: number;
+    playerId: number;
+    inventoryId: number;
+  }): Promise<{ minPrice: number; maxPrice: number; quote: number } | null> {
+    const definition = this.getVehicleById(input.vehicleId);
+    if (!definition) return null;
+    const tuning = await getVehicleTuningLevels(input.playerId, input.inventoryId);
+    const vehicleType = normalizeVehicleType(input.vehicleType);
+    const quote = Math.max(
+      1,
+      calculateSellPrice(
+        definition,
+        input.currentLocation || '',
+        input.condition,
+        vehicleType,
+        tuning
+      ) || 1
+    );
+    const catalog = definition.baseValue;
+    const base = Number.isFinite(catalog) && catalog > 0 ? catalog : quote;
+    const minPrice = Math.max(1, Math.floor(Math.min(base, quote) * 0.1));
+    const maxPrice = Math.max(base * 2, quote * 2, quote);
+    return { minPrice, maxPrice, quote };
+  },
+
+  /**
    * Sell a vehicle on the black market
    */
   async sellVehicle(

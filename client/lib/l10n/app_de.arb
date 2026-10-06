@@ -1040,6 +1040,17 @@
   "invalidPrice": "Ungültiger Preis",
   "vehicleListed": "Fahrzeug auf dem Markt gelistet!",
   "listVehicleFailed": "Fahrzeug konnte nicht aufgelistet werden",
+  "marketListPriceRange": "Der Preis muss zwischen €{min} und €{max} liegen.",
+  "@marketListPriceRange": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
   "marina": "Yachthafen",
   "hospital": "Krankenhaus",
   "court": "Gericht",

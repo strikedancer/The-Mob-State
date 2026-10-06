@@ -1442,6 +1442,11 @@ class _GarageScreenState extends State<GarageScreen> {
               decoration: InputDecoration(
                 labelText: AppLocalizations.of(context)!.askingPrice,
                 hintText: AppLocalizations.of(context)!.enterPrice,
+                helperText: AppLocalizations.of(context)!.marketListPriceRange(
+                  '${vehicle.marketListingPriceBounds().min}',
+                  '${vehicle.marketListingPriceBounds().max}',
+                ),
+                helperMaxLines: 2,
               ),
             ),
           ],
@@ -1471,6 +1476,22 @@ class _GarageScreenState extends State<GarageScreen> {
       return;
     }
 
+    final bounds = vehicle.marketListingPriceBounds();
+    if (price < bounds.min || price > bounds.max) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            AppLocalizations.of(context)!.marketListPriceRange(
+              '${bounds.min}',
+              '${bounds.max}',
+            ),
+          ),
+        ),
+      );
+      return;
+    }
+
     final success = await provider.listVehicleOnMarket(vehicle.id, price);
 
     if (!mounted) return;
@@ -1481,12 +1502,16 @@ class _GarageScreenState extends State<GarageScreen> {
         SnackBar(content: Text(AppLocalizations.of(context)!.vehicleListed)),
       );
     } else {
+      final l10n = AppLocalizations.of(context)!;
+      final message = provider.listingFailureMessage(
+        priceRange: (min, max) => l10n.marketListPriceRange('$min', '$max'),
+        fallback: l10n.listVehicleFailed,
+      );
+      provider.clearError();
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(
-            provider.error ?? AppLocalizations.of(context)!.listVehicleFailed,
-          ),
+          content: Text(message),
         ),
       );
     }
