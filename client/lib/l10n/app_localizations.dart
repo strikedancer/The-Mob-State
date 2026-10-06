@@ -33703,7 +33703,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicBlackMarketTips.
   ///
   /// In en, this message translates to:
-  /// **'Trade tab: pull to refresh if a segment fails; watch risk chips and Wanted before risky smuggling runs.\nBuy weapons and ammo in bulk when prices are low: availability is temporary.\nAvoid large black market purchases when FBI Heat is already above 30.\nMarketplace: refresh after listing; only tools in your carried inventory can be placed for sale.'**
+  /// **'Trade tab: pull to refresh if a segment fails; watch risk chips and Wanted before risky smuggling runs.\nBuy weapons and ammo in bulk when prices are low: availability is temporary.\nAvoid large black market purchases when FBI Heat is already above 30.\nThe marketplace shows ads from every country; the country is on the card. Refresh after listing. Only tools in your carried inventory can be placed for sale.'**
   String get helpTopicBlackMarketTips;
 
   /// No description provided for @helpTopicDrugsCategory.

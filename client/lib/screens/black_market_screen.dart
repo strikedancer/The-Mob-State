@@ -111,11 +111,9 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
       context,
       listen: false,
     );
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final currentCountry = authProvider.currentPlayer?.currentCountry;
 
     await vehicleProvider.fetchInventory();
-    await vehicleProvider.fetchMarketListings(country: currentCountry);
+    await vehicleProvider.fetchMarketListings();
     await vehicleProvider.fetchMyToolMarketListings();
   }
 
@@ -616,8 +614,8 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
     );
   }
 
-  /// Public board is the country you are standing in. Your own ads stay
-  /// visible even when the vehicle is parked somewhere else.
+  /// Public board lists every country. Own ads are merged in so a listing
+  /// you just posted shows before the next full reload.
   List<MarketListing> _visibleMarketVehicles(VehicleProvider provider) {
     final filtered = _getFilteredListings(provider.marketListings);
     final seen = filtered.map((listing) => listing.vehicle.id).toSet();
