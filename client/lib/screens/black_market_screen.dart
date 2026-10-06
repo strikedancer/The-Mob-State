@@ -114,6 +114,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final currentCountry = authProvider.currentPlayer?.currentCountry;
 
+    await vehicleProvider.fetchInventory();
     await vehicleProvider.fetchMarketListings(country: currentCountry);
     await vehicleProvider.fetchMyToolMarketListings();
   }
@@ -499,8 +500,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
       );
     }
 
-    final filteredVehicles =
-        _getFilteredListings(provider.marketListings);
+    final filteredVehicles = _visibleMarketVehicles(provider);
     final filteredTools =
         _getFilteredToolListings(provider.toolMarketListings);
 
@@ -616,9 +616,37 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
     );
   }
 
+  /// Public board is the country you are standing in. Your own ads stay
+  /// visible even when the vehicle is parked somewhere else.
+  List<MarketListing> _visibleMarketVehicles(VehicleProvider provider) {
+    final filtered = _getFilteredListings(provider.marketListings);
+    final seen = filtered.map((listing) => listing.vehicle.id).toSet();
+    final me = Provider.of<AuthProvider>(context, listen: false).currentPlayer;
+    final own = provider.inventory.where((vehicle) => vehicle.marketListing);
+    return [
+      ...filtered,
+      for (final vehicle in own)
+        if (!seen.contains(vehicle.id))
+          MarketListing(
+            id: vehicle.id,
+            vehicle: vehicle,
+            sellerUsername: me?.username ?? '',
+            sellerId: me?.id ?? 0,
+          ),
+    ];
+  }
+
+  bool _isMyListedVehicle(int inventoryId) {
+    final provider = Provider.of<VehicleProvider>(context, listen: false);
+    return provider.inventory.any(
+      (vehicle) => vehicle.id == inventoryId && vehicle.marketListing,
+    );
+  }
+
   Widget _buildMarketListingCard(MarketListing listing) {
     final l10n = AppLocalizations.of(context)!;
     final vehicle = listing.vehicle;
+    final mine = _isMyListedVehicle(vehicle.id);
     final askingPrice = vehicle.askingPrice ?? 0;
     final marketValue = vehicle.getMarketValue();
     final priceDifference = ((askingPrice - marketValue) / marketValue * 100);
@@ -678,11 +706,30 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
           color: Colors.green,
         ),
       ),
-      action: FilledButton(
-        onPressed: () => _buyVehicle(listing),
-        style: marketBuyButtonStyle(),
-        child: Text(l10n.bmHubBuyNow),
-      ),
+      action: mine
+          ? Wrap(
+              spacing: 6,
+              children: [
+                OutlinedButton(
+                  onPressed: () => _editPrice(vehicle),
+                  style: OutlinedButton.styleFrom(
+                    visualDensity: VisualDensity.compact,
+                    minimumSize: const Size(0, 34),
+                  ),
+                  child: Text(l10n.bmHubEditPrice),
+                ),
+                FilledButton(
+                  onPressed: () => _delistVehicle(vehicle),
+                  style: marketBuyButtonStyle(background: Colors.red),
+                  child: Text(l10n.bmHubDelist),
+                ),
+              ],
+            )
+          : FilledButton(
+              onPressed: () => _buyVehicle(listing),
+              style: marketBuyButtonStyle(),
+              child: Text(l10n.bmHubBuyNow),
+            ),
     );
   }
 
@@ -2200,6 +2247,12 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
                 label:
                     '${l10n.bmHubMarketValueShort}: €${marketValue.toStringAsFixed(0)}',
                 color: Colors.blueGrey.shade700,
+              ),
+              MarketInfoPill(
+                label: vehicle.currentLocation?.toUpperCase() ??
+                    l10n.bmHubLocationUnknown,
+                color: Colors.blueGrey.shade700,
+                icon: Icons.location_on,
               ),
             ],
           ),

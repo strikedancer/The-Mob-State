@@ -41,6 +41,7 @@ Inventory for event items: `GET /game-events/my-items`. Public gold/silver/bronz
 
 ## Client
 - Sell CTA → kind picker (vehicle/tool/drug/crypto/trade/event). Empty Marktplaats / Mijn advertenties must show **Verkoop item** in the empty state (not only a FAB when listings exist). FAB stays when the list has rows; inset from the right so the live-event rail does not cover it. Vehicles can also still be listed from Garage/Marina.
+- `GET /market/unified?country=` is the country the player is standing in. A listed vehicle stays in its `currentLocation`. The public board hides other countries. The seller's own vehicle ads are merged from inventory onto Marktplaats (edit/delist, not buy) and onto Mijn advertenties, with the park country on the card.
 - Polymorphic `PlayerToolMarketListing` model
 
 ## QA
