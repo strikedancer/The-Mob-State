@@ -537,7 +537,10 @@ export const donService = {
     const racket = await prisma.donRacket.findUnique({ where: { id: racketId } });
     if (!racket) throw new Error('DON_RACKET_NOT_FOUND');
     if (racket.countryCode !== player.currentCountry) throw new Error('WRONG_COUNTRY');
-    if (racket.ownerPlayerId && racket.ownerPlayerId !== playerId) throw new Error('DON_RACKET_OWNED');
+    if (racket.ownerPlayerId === playerId) {
+      return { racketId: racket.id, businessKey: racket.businessKey };
+    }
+    if (racket.ownerPlayerId) throw new Error('DON_RACKET_OWNED');
     const owned = await prisma.donRacket.count({ where: { ownerPlayerId: playerId } });
     if (owned >= cfg.maxRacketsPerPlayer) throw new Error('DON_RACKET_CAP');
     const def = businessDef(racket.businessKey);
@@ -558,14 +561,6 @@ export const donService = {
       'don.racket_claimed',
       { racketId, countryCode: racket.countryCode, businessKey: racket.businessKey },
       playerId
-    );
-    void notifyDon(
-      playerId,
-      {
-        nl: `Je hebt de ${donBusinessLabel(updated.businessKey, true)} geclaimd.`,
-        en: `You claimed the ${donBusinessLabel(updated.businessKey, false)}.`,
-      },
-      { push: false }
     );
     return { racketId: updated.id, businessKey: updated.businessKey };
   },
