@@ -19691,7 +19691,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpTopicBlackMarketTips =>
-      'Trade tab: pull to refresh if a segment fails; watch risk chips and Wanted before risky smuggling runs.\nBuy weapons and ammo in bulk when prices are low: availability is temporary.\nAvoid large black market purchases when FBI Heat is already above 30.\nThe marketplace shows ads from every country; the country is on the card. Refresh after listing. Only tools in your carried inventory can be placed for sale.';
+      'Trade tab: pull to refresh if a segment fails; watch risk chips and Wanted before risky smuggling runs.\nBuy weapons and ammo in bulk when prices are low: availability is temporary.\nAvoid large black market purchases when FBI Heat is already above 30.\nThe marketplace shows ads from every country; the country is on the card, not the seller's name. Refresh after listing. Only tools in your carried inventory can be placed for sale.';
 
   @override
   String get helpTopicDrugsCategory => 'Empire';

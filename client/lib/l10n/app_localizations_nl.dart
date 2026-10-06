@@ -19740,7 +19740,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicBlackMarketTips =>
-      'Handelswaren-tab: trek om te verversen als data gedeeltelijk faalt; let op risicochips en Wanted voor smokkelroutes.\nKoop wapens en ammo in bulk als de prijs laag staat: beschikbaarheid is tijdelijk.\nVermijd grote zwarte markt aankopen als je FBI Heat al boven 30 zit.\nMarktplaats toont advertenties uit alle landen; het land staat op de kaart. Ververs na plaatsen. Alleen gereedschap dat je bij je draagt kun je te koop zetten.';
+      'Handelswaren-tab: trek om te verversen als data gedeeltelijk faalt; let op risicochips en Wanted voor smokkelroutes.\nKoop wapens en ammo in bulk als de prijs laag staat: beschikbaarheid is tijdelijk.\nVermijd grote zwarte markt aankopen als je FBI Heat al boven 30 zit.\nMarktplaats toont advertenties uit alle landen; het land staat op de kaart, de naam van de verkoper niet. Ververs na plaatsen. Alleen gereedschap dat je bij je draagt kun je te koop zetten.';
 
   @override
   String get helpTopicDrugsCategory => 'Empire';

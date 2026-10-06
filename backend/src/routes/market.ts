@@ -79,8 +79,8 @@ router.get('/unified', authenticate, async (req: AuthRequest, res: Response) => 
     const { country } = req.query;
     const countryStr = typeof country === 'string' ? country : undefined;
     const [listings, itemListings] = await Promise.all([
-      blackMarketService.getMarketListings(countryStr),
-      playerMarketplaceService.getActiveItemListings(countryStr),
+      blackMarketService.getMarketListings(countryStr, req.player!.id),
+      playerMarketplaceService.getActiveItemListings(countryStr, req.player!.id),
     ]);
 
     return res.status(200).json({
@@ -106,7 +106,8 @@ router.get('/vehicles', authenticate, async (req: AuthRequest, res: Response) =>
   try {
     const { country } = req.query;
     const listings = await blackMarketService.getMarketListings(
-      country as string | undefined
+      country as string | undefined,
+      req.player!.id
     );
 
     return res.status(200).json({

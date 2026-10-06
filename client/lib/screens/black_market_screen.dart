@@ -669,11 +669,6 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
             runSpacing: 3,
             children: [
               MarketInfoPill(
-                label: listing.sellerUsername,
-                color: Colors.blueGrey.shade700,
-                icon: Icons.person,
-              ),
-              MarketInfoPill(
                 label: vehicle.currentLocation?.toUpperCase() ??
                     l10n.bmHubLocationUnknown,
                 color: Colors.blueGrey.shade700,
@@ -835,7 +830,8 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
   Widget _buildToolMarketListingCard(PlayerToolMarketListing listing) {
     final l10n = AppLocalizations.of(context)!;
     final auth = Provider.of<AuthProvider>(context, listen: false);
-    final isSelf = auth.currentPlayer?.id == listing.sellerId;
+    final isSelf = listing.isMine ||
+        (listing.sellerId != 0 && auth.currentPlayer?.id == listing.sellerId);
     final name = listing.displayName;
     final pt = listing.playerTool;
     final maxD = listing.toolDefinition?.maxDurability ?? 1;
@@ -865,11 +861,6 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
             spacing: 4,
             runSpacing: 3,
             children: [
-              MarketInfoPill(
-                label: listing.sellerUsername,
-                color: Colors.blueGrey.shade700,
-                icon: Icons.person,
-              ),
               MarketInfoPill(
                 label: (listing.countryCode ?? l10n.bmHubLocationUnknown)
                     .toUpperCase(),

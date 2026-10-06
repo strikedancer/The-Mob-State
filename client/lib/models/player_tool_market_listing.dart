@@ -8,6 +8,7 @@ class PlayerToolMarketListing {
   final DateTime createdAt;
   final int sellerId;
   final String sellerUsername;
+  final bool isMine;
   final PlayerToolMarketPlayerTool? playerTool;
   final PlayerToolMarketToolDefinition? toolDefinition;
   final DrugLotInfo? drugLot;
@@ -24,6 +25,7 @@ class PlayerToolMarketListing {
     required this.createdAt,
     required this.sellerId,
     required this.sellerUsername,
+    this.isMine = false,
     this.playerTool,
     this.toolDefinition,
     this.drugLot,
@@ -49,6 +51,7 @@ class PlayerToolMarketListing {
       createdAt: DateTime.parse(json['createdAt'] as String),
       sellerId: (seller?['id'] as num?)?.toInt() ?? 0,
       sellerUsername: seller?['username'] as String? ?? '',
+      isMine: json['isMine'] == true,
       playerTool: pt != null ? PlayerToolMarketPlayerTool.fromJson(pt) : null,
       toolDefinition:
           td != null ? PlayerToolMarketToolDefinition.fromJson(td) : null,

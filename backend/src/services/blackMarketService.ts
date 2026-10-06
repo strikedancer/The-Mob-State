@@ -10,7 +10,7 @@ export const blackMarketService = {
   /**
    * Get all vehicles listed on the market
    */
-  async getMarketListings(country?: string) {
+  async getMarketListings(country?: string, viewerId?: number) {
     const listings = await prisma.vehicleInventory.findMany({
       where: {
         marketListing: true,
@@ -20,7 +20,6 @@ export const blackMarketService = {
         player: {
           select: {
             id: true,
-            username: true,
           },
         },
       },
@@ -29,12 +28,15 @@ export const blackMarketService = {
       },
     });
 
-    // Add vehicle definitions
+    // Country is public. Seller name stays off the board so a listing
+    // does not show where that player is.
     return listings.map((listing) => {
+      const { player, ...rest } = listing;
       const definition = vehicleService.getVehicleById(listing.vehicleId);
       return {
-        ...listing,
+        ...rest,
         definition,
+        isMine: viewerId != null && player.id === viewerId,
       };
     });
   },

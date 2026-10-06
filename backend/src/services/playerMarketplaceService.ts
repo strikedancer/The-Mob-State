@@ -456,7 +456,7 @@ export const playerMarketplaceService = {
   MARKET_LISTING_KIND_TRADE_GOOD_LOT,
 
   /** All active listings of every kind, serialized polymorphically. */
-  async getActiveItemListings(country?: string) {
+  async getActiveItemListings(country?: string, viewerId?: number) {
     const rows = await prisma.playerMarketListing.findMany({
       where: {
         status: 'active',
@@ -469,7 +469,12 @@ export const playerMarketplaceService = {
     const out: unknown[] = [];
     for (const row of rows) {
       const serialized = await serializeListing(row);
-      if (serialized) out.push(serialized);
+      if (!serialized || typeof serialized !== 'object') continue;
+      const { seller, ...rest } = serialized as { seller?: { id?: number } };
+      out.push({
+        ...rest,
+        isMine: viewerId != null && seller?.id === viewerId,
+      });
     }
     return out;
   },
