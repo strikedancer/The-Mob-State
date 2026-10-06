@@ -17581,8 +17581,8 @@ class AppLocalizationsNl extends AppLocalizations {
       'Alleen aangrenzende regio\'s mogen.';
 
   @override
-  String get territoryErrorRiskFortifyUsed =>
-      'Je mag één keer legers verplaatsen (fortificeren) per versterkingsronde. Die verplaatsing is al gedaan;
+  @override
+  String get territoryErrorRiskFortifyUsed => 'Je mag één keer legers verplaatsen (fortificeren) per versterkingsronde. Die verplaatsing is al gedaan; wacht tot de ronde voorbij is.';
 
   @override
   String territoryRiskFortifyUsedStatus(String time) {
@@ -17590,16 +17590,37 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  @override
   String territoryRiskFortifyRemaining(String used, String max) {
     return 'Fortificeren: $used/$max deze ronde';
   }
 
   @override
-  String get territoryRiskFortifyUsedButton =>
-      'Fortificeren al gebruikt'; wacht tot de ronde voorbij is.'
+  String get territoryRiskFortifyUsedButton => 'Fortificeren al gebruikt';
 
   @override
+  String get territoryRiskWindowTitle => 'Versterking en fortificeren';
+
+  @override
+  String territoryRiskClaimAgainIn(String time) {
+    return 'Versterking weer claimen over $time.';
+  }
+
+  @override
+  String get territoryRiskClaimAvailableNow => 'Je kunt nu versterking claimen.';
+
+  @override
+  String territoryRiskFortifyAgainIn(String time) {
+    return 'Fortificeren weer over $time.';
+  }
+
+  @override
+  String territoryRiskFortifyAvailableResets(String used, String max, String time) {
+    return 'Fortificeren is beschikbaar ($used/$max). Deze ronde reset over $time.';
+  }
+
+  @override
+  String get territoryRiskFortifyAvailableNow => 'Je kunt nu fortificeren.';
+
   String get territoryErrorRiskInsufficientArmies =>
       'Niet genoeg legers (laat minstens 1 achter).';
 

@@ -30157,9 +30157,29 @@ abstract class AppLocalizations {
   /// No description provided for @territoryRiskFortifyUsedStatus.
   String territoryRiskFortifyUsedStatus(String time);
 
-  /// No description provided for @territoryRiskFortifyUsedButton.
+  /// No description provided for @territoryRiskFortifyRemaining.
   String territoryRiskFortifyRemaining(String used, String max);
+
+  /// No description provided for @territoryRiskFortifyUsedButton.
   String get territoryRiskFortifyUsedButton;
+
+  /// No description provided for @territoryRiskWindowTitle.
+  String get territoryRiskWindowTitle;
+
+  /// No description provided for @territoryRiskClaimAgainIn.
+  String territoryRiskClaimAgainIn(String time);
+
+  /// No description provided for @territoryRiskClaimAvailableNow.
+  String get territoryRiskClaimAvailableNow;
+
+  /// No description provided for @territoryRiskFortifyAgainIn.
+  String territoryRiskFortifyAgainIn(String time);
+
+  /// No description provided for @territoryRiskFortifyAvailableResets.
+  String territoryRiskFortifyAvailableResets(String used, String max, String time);
+
+  /// No description provided for @territoryRiskFortifyAvailableNow.
+  String get territoryRiskFortifyAvailableNow;
 
   /// No description provided for @territoryErrorRiskInsufficientArmies.
   ///

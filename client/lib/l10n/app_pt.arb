@@ -14001,5 +14001,38 @@
   "bmHubSellKindVehicle": "Vehicles",
   "bmHubNoVehiclesToSell": "No vehicles available to list (already listed, in showroom, in transit, or in repair).",
   "bmHubListVehicleTitle": "List vehicle",
-  "bmHubListVehicleSelectLabel": "Vehicle"
+  "bmHubListVehicleSelectLabel": "Vehicle",
+  "territoryRiskWindowTitle": "Reinforcements and fortify",
+  "territoryRiskClaimAgainIn": "Claim reinforcements again in {time}.",
+  "@territoryRiskClaimAgainIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryRiskClaimAvailableNow": "You can claim reinforcements now.",
+  "territoryRiskFortifyAgainIn": "Fortify again in {time}.",
+  "@territoryRiskFortifyAgainIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryRiskFortifyAvailableResets": "Fortify is available ({used}/{max}). This round resets in {time}.",
+  "@territoryRiskFortifyAvailableResets": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryRiskFortifyAvailableNow": "You can fortify now."
 }

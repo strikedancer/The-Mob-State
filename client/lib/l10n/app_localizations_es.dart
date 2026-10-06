@@ -17693,8 +17693,8 @@ class AppLocalizationsEs extends AppLocalizations {
       'You can only attack or fortify adjacent regions.';
 
   @override
-  String get territoryErrorRiskFortifyUsed =>
-      'You may move armies (fortify) once per reinforce round. That move is already used;
+  @override
+  String get territoryErrorRiskFortifyUsed => 'You already fortified this reinforce window.';
 
   @override
   String territoryRiskFortifyUsedStatus(String time) {
@@ -17702,16 +17702,37 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  @override
   String territoryRiskFortifyRemaining(String used, String max) {
     return 'Fortify: $used/$max this round';
   }
 
   @override
-  String get territoryRiskFortifyUsedButton =>
-      'Fortify already used'; wait until the round resets.'
+  String get territoryRiskFortifyUsedButton => 'Fortify already used';
 
   @override
+  String get territoryRiskWindowTitle => 'Reinforcements and fortify';
+
+  @override
+  String territoryRiskClaimAgainIn(String time) {
+    return 'Claim reinforcements again in $time.';
+  }
+
+  @override
+  String get territoryRiskClaimAvailableNow => 'You can claim reinforcements now.';
+
+  @override
+  String territoryRiskFortifyAgainIn(String time) {
+    return 'Fortify again in $time.';
+  }
+
+  @override
+  String territoryRiskFortifyAvailableResets(String used, String max, String time) {
+    return 'Fortify is available ($used/$max). This round resets in $time.';
+  }
+
+  @override
+  String get territoryRiskFortifyAvailableNow => 'You can fortify now.';
+
   String get territoryErrorRiskInsufficientArmies =>
       'Not enough armies (leave at least 1 behind).';
 

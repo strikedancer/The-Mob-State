@@ -604,6 +604,14 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         key = _expiredTimerRefreshKey(open, now);
       }
     }
+    if (key == null && _mapData['riskMode'] == true) {
+      final reinforce = _riskReinforceMap();
+      final snap = (reinforce?['secondsRemaining'] as num?)?.toInt() ?? 0;
+      final ends = _riskWindowEndsAt();
+      if (snap > 0 && ends != null && !ends.isAfter(now)) {
+        key = 'risk-reinforce-window';
+      }
+    }
     if (key == null) return;
     if (key == _lastSilentRefreshKey) {
       final lastAt = _lastSilentRefreshAt;
@@ -763,6 +771,47 @@ class _TerritoryScreenState extends State<TerritoryScreen>
 
   String _formatRiskWindowRemaining(int seconds) {
     return _formatDuration(Duration(seconds: seconds < 0 ? 0 : seconds));
+  }
+
+  Map<String, dynamic>? _riskReinforceMap() {
+    return (_mapData['riskReinforce'] as Map?)?.cast<String, dynamic>();
+  }
+
+  DateTime? _riskWindowEndsAt() {
+    return _parseApiDate(_riskReinforceMap()?['windowEndsAt']);
+  }
+
+  bool _riskWindowOpen(DateTime now) {
+    final ends = _riskWindowEndsAt();
+    return ends != null && ends.isAfter(now);
+  }
+
+  String _riskWindowCountdown(DateTime now) {
+    final ends = _riskWindowEndsAt();
+    if (ends == null) return _formatLiveDuration(Duration.zero);
+    return _countdownLabel(ends, now);
+  }
+
+  List<String> _riskWindowStatusLines(DateTime now) {
+    final t = _l10n;
+    final reinforce = _riskReinforceMap();
+    if (reinforce == null) return const [];
+    final left = (reinforce['armiesRemaining'] as num?)?.toInt() ?? 0;
+    final fortifyUsed = reinforce['fortifyUsed'] == true;
+    final used = (reinforce['fortifyCount'] as num?)?.toInt() ?? 0;
+    final max = (reinforce['fortifyMax'] as num?)?.toInt() ?? 1;
+    final open = _riskWindowOpen(now);
+    final time = _riskWindowCountdown(now);
+    return [
+      t.territoryRiskReinforceLeft(left.toString()),
+      if (open) t.territoryRiskClaimAgainIn(time) else t.territoryRiskClaimAvailableNow,
+      if (!open)
+        t.territoryRiskFortifyAvailableNow
+      else if (fortifyUsed)
+        t.territoryRiskFortifyAgainIn(time)
+      else
+        t.territoryRiskFortifyAvailableResets(used.toString(), max.toString(), time),
+    ];
   }
 
   String _formatLiveDuration(Duration duration) {
@@ -2268,6 +2317,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         children: [
           if (viewerCaps != null) _buildViewerCapsChips(viewerCaps),
           _buildHoldDutyChip(),
+          _buildRiskWindowCard(),
           _buildRiskWireStrip(),
           _buildAbandonCountryButton(),
           _buildNextActionChip(),
@@ -2282,6 +2332,70 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildRiskWindowCard() {
+    if (_mapData['riskMode'] != true) return const SizedBox.shrink();
+    final invade = (_mapData['riskInvade'] as Map?)?.cast<String, dynamic>();
+    if (invade != null && invade['eligible'] == true) return const SizedBox.shrink();
+    if (_riskReinforceMap() == null) return const SizedBox.shrink();
+    final t = _l10n;
+    return ValueListenableBuilder<DateTime>(
+      valueListenable: _nowNotifier,
+      builder: (context, now, _) {
+        final lines = _riskWindowStatusLines(now);
+        if (lines.isEmpty) return const SizedBox.shrink();
+        final windowOpen = _riskWindowOpen(now);
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+          child: Card(
+            color: const Color(0xFF1E1414),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+              side: BorderSide(
+                color: windowOpen ? Colors.amber.shade800 : Colors.teal.shade700,
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.timer_outlined,
+                        size: 18,
+                        color: windowOpen ? Colors.amber[200] : Colors.teal[200],
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          t.territoryRiskWindowTitle,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  for (final line in lines)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 4),
+                      child: Text(
+                        line,
+                        style: TextStyle(fontSize: 13, color: Colors.grey[200]),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -3550,51 +3664,26 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         ),
         Builder(
           builder: (_) {
-            final reinforce =
-                (_mapData['riskReinforce'] as Map?)?.cast<String, dynamic>();
             final invade =
                 (_mapData['riskInvade'] as Map?)?.cast<String, dynamic>();
             if (invade != null && invade['eligible'] == true) {
               return const SizedBox.shrink();
             }
-            final left = (reinforce?['armiesRemaining'] as num?)?.toInt() ?? 0;
-            final fortifyUsed = reinforce?['fortifyUsed'] == true;
-            final fortifyCount =
-                (reinforce?['fortifyCount'] as num?)?.toInt() ?? 0;
-            final fortifyMax =
-                (reinforce?['fortifyMax'] as num?)?.toInt() ?? 1;
-            final secs =
-                (reinforce?['secondsRemaining'] as num?)?.toInt() ?? 0;
+            final lines = _riskWindowStatusLines(clock);
+            if (lines.isEmpty) return const SizedBox.shrink();
             return Padding(
               padding: const EdgeInsets.only(top: 4, bottom: 8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    t.territoryRiskReinforceLeft(left.toString()),
-                    style: TextStyle(color: Colors.grey[700], fontSize: 12),
-                  ),
-                  if (fortifyMax > 1 && !fortifyUsed)
+                  for (final line in lines)
                     Padding(
-                      padding: const EdgeInsets.only(top: 4),
+                      padding: const EdgeInsets.only(bottom: 4),
                       child: Text(
-                        t.territoryRiskFortifyRemaining(
-                          fortifyCount.toString(),
-                          fortifyMax.toString(),
-                        ),
-                        style: TextStyle(color: Colors.grey[700], fontSize: 12),
-                      ),
-                    ),
-                  if (fortifyUsed)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 4),
-                      child: Text(
-                        t.territoryRiskFortifyUsedStatus(
-                          _formatRiskWindowRemaining(secs),
-                        ),
+                        line,
                         style: TextStyle(
-                          color: Colors.orange.shade900,
-                          fontSize: 12,
+                          color: Colors.grey[800],
+                          fontSize: 13,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -3611,11 +3700,15 @@ class _TerritoryScreenState extends State<TerritoryScreen>
             if (invade != null && invade['eligible'] == true) {
               return const SizedBox.shrink();
             }
+            final claimLocked = _riskWindowOpen(clock);
             return _buildActionButton(
-              label: t.territoryRiskClaimReinforce,
+              label: claimLocked
+                  ? t.territoryRiskClaimAgainIn(_riskWindowCountdown(clock))
+                  : t.territoryRiskClaimReinforce,
               icon: Icons.add_circle_outline,
               color: Colors.teal[800]!,
-              onTap: _riskClaimReinforce,
+              onTap: claimLocked ? null : _riskClaimReinforce,
+              forceDisabled: claimLocked,
             );
           },
         ),
@@ -3630,17 +3723,18 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           const SizedBox(height: 8),
           Builder(
             builder: (_) {
-              final reinforce =
-                  (_mapData['riskReinforce'] as Map?)?.cast<String, dynamic>();
+              final reinforce = _riskReinforceMap();
+              final windowOpen = _riskWindowOpen(clock);
               final fortifyUsed = reinforce?['fortifyUsed'] == true;
+              final fortifyBlocked = windowOpen && fortifyUsed;
               return _buildActionButton(
-                label: fortifyUsed
-                    ? t.territoryRiskFortifyUsedButton
+                label: fortifyBlocked
+                    ? t.territoryRiskFortifyAgainIn(_riskWindowCountdown(clock))
                     : t.territoryRiskFortify,
                 icon: Icons.swap_horiz,
                 color: Colors.blueGrey[800]!,
-                onTap: fortifyUsed ? null : () => _riskFortify(region),
-                forceDisabled: fortifyUsed,
+                onTap: fortifyBlocked ? null : () => _riskFortify(region),
+                forceDisabled: fortifyBlocked,
               );
             },
           ),

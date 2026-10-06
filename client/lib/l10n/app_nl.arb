@@ -14001,5 +14001,38 @@
       }
     }
   },
-  "territoryRiskFortifyUsedButton": "Fortificeren al gebruikt"
+  "territoryRiskFortifyUsedButton": "Fortificeren al gebruikt",
+  "territoryRiskWindowTitle": "Versterking en fortificeren",
+  "territoryRiskClaimAgainIn": "Versterking weer claimen over {time}.",
+  "@territoryRiskClaimAgainIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryRiskClaimAvailableNow": "Je kunt nu versterking claimen.",
+  "territoryRiskFortifyAgainIn": "Fortificeren weer over {time}.",
+  "@territoryRiskFortifyAgainIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryRiskFortifyAvailableResets": "Fortificeren is beschikbaar ({used}/{max}). Deze ronde reset over {time}.",
+  "@territoryRiskFortifyAvailableResets": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "territoryRiskFortifyAvailableNow": "Je kunt nu fortificeren."
 }
