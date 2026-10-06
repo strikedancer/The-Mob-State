@@ -1482,10 +1482,72 @@ async function loadCrewPresenceTerritoryCodes(crewIds: number[]): Promise<Map<nu
 }
 
 /**
- * After a miss, free the duty slot (do not keep extending the same region forever) so the crew
- * can rotate to another stale region. Income penalty stays on the missed region via holdMissStreak.
- * Prefer assigning the next due region in a country where a crew member currently is.
+ * After a miss, free the duty slot so another stale region in a country where a crew
+ * member is present can rotate in. No patrol ping for countries nobody is in.
  */
+/** Drop patrol duties in countries where no crew member is present. No miss, no ping. */
+async function clearHoldDutiesWithoutLocalPresence(): Promise<void> {
+  const dues = await prisma.$queryRawUnsafe<Array<{
+    regionKey: string;
+    ownerCrewId: number;
+    countryCode: string;
+  }>>(
+    `SELECT tc.regionKey, tc.ownerCrewId, tr.countryCode
+     FROM territory_control tc
+     JOIN territory_regions tr ON tr.regionKey = tc.regionKey
+     WHERE tc.ownerCrewId IS NOT NULL
+       AND tc.holdDueAt IS NOT NULL
+       AND tr.enabled = 1`,
+  );
+  if (dues.length === 0) return;
+
+  const presenceByCrew = await loadCrewPresenceTerritoryCodes(
+    dues.map((row) => toNumeric(row.ownerCrewId)),
+  );
+  for (const row of dues) {
+    const crewId = toNumeric(row.ownerCrewId);
+    const code = String(row.countryCode || '').toLowerCase();
+    if (presenceByCrew.get(crewId)?.has(code)) continue;
+    await prisma.$executeRawUnsafe(
+      `UPDATE territory_control
+       SET holdDueAt = NULL, updatedAt = NOW()
+       WHERE regionKey = ? AND ownerCrewId = ? AND holdDueAt IS NOT NULL`,
+      row.regionKey,
+      crewId,
+    );
+  }
+}
+
+async function assignHoldDutyIfSlotFree(params: {
+  regionKey: string;
+  ownerCrewId: number;
+  dueAt: Date;
+  maxDuePerCrew: number;
+}): Promise<boolean> {
+  return prisma.$transaction(async (tx) => {
+    await tx.$queryRawUnsafe(
+      `SELECT id FROM crews WHERE id = ? FOR UPDATE`,
+      params.ownerCrewId,
+    );
+    const counts = await tx.$queryRawUnsafe<Array<{ dueCount: number }>>(
+      `SELECT COUNT(*) AS dueCount
+       FROM territory_control
+       WHERE ownerCrewId = ? AND holdDueAt IS NOT NULL`,
+      params.ownerCrewId,
+    );
+    if (toNumeric(counts[0]?.dueCount) >= params.maxDuePerCrew) return false;
+    const updated = await tx.$executeRawUnsafe(
+      `UPDATE territory_control
+       SET holdDueAt = ?, updatedAt = NOW()
+       WHERE regionKey = ? AND ownerCrewId = ? AND holdDueAt IS NULL`,
+      params.dueAt,
+      params.regionKey,
+      params.ownerCrewId,
+    );
+    return Number(updated) > 0;
+  });
+}
+
 async function processTerritoryHoldDuties(
   now: Date,
   cfg: Awaited<ReturnType<typeof getTerritoryConfig>>,
@@ -1493,6 +1555,8 @@ async function processTerritoryHoldDuties(
   const hold = holdConfigFromTerritoryCfg(cfg);
   const graceMinutes = hold.graceHours * 60;
   const windowHours = hold.windowHours;
+
+  await clearHoldDutiesWithoutLocalPresence();
 
   const expired = await prisma.$queryRawUnsafe<Array<{
     regionKey: string;
@@ -1594,17 +1658,20 @@ async function processTerritoryHoldDuties(
   for (const candidate of candidates) {
     const ownerCrewId = toNumeric(candidate.ownerCrewId);
     if ((dueByCrew.get(ownerCrewId) ?? 0) >= hold.maxDuePerCrew) continue;
+    const countryCode = String(candidate.countryCode || '').toLowerCase();
+    if (!presenceByCrew.get(ownerCrewId)?.has(countryCode)) continue;
 
     const dueAt = new Date(now.getTime() + windowHours * 60 * 60 * 1000);
-    const updated = await prisma.$executeRawUnsafe(
-      `UPDATE territory_control
-       SET holdDueAt = ?, updatedAt = NOW()
-       WHERE regionKey = ? AND ownerCrewId = ? AND holdDueAt IS NULL`,
-      dueAt,
-      candidate.regionKey,
+    const assigned = await assignHoldDutyIfSlotFree({
+      regionKey: candidate.regionKey,
       ownerCrewId,
-    );
-    if (Number(updated) <= 0) continue;
+      dueAt,
+      maxDuePerCrew: hold.maxDuePerCrew,
+    });
+    if (!assigned) {
+      dueByCrew.set(ownerCrewId, hold.maxDuePerCrew);
+      continue;
+    }
     dueByCrew.set(ownerCrewId, (dueByCrew.get(ownerCrewId) ?? 0) + 1);
     _notifyCrewHoldDue(ownerCrewId, candidate.regionKey, candidate.nameNl, candidate.nameEn, windowHours).catch(() => {});
   }
