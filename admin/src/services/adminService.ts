@@ -1879,6 +1879,56 @@ export const adminService = {
     return response.json();
   },
 
+  async listPlayerDeathSnapshots(playerId: number) {
+    const token = adminAuthService.getToken();
+    const response = await fetch(
+      `${API_URL}/admin/players/${playerId}/death-snapshots`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    );
+    await ensureOk(response, "Failed to load death snapshots");
+    return response.json() as Promise<{
+      snapshots: Array<{
+        id: number;
+        hitId: number | null;
+        killerId: number | null;
+        bounty: number;
+        vipProtectionApplied: boolean;
+        createdAt: string;
+        restoredAt: string | null;
+        summary: {
+          rankBefore?: number | null;
+          moneyBefore?: number | null;
+          keptHouses?: number;
+          keptApartments?: number;
+          counts?: Record<string, number>;
+        };
+      }>;
+    }>;
+  },
+
+  async restorePlayerDeathSnapshot(
+    playerId: number,
+    snapshotId: number,
+    reason: string,
+  ) {
+    const token = adminAuthService.getToken();
+    const response = await fetch(
+      `${API_URL}/admin/players/${playerId}/death-snapshots/${snapshotId}/restore`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ reason, confirm: "RESTORE" }),
+      },
+    );
+    await ensureOk(response, "Failed to restore death snapshot");
+    return response.json();
+  },
+
   async grantSeasonPass(playerId: number, reason: string) {
     const token = adminAuthService.getToken();
     const response = await fetch(

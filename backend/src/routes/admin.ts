@@ -76,6 +76,10 @@ import {
   AUTH_REQUIRE_EMAIL_VERIFICATION_KEY,
 } from '../services/authService';
 import { facebookAuthService } from '../services/facebookAuthService';
+import {
+  listPlayerDeathSnapshots,
+  restorePlayerDeathSnapshot,
+} from '../services/playerDeathLossService';
 
 const router = express.Router();
 
@@ -6202,5 +6206,57 @@ router.put('/trial/runtime-config', async (req, res) => {
     return res.status(500).json({ error: 'Failed to update court runtime config' });
   }
 });
+
+router.get(
+  '/players/:playerId/death-snapshots',
+  requireAdminRole(AdminRole.SUPER_ADMIN, AdminRole.MODERATOR),
+  async (req, res) => {
+    const playerId = Number(req.params.playerId);
+    if (!Number.isInteger(playerId) || playerId <= 0) {
+      return res.status(400).json({ error: 'Invalid player id' });
+    }
+    const snapshots = await listPlayerDeathSnapshots(playerId);
+    return res.json({ snapshots });
+  }
+);
+
+router.post(
+  '/players/:playerId/death-snapshots/:snapshotId/restore',
+  requireAdminRole(AdminRole.SUPER_ADMIN),
+  auditLog({ action: 'RESTORE_DEATH_SNAPSHOT', targetType: 'Player' }),
+  async (req: AdminRequest, res) => {
+    const playerId = Number(req.params.playerId);
+    const snapshotId = Number(req.params.snapshotId);
+    const reason = String(req.body?.reason || '').trim();
+    const confirm = String(req.body?.confirm || '').trim();
+    if (!Number.isInteger(playerId) || playerId <= 0 || !Number.isInteger(snapshotId) || snapshotId <= 0) {
+      return res.status(400).json({ error: 'Invalid id' });
+    }
+    if (confirm !== 'RESTORE') {
+      return res.status(400).json({ error: 'Type RESTORE to confirm' });
+    }
+    if (reason.length < 5) {
+      return res.status(400).json({ error: 'Reason is required (min. 5 characters)' });
+    }
+    const existing = await prisma.playerDeathSnapshot.findUnique({
+      where: { id: snapshotId },
+      select: { playerId: true, restoredAt: true },
+    });
+    if (!existing || existing.playerId !== playerId) {
+      return res.status(404).json({ error: 'DEATH_SNAPSHOT_NOT_FOUND' });
+    }
+    if (existing.restoredAt) {
+      return res.status(409).json({ error: 'DEATH_SNAPSHOT_ALREADY_RESTORED' });
+    }
+    try {
+      const result = await restorePlayerDeathSnapshot(snapshotId, req.admin?.id ?? null);
+      return res.json({ success: true, ...result });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'RESTORE_FAILED';
+      console.error('[Admin] Death snapshot restore failed:', error);
+      return res.status(400).json({ error: message });
+    }
+  }
+);
 
 export default router;

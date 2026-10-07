@@ -136,6 +136,7 @@ model Player {
   hitsCompleted                   HitList[]                        @relation("HitKiller")
   hitsPlaced                      HitList[]                        @relation("HitPlacer")
   hitsTarget                      HitList[]                        @relation("HitTarget")
+  deathSnapshots                  PlayerDeathSnapshot[]
   inventory                       Inventory[]
   inventoryUpgrades               InventoryUpgrades[]
   jobAttempts                     JobAttempt[]
@@ -2096,6 +2097,27 @@ model HitList {
   @@index([status])
   @@index([completedBy], map: "hit_list_completedBy_fkey")
   @@map("hit_list")
+}
+
+/// Exact copy of what a hitlist kill removed, so staff can put it back.
+model PlayerDeathSnapshot {
+  id                   Int       @id @default(autoincrement())
+  playerId             Int
+  hitId                Int?
+  killerId             Int?
+  placedById           Int?
+  bounty               Int       @default(0)
+  vipProtectionApplied Boolean   @default(false)
+  summary              String    @db.Text
+  payload              String    @db.LongText
+  createdAt            DateTime  @default(now())
+  restoredAt           DateTime?
+  restoredByAdminId    Int?
+  player               Player    @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId, createdAt])
+  @@index([restoredAt])
+  @@map("player_death_snapshots")
 }
 
 model PlayerSecurity {

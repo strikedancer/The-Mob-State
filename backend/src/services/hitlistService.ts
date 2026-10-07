@@ -13,6 +13,12 @@ import { weaponSelectionService } from './weaponSelectionService';
 import { directMessageService } from './directMessageService';
 import { getActiveEventBoostEffects } from './premiumCreditsService';
 import { isVipStatusActive } from './vipBenefitsService';
+import {
+  collectPlayerDeathLoss,
+  keptToolLocation,
+  savePlayerDeathLoss,
+  type HitLootTransfer,
+} from './playerDeathLossService';
 import { NotificationService } from './notificationService';
 import { systemLogService } from './systemLogService';
 import { educationService } from './educationService';
@@ -106,6 +112,7 @@ interface HitLootSummary {
   cashAwarded: number;
   itemsTaken: number;
   itemsAwarded: number;
+  transfers: HitLootTransfer[];
 }
 
 interface MurderCaseDetails {
@@ -258,8 +265,8 @@ function buildMurderCaseNotification(
       'Moordlijst melding',
       `${victimUsername}, je bent zojuist vermoord via de moordlijst.`,
       vipProtectionApplied
-        ? 'VIP actief: je behoudt bank, crypto, opleidingen en prestaties. Je rank is gehalveerd en je start opnieuw met €500.000 cash.'
-        : 'Geen VIP actief: je accountprogress is volledig gereset naar basisstatus.',
+        ? 'VIP actief: je behoudt bank, crypto, opleidingen, prestaties, huizen en appartementen inclusief de opslag. Je rank is gehalveerd en je start opnieuw met €500.000 cash.'
+        : 'Geen VIP actief: je accountprogress is gereset naar basisstatus. Huizen en appartementen, inclusief de opslag, blijven staan.',
       'Je kunt binnen 24 uur een detective-onderzoek starten via de knop in dit bericht.',
       'Detective Bureau stuurt daarna een nieuw rapport en kan de moordenaar mogelijk identificeren.',
       marker,
@@ -270,8 +277,8 @@ function buildMurderCaseNotification(
     'Hitlist notice',
     `${victimUsername}, you were just killed through the hitlist.`,
     vipProtectionApplied
-      ? 'VIP active: you keep bank, crypto, education and achievements. Your rank is halved and you restart with €500,000 cash.'
-      : 'No active VIP: your account progression was fully reset to baseline.',
+      ? 'VIP active: you keep bank, crypto, education, achievements, and your houses and apartments including their storage. Your rank is halved and you restart with €500,000 cash.'
+      : 'No active VIP: your account progression was reset to baseline. Houses and apartments, including their storage, stay.',
     'You can start a detective investigation within 24 hours using the button in this message.',
     'Detective Bureau will then send a follow-up report and may identify the killer.',
     marker,
@@ -301,16 +308,30 @@ async function resetKilledPlayerProgressInTransaction(
   });
   const wasCrewLeader = crewMembership?.role === 'leader';
 
+  const keptProperties = await tx.property.findMany({
+    where: { playerId, propertyType: { in: ['house', 'apartment'] } },
+    select: { id: true },
+  });
+  const keptToolLocations = keptProperties.map((row: { id: number }) => keptToolLocation(row.id));
+
   await tx.actionCooldown.deleteMany({ where: { playerId } });
   await tx.crimeAttempt.deleteMany({ where: { playerId } });
   await tx.jobAttempt.deleteMany({ where: { playerId } });
   await tx.inventory.deleteMany({ where: { playerId } });
+  await tx.vehicle_tuning_upgrades.deleteMany({ where: { player_id: playerId } }).catch(() => undefined);
+  await tx.vehicle_repair_jobs.deleteMany({ where: { player_id: playerId } }).catch(() => undefined);
   await tx.vehicleInventory.deleteMany({ where: { playerId } });
   await tx.ammoInventory.deleteMany({ where: { playerId } });
   await tx.weaponInventory.deleteMany({ where: { playerId } });
-  await tx.playerTools.deleteMany({ where: { playerId } });
+  await tx.playerTools.deleteMany({
+    where: keptToolLocations.length
+      ? { playerId, location: { notIn: keptToolLocations } }
+      : { playerId },
+  });
   await tx.toolLoadouts.deleteMany({ where: { playerId } }).catch(() => undefined);
-  await tx.property.deleteMany({ where: { playerId } });
+  await tx.property.deleteMany({
+    where: { playerId, propertyType: { notIn: ['house', 'apartment'] } },
+  });
   await tx.prostitute.deleteMany({ where: { playerId } });
   const lostCasinos = await tx.casinoOwnership.findMany({
     where: { ownerId: playerId },
@@ -730,6 +751,7 @@ async function transferHitLoot(
     cashAwarded: 0,
     itemsTaken: 0,
     itemsAwarded: 0,
+    transfers: [],
   };
 
   const victim = await tx.player.findUnique({
@@ -750,6 +772,12 @@ async function transferHitLoot(
     summary.itemsTaken += Number(row.quantity || 0);
     summary.itemsAwarded += transferQty;
     if (transferQty > 0) {
+      summary.transfers.push({
+        kind: 'inventory',
+        quantity: transferQty,
+        goodType: row.goodType,
+        country: lootCountry,
+      });
       await tx.inventory.upsert({
         where: {
           playerId_goodType_country: {
@@ -784,6 +812,11 @@ async function transferHitLoot(
     summary.itemsTaken += Number(row.quantity || 0);
     summary.itemsAwarded += transferQty;
     if (transferQty > 0) {
+      summary.transfers.push({
+        kind: 'ammo',
+        quantity: transferQty,
+        ammoType: row.ammoType,
+      });
       await tx.ammoInventory.upsert({
         where: {
           playerId_ammoType: {
@@ -816,6 +849,11 @@ async function transferHitLoot(
     summary.itemsTaken += Number(row.quantity || 0);
     summary.itemsAwarded += transferQty;
     if (transferQty > 0) {
+      summary.transfers.push({
+        kind: 'weapon',
+        quantity: transferQty,
+        weaponId: row.weaponId,
+      });
       await tx.weaponInventory.upsert({
         where: {
           playerId_weaponId: {
@@ -848,6 +886,12 @@ async function transferHitLoot(
     summary.itemsTaken += Number(row.quantity || 0);
     summary.itemsAwarded += transferQty;
     if (transferQty > 0) {
+      summary.transfers.push({
+        kind: 'tool',
+        quantity: transferQty,
+        toolId: row.toolId,
+        durability: row.durability,
+      });
       const existingTool = await tx.playerTools.findFirst({
         where: {
           playerId: killerId,
@@ -1641,6 +1685,7 @@ export async function attemptHit(
       cashAwarded: 0,
       itemsTaken: 0,
       itemsAwarded: 0,
+      transfers: [],
     };
 
     await prisma.$transaction(async (tx) => {
@@ -1661,7 +1706,24 @@ export async function attemptHit(
         attackerArmorLoss
       );
 
+      const deathDraft = await collectPlayerDeathLoss(tx, victimId);
       lootSummary = await transferHitLoot(tx, playerId, victimId, lootSettings);
+      deathDraft.loot = {
+        killerId: playerId,
+        placedById: hit.placedById,
+        bounty,
+        cashTaken: lootSummary.cashTaken,
+        cashAwarded: lootSummary.cashAwarded,
+        transfers: lootSummary.transfers,
+      };
+      await savePlayerDeathLoss(tx, {
+        playerId: victimId,
+        hitId,
+        killerId: playerId,
+        placedById: hit.placedById,
+        bounty,
+        draft: deathDraft,
+      });
 
       await tx.player.update({
         where: { id: playerId },
@@ -1683,7 +1745,7 @@ export async function attemptHit(
           completedAt: new Date(),
         },
       });
-    });
+    }, { timeout: 60_000, maxWait: 10_000 });
 
     let dailyContractBonus = 0;
     try {

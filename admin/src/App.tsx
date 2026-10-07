@@ -773,6 +773,25 @@ function App() {
   );
   const [banDuration, setBanDuration] = useState("24");
   const [playerManageReason, setPlayerManageReason] = useState("");
+  const [playerDeathSnapshots, setPlayerDeathSnapshots] = useState<
+    Array<{
+      id: number;
+      createdAt: string;
+      restoredAt: string | null;
+      vipProtectionApplied: boolean;
+      bounty: number;
+      summary: {
+        rankBefore?: number | null;
+        moneyBefore?: number | null;
+        keptHouses?: number;
+        keptApartments?: number;
+        counts?: Record<string, number>;
+      };
+    }>
+  >([]);
+  const [restoringDeathSnapshotId, setRestoringDeathSnapshotId] = useState<
+    number | null
+  >(null);
   const [playerVipTouched, setPlayerVipTouched] = useState(false);
   const [isSendingPlayerTestPush, setIsSendingPlayerTestPush] = useState(false);
   const [playerTestPushForm, setPlayerTestPushForm] =
@@ -1464,6 +1483,31 @@ function App() {
       } finally {
         if (!cancelled) {
           setPlayerCustomPortraitsLoading(false);
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedPlayerId, playerDetailTab]);
+
+  useEffect(() => {
+    if (!selectedPlayerId || playerDetailTab !== "manage") {
+      setPlayerDeathSnapshots([]);
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      try {
+        const result = await adminService.listPlayerDeathSnapshots(
+          selectedPlayerId,
+        );
+        if (!cancelled) {
+          setPlayerDeathSnapshots(result.snapshots || []);
+        }
+      } catch {
+        if (!cancelled) {
+          setPlayerDeathSnapshots([]);
         }
       }
     })();
@@ -3704,6 +3748,56 @@ function App() {
       );
     } finally {
       setDeletingPortraitId(null);
+    }
+  };
+
+  const handleRestoreDeathSnapshot = async (snapshotId: number) => {
+    if (!selectedPlayerId || adminRole !== "SUPER_ADMIN") return;
+    const reason = window.prompt(
+      l(
+        "Reden voor het terugzetten van dit moordverlies (min. 5 tekens).",
+        "Reason for restoring this death loss (min. 5 characters).",
+      ),
+      playerManageReason.trim(),
+    );
+    if (!reason || reason.trim().length < 5) return;
+    const confirm = window.prompt(
+      l(
+        "Dit zet de bewaarde verliezen terug en haalt bounty en buit bij de moordenaar weg. Typ RESTORE.",
+        "This restores the saved losses and claws bounty and loot from the killer. Type RESTORE.",
+      ),
+    );
+    if (confirm !== "RESTORE") return;
+    setRestoringDeathSnapshotId(snapshotId);
+    try {
+      const result = await adminService.restorePlayerDeathSnapshot(
+        selectedPlayerId,
+        snapshotId,
+        reason.trim(),
+      );
+      const warnings = Array.isArray(result?.warnings) ? result.warnings : [];
+      alert(
+        warnings.length
+          ? l(
+              `Teruggezet met opmerkingen: ${warnings.join(", ")}`,
+              `Restored with notes: ${warnings.join(", ")}`,
+            )
+          : l("Moordverlies teruggezet.", "Death loss restored."),
+      );
+      const refreshed = await adminService.listPlayerDeathSnapshots(
+        selectedPlayerId,
+      );
+      setPlayerDeathSnapshots(refreshed.snapshots || []);
+      const overview = await adminService.getPlayerOverview(selectedPlayerId);
+      setSelectedPlayerOverview(overview);
+    } catch (err) {
+      if (handleUnauthorized(err)) return;
+      const message = err instanceof Error ? err.message : t.unknownError;
+      alert(
+        `${l("Terugzetten mislukt", "Restore failed")}: ${message}`,
+      );
+    } finally {
+      setRestoringDeathSnapshotId(null);
     }
   };
 
@@ -9148,6 +9242,79 @@ function App() {
                                       "Save only updates this form. Reset wipes gameplay but keeps the account, VIP subscription, and paid credits.",
                                     )}
                                   </small>
+                                </div>
+
+                                <div className="mt-4 pt-4 border-top">
+                                  <h6 className="mb-2">
+                                    <i className="ph-arrow-counter-clockwise me-2" />
+                                    {l("Moordverlies", "Death loss")}
+                                  </h6>
+                                  <p className="text-muted small">
+                                    {l(
+                                      "Bij een moord blijven huizen en appartementen, inclusief de opslag. Alles wat wel weggaat wordt hier bewaard.",
+                                      "On a murder, houses and apartments stay, including their storage. Everything else that is removed is saved here.",
+                                    )}
+                                  </p>
+                                  {playerDeathSnapshots.length === 0 ? (
+                                    <div className="text-muted small">
+                                      {l("Nog geen moordverlies.", "No death loss yet.")}
+                                    </div>
+                                  ) : (
+                                    <div className="d-flex flex-column gap-2">
+                                      {playerDeathSnapshots.map((snapshot) => {
+                                        const counts = snapshot.summary?.counts || {};
+                                        const lostVehicles = counts.vehicles || 0;
+                                        const lostTools = counts.tools || 0;
+                                        const lostProperties = counts.properties || 0;
+                                        return (
+                                          <div
+                                            key={snapshot.id}
+                                            className="border rounded p-2 d-flex flex-wrap justify-content-between gap-2"
+                                          >
+                                            <div className="small">
+                                              <div>
+                                                {new Date(snapshot.createdAt).toLocaleString()}{" "}
+                                                {snapshot.vipProtectionApplied
+                                                  ? "VIP"
+                                                  : l("geen VIP", "no VIP")}
+                                              </div>
+                                              <div>
+                                                {l("Rank", "Rank")}{" "}
+                                                {snapshot.summary?.rankBefore ?? "—"}, €
+                                                {Number(snapshot.summary?.moneyBefore || 0).toLocaleString()}
+                                                {". "}
+                                                {l("Behouden", "Kept")}:{" "}
+                                                {snapshot.summary?.keptHouses || 0}{" "}
+                                                {l("huizen", "houses")},{" "}
+                                                {snapshot.summary?.keptApartments || 0}{" "}
+                                                {l("appartementen", "apartments")}.{" "}
+                                                {l("Verloren", "Lost")}: {lostProperties}{" "}
+                                                {l("panden", "properties")}, {lostVehicles}{" "}
+                                                {l("voertuigen", "vehicles")}, {lostTools}{" "}
+                                                {l("gereedschap", "tools")}.
+                                              </div>
+                                            </div>
+                                            {snapshot.restoredAt ? (
+                                              <span className="badge bg-success align-self-center">
+                                                {l("Teruggezet", "Restored")}
+                                              </span>
+                                            ) : adminRole === "SUPER_ADMIN" ? (
+                                              <button
+                                                type="button"
+                                                className="btn btn-sm btn-outline-warning"
+                                                disabled={restoringDeathSnapshotId === snapshot.id}
+                                                onClick={() =>
+                                                  handleRestoreDeathSnapshot(snapshot.id)
+                                                }
+                                              >
+                                                {l("Terugzetten", "Restore")}
+                                              </button>
+                                            ) : null}
+                                          </div>
+                                        );
+                                      })}
+                                    </div>
+                                  )}
                                 </div>
 
                                 <div className="mt-4 pt-4 border-top">
