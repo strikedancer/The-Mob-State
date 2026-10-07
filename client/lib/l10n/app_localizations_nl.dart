@@ -10540,6 +10540,14 @@ class AppLocalizationsNl extends AppLocalizations {
       'Er loopt al een onderzoek voor deze hit. Wacht op je detectivebericht.';
 
   @override
+  String get hitlistErrInvestigationRequired =>
+      'Je hebt een afgerond detective-rapport nodig voordat je deze moord kunt uitvoeren. Elk onderzoek duurt 24 uur.';
+
+  @override
+  String get hitlistErrInvestigationPending =>
+      'Je onderzoek loopt nog. Het rapport komt na 24 uur. Daarvoor kun je de moord niet uitvoeren.';
+
+  @override
   String get hitlistErrInvalidCaseId => 'Ongeldig dossiernummer';
 
   @override
@@ -10560,18 +10568,18 @@ class AppLocalizationsNl extends AppLocalizations {
   String get hitlistInvestigationOptions => 'Onderzoek opties';
 
   @override
-  String get hitlistInvestigationChooseSpeedPrice => 'Kies snelheid en prijs:';
+  String get hitlistInvestigationChooseSpeedPrice => 'Elk onderzoek duurt 24 uur. Een dieper rapport kijkt door meer lijfwachten heen. Zonder afgerond rapport kun je de moord niet uitvoeren.';
 
   @override
-  String get hitlistInvestigationQuick => 'Snel onderzoek (€1.000.000 • 1 uur)';
+  String get hitlistInvestigationQuick => 'Oppervlakkig onderzoek (€250.000 • 24 uur)';
 
   @override
   String get hitlistInvestigationStandard =>
-      'Gemiddeld onderzoek (€500.000 • 6 uur)';
+      'Normaal onderzoek (€500.000 • 24 uur)';
 
   @override
   String get hitlistInvestigationSlow =>
-      'Langzaam onderzoek (€250.000 • 24 uur)';
+      'Diep onderzoek (€1.000.000 • 24 uur)';
 
   @override
   String hitlistInvestigationQueued(
@@ -19862,7 +19870,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpTopicHitlistHow =>
-      'Via de hitlist kun je een speler toevoegen door een bounty in te stellen. Minimumbounty is €5.000. De betaler verliest dit geld direct.\nAls er een bounty op jou wordt geplaatst, ontvang je direct een pushmelding en inboxbericht van Moordlijst Bureau.\nActieve hits zijn zichtbaar voor alle spelers. Hoe hoger de bounty, hoe meer aandacht het contract trekt.\nDetective-onderzoek levert geen directe uitslag meer op: rapporten komen later via een bericht van Detective Bureau (Snel 1 uur €1.000.000, Gemiddeld 6 uur €500.000, Langzaam 24 uur €250.000).\nWord je via de hitlist vermoord, dan ontvang je een Moordlijst Bureau-bericht met een knop om binnen 24 uur onderzoek naar de dader te starten.\nHuizen en appartementen blijven altijd, inclusief de opslag. Met VIP blijven je andere eigendommen, schoollevels en drugslabs ook. Casino en nachtclub ben je altijd kwijt. VIP raakt de helft van elke showroom en de helft van de prostituees kwijt. Wat een moord weghaalt wordt bewaard, zodat het teruggezet kan worden.\nVraag je dit onderzoek snel na de moord aan, dan komt het detective-rapport sneller. Wacht je langer, dan duurt het rapport ook langer.\nOm een hit uit te voeren moet je in hetzelfde land zijn als je doelwit. Je valt aan via het spelersprofiel.\nGevecht wordt automatisch berekend op basis van: bewapening, armor, stats (kracht, reflexen), crew-bonussen en actief niveau.\nBij een succesvolle eliminatie ontvang je de volledige bounty. Mislukt de aanval dan verlies je HP en het doelwit blijft leven.\nBij een succesvolle moord krijgt het doelwit een harde reset van accountprogressie: bezittingen en voortgang worden teruggezet naar basisstatus, maar banktegoed en crew-leiderschap blijven behouden. Jij ontvangt naast de bounty een deel van de beschikbare buit.\nNa een succesvolle kill ontvang je direct een inboxbericht van Moordlijst Bureau met een overzicht van de bounty en buit (geld + items).\nDoelwitten met een actieve bodyguard of bewakingsbeveiliging zijn moeilijker te raken.\nJe kunt je eigen naam van de hitlist verwijderen door de plaatser te betalen of de bounty zelf over te nemen.';
+      'Via de hitlist kun je een speler toevoegen door een bounty in te stellen. Minimumbounty is €5.000. De betaler verliest dit geld direct.\nAls er een bounty op jou wordt geplaatst, ontvang je direct een pushmelding en inboxbericht van Moordlijst Bureau.\nActieve hits zijn zichtbaar voor alle spelers. Hoe hoger de bounty, hoe meer aandacht het contract trekt.\nVoordat je een moord kunt uitvoeren, moet een detective-onderzoek klaar zijn. Elk rapport duurt 24 uur. Oppervlakkig kost €250.000, normaal €500.000 en diep €1.000.000. Genoeg lijfwachten laten dat rapport het verkeerde land noemen. Een dieper rapport kijkt door meer lijfwachten heen, maar een vol team van 10 elite-lijfwachten houdt elk rapport tegen. Na 48 uur offline wordt die dekking zwakker, en na 7 dagen klopt het rapport wel.\nWord je via de hitlist vermoord, dan ontvang je een Moordlijst Bureau-bericht met een knop om binnen 24 uur onderzoek naar de dader te starten.\nHuizen en appartementen blijven altijd, inclusief de opslag. Met VIP blijven je andere eigendommen, schoollevels en drugslabs ook. Casino en nachtclub ben je altijd kwijt. VIP raakt de helft van elke showroom en de helft van de prostituees kwijt. Wat een moord weghaalt wordt bewaard, zodat het teruggezet kan worden.\nVraag je dit onderzoek snel na de moord aan, dan komt het detective-rapport sneller. Wacht je langer, dan duurt het rapport ook langer.\nOm een hit uit te voeren moet je in hetzelfde land zijn als je doelwit. Je valt aan via het spelersprofiel.\nGevecht wordt automatisch berekend op basis van: bewapening, armor, stats (kracht, reflexen), crew-bonussen en actief niveau.\nBij een succesvolle eliminatie ontvang je de volledige bounty. Mislukt de aanval dan verlies je HP en het doelwit blijft leven.\nBij een succesvolle moord krijgt het doelwit een harde reset van accountprogressie: bezittingen en voortgang worden teruggezet naar basisstatus, maar banktegoed en crew-leiderschap blijven behouden. Jij ontvangt naast de bounty een deel van de beschikbare buit.\nNa een succesvolle kill ontvang je direct een inboxbericht van Moordlijst Bureau met een overzicht van de bounty en buit (geld + items).\nDoelwitten met een actieve bodyguard of bewakingsbeveiliging zijn moeilijker te raken.\nJe kunt je eigen naam van de hitlist verwijderen door de plaatser te betalen of de bounty zelf over te nemen.';
 
   @override
   String get helpTopicHitlistTips =>

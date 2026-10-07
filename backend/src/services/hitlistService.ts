@@ -24,6 +24,7 @@ import { educationService } from './educationService';
 import { checkAndUnlockAchievements } from './achievementService';
 import fs from 'fs';
 import path from 'path';
+import countriesData from '../../content/countries.json';
 import { activePortraitPathFromRow } from '../utils/avatarDisplay';
 import {
   BODYGUARD_CAP,
@@ -1518,6 +1519,8 @@ export async function attemptHit(
     }
   }
 
+  await assertHitInvestigationReady(playerId, hitId);
+
   const attacker = await prisma.player.findUnique({
     where: { id: playerId },
     select: { currentCountry: true, money: true, preferredLanguage: true, health: true },
@@ -1924,27 +1927,31 @@ interface InvestigationQueueRow {
   reportArmor: number | null;
 }
 
+const INVESTIGATION_DELAY_MS = 24 * 60 * 60 * 1000;
+
+const TRAVEL_COUNTRY_IDS = (countriesData as Array<{ id: string }>).map((entry) => entry.id);
+
 const INVESTIGATION_TIER_CONFIG: Record<
   InvestigationTier,
   { cost: number; delayMs: number; nlLabel: string; enLabel: string }
 > = {
   quick: {
-    cost: 1_000_000,
-    delayMs: 60 * 60 * 1000,
-    nlLabel: 'Snel',
-    enLabel: 'Quick',
+    cost: 250_000,
+    delayMs: INVESTIGATION_DELAY_MS,
+    nlLabel: 'Oppervlakkig',
+    enLabel: 'Shallow',
   },
   standard: {
     cost: 500_000,
-    delayMs: 6 * 60 * 60 * 1000,
-    nlLabel: 'Gemiddeld',
+    delayMs: INVESTIGATION_DELAY_MS,
+    nlLabel: 'Normaal',
     enLabel: 'Standard',
   },
   deep: {
-    cost: 250_000,
-    delayMs: 24 * 60 * 60 * 1000,
-    nlLabel: 'Langzaam',
-    enLabel: 'Slow',
+    cost: 1_000_000,
+    delayMs: INVESTIGATION_DELAY_MS,
+    nlLabel: 'Diep',
+    enLabel: 'Deep',
   },
 };
 
@@ -1990,6 +1997,37 @@ function getTierConfig(tier: InvestigationTier) {
     throw new Error('INVALID_INVESTIGATION_TIER');
   }
   return config;
+}
+
+function decoyCountry(realCountry: string, seed: number): string {
+  const options = TRAVEL_COUNTRY_IDS.filter((id) => id !== realCountry);
+  if (options.length === 0) {
+    return realCountry;
+  }
+  return options[Math.abs(Math.floor(seed)) % options.length];
+}
+
+/** A finished detective report is required before a hit can be attempted. */
+async function assertHitInvestigationReady(playerId: number, hitId: number): Promise<void> {
+  await ensureInvestigationSchema();
+
+  const rows = await prisma.$queryRaw<Array<{ status: string }>>`
+    SELECT status
+    FROM hitlist_investigations
+    WHERE playerId = ${playerId}
+      AND hitId = ${hitId}
+      AND status IN ('pending', 'completed')
+  `;
+
+  if (rows.some((row) => row.status === 'completed')) {
+    return;
+  }
+
+  if (rows.some((row) => row.status === 'pending')) {
+    throw new Error('INVESTIGATION_PENDING');
+  }
+
+  throw new Error('INVESTIGATION_REQUIRED');
 }
 
 export async function investigateHit(
@@ -2136,16 +2174,12 @@ function buildInvestigationMessage(
     isNl ? `Doelwit: ${targetUsername}` : `Target: ${targetUsername}`,
   ];
 
-  if (clarity === 'blocked') {
+  if (clarity === 'blocked' || clarity === 'full') {
+    lines.push(isNl ? `Locatie: ${country}` : `Location: ${country}`);
     lines.push(
       isNl
-        ? 'Locatie: afgeschermd — lijfwachten hielden de detective op afstand'
-        : 'Location: shielded — bodyguards kept the detective at bay'
-    );
-    lines.push(
-      isNl
-        ? 'Beveiliging: zwaar bewaakt. Exacte sterkte en vest onbekend.'
-        : 'Security: heavily guarded. Exact strength and vest unknown.'
+        ? `Lijfwachten: ${bodyguards} · Vest: ${armor}`
+        : `Bodyguards: ${bodyguards} · Vest: ${armor}`
     );
   } else if (clarity === 'partial') {
     lines.push(isNl ? `Locatie: ${country}` : `Location: ${country}`);
@@ -2167,13 +2201,6 @@ function buildInvestigationMessage(
       isNl
         ? 'Lijfwachten hebben het rapport deels vertroebeld. Dieper onderzoek ziet meer.'
         : 'Bodyguards partly clouded this report. A deeper investigation sees more.'
-    );
-  } else {
-    lines.push(isNl ? `Locatie: ${country}` : `Location: ${country}`);
-    lines.push(
-      isNl
-        ? `Lijfwachten: ${bodyguards} · Vest: ${armor}`
-        : `Bodyguards: ${bodyguards} · Vest: ${armor}`
     );
   }
 
@@ -2267,10 +2294,23 @@ export async function processPendingInvestigations(limit = 50): Promise<number> 
       const clarity = investigationClarity(guardDefense, row.tier, {
         lastTickAt: target.lastTickAt,
       });
+      const misleadingSeed = row.id * 17 + row.targetId;
       const reportedCountry =
-        clarity === 'blocked' ? null : target.currentCountry;
-      const reportedGuards = clarity === 'full' ? bodyguardTotal(roster) : null;
-      const reportedArmor = clarity === 'full' ? armorRating : null;
+        clarity === 'blocked'
+          ? decoyCountry(target.currentCountry, misleadingSeed)
+          : target.currentCountry;
+      const reportedGuards =
+        clarity === 'full'
+          ? bodyguardTotal(roster)
+          : clarity === 'blocked'
+            ? Math.abs(misleadingSeed) % 4
+            : null;
+      const reportedArmor =
+        clarity === 'full'
+          ? armorRating
+          : clarity === 'blocked'
+            ? (Math.abs(misleadingSeed) % 3) * 20
+            : null;
 
       const updatedRow: InvestigationQueueRow = {
         ...row,

@@ -5,10 +5,12 @@ Hit placement, bounties, detective investigations, combat mechanics, counter-bou
 
 **Core Game Loop:**
 1. Speler plaatst bounty op enemy (geld afgetrokken)
-2. Potentiële assassins huren detective voor locatie
-3. Assassin wacht op moment + staat in land op
-4. Combat (attacker vs defender)
-5. Bounty uitbetaald aan winner
+2. Assassin start een detective-onderzoek. Elk rapport duurt 24 uur (oppervlakkig €250.000, normaal €500.000, diep €1.000.000)
+3. Zonder afgerond rapport mag de moord niet worden uitgevoerd
+4. Genoeg lijfwachten laten het rapport het verkeerde land en de verkeerde beveiliging noemen. Een vol team van 10 elite-lijfwachten houdt elk rapport tegen. Na 48 uur offline verzwakt die dekking; na 7 dagen klopt het rapport
+5. Assassin moet in het echte land van het doelwit staan
+6. Combat (attacker vs defender)
+7. Bounty uitbetaald aan winner
 
 ## Primary Frontend Entry
 - client/lib/screens/hitlist_screen.dart
@@ -334,7 +336,7 @@ await prisma.$transaction([
 - ✅ On web dashboard, verify there is no extra “Moordlijst” AppBar title and the hero shows open-count + security. Collapsed hit cards: on desktop one row (avatar, name, bounty, age, Hit); under ~420px stack name on the first row and bounty/time/Hit below so the row does not overflow.
 - ✅ A failed hitlist load must show retry, not the empty “no contracts” state.
 - ✅ Place hit (€50K, €500K, €5M) - check money deducted
-- ✅ Hire detective (all 3 cost tiers) - check queue response is immediate but report delivery happens in 1h/6h/24h via Detective Bureau inbox message
+- ✅ Hire detective (all 3 cost tiers) - check queue response is immediate but every report arrives after 24 hours via Detective Bureau inbox message. Attempting the hit before that report is finished returns INVESTIGATION_REQUIRED or INVESTIGATION_PENDING
 - ✅ View detective report - check 3-hour expiry countdown
 - ✅ Attempt hit (success + failure) - success pays bounty; failure keeps the contract, cuts guards/HP, wears vest, and locks retries for 10 minutes
 - ✅ Place counter-bounty - check reversal atomicity (role swap)

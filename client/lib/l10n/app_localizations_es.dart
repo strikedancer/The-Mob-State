@@ -10586,6 +10586,14 @@ class AppLocalizationsEs extends AppLocalizations {
       'Ya hay una investigación pendiente por este golpe. Espere su mensaje de detective.';
 
   @override
+  String get hitlistErrInvestigationRequired =>
+      'Necesitas un informe de detective terminado antes de intentar este golpe. Cada investigación dura 24 horas.';
+
+  @override
+  String get hitlistErrInvestigationPending =>
+      'Tu investigación sigue en curso. El informe llega a las 24 horas. Antes no puedes intentar el golpe.';
+
+  @override
   String get hitlistErrInvalidCaseId => 'Número de expediente no válido';
 
   @override
@@ -10607,19 +10615,19 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get hitlistInvestigationChooseSpeedPrice =>
-      'Elige velocidad y precio:';
+      'Cada investigación dura 24 horas. Un informe más profundo ve a través de más guardaespaldas. Sin un informe terminado no puedes intentar el golpe.';
 
   @override
   String get hitlistInvestigationQuick =>
-      'Investigación rápida (1.000.000€ • 1 hora)';
+      'Investigación superficial (€250.000 • 24 horas)';
 
   @override
   String get hitlistInvestigationStandard =>
-      'Investigación estándar (500.000€ • 6 horas)';
+      'Investigación estándar (€500.000 • 24 horas)';
 
   @override
   String get hitlistInvestigationSlow =>
-      'Investigación lenta (250.000€ • 24 horas)';
+      'Investigación profunda (€1.000.000 • 24 horas)';
 
   @override
   String hitlistInvestigationQueued(
@@ -19992,7 +20000,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpTopicHitlistHow =>
-      'A través de la lista de resultados, agregas un jugador estableciendo una recompensa. La recompensa mínima es de 5.000 €. El pagador pierde este dinero inmediatamente. \nSi se le otorga una recompensa, recibirá inmediatamente una notificación automática y un mensaje en la bandeja de entrada de Hitlist Bureau. \nLos golpes activos son visibles para todos los jugadores. Cuanto mayor es la recompensa, más atención atrae el contrato. \nLas investigaciones de detectives ya no proporcionan información instantánea: los informes llegan más tarde a través de un mensaje de Detective Bureau (Rápido 1 hora 1.000.000 €, Estándar 6 horas 500.000 €, Lento 24 horas 250.000 €). Los guardaespaldas objetivo pueden nublar o bloquear ese informe: Quick es fácil de detener. La lentitud siempre gotea al país, incluso contra un equipo de élite. Después de 48 horas sin conexión la cubierta se debilita; después de 7 días el informe está completo. Después de un asesinato, los guardaespaldas del asesino también reducen la posibilidad de que un detective del caso de asesinato los identifique, hasta que permanecen desconectados por mucho tiempo. \nSi lo matan a través de la lista de objetivos, recibirá un mensaje de Hitlist Bureau con un botón para iniciar una investigación del asesino dentro de las 24 horas. \nSi solicita esta investigación rápidamente después del asesinato, el informe detective llegará más rápido. Esperar más significa una demora mayor en el informe. \nPara ejecutar un golpe debes estar en el mismo país que tu objetivo. Atacas a través del perfil del jugador. \nEl combate se calcula automáticamente en función de: armas, armaduras, estadísticas (fuerza, reflejos), bonificaciones de Crew y nivel activo. \nSi lo eliminas con éxito, recibirás la recompensa completa, pero aún puedes perder HP, guardaespaldas y estado del chaleco. Si el ataque falla, el contrato permanece abierto: ambos bandos pierden guardaespaldas y HP, y puedes volver a intentarlo después de 10 minutos. \nTras un impacto exitoso, el objetivo recibe un reinicio completo del progreso de la cuenta: los activos y el progreso se restablecen al estado inicial, mientras que el saldo bancario y el liderazgo de la Crew se conservan. Recibes una parte del botín disponible además de la recompensa. \nDespués de una muerte exitosa, recibirás inmediatamente un mensaje en la bandeja de entrada de Hitlist Bureau con un desglose de la recompensa y el botín (efectivo + artículos). \nLos objetivos con un guardaespaldas activo o protección de seguridad son más difíciles de alcanzar. \nPuede eliminar su propio nombre de la lista de resultados pagando al colocador o comprando la recompensa usted mismo.';
+      'A través de la lista de resultados, agregas un jugador estableciendo una recompensa. La recompensa mínima es de 5.000 €. El pagador pierde este dinero inmediatamente. \nSi se le otorga una recompensa, recibirá inmediatamente una notificación automática y un mensaje en la bandeja de entrada de Hitlist Bureau. \nLos golpes activos son visibles para todos los jugadores. Cuanto mayor es la recompensa, más atención atrae el contrato. \nAntes de intentar un golpe tienes que terminar una investigación de detective. Cada informe tarda 24 horas (superficial €250.000, estándar €500.000, profunda €1.000.000). Con suficientes guardaespaldas el informe nombra el país equivocado. Un equipo completo de 10 guardaespaldas de élite engaña cualquier informe. Tras 48 horas sin conexión esa cobertura se debilita; a los 7 días el informe es correcto. Después de un asesinato, los guardaespaldas del asesino también reducen la posibilidad de que un detective del caso de asesinato los identifique, hasta que permanecen desconectados por mucho tiempo. \nSi lo matan a través de la lista de objetivos, recibirá un mensaje de Hitlist Bureau con un botón para iniciar una investigación del asesino dentro de las 24 horas. \nSi solicita esta investigación rápidamente después del asesinato, el informe detective llegará más rápido. Esperar más significa una demora mayor en el informe. \nPara ejecutar un golpe debes estar en el mismo país que tu objetivo. Atacas a través del perfil del jugador. \nEl combate se calcula automáticamente en función de: armas, armaduras, estadísticas (fuerza, reflejos), bonificaciones de Crew y nivel activo. \nSi lo eliminas con éxito, recibirás la recompensa completa, pero aún puedes perder HP, guardaespaldas y estado del chaleco. Si el ataque falla, el contrato permanece abierto: ambos bandos pierden guardaespaldas y HP, y puedes volver a intentarlo después de 10 minutos. \nTras un impacto exitoso, el objetivo recibe un reinicio completo del progreso de la cuenta: los activos y el progreso se restablecen al estado inicial, mientras que el saldo bancario y el liderazgo de la Crew se conservan. Recibes una parte del botín disponible además de la recompensa. \nDespués de una muerte exitosa, recibirás inmediatamente un mensaje en la bandeja de entrada de Hitlist Bureau con un desglose de la recompensa y el botín (efectivo + artículos). \nLos objetivos con un guardaespaldas activo o protección de seguridad son más difíciles de alcanzar. \nPuede eliminar su propio nombre de la lista de resultados pagando al colocador o comprando la recompensa usted mismo.';
 
   @override
   String get helpTopicHitlistTips =>

@@ -10551,6 +10551,14 @@ class AppLocalizationsPt extends AppLocalizations {
       'Uma investigação já está pendente para este hit. Aguarde sua mensagem de detetive.';
 
   @override
+  String get hitlistErrInvestigationRequired =>
+      'Precisas de um relatório de detetive concluído antes de tentares este assassinato. Cada investigação demora 24 horas.';
+
+  @override
+  String get hitlistErrInvestigationPending =>
+      'A tua investigação ainda está a decorrer. O relatório chega após 24 horas. Antes disso não podes tentar o assassinato.';
+
+  @override
   String get hitlistErrInvalidCaseId => 'Número de arquivo de caso inválido';
 
   @override
@@ -10572,19 +10580,19 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get hitlistInvestigationChooseSpeedPrice =>
-      'Escolha velocidade e preço:';
+      'Cada investigação demora 24 horas. Um relatório mais fundo vê através de mais guarda-costas. Sem um relatório concluído não podes tentar o assassinato.';
 
   @override
   String get hitlistInvestigationQuick =>
-      'Investigação rápida (1.000.000€ • 1 hora)';
+      'Investigação superficial (€250.000 • 24 horas)';
 
   @override
   String get hitlistInvestigationStandard =>
-      'Investigação padrão (500.000€ • 6 horas)';
+      'Investigação padrão (€500.000 • 24 horas)';
 
   @override
   String get hitlistInvestigationSlow =>
-      'Investigação lenta (€250.000 • 24 horas)';
+      'Investigação profunda (€1.000.000 • 24 horas)';
 
   @override
   String hitlistInvestigationQueued(
@@ -19961,7 +19969,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get helpTopicHitlistHow =>
-      'Através da lista de hits você adiciona um jogador definindo uma recompensa. A recompensa mínima é de € 5.000. O pagador perde esse dinheiro imediatamente. \nSe uma recompensa for colocada em você, você receberá imediatamente uma notificação push e uma mensagem na caixa de entrada do Hitlist Bureau. \nOs golpes ativos são visíveis para todos os jogadores. Quanto maior a recompensa, mais atenção o contrato atrai. \nAs investigações de detetives não retornam mais informações instantâneas: os relatórios chegam mais tarde por meio de uma mensagem do Detective Bureau (Rápido 1 hora € 1.000.000, Padrão 6 horas € 500.000, Lento 24 horas € 250.000). Os guarda-costas alvo podem obscurecer ou bloquear esse relatório: rápido é fácil de parar. O Slow sempre vaza o país, mesmo contra um time de elite completo. Após 48 horas offline a cobertura enfraquece; após 7 dias o relatório está completo. Depois de uma morte, os guarda-costas do assassino também diminuem a chance de um detetive do caso de assassinato nomeá-los, até que fiquem offline por muito tempo. \nSe você for morto pela lista de alvos, receberá uma mensagem do Hitlist Bureau com um botão para iniciar uma investigação do assassino em 24 horas. \nSe você solicitar essa investigação logo após o assassinato, o relatório do detetive chegará mais rápido. Esperar mais significa um atraso maior no relatório. \nPara executar um golpe você deve estar no mesmo país que seu alvo. Você ataca através do perfil do jogador. \nO combate é calculado automaticamente com base em: armas, armaduras, estatísticas (força, reflexos), bônus da Crew e nível ativo. \nNa eliminação bem-sucedida, você recebe a recompensa completa, mas ainda pode perder HP, guarda-costas e condição do colete. Se o ataque falhar, o contrato permanece aberto: ambos os lados perdem guarda-costas e HP, e você pode tentar novamente após 10 minutos. \nEm caso de sucesso, o alvo recebe uma reinicialização total do progresso da conta: os recursos e a progressão são redefinidos para o status inicial, enquanto o saldo bancário e a liderança da Crew são preservados. Você recebe uma parte do saque disponível além da recompensa. \nApós uma morte bem-sucedida, você receberá imediatamente uma mensagem na caixa de entrada do Hitlist Bureau com um detalhamento da recompensa e do saque (dinheiro + itens). \nAlvos com guarda-costas ativos ou proteção de segurança são mais difíceis de atingir. \nVocê pode remover seu próprio nome da lista de alvos pagando ao colocador ou comprando a recompensa você mesmo.';
+      'Através da lista de hits você adiciona um jogador definindo uma recompensa. A recompensa mínima é de € 5.000. O pagador perde esse dinheiro imediatamente. \nSe uma recompensa for colocada em você, você receberá imediatamente uma notificação push e uma mensagem na caixa de entrada do Hitlist Bureau. \nOs golpes ativos são visíveis para todos os jogadores. Quanto maior a recompensa, mais atenção o contrato atrai. \nAntes de tentares um assassinato, tens de concluir uma investigação de detetive. Cada relatório demora 24 horas (superficial €250.000, padrão €500.000, profunda €1.000.000). Com guarda-costas suficientes o relatório indica o país errado. Uma equipa completa de 10 guarda-costas de elite engana qualquer relatório. Após 48 horas offline essa cobertura enfraquece; após 7 dias o relatório está certo. Depois de uma morte, os guarda-costas do assassino também diminuem a chance de um detetive do caso de assassinato nomeá-los, até que fiquem offline por muito tempo. \nSe você for morto pela lista de alvos, receberá uma mensagem do Hitlist Bureau com um botão para iniciar uma investigação do assassino em 24 horas. \nSe você solicitar essa investigação logo após o assassinato, o relatório do detetive chegará mais rápido. Esperar mais significa um atraso maior no relatório. \nPara executar um golpe você deve estar no mesmo país que seu alvo. Você ataca através do perfil do jogador. \nO combate é calculado automaticamente com base em: armas, armaduras, estatísticas (força, reflexos), bônus da Crew e nível ativo. \nNa eliminação bem-sucedida, você recebe a recompensa completa, mas ainda pode perder HP, guarda-costas e condição do colete. Se o ataque falhar, o contrato permanece aberto: ambos os lados perdem guarda-costas e HP, e você pode tentar novamente após 10 minutos. \nEm caso de sucesso, o alvo recebe uma reinicialização total do progresso da conta: os recursos e a progressão são redefinidos para o status inicial, enquanto o saldo bancário e a liderança da Crew são preservados. Você recebe uma parte do saque disponível além da recompensa. \nApós uma morte bem-sucedida, você receberá imediatamente uma mensagem na caixa de entrada do Hitlist Bureau com um detalhamento da recompensa e do saque (dinheiro + itens). \nAlvos com guarda-costas ativos ou proteção de segurança são mais difíceis de atingir. \nVocê pode remover seu próprio nome da lista de alvos pagando ao colocador ou comprando a recompensa você mesmo.';
 
   @override
   String get helpTopicHitlistTips =>

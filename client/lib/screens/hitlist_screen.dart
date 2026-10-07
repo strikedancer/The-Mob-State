@@ -60,6 +60,10 @@ String _resolveHitErrorMessage(dynamic data, AppLocalizations l10n) {
       return l10n.hitlistErrInvalidInvestigationTier;
     case 'INVESTIGATION_ALREADY_PENDING':
       return l10n.hitlistErrInvestigationAlreadyPending;
+    case 'INVESTIGATION_REQUIRED':
+      return l10n.hitlistErrInvestigationRequired;
+    case 'INVESTIGATION_PENDING':
+      return l10n.hitlistErrInvestigationPending;
     case 'INVALID_CASE_ID':
       return l10n.hitlistErrInvalidCaseId;
     case 'MURDER_CASE_NOT_FOUND':

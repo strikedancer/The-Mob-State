@@ -235,10 +235,6 @@ export function investigationClarity(
   } else {
     clarity = 'blocked';
   }
-  // Slow detectives always leak country, even against a paid max elite stack.
-  if (tier === 'deep' && clarity === 'blocked') {
-    clarity = 'partial';
-  }
   return raiseInvestigationClarity(
     clarity,
     investigationOfflineDecaySteps(options?.lastTickAt, options?.now)

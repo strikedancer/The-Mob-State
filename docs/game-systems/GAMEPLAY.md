@@ -999,7 +999,7 @@ Bob: Ã¢â€šÂ¬300K counter-hit
 
 ### Waar vest en lijfwachten meetellen
 - **Moordlijst**: type-match vest + lijfwacht-defense in de win-kans. Een mislukte aanslag annuleert het contract niet: beide kanten verliezen lijfwachten (elite eerst, ongeveer een kwart tot de helft) en HP (12â€“50, floor 1); vesten slijten. De aanvaller krijgt minstens 40% return-vuur. Bij een kill loopt de aanvaller lichter af. Na 10 minuten kan iedereen opnieuw proberen.
-- **Detective-onderzoek**: lijfwachten vertroebelen of blokkeren het rapport (Snel is zwak). Langzaam lekt altijd het land, ook bij een vol elite-team. Wie 48 uur niet speelt, verliest een afschermingsstap; na 7 dagen is het rapport volledig. Na een moord verlagen lijfwachten van de dader de kans dat de moordzaak hen noemt (minimum 20%), tot ze lang offline zijn.
+- **Detective-onderzoek**: een moord kan pas nadat jouw detective-rapport klaar is. Elk onderzoek duurt 24 uur. Oppervlakkig kost €250.000, normaal €500.000 en diep €1.000.000. Een dieper rapport kijkt door meer lijfwachten heen. Genoeg lijfwachten laten het rapport het verkeerde land en de verkeerde beveiliging noemen. Een vol team van 10 elite-lijfwachten houdt elk rapport tegen. Wie 48 uur niet speelt, verliest een afschermingsstap; na 7 dagen is het rapport volledig. Na een moord verlagen lijfwachten van de dader de kans dat de moordzaak hen noemt (minimum 20%), tot ze lang offline zijn.
 - **Crimes**: elke poging doet 5â€“15 HP; vest en lijfwachten kappen dat tot max ~55% minder. Geen extra slagingskans.
 - **Niet**: territorium, crew-oorlog, nightclub of rosse buurt â€” die hebben eigen beveiliging.
 

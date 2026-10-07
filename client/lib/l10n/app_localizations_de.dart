@@ -10614,6 +10614,14 @@ class AppLocalizationsDe extends AppLocalizations {
       'Zu diesem Treffer läuft bereits eine Untersuchung. Warten Sie auf Ihre Detektivnachricht.';
 
   @override
+  String get hitlistErrInvestigationRequired =>
+      'Du brauchst einen fertigen Detektivbericht, bevor du diesen Mord ausführen kannst. Jede Untersuchung dauert 24 Stunden.';
+
+  @override
+  String get hitlistErrInvestigationPending =>
+      'Deine Untersuchung läuft noch. Der Bericht kommt nach 24 Stunden. Vorher kannst du den Mord nicht ausführen.';
+
+  @override
   String get hitlistErrInvalidCaseId => 'Ungültige Fallaktennummer';
 
   @override
@@ -10636,19 +10644,19 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get hitlistInvestigationChooseSpeedPrice =>
-      'Wählen Sie Geschwindigkeit und Preis:';
+      'Jede Untersuchung dauert 24 Stunden. Ein tieferer Bericht sieht durch mehr Leibwächter. Ohne fertigen Bericht kannst du den Mord nicht ausführen.';
 
   @override
   String get hitlistInvestigationQuick =>
-      'Schnelle Untersuchung (1.000.000 € • 1 Stunde)';
+      'Oberflächliche Untersuchung (€250.000 • 24 Stunden)';
 
   @override
   String get hitlistInvestigationStandard =>
-      'Standarduntersuchung (500.000 € • 6 Stunden)';
+      'Standarduntersuchung (€500.000 • 24 Stunden)';
 
   @override
   String get hitlistInvestigationSlow =>
-      'Langsame Untersuchung (250.000 € • 24 Stunden)';
+      'Tiefe Untersuchung (€1.000.000 • 24 Stunden)';
 
   @override
   String hitlistInvestigationQueued(
@@ -20045,7 +20053,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpTopicHitlistHow =>
-      'Über die Trefferliste fügen Sie einen Spieler hinzu, indem Sie ein Kopfgeld festlegen. Das Mindestprämie beträgt 5.000 €. Der Zahler verliert dieses Geld sofort. \nWenn ein Kopfgeld auf Sie ausgesetzt wird, erhalten Sie sofort eine Push-Benachrichtigung und eine Posteingangsnachricht vom Hitlist Bureau. \nAktive Treffer sind für alle Spieler sichtbar. Je höher die Prämie, desto mehr Aufmerksamkeit erregt der Vertrag. \nDetektivuntersuchungen liefern keine sofortigen Informationen mehr: Berichte kommen später über eine Nachricht des Detektivbüros an (Schnell 1 Stunde 1.000.000 €, Standard 6 Stunden 500.000 €, Langsam 24 Stunden 250.000 €). Gezielte Leibwächter können diesen Bericht trüben oder blockieren: Schnell lässt sich leicht stoppen. Slow verliert immer das Land, selbst gegen ein komplettes Eliteteam. Nach 48 Stunden offline wird die Deckung schwächer; Nach 7 Tagen ist der Bericht fertig. Nach einem Mord verringern die Leibwächter des Mörders auch die Chance, dass ein Kriminalbeamter ihn benennt, bis er für längere Zeit offline bleibt. \nWenn Sie über die Hitlist getötet werden, erhalten Sie eine Nachricht des Hitlist Bureau mit einer Schaltfläche, mit der Sie innerhalb von 24 Stunden eine Mordermittlung einleiten können. \nWenn Sie diese Untersuchung zeitnah nach dem Mord anfordern, kommt der Kriminalbericht schneller an. Längeres Warten bedeutet eine längere Berichtsverzögerung. \nUm einen Treffer auszuführen, müssen Sie sich im selben Land wie Ihr Ziel befinden. Sie greifen über das Spielerprofil an. \nDer Kampf wird automatisch berechnet, basierend auf: Waffen, Rüstung, Statistiken (Stärke, Reflexe), Besatzungsboni und aktivem Level. \nBei erfolgreicher Eliminierung erhalten Sie das volle Kopfgeld, können aber trotzdem HP, Leibwächter und Westenzustand verlieren. Wenn der Angriff fehlschlägt, bleibt der Vertrag offen: Beide Seiten verlieren Leibwächter und HP, und Sie können es nach 10 Minuten erneut versuchen. \nBei einem erfolgreichen Treffer erhält das Ziel einen harten Kontofortschritts-Reset: Vermögenswerte und Fortschritt werden auf den Ausgangsstatus zurückgesetzt, während Bankguthaben und Besatzungsführung erhalten bleiben. Zusätzlich zum Kopfgeld erhältst du einen Anteil der verfügbaren Beute. \nNach einem erfolgreichen Kill erhalten Sie sofort eine Posteingangsnachricht vom Hitlist Bureau mit einer Aufschlüsselung des Kopfgeldes und der Beute (Bargeld + Gegenstände). \nZiele mit aktivem Leibwächter oder Sicherheitsschutz sind schwerer zu treffen. \nSie können Ihren eigenen Namen von der Trefferliste entfernen, indem Sie den Placer bezahlen oder das Kopfgeld selbst auszahlen.';
+      'Über die Trefferliste fügen Sie einen Spieler hinzu, indem Sie ein Kopfgeld festlegen. Das Mindestprämie beträgt 5.000 €. Der Zahler verliert dieses Geld sofort. \nWenn ein Kopfgeld auf Sie ausgesetzt wird, erhalten Sie sofort eine Push-Benachrichtigung und eine Posteingangsnachricht vom Hitlist Bureau. \nAktive Treffer sind für alle Spieler sichtbar. Je höher die Prämie, desto mehr Aufmerksamkeit erregt der Vertrag. \nBevor du einen Mord ausführen kannst, muss eine Detektivuntersuchung fertig sein. Jeder Bericht dauert 24 Stunden (oberflächlich €250.000, Standard €500.000, tief €1.000.000). Genug Leibwächter lassen den Bericht das falsche Land nennen. Ein volles Team aus 10 Elite-Leibwächtern täuscht jeden Bericht. Nach 48 Stunden offline wird die Deckung schwächer; nach 7 Tagen stimmt der Bericht. Nach einem Mord verringern die Leibwächter des Mörders auch die Chance, dass ein Kriminalbeamter ihn benennt, bis er für längere Zeit offline bleibt. \nWenn Sie über die Hitlist getötet werden, erhalten Sie eine Nachricht des Hitlist Bureau mit einer Schaltfläche, mit der Sie innerhalb von 24 Stunden eine Mordermittlung einleiten können. \nWenn Sie diese Untersuchung zeitnah nach dem Mord anfordern, kommt der Kriminalbericht schneller an. Längeres Warten bedeutet eine längere Berichtsverzögerung. \nUm einen Treffer auszuführen, müssen Sie sich im selben Land wie Ihr Ziel befinden. Sie greifen über das Spielerprofil an. \nDer Kampf wird automatisch berechnet, basierend auf: Waffen, Rüstung, Statistiken (Stärke, Reflexe), Besatzungsboni und aktivem Level. \nBei erfolgreicher Eliminierung erhalten Sie das volle Kopfgeld, können aber trotzdem HP, Leibwächter und Westenzustand verlieren. Wenn der Angriff fehlschlägt, bleibt der Vertrag offen: Beide Seiten verlieren Leibwächter und HP, und Sie können es nach 10 Minuten erneut versuchen. \nBei einem erfolgreichen Treffer erhält das Ziel einen harten Kontofortschritts-Reset: Vermögenswerte und Fortschritt werden auf den Ausgangsstatus zurückgesetzt, während Bankguthaben und Besatzungsführung erhalten bleiben. Zusätzlich zum Kopfgeld erhältst du einen Anteil der verfügbaren Beute. \nNach einem erfolgreichen Kill erhalten Sie sofort eine Posteingangsnachricht vom Hitlist Bureau mit einer Aufschlüsselung des Kopfgeldes und der Beute (Bargeld + Gegenstände). \nZiele mit aktivem Leibwächter oder Sicherheitsschutz sind schwerer zu treffen. \nSie können Ihren eigenen Namen von der Trefferliste entfernen, indem Sie den Placer bezahlen oder das Kopfgeld selbst auszahlen.';
 
   @override
   String get helpTopicHitlistTips =>

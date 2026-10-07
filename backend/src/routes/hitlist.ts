@@ -334,6 +334,24 @@ router.post(
         });
       }
 
+      if (error.message === 'INVESTIGATION_REQUIRED') {
+        return res.status(400).json({
+          success: false,
+          error: 'INVESTIGATION_REQUIRED',
+          message:
+            'Je moet eerst een detective-onderzoek afronden. Dat duurt 24 uur. Daarna kun je de moord uitvoeren.',
+        });
+      }
+
+      if (error.message === 'INVESTIGATION_PENDING') {
+        return res.status(400).json({
+          success: false,
+          error: 'INVESTIGATION_PENDING',
+          message:
+            'Je onderzoek loopt nog. Het rapport komt na 24 uur. Daarvoor kun je de moord niet uitvoeren.',
+        });
+      }
+
       if (error.message === 'HIT_COMBAT_COOLDOWN') {
         const retryAfterSeconds = Math.max(1, Number(error.retryAfterSeconds || 600));
         return res.status(400).json({

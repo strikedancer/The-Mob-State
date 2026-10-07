@@ -10553,6 +10553,14 @@ class AppLocalizationsPl extends AppLocalizations {
       'W sprawie tego trafienia toczy się już śledztwo. Poczekaj na wiadomość detektywistyczną.';
 
   @override
+  String get hitlistErrInvestigationRequired =>
+      'Potrzebujesz ukończonego raportu detektywa, zanim wykonasz ten zamach. Każde dochodzenie trwa 24 godziny.';
+
+  @override
+  String get hitlistErrInvestigationPending =>
+      'Twoje dochodzenie jeszcze trwa. Raport przychodzi po 24 godzinach. Wcześniej nie możesz wykonać zamachu.';
+
+  @override
   String get hitlistErrInvalidCaseId => 'Nieprawidłowy numer akt sprawy';
 
   @override
@@ -10574,19 +10582,19 @@ class AppLocalizationsPl extends AppLocalizations {
   String get hitlistInvestigationOptions => 'Opcje dochodzenia';
 
   @override
-  String get hitlistInvestigationChooseSpeedPrice => 'Wybierz prędkość i cenę:';
+  String get hitlistInvestigationChooseSpeedPrice => 'Każde dochodzenie trwa 24 godziny. Głębszy raport widzi przez więcej ochroniarzy. Bez ukończonego raportu nie możesz wykonać zamachu.';
 
   @override
   String get hitlistInvestigationQuick =>
-      'Szybkie dochodzenie (1 000 000 EUR • 1 godzina)';
+      'Płytkie dochodzenie (250 000 euro • 24 godziny)';
 
   @override
   String get hitlistInvestigationStandard =>
-      'Dochodzenie standardowe (500 000 euro • 6 godzin)';
+      'Standardowe dochodzenie (500 000 euro • 24 godziny)';
 
   @override
   String get hitlistInvestigationSlow =>
-      'Powolne dochodzenie (250 000 euro • 24 godziny)';
+      'Głębokie dochodzenie (1 000 000 euro • 24 godziny)';
 
   @override
   String hitlistInvestigationQueued(
@@ -19954,7 +19962,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get helpTopicHitlistHow =>
-      'Za pomocą listy trafień dodajesz gracza, ustalając nagrodę. Minimalna nagroda wynosi 5000 €. Płatnik natychmiast traci te pieniądze. \nJeśli wyznaczona zostanie nagroda, natychmiast otrzymasz powiadomienie push i wiadomość w skrzynce odbiorczej z Biura Hitlist. \nAktywne trafienia są widoczne dla wszystkich graczy. Im wyższa nagroda, tym większą uwagę przyciąga kontrakt. \nDochodzenia detektywistyczne nie zwracają już natychmiastowych informacji: raporty docierają później za pośrednictwem wiadomości z Biura Detektywistycznego (szybka 1 godzina 1 000 000 euro, standardowa 6 godzin 500 000 euro, wolna 24 godziny 250 000 euro). Docelowi ochroniarze mogą zaciemniać lub blokować ten raport: Quick jest łatwy do zatrzymania. Slow zawsze przecieka przez cały kraj, nawet przeciwko pełnej elitarnej drużynie. Po 48 godzinach offline osłona słabnie; po 7 dniach raport jest gotowy. Po zabójstwie ochroniarze zabójcy zmniejszają również szansę, że detektyw prowadzący sprawę morderstwa wymieni ich nazwiska, dopóki nie pozostaną na długo offline. \nJeśli zginiesz przez listę trafień, otrzymasz wiadomość od Biura Hitlist z przyciskiem umożliwiającym rozpoczęcie śledztwa w sprawie zabójcy w ciągu 24 godzin. \nJeśli złożysz wniosek o dochodzenie szybko po morderstwie, raport detektywistyczny dotrze szybciej. Dłuższe oczekiwanie oznacza większe opóźnienie raportu. \nAby wykonać trafienie, musisz znajdować się w tym samym kraju, co cel. Atakujesz poprzez profil gracza. \nWalka jest obliczana automatycznie na podstawie: broni, pancerza, statystyk (siła, refleks), bonusów załogi i poziomu aktywności. \nPo pomyślnej eliminacji otrzymasz pełną nagrodę, ale nadal możesz stracić HP, ochroniarzy i stan kamizelki. Jeśli atak się nie powiedzie, kontrakt pozostaje otwarty: obie strony tracą ochroniarzy i HP, a ty możesz spróbować ponownie po 10 minutach. \nPo udanym trafieniu cel otrzymuje twardy reset postępu konta: zasoby i postępy zostają zresetowane do stanu bazowego, przy czym saldo bankowe i przywództwo załogi zostają zachowane. Oprócz nagrody otrzymujesz część dostępnego łupu. \nPo udanym zabiciu natychmiast otrzymasz wiadomość od Biura Hitlist z wyszczególnieniem nagród i łupów (gotówka + przedmioty). \nCele z aktywnym ochroniarzem lub ochroną są trudniejsze do trafienia. \nMożesz usunąć swoje imię i nazwisko z listy trafień, płacąc umieszczającemu lub samodzielnie wykupując nagrodę.';
+      'Za pomocą listy trafień dodajesz gracza, ustalając nagrodę. Minimalna nagroda wynosi 5000 €. Płatnik natychmiast traci te pieniądze. \nJeśli wyznaczona zostanie nagroda, natychmiast otrzymasz powiadomienie push i wiadomość w skrzynce odbiorczej z Biura Hitlist. \nAktywne trafienia są widoczne dla wszystkich graczy. Im wyższa nagroda, tym większą uwagę przyciąga kontrakt. \nZanim wykonasz zamach, musisz ukończyć dochodzenie detektywa. Każdy raport trwa 24 godziny (płytkie 250 000 euro, standardowe 500 000 euro, głębokie 1 000 000 euro). Przy wystarczającej liczbie ochroniarzy raport podaje zły kraj. Pełna drużyna 10 elitarnych ochroniarzy oszukuje każdy raport. Po 48 godzinach offline ta osłona słabnie; po 7 dniach raport jest prawdziwy. Po zabójstwie ochroniarze zabójcy zmniejszają również szansę, że detektyw prowadzący sprawę morderstwa wymieni ich nazwiska, dopóki nie pozostaną na długo offline. \nJeśli zginiesz przez listę trafień, otrzymasz wiadomość od Biura Hitlist z przyciskiem umożliwiającym rozpoczęcie śledztwa w sprawie zabójcy w ciągu 24 godzin. \nJeśli złożysz wniosek o dochodzenie szybko po morderstwie, raport detektywistyczny dotrze szybciej. Dłuższe oczekiwanie oznacza większe opóźnienie raportu. \nAby wykonać trafienie, musisz znajdować się w tym samym kraju, co cel. Atakujesz poprzez profil gracza. \nWalka jest obliczana automatycznie na podstawie: broni, pancerza, statystyk (siła, refleks), bonusów załogi i poziomu aktywności. \nPo pomyślnej eliminacji otrzymasz pełną nagrodę, ale nadal możesz stracić HP, ochroniarzy i stan kamizelki. Jeśli atak się nie powiedzie, kontrakt pozostaje otwarty: obie strony tracą ochroniarzy i HP, a ty możesz spróbować ponownie po 10 minutach. \nPo udanym trafieniu cel otrzymuje twardy reset postępu konta: zasoby i postępy zostają zresetowane do stanu bazowego, przy czym saldo bankowe i przywództwo załogi zostają zachowane. Oprócz nagrody otrzymujesz część dostępnego łupu. \nPo udanym zabiciu natychmiast otrzymasz wiadomość od Biura Hitlist z wyszczególnieniem nagród i łupów (gotówka + przedmioty). \nCele z aktywnym ochroniarzem lub ochroną są trudniejsze do trafienia. \nMożesz usunąć swoje imię i nazwisko z listy trafień, płacąc umieszczającemu lub samodzielnie wykupując nagrodę.';
 
   @override
   String get helpTopicHitlistTips =>

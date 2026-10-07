@@ -18233,6 +18233,18 @@ abstract class AppLocalizations {
   /// **'An investigation is already pending for this hit. Wait for your detective message.'**
   String get hitlistErrInvestigationAlreadyPending;
 
+  /// No description provided for @hitlistErrInvestigationRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'You need a finished detective report before you can attempt this hit. Every investigation takes 24 hours.'**
+  String get hitlistErrInvestigationRequired;
+
+  /// No description provided for @hitlistErrInvestigationPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Your investigation is still running. The report arrives after 24 hours, and you cannot attempt the hit before that.'**
+  String get hitlistErrInvestigationPending;
+
   /// No description provided for @hitlistErrInvalidCaseId.
   ///
   /// In en, this message translates to:
@@ -18272,25 +18284,25 @@ abstract class AppLocalizations {
   /// No description provided for @hitlistInvestigationChooseSpeedPrice.
   ///
   /// In en, this message translates to:
-  /// **'Choose speed and price:'**
+  /// **'Every investigation takes 24 hours. A deeper report sees through more bodyguards. Without a finished report you cannot attempt the hit.'**
   String get hitlistInvestigationChooseSpeedPrice;
 
   /// No description provided for @hitlistInvestigationQuick.
   ///
   /// In en, this message translates to:
-  /// **'Quick investigation (€1,000,000 • 1 hour)'**
+  /// **'Shallow investigation (€250,000 • 24 hours)'**
   String get hitlistInvestigationQuick;
 
   /// No description provided for @hitlistInvestigationStandard.
   ///
   /// In en, this message translates to:
-  /// **'Standard investigation (€500,000 • 6 hours)'**
+  /// **'Standard investigation (€500,000 • 24 hours)'**
   String get hitlistInvestigationStandard;
 
   /// No description provided for @hitlistInvestigationSlow.
   ///
   /// In en, this message translates to:
-  /// **'Slow investigation (€250,000 • 24 hours)'**
+  /// **'Deep investigation (€1,000,000 • 24 hours)'**
   String get hitlistInvestigationSlow;
 
   /// No description provided for @hitlistInvestigationQueued.
@@ -33907,7 +33919,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpTopicHitlistHow.
   ///
   /// In en, this message translates to:
-  /// **'Via the hitlist you add a player by setting a bounty. Minimum bounty is €5,000. The payer loses this money immediately.\nIf a bounty is placed on you, you immediately receive a push notification and inbox message from Hitlist Bureau.\nActive hits are visible to all players. The higher the bounty, the more attention the contract attracts.\nDetective investigations no longer return instant intel: reports arrive later via a Detective Bureau message (Quick 1 hour €1,000,000, Standard 6 hours €500,000, Slow 24 hours €250,000).\nIf you are killed through the hitlist, you receive a Hitlist Bureau message with a button to start a killer investigation within 24 hours.\nHouses and apartments always stay, including their storage. With VIP your other properties, school levels and drug labs stay too. Casino and nightclub are always lost. VIP loses half of each showroom and half of their prostitutes. What a murder removes is saved so it can be put back.\nIf you request this investigation quickly after the murder, the detective report arrives faster. Waiting longer means a longer report delay.\nTo execute a hit you must be in the same country as your target. You attack via the player profile.\nCombat is auto-calculated based on: weapons, armor, stats (strength, reflexes), crew bonuses and active level.\nOn successful elimination you receive the full bounty. If the attack fails you lose HP and the target survives.\nOn a successful hit, the target receives a hard account-progress reset: assets and progression are reset to baseline status, while bank balance and crew leadership are preserved. You receive a share of available loot in addition to the bounty.\nAfter a successful kill you immediately receive an inbox message from Hitlist Bureau with a breakdown of the bounty and loot (cash + items).\nTargets with an active bodyguard or security protection are harder to hit.\nYou can remove your own name from the hitlist by paying the placer or buying out the bounty yourself.'**
+  /// **'Via the hitlist you add a player by setting a bounty. Minimum bounty is €5,000. The payer loses this money immediately.\nIf a bounty is placed on you, you immediately receive a push notification and inbox message from Hitlist Bureau.\nActive hits are visible to all players. The higher the bounty, the more attention the contract attracts.\nBefore you can attempt a hit you must finish a detective investigation. Every report takes 24 hours. Shallow costs €250,000, standard €500,000 and deep €1,000,000. Enough bodyguards make that report name the wrong country. A deeper report sees through more guards, but a full team of 10 elite bodyguards fools every report. After 48 hours offline that cover weakens, and after 7 days the report is accurate.\nIf you are killed through the hitlist, you receive a Hitlist Bureau message with a button to start a killer investigation within 24 hours.\nHouses and apartments always stay, including their storage. With VIP your other properties, school levels and drug labs stay too. Casino and nightclub are always lost. VIP loses half of each showroom and half of their prostitutes. What a murder removes is saved so it can be put back.\nIf you request this investigation quickly after the murder, the detective report arrives faster. Waiting longer means a longer report delay.\nTo execute a hit you must be in the same country as your target. You attack via the player profile.\nCombat is auto-calculated based on: weapons, armor, stats (strength, reflexes), crew bonuses and active level.\nOn successful elimination you receive the full bounty. If the attack fails you lose HP and the target survives.\nOn a successful hit, the target receives a hard account-progress reset: assets and progression are reset to baseline status, while bank balance and crew leadership are preserved. You receive a share of available loot in addition to the bounty.\nAfter a successful kill you immediately receive an inbox message from Hitlist Bureau with a breakdown of the bounty and loot (cash + items).\nTargets with an active bodyguard or security protection are harder to hit.\nYou can remove your own name from the hitlist by paying the placer or buying out the bounty yourself.'**
   String get helpTopicHitlistHow;
 
   /// No description provided for @helpTopicHitlistTips.

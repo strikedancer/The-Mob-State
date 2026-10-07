@@ -10622,6 +10622,14 @@ class AppLocalizationsFr extends AppLocalizations {
       'Une enquête est déjà en cours pour ce coup. Attendez votre message de détective.';
 
   @override
+  String get hitlistErrInvestigationRequired =>
+      'Il te faut un rapport de détective terminé avant de tenter ce meurtre. Chaque enquête dure 24 heures.';
+
+  @override
+  String get hitlistErrInvestigationPending =>
+      'Ton enquête est encore en cours. Le rapport arrive après 24 heures. Avant ça, tu ne peux pas tenter le meurtre.';
+
+  @override
   String get hitlistErrInvalidCaseId => 'Numéro de dossier invalide';
 
   @override
@@ -10643,19 +10651,19 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get hitlistInvestigationChooseSpeedPrice =>
-      'Choisissez la vitesse et le prix :';
+      'Chaque enquête dure 24 heures. Un rapport plus profond voit à travers plus de gardes du corps. Sans rapport terminé, tu ne peux pas tenter le meurtre.';
 
   @override
   String get hitlistInvestigationQuick =>
-      'Enquête rapide (1 000 000 € • 1 heure)';
+      'Enquête superficielle (250 000 € • 24 heures)';
 
   @override
   String get hitlistInvestigationStandard =>
-      'Enquête standard (500 000 € • 6 heures)';
+      'Enquête standard (500 000 € • 24 heures)';
 
   @override
   String get hitlistInvestigationSlow =>
-      'Enquête lente (250 000 € • 24 heures)';
+      'Enquête approfondie (1 000 000 € • 24 heures)';
 
   @override
   String hitlistInvestigationQueued(
@@ -20050,11 +20058,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpTopicHitlistHow =>
-      'Via la liste de résultats, vous ajoutez un joueur en définissant une prime. La prime minimale est de 5 000 €. Le payeur perd cet argent immédiatement. \nSi une prime vous est attribuée, vous recevez immédiatement une notification push et un message de boîte de réception de Hitlist Bureau. \nLes coups actifs sont visibles par tous les joueurs. Plus la prime est élevée, plus le contrat attire l’attention. \nLes enquêtes de détective ne renvoient plus d\'informations instantanées : les rapports arrivent plus tard via un message du Detective Bureau (Rapide 1 heure 1 000 000 €, Standard 6 heures 500 000 €, Lent 24 heures 250 000 €). Les gardes du corps ciblés peuvent brouiller ou bloquer ce rapport : Quick est facile à arrêter. Le pays fuit toujours lentement, même contre une équipe d\'élite au complet. Après 48 heures hors ligne, la couverture s\'affaiblit ; après 7 jours, le rapport est terminé. Après un meurtre, les gardes du corps du tueur réduisent également les chances qu\'un détective chargé de l\'affaire du meurtre le nomme, jusqu\'à ce qu\'il reste longtemps hors ligne. \nSi vous êtes tué via la liste noire, vous recevez un message du Hitlist Bureau avec un bouton pour lancer une enquête sur le tueur dans les 24 heures. \nSi vous demandez cette enquête rapidement après le meurtre, le rapport de détective arrive plus rapidement. Attendre plus longtemps signifie un délai de rapport plus long. \nPour exécuter une frappe, vous devez être dans le même pays que votre cible. Vous attaquez via le profil du joueur. \nLe combat est calculé automatiquement en fonction des armes, de l\'armure, des statistiques (force, réflexes), des bonus d\'équipage et du niveau d\'activité. \nEn cas d\'élimination réussie, vous recevez la totalité de la prime, mais vous pouvez toujours perdre des HP, des gardes du corps et l\'état de votre gilet. Si l\'attaque échoue, le contrat reste ouvert : les deux camps perdent leurs gardes du corps et leurs PV, et vous pouvez réessayer après 10 minutes. \nEn cas de succès, la cible reçoit une réinitialisation matérielle de la progression de son compte : les actifs et la progression sont réinitialisés à leur statut de base, tandis que le solde bancaire et le leadership de l\'équipage sont préservés. Vous recevez une part du butin disponible en plus de la prime. \nAprès un kill réussi, vous recevez immédiatement un message de Hitlist Bureau avec le détail de la prime et du butin (argent + objets). \nLes cibles avec un garde du corps actif ou une protection de sécurité sont plus difficiles à atteindre. \nVous pouvez supprimer votre propre nom de la liste de résultats en payant le placer ou en rachetant vous-même la prime.';
+      'Via la liste de résultats, vous ajoutez un joueur en définissant une prime. La prime minimale est de 5 000 €. Le payeur perd cet argent immédiatement. \nSi une prime vous est attribuée, vous recevez immédiatement une notification push et un message de boîte de réception de Hitlist Bureau. \nLes coups actifs sont visibles par tous les joueurs. Plus la prime est élevée, plus le contrat attire l’attention. \nAvant de tenter un meurtre, il faut terminer une enquête de détective. Chaque rapport prend 24 heures (superficielle 250 000 €, standard 500 000 €, approfondie 1 000 000 €). Avec assez de gardes du corps, le rapport indique le mauvais pays. Une équipe complète de 10 gardes d\'élite trompe chaque rapport. Après 48 heures hors ligne cette couverture faiblit ; après 7 jours le rapport est exact. Après un meurtre, les gardes du corps du tueur réduisent également les chances qu\'un détective chargé de l\'affaire du meurtre le nomme, jusqu\'à ce qu\'il reste longtemps hors ligne. \nSi vous êtes tué via la liste noire, vous recevez un message du Hitlist Bureau avec un bouton pour lancer une enquête sur le tueur dans les 24 heures. \nSi vous demandez cette enquête rapidement après le meurtre, le rapport de détective arrive plus rapidement. Attendre plus longtemps signifie un délai de rapport plus long. \nPour exécuter une frappe, vous devez être dans le même pays que votre cible. Vous attaquez via le profil du joueur. \nLe combat est calculé automatiquement en fonction des armes, de l\'armure, des statistiques (force, réflexes), des bonus d\'équipage et du niveau d\'activité. \nEn cas d\'élimination réussie, vous recevez la totalité de la prime, mais vous pouvez toujours perdre des HP, des gardes du corps et l\'état de votre gilet. Si l\'attaque échoue, le contrat reste ouvert : les deux camps perdent leurs gardes du corps et leurs PV, et vous pouvez réessayer après 10 minutes. \nEn cas de succès, la cible reçoit une réinitialisation matérielle de la progression de son compte : les actifs et la progression sont réinitialisés à leur statut de base, tandis que le solde bancaire et le leadership de l\'équipage sont préservés. Vous recevez une part du butin disponible en plus de la prime. \nAprès un kill réussi, vous recevez immédiatement un message de Hitlist Bureau avec le détail de la prime et du butin (argent + objets). \nLes cibles avec un garde du corps actif ou une protection de sécurité sont plus difficiles à atteindre. \nVous pouvez supprimer votre propre nom de la liste de résultats en payant le placer ou en rachetant vous-même la prime.';
 
   @override
   String get helpTopicHitlistTips =>
-      'Consultez quotidiennement la liste des cibles : des primes élevées sur les joueurs faibles constituent un profit rapide si vous êtes dans le même pays. \nNe placez une prime sur un joueur que lorsque vous avez des raisons de croire qu\'il est hors ligne ou qu\'il a peu de HP. \nÉvitez les informations rapides bon marché si la cible garde des gardes du corps d\'élite et a joué récemment ; un rapport lent montre toujours le pays. Un char max tombe rarement d\'un seul coup : un coup raté réduit toujours les gardes et les PV des deux côtés, et vous pouvez réessayer après 10 minutes.';
+      'Consultez quotidiennement la liste des cibles : des primes élevées sur les joueurs faibles constituent un profit rapide si vous êtes dans le même pays. \nNe placez une prime sur un joueur que lorsque vous avez des raisons de croire qu\'il est hors ligne ou qu\'il a peu de HP. \nÉvitez les informations rapides bon marché si la cible garde des gardes du corps d\'élite et a joué récemment ; un rapport peut indiquer le mauvais pays s\'il y a assez de gardes. Un char max tombe rarement d\'un seul coup : un coup raté réduit toujours les gardes et les PV des deux côtés, et vous pouvez réessayer après 10 minutes.';
 
   @override
   String get helpTopicSecurityCategory => 'Risque';
