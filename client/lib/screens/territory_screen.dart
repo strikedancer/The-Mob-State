@@ -1494,7 +1494,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     final name = _regionDisplayName(region, shape);
     if (region == null) return name;
     final armies = (region['armies'] as num?)?.toInt() ?? 0;
-    return '$name\n${l10n.territoryRiskArmies(armies.toString())}';
+    return '$name\n${_l10n.territoryRiskArmies(armies.toString())}';
   }
 
   String _regionDisplayName(
