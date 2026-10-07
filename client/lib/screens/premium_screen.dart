@@ -683,6 +683,10 @@ class _PremiumScreenState extends State<PremiumScreen> {
       .where((item) => (item['effectType'] ?? '').toString() == 'CASH_BUNDLE')
       .toList();
 
+  List<Map<String, dynamic>> get _hitProtectionItems => _creditItems
+      .where((item) => (item['effectType'] ?? '').toString() == 'HIT_PROTECTION')
+      .toList();
+
   /// Monthly Event Pass only (no short 7-day event boost packs here).
   List<Map<String, dynamic>> get _passPurchaseOffers => _products.where((product) {
     final type = ((product['reward'] as Map?)?['type'] ?? '').toString();
@@ -1501,6 +1505,21 @@ class _PremiumScreenState extends State<PremiumScreen> {
                 ),
             ],
           ),
+        if (_hitProtectionItems.isNotEmpty) ...[
+          const SizedBox(height: 20),
+          _buildSectionHeader(
+            title: l10n.premiumUiHitProtectionTitle,
+            subtitle: l10n.premiumUiHitProtectionSubtitle,
+            icon: Icons.shield,
+            accent: Colors.red.shade700,
+          ),
+          const SizedBox(height: 8),
+          for (final item in _hitProtectionItems)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: _buildHitProtectionRow(item, l10n),
+            ),
+        ],
         const SizedBox(height: 8),
         Text(
           l10n.premiumUiSpeedupHint,
@@ -1650,6 +1669,43 @@ class _PremiumScreenState extends State<PremiumScreen> {
               'one_time',
               productKey: (product['key'] ?? '').toString(),
             ),
+    );
+  }
+
+  Widget _buildHitProtectionRow(
+    Map<String, dynamic> item,
+    AppLocalizations l10n,
+  ) {
+    final fallbackCost = (item['creditCost'] as num?)?.toInt() ?? 0;
+    final effectiveCost =
+        (item['effectiveCreditCost'] as num?)?.toInt() ?? fallbackCost;
+    final useNl = _useNlCatalogCopy(context);
+    final title = useNl
+        ? (item['titleNl'] ?? '').toString()
+        : (item['titleEn'] ?? '').toString();
+    final description = useNl
+        ? (item['descriptionNl'] ?? '').toString()
+        : (item['descriptionEn'] ?? '').toString();
+    final resolvedTitle = title.trim().isEmpty
+        ? l10n.premiumUiHitProtectionTitle
+        : title.trim();
+    final resolvedDescription = description.trim().isEmpty
+        ? l10n.premiumUiHitProtectionSubtitle
+        : description.trim();
+    final disabled = _processingRedeem || _creditBalance < effectiveCost;
+    return _buildCatalogRow(
+      title: resolvedTitle,
+      subtitle: resolvedDescription,
+      imagePath: '$_premiumTilesBasePath/shop_hit_protection.png',
+      accent: Colors.red.shade800,
+      icon: Icons.shield,
+      priceLabel: l10n.premiumUiCreditsCount(effectiveCost),
+      actionLabel: disabled
+          ? l10n.premiumUiShopNotEnoughCredits
+          : l10n.premiumUiShopRedeem,
+      infoTitle: resolvedTitle,
+      infoBody: resolvedDescription,
+      onPressed: disabled ? null : () => _redeemCreditItem(item),
     );
   }
 

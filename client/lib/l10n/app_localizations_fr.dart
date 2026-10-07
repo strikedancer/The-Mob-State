@@ -6726,6 +6726,13 @@ class AppLocalizationsFr extends AppLocalizations {
       'Pay in euros. After payment the cash lands in your wallet. This is not VIP and not credits.';
 
   @override
+  String get premiumUiHitProtectionTitle => 'Protection contre le meurtre';
+
+  @override
+  String get premiumUiHitProtectionSubtitle =>
+      'Dépense des crédits pour que les meurtres de la liste contre toi soient refusés. Racheter ajoute le temps à celui que tu as déjà.';
+
+  @override
   String premiumUiBuyCashCta(String price) {
     return 'Buy $price';
   }

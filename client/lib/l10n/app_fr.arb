@@ -13363,6 +13363,8 @@
   "crewUiStorageViewContents": "Afficher le contenu",
   "premiumUiSectionBuyCashTitle": "Buy in-game cash",
   "premiumUiSectionBuyCashSubtitle": "Pay in euros. After payment the cash lands in your wallet. This is not VIP and not credits.",
+  "premiumUiHitProtectionTitle": "Protection contre le meurtre",
+  "premiumUiHitProtectionSubtitle": "Dépense des crédits pour que les meurtres de la liste contre toi soient refusés. Racheter ajoute le temps à celui que tu as déjà.",
   "premiumUiBuyCashCta": "Buy {price}",
   "@premiumUiBuyCashCta": {
     "placeholders": {

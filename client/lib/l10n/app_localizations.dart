@@ -11764,6 +11764,18 @@ abstract class AppLocalizations {
   /// **'Pay in euros. After payment the cash lands in your wallet. This is not VIP and not credits.'**
   String get premiumUiSectionBuyCashSubtitle;
 
+  /// No description provided for @premiumUiHitProtectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hit protection'**
+  String get premiumUiHitProtectionTitle;
+
+  /// No description provided for @premiumUiHitProtectionSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Spend credits so hitlist murders against you are refused. Buying again adds the time to what you already have.'**
+  String get premiumUiHitProtectionSubtitle;
+
   /// No description provided for @premiumUiBuyCashCta.
   ///
   /// In en, this message translates to:

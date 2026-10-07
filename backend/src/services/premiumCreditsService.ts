@@ -131,12 +131,53 @@ const DEFAULT_CREDIT_ITEMS: CreditCatalogItem[] = [
     key: 'hit_protection_24h',
     titleNl: 'Moordbescherming 24 uur',
     titleEn: 'Hit protection 24 hours',
-    descriptionNl: 'Voorkomt hitlist-kills voor 24 uur.',
-    descriptionEn: 'Prevents hitlist kills for 24 hours.',
+    descriptionNl:
+      'Niemand kan je 24 uur via de hitlist vermoorden. Koop je opnieuw, dan telt de tijd bij wat je al hebt.',
+    descriptionEn:
+      'Nobody can kill you through the hitlist for 24 hours. Buying again adds the time to what you already have.',
     creditCost: 60,
     effectType: 'HIT_PROTECTION',
     durationHours: 24,
     sortOrder: 20,
+  },
+  {
+    key: 'hit_protection_7d',
+    titleNl: 'Moordbescherming 1 week',
+    titleEn: 'Hit protection 1 week',
+    descriptionNl:
+      'Niemand kan je 7 dagen via de hitlist vermoorden. Koop je opnieuw, dan telt de tijd bij wat je al hebt.',
+    descriptionEn:
+      'Nobody can kill you through the hitlist for 7 days. Buying again adds the time to what you already have.',
+    creditCost: 300,
+    effectType: 'HIT_PROTECTION',
+    durationHours: 24 * 7,
+    sortOrder: 21,
+  },
+  {
+    key: 'hit_protection_14d',
+    titleNl: 'Moordbescherming 2 weken',
+    titleEn: 'Hit protection 2 weeks',
+    descriptionNl:
+      'Niemand kan je 14 dagen via de hitlist vermoorden. Koop je opnieuw, dan telt de tijd bij wat je al hebt.',
+    descriptionEn:
+      'Nobody can kill you through the hitlist for 14 days. Buying again adds the time to what you already have.',
+    creditCost: 550,
+    effectType: 'HIT_PROTECTION',
+    durationHours: 24 * 14,
+    sortOrder: 22,
+  },
+  {
+    key: 'hit_protection_30d',
+    titleNl: 'Moordbescherming 1 maand',
+    titleEn: 'Hit protection 1 month',
+    descriptionNl:
+      'Niemand kan je 30 dagen via de hitlist vermoorden. Koop je opnieuw, dan telt de tijd bij wat je al hebt.',
+    descriptionEn:
+      'Nobody can kill you through the hitlist for 30 days. Buying again adds the time to what you already have.',
+    creditCost: 1000,
+    effectType: 'HIT_PROTECTION',
+    durationHours: 24 * 30,
+    sortOrder: 23,
   },
   {
     key: 'repair_finish_now',
@@ -711,8 +752,16 @@ export async function redeemCreditItem(
         expiresAt
       );
 
-      messageNl = 'Moordbescherming geactiveerd';
-      messageEn = 'Hit protection activated';
+      const days = Math.max(1, Math.round(durationHours / 24));
+      if (days <= 1) {
+        messageNl =
+          'Moordbescherming geactiveerd voor 24 uur. Een nieuwe aankoop telt de tijd erbij.';
+        messageEn =
+          'Hit protection activated for 24 hours. Buying again adds the time on top.';
+      } else {
+        messageNl = `Moordbescherming geactiveerd voor ${days} dagen. Een nieuwe aankoop telt de tijd erbij.`;
+        messageEn = `Hit protection activated for ${days} days. Buying again adds the time on top.`;
+      }
     } else if (item.effectType === 'VEHICLE_REPAIR_FINISH') {
       if (!options.vehicleInventoryId || !Number.isFinite(options.vehicleInventoryId)) {
         throw new Error('VEHICLE_ID_REQUIRED');

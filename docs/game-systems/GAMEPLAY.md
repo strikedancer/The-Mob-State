@@ -1092,13 +1092,14 @@ Bob: Ã¢â€šÂ¬300K counter-hit
 ## Premium & Credits
 
 - Spelers hebben **Winkel** direct onder Dashboard in het zijmenu; web/PWA checkouts landen daarna terug in die ingesloten game-sectie.
-- VIP-tab: Player VIP, Crew VIP, Event Pass, status. Credits-tab: creditbundels en in-game cashpakketten. Tegels om wachttijden te verkorten staan hier niet; die blijven op het scherm waar je wacht.
+- VIP-tab: Player VIP, Crew VIP, Event Pass, status. Credits-tab: creditbundels, moordbescherming en in-game cashpakketten. Tegels om wachttijden te verkorten staan hier niet; die blijven op het scherm waar je wacht.
 - Player VIP is persoonlijk. Crew VIP werkt alleen als je in een crew zit: VIP-HQ, bijgebouwen boven 10, +10% oorlogspunten, Schild voor de hele crew, +2 territorium-gebieden, +2 versterkingslegers per venster, 2× fortificeren per ronde, +1 garnizoen-slot en +10% passief territorium-inkomen. Ieder lid kan euro's in de Crew VIP-pot doneren op de **Crew**-pagina tot een maand vol is, of Ã©Ã©n lid neemt het maandabonnement in Winkel. In-game crew-bank koopt geen Crew VIP.
 - Cosmetische credit-items (zoals het gouden landgoedhek) geven geen combat-power.
 - VIP- en credit-checkouts openen de betaalpagina en keren daarna terug naar **Winkel** in de game-shell, zodat de speler direct de uitkomst, vernieuwde VIP-status en bijgewerkte credits ziet.
 - Creditbundels openen eerst een aantalkeuze (1â€“20 pakketten). Je betaalt het totaal in Ã©Ã©n checkout; Event Pass en VIP blijven Ã©Ã©n stuk.
 - Credit-items gebruiken wallet-credits in plaats van euro's. Admin beheert live welke items actief zijn, wat ze kosten en welk effecttype ze gebruiken.
-- Mogelijke credit-effecten zijn onder meer cash wissel (25 credits â†’ â‚¬2.000), hit protection, cooldown resets, event boosts en context-gebonden voertuigacties. Euro-cashpakketten blijven de betere cash-per-euro.
+- Mogelijke credit-effecten zijn onder meer cash wissel (25 credits â†’ â‚¬2.000), moordbescherming, cooldown resets, event boosts en context-gebonden voertuigacties. Euro-cashpakketten blijven de betere cash-per-euro.
+- Moordbescherming in de winkel (Credits-tab) blokkeert hitlist-moorden: 24 uur voor 60 credits, 1 week voor 300, 2 weken voor 550 en 1 maand (30 dagen) voor 1.000. Opnieuw kopen telt de tijd bij de bescherming die nog loopt.
 - VIP-prijzen en credit-kosten zijn runtime-config/admin-gestuurd en dus niet langer vaste clientwaarden.
 - Cooldown reset-items gebruiken een dynamische prijs (`effectiveCreditCost`): hoe waardevoller de actie en hoe meer resterende cooldown, hoe hoger de credit-kost.
 - Die dynamische prijs moet wel in balans blijven: korte cooldowns krijgen een lagere, niet-straffende credit-kost en langere/high-value acties schalen geleidelijk op.
