@@ -9,7 +9,9 @@ import {
   ensureCrewVehicleOpsSchema,
 } from './crewVehicleOpsService';
 import {
+  assertBackpackFits,
   debitBackpackTrade,
+  extraSlotsForAmmoAdd,
   getBackpackTradeQuantity,
   refreshInventorySlotUsage,
 } from './carriedInventory';
@@ -423,21 +425,26 @@ export async function depositCrewTool(
   });
 }
 
-export type CrewToolWithdrawMode = 'off' | 'rank' | 'tenure' | 'income_share';
+export type CrewToolWithdrawMode = 'rank' | 'tenure' | 'income_share';
+export type StorageWithdrawKind = 'tools' | 'ammo' | 'parts';
 
 export type CrewToolWithdrawPolicy = {
   mode: CrewToolWithdrawMode;
   minRank: number;
   minDays: number;
   incomePercent: number;
+  toolsEnabled: boolean;
+  ammoEnabled: boolean;
+  partsEnabled: boolean;
 };
 
-const TOOL_WITHDRAW_MODES = new Set<CrewToolWithdrawMode>([
-  'off',
-  'rank',
-  'tenure',
-  'income_share',
-]);
+const TOOL_WITHDRAW_MODES = new Set<CrewToolWithdrawMode>(['rank', 'tenure', 'income_share']);
+
+function flagEnabled(value: unknown, fallback: boolean): boolean {
+  if (value == null) return fallback;
+  if (typeof value === 'boolean') return value;
+  return Number(value) === 1;
+}
 
 function clampInt(value: unknown, min: number, max: number, fallback: number): number {
   const n = Math.floor(Number(value));
@@ -447,37 +454,52 @@ function clampInt(value: unknown, min: number, max: number, fallback: number): n
 
 function normalizeToolWithdrawMode(value: unknown): CrewToolWithdrawMode {
   const mode = String(value ?? 'rank');
+  if (mode === 'off') return 'rank';
   return TOOL_WITHDRAW_MODES.has(mode as CrewToolWithdrawMode)
     ? (mode as CrewToolWithdrawMode)
     : 'rank';
 }
 
+type PolicyDbRow = {
+  toolWithdrawMode: string | null;
+  toolWithdrawMinRank: number | null;
+  toolWithdrawMinDays: number | null;
+  toolWithdrawIncomePercent: number | null;
+  toolWithdrawEnabled: number | boolean | null;
+  ammoWithdrawEnabled: number | boolean | null;
+  partsWithdrawEnabled: number | boolean | null;
+};
+
 export async function getCrewToolWithdrawPolicy(crewId: number): Promise<CrewToolWithdrawPolicy> {
-  const rows = await prisma.$queryRawUnsafe<
-    Array<{
-      toolWithdrawMode: string | null;
-      toolWithdrawMinRank: number | null;
-      toolWithdrawMinDays: number | null;
-      toolWithdrawIncomePercent: number | null;
-    }>
-  >(
-    `SELECT toolWithdrawMode, toolWithdrawMinRank, toolWithdrawMinDays, toolWithdrawIncomePercent
+  const rows = await prisma.$queryRawUnsafe<PolicyDbRow[]>(
+    `SELECT toolWithdrawMode, toolWithdrawMinRank, toolWithdrawMinDays, toolWithdrawIncomePercent,
+            toolWithdrawEnabled, ammoWithdrawEnabled, partsWithdrawEnabled
      FROM crews WHERE id = ? LIMIT 1`,
     crewId,
   );
   const row = rows[0];
+  const legacyOff = String(row?.toolWithdrawMode ?? '') === 'off';
   return {
     mode: normalizeToolWithdrawMode(row?.toolWithdrawMode),
     minRank: clampInt(row?.toolWithdrawMinRank, 1, 100, 1),
     minDays: clampInt(row?.toolWithdrawMinDays, 0, 3650, 7),
     incomePercent: clampInt(row?.toolWithdrawIncomePercent, 1, 25, 5),
+    toolsEnabled: legacyOff ? false : flagEnabled(row?.toolWithdrawEnabled, true),
+    ammoEnabled: flagEnabled(row?.ammoWithdrawEnabled, true),
+    partsEnabled: flagEnabled(row?.partsWithdrawEnabled, true),
   };
+}
+
+function kindEnabled(policy: CrewToolWithdrawPolicy, kind: StorageWithdrawKind): boolean {
+  if (kind === 'ammo') return policy.ammoEnabled;
+  if (kind === 'parts') return policy.partsEnabled;
+  return policy.toolsEnabled;
 }
 
 export async function setCrewToolWithdrawPolicy(
   crewId: number,
   playerId: number,
-  input: Partial<CrewToolWithdrawPolicy>,
+  input: Partial<CrewToolWithdrawPolicy> & { mode?: string },
 ): Promise<CrewToolWithdrawPolicy> {
   const officer = await prisma.crewMember.findFirst({
     where: { crewId, playerId, role: { in: ['leader', 'co_leader'] } },
@@ -486,31 +508,88 @@ export async function setCrewToolWithdrawPolicy(
   if (!officer) {
     throw new Error('NOT_OFFICER');
   }
-  if (input.mode != null && !TOOL_WITHDRAW_MODES.has(String(input.mode) as CrewToolWithdrawMode)) {
+  if (
+    input.mode != null &&
+    input.mode !== 'off' &&
+    !TOOL_WITHDRAW_MODES.has(String(input.mode) as CrewToolWithdrawMode)
+  ) {
     throw new Error('INVALID_TOOL_POLICY');
   }
   const mode = normalizeToolWithdrawMode(input.mode);
   const current = await getCrewToolWithdrawPolicy(crewId);
+  const toolsEnabled =
+    input.mode === 'off'
+      ? false
+      : input.toolsEnabled == null
+        ? current.toolsEnabled
+        : flagEnabled(input.toolsEnabled, current.toolsEnabled);
   const next: CrewToolWithdrawPolicy = {
-    mode: input.mode == null ? current.mode : mode,
+    mode: input.mode == null || input.mode === 'off' ? current.mode : mode,
     minRank: input.minRank == null ? current.minRank : clampInt(input.minRank, 1, 100, current.minRank),
     minDays: input.minDays == null ? current.minDays : clampInt(input.minDays, 0, 3650, current.minDays),
     incomePercent:
       input.incomePercent == null
         ? current.incomePercent
         : clampInt(input.incomePercent, 1, 25, current.incomePercent),
+    toolsEnabled,
+    ammoEnabled:
+      input.ammoEnabled == null ? current.ammoEnabled : flagEnabled(input.ammoEnabled, current.ammoEnabled),
+    partsEnabled:
+      input.partsEnabled == null
+        ? current.partsEnabled
+        : flagEnabled(input.partsEnabled, current.partsEnabled),
   };
   await prisma.$executeRawUnsafe(
     `UPDATE crews
-     SET toolWithdrawMode = ?, toolWithdrawMinRank = ?, toolWithdrawMinDays = ?, toolWithdrawIncomePercent = ?
+     SET toolWithdrawMode = ?, toolWithdrawMinRank = ?, toolWithdrawMinDays = ?, toolWithdrawIncomePercent = ?,
+         toolWithdrawEnabled = ?, ammoWithdrawEnabled = ?, partsWithdrawEnabled = ?
      WHERE id = ?`,
     next.mode,
     next.minRank,
     next.minDays,
     next.incomePercent,
+    next.toolsEnabled ? 1 : 0,
+    next.ammoEnabled ? 1 : 0,
+    next.partsEnabled ? 1 : 0,
     crewId,
   );
   return next;
+}
+
+function gateReason(
+  policy: CrewToolWithdrawPolicy,
+  membership: {
+    role: string;
+    joinedAt: Date;
+    incomeShareEnabled: boolean;
+    player: { rank: number };
+  },
+  kind: StorageWithdrawKind,
+): { allowed: boolean; reason: string } {
+  if (membership.role === 'leader' || membership.role === 'co_leader') {
+    return { allowed: true, reason: 'OFFICER' };
+  }
+  if (!kindEnabled(policy, kind)) {
+    return { allowed: false, reason: 'STORAGE_WITHDRAW_OFF' };
+  }
+  if (policy.mode === 'rank') {
+    const rank = membership.player.rank ?? 1;
+    if (rank < policy.minRank) {
+      return { allowed: false, reason: 'STORAGE_WITHDRAW_RANK' };
+    }
+    return { allowed: true, reason: 'OK' };
+  }
+  if (policy.mode === 'tenure') {
+    const days = Math.floor((Date.now() - membership.joinedAt.getTime()) / 86_400_000);
+    if (days < policy.minDays) {
+      return { allowed: false, reason: 'STORAGE_WITHDRAW_TENURE' };
+    }
+    return { allowed: true, reason: 'OK' };
+  }
+  if (!membership.incomeShareEnabled) {
+    return { allowed: false, reason: 'STORAGE_WITHDRAW_INCOME' };
+  }
+  return { allowed: true, reason: 'OK' };
 }
 
 export async function getCrewToolWithdrawStatus(crewId: number, playerId: number) {
@@ -525,32 +604,43 @@ export async function getCrewToolWithdrawStatus(crewId: number, playerId: number
     },
   });
   if (!membership) {
-    return { ...policy, allowed: false, reason: 'NOT_A_MEMBER' };
+    return {
+      ...policy,
+      allowed: false,
+      reason: 'NOT_A_MEMBER',
+      ammoAllowed: false,
+      ammoReason: 'NOT_A_MEMBER',
+      partsAllowed: false,
+      partsReason: 'NOT_A_MEMBER',
+    };
   }
-  if (membership.role === 'leader' || membership.role === 'co_leader') {
-    return { ...policy, allowed: true, reason: 'OFFICER' };
+  const tools = gateReason(policy, membership, 'tools');
+  const ammo = gateReason(policy, membership, 'ammo');
+  const parts = gateReason(policy, membership, 'parts');
+  return {
+    ...policy,
+    allowed: tools.allowed,
+    reason: tools.reason,
+    ammoAllowed: ammo.allowed,
+    ammoReason: ammo.reason,
+    partsAllowed: parts.allowed,
+    partsReason: parts.reason,
+  };
+}
+
+async function assertMemberMayWithdraw(
+  crewId: number,
+  playerId: number,
+  kind: StorageWithdrawKind,
+) {
+  const status = await getCrewToolWithdrawStatus(crewId, playerId);
+  const allowed =
+    kind === 'ammo' ? status.ammoAllowed : kind === 'parts' ? status.partsAllowed : status.allowed;
+  const reason =
+    kind === 'ammo' ? status.ammoReason : kind === 'parts' ? status.partsReason : status.reason;
+  if (!allowed) {
+    throw new Error(reason === 'NOT_A_MEMBER' ? 'NOT_IN_CREW' : reason);
   }
-  if (policy.mode === 'off') {
-    return { ...policy, allowed: false, reason: 'TOOL_WITHDRAW_OFF' };
-  }
-  if (policy.mode === 'rank') {
-    const rank = membership.player.rank ?? 1;
-    if (rank < policy.minRank) {
-      return { ...policy, allowed: false, reason: 'TOOL_WITHDRAW_RANK' };
-    }
-    return { ...policy, allowed: true, reason: 'OK' };
-  }
-  if (policy.mode === 'tenure') {
-    const days = Math.floor((Date.now() - membership.joinedAt.getTime()) / 86_400_000);
-    if (days < policy.minDays) {
-      return { ...policy, allowed: false, reason: 'TOOL_WITHDRAW_TENURE' };
-    }
-    return { ...policy, allowed: true, reason: 'OK' };
-  }
-  if (!membership.incomeShareEnabled) {
-    return { ...policy, allowed: false, reason: 'TOOL_WITHDRAW_INCOME' };
-  }
-  return { ...policy, allowed: true, reason: 'OK' };
 }
 
 /** Move one crew-storage tool into the member's carried backpack. */
@@ -559,10 +649,7 @@ export async function withdrawCrewTool(
   playerId: number,
   crewToolId: number,
 ) {
-  const status = await getCrewToolWithdrawStatus(crewId, playerId);
-  if (!status.allowed) {
-    throw new Error(status.reason === 'NOT_A_MEMBER' ? 'NOT_IN_CREW' : status.reason);
-  }
+  await assertMemberMayWithdraw(crewId, playerId, 'tools');
 
   const row = await prisma.crewToolInventory.findFirst({
     where: { id: crewToolId, crewId },
@@ -596,6 +683,118 @@ export async function withdrawCrewTool(
   });
 
   await refreshInventorySlotUsage(playerId);
+}
+
+/** Move crew ammo into the member's backpack. */
+export async function withdrawCrewAmmo(
+  crewId: number,
+  playerId: number,
+  ammoType: string,
+  quantity: number,
+) {
+  const type = ammoType.trim();
+  if (!type || !Number.isInteger(quantity) || quantity <= 0 || quantity > 100000) {
+    throw new Error('INVALID_QUANTITY');
+  }
+  await assertMemberMayWithdraw(crewId, playerId, 'ammo');
+
+  const crewRow = await prisma.crewAmmoInventory.findUnique({
+    where: { crewId_ammoType: { crewId, ammoType: type } },
+  });
+  if (!crewRow || crewRow.quantity < quantity) {
+    throw new Error('INSUFFICIENT_AMMO');
+  }
+
+  const { ammoService } = await import('./ammoService');
+  const definition = ammoService.getAmmoDefinition(type);
+  const maxInventory = definition?.maxInventory ?? 10000;
+  const existing = await prisma.ammoInventory.findUnique({
+    where: { playerId_ammoType: { playerId, ammoType: type } },
+  });
+  const currentQuantity = existing?.quantity ?? 0;
+  if (currentQuantity + quantity > maxInventory) {
+    throw new Error('MAX_INVENTORY_REACHED');
+  }
+  await assertBackpackFits(playerId, await extraSlotsForAmmoAdd(playerId, type, quantity));
+
+  await prisma.$transaction(async (tx) => {
+    const updated = await tx.crewAmmoInventory.updateMany({
+      where: { crewId, ammoType: type, quantity: { gte: quantity } },
+      data: { quantity: { decrement: quantity } },
+    });
+    if (updated.count !== 1) {
+      throw new Error('INSUFFICIENT_AMMO');
+    }
+    await tx.crewAmmoInventory.deleteMany({
+      where: { crewId, ammoType: type, quantity: { lte: 0 } },
+    });
+    if (!existing) {
+      await tx.ammoInventory.create({
+        data: { playerId, ammoType: type, quantity, quality: 1 },
+      });
+      return;
+    }
+    const nextQty = currentQuantity + quantity;
+    const quality = (existing.quality * currentQuantity + quantity) / nextQty;
+    await tx.ammoInventory.update({
+      where: { id: existing.id },
+      data: { quantity: nextQty, quality },
+    });
+  });
+
+  await refreshInventorySlotUsage(playerId);
+}
+
+/** Move crew vehicle parts into the member's personal parts stash. */
+export async function withdrawCrewParts(
+  crewId: number,
+  playerId: number,
+  partsTypeInput: string,
+  quantity: number,
+) {
+  const partsType = normalizeCrewPartType(partsTypeInput);
+  if (!partsType) {
+    throw new Error('INVALID_PARTS_TYPE');
+  }
+  if (!Number.isInteger(quantity) || quantity <= 0 || quantity > 100000) {
+    throw new Error('INVALID_QUANTITY');
+  }
+  await assertMemberMayWithdraw(crewId, playerId, 'parts');
+
+  const stock = await getCrewPartsStock(crewId, partsType);
+  if (stock < quantity) {
+    throw new Error('INSUFFICIENT_PARTS');
+  }
+
+  const crewColumn = crewPartsColumn(partsType);
+  const playerColumn = playerPartsColumn(partsType);
+  const car = partsType === 'car' ? quantity : 0;
+  const motorcycle = partsType === 'motorcycle' ? quantity : 0;
+  const boat = partsType === 'boat' ? quantity : 0;
+
+  await prisma.$transaction(async (tx) => {
+    const changed = await tx.$executeRawUnsafe(
+      `UPDATE crew_vehicle_parts_inventory
+       SET ${crewColumn} = ${crewColumn} - ?
+       WHERE crewId = ? AND ${crewColumn} >= ?`,
+      quantity,
+      crewId,
+      quantity,
+    );
+    if (!Number(changed)) {
+      throw new Error('INSUFFICIENT_PARTS');
+    }
+    await tx.$executeRawUnsafe(
+      `INSERT INTO player_vehicle_parts (player_id, car_parts, motorcycle_parts, boat_parts)
+       VALUES (?, ?, ?, ?)
+       ON DUPLICATE KEY UPDATE ${playerColumn} = ${playerColumn} + ?`,
+      playerId,
+      car,
+      motorcycle,
+      boat,
+      quantity,
+    );
+  });
 }
 
 export async function depositCrewParts(

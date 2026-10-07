@@ -553,11 +553,15 @@ model Crew {
   vipFundCents           Int                        @default(0)
   recruitingOpen         Boolean                    @default(true)
   autoAccept             Boolean                    @default(false)
-  /// off | rank | tenure | income_share. Default rank 1: any member may take a tool.
+  /// rank | tenure | income_share. Shared gate for tools, ammo and parts.
   toolWithdrawMode       String                     @default("rank") @db.VarChar(20)
   toolWithdrawMinRank    Int                        @default(1)
   toolWithdrawMinDays    Int                        @default(7)
   toolWithdrawIncomePercent Int                     @default(5)
+  /// Leader/co-leader switches. Off blocks members; officers can still take stock back.
+  toolWithdrawEnabled    Boolean                    @default(true)
+  ammoWithdrawEnabled    Boolean                    @default(true)
+  partsWithdrawEnabled   Boolean                    @default(true)
   vipDonations           CrewVipDonation[]
   ammoInventory         CrewAmmoInventory[]
   ammoStorageBuilding   CrewAmmoStorageBuilding?

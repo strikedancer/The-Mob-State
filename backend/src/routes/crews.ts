@@ -1897,6 +1897,10 @@ router.post(
           'TOOL_WITHDRAW_RANK',
           'TOOL_WITHDRAW_TENURE',
           'TOOL_WITHDRAW_INCOME',
+          'STORAGE_WITHDRAW_OFF',
+          'STORAGE_WITHDRAW_RANK',
+          'STORAGE_WITHDRAW_TENURE',
+          'STORAGE_WITHDRAW_INCOME',
           'TOOL_NOT_FOUND',
           'INVENTORY_FULL',
         ]);
@@ -1929,6 +1933,9 @@ router.post(
         minRank?: number;
         minDays?: number;
         incomePercent?: number;
+        toolsEnabled?: boolean;
+        ammoEnabled?: boolean;
+        partsEnabled?: boolean;
       };
 
       if (isNaN(crewId)) {
@@ -1942,10 +1949,13 @@ router.post(
         crewId,
         currentPlayerId,
         {
-          mode: body.mode as 'off' | 'rank' | 'tenure' | 'income_share' | undefined,
+          mode: body.mode,
           minRank: body.minRank,
           minDays: body.minDays,
           incomePercent: body.incomePercent,
+          toolsEnabled: body.toolsEnabled,
+          ammoEnabled: body.ammoEnabled,
+          partsEnabled: body.partsEnabled,
         },
       );
 
@@ -1974,8 +1984,121 @@ router.post(
 );
 
 /**
+ * POST /crews/:id/storage/ammo/withdraw
+ * Move crew ammo into the member's backpack when that bay is enabled.
+ */
+router.post(
+  '/:id/storage/ammo/withdraw',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const crewId = parseInt(req.params.id as string);
+      const currentPlayerId = req.player!.id;
+      const { ammoType, quantity } = req.body as { ammoType?: string; quantity?: number };
+
+      if (isNaN(crewId) || !ammoType || !quantity) {
+        return res.status(400).json({
+          event: 'error.invalid_input',
+          params: {},
+        });
+      }
+
+      await crewStorageService.withdrawCrewAmmo(
+        crewId,
+        currentPlayerId,
+        ammoType,
+        Number(quantity),
+      );
+
+      return res.json({
+        event: 'crew.storage_ammo_withdraw',
+        params: {},
+      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        const known = new Set([
+          'NOT_IN_CREW',
+          'STORAGE_WITHDRAW_OFF',
+          'STORAGE_WITHDRAW_RANK',
+          'STORAGE_WITHDRAW_TENURE',
+          'STORAGE_WITHDRAW_INCOME',
+          'INSUFFICIENT_AMMO',
+          'INVALID_QUANTITY',
+          'INVENTORY_FULL',
+          'MAX_INVENTORY_REACHED',
+        ]);
+        if (known.has(error.message)) {
+          const status = error.message === 'NOT_IN_CREW' ? 403 : 400;
+          return res.status(status).json({
+            event: `error.${error.message.toLowerCase()}`,
+            params: {},
+          });
+        }
+      }
+      return next(error);
+    }
+  }
+);
+
+/**
+ * POST /crews/:id/storage/parts/withdraw
+ * Move crew vehicle parts into the member's personal parts stash when that bay is enabled.
+ */
+router.post(
+  '/:id/storage/parts/withdraw',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const crewId = parseInt(req.params.id as string);
+      const currentPlayerId = req.player!.id;
+      const { partsType, quantity } = req.body as { partsType?: string; quantity?: number };
+
+      if (isNaN(crewId) || !partsType || !quantity) {
+        return res.status(400).json({
+          event: 'error.invalid_input',
+          params: {},
+        });
+      }
+
+      await crewStorageService.withdrawCrewParts(
+        crewId,
+        currentPlayerId,
+        partsType,
+        Number(quantity),
+      );
+
+      return res.json({
+        event: 'crew.storage_parts_withdraw',
+        params: {},
+      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        const known = new Set([
+          'NOT_IN_CREW',
+          'STORAGE_WITHDRAW_OFF',
+          'STORAGE_WITHDRAW_RANK',
+          'STORAGE_WITHDRAW_TENURE',
+          'STORAGE_WITHDRAW_INCOME',
+          'INSUFFICIENT_PARTS',
+          'INVALID_PARTS_TYPE',
+          'INVALID_QUANTITY',
+        ]);
+        if (known.has(error.message)) {
+          const status = error.message === 'NOT_IN_CREW' ? 403 : 400;
+          return res.status(status).json({
+            event: `error.${error.message.toLowerCase()}`,
+            params: {},
+          });
+        }
+      }
+      return next(error);
+    }
+  }
+);
+
+/**
  * POST /crews/:id/storage/parts/deposit
- * Deposit personal vehicle parts into crew parts storage. No personal withdraw.
+ * Deposit personal vehicle parts into crew parts storage.
  */
 router.post(
   '/:id/storage/parts/deposit',

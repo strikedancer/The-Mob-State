@@ -18,13 +18,27 @@ async function getSharePercentForCrew(crewId: number): Promise<number> {
   const base = await getSharePercent();
   try {
     const rows = await prisma.$queryRawUnsafe<
-      Array<{ toolWithdrawMode: string | null; toolWithdrawIncomePercent: number | null }>
+      Array<{
+        toolWithdrawMode: string | null;
+        toolWithdrawIncomePercent: number | null;
+        toolWithdrawEnabled: number | boolean | null;
+        ammoWithdrawEnabled: number | boolean | null;
+        partsWithdrawEnabled: number | boolean | null;
+      }>
     >(
-      `SELECT toolWithdrawMode, toolWithdrawIncomePercent FROM crews WHERE id = ? LIMIT 1`,
+      `SELECT toolWithdrawMode, toolWithdrawIncomePercent, toolWithdrawEnabled, ammoWithdrawEnabled, partsWithdrawEnabled
+       FROM crews WHERE id = ? LIMIT 1`,
       crewId,
     );
     const row = rows[0];
-    if (row?.toolWithdrawMode === 'income_share') {
+    const anyBay =
+      Number(row?.toolWithdrawEnabled ?? 0) === 1 ||
+      row?.toolWithdrawEnabled === true ||
+      Number(row?.ammoWithdrawEnabled ?? 0) === 1 ||
+      row?.ammoWithdrawEnabled === true ||
+      Number(row?.partsWithdrawEnabled ?? 0) === 1 ||
+      row?.partsWithdrawEnabled === true;
+    if (row?.toolWithdrawMode === 'income_share' && anyBay) {
       return Math.max(1, Math.min(25, Math.floor(Number(row.toolWithdrawIncomePercent ?? 5))));
     }
   } catch {

@@ -48,4 +48,18 @@ async function ensureCrewToolWithdrawColumns(): Promise<void> {
   await add(
     `ALTER TABLE crews ADD COLUMN toolWithdrawIncomePercent INT NOT NULL DEFAULT 5`,
   );
+  await add(
+    `ALTER TABLE crews ADD COLUMN toolWithdrawEnabled TINYINT(1) NOT NULL DEFAULT 1`,
+  );
+  await add(
+    `ALTER TABLE crews ADD COLUMN ammoWithdrawEnabled TINYINT(1) NOT NULL DEFAULT 1`,
+  );
+  await add(
+    `ALTER TABLE crews ADD COLUMN partsWithdrawEnabled TINYINT(1) NOT NULL DEFAULT 1`,
+  );
+  await prisma.$executeRawUnsafe(
+    `UPDATE crews
+     SET toolWithdrawEnabled = 0, toolWithdrawMode = 'rank'
+     WHERE toolWithdrawMode = 'off'`,
+  ).catch(() => undefined);
 }

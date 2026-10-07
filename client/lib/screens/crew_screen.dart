@@ -4531,56 +4531,89 @@ class _CrewScreenState extends State<CrewScreen>
     return {};
   }
 
-  String _toolWithdrawRuleText(String locale) {
+  bool _storageWithdrawEnabled(String kind) {
+    final policy = _toolWithdraw;
+    if (kind == 'ammo') {
+      if (!policy.containsKey('ammoEnabled')) return true;
+      return policy['ammoEnabled'] == true;
+    }
+    if (kind == 'parts') {
+      if (!policy.containsKey('partsEnabled')) return true;
+      return policy['partsEnabled'] == true;
+    }
+    if (policy.containsKey('toolsEnabled')) return policy['toolsEnabled'] == true;
+    return (policy['mode'] ?? 'rank').toString() != 'off';
+  }
+
+  String _storageWithdrawRuleText(String locale, String kind) {
+    if (!_storageWithdrawEnabled(kind)) {
+      return locale == 'nl'
+          ? 'Uitgezet. Alleen leider en co-leider mogen meenemen.'
+          : 'Turned off. Only the leader and co-leader can take this.';
+    }
     final policy = _toolWithdraw;
     final mode = (policy['mode'] ?? 'rank').toString();
-    if (mode == 'off') {
-      return locale == 'nl'
-          ? 'Alleen leider en co-leider mogen gereedschap meenemen.'
-          : 'Only the leader and co-leader can take a tool.';
-    }
     if (mode == 'tenure') {
       final days = (policy['minDays'] as num?)?.toInt() ?? 7;
       return locale == 'nl'
-          ? 'Meenemen mag vanaf $days dagen lidmaatschap. Leider en co-leider altijd.'
-          : 'Take a tool after $days days in the crew. Leader and co-leader always can.';
+          ? 'Aan. Meenemen mag vanaf $days dagen lidmaatschap.'
+          : 'On. Take this after $days days in the crew.';
     }
     if (mode == 'income_share') {
       final pct = (policy['incomePercent'] as num?)?.toInt() ?? 5;
       return locale == 'nl'
-          ? 'Meenemen mag als Inkomsten delen aan staat ($pct% naar de crewbank).'
-          : 'Take a tool if Share income is on ($pct% goes to the crew bank).';
+          ? 'Aan. Meenemen mag als Inkomsten delen aan staat ($pct% naar de crewbank).'
+          : 'On. Take this if Share income is on ($pct% goes to the crew bank).';
     }
     final rank = (policy['minRank'] as num?)?.toInt() ?? 1;
     return locale == 'nl'
-        ? 'Meenemen mag vanaf rang $rank. Leider en co-leider altijd.'
-        : 'Take a tool from rank $rank. Leader and co-leader always can.';
+        ? 'Aan. Meenemen mag vanaf rang $rank.'
+        : 'On. Take this from rank $rank.';
   }
+
+  String _toolWithdrawRuleText(String locale) =>
+      _storageWithdrawRuleText(locale, 'tools');
 
   String _toolWithdrawError(String locale, String event) {
     switch (event) {
       case 'error.tool_withdraw_off':
+      case 'error.storage_withdraw_off':
         return locale == 'nl'
-            ? 'De leider heeft meenemen uitgezet.'
-            : 'The leader turned taking tools off.';
+            ? 'De leider heeft dit uitgezet.'
+            : 'The leader turned this off.';
       case 'error.tool_withdraw_rank':
+      case 'error.storage_withdraw_rank':
         return locale == 'nl'
-            ? 'Je rang is nog te laag voor gereedschap uit de opslag.'
-            : 'Your rank is still too low to take a tool from storage.';
+            ? 'Je rang is nog te laag om dit mee te nemen.'
+            : 'Your rank is still too low to take this.';
       case 'error.tool_withdraw_tenure':
+      case 'error.storage_withdraw_tenure':
         return locale == 'nl'
-            ? 'Je bent nog niet lang genoeg lid om gereedschap mee te nemen.'
-            : 'You have not been a member long enough to take a tool.';
+            ? 'Je bent nog niet lang genoeg lid om dit mee te nemen.'
+            : 'You have not been a member long enough to take this.';
       case 'error.tool_withdraw_income':
+      case 'error.storage_withdraw_income':
         return locale == 'nl'
-            ? 'Zet Inkomsten delen aan op Leden. Dan mag je gereedschap meenemen.'
-            : 'Turn on Share income on Members. Then you can take a tool.';
+            ? 'Zet Inkomsten delen aan op Leden. Dan mag je dit meenemen.'
+            : 'Turn on Share income on Members. Then you can take this.';
       case 'error.inventory_full':
         return locale == 'nl' ? 'Je rugzak zit vol.' : 'Your backpack is full.';
+      case 'error.max_inventory_reached':
+        return locale == 'nl'
+            ? 'Je kunt niet meer van deze kogels dragen.'
+            : 'You cannot carry more of these rounds.';
+      case 'error.insufficient_ammo':
+        return locale == 'nl'
+            ? 'Er liggen niet genoeg kogels in de opslag.'
+            : 'There are not enough rounds in storage.';
+      case 'error.insufficient_parts':
+        return locale == 'nl'
+            ? 'Er liggen niet genoeg onderdelen in de opslag.'
+            : 'There are not enough parts in storage.';
       default:
         return locale == 'nl'
-            ? 'Gereedschap meenemen is niet gelukt.'
-            : 'Could not take the tool.';
+            ? 'Meenemen is niet gelukt.'
+            : 'Could not take this.';
     }
   }
 
@@ -4630,14 +4663,116 @@ class _CrewScreenState extends State<CrewScreen>
     }
   }
 
+  Future<void> _withdrawCrewQuantity({
+    required String path,
+    required Map<String, dynamic> payload,
+    required int maxQuantity,
+    required String title,
+  }) async {
+    if (_myCrew == null || maxQuantity <= 0) return;
+    final locale = Localizations.localeOf(context).languageCode;
+    final qtyController = TextEditingController(text: '1');
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(title),
+        content: TextField(
+          controller: qtyController,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            labelText: locale == 'nl'
+                ? 'Aantal (max $maxQuantity)'
+                : 'Amount (max $maxQuantity)',
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: Text(locale == 'nl' ? 'Annuleren' : 'Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(dialogContext, true),
+            child: Text(locale == 'nl' ? 'Meenemen' : 'Take'),
+          ),
+        ],
+      ),
+    );
+    final quantity = int.tryParse(qtyController.text) ?? 0;
+    qtyController.dispose();
+    if (confirmed != true || quantity <= 0 || quantity > maxQuantity) {
+      if (confirmed == true && mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              locale == 'nl' ? 'Kies een geldig aantal.' : 'Choose a valid amount.',
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      return;
+    }
+    try {
+      final response = await AuthService().apiClient.post(
+        '/crews/${_myCrew!.id}$path',
+        {...payload, 'quantity': quantity},
+      );
+      if (!mounted) return;
+      if (response.statusCode == 200) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              locale == 'nl' ? 'Meegenomen' : 'Taken',
+            ),
+            backgroundColor: Colors.green,
+          ),
+        );
+        _loadData();
+        return;
+      }
+      var event = '';
+      try {
+        final body = jsonDecode(response.body);
+        if (body is Map) event = (body['event'] ?? '').toString();
+      } catch (_) {}
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_toolWithdrawError(locale, event)),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } catch (_) {
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_toolWithdrawError(locale, '')),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
   Future<void> _editToolWithdrawPolicy() async {
     if (_myCrew == null) return;
     final locale = Localizations.localeOf(context).languageCode;
     final policy = _toolWithdraw;
     var mode = (policy['mode'] ?? 'rank').toString();
-    if (!['off', 'rank', 'tenure', 'income_share'].contains(mode)) {
+    if (mode == 'off' || !['rank', 'tenure', 'income_share'].contains(mode)) {
       mode = 'rank';
     }
+    var toolsOn = policy.containsKey('toolsEnabled')
+        ? policy['toolsEnabled'] == true
+        : (policy['mode'] ?? 'rank').toString() != 'off';
+    var ammoOn = policy.containsKey('ammoEnabled')
+        ? policy['ammoEnabled'] == true
+        : true;
+    var partsOn = policy.containsKey('partsEnabled')
+        ? policy['partsEnabled'] == true
+        : true;
     final rankCtrl = TextEditingController(
       text: '${(policy['minRank'] as num?)?.toInt() ?? 1}',
     );
@@ -4651,16 +4786,36 @@ class _CrewScreenState extends State<CrewScreen>
       context: context,
       builder: (dialogContext) => StatefulBuilder(
         builder: (dialogContext, setDialog) => AlertDialog(
-          title: Text(locale == 'nl' ? 'Gereedschap meenemen' : 'Take tools'),
-          content: Column(
+          title: Text(
+            locale == 'nl' ? 'Meenemen uit opslag' : 'Take from storage',
+          ),
+          content: SingleChildScrollView(
+            child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 locale == 'nl'
-                    ? 'Leider en co-leider mogen altijd een stuk naar hun rugzak halen. Kies de regel voor de andere leden.'
-                    : 'The leader and co-leader can always take a tool into their backpack. Choose the rule for everyone else.',
+                    ? 'Zet gereedschap, kogels en onderdelen apart aan of uit. Leider en co-leider mogen altijd meenemen. De regel hieronder geldt voor leden als een opslag aan staat.'
+                    : 'Turn tools, ammo and parts on or off separately. The leader and co-leader can always take them. The rule below applies to members when a bay is on.',
               ),
-              const SizedBox(height: 12),
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(locale == 'nl' ? 'Gereedschap' : 'Tools'),
+                value: toolsOn,
+                onChanged: (value) => setDialog(() => toolsOn = value),
+              ),
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(locale == 'nl' ? 'Kogels' : 'Ammo'),
+                value: ammoOn,
+                onChanged: (value) => setDialog(() => ammoOn = value),
+              ),
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(locale == 'nl' ? 'Onderdelen' : 'Parts'),
+                value: partsOn,
+                onChanged: (value) => setDialog(() => partsOn = value),
+              ),
               DropdownButtonFormField<String>(
                 value: mode,
                 items: [
@@ -4676,12 +4831,6 @@ class _CrewScreenState extends State<CrewScreen>
                     value: 'income_share',
                     child: Text(
                       locale == 'nl' ? 'Inkomsten delen' : 'Share income',
-                    ),
-                  ),
-                  DropdownMenuItem(
-                    value: 'off',
-                    child: Text(
-                      locale == 'nl' ? 'Alleen officieren' : 'Officers only',
                     ),
                   ),
                 ],
@@ -4719,6 +4868,7 @@ class _CrewScreenState extends State<CrewScreen>
                   ),
                 ),
             ],
+            ),
           ),
           actions: [
             TextButton(
@@ -4747,6 +4897,9 @@ class _CrewScreenState extends State<CrewScreen>
           'minRank': int.tryParse(rankCtrl.text) ?? 1,
           'minDays': int.tryParse(daysCtrl.text) ?? 7,
           'incomePercent': int.tryParse(pctCtrl.text) ?? 5,
+          'toolsEnabled': toolsOn,
+          'ammoEnabled': ammoOn,
+          'partsEnabled': partsOn,
         },
       );
       if (!mounted) return;
@@ -7199,6 +7352,7 @@ class _CrewScreenState extends State<CrewScreen>
                 : partsType == 'boat'
                     ? loc.crewUiPartsBoat
                     : loc.crewUiPartsCar;
+            final partLocale = Localizations.localeOf(context).languageCode;
             return ListTile(
               dense: true,
               contentPadding: const EdgeInsets.symmetric(horizontal: 16),
@@ -7208,6 +7362,15 @@ class _CrewScreenState extends State<CrewScreen>
               ),
               title: Text(label),
               subtitle: Text('$qty×'),
+              trailing: TextButton(
+                onPressed: () => _withdrawCrewQuantity(
+                  path: '/storage/parts/withdraw',
+                  payload: {'partsType': partsType},
+                  maxQuantity: qty,
+                  title: partLocale == 'nl' ? 'Onderdelen meenemen' : 'Take parts',
+                ),
+                child: Text(partLocale == 'nl' ? 'Meenemen' : 'Take'),
+              ),
             );
           },
         );
@@ -7235,6 +7398,7 @@ class _CrewScreenState extends State<CrewScreen>
           );
         });
       case 'ammo_storage':
+        final ammoLocale = Localizations.localeOf(context).languageCode;
         return tilesFrom(_crewInventoryRows('ammo'), (row) {
           final ammoType = (row['ammoType'] ?? '').toString();
           final qty = (row['quantity'] as num?)?.toInt() ?? 0;
@@ -7247,6 +7411,17 @@ class _CrewScreenState extends State<CrewScreen>
             ),
             title: Text(localizedAmmoCaliber(ammoType)),
             subtitle: Text('$qty×'),
+            trailing: qty <= 0
+                ? null
+                : TextButton(
+                    onPressed: () => _withdrawCrewQuantity(
+                      path: '/storage/ammo/withdraw',
+                      payload: {'ammoType': ammoType},
+                      maxQuantity: qty,
+                      title: ammoLocale == 'nl' ? 'Kogels meenemen' : 'Take ammo',
+                    ),
+                    child: Text(ammoLocale == 'nl' ? 'Rugzak' : 'Backpack'),
+                  ),
           );
         });
       case 'drug_storage':
@@ -7627,6 +7802,8 @@ class _CrewScreenState extends State<CrewScreen>
                 : null,
             actionNl: 'Toevoegen',
             actionEn: 'Add',
+            onSettings: isToolOfficer ? _editToolWithdrawPolicy : null,
+            ruleText: _storageWithdrawRuleText(locale, 'parts'),
           ),
           buildStorageTile(
             icon: Icons.inventory_2,
@@ -7639,6 +7816,8 @@ class _CrewScreenState extends State<CrewScreen>
                 : null,
             actionNl: 'Toevoegen',
             actionEn: 'Add',
+            onSettings: isToolOfficer ? _editToolWithdrawPolicy : null,
+            ruleText: _storageWithdrawRuleText(locale, 'ammo'),
           ),
           buildStorageTile(
             icon: Icons.medication,
@@ -7732,8 +7911,8 @@ class _CrewScreenState extends State<CrewScreen>
                 subtitle: Text(
                   _toolWithdraw['mode'] == 'income_share'
                       ? (locale == 'nl'
-                          ? 'Nodig om gereedschap uit de opslag te pakken: ${(_toolWithdraw['incomePercent'] as num?)?.toInt() ?? 5}% van drugs-, munitie-, voertuig- en prostitutie-inkomen gaat rechtstreeks naar de crewbank.'
-                          : 'Required to take a tool from storage: ${(_toolWithdraw['incomePercent'] as num?)?.toInt() ?? 5}% of drug, ammo, vehicle and prostitution income goes straight to the crew bank.')
+                          ? 'Nodig om gereedschap, kogels of onderdelen uit de opslag te pakken als de leider dat aan heeft staan: ${(_toolWithdraw['incomePercent'] as num?)?.toInt() ?? 5}% van drugs-, munitie-, voertuig- en prostitutie-inkomen gaat rechtstreeks naar de crewbank.'
+                          : 'Required to take tools, ammo or parts from storage when the leader has that bay on: ${(_toolWithdraw['incomePercent'] as num?)?.toInt() ?? 5}% of drug, ammo, vehicle and prostitution income goes straight to the crew bank.')
                       : (locale == 'nl'
                           ? 'Optioneel: een deel van drugsverkoop, munitieverkoop, voertuigverkoop/-sloop en prostitutie-innemen gaat naar de crewbank. Jouw bijdrage staat bij de ledenlijst.'
                           : 'Optional: a cut of drug sales, ammo sales, vehicle sell/scrap and prostitution collection goes to the crew bank. Your contribution shows on the members list.'),
