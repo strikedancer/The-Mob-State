@@ -1487,6 +1487,16 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         );
   }
 
+  String _mapTooltipText(
+    Map<String, dynamic>? region,
+    _SvgRegionShape shape,
+  ) {
+    final name = _regionDisplayName(region, shape);
+    if (region == null) return name;
+    final armies = (region['armies'] as num?)?.toInt() ?? 0;
+    return '$name\n${l10n.territoryRiskArmies(armies.toString())}';
+  }
+
   String _regionDisplayName(
     Map<String, dynamic>? region,
     _SvgRegionShape shape,
@@ -1538,7 +1548,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     _mapTooltipTimer?.cancel();
     setState(() {
       _hoveredSvgElementId = hit.id;
-      _mapTooltipLabel = _regionDisplayName(matchedRegion, hit);
+      _mapTooltipLabel = _mapTooltipText(matchedRegion, hit);
       _mapTooltipOffset = event.localPosition;
       _renderedSvgMap = _renderSvgWithOwnership(
         (_mapData['regions'] as List<dynamic>?) ?? const <dynamic>[],
@@ -1560,7 +1570,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     if (hit == null) return;
 
     final matchedRegion = _findRegionBySvgElementId(regions, hit.id);
-    final regionName = _regionDisplayName(matchedRegion, hit);
+    final regionName = _mapTooltipText(matchedRegion, hit);
 
     _mapTooltipTimer?.cancel();
     setState(() {
@@ -2866,14 +2876,22 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                                           if (_mapTooltipLabel != null &&
                                               _mapTooltipOffset != null)
                                             Positioned(
-                                              left: (_mapTooltipOffset!.dx + 10)
-                                                  .clamp(8, mapWidth - 180),
-                                              top: (_mapTooltipOffset!.dy - 36)
-                                                  .clamp(8, mapHeight - 32),
+                                              left: (_mapTooltipOffset!.dx + 10).clamp(
+                                                8.0,
+                                                mapWidth - 220 < 8
+                                                    ? 8.0
+                                                    : mapWidth - 220,
+                                              ),
+                                              top: (_mapTooltipOffset!.dy - 52).clamp(
+                                                8.0,
+                                                mapHeight - 56 < 8
+                                                    ? 8.0
+                                                    : mapHeight - 56,
+                                              ),
                                               child: Container(
                                                 constraints:
                                                     const BoxConstraints(
-                                                      maxWidth: 170,
+                                                      maxWidth: 210,
                                                     ),
                                                 padding:
                                                     const EdgeInsets.symmetric(
@@ -2887,7 +2905,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                                                 ),
                                                 child: Text(
                                                   _mapTooltipLabel!,
-                                                  maxLines: 2,
+                                                  maxLines: 3,
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   style: const TextStyle(
