@@ -27,4 +27,25 @@ export async function ensureCrewToolStorageSchema(): Promise<void> {
       INDEX idx_crew_tool_crew_tool (crewId, toolId)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
   `);
+
+  await ensureCrewToolWithdrawColumns();
+}
+
+/** Leader/co-leader gate for taking a crew tool into a personal backpack. */
+async function ensureCrewToolWithdrawColumns(): Promise<void> {
+  const add = async (sql: string) => {
+    await prisma.$executeRawUnsafe(sql).catch(() => undefined);
+  };
+  await add(
+    `ALTER TABLE crews ADD COLUMN toolWithdrawMode VARCHAR(20) NOT NULL DEFAULT 'rank'`,
+  );
+  await add(
+    `ALTER TABLE crews ADD COLUMN toolWithdrawMinRank INT NOT NULL DEFAULT 1`,
+  );
+  await add(
+    `ALTER TABLE crews ADD COLUMN toolWithdrawMinDays INT NOT NULL DEFAULT 7`,
+  );
+  await add(
+    `ALTER TABLE crews ADD COLUMN toolWithdrawIncomePercent INT NOT NULL DEFAULT 5`,
+  );
 }

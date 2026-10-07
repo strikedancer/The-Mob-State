@@ -553,6 +553,11 @@ model Crew {
   vipFundCents           Int                        @default(0)
   recruitingOpen         Boolean                    @default(true)
   autoAccept             Boolean                    @default(false)
+  /// off | rank | tenure | income_share. Default rank 1: any member may take a tool.
+  toolWithdrawMode       String                     @default("rank") @db.VarChar(20)
+  toolWithdrawMinRank    Int                        @default(1)
+  toolWithdrawMinDays    Int                        @default(7)
+  toolWithdrawIncomePercent Int                     @default(5)
   vipDonations           CrewVipDonation[]
   ammoInventory         CrewAmmoInventory[]
   ammoStorageBuilding   CrewAmmoStorageBuilding?

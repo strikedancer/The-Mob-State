@@ -423,6 +423,181 @@ export async function depositCrewTool(
   });
 }
 
+export type CrewToolWithdrawMode = 'off' | 'rank' | 'tenure' | 'income_share';
+
+export type CrewToolWithdrawPolicy = {
+  mode: CrewToolWithdrawMode;
+  minRank: number;
+  minDays: number;
+  incomePercent: number;
+};
+
+const TOOL_WITHDRAW_MODES = new Set<CrewToolWithdrawMode>([
+  'off',
+  'rank',
+  'tenure',
+  'income_share',
+]);
+
+function clampInt(value: unknown, min: number, max: number, fallback: number): number {
+  const n = Math.floor(Number(value));
+  if (!Number.isFinite(n)) return fallback;
+  return Math.max(min, Math.min(max, n));
+}
+
+function normalizeToolWithdrawMode(value: unknown): CrewToolWithdrawMode {
+  const mode = String(value ?? 'rank');
+  return TOOL_WITHDRAW_MODES.has(mode as CrewToolWithdrawMode)
+    ? (mode as CrewToolWithdrawMode)
+    : 'rank';
+}
+
+export async function getCrewToolWithdrawPolicy(crewId: number): Promise<CrewToolWithdrawPolicy> {
+  const rows = await prisma.$queryRawUnsafe<
+    Array<{
+      toolWithdrawMode: string | null;
+      toolWithdrawMinRank: number | null;
+      toolWithdrawMinDays: number | null;
+      toolWithdrawIncomePercent: number | null;
+    }>
+  >(
+    `SELECT toolWithdrawMode, toolWithdrawMinRank, toolWithdrawMinDays, toolWithdrawIncomePercent
+     FROM crews WHERE id = ? LIMIT 1`,
+    crewId,
+  );
+  const row = rows[0];
+  return {
+    mode: normalizeToolWithdrawMode(row?.toolWithdrawMode),
+    minRank: clampInt(row?.toolWithdrawMinRank, 1, 100, 1),
+    minDays: clampInt(row?.toolWithdrawMinDays, 0, 3650, 7),
+    incomePercent: clampInt(row?.toolWithdrawIncomePercent, 1, 25, 5),
+  };
+}
+
+export async function setCrewToolWithdrawPolicy(
+  crewId: number,
+  playerId: number,
+  input: Partial<CrewToolWithdrawPolicy>,
+): Promise<CrewToolWithdrawPolicy> {
+  const officer = await prisma.crewMember.findFirst({
+    where: { crewId, playerId, role: { in: ['leader', 'co_leader'] } },
+    select: { id: true },
+  });
+  if (!officer) {
+    throw new Error('NOT_OFFICER');
+  }
+  if (input.mode != null && !TOOL_WITHDRAW_MODES.has(String(input.mode) as CrewToolWithdrawMode)) {
+    throw new Error('INVALID_TOOL_POLICY');
+  }
+  const mode = normalizeToolWithdrawMode(input.mode);
+  const current = await getCrewToolWithdrawPolicy(crewId);
+  const next: CrewToolWithdrawPolicy = {
+    mode: input.mode == null ? current.mode : mode,
+    minRank: input.minRank == null ? current.minRank : clampInt(input.minRank, 1, 100, current.minRank),
+    minDays: input.minDays == null ? current.minDays : clampInt(input.minDays, 0, 3650, current.minDays),
+    incomePercent:
+      input.incomePercent == null
+        ? current.incomePercent
+        : clampInt(input.incomePercent, 1, 25, current.incomePercent),
+  };
+  await prisma.$executeRawUnsafe(
+    `UPDATE crews
+     SET toolWithdrawMode = ?, toolWithdrawMinRank = ?, toolWithdrawMinDays = ?, toolWithdrawIncomePercent = ?
+     WHERE id = ?`,
+    next.mode,
+    next.minRank,
+    next.minDays,
+    next.incomePercent,
+    crewId,
+  );
+  return next;
+}
+
+export async function getCrewToolWithdrawStatus(crewId: number, playerId: number) {
+  const policy = await getCrewToolWithdrawPolicy(crewId);
+  const membership = await prisma.crewMember.findFirst({
+    where: { crewId, playerId },
+    select: {
+      role: true,
+      joinedAt: true,
+      incomeShareEnabled: true,
+      player: { select: { rank: true } },
+    },
+  });
+  if (!membership) {
+    return { ...policy, allowed: false, reason: 'NOT_A_MEMBER' };
+  }
+  if (membership.role === 'leader' || membership.role === 'co_leader') {
+    return { ...policy, allowed: true, reason: 'OFFICER' };
+  }
+  if (policy.mode === 'off') {
+    return { ...policy, allowed: false, reason: 'TOOL_WITHDRAW_OFF' };
+  }
+  if (policy.mode === 'rank') {
+    const rank = membership.player.rank ?? 1;
+    if (rank < policy.minRank) {
+      return { ...policy, allowed: false, reason: 'TOOL_WITHDRAW_RANK' };
+    }
+    return { ...policy, allowed: true, reason: 'OK' };
+  }
+  if (policy.mode === 'tenure') {
+    const days = Math.floor((Date.now() - membership.joinedAt.getTime()) / 86_400_000);
+    if (days < policy.minDays) {
+      return { ...policy, allowed: false, reason: 'TOOL_WITHDRAW_TENURE' };
+    }
+    return { ...policy, allowed: true, reason: 'OK' };
+  }
+  if (!membership.incomeShareEnabled) {
+    return { ...policy, allowed: false, reason: 'TOOL_WITHDRAW_INCOME' };
+  }
+  return { ...policy, allowed: true, reason: 'OK' };
+}
+
+/** Move one crew-storage tool into the member's carried backpack. */
+export async function withdrawCrewTool(
+  crewId: number,
+  playerId: number,
+  crewToolId: number,
+) {
+  const status = await getCrewToolWithdrawStatus(crewId, playerId);
+  if (!status.allowed) {
+    throw new Error(status.reason === 'NOT_A_MEMBER' ? 'NOT_IN_CREW' : status.reason);
+  }
+
+  const row = await prisma.crewToolInventory.findFirst({
+    where: { id: crewToolId, crewId },
+  });
+  if (!row) {
+    throw new Error('TOOL_NOT_FOUND');
+  }
+
+  const toolService = (await import('./toolService')).default;
+  const canCarry = await toolService.canCarryTool(playerId, row.toolId, 1);
+  if (!canCarry) {
+    throw new Error('INVENTORY_FULL');
+  }
+
+  await prisma.$transaction(async (tx) => {
+    const deleted = await tx.crewToolInventory.deleteMany({
+      where: { id: crewToolId, crewId },
+    });
+    if (deleted.count !== 1) {
+      throw new Error('TOOL_NOT_FOUND');
+    }
+    await tx.playerTools.create({
+      data: {
+        playerId,
+        toolId: row.toolId,
+        durability: row.durability,
+        location: 'carried',
+        quantity: 1,
+      },
+    });
+  });
+
+  await refreshInventorySlotUsage(playerId);
+}
+
 export async function depositCrewParts(
   crewId: number,
   playerId: number,

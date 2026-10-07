@@ -13,6 +13,26 @@ async function getSharePercent(): Promise<number> {
   return Math.max(0, Math.min(max, Math.min(10, pct)));
 }
 
+/** Tool-access gate uses the officer-set crew percent instead of the global runtime cut. */
+async function getSharePercentForCrew(crewId: number): Promise<number> {
+  const base = await getSharePercent();
+  try {
+    const rows = await prisma.$queryRawUnsafe<
+      Array<{ toolWithdrawMode: string | null; toolWithdrawIncomePercent: number | null }>
+    >(
+      `SELECT toolWithdrawMode, toolWithdrawIncomePercent FROM crews WHERE id = ? LIMIT 1`,
+      crewId,
+    );
+    const row = rows[0];
+    if (row?.toolWithdrawMode === 'income_share') {
+      return Math.max(1, Math.min(25, Math.floor(Number(row.toolWithdrawIncomePercent ?? 5))));
+    }
+  } catch {
+    return base;
+  }
+  return base;
+}
+
 type ShareRow = {
   crewId: number;
   incomeShareEnabled: number | boolean;
@@ -40,7 +60,7 @@ export async function applyOptionalCrewIncomeShare(
     return { personal: gross, crewShare: 0, crewId: null };
   }
 
-  const pct = await getSharePercent();
+  const pct = await getSharePercentForCrew(Number(membership.crewId));
   if (pct <= 0) {
     return { personal: gross, crewShare: 0, crewId: membership.crewId };
   }

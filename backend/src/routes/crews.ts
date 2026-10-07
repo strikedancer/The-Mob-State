@@ -1381,10 +1381,14 @@ router.get(
         crewId,
         viewer?.currentCountry?.trim() || 'netherlands'
       );
+      const toolWithdraw = await crewStorageService.getCrewToolWithdrawStatus(
+        crewId,
+        currentPlayerId,
+      );
 
       return res.json({
         event: 'crew.storage',
-        params: { storage },
+        params: { storage: { ...storage, toolWithdraw } },
       });
     } catch (error: unknown) {
       return next(error);
@@ -1789,7 +1793,7 @@ router.post(
 
 /**
  * POST /crews/:id/storage/tools/deposit
- * Deposit a carried tool into crew tool storage. No personal withdraw.
+ * Deposit a carried tool into crew tool storage.
  */
 router.post(
   '/:id/storage/tools/deposit',
@@ -1850,6 +1854,116 @@ router.post(
         if (error.message === 'TOOL_BROKEN') {
           return res.status(400).json({
             event: 'error.tool_broken',
+            params: {},
+          });
+        }
+      }
+      return next(error);
+    }
+  }
+);
+
+/**
+ * POST /crews/:id/storage/tools/withdraw
+ * Move one crew tool into the member's backpack when the officer rule allows it.
+ */
+router.post(
+  '/:id/storage/tools/withdraw',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const crewId = parseInt(req.params.id as string);
+      const currentPlayerId = req.player!.id;
+      const { crewToolId } = req.body as { crewToolId?: number };
+
+      if (isNaN(crewId) || !crewToolId) {
+        return res.status(400).json({
+          event: 'error.invalid_input',
+          params: {},
+        });
+      }
+
+      await crewStorageService.withdrawCrewTool(crewId, currentPlayerId, Number(crewToolId));
+
+      return res.json({
+        event: 'crew.storage_tool_withdraw',
+        params: {},
+      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        const known = new Set([
+          'NOT_IN_CREW',
+          'TOOL_WITHDRAW_OFF',
+          'TOOL_WITHDRAW_RANK',
+          'TOOL_WITHDRAW_TENURE',
+          'TOOL_WITHDRAW_INCOME',
+          'TOOL_NOT_FOUND',
+          'INVENTORY_FULL',
+        ]);
+        if (known.has(error.message)) {
+          const status = error.message === 'NOT_IN_CREW' ? 403 : 400;
+          return res.status(status).json({
+            event: `error.${error.message.toLowerCase()}`,
+            params: {},
+          });
+        }
+      }
+      return next(error);
+    }
+  }
+);
+
+/**
+ * POST /crews/:id/storage/tools/policy
+ * Leader or co-leader sets who may take a tool into their backpack.
+ */
+router.post(
+  '/:id/storage/tools/policy',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const crewId = parseInt(req.params.id as string);
+      const currentPlayerId = req.player!.id;
+      const body = req.body as {
+        mode?: string;
+        minRank?: number;
+        minDays?: number;
+        incomePercent?: number;
+      };
+
+      if (isNaN(crewId)) {
+        return res.status(400).json({
+          event: 'error.invalid_crew_id',
+          params: {},
+        });
+      }
+
+      const policy = await crewStorageService.setCrewToolWithdrawPolicy(
+        crewId,
+        currentPlayerId,
+        {
+          mode: body.mode as 'off' | 'rank' | 'tenure' | 'income_share' | undefined,
+          minRank: body.minRank,
+          minDays: body.minDays,
+          incomePercent: body.incomePercent,
+        },
+      );
+
+      return res.json({
+        event: 'crew.tool_withdraw_policy',
+        params: { policy },
+      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        if (error.message === 'NOT_OFFICER') {
+          return res.status(403).json({
+            event: 'error.not_officer',
+            params: {},
+          });
+        }
+        if (error.message === 'INVALID_TOOL_POLICY') {
+          return res.status(400).json({
+            event: 'error.invalid_tool_policy',
             params: {},
           });
         }

@@ -4524,6 +4524,272 @@ class _CrewScreenState extends State<CrewScreen>
     }
   }
 
+  Map<String, dynamic> get _toolWithdraw {
+    final raw = _crewStorage?['toolWithdraw'];
+    if (raw is Map<String, dynamic>) return raw;
+    if (raw is Map) return Map<String, dynamic>.from(raw);
+    return {};
+  }
+
+  String _toolWithdrawRuleText(String locale) {
+    final policy = _toolWithdraw;
+    final mode = (policy['mode'] ?? 'rank').toString();
+    if (mode == 'off') {
+      return locale == 'nl'
+          ? 'Alleen leider en co-leider mogen gereedschap meenemen.'
+          : 'Only the leader and co-leader can take a tool.';
+    }
+    if (mode == 'tenure') {
+      final days = (policy['minDays'] as num?)?.toInt() ?? 7;
+      return locale == 'nl'
+          ? 'Meenemen mag vanaf $days dagen lidmaatschap. Leider en co-leider altijd.'
+          : 'Take a tool after $days days in the crew. Leader and co-leader always can.';
+    }
+    if (mode == 'income_share') {
+      final pct = (policy['incomePercent'] as num?)?.toInt() ?? 5;
+      return locale == 'nl'
+          ? 'Meenemen mag als Inkomsten delen aan staat ($pct% naar de crewbank).'
+          : 'Take a tool if Share income is on ($pct% goes to the crew bank).';
+    }
+    final rank = (policy['minRank'] as num?)?.toInt() ?? 1;
+    return locale == 'nl'
+        ? 'Meenemen mag vanaf rang $rank. Leider en co-leider altijd.'
+        : 'Take a tool from rank $rank. Leader and co-leader always can.';
+  }
+
+  String _toolWithdrawError(String locale, String event) {
+    switch (event) {
+      case 'error.tool_withdraw_off':
+        return locale == 'nl'
+            ? 'De leider heeft meenemen uitgezet.'
+            : 'The leader turned taking tools off.';
+      case 'error.tool_withdraw_rank':
+        return locale == 'nl'
+            ? 'Je rang is nog te laag voor gereedschap uit de opslag.'
+            : 'Your rank is still too low to take a tool from storage.';
+      case 'error.tool_withdraw_tenure':
+        return locale == 'nl'
+            ? 'Je bent nog niet lang genoeg lid om gereedschap mee te nemen.'
+            : 'You have not been a member long enough to take a tool.';
+      case 'error.tool_withdraw_income':
+        return locale == 'nl'
+            ? 'Zet Inkomsten delen aan op Leden. Dan mag je gereedschap meenemen.'
+            : 'Turn on Share income on Members. Then you can take a tool.';
+      case 'error.inventory_full':
+        return locale == 'nl' ? 'Je rugzak zit vol.' : 'Your backpack is full.';
+      default:
+        return locale == 'nl'
+            ? 'Gereedschap meenemen is niet gelukt.'
+            : 'Could not take the tool.';
+    }
+  }
+
+  Future<void> _withdrawCrewTool(int crewToolId) async {
+    if (_myCrew == null) return;
+    final locale = Localizations.localeOf(context).languageCode;
+    try {
+      final response = await AuthService().apiClient.post(
+        '/crews/${_myCrew!.id}/storage/tools/withdraw',
+        {'crewToolId': crewToolId},
+      );
+      if (!mounted) return;
+      if (response.statusCode == 200) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              locale == 'nl' ? 'In je rugzak gelegd' : 'Added to your backpack',
+            ),
+            backgroundColor: Colors.green,
+          ),
+        );
+        _loadData();
+        return;
+      }
+      var event = '';
+      try {
+        final body = jsonDecode(response.body);
+        if (body is Map) event = (body['event'] ?? '').toString();
+      } catch (_) {}
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_toolWithdrawError(locale, event)),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } catch (_) {
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_toolWithdrawError(locale, '')),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Future<void> _editToolWithdrawPolicy() async {
+    if (_myCrew == null) return;
+    final locale = Localizations.localeOf(context).languageCode;
+    final policy = _toolWithdraw;
+    var mode = (policy['mode'] ?? 'rank').toString();
+    if (!['off', 'rank', 'tenure', 'income_share'].contains(mode)) {
+      mode = 'rank';
+    }
+    final rankCtrl = TextEditingController(
+      text: '${(policy['minRank'] as num?)?.toInt() ?? 1}',
+    );
+    final daysCtrl = TextEditingController(
+      text: '${(policy['minDays'] as num?)?.toInt() ?? 7}',
+    );
+    final pctCtrl = TextEditingController(
+      text: '${(policy['incomePercent'] as num?)?.toInt() ?? 5}',
+    );
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (dialogContext, setDialog) => AlertDialog(
+          title: Text(locale == 'nl' ? 'Gereedschap meenemen' : 'Take tools'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                locale == 'nl'
+                    ? 'Leider en co-leider mogen altijd een stuk naar hun rugzak halen. Kies de regel voor de andere leden.'
+                    : 'The leader and co-leader can always take a tool into their backpack. Choose the rule for everyone else.',
+              ),
+              const SizedBox(height: 12),
+              DropdownButtonFormField<String>(
+                value: mode,
+                items: [
+                  DropdownMenuItem(
+                    value: 'rank',
+                    child: Text(locale == 'nl' ? 'Vanaf rang' : 'From rank'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'tenure',
+                    child: Text(locale == 'nl' ? 'Dagen lid' : 'Days as member'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'income_share',
+                    child: Text(
+                      locale == 'nl' ? 'Inkomsten delen' : 'Share income',
+                    ),
+                  ),
+                  DropdownMenuItem(
+                    value: 'off',
+                    child: Text(
+                      locale == 'nl' ? 'Alleen officieren' : 'Officers only',
+                    ),
+                  ),
+                ],
+                onChanged: (value) {
+                  if (value == null) return;
+                  setDialog(() => mode = value);
+                },
+              ),
+              if (mode == 'rank')
+                TextField(
+                  controller: rankCtrl,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: locale == 'nl' ? 'Minimale rang' : 'Minimum rank',
+                  ),
+                ),
+              if (mode == 'tenure')
+                TextField(
+                  controller: daysCtrl,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: locale == 'nl'
+                        ? 'Minimaal dagen lid'
+                        : 'Minimum days as member',
+                  ),
+                ),
+              if (mode == 'income_share')
+                TextField(
+                  controller: pctCtrl,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: locale == 'nl'
+                        ? 'Procent van inkomen (1-25)'
+                        : 'Percent of income (1-25)',
+                  ),
+                ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, false),
+              child: Text(locale == 'nl' ? 'Annuleren' : 'Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(dialogContext, true),
+              child: Text(locale == 'nl' ? 'Opslaan' : 'Save'),
+            ),
+          ],
+        ),
+      ),
+    );
+    if (confirmed != true) {
+      rankCtrl.dispose();
+      daysCtrl.dispose();
+      pctCtrl.dispose();
+      return;
+    }
+    try {
+      final response = await AuthService().apiClient.post(
+        '/crews/${_myCrew!.id}/storage/tools/policy',
+        {
+          'mode': mode,
+          'minRank': int.tryParse(rankCtrl.text) ?? 1,
+          'minDays': int.tryParse(daysCtrl.text) ?? 7,
+          'incomePercent': int.tryParse(pctCtrl.text) ?? 5,
+        },
+      );
+      if (!mounted) return;
+      if (response.statusCode == 200) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(locale == 'nl' ? 'Regel opgeslagen' : 'Rule saved'),
+            backgroundColor: Colors.green,
+          ),
+        );
+        _loadData();
+      } else {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              locale == 'nl'
+                  ? 'Alleen leider of co-leider kan deze regel zetten.'
+                  : 'Only the leader or co-leader can set this rule.',
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (_) {
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            locale == 'nl' ? 'Opslaan is niet gelukt.' : 'Could not save the rule.',
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      rankCtrl.dispose();
+      daysCtrl.dispose();
+      pctCtrl.dispose();
+    }
+  }
+
   Future<void> _depositParts() async {
     if (_myCrew == null) return;
     final locale = Localizations.localeOf(context).languageCode;
@@ -6946,9 +7212,11 @@ class _CrewScreenState extends State<CrewScreen>
           },
         );
       case 'tool_storage':
+        final toolLocale = Localizations.localeOf(context).languageCode;
         return tilesFrom(_crewInventoryRows('tools'), (row) {
           final id = (row['toolId'] ?? '').toString();
           final durability = (row['durability'] as num?)?.toInt() ?? 0;
+          final crewToolId = (row['id'] as num?)?.toInt();
           return ListTile(
             dense: true,
             contentPadding: const EdgeInsets.symmetric(horizontal: 16),
@@ -6958,6 +7226,12 @@ class _CrewScreenState extends State<CrewScreen>
             ),
             title: Text(localizedToolName(loc, id, id)),
             subtitle: Text('${loc.durability} $durability%'),
+            trailing: crewToolId == null
+                ? null
+                : TextButton(
+                    onPressed: () => _withdrawCrewTool(crewToolId),
+                    child: Text(toolLocale == 'nl' ? 'Rugzak' : 'Backpack'),
+                  ),
           );
         });
       case 'ammo_storage':
@@ -7098,6 +7372,8 @@ class _CrewScreenState extends State<CrewScreen>
     VoidCallback? onAdd,
     required String addLabel,
     bool allowDrugExport = false,
+    VoidCallback? onSettings,
+    String? ruleText,
   }) {
     final items = _crewStorageItemTiles(
       buildingType: buildingType,
@@ -7112,10 +7388,30 @@ class _CrewScreenState extends State<CrewScreen>
           ListTile(
             leading: Icon(icon),
             title: Text(title),
-            subtitle: Text(value),
-            trailing: onAdd != null
-                ? OutlinedButton(onPressed: onAdd, child: Text(addLabel))
-                : null,
+            subtitle: Text(
+              ruleText == null || ruleText.isEmpty ? value : '$value\n$ruleText',
+            ),
+            trailing: (onAdd == null && onSettings == null)
+                ? null
+                : Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (onSettings != null)
+                        IconButton(
+                          tooltip: Localizations.localeOf(context).languageCode ==
+                                  'nl'
+                              ? 'Regel'
+                              : 'Rule',
+                          onPressed: onSettings,
+                          icon: const Icon(Icons.tune),
+                        ),
+                      if (onAdd != null)
+                        OutlinedButton(
+                          onPressed: onAdd,
+                          child: Text(addLabel),
+                        ),
+                    ],
+                  ),
           ),
           const Divider(height: 1),
           ConstrainedBox(
@@ -7142,6 +7438,13 @@ class _CrewScreenState extends State<CrewScreen>
       );
     }
 
+    final authProvider = Provider.of<AuthProvider>(context);
+    final currentPlayerId = authProvider.currentPlayer?.id ?? 0;
+    final myMembership = _myCrew!.members.firstWhere(
+      (m) => m.playerId == currentPlayerId,
+    );
+    final isToolOfficer = myMembership.isOfficer;
+
     final storage = _crewStorage;
     final capacities = storage?['capacities'] as Map<String, dynamic>?;
     final totals = storage?['totals'] as Map<String, dynamic>?;
@@ -7166,6 +7469,8 @@ class _CrewScreenState extends State<CrewScreen>
       String? actionNl,
       String? actionEn,
       bool allowDrugExport = false,
+      VoidCallback? onSettings,
+      String? ruleText,
     }) {
       return _buildCrewStorageBayCard(
         icon: icon,
@@ -7175,6 +7480,8 @@ class _CrewScreenState extends State<CrewScreen>
         onAdd: onPressed,
         addLabel: locale == 'nl' ? (actionNl ?? '') : (actionEn ?? ''),
         allowDrugExport: allowDrugExport,
+        onSettings: onSettings,
+        ruleText: ruleText,
       );
     }
 
@@ -7306,6 +7613,8 @@ class _CrewScreenState extends State<CrewScreen>
                 : null,
             actionNl: 'Toevoegen',
             actionEn: 'Add',
+            onSettings: isToolOfficer ? _editToolWithdrawPolicy : null,
+            ruleText: _toolWithdrawRuleText(locale),
           ),
           buildStorageTile(
             icon: Icons.settings,
@@ -7421,9 +7730,13 @@ class _CrewScreenState extends State<CrewScreen>
                   locale == 'nl' ? 'Inkomsten delen' : 'Share income',
                 ),
                 subtitle: Text(
-                  locale == 'nl'
-                      ? 'Optioneel: een deel van drugsverkoop, munitieverkoop, voertuigverkoop/-sloop en prostitutie-innemen gaat naar de crewbank. Jouw bijdrage staat bij de ledenlijst.'
-                      : 'Optional: a cut of drug sales, ammo sales, vehicle sell/scrap and prostitution collection goes to the crew bank. Your contribution shows on the members list.',
+                  _toolWithdraw['mode'] == 'income_share'
+                      ? (locale == 'nl'
+                          ? 'Nodig om gereedschap uit de opslag te pakken: ${(_toolWithdraw['incomePercent'] as num?)?.toInt() ?? 5}% van drugs-, munitie-, voertuig- en prostitutie-inkomen gaat rechtstreeks naar de crewbank.'
+                          : 'Required to take a tool from storage: ${(_toolWithdraw['incomePercent'] as num?)?.toInt() ?? 5}% of drug, ammo, vehicle and prostitution income goes straight to the crew bank.')
+                      : (locale == 'nl'
+                          ? 'Optioneel: een deel van drugsverkoop, munitieverkoop, voertuigverkoop/-sloop en prostitutie-innemen gaat naar de crewbank. Jouw bijdrage staat bij de ledenlijst.'
+                          : 'Optional: a cut of drug sales, ammo sales, vehicle sell/scrap and prostitution collection goes to the crew bank. Your contribution shows on the members list.'),
                 ),
                 value: myMembership.incomeShareEnabled,
                 onChanged: (value) => _setIncomeShareEnabled(value),
