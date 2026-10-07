@@ -57,6 +57,12 @@ async function ensureCrewToolWithdrawColumns(): Promise<void> {
   await add(
     `ALTER TABLE crews ADD COLUMN partsWithdrawEnabled TINYINT(1) NOT NULL DEFAULT 1`,
   );
+  await add(
+    `ALTER TABLE crews ADD COLUMN weaponWithdrawEnabled TINYINT(1) NOT NULL DEFAULT 1`,
+  );
+  await add(
+    `ALTER TABLE crews ADD COLUMN vehicleWithdrawEnabled TINYINT(1) NOT NULL DEFAULT 1`,
+  );
   await prisma.$executeRawUnsafe(
     `UPDATE crews
      SET toolWithdrawEnabled = 0, toolWithdrawMode = 'rank'

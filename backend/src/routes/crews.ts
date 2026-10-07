@@ -1936,6 +1936,8 @@ router.post(
         toolsEnabled?: boolean;
         ammoEnabled?: boolean;
         partsEnabled?: boolean;
+        weaponsEnabled?: boolean;
+        vehiclesEnabled?: boolean;
       };
 
       if (isNaN(crewId)) {
@@ -1956,6 +1958,8 @@ router.post(
           toolsEnabled: body.toolsEnabled,
           ammoEnabled: body.ammoEnabled,
           partsEnabled: body.partsEnabled,
+          weaponsEnabled: body.weaponsEnabled,
+          vehiclesEnabled: body.vehiclesEnabled,
         },
       );
 
@@ -2082,6 +2086,121 @@ router.post(
           'INSUFFICIENT_PARTS',
           'INVALID_PARTS_TYPE',
           'INVALID_QUANTITY',
+        ]);
+        if (known.has(error.message)) {
+          const status = error.message === 'NOT_IN_CREW' ? 403 : 400;
+          return res.status(status).json({
+            event: `error.${error.message.toLowerCase()}`,
+            params: {},
+          });
+        }
+      }
+      return next(error);
+    }
+  }
+);
+
+/**
+ * POST /crews/:id/storage/weapons/withdraw
+ * Move crew weapons into the member's backpack when that bay is enabled.
+ */
+router.post(
+  '/:id/storage/weapons/withdraw',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const crewId = parseInt(req.params.id as string);
+      const currentPlayerId = req.player!.id;
+      const { weaponId, quantity } = req.body as { weaponId?: string; quantity?: number };
+
+      if (isNaN(crewId) || !weaponId || !quantity) {
+        return res.status(400).json({
+          event: 'error.invalid_input',
+          params: {},
+        });
+      }
+
+      await crewStorageService.withdrawCrewWeapon(
+        crewId,
+        currentPlayerId,
+        weaponId,
+        Number(quantity),
+      );
+
+      return res.json({
+        event: 'crew.storage_weapon_withdraw',
+        params: {},
+      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        const known = new Set([
+          'NOT_IN_CREW',
+          'STORAGE_WITHDRAW_OFF',
+          'STORAGE_WITHDRAW_RANK',
+          'STORAGE_WITHDRAW_TENURE',
+          'STORAGE_WITHDRAW_INCOME',
+          'INSUFFICIENT_WEAPONS',
+          'INVALID_QUANTITY',
+          'INVENTORY_FULL',
+        ]);
+        if (known.has(error.message)) {
+          const status = error.message === 'NOT_IN_CREW' ? 403 : 400;
+          return res.status(status).json({
+            event: `error.${error.message.toLowerCase()}`,
+            params: {},
+          });
+        }
+      }
+      return next(error);
+    }
+  }
+);
+
+/**
+ * POST /crews/:id/storage/vehicles/withdraw
+ * Move one crew car, motorcycle or boat into the member's garage or marina.
+ */
+router.post(
+  '/:id/storage/vehicles/withdraw',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const crewId = parseInt(req.params.id as string);
+      const currentPlayerId = req.player!.id;
+      const { kind, crewVehicleId } = req.body as { kind?: string; crewVehicleId?: number };
+
+      if (isNaN(crewId) || (kind !== 'car' && kind !== 'boat') || !crewVehicleId) {
+        return res.status(400).json({
+          event: 'error.invalid_input',
+          params: {},
+        });
+      }
+
+      await crewStorageService.withdrawCrewVehicle(
+        crewId,
+        currentPlayerId,
+        kind,
+        Number(crewVehicleId),
+      );
+
+      return res.json({
+        event: 'crew.storage_vehicle_withdraw',
+        params: {},
+      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        const known = new Set([
+          'NOT_IN_CREW',
+          'STORAGE_WITHDRAW_OFF',
+          'STORAGE_WITHDRAW_RANK',
+          'STORAGE_WITHDRAW_TENURE',
+          'STORAGE_WITHDRAW_INCOME',
+          'VEHICLE_NOT_FOUND',
+          'VEHICLE_REPAIR_IN_PROGRESS',
+          'NO_GARAGE',
+          'GARAGE_FULL',
+          'NO_MARINA',
+          'MARINA_FULL',
         ]);
         if (known.has(error.message)) {
           const status = error.message === 'NOT_IN_CREW' ? 403 : 400;

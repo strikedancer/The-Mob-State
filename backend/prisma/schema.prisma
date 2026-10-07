@@ -562,6 +562,8 @@ model Crew {
   toolWithdrawEnabled    Boolean                    @default(true)
   ammoWithdrawEnabled    Boolean                    @default(true)
   partsWithdrawEnabled   Boolean                    @default(true)
+  weaponWithdrawEnabled  Boolean                    @default(true)
+  vehicleWithdrawEnabled Boolean                    @default(true)
   vipDonations           CrewVipDonation[]
   ammoInventory         CrewAmmoInventory[]
   ammoStorageBuilding   CrewAmmoStorageBuilding?

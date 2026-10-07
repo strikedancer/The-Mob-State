@@ -24,20 +24,24 @@ async function getSharePercentForCrew(crewId: number): Promise<number> {
         toolWithdrawEnabled: number | boolean | null;
         ammoWithdrawEnabled: number | boolean | null;
         partsWithdrawEnabled: number | boolean | null;
+        weaponWithdrawEnabled: number | boolean | null;
+        vehicleWithdrawEnabled: number | boolean | null;
       }>
     >(
-      `SELECT toolWithdrawMode, toolWithdrawIncomePercent, toolWithdrawEnabled, ammoWithdrawEnabled, partsWithdrawEnabled
+      `SELECT toolWithdrawMode, toolWithdrawIncomePercent, toolWithdrawEnabled, ammoWithdrawEnabled, partsWithdrawEnabled,
+              weaponWithdrawEnabled, vehicleWithdrawEnabled
        FROM crews WHERE id = ? LIMIT 1`,
       crewId,
     );
     const row = rows[0];
+    const bayOn = (value: number | boolean | null | undefined) =>
+      value === true || Number(value ?? 0) === 1;
     const anyBay =
-      Number(row?.toolWithdrawEnabled ?? 0) === 1 ||
-      row?.toolWithdrawEnabled === true ||
-      Number(row?.ammoWithdrawEnabled ?? 0) === 1 ||
-      row?.ammoWithdrawEnabled === true ||
-      Number(row?.partsWithdrawEnabled ?? 0) === 1 ||
-      row?.partsWithdrawEnabled === true;
+      bayOn(row?.toolWithdrawEnabled) ||
+      bayOn(row?.ammoWithdrawEnabled) ||
+      bayOn(row?.partsWithdrawEnabled) ||
+      bayOn(row?.weaponWithdrawEnabled) ||
+      bayOn(row?.vehicleWithdrawEnabled);
     if (row?.toolWithdrawMode === 'income_share' && anyBay) {
       return Math.max(1, Math.min(25, Math.floor(Number(row.toolWithdrawIncomePercent ?? 5))));
     }

@@ -426,7 +426,7 @@ export async function depositCrewTool(
 }
 
 export type CrewToolWithdrawMode = 'rank' | 'tenure' | 'income_share';
-export type StorageWithdrawKind = 'tools' | 'ammo' | 'parts';
+export type StorageWithdrawKind = 'tools' | 'ammo' | 'parts' | 'weapons' | 'vehicles';
 
 export type CrewToolWithdrawPolicy = {
   mode: CrewToolWithdrawMode;
@@ -436,6 +436,8 @@ export type CrewToolWithdrawPolicy = {
   toolsEnabled: boolean;
   ammoEnabled: boolean;
   partsEnabled: boolean;
+  weaponsEnabled: boolean;
+  vehiclesEnabled: boolean;
 };
 
 const TOOL_WITHDRAW_MODES = new Set<CrewToolWithdrawMode>(['rank', 'tenure', 'income_share']);
@@ -468,12 +470,15 @@ type PolicyDbRow = {
   toolWithdrawEnabled: number | boolean | null;
   ammoWithdrawEnabled: number | boolean | null;
   partsWithdrawEnabled: number | boolean | null;
+  weaponWithdrawEnabled: number | boolean | null;
+  vehicleWithdrawEnabled: number | boolean | null;
 };
 
 export async function getCrewToolWithdrawPolicy(crewId: number): Promise<CrewToolWithdrawPolicy> {
   const rows = await prisma.$queryRawUnsafe<PolicyDbRow[]>(
     `SELECT toolWithdrawMode, toolWithdrawMinRank, toolWithdrawMinDays, toolWithdrawIncomePercent,
-            toolWithdrawEnabled, ammoWithdrawEnabled, partsWithdrawEnabled
+            toolWithdrawEnabled, ammoWithdrawEnabled, partsWithdrawEnabled,
+            weaponWithdrawEnabled, vehicleWithdrawEnabled
      FROM crews WHERE id = ? LIMIT 1`,
     crewId,
   );
@@ -487,12 +492,16 @@ export async function getCrewToolWithdrawPolicy(crewId: number): Promise<CrewToo
     toolsEnabled: legacyOff ? false : flagEnabled(row?.toolWithdrawEnabled, true),
     ammoEnabled: flagEnabled(row?.ammoWithdrawEnabled, true),
     partsEnabled: flagEnabled(row?.partsWithdrawEnabled, true),
+    weaponsEnabled: flagEnabled(row?.weaponWithdrawEnabled, true),
+    vehiclesEnabled: flagEnabled(row?.vehicleWithdrawEnabled, true),
   };
 }
 
 function kindEnabled(policy: CrewToolWithdrawPolicy, kind: StorageWithdrawKind): boolean {
   if (kind === 'ammo') return policy.ammoEnabled;
   if (kind === 'parts') return policy.partsEnabled;
+  if (kind === 'weapons') return policy.weaponsEnabled;
+  if (kind === 'vehicles') return policy.vehiclesEnabled;
   return policy.toolsEnabled;
 }
 
@@ -538,11 +547,20 @@ export async function setCrewToolWithdrawPolicy(
       input.partsEnabled == null
         ? current.partsEnabled
         : flagEnabled(input.partsEnabled, current.partsEnabled),
+    weaponsEnabled:
+      input.weaponsEnabled == null
+        ? current.weaponsEnabled
+        : flagEnabled(input.weaponsEnabled, current.weaponsEnabled),
+    vehiclesEnabled:
+      input.vehiclesEnabled == null
+        ? current.vehiclesEnabled
+        : flagEnabled(input.vehiclesEnabled, current.vehiclesEnabled),
   };
   await prisma.$executeRawUnsafe(
     `UPDATE crews
      SET toolWithdrawMode = ?, toolWithdrawMinRank = ?, toolWithdrawMinDays = ?, toolWithdrawIncomePercent = ?,
-         toolWithdrawEnabled = ?, ammoWithdrawEnabled = ?, partsWithdrawEnabled = ?
+         toolWithdrawEnabled = ?, ammoWithdrawEnabled = ?, partsWithdrawEnabled = ?,
+         weaponWithdrawEnabled = ?, vehicleWithdrawEnabled = ?
      WHERE id = ?`,
     next.mode,
     next.minRank,
@@ -551,6 +569,8 @@ export async function setCrewToolWithdrawPolicy(
     next.toolsEnabled ? 1 : 0,
     next.ammoEnabled ? 1 : 0,
     next.partsEnabled ? 1 : 0,
+    next.weaponsEnabled ? 1 : 0,
+    next.vehiclesEnabled ? 1 : 0,
     crewId,
   );
   return next;
@@ -612,11 +632,17 @@ export async function getCrewToolWithdrawStatus(crewId: number, playerId: number
       ammoReason: 'NOT_A_MEMBER',
       partsAllowed: false,
       partsReason: 'NOT_A_MEMBER',
+      weaponsAllowed: false,
+      weaponsReason: 'NOT_A_MEMBER',
+      vehiclesAllowed: false,
+      vehiclesReason: 'NOT_A_MEMBER',
     };
   }
   const tools = gateReason(policy, membership, 'tools');
   const ammo = gateReason(policy, membership, 'ammo');
   const parts = gateReason(policy, membership, 'parts');
+  const weapons = gateReason(policy, membership, 'weapons');
+  const vehicles = gateReason(policy, membership, 'vehicles');
   return {
     ...policy,
     allowed: tools.allowed,
@@ -625,6 +651,10 @@ export async function getCrewToolWithdrawStatus(crewId: number, playerId: number
     ammoReason: ammo.reason,
     partsAllowed: parts.allowed,
     partsReason: parts.reason,
+    weaponsAllowed: weapons.allowed,
+    weaponsReason: weapons.reason,
+    vehiclesAllowed: vehicles.allowed,
+    vehiclesReason: vehicles.reason,
   };
 }
 
@@ -635,9 +665,25 @@ async function assertMemberMayWithdraw(
 ) {
   const status = await getCrewToolWithdrawStatus(crewId, playerId);
   const allowed =
-    kind === 'ammo' ? status.ammoAllowed : kind === 'parts' ? status.partsAllowed : status.allowed;
+    kind === 'ammo'
+      ? status.ammoAllowed
+      : kind === 'parts'
+        ? status.partsAllowed
+        : kind === 'weapons'
+          ? status.weaponsAllowed
+          : kind === 'vehicles'
+            ? status.vehiclesAllowed
+            : status.allowed;
   const reason =
-    kind === 'ammo' ? status.ammoReason : kind === 'parts' ? status.partsReason : status.reason;
+    kind === 'ammo'
+      ? status.ammoReason
+      : kind === 'parts'
+        ? status.partsReason
+        : kind === 'weapons'
+          ? status.weaponsReason
+          : kind === 'vehicles'
+            ? status.vehiclesReason
+            : status.reason;
   if (!allowed) {
     throw new Error(reason === 'NOT_A_MEMBER' ? 'NOT_IN_CREW' : reason);
   }
@@ -793,6 +839,167 @@ export async function withdrawCrewParts(
       motorcycle,
       boat,
       quantity,
+    );
+  });
+}
+
+/** Move crew weapons into the member's backpack. */
+export async function withdrawCrewWeapon(
+  crewId: number,
+  playerId: number,
+  weaponId: string,
+  quantity: number,
+) {
+  const id = weaponId.trim();
+  if (!id || !Number.isInteger(quantity) || quantity <= 0 || quantity > 100000) {
+    throw new Error('INVALID_QUANTITY');
+  }
+  await assertMemberMayWithdraw(crewId, playerId, 'weapons');
+
+  const crewRow = await prisma.crewWeaponInventory.findUnique({
+    where: { crewId_weaponId: { crewId, weaponId: id } },
+  });
+  if (!crewRow || crewRow.quantity < quantity) {
+    throw new Error('INSUFFICIENT_WEAPONS');
+  }
+
+  await assertBackpackFits(playerId, quantity);
+
+  const existing = await prisma.weaponInventory.findUnique({
+    where: { playerId_weaponId: { playerId, weaponId: id } },
+  });
+
+  await prisma.$transaction(async (tx) => {
+    const updated = await tx.crewWeaponInventory.updateMany({
+      where: { crewId, weaponId: id, quantity: { gte: quantity } },
+      data: { quantity: { decrement: quantity } },
+    });
+    if (updated.count !== 1) {
+      throw new Error('INSUFFICIENT_WEAPONS');
+    }
+    await tx.crewWeaponInventory.deleteMany({
+      where: { crewId, weaponId: id, quantity: { lte: 0 } },
+    });
+    if (!existing) {
+      await tx.weaponInventory.create({
+        data: {
+          playerId,
+          weaponId: id,
+          quantity,
+          condition: crewRow.averageCondition,
+        },
+      });
+      return;
+    }
+    const nextQty = existing.quantity + quantity;
+    const condition = Math.floor(
+      (existing.condition * existing.quantity + crewRow.averageCondition * quantity) / nextQty,
+    );
+    await tx.weaponInventory.update({
+      where: { id: existing.id },
+      data: { quantity: nextQty, condition },
+    });
+  });
+
+  await refreshInventorySlotUsage(playerId);
+}
+
+async function assertPersonalVehicleRoom(
+  playerId: number,
+  country: string,
+  vehicleType: 'car' | 'motorcycle' | 'boat',
+) {
+  const { computeGarageSlotTotals } = await import('./garageService');
+  const { notInShowroomWhere } = await import('./showroomCatalog');
+  if (vehicleType === 'boat') {
+    const marina = await prisma.marina.findFirst({
+      where: { playerId, location: country },
+      include: { upgrades: { orderBy: { upgradeLevel: 'desc' }, take: 1 } },
+    });
+    if (!marina) throw new Error('NO_MARINA');
+    const total = marina.capacity + (marina.upgrades[0]?.capacityBonus || 0);
+    const current = await prisma.vehicleInventory.count({
+      where: { playerId, currentLocation: country, vehicleType: 'boat', ...notInShowroomWhere },
+    });
+    if (current >= total) throw new Error('MARINA_FULL');
+    return;
+  }
+
+  const garage = await prisma.garage.findFirst({
+    where: { playerId, location: country },
+    include: { upgrades: true },
+  });
+  if (!garage) throw new Error('NO_GARAGE');
+  const caps = computeGarageSlotTotals(garage);
+  const cap = vehicleType === 'motorcycle' ? caps.motorcycleTotalCapacity : caps.carTotalCapacity;
+  const current = await prisma.vehicleInventory.count({
+    where: { playerId, currentLocation: country, vehicleType, ...notInShowroomWhere },
+  });
+  if (current >= cap) throw new Error('GARAGE_FULL');
+}
+
+/** Move one crew car, motorcycle or boat into the member's garage or marina in their current country. */
+export async function withdrawCrewVehicle(
+  crewId: number,
+  playerId: number,
+  kind: 'car' | 'boat',
+  crewVehicleId: number,
+) {
+  if (!Number.isInteger(crewVehicleId) || crewVehicleId <= 0) {
+    throw new Error('VEHICLE_NOT_FOUND');
+  }
+  await assertMemberMayWithdraw(crewId, playerId, 'vehicles');
+  await completeDueCrewVehicleRepairs(crewId);
+
+  const row =
+    kind === 'boat'
+      ? await prisma.crewBoatInventory.findFirst({ where: { id: crewVehicleId, crewId } })
+      : await prisma.crewCarInventory.findFirst({ where: { id: crewVehicleId, crewId } });
+  if (!row) throw new Error('VEHICLE_NOT_FOUND');
+  if (row.repairCompletesAt && row.repairCompletesAt.getTime() > Date.now()) {
+    throw new Error('VEHICLE_REPAIR_IN_PROGRESS');
+  }
+
+  const country = await playerCountry(playerId);
+  const vehicleType = kind === 'boat' ? 'boat' : resolveCrewLandVehicleType(row.vehicleId);
+  await assertPersonalVehicleRoom(playerId, country, vehicleType);
+  await ensureCrewVehicleOpsSchema();
+  await vehicleService.readPersonalTuning(playerId, 0);
+
+  await prisma.$transaction(async (tx) => {
+    const deleted =
+      kind === 'boat'
+        ? await tx.crewBoatInventory.deleteMany({ where: { id: crewVehicleId, crewId } })
+        : await tx.crewCarInventory.deleteMany({ where: { id: crewVehicleId, crewId } });
+    if (deleted.count !== 1) throw new Error('VEHICLE_NOT_FOUND');
+
+    const personal = await tx.vehicleInventory.create({
+      data: {
+        playerId,
+        vehicleType,
+        vehicleId: row.vehicleId,
+        stolenInCountry: row.stolenInCountry?.trim() || country,
+        currentLocation: country,
+        condition: row.condition,
+        fuelLevel: row.fuelLevel,
+        marketListing: false,
+      },
+    });
+    await tx.$executeRawUnsafe(
+      `INSERT INTO vehicle_tuning_upgrades (
+         player_id, vehicle_inventory_id, speed_level, stealth_level, armor_level, tune_cooldown_until
+       ) VALUES (?, ?, ?, ?, ?, ?)
+       ON DUPLICATE KEY UPDATE
+         speed_level = VALUES(speed_level),
+         stealth_level = VALUES(stealth_level),
+         armor_level = VALUES(armor_level),
+         tune_cooldown_until = VALUES(tune_cooldown_until)`,
+      playerId,
+      personal.id,
+      row.speedLevel ?? 0,
+      row.stealthLevel ?? 0,
+      row.armorLevel ?? 0,
+      row.tuneCooldownUntil,
     );
   });
 }
