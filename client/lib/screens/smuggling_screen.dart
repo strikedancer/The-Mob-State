@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../l10n/app_localizations.dart';
 import '../services/smuggling_service.dart';
@@ -1287,20 +1288,146 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
             },
           ),
           const SizedBox(height: 10),
-          TextField(
-            controller: _quantityController,
-            keyboardType: TextInputType.number,
-            enabled: !isVehicle,
-            onChanged: (_) => _loadQuote(),
-            style: const TextStyle(color: Colors.white),
-            decoration: _fieldDecoration(l10n.smugglingQuantity).copyWith(
-              helperText: isVehicle
-                  ? l10n.smugglingVehiclesOneByOne
-                  : l10n.smugglingMaxQuantity(maxQty),
-              helperStyle: const TextStyle(color: Colors.white54),
-            ),
+          _buildCargoQuantityStepper(
+            l10n: l10n,
+            maxQty: maxQty < 1 ? 1 : maxQty,
+            locked: isVehicle,
+            helperText: isVehicle
+                ? l10n.smugglingVehiclesOneByOne
+                : l10n.smugglingMaxQuantity(maxQty),
           ),
         ],
+      ],
+    );
+  }
+
+  void _setCargoQuantity(int next, int maxQty) {
+    final clamped = next.clamp(1, maxQty);
+    final text = '$clamped';
+    _quantityController.value = TextEditingValue(
+      text: text,
+      selection: TextSelection.collapsed(offset: text.length),
+    );
+    _loadQuote();
+  }
+
+  Widget _buildCargoQuantityStepper({
+    required AppLocalizations l10n,
+    required int maxQty,
+    required bool locked,
+    required String helperText,
+  }) {
+    final parsed = int.tryParse(_quantityController.text.trim());
+    final current = parsed == null || parsed < 1 ? 1 : parsed;
+    final atMin = locked || current <= 1;
+    final atMax = locked || current >= maxQty;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          l10n.smugglingQuantity,
+          style: const TextStyle(color: Colors.white70),
+        ),
+        const SizedBox(height: 6),
+        Row(
+          children: [
+            IconButton(
+              icon: const Icon(Icons.remove_circle_outline),
+              color: _gold,
+              disabledColor: Colors.white24,
+              onPressed: atMin
+                  ? null
+                  : () => _setCargoQuantity(current - 1, maxQty),
+              onLongPress: atMin
+                  ? null
+                  : () => _setCargoQuantity(current - 10, maxQty),
+            ),
+            SizedBox(
+              width: 88,
+              child: TextField(
+                controller: _quantityController,
+                enabled: !locked,
+                textAlign: TextAlign.center,
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(6),
+                ],
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+                decoration: InputDecoration(
+                  isDense: true,
+                  filled: true,
+                  fillColor: const Color(0x33241A0F),
+                  hintText: '1',
+                  hintStyle: const TextStyle(color: Colors.white38),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 10,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(color: _goldSoft),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(color: _gold),
+                  ),
+                  disabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(color: _goldSoft),
+                  ),
+                ),
+                onChanged: (raw) {
+                  if (raw.isEmpty || locked) return;
+                  final typed = int.tryParse(raw);
+                  if (typed == null) return;
+                  if (typed > maxQty) {
+                    _setCargoQuantity(maxQty, maxQty);
+                    return;
+                  }
+                  _loadQuote();
+                },
+                onSubmitted: (raw) {
+                  final typed = int.tryParse(raw.trim());
+                  _setCargoQuantity(typed ?? 1, maxQty);
+                },
+                onTapOutside: (_) {
+                  final typed = int.tryParse(_quantityController.text.trim());
+                  if (typed == null || typed < 1 || typed > maxQty) {
+                    _setCargoQuantity(typed ?? 1, maxQty);
+                  }
+                },
+              ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.add_circle_outline),
+              color: _gold,
+              disabledColor: Colors.white24,
+              onPressed: atMax
+                  ? null
+                  : () => _setCargoQuantity(current + 1, maxQty),
+              onLongPress: atMax
+                  ? null
+                  : () => _setCargoQuantity(current + 10, maxQty),
+            ),
+            TextButton(
+              onPressed: atMax ? null : () => _setCargoQuantity(maxQty, maxQty),
+              style: TextButton.styleFrom(
+                foregroundColor: _gold,
+                disabledForegroundColor: Colors.white24,
+              ),
+              child: Text(l10n.tradeQtyMax),
+            ),
+          ],
+        ),
+        const SizedBox(height: 4),
+        Text(
+          helperText,
+          style: const TextStyle(color: Colors.white54, fontSize: 12),
+        ),
       ],
     );
   }

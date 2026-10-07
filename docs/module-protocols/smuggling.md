@@ -5,7 +5,7 @@ Shipment routing, quotes, depots, channels, destinations and risk handling.
 
 Vehicle movement between countries also belongs here when cars or boats are relocated through the smuggling network.
 
-**Hub UX (Phase 1):** noir/gold mafia panels, stepped send flow (Cargo → Route → Transport → Confirm), ETA countdown on shipment cards, and a result overlay for successful send/claim.
+**Hub UX (Phase 1):** noir/gold mafia panels, stepped send flow (Cargo → Route → Transport → Confirm), ETA countdown on shipment cards, and a result overlay for successful send/claim. Cargo quantity uses minus, plus and Max (long-press steps by 10) in addition to typing; vehicles stay one per shipment.
 
 ## Primary Frontend Entry
 - client/lib/screens/smuggling_screen.dart
