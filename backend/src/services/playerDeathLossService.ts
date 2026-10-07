@@ -1,12 +1,19 @@
 /**
  * Records exactly what a hitlist kill removes, and can put that loss back.
- * Houses and apartments, including their storage, are not part of the loss.
+ * Houses and apartments always stay. VIP also keeps other properties, school
+ * and drug labs. Casino and nightclub are always removed.
  */
 import prisma from '../lib/prisma';
 import { isVipStatusActive } from './vipBenefitsService';
 import { isNpcPlayerId } from './npcLookup';
 
 export const KEPT_DEATH_PROPERTY_TYPES = ['house', 'apartment'] as const;
+export const ALWAYS_LOST_DEATH_PROPERTY_TYPES = ['casino', 'nightclub'] as const;
+export const SHOWROOM_PROPERTY_TYPES = [
+  'car_showroom',
+  'motorcycle_showroom',
+  'boat_harbor',
+] as const;
 
 export type HitLootTransfer = {
   kind: 'inventory' | 'ammo' | 'weapon' | 'tool';
@@ -68,12 +75,95 @@ const PLAYER_RESTORE_FIELDS = [
   'premiumCredits',
 ] as const;
 
-export function isKeptOnDeathProperty(propertyType: string): boolean {
-  return (KEPT_DEATH_PROPERTY_TYPES as readonly string[]).includes(propertyType);
+export function propertyKeptOnDeath(propertyType: string, vip: boolean): boolean {
+  if ((ALWAYS_LOST_DEATH_PROPERTY_TYPES as readonly string[]).includes(propertyType)) {
+    return false;
+  }
+  if ((KEPT_DEATH_PROPERTY_TYPES as readonly string[]).includes(propertyType)) {
+    return true;
+  }
+  return vip;
+}
+
+/** Oldest half, rounded down. A single item stays. */
+export function lostHalfById<T extends { id: number }>(rows: T[]): T[] {
+  const sorted = [...rows].sort((a, b) => a.id - b.id);
+  return sorted.slice(0, Math.floor(sorted.length / 2));
 }
 
 export function keptToolLocation(propertyId: number): string {
   return `property_${propertyId}`;
+}
+
+export async function planDeathRemovals(tx: any, playerId: number) {
+  const player = await tx.player.findUnique({
+    where: { id: playerId },
+    select: { isVip: true, vipExpiresAt: true },
+  });
+  const vip = player ? isVipStatusActive(player) : false;
+  const properties = await tx.property.findMany({ where: { playerId } });
+  const keptProperties = properties.filter((row: { propertyType: string }) =>
+    propertyKeptOnDeath(row.propertyType, vip)
+  );
+  const lostProperties = properties.filter(
+    (row: { propertyType: string }) => !propertyKeptOnDeath(row.propertyType, vip)
+  );
+  const keptShowroomIds = new Set(
+    keptProperties
+      .filter((row: { propertyType: string }) =>
+        (SHOWROOM_PROPERTY_TYPES as readonly string[]).includes(row.propertyType)
+      )
+      .map((row: { id: number }) => row.id)
+  );
+  const vehicles = await tx.vehicleInventory.findMany({
+    where: { playerId },
+    select: { id: true, showroomPropertyId: true },
+  });
+  const lostShowroomIds = new Set<number>();
+  const grouped = new Map<number, Array<{ id: number }>>();
+  for (const vehicle of vehicles as Array<{ id: number; showroomPropertyId: number | null }>) {
+    if (vehicle.showroomPropertyId != null && keptShowroomIds.has(vehicle.showroomPropertyId)) {
+      const list = grouped.get(vehicle.showroomPropertyId) || [];
+      list.push(vehicle);
+      grouped.set(vehicle.showroomPropertyId, list);
+    }
+  }
+  for (const group of grouped.values()) {
+    for (const row of lostHalfById(group)) {
+      lostShowroomIds.add(row.id);
+    }
+  }
+  const keptVehicleIds = new Set(
+    (vehicles as Array<{ id: number; showroomPropertyId: number | null }>)
+      .filter(
+        (vehicle) =>
+          vehicle.showroomPropertyId != null &&
+          keptShowroomIds.has(vehicle.showroomPropertyId) &&
+          !lostShowroomIds.has(vehicle.id)
+      )
+      .map((vehicle) => vehicle.id)
+  );
+  const lostVehicleIds = (vehicles as Array<{ id: number }>)
+    .filter((vehicle) => !keptVehicleIds.has(vehicle.id))
+    .map((vehicle) => vehicle.id);
+  const prostitutes = await tx.prostitute.findMany({
+    where: { playerId },
+    select: { id: true },
+  });
+  const lostProstituteIds = (
+    vip ? lostHalfById(prostitutes as Array<{ id: number }>) : (prostitutes as Array<{ id: number }>)
+  ).map((row) => row.id);
+
+  return {
+    vip,
+    keptProperties,
+    lostProperties,
+    lostPropertyIds: lostProperties.map((row: { id: number }) => row.id),
+    keptToolLocations: keptProperties.map((row: { id: number }) => keptToolLocation(row.id)),
+    lostVehicleIds,
+    lostProstituteIds,
+    keepDrugFacilities: vip,
+  };
 }
 
 function jsonSafe(value: unknown): string {
@@ -184,17 +274,12 @@ export async function collectPlayerDeathLoss(tx: any, playerId: number): Promise
   }
 
   const vipProtectionApplied = isVipStatusActive(player);
-  const properties = await tx.property.findMany({ where: { playerId } });
-  const keptProperties = properties.filter((row: { propertyType: string }) =>
-    isKeptOnDeathProperty(row.propertyType)
-  );
-  const lostProperties = properties.filter(
-    (row: { propertyType: string }) => !isKeptOnDeathProperty(row.propertyType)
-  );
-  const keptLocations = new Set(
-    keptProperties.map((row: { id: number }) => keptToolLocation(row.id))
-  );
-  const lostPropertyIds = lostProperties.map((row: { id: number }) => row.id);
+  const plan = await planDeathRemovals(tx, playerId);
+  const keptProperties = plan.keptProperties;
+  const lostProperties = plan.lostProperties;
+  const keptLocations = new Set(plan.keptToolLocations);
+  const lostPropertyIds = plan.lostPropertyIds;
+  const lostVehicleIds = plan.lostVehicleIds;
 
   const tools = await tx.playerTools.findMany({ where: { playerId } });
   const lostTools = tools.filter(
@@ -232,14 +317,36 @@ export async function collectPlayerDeathLoss(tx: any, playerId: number): Promise
       ? await tx.drugFacilityUpgrade.findMany({ where: { facilityId: { in: facilityIds } } })
       : [];
 
+  const productions = await tx.drugProduction.findMany({ where: { playerId } });
+  const lostPropertyIdSet = new Set(lostPropertyIds);
+  const lostProductions = plan.keepDrugFacilities
+    ? productions.filter(
+        (row: { propertyId: number | null }) =>
+          row.propertyId != null && lostPropertyIdSet.has(row.propertyId)
+      )
+    : productions;
+  const allVehicles = await tx.vehicleInventory.findMany({ where: { playerId } });
+  const lostVehicleIdSet = new Set(lostVehicleIds);
+  const prostitutes = await tx.prostitute.findMany({ where: { playerId } });
+  const lostProstituteIdSet = new Set(plan.lostProstituteIds);
   const losses: Record<string, unknown[]> = {
     actionCooldowns: await tx.actionCooldown.findMany({ where: { playerId } }),
     crimeAttempts: await tx.crimeAttempt.findMany({ where: { playerId } }),
     jobAttempts: await tx.jobAttempt.findMany({ where: { playerId } }),
     inventory: await tx.inventory.findMany({ where: { playerId } }),
-    vehicleTuning: await tx.vehicle_tuning_upgrades.findMany({ where: { player_id: playerId } }),
-    vehicleRepairJobs: await tx.vehicle_repair_jobs.findMany({ where: { player_id: playerId } }),
-    vehicles: await tx.vehicleInventory.findMany({ where: { playerId } }),
+    vehicleTuning:
+      lostVehicleIds.length > 0
+        ? await tx.vehicle_tuning_upgrades.findMany({
+            where: { vehicle_inventory_id: { in: lostVehicleIds } },
+          })
+        : [],
+    vehicleRepairJobs:
+      lostVehicleIds.length > 0
+        ? await tx.vehicle_repair_jobs.findMany({
+            where: { vehicle_inventory_id: { in: lostVehicleIds } },
+          })
+        : [],
+    vehicles: allVehicles.filter((row: { id: number }) => lostVehicleIdSet.has(row.id)),
     ammo: await tx.ammoInventory.findMany({ where: { playerId } }),
     weapons: await tx.weaponInventory.findMany({ where: { playerId } }),
     tools: lostTools,
@@ -249,13 +356,13 @@ export async function collectPlayerDeathLoss(tx: any, playerId: number): Promise
     propertyDrugStorage,
     nightclubVenues,
     nightclubDrugInventory,
-    prostitutes: await tx.prostitute.findMany({ where: { playerId } }),
+    prostitutes: prostitutes.filter((row: { id: number }) => lostProstituteIdSet.has(row.id)),
     casinos,
     casinoStaff,
     drugInventory: await tx.drugInventory.findMany({ where: { playerId } }),
-    drugFacilities: facilities,
-    drugFacilityUpgrades: facilityUpgrades,
-    drugProductions: await tx.drugProduction.findMany({ where: { playerId } }),
+    drugFacilities: plan.keepDrugFacilities ? [] : facilities,
+    drugFacilityUpgrades: plan.keepDrugFacilities ? [] : facilityUpgrades,
+    drugProductions: lostProductions,
     productionMaterials: await tx.productionMaterial.findMany({ where: { playerId } }),
     ammoFactories: await tx.ammoFactory.findMany({ where: { ownerId: playerId } }),
   };
@@ -314,6 +421,9 @@ function summarize(draft: DeathDraft) {
     vipProtectionApplied: draft.vipProtectionApplied,
     keptHouses: draft.keptProperties.filter((row) => row.propertyType === 'house').length,
     keptApartments: draft.keptProperties.filter((row) => row.propertyType === 'apartment').length,
+    keptOtherProperties: draft.keptProperties.filter(
+      (row) => row.propertyType !== 'house' && row.propertyType !== 'apartment'
+    ).length,
     counts,
   };
 }

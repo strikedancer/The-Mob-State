@@ -9251,8 +9251,8 @@ function App() {
                                   </h6>
                                   <p className="text-muted small">
                                     {l(
-                                      "Bij een moord blijven huizen en appartementen, inclusief de opslag. Alles wat wel weggaat wordt hier bewaard.",
-                                      "On a murder, houses and apartments stay, including their storage. Everything else that is removed is saved here.",
+                                      "Huizen en appartementen blijven altijd. VIP houdt ook de andere panden, school en drugslabs. Casino en nachtclub gaan altijd weg. VIP raakt de helft van elke showroom en de helft van de prostituees kwijt.",
+                                      "Houses and apartments always stay. VIP also keeps other properties, school and drug labs. Casino and nightclub are always lost. VIP loses half of each showroom and half of their prostitutes.",
                                     )}
                                   </p>
                                   {playerDeathSnapshots.length === 0 ? (

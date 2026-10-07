@@ -12,10 +12,9 @@ import weaponService from './weaponService';
 import { weaponSelectionService } from './weaponSelectionService';
 import { directMessageService } from './directMessageService';
 import { getActiveEventBoostEffects } from './premiumCreditsService';
-import { isVipStatusActive } from './vipBenefitsService';
 import {
   collectPlayerDeathLoss,
-  keptToolLocation,
+  planDeathRemovals,
   savePlayerDeathLoss,
   type HitLootTransfer,
 } from './playerDeathLossService';
@@ -265,8 +264,8 @@ function buildMurderCaseNotification(
       'Moordlijst melding',
       `${victimUsername}, je bent zojuist vermoord via de moordlijst.`,
       vipProtectionApplied
-        ? 'VIP actief: je behoudt bank, crypto, opleidingen, prestaties, huizen en appartementen inclusief de opslag. Je rank is gehalveerd en je start opnieuw met €500.000 cash.'
-        : 'Geen VIP actief: je accountprogress is gereset naar basisstatus. Huizen en appartementen, inclusief de opslag, blijven staan.',
+        ? 'VIP actief: je behoudt bank, crypto, opleidingen, prestaties, drugslabs en je eigendommen inclusief de opslag. Casino en nachtclub ben je kwijt. Van elke showroom en van je prostituees raak je de helft kwijt. Je rank is gehalveerd en je start opnieuw met €500.000 cash.'
+        : 'Geen VIP actief: je accountprogress is gereset naar basisstatus. Huizen en appartementen, inclusief de opslag, blijven staan. Casino en nachtclub ben je kwijt.',
       'Je kunt binnen 24 uur een detective-onderzoek starten via de knop in dit bericht.',
       'Detective Bureau stuurt daarna een nieuw rapport en kan de moordenaar mogelijk identificeren.',
       marker,
@@ -277,8 +276,8 @@ function buildMurderCaseNotification(
     'Hitlist notice',
     `${victimUsername}, you were just killed through the hitlist.`,
     vipProtectionApplied
-      ? 'VIP active: you keep bank, crypto, education, achievements, and your houses and apartments including their storage. Your rank is halved and you restart with €500,000 cash.'
-      : 'No active VIP: your account progression was reset to baseline. Houses and apartments, including their storage, stay.',
+      ? 'VIP active: you keep bank, crypto, education, achievements, drug labs and your properties including their storage. You always lose your casino and nightclub. You lose half of each showroom and half of your prostitutes. Your rank is halved and you restart with €500,000 cash.'
+      : 'No active VIP: your account progression was reset to baseline. Houses and apartments, including their storage, stay. You always lose your casino and nightclub.',
     'You can start a detective investigation within 24 hours using the button in this message.',
     'Detective Bureau will then send a follow-up report and may identify the killer.',
     marker,
@@ -293,34 +292,34 @@ async function resetKilledPlayerProgressInTransaction(
     where: { id: playerId },
     select: {
       rank: true,
-      isVip: true,
-      vipExpiresAt: true,
     },
   });
   if (!victim) {
     throw new Error('TARGET_NOT_FOUND');
   }
 
-  const vipProtectionApplied = isVipStatusActive(victim);
+  const plan = await planDeathRemovals(tx, playerId);
+  const vipProtectionApplied = plan.vip;
   const crewMembership = await tx.crewMember.findUnique({
     where: { playerId },
     select: { crewId: true, role: true },
   });
   const wasCrewLeader = crewMembership?.role === 'leader';
-
-  const keptProperties = await tx.property.findMany({
-    where: { playerId, propertyType: { in: ['house', 'apartment'] } },
-    select: { id: true },
-  });
-  const keptToolLocations = keptProperties.map((row: { id: number }) => keptToolLocation(row.id));
+  const keptToolLocations = plan.keptToolLocations;
 
   await tx.actionCooldown.deleteMany({ where: { playerId } });
   await tx.crimeAttempt.deleteMany({ where: { playerId } });
   await tx.jobAttempt.deleteMany({ where: { playerId } });
   await tx.inventory.deleteMany({ where: { playerId } });
-  await tx.vehicle_tuning_upgrades.deleteMany({ where: { player_id: playerId } }).catch(() => undefined);
-  await tx.vehicle_repair_jobs.deleteMany({ where: { player_id: playerId } }).catch(() => undefined);
-  await tx.vehicleInventory.deleteMany({ where: { playerId } });
+  if (plan.lostVehicleIds.length > 0) {
+    await tx.vehicle_tuning_upgrades
+      .deleteMany({ where: { vehicle_inventory_id: { in: plan.lostVehicleIds } } })
+      .catch(() => undefined);
+    await tx.vehicle_repair_jobs
+      .deleteMany({ where: { vehicle_inventory_id: { in: plan.lostVehicleIds } } })
+      .catch(() => undefined);
+    await tx.vehicleInventory.deleteMany({ where: { id: { in: plan.lostVehicleIds } } });
+  }
   await tx.ammoInventory.deleteMany({ where: { playerId } });
   await tx.weaponInventory.deleteMany({ where: { playerId } });
   await tx.playerTools.deleteMany({
@@ -329,33 +328,46 @@ async function resetKilledPlayerProgressInTransaction(
       : { playerId },
   });
   await tx.toolLoadouts.deleteMany({ where: { playerId } }).catch(() => undefined);
-  await tx.property.deleteMany({
-    where: { playerId, propertyType: { notIn: ['house', 'apartment'] } },
+  if (plan.lostProstituteIds.length > 0) {
+    await tx.prostitute.deleteMany({ where: { id: { in: plan.lostProstituteIds } } });
+  }
+  await tx.prostitute.updateMany({
+    where: { playerId, nightclubVenueId: { not: null } },
+    data: { location: 'street', nightclubVenueId: null, nightclubAssignedAt: null },
   });
-  await tx.prostitute.deleteMany({ where: { playerId } });
+  if (plan.keepDrugFacilities && plan.lostPropertyIds.length > 0) {
+    await tx.drugProduction.deleteMany({
+      where: { playerId, propertyId: { in: plan.lostPropertyIds } },
+    });
+  }
+  if (plan.lostPropertyIds.length > 0) {
+    await tx.property.deleteMany({ where: { id: { in: plan.lostPropertyIds } } });
+  }
   const lostCasinos = await tx.casinoOwnership.findMany({
     where: { ownerId: playerId },
     select: { casinoId: true },
   });
   await tx.casinoOwnership.deleteMany({ where: { ownerId: playerId } });
   await tx.drugInventory.deleteMany({ where: { playerId } });
-  const ownedFacilities = await tx.drugFacility
-    .findMany({
-      where: { playerId },
-      select: { id: true },
-    })
-    .catch(() => [] as Array<{ id: number }>);
-  if (ownedFacilities.length > 0) {
-    await tx.drugFacilityUpgrade
-      .deleteMany({
-        where: {
-          facilityId: { in: ownedFacilities.map((facility) => facility.id) },
-        },
+  if (!plan.keepDrugFacilities) {
+    const ownedFacilities = await tx.drugFacility
+      .findMany({
+        where: { playerId },
+        select: { id: true },
       })
-      .catch(() => undefined);
+      .catch(() => [] as Array<{ id: number }>);
+    if (ownedFacilities.length > 0) {
+      await tx.drugFacilityUpgrade
+        .deleteMany({
+          where: {
+            facilityId: { in: ownedFacilities.map((facility) => facility.id) },
+          },
+        })
+        .catch(() => undefined);
+    }
+    await tx.drugFacility.deleteMany({ where: { playerId } }).catch(() => undefined);
+    await tx.drugProduction.deleteMany({ where: { playerId } });
   }
-  await tx.drugFacility.deleteMany({ where: { playerId } }).catch(() => undefined);
-  await tx.drugProduction.deleteMany({ where: { playerId } });
   await tx.productionMaterial.deleteMany({ where: { playerId } });
 
   if (vipProtectionApplied) {

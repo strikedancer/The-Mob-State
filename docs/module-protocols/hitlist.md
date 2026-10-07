@@ -54,9 +54,9 @@ Hit placement, bounties, detective investigations, combat mechanics, counter-bou
 - Responsive usability without hiding critical actions
 - Loot reward percentages must be runtime-configurable via admin settings (`HITLIST_LOOT_CASH_PERCENT`, `HITLIST_LOOT_ITEM_PERCENT`) and not hardcoded in code or file-only env workflow
 - On successful hit, kill-reset behavior must branch by VIP status:
-- Active Player VIP: victim keeps bank + crypto + education + achievements, rank is halved, on-hand cash resets to a fixed restart amount, and assets/inventory/drugs are wiped.
-- No active Player VIP: victim receives a full progression reset (including bank/crypto/education/achievements) to baseline.
-- Houses and apartments are never wiped, for VIP and non-VIP. Their storage stays with them: property stash rows and tools stored at `property_{id}` (weapons, ammo, armor, cash, materials, drugs, trade goods).
+- Active Player VIP: victim keeps bank + crypto + education + achievements + drug labs, rank is halved, on-hand cash resets to a fixed restart amount. Other properties stay, including their storage. Casino and nightclub are always removed. Each showroom loses the oldest half of its exhibited vehicles (rounded down; one exhibit stays). Half of the prostitutes are removed the same way. Carried inventory, garage vehicles and the country drug/material depot are still wiped.
+- No active Player VIP: victim receives a full progression reset (including bank/crypto/education/achievements/drug labs) to baseline.
+- Houses and apartments are never wiped, for VIP and non-VIP. Their storage stays with them: property stash rows and tools stored at `property_{id}` (weapons, ammo, armor, cash, materials, drugs, trade goods). Casino and nightclub are always wiped.
 - Before the wipe, the kill stores a full snapshot of everything that is removed (`player_death_snapshots`: player fields, deleted rows, and loot transferred to the killer). Staff restore it from Admin → player → Beheer, SUPER_ADMIN only. Restore puts the victim's rows and stats back, claws the killer's bounty and loot, and refunds the bounty to the player who placed the contract.
 - Killer loot remains limited to a configurable share of victim on-hand cash and carried inventory, never bank balance.
 - Tijdelijke premium/combat boosts blijven side-grade: capped attack/defense modifiers zonder permanente statinflatie of pay-to-win top-tier power.
