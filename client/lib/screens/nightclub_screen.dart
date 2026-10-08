@@ -1187,11 +1187,16 @@ class _NightclubScreenState extends State<NightclubScreen> {
 
     final data = await _nightclubService.searchRivalsByName(name);
     if (!mounted) return;
+    String? firstName;
+    if (data.isNotEmpty && data.first is Map) {
+      final rawName = Map<String, dynamic>.from(data.first as Map)['ownerName']
+          ?.toString()
+          .trim();
+      if (rawName != null && rawName.isNotEmpty) firstName = rawName;
+    }
     setState(() {
       _rivalSearchResults = data;
-      _selectedRivalName = data.isNotEmpty
-          ? (data.first as Map<String, dynamic>)['ownerName']?.toString()
-          : null;
+      _selectedRivalName = firstName;
     });
   }
 
@@ -3112,78 +3117,29 @@ class _NightclubScreenState extends State<NightclubScreen> {
               _t.nightclubSectionRivals,
               Icons.sports_mma,
             ),
-            // Keep search IconButton outside InputDecoration.suffixIcon:
-            // on Flutter web that combo has painted a huge grey ErrorWidget
-            // under this section (unbounded ErrorBox inside ListView).
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _rivalSearchController,
-                    style: const TextStyle(color: Colors.white),
-                    cursorColor: const Color(0xFFD4A24D),
-                    decoration: _fieldDecoration(_t.nightclubSearchPlayerName),
-                    onSubmitted: (_) => _searchRivals(),
-                    textInputAction: TextInputAction.search,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Padding(
-                  padding: const EdgeInsets.only(top: 4),
-                  child: FilledButton.tonal(
-                    onPressed: _searchRivals,
-                    style: FilledButton.styleFrom(
-                      backgroundColor: const Color(0xFF2A1C12),
-                      foregroundColor: const Color(0xFFFFE3A0),
-                      padding: const EdgeInsets.all(14),
-                      minimumSize: const Size(48, 48),
-                    ),
-                    child: const Icon(Icons.search),
-                  ),
-                ),
-              ],
+            // Full-width field, button underneath, results as tiles.
+            // A search IconButton in suffixIcon, a Row beside the field, and a
+            // DropdownButtonFormField here each painted a huge grey ErrorWidget
+            // on Flutter web (unbounded ErrorBox inside the page ListView).
+            TextField(
+              controller: _rivalSearchController,
+              style: const TextStyle(color: Colors.white),
+              cursorColor: const Color(0xFFD4A24D),
+              decoration: _fieldDecoration(_t.nightclubSearchPlayerName),
+              onSubmitted: (_) => _searchRivals(),
+              textInputAction: TextInputAction.search,
             ),
             const SizedBox(height: 6),
-            Builder(
-              builder: (context) {
-                final rivalItems = <DropdownMenuItem<String>>[];
-                final seenNames = <String>{};
-                for (final raw in _rivalSearchResults) {
-                  if (raw is! Map) continue;
-                  final map = Map<String, dynamic>.from(raw);
-                  final name = (map['ownerName'] ?? '').toString().trim();
-                  if (name.isEmpty || !seenNames.add(name)) continue;
-                  rivalItems.add(
-                    DropdownMenuItem<String>(
-                      value: name,
-                      child: Text(
-                        _t.nightclubRivalCrowdLine(
-                          name,
-                          (map['country'] ?? '-').toString(),
-                          '${map['crowdSize'] ?? 0}',
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  );
-                }
-                if (rivalItems.isEmpty) {
-                  return const SizedBox.shrink();
-                }
-                final rivalKeys = rivalItems
-                    .map((item) => item.value)
-                    .whereType<String>()
-                    .toSet();
-                return DropdownButtonFormField<String>(
-                  value: _validDropdownValue(_selectedRivalName, rivalKeys),
-                  isExpanded: true,
-                  items: rivalItems,
-                  onChanged: (v) => setState(() => _selectedRivalName = v),
-                  decoration: _fieldDecoration(_t.nightclubTargetName),
-                );
-              },
+            Align(
+              alignment: Alignment.centerLeft,
+              child: FilledButton.icon(
+                onPressed: _searchRivals,
+                icon: const Icon(Icons.search),
+                label: Text(_t.nightclubSearchPlayerName),
+              ),
             ),
+            const SizedBox(height: 6),
+            ..._rivalResultTiles(),
             const SizedBox(height: 6),
             Wrap(
               spacing: 8,
@@ -3779,6 +3735,58 @@ class _NightclubScreenState extends State<NightclubScreen> {
     );
   }
 
+  List<Widget> _rivalResultTiles() {
+    final tiles = <Widget>[];
+    final seenNames = <String>{};
+    for (final raw in _rivalSearchResults) {
+      if (raw is! Map) continue;
+      final map = Map<String, dynamic>.from(raw);
+      final name = (map['ownerName'] ?? '').toString().trim();
+      if (name.isEmpty || !seenNames.add(name)) continue;
+      final selected = name == _selectedRivalName;
+      tiles.add(
+        Padding(
+          padding: const EdgeInsets.only(bottom: 6),
+          child: Material(
+            color: const Color(0xFF1A130E),
+            borderRadius: BorderRadius.circular(10),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(10),
+              onTap: () => setState(() => _selectedRivalName = name),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: selected
+                        ? const Color(0xFFD4A24D)
+                        : const Color(0x66D4A24D),
+                    width: selected ? 1.4 : 1,
+                  ),
+                ),
+                child: Text(
+                  _t.nightclubRivalCrowdLine(
+                    name,
+                    (map['country'] ?? '-').toString(),
+                    '${map['crowdSize'] ?? 0}',
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: selected ? const Color(0xFFFFE3A0) : Colors.white,
+                    fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+    return tiles;
+  }
+
   Widget _intelligenceSectionTitle(String text, IconData icon) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 6),
@@ -3786,11 +3794,15 @@ class _NightclubScreenState extends State<NightclubScreen> {
         children: [
           Icon(icon, size: 18, color: const Color(0xFFD4A24D)),
           const SizedBox(width: 6),
-          Text(
-            text,
-            style: const TextStyle(
-              fontWeight: FontWeight.w700,
-              color: Color(0xFFFFE3A0),
+          Expanded(
+            child: Text(
+              text,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontWeight: FontWeight.w700,
+                color: Color(0xFFFFE3A0),
+              ),
             ),
           ),
         ],
